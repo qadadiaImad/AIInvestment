@@ -1,0 +1,35 @@
+# Secrets — API keys live here, never committed
+.env
+.env.*
+
+# Retrieved data (timestamped pulls; regenerate, don't version)
+data/
+
+# Playwright MCP scratch
+.playwright-mcp/
+
+# Generated capital-web artifacts (regenerate: python scripts/build_capital_web.py)
+capital_web.html
+capital_web_render.png
+
+# Generated analyst/dashboard artifacts + scratch
+*_dashboard.html
+stack_screener.html
+*_render.png
+gf_*.txt
+# Root-level screenshots & scratch (verification artifacts; regenerable)
+/*.png
+/series_all.json
+.vercel/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# Next.js site (web/) build + deps
+web/node_modules/
+web/.next/
+web/out/
+site_*.png

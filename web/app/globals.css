@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0b0f17;
+  --foreground: #e5e7eb;
+  --border: #1f2937;
+  --panel: #0e131d;
+  --muted: #9ca3af;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-term-border: var(--border);
+  --color-term-panel: var(--panel);
+  --color-term-muted: var(--muted);
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo,
+    Consolas, monospace;
+  --font-sans: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* tabular numerals everywhere numbers appear */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+a {
+  color: inherit;
+}
+
+/* scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0f17;
+}
+::-webkit-scrollbar-thumb {
+  background: #1f2937;
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #374151;
+}
+
+/* dense table defaults */
+table.term {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+table.term th,
+table.term td {
+  border-bottom: 1px solid var(--border);
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+table.term th {
+  text-align: left;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 10.5px;
+  user-select: none;
+}
+table.term td.numcell,
+table.term th.numcell {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+table.term tbody tr:hover {
+  background: #11192680;
+}

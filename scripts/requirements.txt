@@ -1,0 +1,4 @@
+requests>=2.31
+pytest>=8.0
+# Playwright batch (gated/no-API sources only) — install when first needed:
+# playwright>=1.48

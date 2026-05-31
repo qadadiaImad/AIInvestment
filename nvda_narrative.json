@@ -1,0 +1,15 @@
+{
+  "valuation_take": "At ~$211 the stock screens ~37% below GuruFocus's ~$334 GF Value, yet GuruFocus tags it a 'Possible Value Trap' and the ~32x P/E already prices in sustained hyperscale capex. The apparent discount is conditional, not a margin of safety — treat the GF Value as a model output, not a floor.",
+  "bottleneck_rationale": "Demand isn't the question for NVDA; the binding constraints sit upstream and outside its control: CoWoS advanced packaging and HBM allocation at TSMC/Micron, plus US-China GPU export controls that resize the addressable market by administration.",
+  "scenarios": [
+    "Bull: packaging/HBM capacity ramps and export rules stabilize -> unit growth sustains the multiple and the GF discount closes upward",
+    "Base: supply stays tight and growth moderates -> price drifts toward GF Value as the multiple compresses",
+    "Bear: export controls tighten and a hyperscaler capex digestion hits orders -> de-rating despite the headline 'discount'"
+  ],
+  "risks": [
+    "Customer concentration in a handful of hyperscalers (who are also building custom silicon)",
+    "Geopolitical single-point risk via TSMC/Taiwan",
+    "Cyclical capex digestion after a historic build-out"
+  ],
+  "synthesis": "NVDA owns a scarce link (leading-edge compute + CUDA distribution) and has real pricing power today — but that scarcity is gated by packaging/HBM it does not own and by export policy it cannot set. Pricing power is durable only as long as TSMC/Micron capacity and the regulatory line hold."
+}
