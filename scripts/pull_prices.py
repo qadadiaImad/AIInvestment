@@ -10,7 +10,7 @@ import datetime
 import json
 import pathlib
 
-from aiinvest import ai_stack, price_history
+from aiinvest import ai_stack, price_history, quantum_stack
 
 
 def _one(full_ticker, out_dir, now):
@@ -32,7 +32,9 @@ def main():
     out_dir = repo / "web" / "public" / "data" / "prices"
     out_dir.mkdir(parents=True, exist_ok=True)
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    tickers = ai_stack.all_tickers()
+    # Prices cover BOTH sectors so every displayed name (incl. quantum) has a
+    # price file for the Price-vs-Fundamental-Value chart. De-dup bridge names.
+    tickers = list(dict.fromkeys(ai_stack.all_tickers() + quantum_stack.all_tickers()))
 
     ok, fail = 0, []
     with cf.ThreadPoolExecutor(max_workers=8) as ex:
