@@ -4,6 +4,53 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { ScreenerRow } from "@/lib/data";
 import LayerChip from "@/components/LayerChip";
+
+// Optional sector tagging added by the merged AI + Quantum loader. AI-only data
+// carries neither field, so both are optional and the UI degrades gracefully.
+type SectorRow = ScreenerRow & {
+  sector?: string | null;
+  sectors?: string[] | null;
+};
+
+// Normalize a row to the set of sectors it belongs to (deduped, order-stable).
+function rowSectors(r: SectorRow): string[] {
+  const out: string[] = [];
+  if (Array.isArray(r.sectors)) {
+    for (const s of r.sectors) {
+      if (s && !out.includes(s)) out.push(s);
+    }
+  }
+  if (r.sector && !out.includes(r.sector)) out.push(r.sector);
+  return out;
+}
+
+type SectorFilter = "All" | "AI" | "Quantum";
+
+const SECTOR_FILTERS: SectorFilter[] = ["All", "AI", "Quantum"];
+
+function SectorChip({ sectors }: { sectors: string[] }) {
+  if (sectors.length === 0) return <span className="text-term-muted">{DASH}</span>;
+  return (
+    <span className="inline-flex gap-1 align-middle">
+      {sectors.map((s) => {
+        const color = s === "Quantum" ? "#a855f7" : "#22d3ee";
+        return (
+          <span
+            key={s}
+            className="inline-block px-1.5 py-px text-[9.5px] font-semibold uppercase tracking-wider rounded-sm"
+            style={{
+              color,
+              border: `1px solid ${color}`,
+              backgroundColor: `${color}1a`,
+            }}
+          >
+            {s}
+          </span>
+        );
+      })}
+    </span>
+  );
+}
 import {
   price as fmtPrice,
   ratio,
@@ -76,12 +123,27 @@ export default function ScreenerTable({
 }) {
   const [sortKey, setSortKey] = useState<SortKey>("perf_1y");
   const [dir, setDir] = useState<Dir>("desc");
+  const [sectorFilter, setSectorFilter] = useState<SectorFilter>("All");
+
+  // Sector tagging only exists once Quantum data is merged in. If no row carries
+  // a sector, hide the filter control and the chip column entirely.
+  const hasSectors = useMemo(
+    () => (rows as SectorRow[]).some((r) => rowSectors(r).length > 0),
+    [rows],
+  );
+
+  const filtered = useMemo(() => {
+    if (!hasSectors || sectorFilter === "All") return rows;
+    return (rows as SectorRow[]).filter((r) =>
+      rowSectors(r).includes(sectorFilter),
+    );
+  }, [rows, hasSectors, sectorFilter]);
 
   const sorted = useMemo(() => {
-    const out = [...rows].sort((a, b) => cmp(a, b, sortKey));
+    const out = [...filtered].sort((a, b) => cmp(a, b, sortKey));
     if (dir === "desc") out.reverse();
     return out;
-  }, [rows, sortKey, dir]);
+  }, [filtered, sortKey, dir]);
 
   function onSort(key: SortKey) {
     if (key === sortKey) {
@@ -98,7 +160,35 @@ export default function ScreenerTable({
     key === sortKey ? (dir === "asc" ? " ▲" : " ▼") : "";
 
   return (
-    <div className="overflow-x-auto border border-term-border rounded-sm">
+    <div className="flex flex-col gap-2">
+      {hasSectors && (
+        <div className="flex items-center gap-1.5">
+          <span className="text-[10px] uppercase tracking-wider text-term-muted">
+            Sector
+          </span>
+          <div className="inline-flex border border-term-border rounded-sm overflow-hidden">
+            {SECTOR_FILTERS.map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => setSectorFilter(s)}
+                aria-pressed={sectorFilter === s}
+                className={`px-2 py-px text-[10.5px] font-semibold uppercase tracking-wider ${
+                  sectorFilter === s
+                    ? "bg-emerald-500/20 text-emerald-300"
+                    : "text-term-muted hover:text-zinc-200"
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+          <span className="text-[10px] text-term-muted">
+            {sorted.length} of {rows.length}
+          </span>
+        </div>
+      )}
+      <div className="overflow-x-auto border border-term-border rounded-sm">
       <table className="term">
         {caption && <caption className="sr-only">{caption}</caption>}
         <thead className="bg-[#0e131d] sticky top-0 z-10">
@@ -122,6 +212,7 @@ export default function ScreenerTable({
                 <span className="text-emerald-400">{arrow(c.key)}</span>
               </th>
             ))}
+            {hasSectors && <th>Sector</th>}
           </tr>
         </thead>
         <tbody>
@@ -170,11 +261,17 @@ export default function ScreenerTable({
                 <td className="tnum text-term-muted">
                   {r.next_catalyst ? dateOnly(r.next_catalyst) : DASH}
                 </td>
+                {hasSectors && (
+                  <td>
+                    <SectorChip sectors={rowSectors(r as SectorRow)} />
+                  </td>
+                )}
               </tr>
             );
           })}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
