@@ -1,0 +1,1296 @@
+{
+  "W000821": [
+    {
+      "committee_code": "HSII",
+      "committee_name": "House Committee on Natural Resources",
+      "title": "Chair"
+    },
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    }
+  ],
+  "H001094": [
+    {
+      "committee_code": "HSII",
+      "committee_name": "House Committee on Natural Resources",
+      "title": ""
+    },
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    }
+  ],
+  "S001212": [
+    {
+      "committee_code": "HSII",
+      "committee_name": "House Committee on Natural Resources",
+      "title": ""
+    },
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    },
+    {
+      "committee_code": "HSSM",
+      "committee_name": "House Committee on Small Business",
+      "title": ""
+    }
+  ],
+  "M001241": [
+    {
+      "committee_code": "HSII",
+      "committee_name": "House Committee on Natural Resources",
+      "title": ""
+    },
+    {
+      "committee_code": "HSGO",
+      "committee_name": "House Committee on Oversight and Government Reform",
+      "title": ""
+    }
+  ],
+  "B000668": [
+    {
+      "committee_code": "HSII",
+      "committee_name": "House Committee on Natural Resources",
+      "title": ""
+    },
+    {
+      "committee_code": "HSIF",
+      "committee_name": "House Committee on Energy and Commerce",
+      "title": ""
+    }
+  ],
+  "R000621": [
+    {
+      "committee_code": "HSII",
+      "committee_name": "House Committee on Natural Resources",
+      "title": ""
+    },
+    {
+      "committee_code": "HSGO",
+      "committee_name": "House Committee on Oversight and Government Reform",
+      "title": ""
+    }
+  ],
+  "C001129": [
+    {
+      "committee_code": "HSII",
+      "committee_name": "House Committee on Natural Resources",
+      "title": ""
+    },
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    },
+    {
+      "committee_code": "HSSY",
+      "committee_name": "House Committee on Science, Space, and Technology",
+      "title": ""
+    }
+  ],
+  "D000624": [
+    {
+      "committee_code": "HSII",
+      "committee_name": "House Committee on Natural Resources",
+      "title": ""
+    },
+    {
+      "committee_code": "HSIF",
+      "committee_name": "House Committee on Energy and Commerce",
+      "title": ""
+    }
+  ],
+  "M001240": [
+    {
+      "committee_code": "HSII",
+      "committee_name": "House Committee on Natural Resources",
+      "title": ""
+    },
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    },
+    {
+      "committee_code": "HSBU",
+      "committee_name": "House Committee on the Budget",
+      "title": ""
+    }
+  ],
+  "L000590": [
+    {
+      "committee_code": "HSII",
+      "committee_name": "House Committee on Natural Resources",
+      "title": ""
+    },
+    {
+      "committee_code": "HSAP",
+      "committee_name": "House Committee on Appropriations",
+      "title": ""
+    }
+  ],
+  "K000403": [
+    {
+      "committee_code": "HSII",
+      "committee_name": "House Committee on Natural Resources",
+      "title": ""
+    },
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    },
+    {
+      "committee_code": "HSSY",
+      "committee_name": "House Committee on Science, Space, and Technology",
+      "title": ""
+    }
+  ],
+  "L000560": [
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": "Ranking Member"
+    }
+  ],
+  "N000147": [
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    },
+    {
+      "committee_code": "HSGO",
+      "committee_name": "House Committee on Oversight and Government Reform",
+      "title": ""
+    }
+  ],
+  "B001291": [
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    },
+    {
+      "committee_code": "HSSY",
+      "committee_name": "House Committee on Science, Space, and Technology",
+      "title": "Chair"
+    }
+  ],
+  "R000603": [
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    },
+    {
+      "committee_code": "HSSY",
+      "committee_name": "House Committee on Science, Space, and Technology",
+      "title": ""
+    },
+    {
+      "committee_code": "HSAG",
+      "committee_name": "House Committee on Agriculture",
+      "title": ""
+    }
+  ],
+  "S001211": [
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    },
+    {
+      "committee_code": "HSFA",
+      "committee_name": "House Committee on Foreign Affairs",
+      "title": ""
+    },
+    {
+      "committee_code": "HSZS",
+      "committee_name": "House Select Committee on the Strategic Competition Between the United States and the Chinese Communist Party",
+      "title": ""
+    }
+  ],
+  "M001196": [
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    },
+    {
+      "committee_code": "HSAS",
+      "committee_name": "House Committee on Armed Services",
+      "title": ""
+    },
+    {
+      "committee_code": "HSZS",
+      "committee_name": "House Select Committee on the Strategic Competition Between the United States and the Chinese Communist Party",
+      "title": ""
+    }
+  ],
+  "R000579": [
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    },
+    {
+      "committee_code": "HSAS",
+      "committee_name": "House Committee on Armed Services",
+      "title": ""
+    }
+  ],
+  "Y000067": [
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    },
+    {
+      "committee_code": "HSWM",
+      "committee_name": "House Committee on Ways and Means",
+      "title": ""
+    }
+  ],
+  "B001327": [
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    },
+    {
+      "committee_code": "HSAG",
+      "committee_name": "House Committee on Agriculture",
+      "title": ""
+    },
+    {
+      "committee_code": "HSSM",
+      "committee_name": "House Committee on Small Business",
+      "title": ""
+    }
+  ],
+  "S001229": [
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    },
+    {
+      "committee_code": "HSFA",
+      "committee_name": "House Committee on Foreign Affairs",
+      "title": ""
+    }
+  ],
+  "F000483": [
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    },
+    {
+      "committee_code": "HSSY",
+      "committee_name": "House Committee on Science, Space, and Technology",
+      "title": ""
+    }
+  ],
+  "T000490": [
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    },
+    {
+      "committee_code": "HSAG",
+      "committee_name": "House Committee on Agriculture",
+      "title": ""
+    }
+  ],
+  "K000405": [
+    {
+      "committee_code": "HSPW",
+      "committee_name": "House Committee on Transportation and Infrastructure",
+      "title": ""
+    },
+    {
+      "committee_code": "HSJU",
+      "committee_name": "House Committee on the Judiciary",
+      "title": ""
+    },
+    {
+      "committee_code": "HSHM",
+      "committee_name": "House Committee on Homeland Security",
+      "title": ""
+    },
+    {
+      "committee_code": "HSSO",
+      "committee_name": "House Committee on Ethics",
+      "title": ""
+    }
+  ],
+  "L000397": [
+    {
+      "committee_code": "HSSY",
+      "committee_name": "House Committee on Science, Space, and Technology",
+      "title": "Ranking Member"
+    },
+    {
+      "committee_code": "HSJU",
+      "committee_name": "House Committee on the Judiciary",
+      "title": ""
+    }
+  ],
+  "I000056": [
+    {
+      "committee_code": "HSSY",
+      "committee_name": "House Committee on Science, Space, and Technology",
+      "title": ""
+    },
+    {
+      "committee_code": "HSJU",
+      "committee_name": "House Committee on the Judiciary",
+      "title": ""
+    },
+    {
+      "committee_code": "HSFA",
+      "committee_name": "House Committee on Foreign Affairs",
+      "title": ""
+    }
+  ],
+  "F000472": [
+    {
+      "committee_code": "HSSY",
+      "committee_name": "House Committee on Science, Space, and Technology",
+      "title": ""
+    },
+    {
+      "committee_code": "HSAP",
+      "committee_name": "House Committee on Appropriations",
+      "title": ""
+    }
+  ],
+  "W000830": [
+    {
+      "committee_code": "HSSY",
+      "committee_name": "House Committee on Science, Space, and Technology",
+      "title": ""
+    },
+    {
+      "committee_code": "HSAS",
+      "committee_name": "House Committee on Armed Services",
+      "title": ""
+    }
+  ],
+  "M001232": [
+    {
+      "committee_code": "HSSY",
+      "committee_name": "House Committee on Science, Space, and Technology",
+      "title": ""
+    },
+    {
+      "committee_code": "HSAG",
+      "committee_name": "House Committee on Agriculture",
+      "title": ""
+    }
+  ],
+  "B001325": [
+    {
+      "committee_code": "HSSY",
+      "committee_name": "House Committee on Science, Space, and Technology",
+      "title": ""
+    },
+    {
+      "committee_code": "HSHM",
+      "committee_name": "House Committee on Homeland Security",
+      "title": ""
+    },
+    {
+      "committee_code": "HSFA",
+      "committee_name": "House Committee on Foreign Affairs",
+      "title": ""
+    }
+  ],
+  "V000139": [
+    {
+      "committee_code": "HSSY",
+      "committee_name": "House Committee on Science, Space, and Technology",
+      "title": ""
+    },
+    {
+      "committee_code": "HSHM",
+      "committee_name": "House Committee on Homeland Security",
+      "title": ""
+    }
+  ],
+  "S001189": [
+    {
+      "committee_code": "HSAG",
+      "committee_name": "House Committee on Agriculture",
+      "title": "Vice Chair"
+    },
+    {
+      "committee_code": "HSAS",
+      "committee_name": "House Committee on Armed Services",
+      "title": ""
+    },
+    {
+      "committee_code": "HLIG",
+      "committee_name": "House Permanent Select Committee on Intelligence",
+      "title": ""
+    },
+    {
+      "committee_code": "HSRU",
+      "committee_name": "House Committee on Rules",
+      "title": ""
+    }
+  ],
+  "D000616": [
+    {
+      "committee_code": "HSAG",
+      "committee_name": "House Committee on Agriculture",
+      "title": ""
+    },
+    {
+      "committee_code": "HSAS",
+      "committee_name": "House Committee on Armed Services",
+      "title": ""
+    }
+  ],
+  "J000309": [
+    {
+      "committee_code": "HSAG",
+      "committee_name": "House Committee on Agriculture",
+      "title": ""
+    },
+    {
+      "committee_code": "HSFA",
+      "committee_name": "House Committee on Foreign Affairs",
+      "title": ""
+    }
+  ],
+  "T000488": [
+    {
+      "committee_code": "HSAG",
+      "committee_name": "House Committee on Agriculture",
+      "title": ""
+    },
+    {
+      "committee_code": "HSHM",
+      "committee_name": "House Committee on Homeland Security",
+      "title": ""
+    }
+  ],
+  "R000612": [
+    {
+      "committee_code": "HSAG",
+      "committee_name": "House Committee on Agriculture",
+      "title": ""
+    },
+    {
+      "committee_code": "HSBA",
+      "committee_name": "House Committee on Financial Services",
+      "title": ""
+    }
+  ],
+  "N000189": [
+    {
+      "committee_code": "HSAG",
+      "committee_name": "House Committee on Agriculture",
+      "title": ""
+    },
+    {
+      "committee_code": "HSAP",
+      "committee_name": "House Committee on Appropriations",
+      "title": ""
+    },
+    {
+      "committee_code": "HSZS",
+      "committee_name": "House Select Committee on the Strategic Competition Between the United States and the Chinese Communist Party",
+      "title": ""
+    }
+  ],
+  "P000597": [
+    {
+      "committee_code": "HSAG",
+      "committee_name": "House Committee on Agriculture",
+      "title": ""
+    },
+    {
+      "committee_code": "HSAP",
+      "committee_name": "House Committee on Appropriations",
+      "title": ""
+    }
+  ],
+  "J000289": [
+    {
+      "committee_code": "HSJU",
+      "committee_name": "House Committee on the Judiciary",
+      "title": "Chair"
+    },
+    {
+      "committee_code": "HSGO",
+      "committee_name": "House Committee on Oversight and Government Reform",
+      "title": ""
+    }
+  ],
+  "C001068": [
+    {
+      "committee_code": "HSJU",
+      "committee_name": "House Committee on the Judiciary",
+      "title": ""
+    },
+    {
+      "committee_code": "HLIG",
+      "committee_name": "House Permanent Select Committee on Intelligence",
+      "title": ""
+    }
+  ],
+  "R000614": [
+    {
+      "committee_code": "HSJU",
+      "committee_name": "House Committee on the Judiciary",
+      "title": ""
+    },
+    {
+      "committee_code": "HSRU",
+      "committee_name": "House Committee on Rules",
+      "title": ""
+    },
+    {
+      "committee_code": "HSBU",
+      "committee_name": "House Committee on the Budget",
+      "title": ""
+    }
+  ],
+  "J000298": [
+    {
+      "committee_code": "HSJU",
+      "committee_name": "House Committee on the Judiciary",
+      "title": ""
+    },
+    {
+      "committee_code": "HSFA",
+      "committee_name": "House Committee on Foreign Affairs",
+      "title": ""
+    },
+    {
+      "committee_code": "HSBU",
+      "committee_name": "House Committee on the Budget",
+      "title": ""
+    }
+  ],
+  "M001208": [
+    {
+      "committee_code": "HSJU",
+      "committee_name": "House Committee on the Judiciary",
+      "title": ""
+    },
+    {
+      "committee_code": "HSED",
+      "committee_name": "House Committee on Education and Workforce",
+      "title": ""
+    }
+  ],
+  "L000597": [
+    {
+      "committee_code": "HSJU",
+      "committee_name": "House Committee on the Judiciary",
+      "title": ""
+    },
+    {
+      "committee_code": "HSIF",
+      "committee_name": "House Committee on Energy and Commerce",
+      "title": ""
+    },
+    {
+      "committee_code": "HSHA",
+      "committee_name": "House Committee on House Administration",
+      "title": "Vice Chair"
+    }
+  ],
+  "M001217": [
+    {
+      "committee_code": "HSJU",
+      "committee_name": "House Committee on the Judiciary",
+      "title": ""
+    },
+    {
+      "committee_code": "HSFA",
+      "committee_name": "House Committee on Foreign Affairs",
+      "title": ""
+    },
+    {
+      "committee_code": "HSQJ",
+      "committee_name": "House Select Subcommittee to Investigate the Remaining Questions Surrounding January 6, 2021",
+      "title": ""
+    }
+  ],
+  "G000599": [
+    {
+      "committee_code": "HSJU",
+      "committee_name": "House Committee on the Judiciary",
+      "title": ""
+    },
+    {
+      "committee_code": "HSHM",
+      "committee_name": "House Committee on Homeland Security",
+      "title": ""
+    }
+  ],
+  "G000603": [
+    {
+      "committee_code": "HSJU",
+      "committee_name": "House Committee on the Judiciary",
+      "title": ""
+    },
+    {
+      "committee_code": "HSGO",
+      "committee_name": "House Committee on Oversight and Government Reform",
+      "title": ""
+    },
+    {
+      "committee_code": "HSBU",
+      "committee_name": "House Committee on the Budget",
+      "title": ""
+    }
+  ],
+  "S000510": [
+    {
+      "committee_code": "HSAS",
+      "committee_name": "House Committee on Armed Services",
+      "title": "Ranking Member"
+    }
+  ],
+  "N000188": [
+    {
+      "committee_code": "HSAS",
+      "committee_name": "House Committee on Armed Services",
+      "title": ""
+    },
+    {
+      "committee_code": "HSED",
+      "committee_name": "House Committee on Education and Workforce",
+      "title": ""
+    }
+  ],
+  "K000375": [
+    {
+      "committee_code": "HSAS",
+      "committee_name": "House Committee on Armed Services",
+      "title": ""
+    },
+    {
+      "committee_code": "HSFA",
+      "committee_name": "House Committee on Foreign Affairs",
+      "title": ""
+    }
+  ],
+  "J000305": [
+    {
+      "committee_code": "HSAS",
+      "committee_name": "House Committee on Armed Services",
+      "title": ""
+    },
+    {
+      "committee_code": "HSFA",
+      "committee_name": "House Committee on Foreign Affairs",
+      "title": ""
+    }
+  ],
+  "C001123": [
+    {
+      "committee_code": "HSAS",
+      "committee_name": "House Committee on Armed Services",
+      "title": ""
+    },
+    {
+      "committee_code": "HSSM",
+      "committee_name": "House Committee on Small Business",
+      "title": ""
+    }
+  ],
+  "M001239": [
+    {
+      "committee_code": "HSAS",
+      "committee_name": "House Committee on Armed Services",
+      "title": ""
+    },
+    {
+      "committee_code": "HSGO",
+      "committee_name": "House Committee on Oversight and Government Reform",
+      "title": ""
+    }
+  ],
+  "A000055": [
+    {
+      "committee_code": "HSAP",
+      "committee_name": "House Committee on Appropriations",
+      "title": ""
+    }
+  ],
+  "W000797": [
+    {
+      "committee_code": "HSAP",
+      "committee_name": "House Committee on Appropriations",
+      "title": ""
+    }
+  ],
+  "J000295": [
+    {
+      "committee_code": "HSAP",
+      "committee_name": "House Committee on Appropriations",
+      "title": ""
+    }
+  ],
+  "C001055": [
+    {
+      "committee_code": "HSAP",
+      "committee_name": "House Committee on Appropriations",
+      "title": ""
+    }
+  ],
+  "R000610": [
+    {
+      "committee_code": "HSAP",
+      "committee_name": "House Committee on Appropriations",
+      "title": ""
+    }
+  ],
+  "L000595": [
+    {
+      "committee_code": "HSAP",
+      "committee_name": "House Committee on Appropriations",
+      "title": ""
+    },
+    {
+      "committee_code": "HSED",
+      "committee_name": "House Committee on Education and Workforce",
+      "title": ""
+    }
+  ],
+  "G000591": [
+    {
+      "committee_code": "HSAP",
+      "committee_name": "House Committee on Appropriations",
+      "title": ""
+    },
+    {
+      "committee_code": "HSHM",
+      "committee_name": "House Committee on Homeland Security",
+      "title": ""
+    },
+    {
+      "committee_code": "HSSO",
+      "committee_name": "House Committee on Ethics",
+      "title": "Chair"
+    }
+  ],
+  "A000379": [
+    {
+      "committee_code": "HSAP",
+      "committee_name": "House Committee on Appropriations",
+      "title": ""
+    },
+    {
+      "committee_code": "HSSM",
+      "committee_name": "House Committee on Small Business",
+      "title": ""
+    }
+  ],
+  "G000597": [
+    {
+      "committee_code": "HSHM",
+      "committee_name": "House Committee on Homeland Security",
+      "title": "Chair"
+    },
+    {
+      "committee_code": "HSBA",
+      "committee_name": "House Committee on Financial Services",
+      "title": ""
+    },
+    {
+      "committee_code": "HSSO",
+      "committee_name": "House Committee on Ethics",
+      "title": ""
+    }
+  ],
+  "P000048": [
+    {
+      "committee_code": "HSHM",
+      "committee_name": "House Committee on Homeland Security",
+      "title": ""
+    },
+    {
+      "committee_code": "HSIF",
+      "committee_name": "House Committee on Energy and Commerce",
+      "title": ""
+    }
+  ],
+  "J000310": [
+    {
+      "committee_code": "HSHM",
+      "committee_name": "House Committee on Homeland Security",
+      "title": ""
+    },
+    {
+      "committee_code": "HSFA",
+      "committee_name": "House Committee on Foreign Affairs",
+      "title": ""
+    },
+    {
+      "committee_code": "HSHA",
+      "committee_name": "House Committee on House Administration",
+      "title": ""
+    }
+  ],
+  "W000831": [
+    {
+      "committee_code": "HSHM",
+      "committee_name": "House Committee on Homeland Security",
+      "title": ""
+    },
+    {
+      "committee_code": "HSGO",
+      "committee_name": "House Committee on Oversight and Government Reform",
+      "title": ""
+    }
+  ],
+  "C001108": [
+    {
+      "committee_code": "HSGO",
+      "committee_name": "House Committee on Oversight and Government Reform",
+      "title": "Chair"
+    },
+    {
+      "committee_code": "HSED",
+      "committee_name": "House Committee on Education and Workforce",
+      "title": ""
+    }
+  ],
+  "F000450": [
+    {
+      "committee_code": "HSGO",
+      "committee_name": "House Committee on Oversight and Government Reform",
+      "title": ""
+    },
+    {
+      "committee_code": "HSED",
+      "committee_name": "House Committee on Education and Workforce",
+      "title": ""
+    },
+    {
+      "committee_code": "HSRU",
+      "committee_name": "House Committee on Rules",
+      "title": "Chair"
+    }
+  ],
+  "S000250": [
+    {
+      "committee_code": "HSGO",
+      "committee_name": "House Committee on Oversight and Government Reform",
+      "title": ""
+    },
+    {
+      "committee_code": "HSBA",
+      "committee_name": "House Committee on Financial Services",
+      "title": ""
+    }
+  ],
+  "D000032": [
+    {
+      "committee_code": "HSGO",
+      "committee_name": "House Committee on Oversight and Government Reform",
+      "title": ""
+    },
+    {
+      "committee_code": "HSBA",
+      "committee_name": "House Committee on Financial Services",
+      "title": ""
+    }
+  ],
+  "L000566": [
+    {
+      "committee_code": "HSIF",
+      "committee_name": "House Committee on Energy and Commerce",
+      "title": ""
+    }
+  ],
+  "C001103": [
+    {
+      "committee_code": "HSIF",
+      "committee_name": "House Committee on Energy and Commerce",
+      "title": ""
+    },
+    {
+      "committee_code": "HSBU",
+      "committee_name": "House Committee on the Budget",
+      "title": ""
+    }
+  ],
+  "D000628": [
+    {
+      "committee_code": "HSIF",
+      "committee_name": "House Committee on Energy and Commerce",
+      "title": "Vice Chair"
+    },
+    {
+      "committee_code": "HSZS",
+      "committee_name": "House Select Committee on the Strategic Competition Between the United States and the Chinese Communist Party",
+      "title": ""
+    }
+  ],
+  "P000608": [
+    {
+      "committee_code": "HSIF",
+      "committee_name": "House Committee on Energy and Commerce",
+      "title": ""
+    },
+    {
+      "committee_code": "HSBU",
+      "committee_name": "House Committee on the Budget",
+      "title": ""
+    }
+  ],
+  "A000372": [
+    {
+      "committee_code": "HSIF",
+      "committee_name": "House Committee on Energy and Commerce",
+      "title": ""
+    },
+    {
+      "committee_code": "HSED",
+      "committee_name": "House Committee on Education and Workforce",
+      "title": ""
+    }
+  ],
+  "T000482": [
+    {
+      "committee_code": "HSIF",
+      "committee_name": "House Committee on Energy and Commerce",
+      "title": ""
+    }
+  ],
+  "F000468": [
+    {
+      "committee_code": "HSIF",
+      "committee_name": "House Committee on Energy and Commerce",
+      "title": ""
+    }
+  ],
+  "A000148": [
+    {
+      "committee_code": "HSIF",
+      "committee_name": "House Committee on Energy and Commerce",
+      "title": ""
+    }
+  ],
+  "L000601": [
+    {
+      "committee_code": "HSIF",
+      "committee_name": "House Committee on Energy and Commerce",
+      "title": ""
+    }
+  ],
+  "M001227": [
+    {
+      "committee_code": "HSIF",
+      "committee_name": "House Committee on Energy and Commerce",
+      "title": ""
+    }
+  ],
+  "K000398": [
+    {
+      "committee_code": "HSIF",
+      "committee_name": "House Committee on Energy and Commerce",
+      "title": ""
+    },
+    {
+      "committee_code": "HSFA",
+      "committee_name": "House Committee on Foreign Affairs",
+      "title": ""
+    }
+  ],
+  "D000399": [
+    {
+      "committee_code": "HSWM",
+      "committee_name": "House Committee on Ways and Means",
+      "title": ""
+    },
+    {
+      "committee_code": "HSBU",
+      "committee_name": "House Committee on the Budget",
+      "title": ""
+    }
+  ],
+  "K000376": [
+    {
+      "committee_code": "HSWM",
+      "committee_name": "House Committee on Ways and Means",
+      "title": ""
+    }
+  ],
+  "S001156": [
+    {
+      "committee_code": "HSWM",
+      "committee_name": "House Committee on Ways and Means",
+      "title": ""
+    }
+  ],
+  "S001185": [
+    {
+      "committee_code": "HSWM",
+      "committee_name": "House Committee on Ways and Means",
+      "title": ""
+    },
+    {
+      "committee_code": "HSHA",
+      "committee_name": "House Committee on House Administration",
+      "title": ""
+    }
+  ],
+  "D000617": [
+    {
+      "committee_code": "HSWM",
+      "committee_name": "House Committee on Ways and Means",
+      "title": ""
+    }
+  ],
+  "S001199": [
+    {
+      "committee_code": "HSWM",
+      "committee_name": "House Committee on Ways and Means",
+      "title": ""
+    },
+    {
+      "committee_code": "HSBU",
+      "committee_name": "House Committee on the Budget",
+      "title": ""
+    }
+  ],
+  "C001080": [
+    {
+      "committee_code": "HSWM",
+      "committee_name": "House Committee on Ways and Means",
+      "title": ""
+    },
+    {
+      "committee_code": "HSBU",
+      "committee_name": "House Committee on the Budget",
+      "title": ""
+    }
+  ],
+  "H001082": [
+    {
+      "committee_code": "HSWM",
+      "committee_name": "House Committee on Ways and Means",
+      "title": ""
+    }
+  ],
+  "M001205": [
+    {
+      "committee_code": "HSWM",
+      "committee_name": "House Committee on Ways and Means",
+      "title": ""
+    }
+  ],
+  "B001292": [
+    {
+      "committee_code": "HSWM",
+      "committee_name": "House Committee on Ways and Means",
+      "title": ""
+    }
+  ],
+  "E000296": [
+    {
+      "committee_code": "HSWM",
+      "committee_name": "House Committee on Ways and Means",
+      "title": ""
+    }
+  ],
+  "S001190": [
+    {
+      "committee_code": "HSWM",
+      "committee_name": "House Committee on Ways and Means",
+      "title": ""
+    },
+    {
+      "committee_code": "HSFA",
+      "committee_name": "House Committee on Foreign Affairs",
+      "title": ""
+    }
+  ],
+  "S001214": [
+    {
+      "committee_code": "HSWM",
+      "committee_name": "House Committee on Ways and Means",
+      "title": ""
+    },
+    {
+      "committee_code": "HLIG",
+      "committee_name": "House Permanent Select Committee on Intelligence",
+      "title": ""
+    }
+  ],
+  "S001201": [
+    {
+      "committee_code": "HSWM",
+      "committee_name": "House Committee on Ways and Means",
+      "title": ""
+    }
+  ],
+  "M001222": [
+    {
+      "committee_code": "HSWM",
+      "committee_name": "House Committee on Ways and Means",
+      "title": ""
+    },
+    {
+      "committee_code": "HSFA",
+      "committee_name": "House Committee on Foreign Affairs",
+      "title": ""
+    }
+  ],
+  "H001072": [
+    {
+      "committee_code": "HLIG",
+      "committee_name": "House Permanent Select Committee on Intelligence",
+      "title": ""
+    },
+    {
+      "committee_code": "HSBA",
+      "committee_name": "House Committee on Financial Services",
+      "title": "Chair"
+    }
+  ],
+  "G000583": [
+    {
+      "committee_code": "HLIG",
+      "committee_name": "House Permanent Select Committee on Intelligence",
+      "title": ""
+    },
+    {
+      "committee_code": "HSBA",
+      "committee_name": "House Committee on Financial Services",
+      "title": ""
+    }
+  ],
+  "W000812": [
+    {
+      "committee_code": "HLIG",
+      "committee_name": "House Permanent Select Committee on Intelligence",
+      "title": ""
+    },
+    {
+      "committee_code": "HSBA",
+      "committee_name": "House Committee on Financial Services",
+      "title": ""
+    }
+  ],
+  "W000816": [
+    {
+      "committee_code": "HSBA",
+      "committee_name": "House Committee on Financial Services",
+      "title": ""
+    },
+    {
+      "committee_code": "HSSM",
+      "committee_name": "House Committee on Small Business",
+      "title": "Chair"
+    }
+  ],
+  "D000626": [
+    {
+      "committee_code": "HSBA",
+      "committee_name": "House Committee on Financial Services",
+      "title": ""
+    },
+    {
+      "committee_code": "HSFA",
+      "committee_name": "House Committee on Foreign Affairs",
+      "title": ""
+    }
+  ],
+  "M001204": [
+    {
+      "committee_code": "HSBA",
+      "committee_name": "House Committee on Financial Services",
+      "title": ""
+    },
+    {
+      "committee_code": "HSSM",
+      "committee_name": "House Committee on Small Business",
+      "title": ""
+    }
+  ],
+  "T000486": [
+    {
+      "committee_code": "HSBA",
+      "committee_name": "House Committee on Financial Services",
+      "title": ""
+    },
+    {
+      "committee_code": "HSZS",
+      "committee_name": "House Select Committee on the Strategic Competition Between the United States and the Chinese Communist Party",
+      "title": ""
+    }
+  ],
+  "F000110": [
+    {
+      "committee_code": "HSBA",
+      "committee_name": "House Committee on Financial Services",
+      "title": ""
+    }
+  ],
+  "M001136": [
+    {
+      "committee_code": "HSBA",
+      "committee_name": "House Committee on Financial Services",
+      "title": ""
+    },
+    {
+      "committee_code": "HSED",
+      "committee_name": "House Committee on Education and Workforce",
+      "title": ""
+    }
+  ],
+  "S000168": [
+    {
+      "committee_code": "HSBA",
+      "committee_name": "House Committee on Financial Services",
+      "title": ""
+    },
+    {
+      "committee_code": "HSFA",
+      "committee_name": "House Committee on Foreign Affairs",
+      "title": ""
+    }
+  ],
+  "M001236": [
+    {
+      "committee_code": "HSBA",
+      "committee_name": "House Committee on Financial Services",
+      "title": ""
+    },
+    {
+      "committee_code": "HSBU",
+      "committee_name": "House Committee on the Budget",
+      "title": ""
+    }
+  ],
+  "M001234": [
+    {
+      "committee_code": "HSVR",
+      "committee_name": "House Committee on Veterans' Affairs",
+      "title": ""
+    },
+    {
+      "committee_code": "HSSM",
+      "committee_name": "House Committee on Small Business",
+      "title": ""
+    }
+  ]
+}

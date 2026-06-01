@@ -1,0 +1,1864 @@
+[
+  {
+    "bioguide": "A000055",
+    "name": {
+      "first": "Robert",
+      "last": "Aderholt",
+      "official_full": "Robert B. Aderholt",
+      "middle": "B."
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "AL",
+      "district": 4,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "S001185",
+    "name": {
+      "first": "Terri",
+      "last": "Sewell",
+      "official_full": "Terri A. Sewell",
+      "middle": "A."
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "AL",
+      "district": 7,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "H001072",
+    "name": {
+      "first": "J.",
+      "middle": "French",
+      "last": "Hill",
+      "official_full": "J. French Hill"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "AR",
+      "district": 2,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "W000821",
+    "name": {
+      "first": "Bruce",
+      "last": "Westerman",
+      "official_full": "Bruce Westerman"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "AR",
+      "district": 4,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "S001211",
+    "name": {
+      "first": "Greg",
+      "last": "Stanton",
+      "official_full": "Greg Stanton"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "AZ",
+      "district": 4,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "P000197",
+    "name": {
+      "first": "Nancy",
+      "last": "Pelosi",
+      "official_full": "Nancy Pelosi"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "CA",
+      "district": 11,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "L000397",
+    "name": {
+      "first": "Zoe",
+      "last": "Lofgren",
+      "official_full": "Zoe Lofgren"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "CA",
+      "district": 18,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "W000830",
+    "name": {
+      "first": "George",
+      "middle": "Thomas",
+      "last": "Whitesides",
+      "official_full": "George Whitesides"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "CA",
+      "district": 27,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "C001080",
+    "name": {
+      "first": "Judy",
+      "middle": "M.",
+      "last": "Chu",
+      "official_full": "Judy Chu"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "CA",
+      "district": 28,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "F000483",
+    "name": {
+      "first": "Laura",
+      "middle": "Syril",
+      "last": "Friedman",
+      "official_full": "Laura Friedman"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "CA",
+      "district": 30,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "C001123",
+    "name": {
+      "first": "Gilbert",
+      "middle": "Ray",
+      "last": "Cisneros",
+      "official_full": "Gilbert Ray Cisneros, Jr."
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "CA",
+      "district": 31,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "S001156",
+    "name": {
+      "first": "Linda",
+      "middle": "T.",
+      "last": "Sánchez",
+      "official_full": "Linda T. Sánchez"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "CA",
+      "district": 38,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "M001241",
+    "name": {
+      "first": "Dave",
+      "middle": "Kunnghee",
+      "last": "Min",
+      "official_full": "Dave Min"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "CA",
+      "district": 47,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "I000056",
+    "name": {
+      "first": "Darrell",
+      "last": "Issa",
+      "official_full": "Darrell Issa",
+      "middle": "E."
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "CA",
+      "district": 48,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "P000608",
+    "name": {
+      "first": "Scott",
+      "last": "Peters",
+      "middle": "H.",
+      "official_full": "Scott H. Peters"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "CA",
+      "district": 50,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "J000305",
+    "name": {
+      "first": "Sara",
+      "last": "Jacobs",
+      "official_full": "Sara Jacobs"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "CA",
+      "district": 51,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "N000147",
+    "name": {
+      "first": "Eleanor",
+      "middle": "Holmes",
+      "last": "Norton",
+      "official_full": "Eleanor Holmes Norton"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "DC",
+      "district": 0,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "D000628",
+    "name": {
+      "first": "Neal",
+      "middle": "P.",
+      "last": "Dunn",
+      "official_full": "Neal P. Dunn"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "FL",
+      "district": 2,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "L000597",
+    "name": {
+      "first": "Laurel",
+      "middle": "Frances",
+      "last": "Lee",
+      "official_full": "Laurel M. Lee"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "FL",
+      "district": 15,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "S001214",
+    "name": {
+      "first": "W.",
+      "middle": "Gregory",
+      "last": "Steube",
+      "official_full": "W. Gregory Steube"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "FL",
+      "district": 17,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "F000472",
+    "name": {
+      "first": "C.",
+      "middle": "Scott",
+      "last": "Franklin",
+      "official_full": "Scott Franklin"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "FL",
+      "district": 18,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "D000032",
+    "name": {
+      "first": "Byron",
+      "middle": "Lowell",
+      "last": "Donalds",
+      "official_full": "Byron Donalds"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "FL",
+      "district": 19,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "M001217",
+    "name": {
+      "first": "Jared",
+      "middle": "Evan",
+      "last": "Moskowitz",
+      "official_full": "Jared Moskowitz"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "FL",
+      "district": 23,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "W000797",
+    "name": {
+      "first": "Debbie",
+      "last": "Wasserman Schultz",
+      "official_full": "Debbie Wasserman Schultz"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "FL",
+      "district": 25,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "S000168",
+    "name": {
+      "first": "Maria",
+      "middle": "Elvira",
+      "last": "Salazar",
+      "official_full": "Maria Elvira Salazar"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "FL",
+      "district": 27,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "C001103",
+    "name": {
+      "first": "Earl",
+      "middle": "L.",
+      "nickname": "Buddy",
+      "last": "Carter",
+      "official_full": "Earl L. \"Buddy\" Carter"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "GA",
+      "district": 1,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "M001208",
+    "name": {
+      "first": "Lucy",
+      "last": "McBath",
+      "official_full": "Lucy McBath"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "GA",
+      "district": 6,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "S001189",
+    "name": {
+      "first": "Austin",
+      "last": "Scott",
+      "official_full": "Austin Scott"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "GA",
+      "district": 8,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "C001129",
+    "name": {
+      "first": "Mike",
+      "middle": "Allen",
+      "last": "Collins",
+      "suffix": "Jr.",
+      "official_full": "Mike Collins"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "GA",
+      "district": 10,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "A000372",
+    "name": {
+      "first": "Rick",
+      "middle": "W.",
+      "last": "Allen",
+      "official_full": "Rick W. Allen"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "GA",
+      "district": 12,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "F000485",
+    "name": {
+      "first": "Clay",
+      "last": "Fuller",
+      "official_full": "Clay Fuller"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "GA",
+      "district": 14,
+      "party": "Republican",
+      "start": "2026-04-14",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "C001055",
+    "name": {
+      "first": "Ed",
+      "last": "Case",
+      "official_full": "Ed Case"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "HI",
+      "district": 1,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "J000309",
+    "name": {
+      "first": "Jonathan",
+      "middle": "Luther",
+      "last": "Jackson",
+      "official_full": "Jonathan L. Jackson"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "IL",
+      "district": 1,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "S001190",
+    "name": {
+      "first": "Bradley",
+      "last": "Schneider",
+      "middle": "Scott",
+      "official_full": "Bradley Scott Schneider",
+      "nickname": "Brad"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "IL",
+      "district": 10,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "Y000067",
+    "name": {
+      "first": "Rudy",
+      "last": "Yakym",
+      "official_full": "Rudy Yakym III"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "IN",
+      "district": 2,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "S000929",
+    "name": {
+      "first": "Victoria",
+      "last": "Spartz",
+      "official_full": "Victoria Spartz"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "IN",
+      "district": 5,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "S001229",
+    "name": {
+      "first": "Jefferson",
+      "middle": "Scott",
+      "last": "Shreve",
+      "official_full": "Jefferson Shreve"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "IN",
+      "district": 6,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "C001108",
+    "name": {
+      "first": "James",
+      "last": "Comer",
+      "official_full": "James Comer"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "KY",
+      "district": 1,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "L000595",
+    "name": {
+      "first": "Julia",
+      "last": "Letlow",
+      "official_full": "Julia Letlow"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "LA",
+      "district": 5,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "F000110",
+    "name": {
+      "first": "Cleo",
+      "last": "Fields",
+      "official_full": "Cleo Fields"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "LA",
+      "district": 6,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "T000482",
+    "name": {
+      "first": "Lori",
+      "last": "Trahan",
+      "official_full": "Lori Trahan"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "MA",
+      "district": 3,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "A000148",
+    "name": {
+      "first": "Jake",
+      "middle": "Daniel",
+      "last": "Auchincloss",
+      "official_full": "Jake Auchincloss"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "MA",
+      "district": 4,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "C001101",
+    "name": {
+      "first": "Katherine",
+      "middle": "M.",
+      "last": "Clark",
+      "official_full": "Katherine M. Clark"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "MA",
+      "district": 5,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "M001196",
+    "name": {
+      "first": "Seth",
+      "last": "Moulton",
+      "official_full": "Seth Moulton"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "MA",
+      "district": 6,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "K000375",
+    "name": {
+      "first": "William",
+      "last": "Keating",
+      "official_full": "William R. Keating",
+      "middle": "R."
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "MA",
+      "district": 9,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "M001232",
+    "name": {
+      "first": "April",
+      "middle": "Lynn",
+      "last": "McClain Delaney",
+      "official_full": "April McClain Delaney"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "MD",
+      "district": 6,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "P000597",
+    "name": {
+      "first": "Chellie",
+      "last": "Pingree",
+      "official_full": "Chellie Pingree"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "ME",
+      "district": 1,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "D000624",
+    "name": {
+      "first": "Debbie",
+      "last": "Dingell",
+      "official_full": "Debbie Dingell"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "MI",
+      "district": 6,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "M001136",
+    "name": {
+      "first": "Lisa",
+      "middle": "C.",
+      "last": "McClain",
+      "official_full": "Lisa C. McClain"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "MI",
+      "district": 9,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "T000488",
+    "name": {
+      "first": "Shri",
+      "last": "Thanedar",
+      "official_full": "Shri Thanedar"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "MI",
+      "district": 13,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "M001234",
+    "name": {
+      "first": "Kelly",
+      "middle": "Louise",
+      "last": "Morrison",
+      "official_full": "Kelly Morrison"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "MN",
+      "district": 3,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "S001212",
+    "name": {
+      "first": "Pete",
+      "last": "Stauber",
+      "official_full": "Pete Stauber"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "MN",
+      "district": 8,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "W000812",
+    "name": {
+      "first": "Ann",
+      "last": "Wagner",
+      "official_full": "Ann Wagner"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "MO",
+      "district": 2,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "A000379",
+    "name": {
+      "first": "Mark",
+      "middle": "Allen",
+      "last": "Alford",
+      "official_full": "Mark Alford"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "MO",
+      "district": 4,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "G000591",
+    "name": {
+      "first": "Michael",
+      "last": "Guest",
+      "official_full": "Michael Guest"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "MS",
+      "district": 3,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "F000450",
+    "name": {
+      "first": "Virginia",
+      "last": "Foxx",
+      "official_full": "Virginia Foxx"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "NC",
+      "district": 5,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "M001240",
+    "name": {
+      "first": "Addison",
+      "middle": "Parker",
+      "last": "McDowell",
+      "official_full": "Addison P. McDowell"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "NC",
+      "district": 6,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "R000603",
+    "name": {
+      "first": "David",
+      "last": "Rouzer",
+      "official_full": "David Rouzer"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "NC",
+      "district": 7,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "K000405",
+    "name": {
+      "first": "Brad",
+      "last": "Knott",
+      "official_full": "Brad Knott"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "NC",
+      "district": 13,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "M001236",
+    "name": {
+      "first": "Tim",
+      "middle": "Keith",
+      "last": "Moore",
+      "official_full": "Tim Moore"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "NC",
+      "district": 14,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "N000188",
+    "name": {
+      "first": "Donald",
+      "middle": "W.",
+      "last": "Norcross",
+      "official_full": "Donald Norcross"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "NJ",
+      "district": 1,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "G000583",
+    "name": {
+      "first": "Josh",
+      "last": "Gottheimer",
+      "official_full": "Josh Gottheimer"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "NJ",
+      "district": 5,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "K000398",
+    "name": {
+      "first": "Thomas",
+      "middle": "Howard",
+      "last": "Kean",
+      "suffix": "Jr.",
+      "official_full": "Thomas H. Kean, Jr."
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "NJ",
+      "district": 7,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "M001246",
+    "name": {
+      "first": "Analilia",
+      "last": "Mejia"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "NJ",
+      "district": 11,
+      "party": "Democrat",
+      "start": "2026-04-20",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "L000590",
+    "name": {
+      "first": "Susie",
+      "last": "Lee",
+      "official_full": "Susie Lee"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "NV",
+      "district": 3,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "G000597",
+    "name": {
+      "first": "Andrew",
+      "middle": "R.",
+      "last": "Garbarino",
+      "official_full": "Andrew R. Garbarino"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "NY",
+      "district": 2,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "S001201",
+    "name": {
+      "first": "Thomas",
+      "middle": "R.",
+      "last": "Suozzi",
+      "official_full": "Thomas R. Suozzi"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "NY",
+      "district": 3,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "G000599",
+    "name": {
+      "first": "Dan",
+      "middle": "Sachs",
+      "last": "Goldman",
+      "official_full": "Daniel S. Goldman"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "NY",
+      "district": 10,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "T000486",
+    "name": {
+      "first": "Ritchie",
+      "middle": "John",
+      "last": "Torres",
+      "official_full": "Ritchie Torres"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "NY",
+      "district": 15,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "R000579",
+    "name": {
+      "first": "Patrick",
+      "last": "Ryan",
+      "official_full": "Patrick Ryan"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "NY",
+      "district": 18,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "L000601",
+    "name": {
+      "first": "Greg",
+      "middle": "John",
+      "last": "Landsman",
+      "official_full": "Greg Landsman"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "OH",
+      "district": 1,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "T000490",
+    "name": {
+      "first": "David",
+      "middle": "J.",
+      "last": "Taylor",
+      "official_full": "David J. Taylor"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "OH",
+      "district": 2,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "J000289",
+    "name": {
+      "first": "Jim",
+      "last": "Jordan",
+      "official_full": "Jim Jordan"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "OH",
+      "district": 4,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "L000566",
+    "name": {
+      "first": "Robert",
+      "middle": "E.",
+      "last": "Latta",
+      "official_full": "Robert E. Latta"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "OH",
+      "district": 5,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "M001222",
+    "name": {
+      "first": "Max",
+      "middle": "Leonard",
+      "last": "Miller",
+      "official_full": "Max L. Miller"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "OH",
+      "district": 7,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "D000626",
+    "name": {
+      "first": "Warren",
+      "last": "Davidson",
+      "official_full": "Warren Davidson"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "OH",
+      "district": 8,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "J000295",
+    "name": {
+      "first": "David",
+      "last": "Joyce",
+      "middle": "P.",
+      "official_full": "David P. Joyce"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "OH",
+      "district": 14,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "H001082",
+    "name": {
+      "first": "Kevin",
+      "middle": "R.",
+      "last": "Hern",
+      "official_full": "Kevin Hern"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "OK",
+      "district": 1,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "B000668",
+    "name": {
+      "first": "Cliff",
+      "middle": "Stewart",
+      "last": "Bentz",
+      "official_full": "Cliff Bentz"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "OR",
+      "district": 2,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "H001094",
+    "name": {
+      "first": "Valerie",
+      "middle": "Anne",
+      "last": "Hoyle",
+      "official_full": "Val T. Hoyle"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "OR",
+      "district": 4,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "E000296",
+    "name": {
+      "first": "Dwight",
+      "last": "Evans",
+      "official_full": "Dwight Evans"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "PA",
+      "district": 3,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "B001327",
+    "name": {
+      "first": "Robert",
+      "middle": "P.",
+      "last": "Bresnahan",
+      "suffix": "Jr.",
+      "official_full": "Robert P. Bresnahan, Jr."
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "PA",
+      "district": 8,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "M001204",
+    "name": {
+      "first": "Daniel",
+      "last": "Meuser",
+      "official_full": "Daniel Meuser"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "PA",
+      "district": 9,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "S001199",
+    "name": {
+      "first": "Lloyd",
+      "last": "Smucker",
+      "official_full": "Lloyd Smucker"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "PA",
+      "district": 11,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "R000610",
+    "name": {
+      "first": "Guy",
+      "last": "Reschenthaler",
+      "official_full": "Guy Reschenthaler"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "PA",
+      "district": 14,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "K000376",
+    "name": {
+      "first": "Mike",
+      "last": "Kelly",
+      "official_full": "Mike Kelly"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "PA",
+      "district": 16,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "B001325",
+    "name": {
+      "first": "Sheri",
+      "middle": "Lynn",
+      "last": "Biggs",
+      "official_full": "Sheri Biggs"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "SC",
+      "district": 3,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "D000616",
+    "name": {
+      "first": "Scott",
+      "last": "DesJarlais",
+      "official_full": "Scott DesJarlais"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "TN",
+      "district": 4,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "R000612",
+    "name": {
+      "first": "John",
+      "middle": "W.",
+      "last": "Rose",
+      "official_full": "John W. Rose"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "TN",
+      "district": 6,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "V000139",
+    "name": {
+      "first": "Matt",
+      "last": "Van Epps",
+      "official_full": "Matt Van Epps"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "TN",
+      "district": 7,
+      "party": "Republican",
+      "start": "2025-12-04",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "C001068",
+    "name": {
+      "first": "Steve",
+      "last": "Cohen",
+      "official_full": "Steve Cohen"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "TN",
+      "district": 9,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "F000468",
+    "name": {
+      "first": "Lizzie",
+      "last": "Fletcher",
+      "official_full": "Lizzie Fletcher"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "TX",
+      "district": 7,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "P000048",
+    "name": {
+      "first": "August",
+      "middle": "Lee",
+      "last": "Pfluger",
+      "suffix": "II",
+      "official_full": "August Pfluger"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "TX",
+      "district": 11,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "S000250",
+    "name": {
+      "first": "Pete",
+      "middle": "A.",
+      "last": "Sessions",
+      "official_full": "Pete Sessions"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "TX",
+      "district": 17,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "R000614",
+    "name": {
+      "first": "Chip",
+      "last": "Roy",
+      "official_full": "Chip Roy"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "TX",
+      "district": 21,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "W000816",
+    "name": {
+      "first": "Roger",
+      "last": "Williams",
+      "official_full": "Roger Williams"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "TX",
+      "district": 25,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "G000603",
+    "name": {
+      "first": "Brandon",
+      "middle": "Gene",
+      "last": "Gill",
+      "official_full": "Brandon Gill"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "TX",
+      "district": 26,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "J000310",
+    "name": {
+      "first": "Julie",
+      "middle": "Elizabeth",
+      "last": "Johnson",
+      "official_full": "Julie Johnson"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "TX",
+      "district": 32,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "B001291",
+    "name": {
+      "first": "Brian",
+      "last": "Babin",
+      "official_full": "Brian Babin"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "TX",
+      "district": 36,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "D000399",
+    "name": {
+      "first": "Lloyd",
+      "middle": "A.",
+      "last": "Doggett",
+      "official_full": "Lloyd Doggett"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "TX",
+      "district": 37,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "K000403",
+    "name": {
+      "first": "Mike",
+      "middle": "Steven",
+      "last": "Kennedy",
+      "official_full": "Mike Kennedy"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "UT",
+      "district": 3,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "M001227",
+    "name": {
+      "first": "Jennifer",
+      "last": "McClellan",
+      "official_full": "Jennifer L. McClellan"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "VA",
+      "district": 4,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "M001239",
+    "name": {
+      "first": "John",
+      "middle": "J.",
+      "last": "McGuire",
+      "suffix": "III",
+      "official_full": "John J. McGuire III"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "VA",
+      "district": 5,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "B001292",
+    "name": {
+      "first": "Donald",
+      "middle": "S.",
+      "last": "Beyer",
+      "suffix": "Jr.",
+      "official_full": "Donald S. Beyer, Jr."
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "VA",
+      "district": 8,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "W000831",
+    "name": {
+      "first": "James",
+      "middle": "R.",
+      "last": "Walkinshaw",
+      "official_full": "James R. Walkinshaw"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "VA",
+      "district": 11,
+      "party": "Democrat",
+      "start": "2025-09-10",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "D000617",
+    "name": {
+      "first": "Suzan",
+      "middle": "K.",
+      "last": "DelBene",
+      "official_full": "Suzan K. DelBene"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "WA",
+      "district": 1,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "L000560",
+    "name": {
+      "first": "Rick",
+      "last": "Larsen",
+      "official_full": "Rick Larsen"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "WA",
+      "district": 2,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "N000189",
+    "name": {
+      "first": "Dan",
+      "last": "Newhouse",
+      "official_full": "Dan Newhouse"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "WA",
+      "district": 4,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "R000621",
+    "name": {
+      "first": "Emily",
+      "middle": "Elissa",
+      "last": "Randall",
+      "official_full": "Emily Randall"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "WA",
+      "district": 6,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "J000298",
+    "name": {
+      "first": "Pramila",
+      "last": "Jayapal",
+      "official_full": "Pramila Jayapal"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "WA",
+      "district": 7,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "S000510",
+    "name": {
+      "first": "Adam",
+      "last": "Smith",
+      "official_full": "Adam Smith"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "WA",
+      "district": 9,
+      "party": "Democrat",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  },
+  {
+    "bioguide": "M001205",
+    "name": {
+      "first": "Carol",
+      "middle": "D.",
+      "last": "Miller",
+      "official_full": "Carol D. Miller"
+    },
+    "current_term": {
+      "type": "rep",
+      "state": "WV",
+      "district": 1,
+      "party": "Republican",
+      "start": "2025-01-03",
+      "end": "2027-01-03"
+    }
+  }
+]

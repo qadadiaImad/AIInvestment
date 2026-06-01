@@ -1,0 +1,562 @@
+{
+  "Jefferson Shreve": {
+    "bioguide": "S001229",
+    "state_dst": "IN06",
+    "how": "state_district"
+  },
+  "Nancy Pelosi": {
+    "bioguide": "P000197",
+    "state_dst": "CA11",
+    "how": "state_district"
+  },
+  "Darrell E. Issa": {
+    "bioguide": "I000056",
+    "state_dst": "CA48",
+    "how": "state_district"
+  },
+  "Gilbert Cisneros": {
+    "bioguide": "C001123",
+    "state_dst": "CA31",
+    "how": "state_district"
+  },
+  "Josh Gottheimer": {
+    "bioguide": "G000583",
+    "state_dst": "NJ05",
+    "how": "state_district"
+  },
+  "Scott H. Peters": {
+    "bioguide": "P000608",
+    "state_dst": "CA50",
+    "how": "state_district"
+  },
+  "Cleo Fields": {
+    "bioguide": "F000110",
+    "state_dst": "LA06",
+    "how": "state_district"
+  },
+  "Kevin Hern": {
+    "bioguide": "H001082",
+    "state_dst": "OK01",
+    "how": "state_district"
+  },
+  "Donald Sternoff Beyer": {
+    "bioguide": "B001292",
+    "state_dst": "VA08",
+    "how": "state_district"
+  },
+  "Chip Roy": {
+    "bioguide": "R000614",
+    "state_dst": "TX21",
+    "how": "state_district"
+  },
+  "Lisa McClain": {
+    "bioguide": "M001136",
+    "state_dst": "MI09",
+    "how": "state_district"
+  },
+  "Suzan K. DelBene": {
+    "bioguide": "D000617",
+    "state_dst": "WA01",
+    "how": "state_district"
+  },
+  "Tim Moore": {
+    "bioguide": "M001236",
+    "state_dst": "NC14",
+    "how": "state_district"
+  },
+  "Earl Leroy Carter": {
+    "bioguide": "C001103",
+    "state_dst": "GA01",
+    "how": "state_district"
+  },
+  "John W. Rose": {
+    "bioguide": "R000612",
+    "state_dst": "TN06",
+    "how": "state_district"
+  },
+  "Sheri Biggs": {
+    "bioguide": "B001325",
+    "state_dst": "SC03",
+    "how": "state_district"
+  },
+  "Rob Bresnahan": {
+    "bioguide": "B001327",
+    "state_dst": "PA08",
+    "how": "state_district"
+  },
+  "Steve Cohen": {
+    "bioguide": "C001068",
+    "state_dst": "TN09",
+    "how": "state_district"
+  },
+  "Kathy Manning": {
+    "bioguide": "M001240",
+    "state_dst": "NC06",
+    "how": "state_district"
+  },
+  "Scott Scott Franklin": {
+    "bioguide": "F000472",
+    "state_dst": "FL18",
+    "how": "state_district"
+  },
+  "Julie Johnson": {
+    "bioguide": "J000310",
+    "state_dst": "TX32",
+    "how": "state_district"
+  },
+  "Kelly Louise Morrison": {
+    "bioguide": "M001234",
+    "state_dst": "MN03",
+    "how": "state_district"
+  },
+  "Marjorie Taylor Greene": {
+    "bioguide": "F000485",
+    "state_dst": "GA14",
+    "how": "state_district"
+  },
+  "Valerie Hoyle": {
+    "bioguide": "H001094",
+    "state_dst": "OR04",
+    "how": "state_district"
+  },
+  "George Whitesides": {
+    "bioguide": "W000830",
+    "state_dst": "CA27",
+    "how": "state_district"
+  },
+  "April McClain Delaney": {
+    "bioguide": "M001232",
+    "state_dst": "MD06",
+    "how": "state_district"
+  },
+  "Mark Dr Green": {
+    "bioguide": "V000139",
+    "state_dst": "TN07",
+    "how": "state_district"
+  },
+  "Julia Letlow": {
+    "bioguide": "L000595",
+    "state_dst": "LA05",
+    "how": "state_district"
+  },
+  "Jonathan Jackson": {
+    "bioguide": "J000309",
+    "state_dst": "IL01",
+    "how": "state_district"
+  },
+  "Lori Trahan": {
+    "bioguide": "T000482",
+    "state_dst": "MA03",
+    "how": "state_district"
+  },
+  "Brandon Gill": {
+    "bioguide": "G000603",
+    "state_dst": "TX26",
+    "how": "state_district"
+  },
+  "Bruce Westerman": {
+    "bioguide": "W000821",
+    "state_dst": "AR04",
+    "how": "state_district"
+  },
+  "Richard W. Allen": {
+    "bioguide": "A000372",
+    "state_dst": "GA12",
+    "how": "state_district"
+  },
+  "Susie Lee": {
+    "bioguide": "L000590",
+    "state_dst": "NV03",
+    "how": "state_district"
+  },
+  "David J. Taylor": {
+    "bioguide": "T000490",
+    "state_dst": "OH02",
+    "how": "state_district"
+  },
+  "Ann Wagner": {
+    "bioguide": "W000812",
+    "state_dst": "MO02",
+    "how": "state_district"
+  },
+  "Daniel Meuser": {
+    "bioguide": "M001204",
+    "state_dst": "PA09",
+    "how": "state_district"
+  },
+  "Ritchie John Torres": {
+    "bioguide": "T000486",
+    "state_dst": "NY15",
+    "how": "state_district"
+  },
+  "Thomas H. Kean": {
+    "bioguide": "K000398",
+    "state_dst": "NJ07",
+    "how": "state_district"
+  },
+  "Mike Kelly": {
+    "bioguide": "K000376",
+    "state_dst": "PA16",
+    "how": "state_district"
+  },
+  "Jared Moskowitz": {
+    "bioguide": "M001217",
+    "state_dst": "FL23",
+    "how": "state_district"
+  },
+  "Sara Jacobs": {
+    "bioguide": "J000305",
+    "state_dst": "CA51",
+    "how": "state_district"
+  },
+  "Greg Landsman": {
+    "bioguide": "L000601",
+    "state_dst": "OH01",
+    "how": "state_district"
+  },
+  "James French Hill": {
+    "bioguide": "H001072",
+    "state_dst": "AR02",
+    "how": "state_district"
+  },
+  "Dan Newhouse": {
+    "bioguide": "N000189",
+    "state_dst": "WA04",
+    "how": "state_district"
+  },
+  "Byron Donalds": {
+    "bioguide": "D000032",
+    "state_dst": "FL19",
+    "how": "state_district"
+  },
+  "Richard Dean Dr McCormick": {
+    "bioguide": "M001208",
+    "state_dst": "GA06",
+    "how": "state_district"
+  },
+  "Virginia Foxx": {
+    "bioguide": "F000450",
+    "state_dst": "NC05",
+    "how": "state_district"
+  },
+  "Katherine M. Clark": {
+    "bioguide": "C001101",
+    "state_dst": "MA05",
+    "how": "state_district"
+  },
+  "Maria Elvira Salazar": {
+    "bioguide": "S000168",
+    "state_dst": "FL27",
+    "how": "state_district"
+  },
+  "Bradley S. Schneider": {
+    "bioguide": "S001190",
+    "state_dst": "IL10",
+    "how": "state_district"
+  },
+  "William R. Keating": {
+    "bioguide": "K000375",
+    "state_dst": "MA09",
+    "how": "state_district"
+  },
+  "Thomas Suozzi": {
+    "bioguide": "S001201",
+    "state_dst": "NY03",
+    "how": "state_district"
+  },
+  "Debbie Dingell": {
+    "bioguide": "D000624",
+    "state_dst": "MI06",
+    "how": "state_district"
+  },
+  "James Comer": {
+    "bioguide": "C001108",
+    "state_dst": "KY01",
+    "how": "state_district"
+  },
+  "Dwight Evans": {
+    "bioguide": "E000296",
+    "state_dst": "PA03",
+    "how": "state_district"
+  },
+  "Max Miller": {
+    "bioguide": "M001222",
+    "state_dst": "OH07",
+    "how": "state_district"
+  },
+  "Judy Chu": {
+    "bioguide": "C001080",
+    "state_dst": "CA28",
+    "how": "state_district"
+  },
+  "Mikie Sherrill": {
+    "bioguide": "M001246",
+    "state_dst": "NJ11",
+    "how": "state_district"
+  },
+  "Pete Sessions": {
+    "bioguide": "S000250",
+    "state_dst": "TX17",
+    "how": "state_district"
+  },
+  "Rick Larsen": {
+    "bioguide": "L000560",
+    "state_dst": "WA02",
+    "how": "state_district"
+  },
+  "Lloyd K. Smucker": {
+    "bioguide": "S001199",
+    "state_dst": "PA11",
+    "how": "state_district"
+  },
+  "Lloyd Doggett": {
+    "bioguide": "D000399",
+    "state_dst": "TX37",
+    "how": "state_district"
+  },
+  "Laurel Lee": {
+    "bioguide": "L000597",
+    "state_dst": "FL15",
+    "how": "state_district"
+  },
+  "August Lee Pfluger": {
+    "bioguide": "P000048",
+    "state_dst": "TX11",
+    "how": "state_district"
+  },
+  "Chellie Pingree": {
+    "bioguide": "P000597",
+    "state_dst": "ME01",
+    "how": "state_district"
+  },
+  "Brian Babin": {
+    "bioguide": "B001291",
+    "state_dst": "TX36",
+    "how": "state_district"
+  },
+  "Jake Auchincloss": {
+    "bioguide": "A000148",
+    "state_dst": "MA04",
+    "how": "state_district"
+  },
+  "Michael A. Collins": {
+    "bioguide": "C001129",
+    "state_dst": "GA10",
+    "how": "state_district"
+  },
+  "Austin Scott": {
+    "bioguide": "S001189",
+    "state_dst": "GA08",
+    "how": "state_district"
+  },
+  "Adam Smith": {
+    "bioguide": "S000510",
+    "state_dst": "WA09",
+    "how": "state_district"
+  },
+  "Zoe Lofgren": {
+    "bioguide": "L000397",
+    "state_dst": "CA18",
+    "how": "state_district"
+  },
+  "Jennifer McClellan": {
+    "bioguide": "M001227",
+    "state_dst": "VA04",
+    "how": "state_district"
+  },
+  "Rudy C. Yakym": {
+    "bioguide": "Y000067",
+    "state_dst": "IN02",
+    "how": "state_district"
+  },
+  "Carol Devine Miller": {
+    "bioguide": "M001205",
+    "state_dst": "WV01",
+    "how": "state_district"
+  },
+  "John McGuire": {
+    "bioguide": "M001239",
+    "state_dst": "VA05",
+    "how": "state_district"
+  },
+  "Elizabeth Fletcher": {
+    "bioguide": "F000468",
+    "state_dst": "TX07",
+    "how": "state_district"
+  },
+  "Emily Randall": {
+    "bioguide": "R000621",
+    "state_dst": "WA06",
+    "how": "state_district"
+  },
+  "Greg Steube": {
+    "bioguide": "S001214",
+    "state_dst": "FL17",
+    "how": "state_district"
+  },
+  "Robert E. Latta": {
+    "bioguide": "L000566",
+    "state_dst": "OH05",
+    "how": "state_district"
+  },
+  "Ed Case": {
+    "bioguide": "C001055",
+    "state_dst": "HI01",
+    "how": "state_district"
+  },
+  "Mark Alford": {
+    "bioguide": "A000379",
+    "state_dst": "MO04",
+    "how": "state_district"
+  },
+  "Roger Williams": {
+    "bioguide": "W000816",
+    "state_dst": "TX25",
+    "how": "state_district"
+  },
+  "Debbie Wasserman Schultz": {
+    "bioguide": "W000797",
+    "state_dst": "FL25",
+    "how": "state_district"
+  },
+  "David P. Joyce": {
+    "bioguide": "J000295",
+    "state_dst": "OH14",
+    "how": "state_district"
+  },
+  "Eleanor Holmes Norton": {
+    "bioguide": "N000147",
+    "state_dst": "DC00",
+    "how": "state_district"
+  },
+  "James D Jordan": {
+    "bioguide": "J000289",
+    "state_dst": "OH04",
+    "how": "state_district"
+  },
+  "Neal Patrick MD, Facs Dunn": {
+    "bioguide": "D000628",
+    "state_dst": "FL02",
+    "how": "state_district"
+  },
+  "Terri A. Sewell": {
+    "bioguide": "S001185",
+    "state_dst": "AL07",
+    "how": "state_district"
+  },
+  "Guy Mr Reschenthaler": {
+    "bioguide": "R000610",
+    "state_dst": "PA14",
+    "how": "state_district"
+  },
+  "Brad Knott": {
+    "bioguide": "K000405",
+    "state_dst": "NC13",
+    "how": "state_district"
+  },
+  "Gerald E. Connolly": {
+    "bioguide": "W000831",
+    "state_dst": "VA11",
+    "how": "state_district"
+  },
+  "Michael Patrick Guest": {
+    "bioguide": "G000591",
+    "state_dst": "MS03",
+    "how": "state_district"
+  },
+  "Scott DesJarlais": {
+    "bioguide": "D000616",
+    "state_dst": "TN04",
+    "how": "state_district"
+  },
+  "Victoria Spartz": {
+    "bioguide": "S000929",
+    "state_dst": "IN05",
+    "how": "state_district"
+  },
+  "Daniel Goldman": {
+    "bioguide": "G000599",
+    "state_dst": "NY10",
+    "how": "state_district"
+  },
+  "Donald W. Norcross": {
+    "bioguide": "N000188",
+    "state_dst": "NJ01",
+    "how": "state_district"
+  },
+  "Greg Stanton": {
+    "bioguide": "S001211",
+    "state_dst": "AZ04",
+    "how": "state_district"
+  },
+  "Patrick Ryan": {
+    "bioguide": "R000579",
+    "state_dst": "NY18",
+    "how": "state_district"
+  },
+  "Peter Allen Stauber": {
+    "bioguide": "S001212",
+    "state_dst": "MN08",
+    "how": "state_district"
+  },
+  "Seth Moulton": {
+    "bioguide": "M001196",
+    "state_dst": "MA06",
+    "how": "state_district"
+  },
+  "Shri Thanedar": {
+    "bioguide": "T000488",
+    "state_dst": "MI13",
+    "how": "state_district"
+  },
+  "Cliff Bentz": {
+    "bioguide": "B000668",
+    "state_dst": "OR02",
+    "how": "state_district"
+  },
+  "Laura Friedman": {
+    "bioguide": "F000483",
+    "state_dst": "CA30",
+    "how": "state_district"
+  },
+  "Dave Min": {
+    "bioguide": "M001241",
+    "state_dst": "CA47",
+    "how": "state_district"
+  },
+  "David Rouzer": {
+    "bioguide": "R000603",
+    "state_dst": "NC07",
+    "how": "state_district"
+  },
+  "Andrew Garbarino": {
+    "bioguide": "G000597",
+    "state_dst": "NY02",
+    "how": "state_district"
+  },
+  "Linda T. Sanchez": {
+    "bioguide": "S001156",
+    "state_dst": "CA38",
+    "how": "state_district"
+  },
+  "Mike Kennedy": {
+    "bioguide": "K000403",
+    "state_dst": "UT03",
+    "how": "state_district"
+  },
+  "Pramila Jayapal": {
+    "bioguide": "J000298",
+    "state_dst": "WA07",
+    "how": "state_district"
+  },
+  "Robert B. Aderholt": {
+    "bioguide": "A000055",
+    "state_dst": "AL04",
+    "how": "state_district"
+  },
+  "Warren Davidson": {
+    "bioguide": "D000626",
+    "state_dst": "OH08",
+    "how": "state_district"
+  }
+}

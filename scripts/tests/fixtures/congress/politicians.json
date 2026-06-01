@@ -1,0 +1,450 @@
+[
+  {
+    "politician": "Jefferson Shreve",
+    "state": "IN06"
+  },
+  {
+    "politician": "Nancy Pelosi",
+    "state": "CA11"
+  },
+  {
+    "politician": "Darrell E. Issa",
+    "state": "CA48"
+  },
+  {
+    "politician": "Gilbert Cisneros",
+    "state": "CA31"
+  },
+  {
+    "politician": "Josh Gottheimer",
+    "state": "NJ05"
+  },
+  {
+    "politician": "Scott H. Peters",
+    "state": "CA50"
+  },
+  {
+    "politician": "Cleo Fields",
+    "state": "LA06"
+  },
+  {
+    "politician": "Kevin Hern",
+    "state": "OK01"
+  },
+  {
+    "politician": "Donald Sternoff Beyer",
+    "state": "VA08"
+  },
+  {
+    "politician": "Chip Roy",
+    "state": "TX21"
+  },
+  {
+    "politician": "Lisa McClain",
+    "state": "MI09"
+  },
+  {
+    "politician": "Suzan K. DelBene",
+    "state": "WA01"
+  },
+  {
+    "politician": "Tim Moore",
+    "state": "NC14"
+  },
+  {
+    "politician": "Earl Leroy Carter",
+    "state": "GA01"
+  },
+  {
+    "politician": "John W. Rose",
+    "state": "TN06"
+  },
+  {
+    "politician": "Sheri Biggs",
+    "state": "SC03"
+  },
+  {
+    "politician": "Rob Bresnahan",
+    "state": "PA08"
+  },
+  {
+    "politician": "Steve Cohen",
+    "state": "TN09"
+  },
+  {
+    "politician": "Kathy Manning",
+    "state": "NC06"
+  },
+  {
+    "politician": "Scott Scott Franklin",
+    "state": "FL18"
+  },
+  {
+    "politician": "Julie Johnson",
+    "state": "TX32"
+  },
+  {
+    "politician": "Kelly Louise Morrison",
+    "state": "MN03"
+  },
+  {
+    "politician": "Marjorie Taylor Greene",
+    "state": "GA14"
+  },
+  {
+    "politician": "Valerie Hoyle",
+    "state": "OR04"
+  },
+  {
+    "politician": "George Whitesides",
+    "state": "CA27"
+  },
+  {
+    "politician": "April McClain Delaney",
+    "state": "MD06"
+  },
+  {
+    "politician": "Mark Dr Green",
+    "state": "TN07"
+  },
+  {
+    "politician": "Julia Letlow",
+    "state": "LA05"
+  },
+  {
+    "politician": "Jonathan Jackson",
+    "state": "IL01"
+  },
+  {
+    "politician": "Lori Trahan",
+    "state": "MA03"
+  },
+  {
+    "politician": "Brandon Gill",
+    "state": "TX26"
+  },
+  {
+    "politician": "Bruce Westerman",
+    "state": "AR04"
+  },
+  {
+    "politician": "Richard W. Allen",
+    "state": "GA12"
+  },
+  {
+    "politician": "Susie Lee",
+    "state": "NV03"
+  },
+  {
+    "politician": "David J. Taylor",
+    "state": "OH02"
+  },
+  {
+    "politician": "Ann Wagner",
+    "state": "MO02"
+  },
+  {
+    "politician": "Daniel Meuser",
+    "state": "PA09"
+  },
+  {
+    "politician": "Ritchie John Torres",
+    "state": "NY15"
+  },
+  {
+    "politician": "Thomas H. Kean",
+    "state": "NJ07"
+  },
+  {
+    "politician": "Mike Kelly",
+    "state": "PA16"
+  },
+  {
+    "politician": "Jared Moskowitz",
+    "state": "FL23"
+  },
+  {
+    "politician": "Sara Jacobs",
+    "state": "CA51"
+  },
+  {
+    "politician": "Greg Landsman",
+    "state": "OH01"
+  },
+  {
+    "politician": "James French Hill",
+    "state": "AR02"
+  },
+  {
+    "politician": "Dan Newhouse",
+    "state": "WA04"
+  },
+  {
+    "politician": "Byron Donalds",
+    "state": "FL19"
+  },
+  {
+    "politician": "Richard Dean Dr McCormick",
+    "state": "GA06"
+  },
+  {
+    "politician": "Virginia Foxx",
+    "state": "NC05"
+  },
+  {
+    "politician": "Katherine M. Clark",
+    "state": "MA05"
+  },
+  {
+    "politician": "Maria Elvira Salazar",
+    "state": "FL27"
+  },
+  {
+    "politician": "Bradley S. Schneider",
+    "state": "IL10"
+  },
+  {
+    "politician": "William R. Keating",
+    "state": "MA09"
+  },
+  {
+    "politician": "Thomas Suozzi",
+    "state": "NY03"
+  },
+  {
+    "politician": "Debbie Dingell",
+    "state": "MI06"
+  },
+  {
+    "politician": "James Comer",
+    "state": "KY01"
+  },
+  {
+    "politician": "Dwight Evans",
+    "state": "PA03"
+  },
+  {
+    "politician": "Max Miller",
+    "state": "OH07"
+  },
+  {
+    "politician": "Judy Chu",
+    "state": "CA28"
+  },
+  {
+    "politician": "Mikie Sherrill",
+    "state": "NJ11"
+  },
+  {
+    "politician": "Pete Sessions",
+    "state": "TX17"
+  },
+  {
+    "politician": "Rick Larsen",
+    "state": "WA02"
+  },
+  {
+    "politician": "Lloyd K. Smucker",
+    "state": "PA11"
+  },
+  {
+    "politician": "Lloyd Doggett",
+    "state": "TX37"
+  },
+  {
+    "politician": "Laurel Lee",
+    "state": "FL15"
+  },
+  {
+    "politician": "August Lee Pfluger",
+    "state": "TX11"
+  },
+  {
+    "politician": "Chellie Pingree",
+    "state": "ME01"
+  },
+  {
+    "politician": "Brian Babin",
+    "state": "TX36"
+  },
+  {
+    "politician": "Jake Auchincloss",
+    "state": "MA04"
+  },
+  {
+    "politician": "Michael A. Collins",
+    "state": "GA10"
+  },
+  {
+    "politician": "Austin Scott",
+    "state": "GA08"
+  },
+  {
+    "politician": "Adam Smith",
+    "state": "WA09"
+  },
+  {
+    "politician": "Zoe Lofgren",
+    "state": "CA18"
+  },
+  {
+    "politician": "Jennifer McClellan",
+    "state": "VA04"
+  },
+  {
+    "politician": "Rudy C. Yakym",
+    "state": "IN02"
+  },
+  {
+    "politician": "Carol Devine Miller",
+    "state": "WV01"
+  },
+  {
+    "politician": "John McGuire",
+    "state": "VA05"
+  },
+  {
+    "politician": "Elizabeth Fletcher",
+    "state": "TX07"
+  },
+  {
+    "politician": "Emily Randall",
+    "state": "WA06"
+  },
+  {
+    "politician": "Greg Steube",
+    "state": "FL17"
+  },
+  {
+    "politician": "Robert E. Latta",
+    "state": "OH05"
+  },
+  {
+    "politician": "Ed Case",
+    "state": "HI01"
+  },
+  {
+    "politician": "Mark Alford",
+    "state": "MO04"
+  },
+  {
+    "politician": "Roger Williams",
+    "state": "TX25"
+  },
+  {
+    "politician": "Debbie Wasserman Schultz",
+    "state": "FL25"
+  },
+  {
+    "politician": "David P. Joyce",
+    "state": "OH14"
+  },
+  {
+    "politician": "Eleanor Holmes Norton",
+    "state": "DC00"
+  },
+  {
+    "politician": "James D Jordan",
+    "state": "OH04"
+  },
+  {
+    "politician": "Neal Patrick MD, Facs Dunn",
+    "state": "FL02"
+  },
+  {
+    "politician": "Terri A. Sewell",
+    "state": "AL07"
+  },
+  {
+    "politician": "Guy Mr Reschenthaler",
+    "state": "PA14"
+  },
+  {
+    "politician": "Brad Knott",
+    "state": "NC13"
+  },
+  {
+    "politician": "Gerald E. Connolly",
+    "state": "VA11"
+  },
+  {
+    "politician": "Michael Patrick Guest",
+    "state": "MS03"
+  },
+  {
+    "politician": "Scott DesJarlais",
+    "state": "TN04"
+  },
+  {
+    "politician": "Victoria Spartz",
+    "state": "IN05"
+  },
+  {
+    "politician": "Daniel Goldman",
+    "state": "NY10"
+  },
+  {
+    "politician": "Donald W. Norcross",
+    "state": "NJ01"
+  },
+  {
+    "politician": "Greg Stanton",
+    "state": "AZ04"
+  },
+  {
+    "politician": "Patrick Ryan",
+    "state": "NY18"
+  },
+  {
+    "politician": "Peter Allen Stauber",
+    "state": "MN08"
+  },
+  {
+    "politician": "Seth Moulton",
+    "state": "MA06"
+  },
+  {
+    "politician": "Shri Thanedar",
+    "state": "MI13"
+  },
+  {
+    "politician": "Cliff Bentz",
+    "state": "OR02"
+  },
+  {
+    "politician": "Laura Friedman",
+    "state": "CA30"
+  },
+  {
+    "politician": "Dave Min",
+    "state": "CA47"
+  },
+  {
+    "politician": "David Rouzer",
+    "state": "NC07"
+  },
+  {
+    "politician": "Andrew Garbarino",
+    "state": "NY02"
+  },
+  {
+    "politician": "Linda T. Sanchez",
+    "state": "CA38"
+  },
+  {
+    "politician": "Mike Kennedy",
+    "state": "UT03"
+  },
+  {
+    "politician": "Pramila Jayapal",
+    "state": "WA07"
+  },
+  {
+    "politician": "Robert B. Aderholt",
+    "state": "AL04"
+  },
+  {
+    "politician": "Warren Davidson",
+    "state": "OH08"
+  }
+]

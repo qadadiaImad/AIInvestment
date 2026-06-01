@@ -1,0 +1,13 @@
+Prefix	Last	First	Suffix	FilingType	StateDst	Year	FilingDate	DocID
+	Aaron	Richard		D	MI04	2025	3/24/2025	40003749
+	Abel	William P.		C	TX31	2025	10/12/2025	10072640
+Mr.	Aboujaoude	Rock Adel	Jr.	C	FL03	2025	11/12/2025	10072809
+	Abrevaya	David		W	IL09	2025	5/19/2025	8005
+	Abu-Ghazalah	Maad		D	NC07	2025	11/18/2025	40004863
+	Abughazaleh	Katherine M.		C	IL09	2025	5/14/2025	10065677
+	Adair	Patti		C	OR05	2025	3/17/2026	10073223
+	Adams	Jared		W	MN07	2025	6/3/2025	8011
+	Adeimy	Deborah		X	FL22	2025	5/22/2025	30023997
+Hon.	Aderholt	Robert B.		P	AL04	2025	9/10/2025	20032062
+Hon.	Aderholt	Robert B.		X	AL04	2025	5/15/2026	30028015
+	Ager	Jamie		X	NC11	2025	9/3/2025	30025402
