@@ -36,7 +36,9 @@ LAYERS = {
 }
 
 # Attempted on each pull; included automatically once it resolves live.
-PENDING = ["NASDAQ:QNT"]  # Quantinuum IPO ~Jun 4 2026 — verify live.
+PENDING = []  # Quantinuum (QNT) IPO ~Jun 4 2026 — NOT yet trading; "QNT" maps to a
+# different issuer on Yahoo/the data source, so do not pull it as the quantum pure-play
+# until it lists. Quantinuum remains a private watch-list node below.
 
 # Diversified bridges/suppliers — GRAPH-ONLY (quantum is a small slice; not screener
 # members). id is the bare symbol so the combined graph can bridge AI<->Quantum.

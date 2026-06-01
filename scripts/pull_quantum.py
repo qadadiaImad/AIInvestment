@@ -25,11 +25,51 @@ import datetime
 import json
 import pathlib
 
-from aiinvest import quantum_stack, tradingview
+from aiinvest import history, quantum_stack, tradingview
 
 
 def _utc_now():
     return datetime.datetime.now(datetime.timezone.utc)
+
+
+def _bare(ticker):
+    """EXCHANGE:SYMBOL -> bare SYMBOL (the key export_quantum reads under data/fundamental)."""
+    return ticker.split(":")[-1]
+
+
+def pull_history(symbols, data_root):
+    """Fetch multi-year annual history per bare symbol and merge into data/fundamental/<SYM>.json.
+
+    Keyless Yahoo timeseries (history.fetch_history). Merge-safe and idempotent: re-reads the
+    existing fundamental record, overwrites only the "history" key, preserves everything else.
+    Returns {symbol: bool} — True when a NON-EMPTY annual history was persisted.
+    """
+    fdir = data_root / "fundamental"
+    fdir.mkdir(parents=True, exist_ok=True)
+    results = {}
+    for sym in symbols:
+        try:
+            hist = history.fetch_history(sym)
+        except Exception as e:  # noqa: BLE001
+            print(f"  history {sym}: FAILED ({e})")
+            results[sym] = False
+            continue
+        non_empty = bool(hist) and any(hist.get(k) for k in history.DEFAULT_TYPES)
+        fpath = fdir / f"{sym}.json"
+        rec = {}
+        if fpath.exists():
+            try:
+                rec = json.loads(fpath.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                rec = {}
+        if not isinstance(rec, dict):
+            rec = {}
+        rec.setdefault("symbol", sym)
+        rec["history"] = hist
+        fpath.write_text(json.dumps(rec, indent=2), encoding="utf-8")
+        results[sym] = non_empty
+        print(f"  history {sym}: {'OK' if non_empty else 'empty'} -> {fpath}")
+    return results
 
 
 def assemble_batch(records, requested_tickers, retrieved_at,
@@ -96,6 +136,14 @@ def main(argv=None):
     fname = f"tradingview_quantum_{now.strftime('%Y%m%dT%H%M%SZ')}.json"
     out_path = out_dir / fname
     out_path.write_text(json.dumps(batch, indent=2), encoding="utf-8")
+
+    # multi-year annual history (keyless Yahoo) — merged into data/fundamental/<SYM>.json,
+    # which export_quantum reads. Cover every bare symbol we requested (resolved or not).
+    hist_symbols = sorted({_bare(t) for t in tickers})
+    print(f"Fetching annual history for {len(hist_symbols)} symbols...")
+    hist_results = pull_history(hist_symbols, pathlib.Path(args.out))
+    hist_ok = sorted(s for s, ok in hist_results.items() if ok)
+    print(f"  history: {len(hist_ok)}/{len(hist_results)} symbols got a non-empty annual history")
 
     md = batch["batch_metadata"]
     failed = md["failed_symbols"]

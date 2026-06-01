@@ -24,16 +24,17 @@ function rowSectors(r: SectorRow): string[] {
   return out;
 }
 
-type SectorFilter = "All" | "AI" | "Quantum";
+type SectorFilter = "All" | "AI" | "Quantum" | "Congress";
 
-const SECTOR_FILTERS: SectorFilter[] = ["All", "AI", "Quantum"];
+const SECTOR_FILTERS: SectorFilter[] = ["All", "AI", "Quantum", "Congress"];
 
 function SectorChip({ sectors }: { sectors: string[] }) {
   if (sectors.length === 0) return <span className="text-term-muted">{DASH}</span>;
   return (
     <span className="inline-flex gap-1 align-middle">
       {sectors.map((s) => {
-        const color = s === "Quantum" ? "#a855f7" : "#22d3ee";
+        const color =
+          s === "Quantum" ? "#a855f7" : s === "Congress" ? "#f59e0b" : "#22d3ee";
         return (
           <span
             key={s}

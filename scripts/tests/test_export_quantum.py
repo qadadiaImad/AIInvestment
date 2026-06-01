@@ -165,3 +165,36 @@ def test_missing_fundamentals_arg_is_optional():
     # build must work with no fundamental_value records at all
     out = eq.build(_batch(), {})
     assert out["stocks"]["JPM"]["valuation"].get("fundamental_value") is None
+
+
+# ----------------------------------------------------------------- history (annual)
+
+_ANNUAL_KEYS = ("annualTotalRevenue", "annualGrossProfit", "annualNetIncome",
+                "annualFreeCashFlow", "annualDilutedEPS")
+
+
+def test_history_folded_in_when_fundamentals_carry_it():
+    funds = _fundamentals()
+    funds["IONQ"] = {
+        "symbol": "IONQ",
+        "history": {
+            "annualTotalRevenue": [{"date": "2025-12-31", "value": 43000000.0}],
+            "annualGrossProfit": [{"date": "2025-12-31", "value": 25000000.0}],
+            "annualNetIncome": [{"date": "2025-12-31", "value": -331000000.0}],
+            "annualFreeCashFlow": [{"date": "2025-12-31", "value": -120000000.0}],
+            "annualDilutedEPS": [{"date": "2025-12-31", "value": -1.2}],
+        },
+    }
+    out = eq.build(_batch(), funds)
+    hist = out["stocks"]["IONQ"]["history"]
+    assert hist
+    for k in _ANNUAL_KEYS:
+        assert k in hist, f"missing {k}"
+    assert hist["annualTotalRevenue"][0]["value"] == 43000000.0
+
+
+def test_history_absent_yields_empty_dict_no_crash():
+    # JPM fundamentals carry no history; IONQ has no fundamentals record at all.
+    out = eq.build(_batch(), _fundamentals())
+    assert out["stocks"]["JPM"]["history"] == {}
+    assert out["stocks"]["IONQ"]["history"] == {}

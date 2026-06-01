@@ -1,11 +1,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getAllSymbols, getStock, type PeerMetric } from "@/lib/data";
+import {
+  getAllSymbols,
+  getStock,
+  getNewsForSymbol,
+  getCongressData,
+  type PeerMetric,
+} from "@/lib/data";
 import LayerChip from "@/components/LayerChip";
 import Sparkline from "@/components/Sparkline";
 import PriceChart from "@/components/PriceChart";
 import TradingViewChart from "@/components/TradingViewChart";
+import StockNews from "@/components/StockNews";
+import WhyConsider, {
+  type CongressSummary,
+} from "@/components/WhyConsider";
 import {
   price as fmtPrice,
   ratio,
@@ -36,19 +46,70 @@ export async function generateMetadata({
   };
 }
 
+// Format a catalyst date for display. Some feeds emit a raw unix epoch in
+// SECONDS (e.g. "1786536000") rather than an ISO string. When the value is
+// all-digits, treat it as epoch-seconds; otherwise fall back to dateOnly,
+// preserving existing ISO-string behavior.
+function catalystDate(v: string | null | undefined): string {
+  if (!v) return DASH;
+  if (/^\d+$/.test(v)) {
+    const d = new Date(Number(v) * 1000);
+    if (!Number.isNaN(d.getTime())) return d.toISOString().slice(0, 10);
+  }
+  return dateOnly(v);
+}
+
+// Derive a deterministic per-symbol congressional-trade summary from the public
+// STOCK Act disclosures (getCongressData). Returns null when no member traded
+// the ticker. This is PUBLIC RECORD only — WHO traded and the net buy/sell
+// counts — never a buy/sell signal and never an accusation. House filings use
+// single-letter txn codes (P=purchase, S=sale, E=exchange); we classify by the
+// leading letter and tally distinct members, ranking them by trade count.
+function getCongressForSymbol(symbol: string): CongressSummary | null {
+  const data = getCongressData();
+  const trades = (data.trades ?? []).filter((t) => t.ticker === symbol);
+  if (trades.length === 0) return null;
+
+  let nBuys = 0;
+  let nSells = 0;
+  const byMember = new Map<
+    string,
+    { name: string; party: string | null; count: number }
+  >();
+  for (const t of trades) {
+    const code = (t.txn_type ?? "").trim().toUpperCase();
+    if (code.startsWith("P")) nBuys += 1;
+    else if (code.startsWith("S")) nSells += 1;
+    const key = t.politician;
+    const existing = byMember.get(key);
+    if (existing) existing.count += 1;
+    else byMember.set(key, { name: t.politician, party: t.party, count: 1 });
+  }
+
+  const topMembers = [...byMember.values()]
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
+    .slice(0, 3)
+    .map((m) => ({ name: m.name, party: m.party }));
+
+  return { nMembers: byMember.size, nBuys, nSells, topMembers };
+}
+
 // ---- small presentational helpers ----
 
 function Panel({
   title,
   children,
   className = "",
+  id,
 }: {
   title: string;
   children: React.ReactNode;
   className?: string;
+  id?: string;
 }) {
   return (
     <section
+      id={id}
       className={`border border-term-border rounded-sm bg-[#0e131d] ${className}`}
     >
       <div className="px-3 py-1.5 border-b border-term-border text-[10.5px] font-semibold uppercase tracking-wider text-term-muted">
@@ -108,6 +169,8 @@ export default async function StockPage({
   const counterparties = s.relationships?.counterparties ?? [];
   const labExposure = s.relationships?.lab_exposure ?? [];
   const catalysts = (s.catalysts ?? []).filter((c) => c.date || c.display);
+  const news = getNewsForSymbol(s.symbol);
+  const congress = getCongressForSymbol(s.symbol);
 
   // peer comparison rows
   const industryPeers = s.peer_comparison?.industry ?? {};
@@ -175,6 +238,11 @@ export default async function StockPage({
           ))}
         </div>
       )}
+
+      {/* Why consider this ticker — deterministic factor card (factors, not advice) */}
+      <Panel title="Why consider this ticker">
+        <WhyConsider stock={s} news={news} congress={congress} />
+      </Panel>
 
       {/* top grid: valuation + performance */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -372,7 +440,7 @@ export default async function StockPage({
               <tbody>
                 {catalysts.map((c) => (
                   <tr key={c.id}>
-                    <td className="tnum">{c.display ?? dateOnly(c.date)}</td>
+                    <td className="tnum">{catalystDate(c.display ?? c.date)}</td>
                     <td className="text-zinc-300">
                       {c.type ? titleCase(c.type) : DASH}
                     </td>
@@ -389,6 +457,11 @@ export default async function StockPage({
           </div>
         </Panel>
       )}
+
+      {/* Related news */}
+      <Panel title="Related news" className="scroll-mt-16" id="related-news">
+        <StockNews articles={news} />
+      </Panel>
 
       {/* Relationships */}
       {(counterparties.length > 0 || labExposure.length > 0) && (
