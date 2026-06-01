@@ -80,6 +80,28 @@ Decide to rotate *before* harvesting garbage. Check, in order:
 
 On gate → rotate (Recipe 1), optional polite back-off, retry on fresh instance.
 
+### Evidence: the guru chart API is IP/session-throttled, not page-gated (verified 2026-06-01)
+
+The historical fundamental-value **series** comes from the chart endpoint
+`https://www.gurufocus.com/reader/_api/chart/{SYM}/valuation?v=1.8.61`. Two transports give
+opposite results against the *same URL* — proof the gate keys on the **client's
+IP/session**, not on the page or the symbol:
+
+| Transport | Result against the chart endpoint |
+|---|---|
+| **Local headless python-playwright** (`scripts/fundamental_fetch.py`, fresh clean profile, single IP) | **HTTP 403 for EVERY ticker** — incl. NVDA, which already has a series. 38/38 series backfills failed both at 4-way concurrency **and** with gentle serial pacing. (The server-rendered *current value* is unaffected — it still works locally.) |
+| **Playwright MCP browser** (orchestrator-owned real browser, real profile/session/IP) | **HTTP 200** — verified on NVDA; the page even prefetches peers AVGO/MU/AMD at 200. Defeats the gate. |
+
+**Doctrine:** because a fresh clean profile from our IP is **already 403** before any view
+count accrues, this is **IP/session reputation throttling**, not a free-view counter —
+state-wiping (Recipe 1) does NOT help the local path. **SERIES retrieval must therefore use
+the Playwright MCP real-browser session**, not local headless. Run it under the Mode-B gated
+contract: isolated, **serial** MCP navigation (the one browser is shared), harvest-in-one-pass
+via same-origin `fetch` from the authenticated page, rotate per budget, and confirm the chart
+request is `200` (not `403`) before trusting any series. Exact sequence:
+`playwright-mcp-protocol.md` § *Historical fundamental (guru) series — Mode B via MCP*. The
+local `fundamental_fetch.py` path stays valid for the current **value** only.
+
 > **Owner's rule (7-day free-trial wall):** if a source shows a **7-day free-trial / signup /
 > "subscribe to premium" wall**, **restart the instance** (fresh browser / `browser_close` →
 > relaunch, or new local Chromium) and retry — **never store a value read from behind the

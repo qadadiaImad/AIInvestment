@@ -116,6 +116,24 @@ inject ads. Mirror GuruTrade's statelessness, but with detection + clean extract
        lazy-load correlation/extra metrics.
 - **Detect gate:** 402/403/429 in network, or text `sign in`/`upgrade`/`premium`/`limit`
   → rotate immediately.
+- **Current VALUE vs historical SERIES — different transports (verified 2026-06-01):** the
+  scalar `fundamental_value` (the server-rendered current value) is retrievable via the
+  **local headless** path (`scripts/fundamental_fetch.py`, fresh clean profile). The
+  **historical SERIES**, however, comes from the chart endpoint
+  `https://www.gurufocus.com/reader/_api/chart/{SYM}/valuation?v=1.8.61`, which
+  **IP-throttles the local headless path to HTTP 403 for every ticker** (38/38 series
+  backfills failed both with 4-way concurrency and with gentle serial pacing — incl. NVDA,
+  which already has a series). The **same endpoint returns HTTP 200 through the Playwright
+  MCP browser** (orchestrator-owned real profile/session/IP — verified on NVDA, which even
+  prefetches peer tickers AVGO/MU/AMD at 200). **Therefore the series must be retrieved via
+  Playwright MCP (Mode B), not local headless.** Honor Mode B: the single MCP browser is a
+  shared resource, so gated *navigation* stays **serial** (no concurrent MCP access);
+  harvest-everything-in-one-pass and rotate the instance per the free-hit budget. Efficient
+  harvest: from ONE authenticated page, same-origin `fetch` the chart endpoint for many
+  symbols via `browser_evaluate` (page context is un-throttled), capture each series JSON,
+  then parse with `aiinvest.fundamental.parse_valuation_chart`. Multi-agent parallelism
+  applies only to the no-gate PARSE / validate / write / re-export stages, never to the MCP
+  navigation itself.
 - **Stealth:** apply the bundle (`../references/anti-gating-cookbook.md` Recipe 2) on each
   fresh instance.
 - **Known GuruTrade pitfalls to avoid:** static UA/viewport (rotate them); blind always-fresh

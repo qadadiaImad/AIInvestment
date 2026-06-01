@@ -6,6 +6,11 @@ A fresh, state-wiped Chromium per invocation is the gate-dodge (the GuruTrade me
 free-view counter never accrues. Reuses the tested extraction; writes a GENERIC record
 (field is `fundamental_value`, source is generic) to data/fundamental/<SYM>.json. The
 valuation tag is computed downstream from our own price, not taken from the source.
+
+NOTE (histo series): this local-headless path gets the current VALUE fine, but the chart-data
+API that carries the historical series returns 403 here (the gated fundamental source
+IP-throttles sessionless headless). Recover the series via the Playwright MCP browser per
+references/playwright-mcp-protocol.md (Mode B) — the MCP real-browser session gets 200.
 """
 from __future__ import annotations
 

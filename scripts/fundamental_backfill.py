@@ -6,6 +6,11 @@ For each ticker: fetch (fresh browser, natural render for the value + capture th
 XHR for the series when it returns 200), save with merge-protect (never downgrades), then
 sleep a randomized 8-14s. Gentle pacing keeps the chart API under its rate limit so it serves
 200s (the series) instead of 403s. Designed to run a slice per workflow agent.
+
+NOTE (histo series): in practice this local-headless path gets a chart-API 403 for every
+ticker even with gentle serial pacing (the gated fundamental source IP-throttles sessionless
+headless). Recover the series via the Playwright MCP browser per
+references/playwright-mcp-protocol.md (Mode B) — the MCP real-browser session gets 200.
 """
 from __future__ import annotations
 
