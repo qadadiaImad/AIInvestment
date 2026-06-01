@@ -16,6 +16,7 @@ LAYERS = {
         "NYSE:GEV", "NYSE:VRT", "NYSE:ETN", "NYSE:PWR", "NYSE:PH", "NYSE:EMR", "NYSE:HUBB", "NYSE:NVT",
         "NYSE:SMR", "NYSE:OKLO", "NASDAQ:NNE", "NYSE:LEU", "NYSE:CCJ", "NYSE:BWXT",
         "NYSE:WMB", "NYSE:KMI", "NYSE:ET", "NYSE:OKE", "NYSE:TRGP", "NYSE:LNG",
+        "AMEX:UEC", "AMEX:UUUU",  # uranium fuel
     ],
     # L1 — Chips & semis: compute, foundry/equipment, EDA, memory, optical/interconnect
     "L1-chips": [
@@ -25,6 +26,7 @@ LAYERS = {
         "NYSE:TSM", "NASDAQ:ASML", "NASDAQ:AMAT", "NASDAQ:LRCX", "NASDAQ:KLAC", "NASDAQ:TER", "NASDAQ:ENTG",
         "NASDAQ:SNPS", "NASDAQ:CDNS",
         "NASDAQ:MU", "NASDAQ:WDC", "NASDAQ:STX", "NYSE:COHR",
+        "NASDAQ:ALAB", "NASDAQ:AMKR", "NYSE:FN",  # AI connectivity, packaging, optical
     ],
     # L2 — Infra / neocloud / hyperscalers / DC REITs / servers / networking
     "L2-infra": [
@@ -33,6 +35,7 @@ LAYERS = {
         "NASDAQ:EQIX", "NYSE:DLR",
         "NYSE:DELL", "NASDAQ:SMCI", "NYSE:HPE", "NYSE:ANET", "NASDAQ:CSCO",
         "NASDAQ:NTAP", "NYSE:CIEN",
+        "NASDAQ:AKAM", "NASDAQ:APLD", "NASDAQ:CORZ", "NASDAQ:WULF", "NYSE:CLS", "NYSE:GLW",  # edge/CDN, AI-DC compute, servers, optical
     ],
     # L3 — Models (foundation): public exposure is via L2 hyperscaler proxies (GOOGL/META/
     # MSFT/AMZN); the pure-play labs are private/pre-IPO (see PRE_IPO). No unique tickers.

@@ -64,6 +64,25 @@ endpoint — one POST returns many tickers/columns. Scriptable, fast, no gate. *
   **Playwright** target (Mode A) — the scanner API covers point-in-time fundamentals, but
   chart-derived historical series and the news feed need page rendering. Other markets: swap
   `/america/` for `/global/`, `/crypto/`, etc.
+- **Sector / industry join — works for ALL sectors, not just AI (verified live 2026-05-31):**
+  The existing helper `aiinvest.tradingview.scan(tickers, columns=...)` is fully generic — it
+  takes any explicit ticker list and the `sector`/`industry` columns are already in
+  `DEFAULT_COLUMNS`. No AI-universe coupling. The build phase's sector join should call:
+  ```python
+  from aiinvest import tradingview as tv
+  recs = tv.scan(["NYSE:JPM", "NASDAQ:WMT"], columns=["description", "sector", "industry"])
+  # each rec: {"symbol","ticker","metrics":{"sector":{"value":...},"industry":{"value":...}}}
+  sector   = rec["metrics"]["sector"]["value"]     # stamped envelope, read .value
+  industry = rec["metrics"]["industry"]["value"]
+  ```
+  Live results (non-AI tickers): `NYSE:JPM → sector="Finance", industry="Major Banks"`;
+  `NASDAQ:WMT → sector="Retail Trade", industry="Specialty Stores"`. Equivalent raw endpoint:
+  `POST scanner.tradingview.com/america/scan` with
+  `{"symbols":{"tickers":["NYSE:JPM"],"query":{"types":[]}},"columns":["sector","industry"]}`.
+  **Gotcha — the EXCHANGE PREFIX is mandatory and must be correct.** Bare symbols (`"JPM"`)
+  and wrong-exchange specs (`"NYSE:WMT"`) return an EMPTY `data` array silently — no error.
+  WMT is `NASDAQ:WMT`, not NYSE. The join must resolve each symbol's real exchange first
+  (e.g. via the symbol-search endpoint) or carry the `EXCHANGE:SYMBOL` form in the universe.
 
 ## Yahoo Finance (`yahoo`) — REST  ⚡ no browser
 

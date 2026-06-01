@@ -29,6 +29,8 @@ from aiinvest import graph_metrics as gm
 from aiinvest import health_score as hs
 from aiinvest import macro_stress as ms
 from aiinvest import contagion
+from aiinvest import vulnerability as vuln
+from aiinvest import fed_path as fp
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -36,6 +38,10 @@ from aiinvest import contagion
 
 _OUTPUT_PATH = (
     _SCRIPTS_DIR.parent / "web" / "public" / "data" / "graph_analysis.json"
+)
+
+_SITE_JSON_PATH = (
+    _SCRIPTS_DIR.parent / "web" / "public" / "data" / "site.json"
 )
 
 _DISCLAIMER = (
@@ -94,6 +100,21 @@ def run() -> None:
     overall_health = health["overall"]
 
     # ------------------------------------------------------------------
+    # 3b. Compute vulnerability scores (cross-sectional fragility)
+    # ------------------------------------------------------------------
+    print("Computing vulnerability scores...")
+    vuln_scores: dict = {}
+    try:
+        if _SITE_JSON_PATH.exists():
+            vuln_scores = vuln.from_site_json(str(_SITE_JSON_PATH))
+            n_vuln = sum(1 for v in vuln_scores.values() if v.get("vulnerability") is not None)
+            print(f"  Vulnerability scores computed for {n_vuln}/{len(vuln_scores)} nodes.")
+        else:
+            print(f"  site.json not found at {_SITE_JSON_PATH}; skipping vulnerability.")
+    except Exception as exc:
+        print(f"  Vulnerability computation failed ({exc}); skipping.")
+
+    # ------------------------------------------------------------------
     # 4. Fetch macro snapshot (network — wrap in try/except)
     # ------------------------------------------------------------------
     print("Fetching macro snapshot from FRED...")
@@ -109,6 +130,29 @@ def run() -> None:
         macro_note_extra = " FRED unavailable — baseline values used."
         snapshot = {
             **_DEFAULT_MACRO_BASELINES,
+            "retrieved_at": generated_at,
+        }
+
+    # ------------------------------------------------------------------
+    # 4b. Build fed-rate path (ZQ futures / FRED fallback)
+    # ------------------------------------------------------------------
+    print("Building fed-rate path...")
+    fed_path_result: dict = {}
+    try:
+        fed_path_result = fp.build_fed_path()
+        print(
+            f"  Fed path: source={fed_path_result.get('source')}  "
+            f"meetings={len(fed_path_result.get('path', {}))}  "
+            f"note={fed_path_result.get('note', '')[:80]}"
+        )
+    except Exception as exc:
+        print(f"  Fed path unavailable ({exc}); block will be empty.")
+        fed_path_result = {
+            "path": {},
+            "scenarios": {"base": {}, "bull": {}, "bear": {}},
+            "sep_dots": {},
+            "source": "unavailable",
+            "note": str(exc),
             "retrieved_at": generated_at,
         }
 
@@ -162,6 +206,7 @@ def run() -> None:
     for nid, nm in gm_nodes.items():
         raw_node = node_id_map.get(nid, {})
         hs_entry = hs_nodes.get(nid, {})
+        v_entry = vuln_scores.get(nid, {})
         nodes_list.append(
             {
                 "id": nid,
@@ -171,6 +216,8 @@ def run() -> None:
                 "components": hs_entry.get("components", {}),
                 "ens": hs_entry.get("ens"),
                 "flags": hs_entry.get("flags", []),
+                "vulnerability": v_entry.get("vulnerability"),
+                "vulnerability_components": v_entry.get("components", {}),
                 "pagerank": nm["pagerank"],
                 "betweenness": nm["betweenness"],
                 "in_scc": nm["in_scc"],
@@ -223,6 +270,30 @@ def run() -> None:
     # ------------------------------------------------------------------
     # 10. Build output JSON
     # ------------------------------------------------------------------
+    # Serialize fed_path: convert date keys to ISO strings for JSON
+    def _serialize_path(path_dict: dict) -> dict:
+        """Convert date keys to ISO-8601 strings."""
+        return {
+            (k.isoformat() if hasattr(k, "isoformat") else str(k)): v
+            for k, v in path_dict.items()
+        }
+
+    fed_path_serialized: dict = {}
+    if fed_path_result:
+        raw_path = fed_path_result.get("path", {})
+        raw_scen = fed_path_result.get("scenarios", {})
+        fed_path_serialized = {
+            "path": _serialize_path(raw_path),
+            "scenarios": {
+                band: _serialize_path(band_path)
+                for band, band_path in raw_scen.items()
+            },
+            "sep_dots": fed_path_result.get("sep_dots", {}),
+            "source": fed_path_result.get("source", "unknown"),
+            "note": fed_path_result.get("note", ""),
+            "retrieved_at": fed_path_result.get("retrieved_at", generated_at),
+        }
+
     output = {
         "generated_at": generated_at,
         "disclaimer": _DISCLAIMER,
@@ -248,6 +319,14 @@ def run() -> None:
         },
         "edge_stress": edge_stress_summary,
         "cascades": cascades_out,
+        "fed_path": fed_path_serialized,
+        "vulnerability": {
+            sym: {
+                "vulnerability": v.get("vulnerability"),
+                "components": v.get("components", {}),
+            }
+            for sym, v in vuln_scores.items()
+        },
     }
 
     # ------------------------------------------------------------------

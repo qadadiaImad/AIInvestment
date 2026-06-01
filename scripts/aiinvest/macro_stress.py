@@ -7,24 +7,36 @@ Two public functions:
     value for each, plus a UTC ``retrieved_at`` timestamp.  Not unit-tested
     (network I/O).
 
-``stress_graph(graph_dict, snapshot, baselines)``  — pure computation.
-    Takes the canonical graph_dict, a macro snapshot dict, and optional
-    baseline overrides.  Returns a parallel-edges list with
+``stress_graph(graph_dict, snapshot, shock)``  — pure computation.
+    Takes the canonical graph_dict, a live macro snapshot dict, and an
+    optional *shock* dict that expresses explicit scenario deltas applied on
+    top of the snapshot.  Returns a parallel-edges list with
     ``stress_score ∈ [0,1]`` (L0-energy outbound up to 1.5) and
     ``stressed_weight``, plus a ``params`` provenance dict.
+
+Stress semantics (§2.7 / A0 fix)
+----------------------------------
+The ``snapshot`` IS the zero-stress reference: when no shock is applied
+(or shock is all zeros), every edge returns ``stress_score == 1.0``.
+A *scenario* is expressed as an explicit shock (Δbps / Δelec_pct) applied
+on top of the current live snapshot — NOT as a diff against a hardcoded
+historical constant.
 
 Three channels, per §4 of the feasibility spec:
 
   Channel 1 — Rates (DFF / DGS10)
       stress_score = max(0, 1 − beta × Δrate_bps / 100)
+      Δrate_bps comes from shock["dff_bps"] / shock["dgs10_bps"].
       Termination amplifier: ≤90 days → (1−raw)*1.5; 91–180 → (1−raw)*1.2.
 
   Channel 2 — Electricity (APU000072610)
+      Δelec_pct comes from shock["elec_pct"] (fraction, e.g. 0.30 = +30%).
       L2-infra dst: stress = max(0, 1 − 0.15 × Δelec_pct); capped at 1.
       L0-energy src outbound: stress = min(1.5, 1 + 0.15 × Δelec_pct).
 
   Channel 3 — Rate-regime trigger
-      DFF ≥ 5.5 → subtract 0.15 from all rumored edges (floored at 0).
+      (snapshot["dff"] + shock["dff_bps"]/100) ≥ 5.5 →
+      subtract 0.15 from all rumored edges (floored at 0).
 
 Base weight (proxy for unsized edges):
     w_base = certainty_w × type_base_weight
@@ -79,11 +91,11 @@ _TYPE_BASE: dict[str, float] = {
     "infra_partner": 1.0,
 }
 
-#: Default baselines (spec §4).
-_DEFAULT_BASELINES: dict[str, float] = {
-    "dff": 4.50,
-    "dgs10": 4.25,
-    "elec": 0.142,
+#: Zero-shock sentinel — used as the default when no shock is provided.
+_ZERO_SHOCK: dict[str, float] = {
+    "dff_bps": 0.0,
+    "dgs10_bps": 0.0,
+    "elec_pct": 0.0,
 }
 
 
@@ -129,9 +141,14 @@ def fetch_macro_snapshot(session=None) -> dict[str, Any]:
 def stress_graph(
     graph_dict: dict,
     snapshot: dict[str, Any],
-    baselines: dict[str, float] | None = None,
+    shock: dict[str, float] | None = None,
 ) -> dict[str, Any]:
-    """Compute per-edge macro stress scores from a macro snapshot.
+    """Compute per-edge macro stress scores from a live macro snapshot + scenario shock.
+
+    The ``snapshot`` is the zero-stress reference point — when ``shock`` is
+    absent (or all zeros), every edge returns ``stress_score == 1.0``.
+    A scenario is expressed as an explicit shock applied *on top of* the
+    current snapshot values:
 
     Parameters
     ----------
@@ -140,8 +157,18 @@ def stress_graph(
     snapshot:
         Dict with keys ``"dff"``, ``"dgs10"``, ``"elec"`` (and optionally
         ``"retrieved_at"``).  Values from ``fetch_macro_snapshot()``.
-    baselines:
-        Override the default baselines (DFF 4.50, DGS10 4.25, ELEC 0.142).
+        This IS the zero-shock baseline (Δ=0 at current → stress 1.0).
+    shock:
+        Optional scenario deltas applied on top of the snapshot::
+
+            {
+                "dff_bps":   float,  # Δ Fed Funds in bps  (default 0)
+                "dgs10_bps": float,  # Δ 10Y Treasury bps  (default 0)
+                "elec_pct":  float,  # Δ electricity as fraction (default 0)
+                                     # e.g. 0.30 = +30% elec price rise
+            }
+
+        Omit a key (or pass None) for zero shock on that channel.
 
     Returns
     -------
@@ -165,24 +192,28 @@ def stress_graph(
                 "delta_dff_bps": float,
                 "delta_dgs10_bps": float,
                 "delta_elec_pct": float,
-                "baselines_used": dict,
+                "shock_applied": dict,
                 "retrieved_at": str | None,
             },
         }
 
     Pure — no network calls.
     """
-    bl = {**_DEFAULT_BASELINES, **(baselines or {})}
+    sh = {**_ZERO_SHOCK, **(shock or {})}
 
     dff: float = float(snapshot["dff"])
     dgs10: float = float(snapshot["dgs10"])
     elec: float = float(snapshot["elec"])
 
-    delta_dff_bps: float = (dff - bl["dff"]) * 100.0    # % → bps
-    delta_dgs10_bps: float = (dgs10 - bl["dgs10"]) * 100.0
-    delta_elec_pct: float = (elec - bl["elec"]) / bl["elec"] if bl["elec"] else 0.0
+    # Deltas come entirely from the explicit shock — NOT from diffing snapshot
+    # against a hardcoded historical constant.
+    delta_dff_bps: float = float(sh.get("dff_bps", 0.0))
+    delta_dgs10_bps: float = float(sh.get("dgs10_bps", 0.0))
+    delta_elec_pct: float = float(sh.get("elec_pct", 0.0))
 
-    regime_trigger: bool = dff >= _DFF_REGIME_THRESHOLD
+    # Regime trigger: use (snapshot + shock) as the effective DFF level
+    effective_dff: float = dff + delta_dff_bps / 100.0
+    regime_trigger: bool = effective_dff >= _DFF_REGIME_THRESHOLD
 
     # Build node-id → layer lookup
     node_layer: dict[str, str] = {
@@ -246,7 +277,7 @@ def stress_graph(
         "delta_dff_bps": delta_dff_bps,
         "delta_dgs10_bps": delta_dgs10_bps,
         "delta_elec_pct": delta_elec_pct,
-        "baselines_used": bl,
+        "shock_applied": dict(sh),
         "retrieved_at": snapshot.get("retrieved_at"),
     }
 
@@ -278,8 +309,8 @@ def _channel1_rate_stress(
 ) -> float:
     """Compute Channel-1 (rates) stress_score, including termination amplifier.
 
-    Uses DFF delta for compute_commitment; DGS10 delta for equity_stake;
-    DFF delta as default for all others.
+    Uses DFF shock for compute_commitment; DGS10 shock for equity_stake;
+    DFF shock as default for all others.
     """
     # Choose which rate delta drives this edge type
     if etype == "equity_stake":
@@ -318,7 +349,7 @@ def _channel2_elec_stress(
 
     L2-infra destination (inbound): lower stress on elec rise.
     L0-energy source outbound: higher stress (margin-positive) on elec rise, capped 1.5.
-    Only applies when there is an actual electricity delta.
+    Only applies when there is an actual electricity shock.
     """
     if delta_elec_pct == 0.0:
         return current_stress

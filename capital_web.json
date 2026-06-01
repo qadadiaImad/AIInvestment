@@ -257,6 +257,22 @@
       "note": ""
     },
     {
+      "id": "UEC",
+      "name": "UEC",
+      "type": "public",
+      "ticker": "AMEX:UEC",
+      "layer": "L0-energy",
+      "note": ""
+    },
+    {
+      "id": "UUUU",
+      "name": "UUUU",
+      "type": "public",
+      "ticker": "AMEX:UUUU",
+      "layer": "L0-energy",
+      "note": ""
+    },
+    {
       "id": "NVDA",
       "name": "NVDA",
       "type": "public",
@@ -473,6 +489,30 @@
       "note": ""
     },
     {
+      "id": "ALAB",
+      "name": "ALAB",
+      "type": "public",
+      "ticker": "NASDAQ:ALAB",
+      "layer": "L1-chips",
+      "note": ""
+    },
+    {
+      "id": "AMKR",
+      "name": "AMKR",
+      "type": "public",
+      "ticker": "NASDAQ:AMKR",
+      "layer": "L1-chips",
+      "note": ""
+    },
+    {
+      "id": "FN",
+      "name": "FN",
+      "type": "public",
+      "ticker": "NYSE:FN",
+      "layer": "L1-chips",
+      "note": ""
+    },
+    {
       "id": "CRWV",
       "name": "CRWV",
       "type": "public",
@@ -605,6 +645,54 @@
       "name": "CIEN",
       "type": "public",
       "ticker": "NYSE:CIEN",
+      "layer": "L2-infra",
+      "note": ""
+    },
+    {
+      "id": "AKAM",
+      "name": "AKAM",
+      "type": "public",
+      "ticker": "NASDAQ:AKAM",
+      "layer": "L2-infra",
+      "note": ""
+    },
+    {
+      "id": "APLD",
+      "name": "APLD",
+      "type": "public",
+      "ticker": "NASDAQ:APLD",
+      "layer": "L2-infra",
+      "note": ""
+    },
+    {
+      "id": "CORZ",
+      "name": "CORZ",
+      "type": "public",
+      "ticker": "NASDAQ:CORZ",
+      "layer": "L2-infra",
+      "note": ""
+    },
+    {
+      "id": "WULF",
+      "name": "WULF",
+      "type": "public",
+      "ticker": "NASDAQ:WULF",
+      "layer": "L2-infra",
+      "note": ""
+    },
+    {
+      "id": "CLS",
+      "name": "CLS",
+      "type": "public",
+      "ticker": "NYSE:CLS",
+      "layer": "L2-infra",
+      "note": ""
+    },
+    {
+      "id": "GLW",
+      "name": "GLW",
+      "type": "public",
+      "ticker": "NYSE:GLW",
       "layer": "L2-infra",
       "note": ""
     },
