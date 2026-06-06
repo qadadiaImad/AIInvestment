@@ -1,0 +1,37 @@
+AI STACK — IMAGE-POST KIT  (2026-06-03)  | 4:5 carousels, cream/emerald editorial aesthetic
+Educational / market commentary only — not financial advice. Slides in higgs/.
+
+================ POST 1 — SALESFORCE (AI) ================
+Slides (in order): post1_1_hook.png -> post1_2_graph.png -> post1_3_takeaway.png
+Caption:
+Salesforce's $50M AI bet is reportedly worth ~$5B now — the headline everyone's resharing.
+The part they skip: the stock still trades ~37% UNDER its fundamental-value model. The win and
+the price are telling different stories. Not financial advice, just the numbers.
+Hashtags: #salesforce #aistocks #valuation #stocktok #fintok #investing101 #notfinancialadvice
+Music vibe: mellow lo-fi / minimal "clean-aesthetic" trending sound (low energy, no hype EDM).
+
+================ POST 2 — IONQ (QUANTUM) ================
+Slides: post2_1_hook.png -> post2_2_graph.png -> post2_3_takeaway.png
+Caption:
+"Quantum stocks" get treated like one trade. They're not. IonQ reportedly posted record revenue
+and trades ~16% BELOW its fundamental-value model — while Rigetti and D-Wave sit 10-30x ABOVE
+theirs. Same hype label, wildly different math. Reported, not confirmed. Not a recommendation.
+Hashtags: #quantumcomputing #ionq #rigetti #quantumstocks #stocktok #fintok #notfinancialadvice
+Music vibe: cool, slightly futuristic minimal/ambient trending beat (restrained, not dramatic).
+
+================ POST 3 — CONGRESS (PUBLIC RECORD) ================
+Slides: post3_1_hook.png -> post3_2_graph.png -> post3_3_takeaway.png
+Caption:
+Straight from a public STOCK Act filing: Rep. Maria Elvira Salazar disclosed buying Salesforce
+(CRM), $15,001-$50,000, traded Apr 6, filed May 8, 2026 — the same stock our model flags ~37%
+below fair value. Transparency only: NOT an accusation, NOT insider anything, NOT a trading
+signal. Not financial advice.
+Hashtags: #congresstrading #stockact #salesforce #transparency #stocktok #fintok #notfinancialadvice
+Music vibe: calm, neutral "newsy" minimal sound (credible, document-like; avoid anything dramatic).
+
+NOTES
+- Assemble each as a 3-image carousel/slideshow in CapCut or the app; set the trending audio; 0.8-1.2s
+  per slide for a reel, or post as a swipe carousel.
+- Through-line: CRM (Salesforce) appears in both Post 1 (cheap vs model) and Post 3 (a member bought it).
+- All numbers are real, pulled from the app data as of 2026-06-02; certainty respected (IonQ revenue
+  = reported; congress = public record). Swap in fresh data anytime by re-running the daily refresh.

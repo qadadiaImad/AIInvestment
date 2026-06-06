@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<title>CRM — Slide 4</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:1350px; }
+  body {
+    font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(120% 90% at 82% 100%, #11233f 0%, #0a1322 50%, #060b16 100%);
+    color:#eef3fb; padding:70px 66px; display:flex; flex-direction:column;
+  }
+  .kick { font-size:24px; font-weight:700; color:#5fa8ff; letter-spacing:3px; text-transform:uppercase; }
+  .title { margin-top:10px; font-size:54px; font-weight:800; letter-spacing:-1.3px; line-height:1.05; }
+  .sub { margin-top:14px; font-size:23px; color:#9fb3d1; max-width:940px; line-height:1.4; }
+
+  .r40 { margin-top:42px; background:linear-gradient(100deg,#10261c,#0e1c33); border:1.5px solid #2f6b52;
+         border-radius:20px; padding:32px 36px; }
+  .r40top { display:flex; justify-content:space-between; align-items:baseline; }
+  .r40name { font-size:26px; font-weight:700; color:#9fe7c0; }
+  .r40val { font-size:62px; font-weight:800; letter-spacing:-2px; color:#5fe0a0; }
+  .r40bar { margin-top:20px; height:30px; background:#13203a; border-radius:10px; position:relative; overflow:hidden; }
+  .r40fill { height:100%; width:75.4%; background:linear-gradient(90deg,#1f6b48,#43e3a0); border-radius:10px; }
+  .r40mark { position:absolute; top:-8px; bottom:-8px; left:66.6%; width:3px; background:#ffd166; }
+  .r40legend { margin-top:14px; font-size:20px; color:#9fb3d1; display:flex; justify-content:space-between; }
+  .r40legend b { color:#fff; }
+
+  .grid { margin-top:34px; display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .card { background:#0e1c33; border:1.5px solid #1f3a5c; border-radius:18px; padding:26px 28px; }
+  .cname { font-size:23px; color:#9fb3d1; font-weight:600; }
+  .cmain { margin-top:10px; display:flex; align-items:baseline; gap:14px; }
+  .cval { font-size:52px; font-weight:800; letter-spacing:-1.5px; }
+  .badge { font-size:18px; font-weight:700; padding:6px 13px; border-radius:999px; }
+  .over { color:#9fe7c0; background:#13241d; border:1.5px solid #2f6b52; }
+  .neutral { color:#9fc0ff; background:#13203a; border:1.5px solid #2b4a72; }
+  .cmed { margin-top:12px; font-size:20px; color:#7e92b2; }
+  .cmed b { color:#cdddf2; }
+  .callout { margin-top:30px; background:#10203a; border-left:5px solid #5fa8ff;
+             border-radius:0 14px 14px 0; padding:22px 30px; font-size:24px; line-height:1.45; color:#dce6f5; }
+  .callout b { color:#9fc0ff; }
+  .foot { margin-top:auto; font-size:18px; color:#6f84a4; padding-top:20px; }
+</style></head>
+<body>
+  <div class="kick">Building blocks &mdash; continued</div>
+  <div class="title">Growth + cash = comfortably past 40.</div>
+  <div class="sub">The software shorthand: revenue growth plus free-cash-flow margin should clear 40%. CRM clears it on cash alone.</div>
+
+  <div class="r40">
+    <div class="r40top"><span class="r40name">Rule of 40 &nbsp;(rev growth + FCF margin)</span><span class="r40val">~45%</span></div>
+    <div class="r40bar"><div class="r40fill"></div><div class="r40mark"></div></div>
+    <div class="r40legend"><span>11.0% growth &nbsp;+&nbsp; 34.2% FCF margin</span><span>yellow line = <b>40% threshold</b></span></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="cname">FCF margin</div>
+      <div class="cmain"><span class="cval" style="color:#5fe0a0">34.2%</span><span class="badge over">elite</span></div>
+      <div class="cmed">a third of revenue lands as free cash</div>
+    </div>
+    <div class="card">
+      <div class="cname">ROIC</div>
+      <div class="cmain"><span class="cval" style="color:#5fe0a0">10.9%</span><span class="badge over">&gt;2&times; median</span></div>
+      <div class="cmed">industry median <b>4.5%</b></div>
+    </div>
+    <div class="card">
+      <div class="cname">P/E</div>
+      <div class="cmain"><span class="cval">23.2&times;</span><span class="badge neutral">in line</span></div>
+      <div class="cmed">industry median <b>25.5&times;</b></div>
+    </div>
+    <div class="card">
+      <div class="cname">EPS growth (YoY)</div>
+      <div class="cmain"><span class="cval" style="color:#5fe0a0">35.1%</span><span class="badge over">strong</span></div>
+      <div class="cmed">earnings compounding faster than sales</div>
+    </div>
+  </div>
+
+  <div class="callout">Read it together: a cash machine (<b>34% FCF margin, 11% ROIC</b>) trading at a market-average P/E while earnings grow 35%. That mix &mdash; not hype &mdash; is what supports a fundamental value above the tape.</div>
+
+  <div class="foot">Company figures: site data (TTM). ROIC industry median: Packaged Software scan, ~289 names, 2026-06-03. P/E median, 182 names. Rule of 40 = rev growth + FCF margin.</div>
+</body></html>

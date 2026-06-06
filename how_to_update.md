@@ -8,12 +8,35 @@ Educational/research only — not investment advice.
 
 ---
 
-## 1. The two commands
+## 0. Update EVERYTHING (the full "update all as of <date>" sequence)
+
+```bash
+cd scripts
+# 1) scriptable refresh — run in order (no --deploy yet; one deploy at the end):
+python refresh_daily.py              # AI fundamentals, prices, graph+resiliency, NEWS, QUANTUM, site, screener
+python refresh_congress.py           # House PTR trades + conflict + party/ideology/policy
+python pull_congress_stocks.py && python export_congress_stocks.py   # top-300 congress /stocks pages
+python pull_kalray.py                # Kalray (+ any foreign names in pull_kalray.EXTRAS)
+
+# 2) GF VALUES + GF HISTO — GATED, NOT scriptable. Ask Claude to run the Playwright-MCP
+#    chart harvest (one fetch gives both the value and the historical series) for the full
+#    universe, parse via aiinvest.fundamental.parse_valuation_chart, merge into
+#    data/fundamental/<SYM>.json. See references/playwright-mcp-protocol.md (Mode B).
+
+# 3) re-export so every bundle folds the fresh GF, then ship:
+python export_site.py && python export_quantum.py && python export_congress_stocks.py && python pull_kalray.py
+cd ../web && vercel --prod --yes
+```
+The GF step (2) is why there is no single command: the chart API blocks the local headless
+path (403) and only the orchestrator-driven MCP browser gets through (Mode B, serial). Last
+full run 2026-06-02: GF value 424 / series 404; 434 pages; site+congress stamped 06-02.
+
+## 1. The two routine commands
 
 ```bash
 cd scripts
 
-# DAILY — fundamentals, prices, graph, resiliency, screener, news  (+ rebuild & ship)
+# DAILY — fundamentals, prices, graph, resiliency, screener, news, quantum  (+ rebuild & ship)
 python refresh_daily.py --deploy
 
 # MONTHLY — congressional trades + party/ideology/policy enrichment  (+ rebuild & ship)

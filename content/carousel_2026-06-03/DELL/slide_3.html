@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:1350px; }
+  body {
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(120% 90% at 20% 0%,#13243f 0%,#0a1018 55%,#070a0f 100%);
+    color:#eef3fb; overflow:hidden;
+  }
+  .wrap { padding:74px 64px; height:100%; display:flex; flex-direction:column; }
+  .kicker { font-size:22px; letter-spacing:3px; color:#7fb2ff; text-transform:uppercase; font-weight:700; }
+  h1 { font-size:54px; font-weight:800; line-height:1.1; margin:12px 0 8px; letter-spacing:-1px; }
+  .lede { font-size:22px; color:#9fb0c7; margin-bottom:34px; }
+  .cards { display:flex; flex-direction:column; gap:22px; }
+  .card { background:rgba(255,255,255,.035); border:1px solid rgba(127,178,255,.16); border-radius:20px; padding:26px 32px; display:flex; align-items:center; gap:26px; }
+  .card .met { flex:1; }
+  .card .mname { font-size:26px; font-weight:700; }
+  .card .mdesc { font-size:17px; color:#9fb0c7; margin-top:3px; }
+  .nums { display:flex; gap:40px; align-items:center; }
+  .num .v { font-size:40px; font-weight:800; }
+  .num .l { font-size:15px; color:#9fb0c7; text-transform:uppercase; letter-spacing:.5px; }
+  .num.ind .v { color:#9fb0c7; font-weight:700; }
+  .badge { font-size:17px; font-weight:800; padding:8px 16px; border-radius:999px; white-space:nowrap; }
+  .badge.over { background:rgba(255,107,129,.16); color:#ff8fa3; }
+  .badge.under { background:rgba(90,209,160,.16); color:#5ad1a0; }
+  .badge.inline { background:rgba(159,176,199,.16); color:#cdd8e8; }
+  .star { border-color:rgba(255,209,102,.5); background:rgba(255,209,102,.07); }
+  .callout { margin-top:auto; background:rgba(255,209,102,.10); border:1px solid rgba(255,209,102,.35); border-radius:20px; padding:28px 32px; }
+  .callout .t { font-size:21px; font-weight:800; color:#ffd166; letter-spacing:.5px; text-transform:uppercase; }
+  .callout .b { font-size:22px; color:#e7eefb; line-height:1.45; margin-top:8px; }
+  .disc { font-size:15px; color:#566576; margin-top:20px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="kicker">What explains the value &middot; hardware lens</div>
+    <h1>Three numbers that frame Dell</h1>
+    <div class="lede">Company value vs the median across its Computer Processing Hardware peers.</div>
+
+    <div class="cards">
+      <div class="card star">
+        <div class="met"><div class="mname">ROIC &mdash; return on invested capital</div><div class="mdesc">how much profit each dollar of capital throws off</div></div>
+        <div class="nums">
+          <div class="num"><div class="v" style="color:#5ad1a0;">38.5%</div><div class="l">DELL</div></div>
+          <div class="num ind"><div class="v">8.1%</div><div class="l">Industry</div></div>
+        </div>
+        <span class="badge under">~5&times; peers</span>
+      </div>
+
+      <div class="card">
+        <div class="met"><div class="mname">Revenue growth (YoY)</div><div class="mdesc">top-line acceleration, AI-server led</div></div>
+        <div class="nums">
+          <div class="num"><div class="v" style="color:#5ad1a0;">38.9%</div><div class="l">DELL</div></div>
+          <div class="num ind"><div class="v">11.0%</div><div class="l">Industry</div></div>
+        </div>
+        <span class="badge under">well above</span>
+      </div>
+
+      <div class="card">
+        <div class="met"><div class="mname">P/E &mdash; price to earnings (TTM)</div><div class="mdesc">what you pay per dollar of profit</div></div>
+        <div class="nums">
+          <div class="num"><div class="v">34.6</div><div class="l">DELL</div></div>
+          <div class="num ind"><div class="v">25.0</div><div class="l">Industry</div></div>
+        </div>
+        <span class="badge over">richer</span>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="t">&#9733; The dominant factor (my read)</div>
+      <div class="b">Dell's <b>~38% ROIC</b> is the standout &mdash; roughly five times the peer median. A capital-light, high-turnover box business that compounds capital this efficiently <i>deserves</i> a premium multiple. The debate is only how big.</div>
+    </div>
+
+    <div class="disc">Industry median via live peer scan (TradingView), 2026-06-03. Subjective call-out. Not financial advice.</div>
+  </div>
+</body>
+</html>

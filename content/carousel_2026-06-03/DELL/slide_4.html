@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:1350px; }
+  body {
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(120% 90% at 80% 100%,#13243f 0%,#0a1018 55%,#070a0f 100%);
+    color:#eef3fb; overflow:hidden;
+  }
+  .wrap { padding:74px 64px; height:100%; display:flex; flex-direction:column; }
+  .kicker { font-size:22px; letter-spacing:3px; color:#7fb2ff; text-transform:uppercase; font-weight:700; }
+  h1 { font-size:54px; font-weight:800; line-height:1.1; margin:12px 0 8px; letter-spacing:-1px; }
+  .lede { font-size:22px; color:#9fb0c7; margin-bottom:32px; }
+  .cards { display:flex; flex-direction:column; gap:20px; }
+  .card { background:rgba(255,255,255,.035); border:1px solid rgba(127,178,255,.16); border-radius:20px; padding:24px 32px; display:flex; align-items:center; gap:26px; }
+  .met { flex:1; }
+  .mname { font-size:25px; font-weight:700; }
+  .mdesc { font-size:17px; color:#9fb0c7; margin-top:3px; }
+  .nums { display:flex; gap:38px; }
+  .num .v { font-size:38px; font-weight:800; }
+  .num .l { font-size:15px; color:#9fb0c7; text-transform:uppercase; letter-spacing:.5px; }
+  .num.ind .v { color:#9fb0c7; font-weight:700; }
+  .badge { font-size:17px; font-weight:800; padding:8px 16px; border-radius:999px; white-space:nowrap; }
+  .badge.inline { background:rgba(159,176,199,.16); color:#cdd8e8; }
+  .badge.up { background:rgba(90,209,160,.16); color:#5ad1a0; }
+  .growth { margin-top:28px; background:rgba(90,209,160,.07); border:1px solid rgba(90,209,160,.28); border-radius:20px; padding:28px 32px; }
+  .growth .t { font-size:21px; font-weight:800; color:#5ad1a0; text-transform:uppercase; letter-spacing:.5px; }
+  .grow-row { display:flex; gap:48px; margin-top:18px; }
+  .gi .v { font-size:46px; font-weight:800; }
+  .gi .l { font-size:17px; color:#9fb0c7; margin-top:2px; }
+  .note { font-size:21px; color:#cdd8e8; line-height:1.45; margin-top:20px; }
+  .disc { font-size:15px; color:#566576; margin-top:auto; padding-top:24px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="kicker">The catch &middot; margins &amp; growth</div>
+    <h1>Big growth, thin margins</h1>
+    <div class="lede">Why a hardware multiple can't fully behave like a software one.</div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="met"><div class="mname">Gross margin</div><div class="mdesc">classic hardware economics &mdash; in line with peers</div></div>
+        <div class="nums">
+          <div class="num"><div class="v">20.9%</div><div class="l">DELL</div></div>
+          <div class="num ind"><div class="v">~21%</div><div class="l">Industry</div></div>
+        </div>
+        <span class="badge inline">in line</span>
+      </div>
+      <div class="card">
+        <div class="met"><div class="mname">Net &amp; free-cash-flow margin</div><div class="mdesc">profit that survives to the bottom / to cash</div></div>
+        <div class="nums">
+          <div class="num"><div class="v">6.3%</div><div class="l">Net</div></div>
+          <div class="num"><div class="v" style="color:#5ad1a0;">7.0%</div><div class="l">FCF</div></div>
+        </div>
+        <span class="badge inline">slim by design</span>
+      </div>
+    </div>
+
+    <div class="growth">
+      <div class="t">But the engine is roaring</div>
+      <div class="grow-row">
+        <div class="gi"><div class="v" style="color:#5ad1a0;">+101%</div><div class="l">EPS growth (YoY)</div></div>
+        <div class="gi"><div class="v">$113.5B</div><div class="l">FY26 revenue</div></div>
+        <div class="gi"><div class="v">$8.6B</div><div class="l">FY26 free cash flow</div></div>
+      </div>
+      <div class="note">Earnings per share roughly <b>doubled</b> year on year and free cash flow jumped to <b>$8.6B</b>. The richer-than-peers P/E is the market saying it believes that AI-server growth has legs &mdash; the thin margins are the reminder of which layer Dell sits in.</div>
+    </div>
+
+    <div class="disc">FY26 = fiscal year ended 2026-01-31 (annual filings). Margins &amp; growth via live financial data. Not financial advice.</div>
+  </div>
+</body>
+</html>

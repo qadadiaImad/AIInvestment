@@ -14,6 +14,39 @@ import pathlib
 import re
 
 from aiinvest import ai_stack, capital_web, enrich, fundamental, siteexport
+import export_quantum as _eq  # reuse the TradingView metric map + record->stock projection
+
+
+def _overlay_fresh_market(stocks, data_root):
+    """Refresh each AI stock's volatile market data (price, fundamentals, performance) from
+    the LATEST TradingView ai-stack batch that pull_ai_stack wrote today.
+
+    Factsheets/dossiers (narrative, filings, peers, bottleneck, history) refresh on a slower
+    cadence, so without this the displayed price/valuation lags the daily price chart. This
+    keeps site.json's market fields as fresh as the daily `pull_ai_stack` step. Returns the
+    number of symbols refreshed.
+    """
+    batches = sorted(glob.glob(str(pathlib.Path(data_root) / "*" / "tradingview_ai-stack_*.json")))
+    if not batches:
+        return 0
+    try:
+        fin = (json.loads(pathlib.Path(batches[-1]).read_text(encoding="utf-8"))
+               .get("financial_data") or {})
+    except Exception:  # noqa: BLE001
+        return 0
+    n = 0
+    for sym, s in stocks.items():
+        rec = fin.get(sym)
+        if not rec:
+            continue
+        fresh = _eq._stock_from_record(rec)  # {valuation, fundamentals, performance, as_of,...}
+        for grp in ("valuation", "fundamentals", "performance"):
+            if fresh.get(grp):
+                s.setdefault(grp, {}).update(fresh[grp])
+        if fresh.get("as_of"):
+            s["as_of"] = fresh["as_of"]
+        n += 1
+    return n
 
 SOURCES = [
     {"name": "TradingView", "url": "https://www.tradingview.com/"},
@@ -55,6 +88,10 @@ def main(argv=None):
             except Exception:  # noqa: BLE001
                 narrative = {}
         stocks[sym] = siteexport.sanitize_stock(fs, narrative)
+
+    # refresh volatile market data (price/fundamentals/performance) from today's batch so
+    # the displayed price doesn't lag the (daily) price chart while factsheets refresh slower.
+    n_fresh = _overlay_fresh_market(stocks, data_root)
 
     # fold in fundamental (intrinsic) values; compute OUR OWN valuation tag from live price
     fdir = data_root / "fundamental"

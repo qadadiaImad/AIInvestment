@@ -1,0 +1,129 @@
+AI STACK — Higgsfield UGC Content Package (3 videos)
+Generated 2026-06-03 (v1). Data mined live as-of 2026-06-02.
+Educational / market commentary only — NOT financial advice.
+Agent: higgsfield-ugc (.claude/agents/higgsfield-ugc.md)
+
+================================================================
+PERSONA (use identically across all 3 — and across future runs)
+================================================================
+Handle: @StackedWithMaya  ("Maya from AI Stack")
+Who:    Maya, 24, Gen-Z finance-explainer. Smart, fast, warm, slightly sarcastic —
+        the friend who actually read the filing so you don't have to. Credible, never a suit.
+Look:   Mixed-race, shoulder-length dark wavy hair, light natural makeup, expressive brows,
+        easy smile that drops into a "wait, listen" face on the hook.
+Wardrobe: Cream ribbed knit top or oversized blazer over a tank; small gold hoops; one delicate necklace.
+Setting:  Cozy modern home-office corner — soft-focus shelf with books + small plant, warm desk lamp,
+          muted monitor glow over the shoulder. Vertical 9:16, chest-up.
+Lighting: Soft key from front-left, warm fill, slight bokeh. "FaceTime with a friend" energy.
+Voice:    High-tempo, conversational, punches the numbers, pitch up on the hook, disclaimer fast + light.
+Channel rule (every video): one quick "not financial advice, just the data" beat + soft CTA
+          "full breakdown's on the AI Stack terminal."
+
+================================================================
+VIDEO 1 — AI / CHIPS: The Marvell "trillion-dollar" hype check
+================================================================
+PICK: "Nvidia CEO Endorses Marvell As Next Trillion-Dollar Giant. Stock Jumps 32%."
+      Yahoo Finance, 2026-06-02 (reported).
+APP NUMBER: MRVL price $290.79 vs fundamental value $106.26  ->  ~2.7x ABOVE the model.
+WHY VIRAL: hype vs math — Jensen's blessing sent it +32%, but the terminal says ~2.7x rich.
+
+HIGGSFIELD PROMPT:
+Vertical 9:16 UGC talking-head video. A 24-year-old mixed-race woman named Maya, shoulder-length dark
+wavy hair, light natural makeup, gold hoop earrings, wearing a cream ribbed knit top, sitting in a cozy
+modern home-office corner. Soft-focus shelf with books and a small plant behind her, warm desk lamp, a
+faint glowing monitor over her shoulder. Soft warm key light from front-left, gentle bokeh. She speaks
+directly to camera, animated and confident, eyebrows raised on the hook then a knowing half-smirk.
+Realistic skin texture, natural micro-expressions. Camera: start with a fast PUSH-IN on her face for the
+first 2 seconds, then settle to a slow subtle DOLLY-IN with light handheld sway. Mood: bright, smart,
+FaceTime-intimate, TikTok-native. Use Higgsfield "Speak" to drive audio-synced lip movement from the VO.
+
+SCRIPT (~33s):
+"Jensen Huang just basically anointed the next trillion-dollar chip company — and the stock ripped
+THIRTY-TWO percent in a day. (beat) But here's what nobody flashed on screen. Marvell's trading around
+two-ninety a share. The fundamental-value model on our terminal? One-oh-six. That means the price is
+sitting almost three times above what the fundamentals say it's worth. Doesn't mean it's wrong — hype can
+run for years. It just means you're paying for the story, not the numbers. Not financial advice, just the
+data. Full breakdown's on the AI Stack terminal."
+
+CAPTIONS (flash): "+32% IN A DAY" -> "$290 PRICE" -> "$106 FUNDAMENTAL VALUE" -> "~2.7x THE MATH" -> "NFA"
+B-ROLL: MRVL price-vs-fundamental chart on the app; /map node NVDA->MRVL (chips layer); zoom on the "+32%" headline.
+TIKTOK CAPTION: Jensen said trillion-dollar. The fundamentals said... read the room. 👀 Not financial
+advice — just what the data shows. Full breakdown on AI Stack.
+HASHTAGS: #stocktok #marvell #nvidia #aistocks #semiconductors #investing101 #fintok #notfinancialadvice
+
+================================================================
+VIDEO 2 — QUANTUM: Rigetti's $100M headline vs a $0.93 reality
+================================================================
+PICK: "Rigetti Gains From Potential $100 Million U.S. Quantum R&D Backing" (Yahoo, 2026-06-02, reported)
+      + "IBM Jumps 7%; IonQ, Rigetti Sell Off as Quantum Trade Concentrates" (247WallSt via Yahoo, 2026-06-01, rumored).
+APP NUMBER: RGTI price $26.88 vs fundamental value $0.93  ->  ~29x ABOVE the model.
+WHY VIRAL: biggest valuation gap in the dataset; "potential" funding = possibility, not banked cash.
+
+HIGGSFIELD PROMPT:
+Vertical 9:16 UGC talking-head video. Same creator: Maya, 24, mixed-race, shoulder-length dark wavy hair,
+light natural makeup, gold hoops, this time a cream tank under an oversized neutral blazer, in the same
+cozy modern home-office corner (book shelf, small plant, warm lamp, faint monitor glow behind her). Soft
+warm front-left key light, gentle bokeh. She speaks to camera, energetic, eyes wide on the hook then a
+playful "I'm serious" look. Realistic skin texture and micro-expressions. Camera: open on a quick SNAP
+PUSH-IN on her eyes for ~1.5 seconds, then a smooth slow DOLLY-IN with faint handheld motion. Mood: punchy,
+curious, slightly wry, TikTok-native. Use Higgsfield "Speak" for audio-driven lip-sync from the VO.
+
+SCRIPT (~34s):
+"Quantum stocks are going parabolic again — Rigetti popped on a *potential* hundred-million-dollar
+government R&D backing. Keyword: potential, it's reported, not banked. (beat) Now look at the gap.
+Rigetti's around twenty-seven dollars a share. The fundamental-value estimate on our terminal? Ninety-three
+cents. That's the price sitting almost thirty times above the model. And yesterday the whole quantum trade
+got jumpy — IBM popped while IonQ and Rigetti sold off. Pure narrative tape. Not financial advice, just
+showing you the spread. Full quantum breakdown's on the AI Stack terminal."
+
+CAPTIONS (flash): "POTENTIAL $100M" -> "$26.88 PRICE" -> "$0.93 FUNDAMENTAL" -> "~29x THE MODEL" -> "REPORTED, NOT BANKED"
+B-ROLL: app quantum dashboard (Q1-hardware layer); RGTI price-vs-fundamental chart; the IBM-up/IonQ-Rigetti-down headline; ticker reel IONQ/RGTI/QBTS.
+TIKTOK CAPTION: "Potential $100M" got the headline. The terminal says 93 cents of fundamental value. Mind
+the gap. 🧊⚛️ Reported, not confirmed — and not financial advice. Full quantum board on AI Stack.
+HASHTAGS: #quantumcomputing #rigetti #ionq #stocktok #quantumstocks #fintok #investing #notfinancialadvice
+
+================================================================
+VIDEO 3 — CONGRESS: What Pelosi's public filings disclosed (transparency, not accusation)
+================================================================
+PICK (public record, STOCK Act, U.S. House Clerk): Nancy Pelosi — NVDA — Purchase — $100,001-$250,000 —
+     transaction 2025-12-30, filed 2026-01-23 (same-day GOOGL purchase disclosed at $250,001-$500,000).
+APP CONTEXT: NVDA price $222.82 vs fundamental value $336.11 -> 33.7% discount. Aggregate: 29 disclosed
+     trades, est. volume ~$27.3M-$123.8M, top disclosed sector "Electronic Technology."
+WHY VIRAL: transparency curiosity — "here's what the public filing actually says."
+HARD RAIL: describe only WHAT was disclosed; no wrongdoing, no insider claim, no copy-the-trade signal.
+
+HIGGSFIELD PROMPT:
+Vertical 9:16 UGC talking-head video. Same creator: Maya, 24, mixed-race, shoulder-length dark wavy hair,
+light natural makeup, gold hoops, cream ribbed knit top, in the same cozy modern home-office corner (shelf
+with books and small plant, warm desk lamp, faint monitor glow behind her shoulder). Soft warm front-left
+key light, gentle bokeh. She speaks to camera, measured and matter-of-fact, a "just the facts" calm with a
+small raised eyebrow on the hook. Realistic skin texture and natural micro-expressions. Camera: open with a
+gentle PUSH-IN for the first 2 seconds, then hold on a very slow DOLLY-IN with minimal handheld sway. Mood:
+credible, transparent, neutral-newsy but still warm and TikTok-native. Use Higgsfield "Speak" for lip-sync.
+
+SCRIPT (~35s):
+"Public records just dropped, and here's exactly what was disclosed — no spin. According to STOCK Act
+filings with the House Clerk, Nancy Pelosi reported a purchase of Nvidia, between a hundred thousand and
+two-fifty-K, dated late December, filed in January. Same day: a Google buy disclosed at a quarter-mil to
+five-hundred-K. (beat) That's it — that's the disclosure. It's not an accusation, not insider anything, and
+definitely not a signal to copy. Just public transparency. For context, our terminal currently shows Nvidia
+trading below its fundamental-value estimate. Not financial advice — do your own research. Full congress
+tracker's on AI Stack."
+
+CAPTIONS (flash): "PUBLIC RECORD" -> "NVDA BUY: $100K-$250K" -> "FILED JAN 2026" -> "NOT A SIGNAL · NOT AN ACCUSATION" -> "DYOR"
+B-ROLL: app congress trades table (Pelosi row highlighted); by_politician card (29 trades, est. $27.3M-$123.8M, "Electronic Technology"); clean NVDA price-vs-fundamental chart for the context line. Keep visuals neutral/document-style.
+TIKTOK CAPTION: Straight from the public STOCK Act filings: here's exactly what was disclosed — who, what,
+the $ range, the date. Transparency only — NOT an accusation and NOT a trading signal. Not financial advice,
+DYOR. Full congress tracker on AI Stack.
+HASHTAGS: #congresstrading #stockact #pelositracker #nvidia #stocktok #transparency #fintok #notfinancialadvice
+
+================================================================
+COMPLIANCE NOTES (all 3)
+================================================================
+- Every script has a spoken "not financial advice / DYOR" beat + caption disclaimer.
+- MRVL/RGTI voiced as reported; Rigetti funding framed as potential/reported, not banked; the quantum-
+  concentration item is rumored, voiced as "jumpy tape," not fact.
+- Congress video states only the disclosed who/ticker/$range/date; explicitly "not an accusation, not
+  insider, not a signal," matching the app's own disclaimer.
+- No buy/sell calls, no price targets as advice; valuation gaps framed as the app's model output.
+- Source files: web/public/data/news.json, congress.json, site.json, quantum.json (as-of 2026-06-02).

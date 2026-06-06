@@ -1,0 +1,36 @@
+AI STACK — IMAGE-POST KIT (2026-06-04)  | 4:5 carousels, dark-fintech + soft-editorial system
+Educational / market commentary only — not financial advice. Slides in higgs/.
+Copy rules applied: no first person (attributed to "analysts" / "congress"); no news outlet named (reportedly).
+
+=============== POST 1 — SALESFORCE (AI) ===============
+Slides: post1_1_hook.png (soft) -> post1_2_graph.png (dark) -> post1_3_takeaway.png (dark)
+Caption:
+Salesforce's tiny AI bet is reportedly worth billions now. The win gets reshared; the price gets
+ignored — it still trades ~40% below analysts' fundamental-value model. The win and the price are
+telling different stories. Not financial advice.
+Hashtags: #salesforce #aistocks #valuation #stocktok #fintok #investing101 #notfinancialadvice
+Music: mellow lo-fi / minimal "clean-aesthetic" trending sound (low energy).
+
+=============== POST 2 — IONQ (QUANTUM) ===============
+Slides: post2_1_hook.png (soft) -> post2_2_graph.png (dark) -> post2_3_takeaway.png (dark)
+Caption:
+"Quantum stocks" get treated like one trade. They're not. IonQ reportedly posted record revenue and
+trades ~20% below analysts' fundamental-value model — while peers sit 10-30x above theirs. Same hype
+label, very different math. Reported, not confirmed. Not a recommendation.
+Hashtags: #quantumcomputing #ionq #rigetti #quantumstocks #stocktok #fintok #notfinancialadvice
+Music: cool, minimal/ambient futuristic trending beat (restrained).
+
+=============== POST 3 — CONGRESS (PUBLIC RECORD) ===============
+Slides: post3_1_hook.png (soft) -> post3_2_graph.png (soft card) -> post3_3_takeaway.png (soft)
+Caption:
+Public STOCK Act record: Rep. Maria Elvira Salazar disclosed buying Salesforce (CRM), $15,001-$50,000,
+traded Apr 6, filed May 8, 2026 — the same stock analysts flag ~40% below fundamental value.
+Transparency only: not an accusation, not insider anything, not a trading signal. Not financial advice.
+Hashtags: #congresstrading #stockact #salesforce #transparency #stocktok #fintok #notfinancialadvice
+Music: calm, neutral minimal sound (credible, document-like).
+
+NOTES
+- Through-line: CRM (Salesforce) appears in Post 1 (analysts call it cheap) and Post 3 (a member bought it).
+- Dark = data/analysis (charts, numbers); Soft = story/news/congress. Shared emerald + Fraunces/Inter/JetBrains Mono.
+- Numbers pulled live from the terminal as of 2026-06-04; certainty respected (IonQ revenue = reportedly).
+- Regenerate anytime from chat: type "stock carousel" (runs the skill as a workflow) or re-run higgs/_build_v2.py.

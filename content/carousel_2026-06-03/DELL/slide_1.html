@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:1350px; }
+  body {
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(120% 90% at 20% 0%,#13243f 0%,#0a1018 55%,#070a0f 100%);
+    color:#eef3fb; overflow:hidden; position:relative;
+  }
+  .wrap { padding:70px 70px 60px; height:100%; display:flex; flex-direction:column; }
+  .tagrow { display:flex; align-items:center; gap:14px; margin-bottom:30px; }
+  .ticker { font-size:30px; font-weight:800; letter-spacing:2px; color:#7fb2ff; }
+  .name { font-size:24px; color:#9fb0c7; font-weight:500; }
+  .layer { margin-left:auto; font-size:18px; font-weight:700; color:#0a1018; background:#5ad1a0; padding:7px 16px; border-radius:999px; letter-spacing:.5px; }
+  .headline { font-size:54px; line-height:1.12; font-weight:800; margin:8px 0 6px; letter-spacing:-.5px; }
+  .headline .hot { color:#ffd166; }
+  .sub { font-size:24px; color:#9fb0c7; font-weight:500; margin-bottom:26px; }
+  .src { font-size:17px; color:#6c7c93; }
+  .chartcard { margin-top:26px; background:rgba(255,255,255,.03); border:1px solid rgba(127,178,255,.16); border-radius:22px; padding:34px 30px 26px; position:relative; }
+  .chartcard h3 { font-size:19px; color:#9fb0c7; font-weight:600; letter-spacing:.5px; text-transform:uppercase; }
+  .pricebig { display:flex; align-items:baseline; gap:18px; margin:6px 0 18px; }
+  .pricebig .p { font-size:62px; font-weight:800; }
+  .pricebig .as { font-size:18px; color:#6c7c93; }
+  .ytdrow { display:flex; align-items:flex-end; gap:50px; margin-top:18px; }
+  .ytd .lbl { font-size:18px; color:#9fb0c7; text-transform:uppercase; letter-spacing:1px; }
+  .ytd .val { font-size:72px; font-weight:800; color:#5ad1a0; line-height:1; }
+  .ytd .val.small { font-size:40px; }
+  .foot { margin-top:auto; font-size:16px; color:#5a6b82; }
+  .disc { font-size:15px; color:#566576; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="tagrow">
+      <span class="ticker">DELL</span>
+      <span class="name">Dell Technologies</span>
+      <span class="layer">AI INFRASTRUCTURE</span>
+    </div>
+
+    <div class="headline">Wall Street admits it got Dell wrong:<br><span class="hot">Morgan Stanley lifts its target +164%</span></div>
+    <div class="sub">AI-server demand outruns the models — the box-makers are having their moment.</div>
+    <div class="src">Reported &middot; Yahoo Finance &middot; 2026-06-02</div>
+
+    <div class="chartcard">
+      <h3>DELL &middot; 5-year price</h3>
+      <div class="pricebig"><span class="p">$435.31</span><span class="as">close, 2026-06-02</span></div>
+      <svg viewBox="0 0 980 360" width="100%" height="300" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#5ad1a0" stop-opacity="0.38"/>
+            <stop offset="100%" stop-color="#5ad1a0" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <polygon fill="url(#g)" points="0,360 0.0,344.4 100.0,337.8 200.0,344.9 300.0,352.2 400.0,348.6 500.0,324.8 600.0,266.6 700.0,287.2 800.0,278.3 900.0,287.1 960.5,205.9 968.3,176.2 972.2,179.5 976.1,116.7 980.0,0.0 980,360"/>
+        <polyline fill="none" stroke="#5ad1a0" stroke-width="3.2" stroke-linejoin="round" points="0.0,344.4 19.5,345.1 39.0,345.2 58.6,344.8 78.1,339.6 97.6,340.0 117.1,338.6 136.7,336.2 156.2,344.2 175.7,348.2 195.2,345.8 214.7,352.1 234.3,347.9 253.8,356.6 273.3,357.6 292.8,351.6 312.4,353.9 331.9,352.9 351.4,357.3 370.9,352.4 390.4,348.2 410.0,342.4 429.5,340.4 449.0,328.5 468.5,331.5 488.0,323.8 507.6,321.9 527.1,314.6 546.6,294.6 566.1,287.0 585.7,241.6 605.2,262.6 624.7,308.6 644.2,288.1 663.7,277.2 683.3,261.2 702.8,287.2 722.3,295.2 741.8,303.0 761.4,315.2 780.9,288.6 800.4,278.3 819.9,267.2 839.4,276.9 859.0,258.0 878.5,276.5 898.0,277.7 917.5,282.0 937.1,250.2 956.6,200.1 968.3,176.2 976.1,116.7 980.0,0.0"/>
+        <circle cx="980" cy="0" r="7" fill="#5ad1a0"/>
+      </svg>
+      <div class="ytdrow">
+        <div class="ytd"><div class="lbl">2026 YTD</div><div class="val">+246%</div></div>
+        <div class="ytd"><div class="lbl">1-year</div><div class="val small">+303%</div></div>
+      </div>
+    </div>
+
+    <div class="foot" style="margin-top:34px;">
+      Swipe &rarr; the gap between Dell's price and one model's "fair value"
+    </div>
+    <div class="disc" style="margin-top:10px;">Educational / market commentary only &mdash; not financial advice. Do your own research.</div>
+  </div>
+</body>
+</html>

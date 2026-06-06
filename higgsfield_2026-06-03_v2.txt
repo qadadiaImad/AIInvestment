@@ -1,0 +1,173 @@
+AI STACK — Higgsfield UGC Content Package (3 videos)
+Generated 2026-06-03 (v2). Data mined live as-of 2026-06-02.
+Educational / market commentary only — NOT financial advice.
+
+NOTE ON v2 DIRECTION (read before producing):
+- Maya's VISUAL identity is carried over from v1 (look / wardrobe / setting / handle).
+- v1's tone, hype, and all product/terminal references are DISCARDED.
+- ATTENTION-FIRST creator channel: no product, no app, no "AI Stack", no "terminal" anywhere
+  in scripts, captions, on-screen text, or B-roll labels. All numbers are Maya's OWN read,
+  framed as an "intrinsic / fundamental-value model" she runs.
+- Tone: dry, precise, smart-to-smart. Hooks are sharp factual contrasts, not screams.
+- Only CTAs allowed are content CTAs (a curiosity loop / "follow for the next one").
+
+================================================================
+PERSONA (use identically across all 3 — and across future runs)
+================================================================
+Handle:  @StackedWithMaya
+Who:     Maya, 24. Reads filings for fun and explains them like a friend who's three steps
+         ahead. Calm, precise, a little dry. Never a hype account, never a suit.
+Look:    Mixed-race, shoulder-length dark wavy hair, light natural makeup, expressive brows.
+         Resting "I already checked the math" face that opens into a small knowing smile.
+Wardrobe: Cream ribbed knit top or oversized neutral blazer over a tank; small gold hoops;
+         one delicate necklace.
+Setting:  Cozy modern home-office corner — soft-focus shelf with books + small plant, warm
+         desk lamp, faint monitor glow over the shoulder. Vertical 9:16, chest-up.
+Lighting: Soft key from front-left, warm fill, slight bokeh. Quiet, close, "real talk" energy.
+Voice:    Even-tempo and measured, not breathless. Lands the contrast flatly and lets it sit.
+         Disclaimer is quick and matter-of-fact, never apologetic.
+Channel rule (every video): one quick "not financial advice / do your own research" beat,
+         spoken and on-screen. Numbers are always "my model," never a recommendation.
+         Close on a content hook — "follow, I do one of these a day" — never a product.
+
+================================================================
+VIDEO 1 — AI / APPLICATION & MODELS: a $50M bet that became $5B, on a stock below my model
+================================================================
+PICK: "Salesforce's $50 Million AI Bet Swells To $5 Billion" — Yahoo Finance, 2026-06-02 (reported).
+      Graph context (reported/filed): Salesforce has committed roughly $300M to Anthropic for an
+      ~1% stake, plus a 2026 token-spend commitment around $300M, almost entirely on coding.
+MY NUMBER: CRM trades near $200.84. My fundamental-value model lands around $319.92 —
+      so price is sitting ~37% BELOW where my model puts it.
+WHY IT WORKS: the headline is a feel-good "early bet 100x'd" story; the quieter fact is the
+      stock itself is priced under the model. Story up, price down — that's the contrast.
+
+HIGGSFIELD PROMPT:
+Vertical 9:16 UGC talking-head video. A 24-year-old mixed-race woman named Maya, shoulder-length
+dark wavy hair, light natural makeup, gold hoop earrings, wearing a cream ribbed knit top, seated
+in a cozy modern home-office corner. Soft-focus shelf with books and a small plant behind her,
+warm desk lamp, faint glowing monitor over her shoulder. Soft warm key light from front-left,
+gentle bokeh. She speaks directly to camera, composed and precise, a single raised brow on the
+contrast line, then a small dry smile. Realistic skin texture, natural micro-expressions.
+Camera: open on a slow, deliberate PUSH-IN for the first ~2 seconds, then settle to a near-static
+slow DOLLY-IN with very light handheld sway. Mood: quiet, intelligent, close-up "real talk."
+Use Higgsfield "Speak" to drive audio-synced lip movement from the VO.
+
+SCRIPT (~33s, ~95 words):
+"Salesforce put fifty million into an AI startup. That stake is reportedly worth about five billion
+now. (beat) Here's the part the headline skips. The story is huge — the stock is not. Salesforce
+trades around two hundred dollars. My fundamental-value model puts it closer to three-twenty.
+So while everyone's framing this as a genius AI bet, the actual share price is sitting roughly
+thirty-seven percent below what my model thinks it's worth. Doesn't mean the model's right. It just
+means the win and the price are telling two different stories. Not financial advice — do your own
+research. Follow, I run one of these a day."
+
+CAPTIONS (flash): "$50M -> $5B" -> "STOCK: ~$200" -> "MY MODEL: ~$320" -> "~37% BELOW" -> "NFA / DYOR"
+B-ROLL: a clean two-line price-vs-model chart Maya drew herself (price line under the model line);
+        a simple node sketch CRM -> Anthropic with "~$300M committed / ~1% stake"; a zoom on the
+        "$50M became $5B" headline. Keep all overlays plain, hand-style, no product branding.
+TIKTOK CAPTION: A $50M bet reportedly turned into $5B — and the stock is still trading under my
+        fundamental-value model. The win and the price disagree. Not financial advice, just my read.
+        Follow for the daily one.
+HASHTAGS: #salesforce #anthropic #aistocks #stocktok #valuation #fintok #investing101 #notfinancialadvice
+
+================================================================
+VIDEO 2 — QUANTUM: the one quantum name trading UNDER my model while the rest run hot
+================================================================
+PICK: "IonQ Reports Record Revenue Growth and Quantum Computing Advances in Q1 2026" — Yahoo Finance,
+      2026-06-02 (RUMORED — voice it as reported, not confirmed fact).
+MY NUMBERS: IONQ trades around $71.40; my model puts it near $84.85 — about 16% BELOW the model.
+      For contrast, in the same sector: Rigetti around $26.88 vs ~$0.93 on my model; D-Wave (QBTS)
+      around $29.91 vs ~$2.18. Same hype wave, opposite spreads.
+WHY IT WORKS: everyone lumps "quantum stocks" into one trade. The spread inside the group is the
+      story — one name sits under the model while two sit many multiples above it.
+
+HIGGSFIELD PROMPT:
+Vertical 9:16 UGC talking-head video. Same creator: Maya, 24, mixed-race, shoulder-length dark wavy
+hair, light natural makeup, gold hoops, this time a cream tank under an oversized neutral blazer, in
+the same cozy modern home-office corner (book shelf, small plant, warm lamp, faint monitor glow
+behind her). Soft warm front-left key light, gentle bokeh. She speaks to camera, calm and analytical,
+a slight head-tilt on the contrast, then a level "do the math" look. Realistic skin texture and
+micro-expressions. Camera: open on a measured PUSH-IN for ~1.5 seconds, then a smooth slow DOLLY-IN
+with faint handheld motion. Mood: precise, curious, unhurried. Use Higgsfield "Speak" for
+audio-driven lip-sync from the VO.
+
+SCRIPT (~35s, ~100 words):
+"People keep saying 'quantum stocks' like they're one thing. They're not. (beat) IonQ reportedly
+posted record revenue this quarter. It trades around seventy-one dollars — and my fundamental-value
+model actually puts it a little higher, around eighty-five. So by my model, that one's below fair
+value. Now look at the neighbors. Rigetti's near twenty-seven; my model says under a dollar.
+D-Wave's near thirty; my model says around two. Same sector, same hype wave — wildly different
+spreads. The label hides the math. Reported numbers, not confirmed, and not financial advice — do
+your own research. Follow, I sort these one a day."
+
+CAPTIONS (flash): "'QUANTUM' ISN'T ONE TRADE" -> "IONQ ~$71 / MODEL ~$85" -> "RGTI ~$27 / MODEL <$1"
+        -> "QBTS ~$30 / MODEL ~$2" -> "REPORTED, NOT CONFIRMED · DYOR"
+B-ROLL: three small hand-drawn price-vs-model bars side by side (IONQ under the model; RGTI and QBTS
+        far above); a zoom on the "record revenue" headline with a small "reported" tag; a plain
+        ticker strip IONQ / RGTI / QBTS. No product branding on any overlay.
+TIKTOK CAPTION: "Quantum stocks" isn't one trade. By my fundamental-value model, one of these is
+        under fair value and two are many multiples above it. Same hype, different math. Reported
+        numbers, not confirmed. Not financial advice. Follow for the daily one.
+HASHTAGS: #quantumcomputing #ionq #rigetti #dwave #stocktok #valuation #fintok #notfinancialadvice
+
+================================================================
+VIDEO 3 — CONGRESS: a public filing that lines up with a stock my model likes (transparency only)
+================================================================
+PICK (PUBLIC RECORD — STOCK Act, U.S. House Clerk PTR): Rep. Maria Elvira Salazar (FL-27) disclosed a
+      PURCHASE of Salesforce (CRM), amount range $15,001-$50,000, transaction dated 2026-04-06,
+      filed 2026-05-08. Aggregate on record: 32 disclosed trades, 31 buys / 1 sell, estimated volume
+      ~$270K-$1.075M, top disclosed sector "Electronic Technology."
+MY NUMBER (context only): the same stock, CRM, trades near $200.84 against ~$319.92 on my
+      fundamental-value model — about 37% below the model.
+WHY IT WORKS: a public disclosure that happens to sit on a name my model already flagged as cheap —
+      pure curiosity. Stated as record, framed as transparency.
+HARD RAIL: describe only WHAT was disclosed (who, ticker, $ range, dates). No wrongdoing, no insider
+      claim, no "copy this trade" signal. Public record shown for transparency.
+
+HIGGSFIELD PROMPT:
+Vertical 9:16 UGC talking-head video. Same creator: Maya, 24, mixed-race, shoulder-length dark wavy
+hair, light natural makeup, gold hoops, cream ribbed knit top, in the same cozy modern home-office
+corner (shelf with books and small plant, warm desk lamp, faint monitor glow behind her shoulder).
+Soft warm front-left key light, gentle bokeh. She speaks to camera, neutral and matter-of-fact, a
+"just the record" calm, brows level. Realistic skin texture and natural micro-expressions.
+Camera: open with a gentle PUSH-IN for the first ~2 seconds, then hold on a very slow DOLLY-IN with
+minimal handheld sway. Mood: credible, even, document-clean but still warm and close.
+Use Higgsfield "Speak" for lip-sync.
+
+SCRIPT (~35s, ~100 words):
+"This is straight off a public disclosure — no spin. Under the STOCK Act, Representative Maria Elvira
+Salazar reported buying Salesforce. The filed range: fifteen to fifty thousand dollars. Bought early
+April, filed early May. On record she shows thirty-two trades, almost all buys, mostly in electronic
+technology. (beat) That's the disclosure. It's public record — not an accusation, not insider
+anything, not a signal to copy. The reason it caught my eye: it's the same stock my fundamental-value
+model already had trading about thirty-seven percent below fair value. Just an overlap I noticed. Not
+financial advice — do your own research. Follow, one of these a day."
+
+CAPTIONS (flash): "PUBLIC RECORD" -> "CRM BUY: $15K-$50K" -> "FILED MAY 2026" -> "NOT AN ACCUSATION ·
+        NOT A SIGNAL" -> "NFA / DYOR"
+B-ROLL: a plain document-style card (member, ticker CRM, range $15K-$50K, txn 04/06/2026, filed
+        05/08/2026); a small aggregate card (32 trades / 31 buys / "Electronic Technology"); the same
+        hand-drawn CRM price-vs-model chart from Video 1 for the overlap line. Keep visuals neutral
+        and document-like, no product branding.
+TIKTOK CAPTION: From the public STOCK Act filings: a disclosed Salesforce purchase, $15K-$50K, filed
+        May 2026 — and it happens to sit on a name my model had ~37% below fair value. Public record,
+        transparency only — NOT an accusation, NOT a trading signal. Not financial advice, DYOR.
+        Follow for the daily one.
+HASHTAGS: #congresstrading #stockact #salesforce #stocktok #transparency #publicrecord #fintok #notfinancialadvice
+
+================================================================
+COMPLIANCE NOTES (all 3)
+================================================================
+- No product, app, terminal, or "AI Stack" reference anywhere — scripts, captions, on-screen text,
+  and B-roll labels are all clean. CTAs are content-only ("follow, one a day").
+- All valuation numbers are framed as Maya's own "fundamental-value model" output, never as advice
+  and never as a price target to act on.
+- Every video has a spoken AND on-screen "not financial advice / do your own research" beat.
+- Certainty handled per the data: Video 1 CRM/Anthropic = reported; Video 2 IonQ "record revenue"
+  item is RUMORED and is voiced as "reported, not confirmed"; the cross-sector quantum spreads are
+  Maya's model read, not claims of fact.
+- Congress video states only the disclosed who / ticker / $ range / dates, plus aggregate counts;
+  explicitly "public record, not an accusation, not insider, not a signal."
+- Real items only. Source files: web/public/data/news.json, congress.json, site.json, quantum.json
+  (data as-of 2026-06-02). The term "GuruFocus" / "GF" is never used; the model output is called
+  "fundamental value."

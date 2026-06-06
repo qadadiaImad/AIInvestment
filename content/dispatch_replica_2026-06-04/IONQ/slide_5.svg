@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <radialGradient id="cream" cx="15%" cy="0%" r="120%">
+      <stop offset="0" stop-color="#FAF7F0"/>
+      <stop offset="0.55" stop-color="#F1EBDD"/>
+      <stop offset="1" stop-color="#E7DECB"/>
+    </radialGradient>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#cream)"/>
+
+  <!-- Kicker -->
+  <circle cx="100" cy="142" r="6" fill="#B4690E"/>
+  <text x="116" y="150" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-weight="600" font-size="26" fill="#B4690E" letter-spacing="4">SOURCES  ·  DATE-STAMPED</text>
+
+  <!-- Title -->
+  <text x="88" y="240" font-family="'Fraunces','Georgia',serif" font-weight="600" font-size="62" fill="#1A1C22" letter-spacing="-1">Where every</text>
+  <text x="88" y="312" font-family="'Fraunces','Georgia',serif" font-weight="600" font-size="62" fill="#1A1C22" letter-spacing="-1">number came from.</text>
+
+  <!-- Card -->
+  <rect x="88" y="360" width="904" height="630" rx="18" fill="#FFFCF6" stroke="#E4DCCB" stroke-width="1.5"/>
+  <text x="128" y="408" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-weight="700" font-size="20" fill="#B4690E" letter-spacing="2">PUBLIC, LIVE-RETRIEVED — 04 JUN 2026</text>
+
+  <!-- Row 1: Price -->
+  <text x="128" y="468" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="22" fill="#8A8170">Price $68.23 · 52w range</text>
+  <text x="388" y="468" font-family="'Inter','Helvetica','Arial',sans-serif" font-weight="600" font-size="25" fill="#1A1C22">stockanalysis.com / Yahoo Finance</text>
+  <text x="388" y="496" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="17" fill="#9AA0AC">retrieved 2026-06-03 · close $68.23 · range $25.89–$84.64</text>
+
+  <!-- Row 2: Revenue -->
+  <text x="128" y="552" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="22" fill="#8A8170">Q1 2026 revenue +755%</text>
+  <text x="388" y="552" font-family="'Inter','Helvetica','Arial',sans-serif" font-weight="600" font-size="25" fill="#1A1C22">IonQ Q1 2026 release</text>
+  <text x="388" y="580" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="17" fill="#9AA0AC">ionq.com investor news · 06 May 2026 · $64.7M vs $7.6M YoY</text>
+
+  <!-- Row 3: Guidance -->
+  <text x="128" y="636" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="22" fill="#8A8170">FY26 guidance $260–270M</text>
+  <text x="388" y="636" font-family="'Inter','Helvetica','Arial',sans-serif" font-weight="600" font-size="25" fill="#1A1C22">IonQ raised guidance, Q1 call</text>
+  <text x="388" y="664" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="17" fill="#9AA0AC">RPO $470M, +554% YoY · company release</text>
+
+  <!-- Row 4: DARPA -->
+  <text x="128" y="720" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="22" fill="#8A8170">DARPA HARQ contract</text>
+  <text x="388" y="720" font-family="'Inter','Helvetica','Arial',sans-serif" font-weight="600" font-size="25" fill="#1A1C22">DARPA Heterogeneous Architectures for Quantum</text>
+  <text x="388" y="748" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="17" fill="#9AA0AC">announced 14 Apr 2026 · IONQ +20.2% on the day</text>
+
+  <!-- Row 5: Analyst consensus -->
+  <text x="128" y="804" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="22" fill="#8A8170">Analyst consensus</text>
+  <text x="388" y="804" font-family="'Inter','Helvetica','Arial',sans-serif" font-weight="600" font-size="25" fill="#1A1C22">S&amp;P Global / MarketBeat / TipRanks</text>
+  <text x="388" y="832" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="17" fill="#9AA0AC">13–17 analysts · avg target $67.64 · range $35–$100</text>
+  <text x="388" y="858" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="17" fill="#9AA0AC">16 Buy / 3 Hold</text>
+
+  <!-- Note -->
+  <g font-family="'Inter','Helvetica','Arial',sans-serif" font-size="25" fill="#5C6270">
+    <text x="88" y="1060">Educational / market commentary only. Numbers above</text>
+    <text x="88" y="1096">are perishable — expect them to drift the day after this</text>
+    <text x="88" y="1132">is posted. The chart on slide 2 is a stylized illustration</text>
+    <text x="88" y="1168">anchored on the published 52-week range, the DARPA</text>
+    <text x="88" y="1204">spike, and the current close; not a tick-by-tick recreation.</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="88" y="1270" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="19" fill="#9AA0AC" letter-spacing="1">educational · not financial advice · public, date-stamped sources</text>
+</svg>
