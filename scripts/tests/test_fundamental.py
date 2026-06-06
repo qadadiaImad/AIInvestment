@@ -64,3 +64,9 @@ def test_parse_chart_empty_is_safe():
     r = fv.parse_valuation_chart({})
     assert r["fundamental_value"] is None
     assert r["fundamental_value_series"] == []
+
+
+def test_parse_chart_zero_value_is_treated_as_missing():
+    # the source returns gf_value 0 when it has no value (recent IPO/ETF) — never a real value
+    r = fv.parse_valuation_chart({"gf_value": 0, "iv": 0, "ms": None, "medps": None})
+    assert r["fundamental_value"] is None

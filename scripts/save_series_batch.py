@@ -21,20 +21,22 @@ def main(argv=None):
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     saved = 0
     for path in paths:
-        data = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
+        data = json.loads(pathlib.Path(path).read_text(encoding="utf-8-sig"))
         for sym, payload in data.items():
             if not isinstance(payload, dict):
                 continue
             parsed = fundamental.parse_valuation_chart(payload)
-            if not parsed.get("fundamental_value_series"):
-                continue
-            ff.save(sym.upper(), {
+            if parsed.get("fundamental_value") is None and not parsed.get("fundamental_value_series"):
+                continue  # a miss (404/403 etc.) — nothing to save
+            rec = {
                 "symbol": sym.upper(),
                 "fundamental_value": parsed.get("fundamental_value"),
                 "margin_of_safety_pct": parsed.get("margin_of_safety_pct"),
-                "fundamental_value_series": parsed["fundamental_value_series"],
                 "retrieved_at": now, "source": "fundamental-model",
-            })
+            }
+            if parsed.get("fundamental_value_series"):
+                rec["fundamental_value_series"] = parsed["fundamental_value_series"]
+            ff.save(sym.upper(), rec)
             saved += 1
     print(f"saved series for {saved} tickers")
     return 0

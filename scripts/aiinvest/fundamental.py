@@ -44,7 +44,8 @@ def parse_valuation_chart(payload):
     """
     p = payload or {}
     return {
-        "fundamental_value": p.get("gf_value") if p.get("gf_value") is not None else p.get("iv"),
+        # the source uses 0 as its "no value" sentinel (recent IPO/ETF) — treat as missing
+        "fundamental_value": (p.get("gf_value") or p.get("iv")) or None,
         "margin_of_safety_pct": p.get("ms"),
         "fundamental_value_series": _series(p.get("medps")),
         "price_series": _series(p.get("price")),

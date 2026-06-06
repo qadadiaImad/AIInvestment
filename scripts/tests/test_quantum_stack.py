@@ -49,8 +49,11 @@ def test_layer_of_unknown_ticker_is_none():
     assert qs.layer_of("NYSE:ZZZZ") is None
 
 
-def test_pending_holds_quantinuum():
-    assert any("QNT" in t for t in qs.PENDING)
+def test_pending_quantinuum_not_pulled_until_it_lists():
+    # Quantinuum (QNT) IPO pending — "QNT" maps to a different issuer on the data
+    # source, so it must be neither in PENDING-pull nor in the live universe yet.
+    assert not any("QNT" in t for t in qs.all_tickers())
+    assert isinstance(qs.PENDING, list)
 
 
 # --- screener vs graph-only node separation ---

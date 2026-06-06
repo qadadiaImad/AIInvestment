@@ -98,11 +98,14 @@ def fetch(symbol, attempts=3):
             "retrieved_at": _now(), "source": "fundamental-model"}
 
 
-def save(sym, rec):
+def save(sym, rec, out_dir=None):
     """Write the record, but NEVER downgrade: keep an existing value/series if the new
-    fetch came back empty (e.g. a 403 on the chart API). Makes backfills safe to re-run."""
-    repo = pathlib.Path(__file__).resolve().parent.parent
-    out_dir = repo / "data" / "fundamental"
+    fetch came back empty (e.g. a 403 on the chart API), and carry over any extra keys
+    the new record doesn't know about (e.g. quantum `history`). Safe to re-run."""
+    if out_dir is None:
+        repo = pathlib.Path(__file__).resolve().parent.parent
+        out_dir = repo / "data" / "fundamental"
+    out_dir = pathlib.Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / f"{sym}.json"
     if path.exists():
@@ -114,6 +117,9 @@ def save(sym, rec):
                     rec["margin_of_safety_pct"] = old.get("margin_of_safety_pct")
             if not rec.get("fundamental_value_series") and old.get("fundamental_value_series"):
                 rec["fundamental_value_series"] = old.get("fundamental_value_series")
+            for k, v in old.items():
+                if k not in rec:
+                    rec[k] = v
         except Exception:  # noqa: BLE001
             pass
     path.write_text(json.dumps(rec, indent=2), encoding="utf-8")
