@@ -1,0 +1,41 @@
+AI STACK — IMAGE-POST KIT (2026-06-21)  | 4:5 carousels (1080×1350), dark-fintech + soft-editorial system
+Numbers pulled live from the terminal, data as of 2026-06-20. Educational / market commentary only — not financial advice.
+Copy rules applied: no first person (attributed to "analysts" / "congress"); no news outlet named (presented as "reportedly").
+Slides rendered in higgs/ via _build_v3.py. Through-line: Post 1 (software layer is cheap, chips are crowded) ↔ Post 3 (a member sold chips/Big-Tech, none from the cheap software layer). Post 2 = quantum myth-bust.
+
+=============== POST 1 — THE SOFTWARE LAYER (AI / VALUATION) ===============
+Slides: v3_post1_1_hook.png (soft) -> v3_post1_2_graph.png (dark bars) -> v3_post1_3_takeaway.png (dark number)
+Caption:
+The market crowds into AI chips. The software layer that actually sells AI is on discount. Adobe trades
+~68% below analysts' fundamental-value model — Atlassian ~70%, Intuit ~67%, Workday ~63%, ServiceNow ~58%.
+Reportedly, even the people building the chips say software benefits next. The hype and the price are
+looking in different directions. Educational only — not financial advice.
+Hashtags: #aistocks #adobe #softwarestocks #valuation #stocktok #fintok #investing101 #notfinancialadvice
+Music: mellow lo-fi / minimal "clean-aesthetic" trending sound (low energy).
+
+=============== POST 2 — QUANTUM ISN'T ONE TRADE (QUANTUM) ===============
+Slides: v3_post2_1_hook.png (soft) -> v3_post2_2_graph.png (dark multiples) -> v3_post2_3_takeaway.png (dark number)
+Caption:
+"Quantum stocks" get traded like one bet. The math says otherwise. IonQ trades ~35% BELOW analysts'
+fundamental-value model — while Rigetti sits ~22x and D-Wave ~10x ABOVE theirs. Same hype label, opposite
+valuations. Most are priced on the narrative; one is priced below the model. Not a recommendation. Educational only.
+Hashtags: #quantumcomputing #ionq #rigetti #dwave #quantumstocks #stocktok #fintok #notfinancialadvice
+Music: cool, minimal/ambient futuristic trending beat (restrained).
+
+=============== POST 3 — PUBLIC RECORD (CONGRESS) ===============
+Slides: v3_post3_1_hook.png (soft) -> v3_post3_2_card.png (soft basket) -> v3_post3_3_takeaway.png (soft)
+Caption:
+Public STOCK Act record: a House member disclosed selling 13 stocks on a single day (traded Jun 16, filed
+Jun 17, 2026) — seven of them AI & Big-Tech names including Nvidia, Microsoft, Meta, Alphabet, Amazon, Intel
+and IBM; the rest spanning energy, industrials, airlines and retail. Each disclosed at $1,001–$50,000.
+Transparency only: not an accusation, not insider anything, not a trading signal. Notably, none came from
+the application-software layer analysts flag ~60% below fundamental value. Educational — not financial advice.
+Hashtags: #congresstrading #stockact #nvidia #bigtech #transparency #stocktok #fintok #notfinancialadvice
+Music: calm, neutral minimal sound (credible, document-like).
+
+NOTES
+- Dark = data/analysis (bars, numbers); Soft = story/news/congress. Shared emerald + Fraunces/Inter/JetBrains Mono.
+- Certainty respected: the "software benefits next" / Burry-buying items are framed "reportedly" (rumored/reported in source).
+- Numbers (as of 2026-06-20 terminal data): ADBE -68% · TEAM -70% · INTU -67% · WDAY -63% · NOW -58% below model;
+  IONQ ~35% below model, RGTI ~21.6x / QBTS ~10.3x above; Van Epps 13-name single-day sale (7 AI/Big-Tech).
+- Regenerate anytime from chat: re-run higgs/_build_v3.py after a data refresh.

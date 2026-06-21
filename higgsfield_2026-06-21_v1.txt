@@ -1,0 +1,63 @@
+TIKTOK UGC KIT — "MAYA" CREATOR PERSONA  (2026-06-21)
+Vertical 9:16. Numbers from the terminal, data as of 2026-06-20. Educational / market commentary — not financial advice.
+Persona identity: Higgsfield custom avatar 0932dd65-ec67-4ecb-90c9-83cb8ef295a1 + identity anchor higgs/maya_anchor_2026-06-03.png
+Copy rules applied: NO first person (Maya speaks as an analyst-presenter, never "I/my/we"); valuation = "analysts' model";
+congress = public record, transparency not accusation; never name a news outlet (framed "reportedly"). Same 3 stories as the IG kit.
+
+================= VIDEO 1 — THE SOFTWARE LAYER (AI) =================
+HOOK (first 1.5s, on-screen + spoken): "Everyone's buying the AI chip. Nobody's pricing what SELLS the AI."
+SPOKEN SCRIPT (~30s):
+"Everyone's piling into the chip. Almost nobody's looking at the layer that actually sells AI. Adobe — about
+68% below analysts' fundamental-value model. Atlassian, seventy. Intuit, sixty-seven. Workday and ServiceNow,
+both under sixty. Reportedly, even the people who make the chips say software wins the next round. So the hype
+sits on one layer... and the discount sits on another. Just the data — not advice."
+ON-SCREEN TEXT BEATS: "AI's cheapest layer isn't the chips" -> "ADBE  −68% vs model" -> "TEAM −70 · INTU −67 · WDAY −63 · NOW −58" -> "hype ≠ price"
+B-ROLL / CUTAWAY: drop in higgs/v3_post1_2_graph.png (the bar chart) at the mid-point.
+CAPTION: The AI discount nobody's talking about: the software layer that sells AI trades ~60–70% below analysts'
+fundamental-value model while everyone crowds the chips. Reportedly even chipmakers say software wins next. NFA.
+#aistocks #adobe #softwarestocks #stocktok #fintok #notfinancialadvice
+HIGGSFIELD VIDEO PROMPT (image-to-video; renders ON APPROVAL — uses credits):
+"Talking-head UGC clip, 9:16. Use the identity anchor (Maya, custom avatar 0932dd65 / maya_anchor_2026-06-03.png):
+same woman, confident friendly fintech-creator energy, soft daylight, clean minimal desk/loft background with subtle
+greenery. Natural hand gestures, direct eye contact, subtle nods on key numbers. Lips synced to the spoken script.
+No on-screen text baked in (captions added in edit). 8s, steady handheld feel."
+
+================= VIDEO 2 — QUANTUM ISN'T ONE TRADE =================
+HOOK: "'Quantum' isn't one trade. Watch the math."
+SPOKEN SCRIPT (~28s):
+"Stop trading 'quantum' like it's one bet. Look at the math. IonQ — about 35% below analysts' fundamental-value
+model. Rigetti? Around twenty-two times above its. D-Wave, about ten times above. Same hype word on every one
+of them — completely different valuations. One's priced on the model; the rest are priced on the story. Reported,
+not confirmed. Not a recommendation."
+ON-SCREEN TEXT BEATS: "'Quantum' ≠ one trade" -> "IONQ  −35% (below model)" -> "RGTI ~22x · QBTS ~10x (above)" -> "story vs model"
+B-ROLL / CUTAWAY: drop in higgs/v3_post2_2_graph.png (the multiples chart) mid-clip.
+CAPTION: "Quantum stocks" get traded like one bet — but IonQ sits ~35% BELOW analysts' model while peers trade
+10–22x ABOVE theirs. Same label, opposite math. Reported, not confirmed. Not a recommendation.
+#quantumcomputing #ionq #rigetti #quantumstocks #stocktok #notfinancialadvice
+HIGGSFIELD VIDEO PROMPT (image-to-video; renders ON APPROVAL — uses credits):
+"Same Maya identity anchor, 9:16. Cooler, slightly more futuristic ambient lighting (subtle blue accent), same
+loft/desk. Calm, slightly skeptical delivery; raises an eyebrow on 'twenty-two times.' Lips synced to script.
+No baked-in text. 8s."
+
+================= VIDEO 3 — PUBLIC RECORD (CONGRESS) =================
+HOOK: "One House member sold 13 stocks — in a single day."
+SPOKEN SCRIPT (~28s):
+"Straight from the public record: one House member disclosed selling thirteen stocks — on the same day. Nvidia,
+Microsoft, Meta, Alphabet, Amazon, Intel, IBM... plus energy, an airline, retail. Traded June sixteenth, filed
+the seventeenth. This isn't an accusation, it isn't insider anything, and it isn't a signal — it's just who
+disclosed what, and when. But it's public. Worth knowing."
+ON-SCREEN TEXT BEATS: "13 stocks. One day." -> ticker wall (NVDA MSFT META GOOGL AMZN INTC IBM …) -> "traded 6/16 · filed 6/17/2026" -> "public record · not a signal"
+B-ROLL / CUTAWAY: drop in higgs/v3_post3_2_card.png (the disclosure card) mid-clip.
+CAPTION: Public STOCK Act record: a House member disclosed selling 13 stocks in one day — 7 of them AI & Big-Tech
+(NVDA, MSFT, META, GOOGL, AMZN, INTC, IBM). Transparency only — not an accusation, not a signal. NFA.
+#congresstrading #stockact #nvidia #bigtech #transparency #stocktok #notfinancialadvice
+HIGGSFIELD VIDEO PROMPT (image-to-video; renders ON APPROVAL — uses credits):
+"Same Maya identity anchor, 9:16. Neutral, credible, document-like tone — measured delivery, fewer gestures, calm.
+Warm soft daylight. Lips synced to script. No baked-in text. 8s."
+
+----------------------------------------------------------------------
+RENDER PLAN (on your approval — this is the only step that spends Higgsfield credits; balance: 126):
+  1) 3 × image-to-video clips (Maya, 9:16, ~8s) from the avatar/anchor above.
+  2) Download each into higgs/ (e.g. higgs/maya_v1_software_2026-06-21.mp4, …_quantum_…, …_congress_…).
+  3) Edit: overlay the ON-SCREEN TEXT BEATS + drop in the matching v3_*.png cutaway; add trending audio per IG kit.
+Say "render the Maya videos" and I'll generate + download them. (Want a single 45s combined cut instead of 3 clips? say so.)

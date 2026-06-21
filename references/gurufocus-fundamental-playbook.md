@@ -18,7 +18,9 @@
      not discard a value because it appears. A genuine block = value not readable at all.
 
 2. **Historical series + margin of safety — JSON endpoint (needs a real browser SESSION):**
-   `GET https://www.gurufocus.com/reader/_api/chart/{SYMBOL}/valuation?v=1.8.61`
+   `GET https://www.gurufocus.com/reader/_api/chart/{SYMBOL}/valuation?v=1.8.70`
+   *(the `v=` string drifts — `1.8.61`→`1.8.70` observed 2026-06-20; copy whatever the page's
+   own chart request uses, via `browser_network_requests(filter="reader/_api/chart")`.)*
    Returns clean JSON: `gf_value`, `iv` (intrinsic value), `ms` (margin of safety %),
    `medps` (the **historical + projected fundamental-value line**, `[[date, value], …]`),
    and `price` (~5y **daily** price `[[date, close], …]`).
@@ -38,7 +40,7 @@ async () => {
   const syms = [/* tickers */];
   const out = {};
   for (const s of syms) {
-    const r = await fetch(`/reader/_api/chart/${s}/valuation?v=1.8.61`, {headers:{accept:'application/json'}});
+    const r = await fetch(`/reader/_api/chart/${s}/valuation?v=1.8.70`, {headers:{accept:'application/json'}});
     out[s] = r.ok ? (({gf_value, ms, medps}) => ({gf_value, ms, medps}))(await r.json()) : {error: r.status};
     await new Promise(f => setTimeout(f, 150));   // gentle pacing
   }

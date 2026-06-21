@@ -91,7 +91,12 @@ Run **alone**. No other tabs active. No parallel agents on the browser.
 
 **Why this exists (verified 2026-06-01, do not soften):** the historical *fundamental-value
 series* comes from the chart endpoint
-`https://www.gurufocus.com/reader/_api/chart/{SYM}/valuation?v=1.8.61`.
+`https://www.gurufocus.com/reader/_api/chart/{SYM}/valuation?v=1.8.70`.
+
+> **The `v=` version string drifts** (was `1.8.61`; observed **`1.8.70` on 2026-06-20`**).
+> It is NOT used by production code — only here and in the playbook. Before a batch, read
+> the page's own chart request via `browser_network_requests(filter="reader/_api/chart")`
+> and copy whatever `v=` it used; a stale version still tends to return 200 but don't rely on it.
 
 - **Local headless python-playwright** (`scripts/fundamental_fetch.py`, fresh clean profile,
   single IP) → this endpoint returns **HTTP 403 for EVERY ticker** (including NVDA, which
@@ -133,7 +138,7 @@ free-hit budget; detect `402/403/429`.
        const syms = ["NVDA","AVGO","MU","AMD"];
        const out = {};
        for (const s of syms) {
-         const r = await fetch(`/reader/_api/chart/${s}/valuation?v=1.8.61`,
+         const r = await fetch(`/reader/_api/chart/${s}/valuation?v=1.8.70`,
                                { credentials: "include" });
          out[s] = { status: r.status, body: r.status === 200 ? await r.json() : null };
        }
