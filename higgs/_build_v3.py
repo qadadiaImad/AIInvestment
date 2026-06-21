@@ -137,12 +137,12 @@ def dark_multiples(syms,kick,title,note,caption):
     <div class='foot'>dashed line = price equals fundamental value · analysts' model · NFA</div></div>"""
     return page(b,DARK_CSS,"dk")
 
-def soft_basket(member,tickers,meta,note):
-    chips="".join(f"<div style=\"font-family:'JetBrains Mono';font-weight:700;font-size:30px;color:#1A1C22;background:#FFFCF6;border:1.5px solid #E4DCCB;border-radius:12px;padding:14px 22px\">{t}</div>" for t in tickers)
-    mr="".join(f"<div style='display:flex;margin:12px 0'><div style=\"width:150px;font-family:'JetBrains Mono';font-size:22px;color:#8A8170\">{k}</div><div style='font-family:Inter;font-weight:600;font-size:26px;color:#1A1C22'>{v}</div></div>" for k,v in meta)
+def soft_basket(member,tickers,meta,note,subtitle):
+    chips="".join(f"<div style=\"font-family:'JetBrains Mono';font-weight:700;font-size:28px;color:#1A1C22;background:#FFFCF6;border:1.5px solid #E4DCCB;border-radius:12px;padding:13px 20px\">{t}</div>" for t in tickers)
+    mr="".join(f"<div style='display:flex;margin:11px 0'><div style=\"width:160px;font-family:'JetBrains Mono';font-size:22px;color:#8A8170\">{k}</div><div style='font-family:Inter;font-weight:600;font-size:26px;color:#1A1C22'>{v}</div></div>" for k,v in meta)
     b=f"""<div class='pad'><div class='kick' style='color:#B4690E'><span class='dot' style='background:#B4690E'></span>PUBLIC RECORD</div>
-    <div style="font-family:Fraunces;font-weight:600;font-size:56px;line-height:1.04;letter-spacing:-1px;margin-top:22px">{member}</div>
-    <div style="font-size:26px;color:#8A8170;margin-top:8px">disclosed selling, all on the same day</div>
+    <div style="font-family:Fraunces;font-weight:600;font-size:54px;line-height:1.04;letter-spacing:-1px;margin-top:20px">{member}</div>
+    <div style="font-size:26px;color:#8A8170;margin-top:8px">{subtitle}</div>
     <div style='display:flex;flex-wrap:wrap;gap:16px;margin-top:34px'>{chips}</div>
     <div style='background:#FFFCF6;border:1.5px solid #E4DCCB;border-radius:18px;padding:30px 40px;margin-top:34px'>{mr}</div>
     <div style='font-size:27px;color:#5C6270;margin-top:auto'>{note}</div>
@@ -166,28 +166,29 @@ ve_syms=[t['ticker'] for t in ve]
 print("Van Epps 06/16 sells:",ve_syms)
 
 SL={
- "v3_post1_1_hook.png":soft_hook("AI &nbsp;·&nbsp; VALUATION",
-   "The chips get the hype.<br>The <em style='font-style:italic;color:#0E9F6E'>software</em> gets the<br>discount.",
-   "The layer that actually sells AI &mdash; Adobe, Intuit, ServiceNow &mdash; reportedly trades far below analysts&rsquo; fundamental-value model."),
- "v3_post1_2_graph.png":dark_bars_ai(cheap,"APPLICATION LAYER &nbsp;·&nbsp; vs MODEL","How cheap, by analysts&rsquo; model","gap below fundamental value",
-   "Five software names sit 56&ndash;70% below analysts&rsquo; model."),
- "v3_post1_3_takeaway.png":dark_number("THE GAP",f"~{abs(ADBE_DC):.0f}","%","ADOBE BELOW ANALYSTS' FUNDAMENTAL VALUE",
-   "Reportedly, even the people who build the chips say software benefits next. The hype and the price are looking in different directions. Not financial advice."),
- "v3_post2_1_hook.png":soft_hook("QUANTUM",
-   "&lsquo;Quantum stocks&rsquo;<br>aren&rsquo;t <em style='font-style:italic;color:#0E9F6E'>one trade.</em>",
-   "Same hype label. Opposite math &mdash; one name even trades below what analysts model."),
- "v3_post2_2_graph.png":dark_multiples(["IONQ","QUBT","QBTS","RGTI"],"QUANTUM &nbsp;·&nbsp; PRICE vs MODEL","Price vs fundamental value",
+ "v3_post1_1_hook.png":soft_hook("AI &nbsp;·&nbsp; THE OVERLOOKED LAYER",
+   "Wall Street bought<br>the chip. It forgot<br>who <em style='font-style:italic;color:#0E9F6E'>sells the AI.</em>",
+   "Adobe just slid to ~68% below what analysts think it&rsquo;s worth &mdash; and the smart money is reportedly starting to circle."),
+ "v3_post1_2_graph.png":dark_bars_ai(cheap,"THE AI SOFTWARE LAYER &nbsp;·&nbsp; ON SALE","Every one of them, marked down","gap below analysts&rsquo; fundamental value",
+   "The whole layer that runs on the chips sits 56&ndash;70% below model."),
+ "v3_post1_3_takeaway.png":dark_number("ADOBE",f"~{abs(ADBE_DC):.0f}","%","BELOW ANALYSTS' FUNDAMENTAL VALUE",
+   "The hype went to the chips. The discount&rsquo;s on the software that runs on them &mdash; reportedly, even chipmakers now say software is next. Not financial advice."),
+ "v3_post2_1_hook.png":soft_hook("QUANTUM &nbsp;·&nbsp; THE ODD ONE OUT",
+   "Quantum, priced like<br>a lottery ticket.<br>One name <em style='font-style:italic;color:#0E9F6E'>isn&rsquo;t.</em>",
+   "Same hype label, opposite math &mdash; and this week, IonQ reportedly shipped real product while peers ran on the story."),
+ "v3_post2_2_graph.png":dark_multiples(["IONQ","QUBT","QBTS","RGTI"],"QUANTUM &nbsp;·&nbsp; PRICE vs MODEL","How many times above fair value",
    "times the price sits above analysts&rsquo; fundamental value","IonQ is the only one trading below the model."),
- "v3_post2_3_takeaway.png":dark_number("THE OUTLIER",f"~{abs(IONQ_DC):.0f}","%",f"IonQ BELOW MODEL — RIGETTI ~{RGTI_M:.0f}x, D-WAVE ~{QBTS_M:.0f}x ABOVE",
-   "Most quantum names are priced on narrative. One is priced below analysts&rsquo; model. Reported, not confirmed. Not a recommendation."),
+ "v3_post2_3_takeaway.png":dark_number("IonQ",f"~{abs(IONQ_DC):.0f}","%",f"BELOW MODEL — RIGETTI ~{RGTI_M:.0f}x, D-WAVE ~{QBTS_M:.0f}x ABOVE",
+   "Most of the sector is priced on the narrative. One is priced below analysts&rsquo; model. Reported, not confirmed. Not a recommendation."),
  "v3_post3_1_hook.png":soft_hook("PUBLIC RECORD",
-   "A House member sold<br>13 stocks &mdash;<br><em style='font-style:italic;color:#B4690E'>in a single day.</em>",
-   "Seven were AI &amp; Big-Tech names. Straight from the STOCK Act filing &mdash; just the record.","not financial advice  ·  swipe &rarr;"),
+   "He helps oversee<br>Big Tech. Then he<br><em style='font-style:italic;color:#B4690E'>sold all of it.</em>",
+   "A House Science-Committee member exited Nvidia, Microsoft, Meta, Apple &amp; more &mdash; eight tech names, in one day.","not financial advice  ·  swipe &rarr;"),
  "v3_post3_2_card.png":soft_basket("Rep. Matthew Van Epps",ve_syms,
-   [("Type","Sales"),("Amount","$1,001 – $50,000 each"),("Traded","Jun 16, 2026"),("Filed","Jun 17, 2026")],
-   "None were from the application-software layer analysts flag ~60% below fundamental value."),
+   [("Committee","Science, Space &amp; Technology"),("Type","Sales, all one day"),("Amount","$1,001 – $50,000 each"),("Traded","Jun 16, 2026"),("Filed","Jun 17, 2026")],
+   "His committee&rsquo;s job is to oversee the U.S. tech &amp; research sector &mdash; the same sector he exited.",
+   "the committee that helps oversee the tech sector"),
  "v3_post3_3_takeaway.png":soft_takeaway("TRANSPARENCY","Public record —<br>not a signal.",
-   "Not an accusation, not insider anything, not advice. Just who disclosed what, and when."),
+   "Members are allowed to trade. This isn&rsquo;t an accusation. It&rsquo;s just who sold what, when &mdash; and which committee they sit on."),
 }
 with sync_playwright() as p:
     b=p.chromium.launch(args=["--no-sandbox"]); pg=b.new_page(viewport={"width":W,"height":H})
