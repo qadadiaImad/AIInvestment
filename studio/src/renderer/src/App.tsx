@@ -1,6 +1,7 @@
 import Terminal from './components/Terminal'
 import Gallery from './components/Gallery'
 import Detail from './components/Detail'
+import QuickActions from './components/QuickActions'
 import { StudioProvider, useStudio } from './store'
 
 function Shell() {
@@ -15,7 +16,10 @@ function Shell() {
         <Gallery />
         <Detail />
       </div>
-      <footer className="h-56 border-t border-white/10 bg-[#0A0D12]"><Terminal /></footer>
+      <footer className="h-64 border-t border-white/10 bg-[#0A0D12] flex flex-col">
+        <QuickActions />
+        <div className="flex-1 overflow-hidden"><Terminal /></div>
+      </footer>
     </div>
   )
 }
