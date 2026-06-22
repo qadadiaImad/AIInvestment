@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <linearGradient id="bignum" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#9FE7C8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1350" fill="#0A0D12"/>
+
+  <!-- Watermark top right -->
+  <text x="1000" y="118" text-anchor="end" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="22" fill="#3A4250" letter-spacing="2">IONQ  ·  Q1 2026</text>
+
+  <!-- Kicker -->
+  <text x="80" y="470" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-weight="600" font-size="24" fill="#34D399" letter-spacing="4">REVENUE GROWTH</text>
+
+  <!-- Big number -->
+  <text x="80" y="700" font-family="'Fraunces','Georgia',serif" font-weight="700" font-size="220" fill="url(#bignum)" letter-spacing="-6">+755<tspan font-size="116">%</tspan></text>
+
+  <!-- Label -->
+  <text x="80" y="760" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="28" fill="#8A95A5" letter-spacing="2">Q1 2026 REVENUE, YEAR-OVER-YEAR</text>
+
+  <!-- Sub text -->
+  <g font-family="'Inter','Helvetica','Arial',sans-serif" font-size="34" fill="#C2CAD6">
+    <text x="80" y="880">$7.6M in Q1 2025 — $64.7M in Q1 2026, 30% above</text>
+    <text x="80" y="928">the midpoint of company guidance. Remaining</text>
+    <text x="80" y="976">performance obligations ended the quarter at</text>
+    <text x="80" y="1024"><tspan font-weight="700" fill="#E8EDF2">$470M</tspan>, up 554% YoY. Backlog is real; valuation is a</text>
+    <text x="80" y="1072">different conversation.</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="80" y="1230" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="18" fill="#5A6472" letter-spacing="0.5">company Q1 2026 release · 06 May 2026 · educational · not financial advice · public, date-stamped sources</text>
+</svg>

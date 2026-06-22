@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <radialGradient id="cream" cx="15%" cy="0%" r="120%">
+      <stop offset="0" stop-color="#FAF7F0"/>
+      <stop offset="0.55" stop-color="#F1EBDD"/>
+      <stop offset="1" stop-color="#E7DECB"/>
+    </radialGradient>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#cream)"/>
+
+  <!-- Watermark top right -->
+  <text x="992" y="118" text-anchor="end" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="22" fill="#B6AE9C" letter-spacing="2">IONQ  ·  Q1 2026</text>
+
+  <!-- Kicker -->
+  <circle cx="100" cy="190" r="6" fill="#0E9F6E"/>
+  <text x="116" y="198" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-weight="600" font-size="26" fill="#0E9F6E" letter-spacing="4">QUANTUM  ·  VALUATION</text>
+
+  <!-- Headline -->
+  <text x="88" y="330" font-family="'Fraunces','Georgia',serif" font-weight="600" font-size="92" fill="#1A1C22" letter-spacing="-2">
+    <tspan x="88" dy="0">$7.6M </tspan><tspan font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-weight="700">→</tspan><tspan> </tspan><tspan font-style="italic" fill="#0E9F6E">$64.7M.</tspan>
+  </text>
+  <text x="88" y="425" font-family="'Fraunces','Georgia',serif" font-weight="600" font-size="92" fill="#1A1C22" letter-spacing="-2">The revenue chart</text>
+  <text x="88" y="520" font-family="'Fraunces','Georgia',serif" font-weight="600" font-size="92" fill="#1A1C22" letter-spacing="-2">no one is pricing.</text>
+
+  <!-- Lead paragraph -->
+  <g font-family="'Inter','Helvetica','Arial',sans-serif" font-size="33" fill="#5C6270">
+    <text x="88" y="1060">IonQ's Q1 revenue grew <tspan font-weight="700" fill="#1A1C22">+755% year-over-year</tspan> and the</text>
+    <text x="88" y="1108">company raised full-year 2026 guidance to $260–270M.</text>
+    <text x="88" y="1156">The stock is back near analysts' average target — and</text>
+    <text x="88" y="1204">almost no one agrees on what the company is worth.</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="88" y="1264" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="19" fill="#9AA0AC" letter-spacing="1">not financial advice  ·  swipe →</text>
+</svg>

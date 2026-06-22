@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:1350px; }
+  body {
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(120% 90% at 80% 0%,#3a1622 0%,#0a1018 55%,#070a0f 100%);
+    color:#eef3fb; overflow:hidden;
+  }
+  .wrap { padding:78px 70px; height:100%; display:flex; flex-direction:column; }
+  .kicker { font-size:22px; letter-spacing:3px; color:#ff8fa3; text-transform:uppercase; font-weight:700; }
+  h1 { font-size:60px; font-weight:800; line-height:1.08; margin:14px 0 10px; letter-spacing:-1px; }
+  .lede { font-size:25px; color:#9fb0c7; line-height:1.4; margin-bottom:54px; max-width:880px; }
+  .bars { display:flex; align-items:flex-end; gap:70px; justify-content:center; height:430px; margin:10px 0 30px; }
+  .bar { width:280px; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; }
+  .bcol { width:200px; border-radius:18px 18px 0 0; position:relative; }
+  .bcol.price { height:430px; background:linear-gradient(180deg,#ff6b81,#c0303f); }
+  .bcol.fv { height:160px; background:linear-gradient(180deg,#5ad1a0,#2c8f68); }
+  .bval { position:absolute; top:-58px; left:0; right:0; text-align:center; font-size:44px; font-weight:800; }
+  .blabel { margin-top:22px; font-size:24px; font-weight:700; text-align:center; }
+  .bsub { font-size:18px; color:#9fb0c7; text-align:center; margin-top:4px; }
+  .verdict { margin-top:auto; background:rgba(255,107,129,.10); border:1px solid rgba(255,107,129,.35); border-radius:20px; padding:30px 34px; }
+  .verdict .big { font-size:40px; font-weight:800; color:#ff8fa3; }
+  .verdict .txt { font-size:23px; color:#cdd8e8; line-height:1.45; margin-top:8px; }
+  .disc { font-size:15px; color:#566576; margin-top:22px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="kicker">The gap</div>
+    <h1>Price has sprinted far past<br>my model's "fair value"</h1>
+    <div class="lede">One discounted fundamental read of Dell's cash flows lands near <b>$162</b> a share. The market is paying <b>$435</b>. That's the whole story of this slide.</div>
+
+    <div class="bars">
+      <div class="bar">
+        <div class="bcol price"><span class="bval">$435</span></div>
+        <div class="blabel">Market price</div>
+        <div class="bsub">2026-06-02 close</div>
+      </div>
+      <div class="bar">
+        <div class="bcol fv"><span class="bval" style="color:#5ad1a0;">$162</span></div>
+        <div class="blabel">Fundamental value</div>
+        <div class="bsub">creator's own model read</div>
+      </div>
+    </div>
+
+    <div class="verdict">
+      <div class="big">~168% above fundamental value</div>
+      <div class="txt">By this lens Dell screens richly valued: the price embeds years of AI-server growth the cash flows haven't booked yet. A model is one opinion, not a verdict &mdash; the next slides show what's actually driving the business.</div>
+    </div>
+
+    <div class="disc">Fundamental value is one model's estimate, not a price target. Educational only &mdash; not financial advice.</div>
+  </div>
+</body>
+</html>

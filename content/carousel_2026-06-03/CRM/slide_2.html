@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<title>CRM — Slide 2</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:1350px; }
+  body {
+    font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(120% 90% at 82% 0%, #11233f 0%, #0a1322 48%, #060b16 100%);
+    color:#eef3fb; padding:74px 70px; display:flex; flex-direction:column;
+  }
+  .kick { font-size:25px; font-weight:700; color:#5fa8ff; letter-spacing:3px; text-transform:uppercase; }
+  .title { margin-top:12px; font-size:62px; font-weight:800; letter-spacing:-1.5px; line-height:1.05; }
+  .sub { margin-top:18px; font-size:25px; color:#9fb3d1; line-height:1.45; max-width:920px; }
+  .bars { margin-top:64px; display:flex; flex-direction:column; gap:46px; }
+  .row { }
+  .rlbl { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:14px; }
+  .rname { font-size:28px; font-weight:700; color:#cdddf2; }
+  .rval { font-size:46px; font-weight:800; letter-spacing:-1px; }
+  .track { height:46px; background:#13203a; border-radius:12px; overflow:hidden; }
+  .fill { height:100%; border-radius:12px; }
+  .price .rval { color:#ff8585; }
+  .price .fill { width:62.8%; background:linear-gradient(90deg,#7a2f2f,#ff6b6b); }
+  .fv .rval { color:#5fe0a0; }
+  .fv .fill { width:100%; background:linear-gradient(90deg,#1f6b48,#43e3a0); }
+  .gap { margin-top:60px; background:#10203a; border:1.5px solid #234469; border-radius:20px;
+         padding:34px 38px; display:flex; align-items:center; gap:34px; }
+  .gapnum { font-size:92px; font-weight:800; letter-spacing:-3px; color:#5fe0a0; line-height:.9; }
+  .gaptxt { font-size:27px; color:#cdddf2; line-height:1.4; }
+  .gaptxt b { color:#fff; }
+  .note { margin-top:auto; font-size:20px; color:#7e92b2; line-height:1.45; }
+</style></head>
+<body>
+  <div class="kick">The gap</div>
+  <div class="title">Trading at $200.84.<br>My model reads ~$320.</div>
+  <div class="sub">A from-scratch fundamental-value estimate &mdash; built on cash flows, margins and growth, not the daily tape. Here is how today's price stacks against it.</div>
+
+  <div class="bars">
+    <div class="row price">
+      <div class="rlbl"><span class="rname">Market price</span><span class="rval">$200.84</span></div>
+      <div class="track"><div class="fill"></div></div>
+    </div>
+    <div class="row fv">
+      <div class="rlbl"><span class="rname">Fundamental value (my estimate)</span><span class="rval">$319.92</span></div>
+      <div class="track"><div class="fill"></div></div>
+    </div>
+  </div>
+
+  <div class="gap">
+    <div class="gapnum">~37%</div>
+    <div class="gaptxt">price sits <b>roughly 37% below</b> my fundamental-value read &mdash; a "significantly undervalued" margin of safety, on this framework.</div>
+  </div>
+
+  <div class="note">"Fundamental value" is one analyst's modeled estimate, not a target or a guarantee. Models can be wrong; price can stay below value for a long time. Educational only &mdash; not financial advice.</div>
+</body></html>

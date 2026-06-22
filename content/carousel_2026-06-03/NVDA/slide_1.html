@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NVDA — Slide 1</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1080px;height:1350px}
+  body{font-family:'Inter',system-ui,sans-serif;background:#070b14;color:#e9eef7;
+    width:1080px;height:1350px;overflow:hidden;position:relative;
+    background-image:radial-gradient(900px 500px at 80% -5%,rgba(118,255,120,.10),transparent 60%),
+      radial-gradient(700px 500px at -10% 110%,rgba(60,130,255,.10),transparent 60%);}
+  .pad{padding:70px 70px 64px}
+  .kicker{display:flex;align-items:center;gap:14px;font-size:23px;letter-spacing:.18em;
+    text-transform:uppercase;color:#8fa0bd;font-weight:700}
+  .dot{width:13px;height:13px;border-radius:50%;background:#76ff78;box-shadow:0 0 18px #76ff78}
+  .ticker{font-size:128px;font-weight:900;letter-spacing:-.03em;line-height:.95;margin-top:26px}
+  .sub{font-size:30px;color:#9fb0cd;font-weight:600;margin-top:8px}
+  .pillrow{display:flex;gap:16px;margin-top:30px;flex-wrap:wrap}
+  .pill{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10);
+    border-radius:16px;padding:14px 22px;font-size:26px;font-weight:700}
+  .pill b{color:#76ff78}
+  .chartwrap{margin-top:40px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+    border-radius:26px;padding:34px 30px 26px;position:relative}
+  . chartlbl{}
+  .clab{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .clab .t{font-size:24px;color:#9fb0cd;font-weight:700}
+  .clab .ytd{font-size:30px;font-weight:800;color:#76ff78}
+  .ytdbig{margin-top:34px;display:flex;align-items:flex-end;gap:26px}
+  .ytdbig .big{font-size:150px;font-weight:900;line-height:.85;color:#76ff78;letter-spacing:-.04em}
+  .ytdbig .meta{font-size:27px;color:#9fb0cd;font-weight:600;padding-bottom:18px}
+  .ytdbig .meta b{color:#e9eef7}
+  .headline{margin-top:40px;background:linear-gradient(100deg,rgba(118,255,120,.14),rgba(60,130,255,.10));
+    border:1px solid rgba(118,255,120,.30);border-radius:22px;padding:34px 36px}
+  .headline .tag{font-size:21px;letter-spacing:.14em;text-transform:uppercase;color:#76ff78;font-weight:800}
+  .headline .txt{font-size:43px;font-weight:800;line-height:1.18;margin-top:14px;letter-spacing:-.01em}
+  .headline .src{font-size:22px;color:#8fa0bd;margin-top:16px;font-weight:600}
+  .foot{position:absolute;bottom:34px;left:70px;right:70px;display:flex;justify-content:space-between;
+    font-size:20px;color:#6f8099;font-weight:600}
+  .badge{font-size:20px;font-weight:700;color:#cdd8ea;background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);padding:7px 16px;border-radius:999px}
+</style>
+</head>
+<body>
+<div class="pad">
+  <div class="kicker"><span class="dot"></span>AI Chip Bellwether · Market Commentary</div>
+  <div class="ticker">NVDA</div>
+  <div class="sub">NVIDIA Corp · Semiconductors · as of 02 Jun 2026</div>
+
+  <div class="pillrow">
+    <div class="pill">Price <b>$222.82</b></div>
+    <div class="pill">Mkt cap <b>$5.39T</b></div>
+    <div class="pill">1Y <b>+62%</b></div>
+  </div>
+
+  <div class="chartwrap">
+    <div class="clab"><span class="t">5-year price · close ($)</span><span class="ytd">$12 → $223</span></div>
+    <svg viewBox="0 0 920 300" width="100%" height="270" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(118,255,120,.34)"/>
+          <stop offset="100%" stop-color="rgba(118,255,120,0)"/>
+        </linearGradient>
+      </defs>
+      <path d="M0.0,293.0 L7.3,290.6 L14.6,288.4 L21.9,291.3 L29.2,289.4 L36.5,288.5 L43.8,285.0 L51.1,285.7 L58.4,286.4 L65.7,287.7 L73.0,284.2 L80.3,273.3 L87.6,271.7 L94.9,271.0 L102.2,275.8 L109.5,277.9 L116.8,282.8 L124.1,283.1 L131.4,282.3 L138.7,284.5 L146.0,279.5 L153.3,279.2 L160.6,286.2 L167.9,289.4 L175.2,292.6 L182.5,290.6 L189.8,294.6 L197.1,295.1 L204.4,295.3 L211.7,291.6 L219.0,291.6 L226.3,291.7 L233.7,296.7 L241.0,299.4 L248.3,300.0 L255.6,299.4 L262.9,297.0 L270.2,295.3 L277.5,293.5 L284.8,294.1 L292.1,296.2 L299.4,293.3 L306.7,286.3 L314.0,285.9 L321.3,283.2 L328.6,280.6 L335.9,277.6 L343.2,278.8 L350.5,276.0 L357.8,276.0 L365.1,260.1 L372.4,258.8 L379.7,258.7 L387.0,251.7 L394.3,251.9 L401.6,256.9 L408.9,250.1 L416.2,252.3 L423.5,258.0 L430.8,252.0 L438.1,258.3 L445.4,253.1 L452.7,247.0 L460.0,252.4 L467.3,245.9 L474.6,249.5 L481.9,235.9 L489.2,227.5 L496.5,213.8 L503.8,200.1 L511.1,192.2 L518.4,188.6 L525.7,194.8 L533.0,192.3 L540.3,188.5 L547.6,155.0 L554.9,145.1 L562.2,137.3 L569.5,135.8 L576.8,157.4 L584.1,167.8 L591.4,141.0 L598.7,170.8 L606.0,152.1 L613.3,139.4 L620.6,120.7 L627.9,124.4 L635.2,115.1 L642.5,119.8 L649.8,129.3 L657.1,126.0 L664.4,127.0 L671.7,146.3 L679.0,119.5 L686.3,154.8 L693.7,147.0 L701.0,162.9 L708.3,159.6 L715.6,162.0 L722.9,132.2 L730.2,125.3 L737.5,113.9 L744.8,96.5 L752.1,82.4 L759.4,70.2 L766.7,57.1 L774.0,63.8 L781.3,77.6 L788.6,55.8 L795.9,53.1 L803.2,57.2 L810.5,22.7 L817.8,51.6 L825.1,58.9 L832.4,64.2 L839.7,51.7 L847.0,50.9 L854.3,45.1 L861.6,57.0 L868.9,57.4 L876.2,56.4 L883.5,82.1 L890.8,37.5 L898.1,13.7 L905.4,2.9 L912.7,14.5 L920.0,0.0 L920,300 L0,300 Z" fill="url(#g)"/>
+      <path d="M0.0,293.0 L7.3,290.6 L14.6,288.4 L21.9,291.3 L29.2,289.4 L36.5,288.5 L43.8,285.0 L51.1,285.7 L58.4,286.4 L65.7,287.7 L73.0,284.2 L80.3,273.3 L87.6,271.7 L94.9,271.0 L102.2,275.8 L109.5,277.9 L116.8,282.8 L124.1,283.1 L131.4,282.3 L138.7,284.5 L146.0,279.5 L153.3,279.2 L160.6,286.2 L167.9,289.4 L175.2,292.6 L182.5,290.6 L189.8,294.6 L197.1,295.1 L204.4,295.3 L211.7,291.6 L219.0,291.6 L226.3,291.7 L233.7,296.7 L241.0,299.4 L248.3,300.0 L255.6,299.4 L262.9,297.0 L270.2,295.3 L277.5,293.5 L284.8,294.1 L292.1,296.2 L299.4,293.3 L306.7,286.3 L314.0,285.9 L321.3,283.2 L328.6,280.6 L335.9,277.6 L343.2,278.8 L350.5,276.0 L357.8,276.0 L365.1,260.1 L372.4,258.8 L379.7,258.7 L387.0,251.7 L394.3,251.9 L401.6,256.9 L408.9,250.1 L416.2,252.3 L423.5,258.0 L430.8,252.0 L438.1,258.3 L445.4,253.1 L452.7,247.0 L460.0,252.4 L467.3,245.9 L474.6,249.5 L481.9,235.9 L489.2,227.5 L496.5,213.8 L503.8,200.1 L511.1,192.2 L518.4,188.6 L525.7,194.8 L533.0,192.3 L540.3,188.5 L547.6,155.0 L554.9,145.1 L562.2,137.3 L569.5,135.8 L576.8,157.4 L584.1,167.8 L591.4,141.0 L598.7,170.8 L606.0,152.1 L613.3,139.4 L620.6,120.7 L627.9,124.4 L635.2,115.1 L642.5,119.8 L649.8,129.3 L657.1,126.0 L664.4,127.0 L671.7,146.3 L679.0,119.5 L686.3,154.8 L693.7,147.0 L701.0,162.9 L708.3,159.6 L715.6,162.0 L722.9,132.2 L730.2,125.3 L737.5,113.9 L744.8,96.5 L752.1,82.4 L759.4,70.2 L766.7,57.1 L774.0,63.8 L781.3,77.6 L788.6,55.8 L795.9,53.1 L803.2,57.2 L810.5,22.7 L817.8,51.6 L825.1,58.9 L832.4,64.2 L839.7,51.7 L847.0,50.9 L854.3,45.1 L861.6,57.0 L868.9,57.4 L876.2,56.4 L883.5,82.1 L890.8,37.5 L898.1,13.7 L905.4,2.9 L912.7,14.5 L920.0,0.0" fill="none" stroke="#76ff78" stroke-width="3.4" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <div class="ytdbig">
+    <div class="big">+19.5%</div>
+    <div class="meta">YTD 2026<br><b>$186.50 → $222.82</b></div>
+  </div>
+
+  <div class="headline">
+    <div class="tag">Public record · congressional disclosure</div>
+    <div class="txt">Nancy Pelosi disclosed an NVDA purchase of $250,001–$500,000 (16 Jan 2026)</div>
+    <div class="src">Periodic Transaction Report · filed 23 Jan 2026 · House Clerk · type "P" (purchase)</div>
+  </div>
+
+  <div class="foot">
+    <span class="badge">Not financial advice · DYOR</span>
+    <span>Public record — not an accusation, not a trading signal</span>
+  </div>
+</div>
+</body>
+</html>

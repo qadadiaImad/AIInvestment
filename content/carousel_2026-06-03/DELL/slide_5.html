@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:1350px; }
+  body {
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(120% 90% at 50% 0%,#13243f 0%,#0a1018 55%,#070a0f 100%);
+    color:#eef3fb; overflow:hidden;
+  }
+  .wrap { padding:74px 64px 56px; height:100%; display:flex; flex-direction:column; }
+  .kicker { font-size:22px; letter-spacing:3px; color:#7fb2ff; text-transform:uppercase; font-weight:700; }
+  h1 { font-size:54px; font-weight:800; line-height:1.1; margin:12px 0 30px; letter-spacing:-1px; }
+  .item { background:rgba(255,255,255,.035); border:1px solid rgba(127,178,255,.16); border-radius:18px; padding:24px 30px; margin-bottom:20px; }
+  .item .top { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+  .tag { font-size:14px; font-weight:800; padding:5px 12px; border-radius:999px; letter-spacing:.5px; text-transform:uppercase; }
+  .tag.reported { background:rgba(127,178,255,.16); color:#7fb2ff; }
+  .tag.record { background:rgba(255,209,102,.14); color:#ffd166; }
+  .src { font-size:15px; color:#6c7c93; margin-left:auto; }
+  .item .h { font-size:27px; font-weight:700; line-height:1.25; }
+  .item .d { font-size:18px; color:#9fb0c7; margin-top:8px; line-height:1.4; }
+  .congress { border-color:rgba(255,209,102,.32); background:rgba(255,209,102,.06); }
+  .cgrid { display:flex; gap:30px; margin-top:14px; }
+  .cg .v { font-size:24px; font-weight:800; }
+  .cg .l { font-size:14px; color:#9fb0c7; text-transform:uppercase; letter-spacing:.5px; }
+  .disc { margin-top:auto; font-size:17px; color:#8a99af; line-height:1.5; border-top:1px solid rgba(127,178,255,.14); padding-top:22px; }
+  .disc b { color:#cdd8e8; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="kicker">Also in the mix</div>
+    <h1>The rest of the Dell tape</h1>
+
+    <div class="item">
+      <div class="top"><span class="tag reported">Reported</span><span class="src">Dell newsroom / Yahoo Finance &middot; GTC 2026</span></div>
+      <div class="h">Dell AI Factory with NVIDIA keeps expanding</div>
+      <div class="d">A co-development program spanning 240+ products with NVIDIA Blackwell / Rubin systems; 4,000+ customers cited. This is the demand story behind the price.</div>
+    </div>
+
+    <div class="item">
+      <div class="top"><span class="tag reported">Reported</span><span class="src">Dell press release &middot; 2026-01-21</span></div>
+      <div class="h">Sovereign AI EMEA: Dell + Palantir data-center network</div>
+      <div class="d">Dell AI Factory hardware as the backbone for a sovereign AI data-center build across Europe, the Middle East &amp; Africa, with Palantir on the software layer.</div>
+    </div>
+
+    <div class="item congress">
+      <div class="top"><span class="tag record">Public record</span><span class="src">House disclosure (PTR) &middot; filed 2025-11-22</span></div>
+      <div class="h">A congressional DELL purchase is on file</div>
+      <div class="cgrid">
+        <div class="cg"><div class="v">Rep. Jared Moskowitz</div><div class="l">Filer (FL-23)</div></div>
+        <div class="cg"><div class="v">$15,001&ndash;$50,000</div><div class="l">Disclosed range</div></div>
+        <div class="cg"><div class="v">Buy &middot; 2025-10-10</div><div class="l">Transaction</div></div>
+      </div>
+      <div class="d">Disclosures are public record &mdash; <b>not an accusation, and not a trading signal.</b> Amounts are broad ranges, not exact figures.</div>
+    </div>
+
+    <div class="disc">
+      <b>Educational / market commentary only &mdash; not financial advice. Do your own research.</b><br>
+      "Fundamental value" is one model's estimate, not a price target. News items carry their reported/filed certainty as labeled. Congressional trades are public disclosures, not accusations or signals. Numbers as of 2026-06-02/03.
+    </div>
+  </div>
+</body>
+</html>

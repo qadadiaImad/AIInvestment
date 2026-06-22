@@ -1,0 +1,39 @@
+AI STACK — IMAGE-RICH CAROUSEL KIT (2026-06-21, v4)  | 4:5 (1080×1350), swipeable, hero art + logo + BIG ticker
+Numbers from the terminal, data as of 2026-06-20. Slides rendered in higgs/ via _build_v4.py (hero art = Higgsfield recraft-v4-1).
+Voice: confident news storytelling; disclaimers THIN on the footer only (no stacked NFAs in the body). No first person; no news outlet named.
+
+=============== POST 1 — THE LAYER WALL STREET FORGOT (ADBE / AI) ===============
+Slides: v4_adbe_1_hook.png -> v4_adbe_2_data.png -> v4_adbe_3_takeaway.png   (hero: hero_software_2026-06-21.png + ADBE logo)
+Caption:
+Wall Street spent two years bidding up the company that makes the AI chips — and forgot the ones that turn those
+chips into money. Adobe now trades about 68% below what analysts think it's worth. Atlassian's ~70% under, Intuit
+~67%, Workday ~63%, ServiceNow ~58%. The hype went to one layer; the discount's sitting on another — right as the
+AI-software thesis starts to turn. Educational, not advice.
+Hashtags: #aistocks #adobe #softwarestocks #valuation #stocktok #fintok #investing101
+
+=============== POST 2 — THE ODD ONE OUT (IONQ / QUANTUM) ===============
+Slides: v4_ionq_1_hook.png -> v4_ionq_2_data.png -> v4_ionq_3_takeaway.png   (hero: hero_quantum_2026-06-21.png + IONQ logo)
+Caption:
+"Quantum" gets traded like one big lottery ticket — but the names underneath are nothing alike. Rigetti trades
+~22x above what analysts think it's worth; D-Wave ~10x above. IonQ? About 35% below. And this week IonQ shipped
+real quantum-security product at scale while much of the sector still runs on a pitch. One name is priced on the
+model, not the story. Educational, not advice.
+Hashtags: #quantumcomputing #ionq #rigetti #dwave #quantumstocks #stocktok #fintok
+
+=============== POST 3 — THE COMMITTEE THAT SOLD ITS SECTOR (CONGRESS) ===============
+Slides: v4_cong_1_hook.png -> v4_cong_2_card.png -> v4_cong_3_takeaway.png   (hero: hero_congress_2026-06-21.png)
+Caption:
+Rep. Matthew Van Epps sits on the House Science, Space & Technology Committee — the panel that helps oversee the
+U.S. tech sector. On June 16, in a single day, he disclosed selling 13 stocks — eight of them the very Big-Tech
+names his committee oversees: Nvidia, Microsoft, Meta, Alphabet, Apple, Intel, IBM and GE. Filed the next day.
+Members are allowed to trade — this is just the public record: who sold what, when, and the committee they sit on.
+Educational, not advice.
+Hashtags: #congresstrading #stockact #nvidia #bigtech #transparency #stocktok #fintok
+
+NOTES
+- v4 = image-rich: each slide has a Higgsfield hero (recraft-v4-1, 4:5, emerald palette) + real logo + BIG uppercase ticker.
+- De-cringe rule applied: confident body; ONE thin disclaimer on the footer; no "not a recommendation / reported, not confirmed" stacking.
+- Heroes per post: ADBE=AI software/neural panels · IONQ=quantum atom/superposition · Congress=Capitol + ticker-tape.
+- Logos fetched from financialmodelingprep.com/image-stock/<TICKER>.png (IONQ verified = Pentagram cube/Q mark).
+- Regenerate after a data refresh: re-run higgs/_build_v4.py (re-gen heroes only when the theme/story changes).
+- Maya UGC retired per owner — see higgsfield_2026-06-21_v2.txt only if you ever want talking-head again.

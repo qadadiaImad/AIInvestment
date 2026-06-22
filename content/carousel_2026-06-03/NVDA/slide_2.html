@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NVDA — Slide 2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,sans-serif;background:#070b14;color:#e9eef7;
+    width:1080px;height:1350px;overflow:hidden;position:relative;
+    background-image:radial-gradient(800px 500px at 90% 0%,rgba(60,130,255,.12),transparent 60%),
+      radial-gradient(700px 500px at -10% 100%,rgba(118,255,120,.08),transparent 60%);}
+  .pad{padding:74px 70px}
+  .kicker{font-size:23px;letter-spacing:.18em;text-transform:uppercase;color:#8fa0bd;font-weight:700}
+  .h{font-size:78px;font-weight:900;letter-spacing:-.03em;line-height:1.0;margin-top:18px}
+  .h em{color:#76ff78;font-style:normal}
+  .lead{font-size:29px;color:#9fb0cd;font-weight:600;margin-top:22px;line-height:1.4;max-width:880px}
+  .bars{margin-top:62px;display:flex;flex-direction:column;gap:46px}
+  .bar{}
+  .bar .lab{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+  .bar .name{font-size:32px;font-weight:800}
+  .bar .name span{font-size:24px;color:#9fb0cd;font-weight:600}
+  .bar .val{font-size:52px;font-weight:900;letter-spacing:-.02em}
+  .track{height:64px;border-radius:16px;background:rgba(255,255,255,.06);overflow:hidden;position:relative}
+  .fill{height:100%;border-radius:16px}
+  .fill.price{width:66.3%;background:linear-gradient(90deg,#3c82ff,#5fa0ff)}
+  .fill.fv{width:100%;background:linear-gradient(90deg,#27d96b,#76ff78)}
+  .gapcard{margin-top:64px;display:flex;gap:26px}
+  .gc{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);
+    border-radius:22px;padding:34px 32px}
+  .gc.hl{background:linear-gradient(120deg,rgba(118,255,120,.16),rgba(118,255,120,.04));
+    border-color:rgba(118,255,120,.34)}
+  .gc .n{font-size:74px;font-weight:900;letter-spacing:-.03em;color:#76ff78;line-height:.9}
+  .gc .t{font-size:25px;color:#9fb0cd;font-weight:600;margin-top:16px;line-height:1.35}
+  .gc.neutral .n{color:#cfe0ff}
+  .note{position:absolute;bottom:42px;left:70px;right:70px;font-size:24px;color:#8fa0bd;
+    font-weight:600;line-height:1.45;border-top:1px solid rgba(255,255,255,.10);padding-top:24px}
+  .note b{color:#cdd8ea}
+</style>
+</head>
+<body>
+<div class="pad">
+  <div class="kicker">The gap · my own model read</div>
+  <div class="h">Trading <em>below</em><br>my fair-value line</div>
+  <div class="lead">My fundamental-value estimate lands above the tape. Here's the spread between what the market pays today and what the cash-flow math says the business is worth.</div>
+
+  <div class="bars">
+    <div class="bar">
+      <div class="lab"><div class="name">Market price <span>· 02 Jun 2026</span></div><div class="val" style="color:#5fa0ff">$222.82</div></div>
+      <div class="track"><div class="fill price"></div></div>
+    </div>
+    <div class="bar">
+      <div class="lab"><div class="name">Fundamental value <span>· my estimate</span></div><div class="val" style="color:#76ff78">$336.11</div></div>
+      <div class="track"><div class="fill fv"></div></div>
+    </div>
+  </div>
+
+  <div class="gapcard">
+    <div class="gc hl"><div class="n">33.7%</div><div class="t">discount to my fundamental-value estimate</div></div>
+    <div class="gc neutral"><div class="n">36.1%</div><div class="t">implied margin of safety on that read</div></div>
+  </div>
+
+  <div class="note">Read it as: at $223 you're paying ~66 cents for a dollar of my modeled value — a cushion only if the growth and margins below actually hold. <b>An estimate, not a price target.</b></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# COWORK INSTRUCTIONS  (cowork channel — Claude reads this every turn)
+# Drop instructions below the line. Claude will see the latest version on your next message
+# and act on anything new. Keep it short; clear one task or note at a time.
+# Examples:
+#   - "regenerate the carousels from fresh data"
+#   - "update all terminal data and deploy"
+#   - "make 2 more posts: pick the hottest AI + congress headlines"
+# ------------------------------------------------------------------------------------------
+TEST 4567 — ack this if you read me

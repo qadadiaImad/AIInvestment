@@ -1,0 +1,23 @@
+{
+  "NVDA": {
+    "fundamental_value": 336.11,
+    "gf_valuation_code": 2,
+    "margin_of_safety_pct": 36.11,
+    "iv": 336.11,
+    "latest_median_ps": 832.07
+  },
+  "CRM": {
+    "fundamental_value": 319.92,
+    "gf_valuation_code": 3,
+    "margin_of_safety_pct": 40.42,
+    "iv": 319.92,
+    "latest_median_ps": 433.37
+  },
+  "DELL": {
+    "fundamental_value": 162.37,
+    "gf_valuation_code": 7,
+    "margin_of_safety_pct": -159.33,
+    "iv": 162.37,
+    "latest_median_ps": 251.32
+  }
+}

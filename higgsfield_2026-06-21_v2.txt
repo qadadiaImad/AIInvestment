@@ -1,0 +1,68 @@
+TIKTOK UGC KIT — "MAYA" CREATOR PERSONA  (2026-06-21, v2 — story-driven / news-anchor tone)
+Vertical 9:16. Numbers from the terminal, data as of 2026-06-20. Educational / market commentary — not financial advice.
+Persona identity: Higgsfield custom avatar 0932dd65-ec67-4ecb-90c9-83cb8ef295a1 + identity anchor higgs/maya_anchor_2026-06-03.png
+Copy rules: NO first person (Maya narrates like a calm news anchor / analyst, never "I/my/we"); valuation = "analysts' model";
+congress = public record + the policy relevance, transparency not accusation; never name a news outlet (framed "reportedly").
+Each script = a story: cold-open hook -> tension -> the data reveal -> the "so what". Same 3 stories as the IG kit.
+
+================= VIDEO 1 — THE LAYER WALL STREET FORGOT (AI) =================
+COLD-OPEN HOOK (0–2s, on-screen + spoken): "Wall Street bought the AI chip — and forgot who actually SELLS the AI."
+SPOKEN SCRIPT (~30s):
+"For two years, all the money chased the company that makes the AI chips. Almost nobody noticed the companies that
+turn those chips into actual revenue. Take Adobe — now trading around 68% below what analysts think it's worth.
+Atlassian, seventy percent under. Intuit, sixty-seven. Workday and ServiceNow, both deep below the model. And the
+tide may be turning: reportedly, even the world's biggest chipmaker just said software is next to benefit from AI —
+and one famous contrarian investor reportedly backed up the truck on beaten-down tech. The hype went to one layer.
+The discount's sitting on another."
+ON-SCREEN BEATS: "the chip got the hype" -> "ADBE −68% vs model" -> "TEAM −70 · INTU −67 · WDAY −63 · NOW −58" -> "hype ≠ price"
+CUTAWAY: drop in higgs/v3_post1_2_graph.png at the "Atlassian, seventy percent under" line.
+CAPTION: The AI discount nobody's talking about — the software layer that sells AI trades ~60–70% below analysts'
+model while everyone crowds the chips. Reportedly even chipmakers say software's next. NFA.
+#aistocks #adobe #softwarestocks #stocktok #fintok #notfinancialadvice
+HIGGSFIELD VIDEO PROMPT (image-to-video; renders ON APPROVAL — uses credits):
+"Talking-head UGC, 9:16, Maya identity anchor (avatar 0932dd65 / maya_anchor_2026-06-03.png): same woman, warm,
+credible news-creator energy, soft daylight, clean minimal loft. Confident open, leans in slightly on 'forgot',
+natural hand gestures, subtle nod on the numbers. Lips synced to script. No baked-in text. 8s."
+
+================= VIDEO 2 — THE ODD ONE OUT (QUANTUM) =================
+COLD-OPEN HOOK: "Quantum stocks trade like lottery tickets. One of them just shipped a real product."
+SPOKEN SCRIPT (~28s):
+"Everyone trades 'quantum' like it's one big bet — but the names underneath are nothing alike. Rigetti trades
+around twenty-two times above analysts' fair value. D-Wave, about ten times above. IonQ? Roughly 35% below it.
+And here's the twist — this week, IonQ reportedly rolled out new quantum-security tech built to actually ship at
+scale, while much of the sector still runs on a pitch deck. Most of quantum is priced on the story. One name is
+priced below the model. Reported, not confirmed — not a recommendation."
+ON-SCREEN BEATS: "'quantum' ≠ one trade" -> "RGTI ~22x · QBTS ~10x ABOVE" -> "IONQ −35% (BELOW)" -> "story vs model"
+CUTAWAY: drop in higgs/v3_post2_2_graph.png on "nothing alike".
+CAPTION: "Quantum" gets traded like one bet — but IonQ sits ~35% BELOW analysts' model while peers trade 10–22x
+ABOVE. And IonQ reportedly just shipped real product. Reported, not confirmed. Not a recommendation.
+#quantumcomputing #ionq #rigetti #quantumstocks #stocktok #notfinancialadvice
+HIGGSFIELD VIDEO PROMPT (image-to-video; renders ON APPROVAL — uses credits):
+"Same Maya anchor, 9:16. Cooler ambient light, subtle blue accent, same loft. Slightly skeptical, knowing delivery;
+small eyebrow raise on 'twenty-two times'. Lips synced. No baked-in text. 8s."
+
+================= VIDEO 3 — THE COMMITTEE THAT SOLD ITS SECTOR (CONGRESS) =================
+COLD-OPEN HOOK: "The congressman who helps oversee Big Tech just sold all of it."
+SPOKEN SCRIPT (~30s):
+"Here's one straight from the public record. Congressman Matthew Van Epps sits on the House Science, Space, and
+Technology Committee — the panel that helps oversee America's tech sector. Then, on a single day in June, he
+disclosed selling thirteen stocks — and eight of them were the exact Big-Tech names his committee oversees: Nvidia,
+Microsoft, Meta, Alphabet, Apple, Intel, IBM, GE. Filed the very next day. Now — members are allowed to trade, this
+isn't an accusation, and it's not a signal. It's just who sold what, when... and the committee they happen to sit
+on. Worth knowing it's all public."
+ON-SCREEN BEATS: "sits on the Science & Tech committee" -> ticker wall (NVDA MSFT META GOOGL AAPL INTC IBM GE) -> "traded 6/16 · filed 6/17" -> "public record · not a signal"
+CUTAWAY: drop in higgs/v3_post3_2_card.png on "selling thirteen stocks".
+CAPTION: Public record: a House Science-Committee member disclosed selling 13 stocks in one day — 8 the very
+Big-Tech names his committee oversees (NVDA, MSFT, META, GOOGL, AAPL, INTC, IBM, GE). Transparency only — not an
+accusation, not a signal. NFA.
+#congresstrading #stockact #nvidia #bigtech #transparency #stocktok #notfinancialadvice
+HIGGSFIELD VIDEO PROMPT (image-to-video; renders ON APPROVAL — uses credits):
+"Same Maya anchor, 9:16. Neutral, credible, document-like tone — measured, fewer gestures, calm authority. Warm
+soft daylight. Lips synced. No baked-in text. 8s."
+
+----------------------------------------------------------------------
+RENDER PLAN (on your approval — the only step that spends Higgsfield credits; balance: 126):
+  1) 3 × image-to-video clips (Maya, 9:16, ~8s) from the avatar/anchor above.
+  2) Download into higgs/ (maya_v2_software_2026-06-21.mp4, _quantum_, _congress_).
+  3) Edit: overlay ON-SCREEN BEATS + drop the matching v3_*.png cutaways; add trending audio per IG kit.
+Say "render the Maya videos" to generate + download. (Want one 45s combined cut instead of 3 clips? say so.)

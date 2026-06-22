@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<title>CRM — Slide 3</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:1350px; }
+  body {
+    font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(120% 90% at 18% 0%, #11233f 0%, #0a1322 48%, #060b16 100%);
+    color:#eef3fb; padding:70px 66px; display:flex; flex-direction:column;
+  }
+  .kick { font-size:24px; font-weight:700; color:#5fa8ff; letter-spacing:3px; text-transform:uppercase; }
+  .title { margin-top:10px; font-size:54px; font-weight:800; letter-spacing:-1.3px; line-height:1.05; }
+  .sub { margin-top:14px; font-size:23px; color:#9fb3d1; max-width:940px; line-height:1.4; }
+  .grid { margin-top:40px; display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .card { background:#0e1c33; border:1.5px solid #1f3a5c; border-radius:18px; padding:26px 28px; }
+  .cname { font-size:23px; color:#9fb3d1; font-weight:600; }
+  .cmain { margin-top:10px; display:flex; align-items:baseline; gap:14px; }
+  .cval { font-size:54px; font-weight:800; letter-spacing:-1.5px; }
+  .badge { font-size:18px; font-weight:700; padding:6px 13px; border-radius:999px; }
+  .over { color:#9fe7c0; background:#13241d; border:1.5px solid #2f6b52; }
+  .under { color:#ffc04d; background:#2a2113; border:1.5px solid #6b5320; }
+  .cmed { margin-top:12px; font-size:20px; color:#7e92b2; }
+  .cmed b { color:#cdddf2; }
+  .hero { grid-column:1 / span 2; background:linear-gradient(100deg,#10261c,#0e1c33);
+          border:1.5px solid #2f6b52; }
+  .hero .cname { color:#9fe7c0; }
+  .callout { margin-top:34px; background:#10203a; border-left:5px solid #5fe0a0;
+             border-radius:0 14px 14px 0; padding:24px 30px; font-size:25px; line-height:1.45; color:#dce6f5; }
+  .callout b { color:#5fe0a0; }
+  .foot { margin-top:auto; font-size:18px; color:#6f84a4; padding-top:22px; }
+</style></head>
+<body>
+  <div class="kick">Why the value &mdash; building blocks</div>
+  <div class="title">A software franchise that prints cash.</div>
+  <div class="sub">For an application-software name, value lives in revenue multiples, growth and margin quality. CRM vs the typical Packaged-Software peer:</div>
+
+  <div class="grid">
+    <div class="card hero">
+      <div class="cname">Operating margin &mdash; the dominant factor</div>
+      <div class="cmain"><span class="cval" style="color:#5fe0a0">21.9%</span><span class="badge over">~3&times; the median</span></div>
+      <div class="cmed">industry median <b>7.3%</b> &middot; profitability, not story, anchors this value</div>
+    </div>
+
+    <div class="card">
+      <div class="cname">Price / Sales</div>
+      <div class="cmain"><span class="cval">4.08&times;</span><span class="badge under">richer</span></div>
+      <div class="cmed">industry median <b>3.61&times;</b></div>
+    </div>
+    <div class="card">
+      <div class="cname">Gross margin</div>
+      <div class="cmain"><span class="cval" style="color:#5fe0a0">75.1%</span><span class="badge over">above</span></div>
+      <div class="cmed">industry median <b>63.7%</b></div>
+    </div>
+    <div class="card">
+      <div class="cname">Revenue growth (YoY)</div>
+      <div class="cmain"><span class="cval">11.0%</span><span class="badge under">below</span></div>
+      <div class="cmed">industry median <b>13.4%</b></div>
+    </div>
+    <div class="card">
+      <div class="cname">Net margin</div>
+      <div class="cmain"><span class="cval" style="color:#5fe0a0">18.7%</span><span class="badge over">above</span></div>
+      <div class="cmed">industry median <b>5.2%</b></div>
+    </div>
+  </div>
+
+  <div class="callout">The one factor doing the work: <b>margins, not growth.</b> CRM grows a touch slower than the median peer (11% vs 13%), but converts revenue at roughly <b>3&times; the typical operating margin</b> &mdash; that profitability is what carries a fundamental value well above today's price.</div>
+
+  <div class="foot">Company figures: site data (TTM). Industry medians: Packaged Software scan, ~290 names, retrieved 2026-06-03. P/S median across 295 names.</div>
+</body></html>

@@ -1,0 +1,459 @@
+{
+  "HSAG": {
+    "name": "House Committee on Agriculture",
+    "type": "house",
+    "subcommittees": {
+      "15": "Forestry and Horticulture",
+      "22": "Commodity Markets, Digital Assets, and Rural Development",
+      "16": "General Farm Commodities, Risk Management, and Credit",
+      "29": "Livestock, Dairy, and Poultry",
+      "14": "Conservation, Research, and Biotechnology",
+      "03": "Nutrition and Foreign Agriculture"
+    }
+  },
+  "HSAP": {
+    "name": "House Committee on Appropriations",
+    "type": "house",
+    "subcommittees": {
+      "01": "Agriculture, Rural Development, Food and Drug Administration, and Related Agencies",
+      "19": "Commerce, Justice, Science, and Related Agencies",
+      "02": "Defense",
+      "10": "Energy and Water Development and Related Agencies",
+      "23": "Financial Services and General Government",
+      "15": "Homeland Security",
+      "06": "Interior, Environment, and Related Agencies",
+      "07": "Labor, Health and Human Services, Education, and Related Agencies",
+      "24": "Legislative Branch",
+      "18": "Military Construction, Veterans Affairs, and Related Agencies",
+      "04": "National Security, Department of State, and Related Programs",
+      "20": "Transportation, Housing and Urban Development, and Related Agencies"
+    }
+  },
+  "HSAS": {
+    "name": "House Committee on Armed Services",
+    "type": "house",
+    "subcommittees": {
+      "25": "Tactical Air and Land Forces",
+      "02": "Military Personnel",
+      "03": "Readiness",
+      "28": "Seapower and Projection Forces",
+      "29": "Strategic Forces",
+      "26": "Intelligence and Special Operations",
+      "35": "Cyber, Information Technologies, and Innovation"
+    }
+  },
+  "HSBA": {
+    "name": "House Committee on Financial Services",
+    "type": "house",
+    "subcommittees": {
+      "16": "Capital Markets",
+      "04": "Housing and Insurance",
+      "09": "Oversight and Investigations",
+      "20": "Financial Institutions",
+      "21": "Digital Assets, Financial Technology, and Artificial Intelligence",
+      "10": "National Security, Illicit Finance, and International Financial Institutions"
+    }
+  },
+  "HSBU": {
+    "name": "House Committee on the Budget",
+    "type": "house",
+    "subcommittees": {}
+  },
+  "HSED": {
+    "name": "House Committee on Education and Workforce",
+    "type": "house",
+    "subcommittees": {
+      "14": "Early Childhood, Elementary, and Secondary Education",
+      "02": "Health, Employment, Labor, and Pensions",
+      "13": "Higher Education and Workforce Development",
+      "10": "Workforce Protections"
+    }
+  },
+  "HSFA": {
+    "name": "House Committee on Foreign Affairs",
+    "type": "house",
+    "subcommittees": {
+      "16": "Africa",
+      "05": "East Asia and Pacific",
+      "14": "Europe",
+      "13": "Middle East and North Africa",
+      "07": "Western Hemisphere",
+      "17": "Oversight and Intelligence",
+      "19": "South and Central Asia"
+    }
+  },
+  "HSGO": {
+    "name": "House Committee on Oversight and Government Reform",
+    "type": "house",
+    "subcommittees": {
+      "24": "Government Operations",
+      "06": "Military and Foreign Affairs",
+      "27": "Health Care and Financial Services",
+      "05": "Economic Growth, Energy Policy, and Regulatory Affairs",
+      "12": "Cybersecurity, Information Technology, and Government Innovation",
+      "16": "Delivering on Government Efficiency",
+      "33": "Federal Law Enforcement"
+    }
+  },
+  "HSHA": {
+    "name": "House Committee on House Administration",
+    "type": "house",
+    "subcommittees": {
+      "08": "Elections",
+      "27": "Modernization and Innovation"
+    }
+  },
+  "HSHM": {
+    "name": "House Committee on Homeland Security",
+    "type": "house",
+    "subcommittees": {
+      "11": "Border Security and Enforcement",
+      "12": "Emergency Management and Technology",
+      "08": "Cybersecurity and Infrastructure Protection",
+      "05": "Counterterrorism and Intelligence",
+      "09": "Oversight, Investigations, and Accountability",
+      "07": "Transportation and Maritime Security"
+    }
+  },
+  "HSIF": {
+    "name": "House Committee on Energy and Commerce",
+    "type": "house",
+    "subcommittees": {
+      "17": "Commerce, Manufacturing, and Trade",
+      "16": "Communications and Technology",
+      "03": "Energy",
+      "14": "Health",
+      "02": "Oversight and Investigations",
+      "18": "Environment"
+    }
+  },
+  "HSII": {
+    "name": "House Committee on Natural Resources",
+    "type": "house",
+    "subcommittees": {
+      "06": "Energy and Mineral Resources",
+      "10": "Federal Lands",
+      "13": "Water, Wildlife and Fisheries",
+      "24": "Indian and Insular Affairs",
+      "15": "Oversight and Investigations"
+    }
+  },
+  "HLIG": {
+    "name": "House Permanent Select Committee on Intelligence",
+    "type": "house",
+    "subcommittees": {
+      "09": "Oversight and Investigations",
+      "01": "Central Intelligence Agency",
+      "02": "National Security Agency and Cyber",
+      "04": "Defense Intelligence and Overhead Architecture",
+      "06": "National Intelligence Enterprise",
+      "11": "Open Source Intelligence"
+    }
+  },
+  "HSJU": {
+    "name": "House Committee on the Judiciary",
+    "type": "house",
+    "subcommittees": {
+      "10": "The Constitution and Limited Government",
+      "03": "Courts, Intellectual Property, Artificial Intelligence, and the Internet",
+      "08": "Crime and Federal Government Surveillance",
+      "01": "Immigration Integrity, Security, and Enforcement",
+      "05": "The Administrative State, Regulatory Reform, and Antitrust",
+      "13": "Oversight"
+    }
+  },
+  "HSPW": {
+    "name": "House Committee on Transportation and Infrastructure",
+    "type": "house",
+    "subcommittees": {
+      "05": "Aviation",
+      "07": "Coast Guard and Maritime Transportation",
+      "13": "Economic Development, Public Buildings, and Emergency Management",
+      "12": "Highways and Transit",
+      "14": "Railroads, Pipelines, and Hazardous Materials",
+      "02": "Water Resources and Environment"
+    }
+  },
+  "HSRU": {
+    "name": "House Committee on Rules",
+    "type": "house",
+    "subcommittees": {
+      "02": "Legislative and Budget Process",
+      "04": "Rules and Organization of the House"
+    }
+  },
+  "HSSM": {
+    "name": "House Committee on Small Business",
+    "type": "house",
+    "subcommittees": {
+      "23": "Contracting and Infrastructure",
+      "24": "Oversight, Investigations, and Regulations",
+      "27": "Economic Growth, Tax, and Capital Access",
+      "21": "Rural Development, Energy, and Supply Chains",
+      "22": "Innovation, Entrepreneurship, and Workforce Development"
+    }
+  },
+  "HSSO": {
+    "name": "House Committee on Ethics",
+    "type": "house",
+    "subcommittees": {}
+  },
+  "HSSY": {
+    "name": "House Committee on Science, Space, and Technology",
+    "type": "house",
+    "subcommittees": {
+      "20": "Energy",
+      "21": "Investigations and Oversight",
+      "16": "Space and Aeronautics",
+      "18": "Environment",
+      "15": "Research and Technology"
+    }
+  },
+  "HSVR": {
+    "name": "House Committee on Veterans' Affairs",
+    "type": "house",
+    "subcommittees": {
+      "09": "Disability Assistance and Memorial Affairs",
+      "10": "Economic Opportunity",
+      "03": "Health",
+      "08": "Oversight and Investigations",
+      "11": "Technology Modernization"
+    }
+  },
+  "HSWM": {
+    "name": "House Committee on Ways and Means",
+    "type": "house",
+    "subcommittees": {
+      "02": "Health",
+      "03": "Work and Welfare",
+      "06": "Oversight",
+      "05": "Tax",
+      "01": "Social Security",
+      "04": "Trade"
+    }
+  },
+  "JCSE": {
+    "name": "Commission on Security and Cooperation in Europe",
+    "type": "joint",
+    "subcommittees": {}
+  },
+  "JSEC": {
+    "name": "Joint Economic Committee",
+    "type": "joint",
+    "subcommittees": {}
+  },
+  "JSLC": {
+    "name": "Joint Committee of Congress on the Library",
+    "type": "joint",
+    "subcommittees": {}
+  },
+  "JSPR": {
+    "name": "Joint Committee on Printing",
+    "type": "joint",
+    "subcommittees": {}
+  },
+  "JSTX": {
+    "name": "Joint Committee on Taxation",
+    "type": "joint",
+    "subcommittees": {}
+  },
+  "SCNC": {
+    "name": "United States Senate Caucus on International Narcotics Control",
+    "type": "senate",
+    "subcommittees": {}
+  },
+  "SLET": {
+    "name": "Senate Select Committee on Ethics",
+    "type": "senate",
+    "subcommittees": {}
+  },
+  "SLIA": {
+    "name": "Senate Committee on Indian Affairs",
+    "type": "senate",
+    "subcommittees": {}
+  },
+  "SLIN": {
+    "name": "Senate Select Committee on Intelligence",
+    "type": "senate",
+    "subcommittees": {}
+  },
+  "SPAG": {
+    "name": "Senate Special Committee on Aging",
+    "type": "senate",
+    "subcommittees": {}
+  },
+  "SSAF": {
+    "name": "Senate Committee on Agriculture, Nutrition, and Forestry",
+    "type": "senate",
+    "subcommittees": {
+      "13": "Commodities, Derivatives, Risk Management, and Trade",
+      "14": "Conservation, Forestry, Natural Resources, and Biotechnology",
+      "15": "Rural Development, Energy, and Credit",
+      "16": "Food and Nutrition, Specialty Crops, Organics, and Research",
+      "17": "Livestock, Dairy, Poultry, and Food Safety"
+    }
+  },
+  "SSAP": {
+    "name": "Senate Committee on Appropriations",
+    "type": "senate",
+    "subcommittees": {
+      "16": "Commerce, Justice, Science, and Related Agencies",
+      "22": "Energy and Water Development",
+      "23": "Financial Services and General Government",
+      "14": "Department of Homeland Security",
+      "17": "Department of Interior, Environment, and Related Agencies",
+      "18": "Departments of Labor, Health and Human Services, and Education, and Related Agencies",
+      "19": "Military Construction, Veterans Affairs, and Related Agencies",
+      "20": "State, Foreign Operations, and Related Programs",
+      "24": "Transportation, Housing and Urban Development, and Related Agencies",
+      "01": "Agriculture, Rural Development, Food and Drug Administration, and Related Agencies",
+      "02": "Department of Defense",
+      "08": "Legislative Branch"
+    }
+  },
+  "SSAS": {
+    "name": "Senate Committee on Armed Services",
+    "type": "senate",
+    "subcommittees": {
+      "14": "Airland",
+      "20": "Emerging Threats and Capabilities",
+      "17": "Personnel",
+      "15": "Readiness and Management Support",
+      "13": "Seapower",
+      "16": "Strategic Forces",
+      "21": "Cybersecurity"
+    }
+  },
+  "SSBK": {
+    "name": "Senate Committee on Banking, Housing, and Urban Affairs",
+    "type": "senate",
+    "subcommittees": {
+      "12": "Economic Policy",
+      "05": "National Security and International Trade and Finance",
+      "04": "Securities, Insurance, and Investment",
+      "09": "Housing, Transportation, and Community Development",
+      "08": "Financial Institutions and Consumer Protection",
+      "13": "Digital Assets"
+    }
+  },
+  "SSBU": {
+    "name": "Senate Committee on the Budget",
+    "type": "senate",
+    "subcommittees": {}
+  },
+  "SSCM": {
+    "name": "Senate Committee on Commerce, Science, and Transportation",
+    "type": "senate",
+    "subcommittees": {
+      "33": "Aviation, Space, and Innovation",
+      "34": "Telecommunications and Media",
+      "35": "Consumer Protection, Technology, and Data Privacy",
+      "36": "Coast Guard, Maritime, and Fisheries",
+      "37": "Science, Manufacturing, and Competitiveness",
+      "38": "Surface Transportation, Freight, Pipelines, and Safety",
+      "39": "Tourism, Trade, and Export Promotion"
+    }
+  },
+  "SSEG": {
+    "name": "Senate Committee on Energy and Natural Resources",
+    "type": "senate",
+    "subcommittees": {
+      "07": "Water and Power",
+      "04": "National Parks",
+      "01": "Energy",
+      "03": "Public Lands, Forests, and Mining"
+    }
+  },
+  "SSEV": {
+    "name": "Senate Committee on Environment and Public Works",
+    "type": "senate",
+    "subcommittees": {
+      "10": "Clean Air, Climate, and Nuclear Innovation and Safety",
+      "09": "Chemical Safety, Waste Management, Environmental Justice, and Regulatory Oversight",
+      "08": "Transportation and Infrastructure",
+      "15": "Fisheries, Wildlife, and Water"
+    }
+  },
+  "SSFI": {
+    "name": "Senate Committee on Finance",
+    "type": "senate",
+    "subcommittees": {
+      "12": "Energy, Natural Resources, and Infrastructure",
+      "10": "Health Care",
+      "13": "International Trade, Customs, and Global Competitiveness",
+      "14": "Fiscal Responsibility and Economic Growth",
+      "11": "Taxation and IRS Oversight",
+      "02": "Social Security, Pensions, and Family Policy"
+    }
+  },
+  "SSFR": {
+    "name": "Senate Committee on Foreign Relations",
+    "type": "senate",
+    "subcommittees": {
+      "01": "Europe and Regional Security Cooperation",
+      "09": "Africa and Global Health Policy",
+      "02": "East Asia, the Pacific, and International Cybersecurity Policy",
+      "07": "Near East, South Asia, Central Asia, and Counterterrorism",
+      "06": "Western Hemisphere, Transnational Crime, Civilian Security, Democracy, Human Rights, and Global Women's Issues",
+      "15": "Multilateral International Development, Multilateral Institutions, and International Economic, Energy, and Environmental Policy",
+      "14": "State Department and USAID Management, International Operations, and Bilateral International Development"
+    }
+  },
+  "SSGA": {
+    "name": "Senate Committee on Homeland Security and Governmental Affairs",
+    "type": "senate",
+    "subcommittees": {
+      "01": "Permanent Subcommittee on Investigations",
+      "20": "Disaster Management, District of Columbia, and Census",
+      "22": "Border Management, Federal Workforce, and Regulatory Affairs"
+    }
+  },
+  "SSHR": {
+    "name": "Senate Committee on Health, Education, Labor, and Pensions",
+    "type": "senate",
+    "subcommittees": {
+      "11": "Employment and Workplace Safety",
+      "12": "Primary Health and Retirement Security",
+      "09": "Education and the American Family"
+    }
+  },
+  "SSJU": {
+    "name": "Senate Committee on the Judiciary",
+    "type": "senate",
+    "subcommittees": {
+      "21": "the Constitution",
+      "22": "Crime and Counterterrorism",
+      "01": "Antitrust, Competition Policy, and Consumer Rights",
+      "04": "Border Security and Immigration",
+      "25": "Federal Courts, Oversight, Agency Action, and Federal Rights",
+      "26": "Intellectual Property",
+      "27": "Human Rights and the Law",
+      "28": "Privacy, Technology, and the Law"
+    }
+  },
+  "SSRA": {
+    "name": "Senate Committee on Rules and Administration",
+    "type": "senate",
+    "subcommittees": {}
+  },
+  "SSSB": {
+    "name": "Senate Committee on Small Business and Entrepreneurship",
+    "type": "senate",
+    "subcommittees": {}
+  },
+  "SSVA": {
+    "name": "Senate Committee on Veterans' Affairs",
+    "type": "senate",
+    "subcommittees": {}
+  },
+  "HSZS": {
+    "name": "House Select Committee on the Strategic Competition Between the United States and the Chinese Communist Party",
+    "type": "house",
+    "subcommittees": {}
+  },
+  "HSQJ": {
+    "name": "House Select Subcommittee to Investigate the Remaining Questions Surrounding January 6, 2021",
+    "type": "house",
+    "subcommittees": {}
+  }
+}

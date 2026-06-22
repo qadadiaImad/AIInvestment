@@ -1,0 +1,45 @@
+AI STACK — NARRATED REEL KIT (2026-06-22)  | 9:16 MP4, animated hero + Harrison AI voice + Ken-Burns data
+Numbers from the terminal, data as of 2026-06-20. Voice: ElevenLabs "Harrison". Educational / market commentary — not advice.
+Each reel: animated hero opener → data slide (Ken-Burns) → takeaway. Thin footer disclaimer only. No first person; no outlet named.
+Add a royalty-free music bed in your editor (Higgsfield is voice-only).
+
+=============== REEL 1 — NVDA (AI CHIPS) ===============
+File: reel_nvda_2026-06-22.mp4   | hero: AI robot + glowing chips
+Caption:
+Every AI chip stock looks expensive right now — except the biggest one. Nvidia is the only chip leader still
+trading below analysts' fundamental-value model: about 39% below fair value, even after a ~46% run this past
+year. AMD, Micron, Marvell and Arm all sit well above theirs. The most crowded trade in tech — and by this
+measure, the cheapest of the bunch. Educational, not advice.
+Hashtags: #nvidia #nvda #aistocks #semiconductors #valuation #stocktok #fintok #investing101
+
+=============== REEL 2 — IONQ (QUANTUM) ===============
+File: reel_ionq_2026-06-22.mp4   | hero: quantum atom / superposition
+Caption:
+"Quantum" gets traded like one big lottery ticket — but the names underneath are nothing alike. Rigetti trades
+~22x above what analysts think it's worth; D-Wave ~10x above. IonQ? About 35% below. And this week IonQ shipped
+real quantum-security product at scale while much of the sector still runs on a pitch. One name is priced on the
+model, not the story. Educational, not advice.
+Hashtags: #quantumcomputing #ionq #rigetti #dwave #quantumstocks #stocktok #fintok
+
+=============== REEL 3 — ADBE (AI SOFTWARE) ===============
+File: reel_adbe_2026-06-22.mp4   | hero: AI neural light + software panels
+Caption:
+Wall Street spent two years bidding up the company that makes the AI chips — and forgot the ones that turn those
+chips into money. Adobe now trades about 68% below what analysts think it's worth. Atlassian's ~70% under, Intuit
+~67%, Workday ~63%, ServiceNow ~58%. The hype went to one layer; the discount's on another — just as the case for
+AI software starts to turn. Educational, not advice.
+Hashtags: #aistocks #adobe #softwarestocks #valuation #stocktok #fintok #investing101
+
+=============== REEL 4 — CONGRESS (VAN EPPS) ===============
+File: reel_congress_2026-06-22.mp4   | hero: Capitol + ticker-tape
+Caption:
+Rep. Matthew Van Epps sits on the House Science, Space & Technology Committee — the panel that helps oversee the
+U.S. tech sector. On June 16, in a single day, he disclosed selling 13 stocks — eight of them the very Big-Tech
+names his committee oversees: Nvidia, Microsoft, Meta, Alphabet, Apple, Intel, IBM and GE. Filed the next day.
+Members are allowed to trade — this is just the public record: who sold what, when, and the committee they sit on.
+Educational, not advice.
+Hashtags: #congresstrading #stockact #nvidia #bigtech #transparency #stocktok #fintok
+
+NOTES
+- Posting order suggestion: lead with Congress (hardest hook) or NVDA (most-searched ticker). Space ~1/day.
+- All four built by the reel engine — see higgs/README_reels.md to rebuild from fresh data.

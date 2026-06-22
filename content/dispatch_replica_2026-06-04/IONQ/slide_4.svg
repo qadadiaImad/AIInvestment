@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350">
+  <defs>
+    <radialGradient id="cream" cx="15%" cy="0%" r="120%">
+      <stop offset="0" stop-color="#FAF7F0"/>
+      <stop offset="0.55" stop-color="#F1EBDD"/>
+      <stop offset="1" stop-color="#E7DECB"/>
+    </radialGradient>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#cream)"/>
+
+  <!-- Rule + kicker -->
+  <rect x="88" y="120" width="120" height="5" rx="2" fill="#0E9F6E"/>
+  <text x="88" y="180" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-weight="600" font-size="26" fill="#0E9F6E" letter-spacing="4">THE TAKEAWAY</text>
+
+  <!-- Big headline -->
+  <text x="88" y="280" font-family="'Fraunces','Georgia',serif" font-weight="700" font-size="84" fill="#15171C" letter-spacing="-2">Record growth.</text>
+  <text x="88" y="368" font-family="'Fraunces','Georgia',serif" font-weight="700" font-size="84" fill="#0E9F6E" font-style="italic" letter-spacing="-2">No consensus.</text>
+
+  <!-- KPI cards -->
+  <g>
+    <!-- Card 1 -->
+    <rect x="88" y="448" width="288" height="220" rx="18" fill="#FFFCF6" stroke="#E4DCCB" stroke-width="1.5"/>
+    <text x="120" y="558" font-family="'Fraunces','Georgia',serif" font-weight="700" font-size="64" fill="#15171C" letter-spacing="-2">+554<tspan font-size="36" fill="#0E9F6E">%</tspan></text>
+    <text x="120" y="618" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="18" fill="#8A8170" letter-spacing="2">RPO BACKLOG YoY</text>
+
+    <!-- Card 2 -->
+    <rect x="396" y="448" width="288" height="220" rx="18" fill="#FFFCF6" stroke="#E4DCCB" stroke-width="1.5"/>
+    <text x="428" y="558" font-family="'Fraunces','Georgia',serif" font-weight="700" font-size="64" fill="#15171C" letter-spacing="-2">$25.5<tspan font-size="36" fill="#0E9F6E">B</tspan></text>
+    <text x="428" y="618" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="18" fill="#8A8170" letter-spacing="2">MARKET CAP</text>
+
+    <!-- Card 3 -->
+    <rect x="704" y="448" width="288" height="220" rx="18" fill="#FFFCF6" stroke="#E4DCCB" stroke-width="1.5"/>
+    <text x="736" y="558" font-family="'Fraunces','Georgia',serif" font-weight="700" font-size="64" fill="#15171C" letter-spacing="-2">16/3<tspan font-size="36" fill="#0E9F6E">/0</tspan></text>
+    <text x="736" y="618" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="18" fill="#8A8170" letter-spacing="2">BUY / HOLD / SELL</text>
+  </g>
+
+  <!-- Sub paragraph -->
+  <g font-family="'Inter','Helvetica','Arial',sans-serif" font-size="33" fill="#5C6270">
+    <text x="88" y="770">Backlog growing faster than revenue. 16 buys, 3 holds,</text>
+    <text x="88" y="818">no sells — but the target range from $35 to $100 says</text>
+    <text x="88" y="866">even the bulls don't agree on what a 100%-growth</text>
+    <text x="88" y="914">quantum business is worth. Believe the contracts;</text>
+    <text x="88" y="962">price your own risk.</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="88" y="1230" font-family="'JetBrains Mono','Menlo','Consolas',monospace" font-size="19" fill="#9AA0AC" letter-spacing="1">educational · not financial advice · public, date-stamped sources</text>
+</svg>
