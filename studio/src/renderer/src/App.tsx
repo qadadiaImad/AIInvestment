@@ -1,3 +1,5 @@
+import Terminal from './components/Terminal'
+
 export default function App() {
   return (
     <div className="h-screen flex flex-col">
@@ -5,7 +7,9 @@ export default function App() {
         AI STACK STUDIO
       </header>
       <main className="flex-1 overflow-auto p-4 text-white/40">gallery (todo)</main>
-      <footer className="h-48 border-t border-white/10 p-2 text-white/40 font-mono text-sm">terminal (todo)</footer>
+      <footer className="h-56 border-t border-white/10 bg-[#0A0D12]">
+        <Terminal />
+      </footer>
     </div>
   )
 }

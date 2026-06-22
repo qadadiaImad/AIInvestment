@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from 'electron'
 import { join } from 'path'
+import { registerTerminal } from './terminal'
 
 function createWindow(): void {
   const win = new BrowserWindow({
@@ -23,6 +24,7 @@ function createWindow(): void {
 }
 
 app.whenReady().then(() => {
+  registerTerminal()
   createWindow()
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
