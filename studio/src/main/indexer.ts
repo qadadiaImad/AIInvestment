@@ -41,12 +41,13 @@ export function buildIndex(files: FileSets): Post[] {
   // content/carousel_<date>/<TK>/...
   const contentSeen = new Set<string>()
   for (const f of files.content) {
-    const m = f.match(/^carousel_(\d{4}-\d{2}-\d{2})\/([A-Z]+)\//)
+    const m = f.match(/^carousel_(\d{4}-\d{2}-\d{2})\/([A-Za-z]+)\//)
     if (!m) continue
-    const ck = key(m[1], m[2])
+    const tk = m[2].toUpperCase() // normalize ticker like the higgs branch; keep original case in the path
+    const ck = key(m[1], tk)
     if (contentSeen.has(ck)) continue
     contentSeen.add(ck)
-    const p = ensure(m[1], m[2], 'carousel'); if (p.kind !== 'reel') p.kind = 'carousel'
+    const p = ensure(m[1], tk, 'carousel'); if (p.kind !== 'reel') p.kind = 'carousel'
     p.media.push(M(`content/carousel_${m[1]}/${m[2]}/slide_1.html`))
   }
 
