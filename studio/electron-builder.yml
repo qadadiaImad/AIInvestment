@@ -2,6 +2,10 @@ appId: com.aistack.studio
 productName: AI STACK Studio
 directories: { output: dist }
 files: [ "out/**/*", "package.json" ]
+# node-pty ships ABI-agnostic NAPI prebuilds; skip electron-builder's source rebuild
+# (it would fail on the winpty gyp chain without VS C++ tools). The prebuilt .node files
+# are packaged as-is and kept out of asar so they load at runtime.
+npmRebuild: false
 asarUnpack: [ "**/node_modules/node-pty/**" ]
 win: { target: [ { target: nsis, arch: [x64] } ] }
 mac: { target: [ dmg ], category: public.app-category.finance }
