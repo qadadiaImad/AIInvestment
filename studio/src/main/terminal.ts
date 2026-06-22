@@ -7,8 +7,10 @@ const SHELL = process.platform === 'win32' ? 'powershell.exe' : (process.env.SHE
 
 export function registerTerminal(): void {
   let term: pty.IPty | null = null
+  let wc: WebContents | null = null
 
   ipcMain.on('term:start', (e, cols: number, rows: number) => {
+    wc = e.sender // (re)point output at the current renderer; survives a renderer hot-reload/reload
     if (term) return
     term = pty.spawn(SHELL, [], {
       name: 'xterm-color',
@@ -17,8 +19,7 @@ export function registerTerminal(): void {
       cwd: REPO_ROOT,
       env: process.env as { [k: string]: string }
     })
-    const wc: WebContents = e.sender
-    term.onData((d) => { if (!wc.isDestroyed()) wc.send('term:data', d) })
+    term.onData((d) => { if (wc && !wc.isDestroyed()) wc.send('term:data', d) })
     term.onExit(() => { term = null })
   })
 
