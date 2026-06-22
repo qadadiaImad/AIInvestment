@@ -8,8 +8,7 @@
     "build": "electron-vite build",
     "start": "electron-vite preview",
     "test": "vitest run",
-    "rebuild": "electron-rebuild -f -w node-pty",
-    "postinstall": "electron-rebuild -f -w node-pty"
+    "rebuild": "electron-rebuild -f -w node-pty"
   },
   "dependencies": {
     "@xterm/addon-fit": "0.11.0",
