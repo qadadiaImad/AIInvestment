@@ -33,10 +33,20 @@ Playwright-MCP concurrency contract) and `references/investing-brief.md` (the in
   (gallery + data viewer + embedded PowerShell/Claude terminal). **Not yet built** — this is the next task.
 
 ## 3. Where we are / NEXT ACTION
-The Studio **plan is written and committed; no code yet.** Next: execute
-`docs/superpowers/plans/2026-06-22-ai-stack-studio.md` task-by-task (recommended: superpowers
-subagent-driven-development — tasks are sequential; verify the Electron window + PowerShell echo before
-moving on). Task 1 (node-pty rebuild for Electron on Windows) is the riskiest step.
+The Studio is **BUILT** (2026-06-22, all 13 plan tasks via subagent-driven-development; on branch
+`feat/multi-sector-research-platform`, ~20 commits, HEAD `b1ed940`). It's in `studio/` (electron-vite +
+React 19 + Tailwind v4): embedded PowerShell terminal (node-pty), `media://` protocol, IPC api, gallery +
+detail panel, quick-actions, electron-builder packaging. 7/7 Vitest unit tests pass; `npm run dist` produced
+a working installer (`studio/dist/AI STACK Studio Setup 0.1.0.exe`). node-pty needed NO rebuild — it loads
+via NAPI prebuilds (see memory `studio-node-pty-electron`); packaging uses `npmRebuild:false`.
+
+**Run it:** `cd studio && npm install && npm run dev`.
+**NEXT (remaining/owner items):** (a) INTERACTIVE verification at the live Electron window — terminal echo +
+`claude` launch, gallery tiles render, click-tile→detail, copy/reveal. (b) The live DATA panel is empty until
+you regenerate `web/public/data/*.json` via `python scripts/refresh_daily.py` (gitignored). (c) Minor: Detail
+caption `<textarea>` is uncontrolled — Copy copies the original caption, not in-box edits (confirm if you want
+edits reflected). (d) Optional: add indexer tests for the v4-slide/caption-attach edge cases.
+Full task-by-task record: `.superpowers/sdd/progress.md`.
 
 ## 4. Key files
 | Path | What |
