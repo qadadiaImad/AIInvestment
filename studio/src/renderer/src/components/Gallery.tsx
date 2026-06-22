@@ -1,14 +1,15 @@
+import { useMemo } from 'react'
 import { useStudio, type Post } from '../store'
 
 export default function Gallery() {
-  const { posts, loading, refresh, selected, select, filterTicker, setFilterTicker, filterKind, setFilterKind } = useStudio()
+  const { posts, loading, refresh, selected, select, filterTicker, setFilterTicker, filterDate, setFilterDate } = useStudio()
 
   const tickers = Array.from(new Set(posts.map(p => p.ticker))).sort()
-  const kinds = Array.from(new Set(posts.map(p => p.kind))).sort()
+  const dates = useMemo(() => ['all', ...Array.from(new Set(posts.map(p => p.date)))], [posts])
 
   const filtered = posts.filter(p =>
     (!filterTicker || p.ticker === filterTicker) &&
-    (!filterKind || p.kind === filterKind)
+    (filterDate === 'all' || p.date === filterDate)
   )
 
   // Group by date then ticker
@@ -34,12 +35,11 @@ export default function Gallery() {
           {tickers.map(t => <option key={t} value={t}>{t}</option>)}
         </select>
         <select
-          value={filterKind}
-          onChange={e => setFilterKind(e.target.value)}
+          value={filterDate}
+          onChange={e => setFilterDate(e.target.value)}
           className="bg-white/5 border border-white/10 rounded px-2 py-1 text-white/80 focus:outline-none"
         >
-          <option value="">All kinds</option>
-          {kinds.map(k => <option key={k} value={k}>{k}</option>)}
+          {dates.map(d => <option key={d} value={d}>{d === 'all' ? 'All dates' : d}</option>)}
         </select>
         <button
           onClick={refresh}

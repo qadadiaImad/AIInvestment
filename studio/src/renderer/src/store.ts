@@ -1,13 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode, createElement } from 'react'
 
-export type Post = {
-  date: string
-  ticker: string
-  kind: string
-  media: string[]
-  poster?: string
-  captionFile?: string
-}
+export type Post = Awaited<ReturnType<typeof window.studio.posts.list>>[number]
 
 type StudioCtx = {
   posts: Post[]
@@ -17,8 +10,8 @@ type StudioCtx = {
   select(p: Post | null): void
   filterTicker: string
   setFilterTicker(t: string): void
-  filterKind: string
-  setFilterKind(k: string): void
+  filterDate: string
+  setFilterDate(d: string): void
 }
 
 const Ctx = createContext<StudioCtx | null>(null)
@@ -28,14 +21,11 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false)
   const [selected, setSelected] = useState<Post | null>(null)
   const [filterTicker, setFilterTicker] = useState('')
-  const [filterKind, setFilterKind] = useState('')
+  const [filterDate, setFilterDate] = useState('all')
 
   function refresh() {
     setLoading(true)
-    window.studio.posts.list().then(data => {
-      setPosts(data as Post[])
-      setLoading(false)
-    }).catch(() => setLoading(false))
+    window.studio.posts.list().then(setPosts).catch(() => {}).finally(() => setLoading(false))
   }
 
   useEffect(() => { refresh() }, [])
@@ -44,7 +34,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     posts, loading, refresh,
     selected, select: setSelected,
     filterTicker, setFilterTicker,
-    filterKind, setFilterKind
+    filterDate, setFilterDate
   }
 
   return createElement(Ctx.Provider, { value }, children)
