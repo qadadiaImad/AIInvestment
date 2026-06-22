@@ -10,5 +10,11 @@ contextBridge.exposeInMainWorld('studio', {
       ipcRenderer.on('term:data', h)
       return () => ipcRenderer.removeListener('term:data', h)
     }
-  }
+  },
+  posts: { list: () => ipcRenderer.invoke('posts:list') },
+  stock: { get: (ticker: string) => ipcRenderer.invoke('stock:get', ticker) },
+  caption: { get: (date: string, ticker: string) => ipcRenderer.invoke('caption:get', date, ticker) },
+  reveal: (rel: string) => ipcRenderer.send('reveal', rel),
+  copy: (text: string) => ipcRenderer.send('copy', text),
+  quickCmd: (name: string) => ipcRenderer.sendSync('quick:cmd', name)
 })

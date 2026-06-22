@@ -2,6 +2,7 @@ import { app, BrowserWindow, protocol } from 'electron'
 import { join } from 'path'
 import { registerTerminal } from './terminal'
 import { registerMediaProtocol, PRIVILEGED } from './media'
+import { registerApi } from './api'
 
 function createWindow(): void {
   const win = new BrowserWindow({
@@ -29,6 +30,7 @@ protocol.registerSchemesAsPrivileged(PRIVILEGED)
 app.whenReady().then(() => {
   registerMediaProtocol()
   registerTerminal()
+  registerApi()
   createWindow()
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
