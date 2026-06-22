@@ -3,11 +3,11 @@ Local content cockpit (Electron). Gallery of reels/posts (by day→stock) + live
 
 ## Run
     cd studio
-    npm install          # rebuilds node-pty for Electron (postinstall)
+    npm install          # node-pty ships NAPI prebuilds — no native rebuild needed
     npm run dev
 
 ## Build a distributable
-    npm run build        # see electron-builder config in package.json
+    npm run dist         # builds the NSIS installer (electron-builder.yml)
 
 ## What it reads (never writes)
 - Media: ../higgs/*  and ../content/carousel_*/<TK>/
