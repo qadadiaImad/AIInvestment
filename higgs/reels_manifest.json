@@ -1,0 +1,22 @@
+{
+  "_note": "Stock-reel manifest for the make-all-reels workflow. Each entry: ticker + pre-resolved Higgsfield animated-hero MP4 + AI-voice MP3 URLs. Regenerate hero/voice via MCP (orchestrator) when the story/data changes; then run the workflow with these as args. Congress reel uses its own builder (_build_reel_congress.py).",
+  "date": "2026-06-22",
+  "voice": "Harrison (ElevenLabs preset 573e5163-59b3-4926-aab1-951ef2985f81)",
+  "reels": [
+    {
+      "tk": "NVDA",
+      "hero": "https://d8j0ntlcm91z4.cloudfront.net/user_3EcHFV4fsIm7E71S9njiQ0O2FLR/hf_20260622_135752_7cc5aaac-be12-4249-a7f1-9209eefd271a.mp4",
+      "voice": "https://d8j0ntlcm91z4.cloudfront.net/user_3EcHFV4fsIm7E71S9njiQ0O2FLR/hf_20260622_135646_a761f8d1-8f54-4e15-b7f8-4f006e845b37.mp3"
+    },
+    {
+      "tk": "IONQ",
+      "hero": "https://d8j0ntlcm91z4.cloudfront.net/user_3EcHFV4fsIm7E71S9njiQ0O2FLR/hf_20260622_133359_16ee54f7-e0fe-4fb0-8462-97a78932baac.mp4",
+      "voice": "https://d8j0ntlcm91z4.cloudfront.net/user_3EcHFV4fsIm7E71S9njiQ0O2FLR/hf_20260622_133407_c8067903-fde0-4cf6-8af3-7e27fd8803a9.mp3"
+    },
+    {
+      "tk": "ADBE",
+      "hero": "https://d8j0ntlcm91z4.cloudfront.net/user_3EcHFV4fsIm7E71S9njiQ0O2FLR/hf_20260622_133404_386fdcdf-c040-430c-b785-55a3fe1908d5.mp4",
+      "voice": "https://d8j0ntlcm91z4.cloudfront.net/user_3EcHFV4fsIm7E71S9njiQ0O2FLR/hf_20260622_133411_58eae848-74c1-4c12-b804-8c6c4d5dffa8.mp3"
+    }
+  ]
+}
