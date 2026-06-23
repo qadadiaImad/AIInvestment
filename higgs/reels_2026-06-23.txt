@@ -1,0 +1,40 @@
+AI STACK — NARRATED REEL KIT (2026-06-23)  | 9:16 MP4, animated hero + Harrison AI voice + Ken-Burns data
+Numbers from the terminal, data as of 2026-06-23. Voice: ElevenLabs "Harrison". Educational / market commentary — not advice.
+Each reel: animated hero opener → data slide (Ken-Burns) → takeaway. Thin footer disclaimer only. No first person; no outlet named.
+News-driven selection; catalysts attributed as "reportedly / this week". Add a royalty-free music bed in your editor (Higgsfield is voice-only).
+NOTE: GuruFocus fundamental-value step not run today → no "% below fair value" framing this round; valuation built from real P/E, P/S, margins, growth & multi-year returns.
+
+=============== REEL 1 — NBIS (AI NEOCLOUD / INFRA) ===============
+File: reel_nbis_2026-06-23.mp4   | hero: GPU data-center hall, emerald light
+Caption:
+The market sold AI chips again this week — but the company renting those chips out just got promoted. Nebius
+joined the Nasdaq-100 this week, carrying a reported $27 billion Meta compute deal and revenue up about 444%
+over the past year. The catch is the price: the stock trades near 101 times sales — roughly five times Nvidia's
+multiple — after a ~491% one-year run. Fastest grower in the neocloud, and the most expensive proof that growth
+this steep gets priced like a promise. Educational, not advice.
+Hashtags: #nebius #nbis #aistocks #datacenter #neocloud #aiinfrastructure #stocktok #fintok #investing101
+
+=============== REEL 2 — QBTS (QUANTUM) ===============
+File: reel_qbts_2026-06-23.mp4   | hero: quantum lattice / dual-rail glow
+Caption:
+Quantum stocks ran together again this year — but one name just put hardware behind the hype. D-Wave unveiled
+what it calls the first error-aware gate-model quantum simulator this week, while a reported $2 billion federal
+quantum push circled the sector. The tape doesn't separate them: D-Wave is up about 53% over the past year, IonQ
+~47%, Rigetti ~86% — all still deeply unprofitable. One name shipped a roadmap step; the rest are still mostly a
+pitch. Watch the product, not just the rally. Educational, not advice.
+Hashtags: #quantumcomputing #dwave #qbts #ionq #rigetti #quantumstocks #stocktok #fintok
+
+=============== REEL 3 — CONGRESS (CISNEROS) ===============
+File: reel_cong_2026-06-23.mp4   | hero: Capitol + ticker-tape
+Caption:
+A member of the House Armed Services Committee — the panel that helps steer defense and national-security tech —
+just disclosed a heavy week in those same names. In mid-May, newly filed this month, Rep. Gilbert Cisneros bought
+Microsoft in the $50,000-to-$100,000 range, added AMD twice, and picked up CrowdStrike, AppLovin and Ciena, while
+trimming Palantir, IBM and Workday. Members are allowed to trade — this is just the public record: who bought what,
+when, and the committee they sit on. Educational, not advice.
+Hashtags: #congresstrading #stockact #microsoft #amd #transparency #stocktok #fintok
+
+NOTES
+- Posting order suggestion: lead with Congress (hardest hook) or NBIS (freshest catalyst). Space ~1/day.
+- All three built by the reel engine — see higgs/README_reels.md to rebuild from fresh data.
+- News this week: NBIS Nasdaq-100 inclusion (eff. 6/22) + reported $27B Meta deal; D-Wave gate-model simulator (6/18) + reported $2B federal quantum funding; Cisneros PTR filed 6/8 (txns mid-May 2026). Catalysts verified via live search; outlets unnamed per rails.
