@@ -22,3 +22,12 @@ def test_returns_caption_text_per_ticker():
 def test_empty_input_returns_empty_dict():
     assert parse_captions("") == {}
     assert parse_captions("   \n  ") == {}
+
+
+def test_long_ticker_like_congress_is_not_dropped():
+    # regression: a >6-char ticker (CONGRESS) must still be parsed
+    txt = ("=============== REEL 4 — CONGRESS (VAN EPPS) ===============\n"
+           "Caption:\nThey oversee it, then trade it.\nHashtags: #congress")
+    c = parse_captions(txt)
+    assert "CONGRESS" in c
+    assert "trade it" in c["CONGRESS"]
