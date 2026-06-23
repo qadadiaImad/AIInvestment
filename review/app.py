@@ -7,6 +7,7 @@ from flask import Flask, abort, jsonify, request, send_file
 
 import comments
 import index
+import scripts
 from captions import parse_captions
 from paths import CONTENT, FEEDBACK_FILE, HIGGS, REPO_ROOT
 
@@ -65,6 +66,10 @@ def create_app() -> Flask:
     @app.get("/api/posts")
     def posts():
         return jsonify(_build_posts())
+
+    @app.get("/api/scripts")
+    def scripts_list():
+        return jsonify(scripts.list_scripts(_list_higgs()))
 
     @app.get("/api/comments")
     def get_comments():

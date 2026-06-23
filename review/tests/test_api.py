@@ -50,3 +50,11 @@ def test_media_serves_real_reel_and_blocks_traversal(client):
     assert r.status_code == 200
     bad = client.get("/media/../../etc/passwd")
     assert bad.status_code in (400, 403, 404)
+
+
+def test_scripts_endpoint_lists_kit_and_reel_script(client):
+    r = client.get("/api/scripts")
+    assert r.status_code == 200
+    names = [e["name"] for e in r.get_json()]
+    assert "reels_2026-06-23.txt" in names
+    assert "reels_2026-06-23_kit.md" in names
