@@ -138,3 +138,111 @@ $("#refresh").onclick = load;
 $("#filter-date").onchange = renderGallery;
 $("#filter-ticker").onchange = renderGallery;
 load();
+
+// ---- Preview view (script/kit monitoring) ----
+let scriptsLoaded = false;
+
+function showView(v) {
+  document.getElementById("posts-view").hidden = v !== "posts";
+  document.getElementById("preview-view").hidden = v !== "preview";
+  $("#nav-posts").classList.toggle("active", v === "posts");
+  $("#nav-preview").classList.toggle("active", v === "preview");
+  if (v === "preview" && !scriptsLoaded) { scriptsLoaded = true; loadScripts(); }
+}
+
+async function loadScripts() {
+  const items = await (await fetch("/api/scripts")).json();
+  const groups = {};
+  for (const e of items) (groups[e.date] ??= []).push(e);
+  const dates = Object.keys(groups).sort().reverse();
+  $("#script-list").innerHTML = dates.map((date) => `
+    <div class="sdate">${date}</div>
+    ${groups[date].map((e) => `
+      <button class="script-row" data-name="${e.name}" data-media="${e.media}" data-kind="${e.kind}">
+        <span class="sname">${e.name}</span>
+        <span class="kind-chip ${e.kind === "kit" ? "kit" : ""}">${e.kind}</span>
+      </button>`).join("")}`).join("");
+  for (const b of document.querySelectorAll(".script-row"))
+    b.onclick = () => showScript(b);
+}
+
+async function showScript(btn) {
+  for (const b of document.querySelectorAll(".script-row")) b.classList.remove("active");
+  btn.classList.add("active");
+  const { name, media, kind } = btn.dataset;
+  const text = await (await fetch(media)).text();
+  const isMd = name.endsWith(".md");
+  const el = $("#script-content");
+  el.dataset.text = text;       // stash for the Raw/Rendered toggle
+  el.dataset.md = isMd ? "1" : "";
+  renderScript(el, name, kind, text, isMd, /*raw=*/false);
+}
+
+function renderScript(el, name, kind, text, isMd, raw) {
+  const toggle = isMd
+    ? `<button class="sc-toggle" id="md-toggle">${raw ? "Rendered" : "Raw"}</button>` : "";
+  const body = (isMd && !raw)
+    ? `<div class="md-body">${renderMarkdown(text)}</div>`
+    : `<pre class="${isMd ? "raw-content" : "txt-content"}">${escapeHtml(text)}</pre>`;
+  el.innerHTML = `<div class="sc-head"><span class="sc-title">${name} · ${kind}</span>${toggle}</div>${body}`;
+  if (isMd) $("#md-toggle").onclick = () =>
+    renderScript(el, name, kind, text, true, !raw);
+}
+
+function renderInline(s) {
+  // s is already HTML-escaped. Apply inline markdown.
+  return s
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+}
+
+function renderMarkdown(src) {
+  const lines = escapeHtml(src).split("\n");   // ESCAPE FIRST, then format
+  const html = [];
+  let i = 0, inList = false;
+  const closeList = () => { if (inList) { html.push("</ul>"); inList = false; } };
+  while (i < lines.length) {
+    const line = lines[i];
+    if (/^```/.test(line)) {
+      closeList();
+      const buf = []; i++;
+      while (i < lines.length && !/^```/.test(lines[i])) { buf.push(lines[i]); i++; }
+      i++;
+      html.push("<pre class='md-code'><code>" + buf.join("\n") + "</code></pre>");
+      continue;
+    }
+    if (/^\s*\|.*\|\s*$/.test(line) && i + 1 < lines.length && /^\s*\|[\s:|-]+\|\s*$/.test(lines[i + 1])) {
+      closeList();
+      const head = line.trim().replace(/^\||\|$/g, "").split("|").map((c) => c.trim());
+      i += 2;
+      const rows = [];
+      while (i < lines.length && /^\s*\|.*\|\s*$/.test(lines[i])) {
+        rows.push(lines[i].trim().replace(/^\||\|$/g, "").split("|").map((c) => c.trim())); i++;
+      }
+      html.push("<table class='md-table'><thead><tr>" +
+        head.map((c) => "<th>" + renderInline(c) + "</th>").join("") + "</tr></thead><tbody>" +
+        rows.map((r) => "<tr>" + r.map((c) => "<td>" + renderInline(c) + "</td>").join("") + "</tr>").join("") +
+        "</tbody></table>");
+      continue;
+    }
+    let m = line.match(/^(#{1,3})\s+(.*)$/);
+    if (m) { closeList(); html.push(`<h${m[1].length}>` + renderInline(m[2]) + `</h${m[1].length}>`); i++; continue; }
+    if (/^---+\s*$/.test(line)) { closeList(); html.push("<hr/>"); i++; continue; }
+    if (/^>\s?/.test(line)) { closeList(); html.push("<blockquote>" + renderInline(line.replace(/^>\s?/, "")) + "</blockquote>"); i++; continue; }
+    if (/^\s*[-*]\s+/.test(line)) {
+      if (!inList) { html.push("<ul>"); inList = true; }
+      html.push("<li>" + renderInline(line.replace(/^\s*[-*]\s+/, "")) + "</li>"); i++; continue;
+    }
+    if (/^\s*$/.test(line)) { closeList(); i++; continue; }
+    closeList();
+    html.push("<p>" + renderInline(line) + "</p>"); i++;
+  }
+  closeList();
+  return html.join("\n");
+}
+
+$("#nav-posts").onclick = () => showView("posts");
+$("#nav-preview").onclick = () => showView("preview");

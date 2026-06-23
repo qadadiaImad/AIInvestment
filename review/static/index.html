@@ -9,6 +9,10 @@
   <body>
     <header>
       <span class="brand">POST REVIEW</span>
+      <nav class="views">
+        <button id="nav-posts" class="active">Posts</button>
+        <button id="nav-preview">Preview</button>
+      </nav>
       <span class="filters">
         <select id="filter-date"></select>
         <select id="filter-ticker"></select>
@@ -16,8 +20,14 @@
       </span>
     </header>
     <main>
-      <section id="gallery"></section>
-      <aside id="detail" hidden></aside>
+      <section id="posts-view">
+        <section id="gallery"></section>
+        <aside id="detail" hidden></aside>
+      </section>
+      <section id="preview-view" hidden>
+        <section id="script-list"></section>
+        <aside id="script-content"><div class="empty">Select a script to preview.</div></aside>
+      </section>
     </main>
     <footer>Educational / market-commentary only — not financial advice.</footer>
     <script src="app.js"></script>
