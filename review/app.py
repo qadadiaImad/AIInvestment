@@ -2,8 +2,6 @@
 from __future__ import annotations
 
 import datetime
-import os
-import pathlib
 
 from flask import Flask, abort, jsonify, request, send_file
 
@@ -103,7 +101,9 @@ def create_app() -> Flask:
         except ValueError as e:
             abort(400, str(e))
         comments.write_store(FEEDBACK_FILE, store)
-        updated = next(c for c in store["comments"] if c["id"] == cid)
+        updated = next((c for c in store["comments"] if c["id"] == cid), None)
+        if updated is None:
+            abort(404)
         return jsonify(updated)
 
     @app.delete("/api/comments/<cid>")
