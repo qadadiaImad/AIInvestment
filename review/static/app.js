@@ -151,7 +151,17 @@ function showView(v) {
 }
 
 async function loadScripts() {
-  const items = await (await fetch("/api/scripts")).json();
+  let items;
+  try {
+    items = await (await fetch("/api/scripts")).json();
+  } catch {
+    $("#script-list").innerHTML = `<div class="empty">Failed to load scripts.</div>`;
+    return;
+  }
+  if (!items.length) {
+    $("#script-list").innerHTML = `<div class="empty">No script/kit docs found in higgs/.</div>`;
+    return;
+  }
   const groups = {};
   for (const e of items) (groups[e.date] ??= []).push(e);
   const dates = Object.keys(groups).sort().reverse();
@@ -170,9 +180,15 @@ async function showScript(btn) {
   for (const b of document.querySelectorAll(".script-row")) b.classList.remove("active");
   btn.classList.add("active");
   const { name, media, kind } = btn.dataset;
-  const text = await (await fetch(media)).text();
-  const isMd = name.endsWith(".md");
   const el = $("#script-content");
+  let text;
+  try {
+    text = await (await fetch(media)).text();
+  } catch {
+    el.innerHTML = `<div class="empty">Failed to load ${escapeHtml(name)}.</div>`;
+    return;
+  }
+  const isMd = name.endsWith(".md");
   renderScript(el, name, kind, text, isMd, /*raw=*/false);
 }
 
