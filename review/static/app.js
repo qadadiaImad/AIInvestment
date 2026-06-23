@@ -158,9 +158,9 @@ async function loadScripts() {
   $("#script-list").innerHTML = dates.map((date) => `
     <div class="sdate">${date}</div>
     ${groups[date].map((e) => `
-      <button class="script-row" data-name="${e.name}" data-media="${e.media}" data-kind="${e.kind}">
-        <span class="sname">${e.name}</span>
-        <span class="kind-chip ${e.kind === "kit" ? "kit" : ""}">${e.kind}</span>
+      <button class="script-row" data-name="${escapeHtml(e.name)}" data-media="${escapeHtml(e.media)}" data-kind="${escapeHtml(e.kind)}">
+        <span class="sname">${escapeHtml(e.name)}</span>
+        <span class="kind-chip ${e.kind === "kit" ? "kit" : ""}">${escapeHtml(e.kind)}</span>
       </button>`).join("")}`).join("");
   for (const b of document.querySelectorAll(".script-row"))
     b.onclick = () => showScript(b);
@@ -173,8 +173,6 @@ async function showScript(btn) {
   const text = await (await fetch(media)).text();
   const isMd = name.endsWith(".md");
   const el = $("#script-content");
-  el.dataset.text = text;       // stash for the Raw/Rendered toggle
-  el.dataset.md = isMd ? "1" : "";
   renderScript(el, name, kind, text, isMd, /*raw=*/false);
 }
 
@@ -184,7 +182,7 @@ function renderScript(el, name, kind, text, isMd, raw) {
   const body = (isMd && !raw)
     ? `<div class="md-body">${renderMarkdown(text)}</div>`
     : `<pre class="${isMd ? "raw-content" : "txt-content"}">${escapeHtml(text)}</pre>`;
-  el.innerHTML = `<div class="sc-head"><span class="sc-title">${name} · ${kind}</span>${toggle}</div>${body}`;
+  el.innerHTML = `<div class="sc-head"><span class="sc-title">${escapeHtml(name)} · ${escapeHtml(kind)}</span>${toggle}</div>${body}`;
   if (isMd) $("#md-toggle").onclick = () =>
     renderScript(el, name, kind, text, true, !raw);
 }
