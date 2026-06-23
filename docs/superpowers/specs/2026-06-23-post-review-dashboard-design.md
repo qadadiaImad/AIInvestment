@@ -64,7 +64,13 @@ indexer, re-expressed in Python):
 
 - `higgs/reel_<tk>_<date>.mp4` → a **reel** post; its slide PNGs `reel_<tk>_{hook,data,takeaway}.png`
   attach as media.
-- `higgs/v4_<tk>_{1_hook,2_data,3_takeaway}.png` → a **carousel** post for `<tk>`.
+- `higgs/v4_<tk>_{1_hook,2_data,3_takeaway}.png` (the dateless image-carousel frames) **attach as media
+  to the same ticker's bundle** (the reel if one exists, else its newest bundle) rather than forming a
+  separate post — v4 files carry no date, so they have no standalone post id. (Decided 2026-06-23: keep
+  attached.) A loose PNG whose ticker has no bundle is dropped, never fabricated into a dated-`0000` post.
+- **Ticker-slug aliasing:** some reels name their assets with a short slug (the congress reel is
+  `reel_congress_*.mp4` but its slides are `reel_cong_*`/`v4_cong_*`); an alias map (`CONG`→`CONGRESS`)
+  normalizes the slug so those slides attach to the right reel.
 - `content/carousel_<date>/<TK>/slide_*.html` (+ `brief.md`) → an **HTML carousel** post.
 - `higgs/reels_<date>.txt` and `higgs/posts_<date>.txt` → caption sheets (sectioned by ticker),
   attached to that date's posts.
