@@ -102,3 +102,12 @@ matplotlib looks flat). **Two surfaces of ONE brand**, chosen by content type:
 3. **Verify**: files present, rails present, no product mention, numbers traceable to the data files.
 The gated GuruFocus MCP fetch for the 3 focal stocks is done by the orchestrator (serial) before/around
 the Build phase; the workflow parallelism is the per-stock slide generation.
+
+## Feedback loop (review dashboard)
+
+Before regenerating a carousel, load its open comments from the review dashboard's store and honor
+them (respect the part tag — caption / audio / visual):
+
+    cd review && python comments.py <date>_<TICKER>_carousel
+
+Store: `feedback/post_comments.json`. After regenerating, mark those comments resolved.
