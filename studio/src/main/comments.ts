@@ -67,7 +67,15 @@ export function writeStore(path: string, store: Store): void {
   renameSync(tmp, path)
 }
 
-const sanitize = (s: string): string => s.replace(/[\r\n]+/g, ' ').replace(/"/g, "'").trim()
+// Make a string safe to embed inside the PowerShell double-quoted `claude "…"`:
+// no newlines, no inner double-quotes (breakout), and neutralize `` ` `` (PS escape char)
+// and `$` (PS interpolation: $var / $(...)) by backtick-escaping — `$278` stays literal.
+const sanitize = (s: string): string =>
+  s.replace(/[\r\n]+/g, ' ')
+    .replace(/"/g, "'")
+    .replace(/`/g, '``')
+    .replace(/\$/g, '`$')
+    .trim()
 
 export function composeRegenPrompt(date: string, ticker: string, open: Comment[]): string {
   if (!open.length) return ''

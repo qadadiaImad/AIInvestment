@@ -59,4 +59,14 @@ describe('composeRegenPrompt', () => {
   it('returns empty string when no open comments', () => {
     expect(composeRegenPrompt('2026-06-23', 'NBIS', [])).toBe('')
   })
+  it('neutralizes PowerShell interpolation (backtick / $()) in a comment', () => {
+    const open = [
+      { id: 'c1', post_id: '2026-06-23_NBIS_reel', part: 'general', text: 'fix $(rm x) and `code`', created_at: 'now', resolved: false },
+    ]
+    const cmd = composeRegenPrompt('2026-06-23', 'NBIS', open)
+    expect((cmd.match(/"/g) || []).length).toBe(2)   // still only the 2 wrapper quotes
+    expect(cmd).toContain('`$(rm x)')                // $ backtick-escaped (kept literal)
+    expect(cmd).toContain('``code``')                // backticks doubled (kept literal)
+    expect(cmd).not.toMatch(/[^`]\$\(/)              // no un-escaped $( remains
+  })
 })
