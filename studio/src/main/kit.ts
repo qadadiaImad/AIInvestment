@@ -37,15 +37,26 @@ export function parseScriptSheet(text: string): ScriptEntry[] {
   return out
 }
 
-// isolate the `"TICKER":{ ... }` CFG block (values contain no braces, so the first `}` closes it).
+// isolate the `"TICKER":{ ... }` CFG block. Brace-match while respecting double-quoted
+// string values (so a `}` inside a value — CSS, text — never truncates the block early).
 function cfgBlock(md: string, ticker: string): string | null {
   const key = `"${ticker.toUpperCase()}":{`
   const start = md.indexOf(key)
   if (start < 0) return null
   const open = md.indexOf('{', start)
-  const close = md.indexOf('}', open)
-  if (open < 0 || close < 0) return null
-  return md.slice(open + 1, close)
+  if (open < 0) return null
+  let depth = 0
+  let inStr = false
+  for (let i = open; i < md.length; i++) {
+    const c = md[i]
+    if (inStr) {
+      if (c === '\\') i++          // skip the escaped char
+      else if (c === '"') inStr = false
+    } else if (c === '"') inStr = true
+    else if (c === '{') depth++
+    else if (c === '}') { depth--; if (depth === 0) return md.slice(open + 1, i) }
+  }
+  return null
 }
 
 export function parseKitCfg(md: string, ticker: string): Slides | null {
