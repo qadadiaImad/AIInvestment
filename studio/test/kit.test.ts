@@ -68,6 +68,20 @@ describe('parseKitCfg', () => {
     expect(s.takeaway.kick).toBe('FAIRLY VALUED')
   })
   it('missing ticker block -> null', () => { expect(parseKitCfg(KIT, 'ZZZZ')).toBeNull() })
+  it('does not truncate on a } in a value or a ] inside rows', () => {
+    const md = `\`\`\`python
+ "XYZ":{"head":"with a brace } in the value and more text",
+   "data_title":"after the brace",
+   "rows":[("A [ttm]",None),("B",None)],
+   "big":"~9","src":"site"},
+\`\`\``
+    const s = parseKitCfg(md, 'XYZ')!
+    expect(s.hook.head).toContain('and more text')   // not truncated at the }
+    expect(s.data.title).toBe('after the brace')      // field after the } still found
+    expect(s.data.rows).toContain('[ttm]')            // rows not truncated at the inner ]
+    expect(s.data.rows).toContain('"B"')              // full rows captured
+    expect(s.takeaway.big).toBe('~9')
+  })
 })
 
 describe('parseHeroPrompt / parseStory', () => {

@@ -37,26 +37,32 @@ export function parseScriptSheet(text: string): ScriptEntry[] {
   return out
 }
 
-// isolate the `"TICKER":{ ... }` CFG block. Brace-match while respecting double-quoted
-// string values (so a `}` inside a value — CSS, text — never truncates the block early).
-function cfgBlock(md: string, ticker: string): string | null {
-  const key = `"${ticker.toUpperCase()}":{`
-  const start = md.indexOf(key)
-  if (start < 0) return null
-  const open = md.indexOf('{', start)
-  if (open < 0) return null
+// Capture a balanced delimited span (e.g. {…} or […]) starting at s[openIdx] (the open
+// delimiter), respecting double-quoted string values so a delimiter inside a value never
+// closes the span early. Returns the span INCLUDING both delimiters, or null if unbalanced.
+function balancedSpan(s: string, openIdx: number, oc: string, cc: string): string | null {
   let depth = 0
   let inStr = false
-  for (let i = open; i < md.length; i++) {
-    const c = md[i]
+  for (let i = openIdx; i < s.length; i++) {
+    const c = s[i]
     if (inStr) {
       if (c === '\\') i++          // skip the escaped char
       else if (c === '"') inStr = false
     } else if (c === '"') inStr = true
-    else if (c === '{') depth++
-    else if (c === '}') { depth--; if (depth === 0) return md.slice(open + 1, i) }
+    else if (c === oc) depth++
+    else if (c === cc) { depth--; if (depth === 0) return s.slice(openIdx, i + 1) }
   }
   return null
+}
+
+// isolate the `"TICKER":{ ... }` CFG block (inner content, braces stripped); null if absent.
+function cfgBlock(md: string, ticker: string): string | null {
+  const start = md.indexOf(`"${ticker.toUpperCase()}":{`)
+  if (start < 0) return null
+  const open = md.indexOf('{', start)
+  if (open < 0) return null
+  const span = balancedSpan(md, open, '{', '}')
+  return span === null ? null : span.slice(1, -1)
 }
 
 export function parseKitCfg(md: string, ticker: string): Slides | null {
@@ -66,12 +72,14 @@ export function parseKitCfg(md: string, ticker: string): Slides | null {
     const m = block.match(new RegExp(`"${name}"\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)"`))
     return m ? clean(m[1]) : undefined
   }
-  const rowsM = block.match(/"rows"\s*:\s*(\[[^\]]*\])/)
+  const rowsAt = block.search(/"rows"\s*:\s*\[/)
+  const rowsOpen = rowsAt < 0 ? -1 : block.indexOf('[', rowsAt)
+  const rows = rowsOpen < 0 ? undefined : (balancedSpan(block, rowsOpen, '[', ']') ?? undefined)
   return {
     hook: { kick: field('kick'), head: field('head'), sub: field('sub'), ex: field('ex') },
     data: {
       kick: field('data_kick'), title: field('data_title'), cap: field('data_cap'),
-      foot: field('data_foot'), rows: rowsM ? rowsM[1] : undefined, mode: field('mode'),
+      foot: field('data_foot'), rows, mode: field('mode'),
     },
     takeaway: {
       kick: field('tk_kick'), big: field('big'), unit: field('unit'),
