@@ -18,6 +18,13 @@ contextBridge.exposeInMainWorld('studio', {
     list: () => ipcRenderer.invoke('kit:list'),
     get: (date: string, ticker: string) => ipcRenderer.invoke('kit:get', date, ticker),
   },
+  comments: {
+    list: (postId: string) => ipcRenderer.invoke('comments:list', postId),
+    add: (postId: string, part: string, text: string) => ipcRenderer.invoke('comments:add', postId, part, text),
+    setResolved: (id: string, resolved: boolean) => ipcRenderer.invoke('comments:setResolved', id, resolved),
+    delete: (id: string) => ipcRenderer.invoke('comments:delete', id),
+    composePrompt: (date: string, ticker: string) => ipcRenderer.invoke('comments:composePrompt', date, ticker),
+  },
   reveal: (rel: string) => ipcRenderer.send('reveal', rel),
   copy: (text: string) => ipcRenderer.send('copy', text),
   quickCmd: (name: string) => ipcRenderer.sendSync('quick:cmd', name)

@@ -1,11 +1,12 @@
 import { ipcMain, shell, clipboard } from 'electron'
 import { readFileSync, readdirSync, existsSync } from 'fs'
 import { join } from 'path'
-import { HIGGS, CONTENT, DATA } from './paths'
+import { HIGGS, CONTENT, DATA, FEEDBACK_FILE } from './paths'
 import { buildIndex } from './indexer'
 import { parseCaptions } from './captions'
 import { joinStock, type Bundles } from './datajoin'
 import { parseScriptSheet, parseKitCfg, parseHeroPrompt, parseStory } from './kit'
+import * as comments from './comments'
 
 function walk(dir: string, base = ''): string[] {
   if (!existsSync(dir)) return []
@@ -21,6 +22,8 @@ function walk(dir: string, base = ''): string[] {
 const readJson = (f: string) => {
   try { return JSON.parse(readFileSync(join(DATA, f), 'utf-8')) } catch { return undefined }
 }
+
+const _now = () => new Date().toISOString()
 
 export function registerApi(): void {
   ipcMain.handle('posts:list', () => {
@@ -84,6 +87,31 @@ export function registerApi(): void {
       story: md ? parseStory(md, tk) : null,
       source: joinStock(tk, b),
     }
+  })
+
+  ipcMain.handle('comments:list', (_e, postId: string) =>
+    comments.loadForPost(comments.readStore(FEEDBACK_FILE), postId, false))
+
+  ipcMain.handle('comments:add', (_e, postId: string, part: string, text: string) => {
+    const { store, comment } = comments.addComment(comments.readStore(FEEDBACK_FILE), postId, part, text, _now())
+    comments.writeStore(FEEDBACK_FILE, store)
+    return comment
+  })
+
+  ipcMain.handle('comments:setResolved', (_e, id: string, resolved: boolean) => {
+    comments.writeStore(FEEDBACK_FILE, comments.setResolved(comments.readStore(FEEDBACK_FILE), id, resolved))
+    return { ok: true }
+  })
+
+  ipcMain.handle('comments:delete', (_e, id: string) => {
+    comments.writeStore(FEEDBACK_FILE, comments.deleteComment(comments.readStore(FEEDBACK_FILE), id))
+    return { ok: true }
+  })
+
+  ipcMain.handle('comments:composePrompt', (_e, date: string, ticker: string) => {
+    const tk = ticker.toUpperCase()
+    const open = comments.loadForPost(comments.readStore(FEEDBACK_FILE), `${date}_${tk}_reel`, true)
+    return comments.composeRegenPrompt(date, tk, open)
   })
 
   ipcMain.on('reveal', (_e, rel: string) => shell.showItemInFolder(join(HIGGS, '..', rel)))

@@ -26,6 +26,13 @@ declare global {
           source: { found: boolean; source?: string; layer?: string; valuation?: any; congress_trades: any[] }
         }>
       }
+      comments: {
+        list(postId: string): Promise<Array<{ id: string; post_id: string; part: string; text: string; created_at: string; resolved: boolean }>>
+        add(postId: string, part: string, text: string): Promise<{ id: string; post_id: string; part: string; text: string; created_at: string; resolved: boolean }>
+        setResolved(id: string, resolved: boolean): Promise<{ ok: boolean }>
+        delete(id: string): Promise<{ ok: boolean }>
+        composePrompt(date: string, ticker: string): Promise<string>
+      }
       reveal(rel: string): void
       copy(text: string): void
       quickCmd(name: string): string
