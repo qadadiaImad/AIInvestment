@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { typeIntoTerminal } from './Terminal'
 
 type KitEntry = Awaited<ReturnType<typeof window.studio.kit.list>>[number]
 type KitDetail = Awaited<ReturnType<typeof window.studio.kit.get>>
@@ -24,6 +25,67 @@ function SlideCard({ label, rows }: { label: string; rows: [string, any][] }) {
           </div>
         ))}
       </div>
+    </div>
+  )
+}
+
+const COMMENT_PARTS = ['general', 'script', 'hook', 'data', 'takeaway', 'hero']
+type Cmt = Awaited<ReturnType<typeof window.studio.comments.list>>[number]
+
+function KitComments({ date, ticker }: { date: string; ticker: string }) {
+  const postId = `${date}_${ticker}_reel`
+  const [list, setList] = useState<Cmt[]>([])
+  const [part, setPart] = useState('general')
+  const [text, setText] = useState('')
+  const [hint, setHint] = useState('')
+  const refresh = () => window.studio.comments.list(postId).then(setList)
+  useEffect(() => { refresh() }, [postId])
+  const add = async () => {
+    if (!text.trim()) return
+    await window.studio.comments.add(postId, part, text.trim())
+    setText(''); setHint(''); refresh()
+  }
+  const open = list.filter((c) => !c.resolved)
+  const regenerate = async () => {
+    const cmd = await window.studio.comments.composePrompt(date, ticker)
+    if (!cmd) { setHint('No open comments to fold in.'); return }
+    typeIntoTerminal(cmd)
+    setHint('Typed into the terminal below — review and press Enter to run.')
+  }
+  return (
+    <div>
+      <div className="font-mono text-xs tracking-widest text-emerald-400 mb-2">COMMENTS</div>
+      <div className="space-y-2 mb-3">
+        {list.length === 0 && <div className="text-white/30 text-sm">No comments yet.</div>}
+        {list.map((c) => (
+          <div key={c.id} className={`border border-white/10 rounded-lg p-2 ${c.resolved ? 'opacity-40' : ''}`}>
+            <div className="flex items-center gap-2 text-xs text-white/40 font-mono">
+              <span className="bg-emerald-500/15 text-emerald-300 px-1.5 rounded">{c.part}</span>
+              <span>{c.created_at}</span>
+              <span className="ml-auto flex gap-2">
+                <button className="hover:text-white" onClick={() => window.studio.comments.setResolved(c.id, !c.resolved).then(refresh)}>{c.resolved ? 'reopen' : 'resolve'}</button>
+                <button className="hover:text-rose-300" onClick={() => window.studio.comments.delete(c.id).then(refresh)}>delete</button>
+              </span>
+            </div>
+            <div className="text-sm mt-1 whitespace-pre-wrap">{c.text}</div>
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-col gap-2">
+        <div className="flex gap-2 items-center">
+          <select value={part} onChange={(e) => setPart(e.target.value)} className="bg-white/5 border border-white/10 rounded px-2 py-1 text-sm font-mono">
+            {COMMENT_PARTS.map((p) => <option key={p} value={p}>{p}</option>)}
+          </select>
+          <button onClick={regenerate} disabled={open.length === 0}
+            className="ml-auto font-mono text-xs px-3 py-1.5 rounded bg-emerald-500/20 text-emerald-300 disabled:opacity-40">
+            Regenerate with comments
+          </button>
+        </div>
+        <textarea value={text} onChange={(e) => setText(e.target.value)} placeholder="Add a comment…"
+          className="bg-white/5 border border-white/10 rounded p-2 text-sm h-20" />
+        <button onClick={add} className="self-start font-mono text-xs px-3 py-1.5 rounded bg-white/10 hover:bg-white/20">Add comment</button>
+      </div>
+      {hint && <div className="text-emerald-400/70 text-xs mt-2">{hint}</div>}
     </div>
   )
 }
@@ -68,6 +130,7 @@ function KitDetailPanel({ d }: { d: KitDetail }) {
       </Section>
       {d.hero_prompt && <Section title="HERO PROMPT"><p className="text-sm text-white/70 whitespace-pre-wrap">{d.hero_prompt}</p></Section>}
       {d.story && <Section title="NEWS ANGLE"><p className="text-sm text-white/70">{d.story}</p></Section>}
+      <KitComments date={d.date} ticker={d.ticker} />
     </div>
   )
 }

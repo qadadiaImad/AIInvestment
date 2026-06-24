@@ -4,6 +4,7 @@ import { FitAddon } from '@xterm/addon-fit'
 import '@xterm/xterm/css/xterm.css'
 
 export let injectToTerminal: (cmd: string) => void = () => {}
+export let typeIntoTerminal: (cmd: string) => void = () => {}
 
 export default function Terminal() {
   const ref = useRef<HTMLDivElement>(null)
@@ -22,6 +23,7 @@ export default function Terminal() {
     const off = window.studio.term.onData((d) => term.write(d))
     term.onData((d) => window.studio.term.input(d))
     injectToTerminal = (cmd: string) => { window.studio.term.input(cmd + '\r') }
+    typeIntoTerminal = (cmd: string) => { window.studio.term.input(cmd) }
     const onResize = () => { fit.fit(); window.studio.term.resize(term.cols, term.rows) }
     window.addEventListener('resize', onResize)
     return () => { off(); window.removeEventListener('resize', onResize); term.dispose() }
