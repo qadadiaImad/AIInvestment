@@ -14,6 +14,10 @@ contextBridge.exposeInMainWorld('studio', {
   posts: { list: () => ipcRenderer.invoke('posts:list') },
   stock: { get: (ticker: string) => ipcRenderer.invoke('stock:get', ticker) },
   caption: { get: (date: string, ticker: string) => ipcRenderer.invoke('caption:get', date, ticker) },
+  kit: {
+    list: () => ipcRenderer.invoke('kit:list'),
+    get: (date: string, ticker: string) => ipcRenderer.invoke('kit:get', date, ticker),
+  },
   reveal: (rel: string) => ipcRenderer.send('reveal', rel),
   copy: (text: string) => ipcRenderer.send('copy', text),
   quickCmd: (name: string) => ipcRenderer.sendSync('quick:cmd', name)

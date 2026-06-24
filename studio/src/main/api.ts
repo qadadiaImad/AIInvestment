@@ -5,6 +5,7 @@ import { HIGGS, CONTENT, DATA } from './paths'
 import { buildIndex } from './indexer'
 import { parseCaptions } from './captions'
 import { joinStock, type Bundles } from './datajoin'
+import { parseScriptSheet, parseKitCfg, parseHeroPrompt, parseStory } from './kit'
 
 function walk(dir: string, base = ''): string[] {
   if (!existsSync(dir)) return []
@@ -46,6 +47,43 @@ export function registerApi(): void {
       }
     }
     return ''
+  })
+
+  ipcMain.handle('kit:list', () => {
+    const files = existsSync(HIGGS) ? readdirSync(HIGGS) : []
+    const dates = files
+      .map((f) => f.match(/^reels_(\d{4}-\d{2}-\d{2})\.txt$/)?.[1])
+      .filter((d): d is string => !!d)
+    const out: Array<{ id: string; date: string; ticker: string; theme: string }> = []
+    for (const date of dates) {
+      const text = readFileSync(join(HIGGS, `reels_${date}.txt`), 'utf-8')
+      for (const e of parseScriptSheet(text)) {
+        out.push({ id: `${date}_${e.ticker}`, date, ticker: e.ticker, theme: e.theme })
+      }
+    }
+    out.sort((a, b) => b.date.localeCompare(a.date) || a.ticker.localeCompare(b.ticker))
+    return out
+  })
+
+  ipcMain.handle('kit:get', (_e, date: string, ticker: string) => {
+    const tk = ticker.toUpperCase()
+    const txtPath = join(HIGGS, `reels_${date}.txt`)
+    const entry = existsSync(txtPath)
+      ? parseScriptSheet(readFileSync(txtPath, 'utf-8')).find((e) => e.ticker === tk)
+      : undefined
+    const mdPath = join(HIGGS, `reels_${date}_kit.md`)
+    const md = existsSync(mdPath) ? readFileSync(mdPath, 'utf-8') : ''
+    const b: Bundles = {
+      site: readJson('site.json'), quantum: readJson('quantum.json'), congress: readJson('congress.json'),
+    }
+    return {
+      id: `${date}_${tk}`, date, ticker: tk,
+      theme: entry?.theme ?? '', script: entry?.script ?? '', hashtags: entry?.hashtags ?? '',
+      slides: md ? parseKitCfg(md, tk) : null,
+      hero_prompt: md ? parseHeroPrompt(md, tk) : null,
+      story: md ? parseStory(md, tk) : null,
+      source: joinStock(tk, b),
+    }
   })
 
   ipcMain.on('reveal', (_e, rel: string) => shell.showItemInFolder(join(HIGGS, '..', rel)))
