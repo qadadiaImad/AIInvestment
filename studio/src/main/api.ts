@@ -118,8 +118,14 @@ export function registerApi(): void {
   ipcMain.on('copy', (_e, text: string) => clipboard.writeText(text))
 
   const QUICK: Record<string, string> = {
-    'refresh-data': 'cd scripts; python refresh_daily.py; cd ..',
-    'make-reels': 'python higgs/make_reel.py NVDA <hero_url> <voice_url>  # edit args / see README_reels.md',
+    // Full refresh: fair-value backfill (GuruFocus scalar, headless) -> daily AI/quantum/news
+    // (export folds in the fresh fair values) -> congress. Heavy (~tens of minutes; 128-name
+    // headless fair-value pass). See scripts/refresh_all.py (--fundamentals none to skip fair value).
+    'refresh-data': 'cd scripts; python refresh_all.py; cd ..',
+    // Phase-2 assembler: builds every reel in reels_manifest.json via make_reel.py. Phase-1
+    // (Higgsfield hero+voice via MCP) must fill the manifest URLs first; placeholder entries
+    // are skipped with a notice. (Parallel variant: higgs/_workflow_make_reels.js via Workflow.)
+    'make-reels': 'python higgs/make_reels_from_manifest.py',
     'build-carousel': 'python higgs/_build_v4.py'
   }
 

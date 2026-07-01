@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { typeIntoTerminal } from './Terminal'
+import { useStudio } from '../store'
 
 type KitEntry = Awaited<ReturnType<typeof window.studio.kit.list>>[number]
 type KitDetail = Awaited<ReturnType<typeof window.studio.kit.get>>
@@ -136,9 +137,12 @@ function KitDetailPanel({ d }: { d: KitDetail }) {
 }
 
 export default function KitView() {
+  const { nonce } = useStudio()
   const [entries, setEntries] = useState<KitEntry[]>([])
   const [sel, setSel] = useState<KitDetail | null>(null)
-  useEffect(() => { window.studio.kit.list().then(setEntries) }, [])
+  // re-fetch on mount AND whenever the header Refresh button bumps the nonce,
+  // so newly generated kits (e.g. reels_2026-06-27.*) show without an app restart.
+  useEffect(() => { window.studio.kit.list().then(setEntries) }, [nonce])
   const open = (e: KitEntry) => window.studio.kit.get(e.date, e.ticker).then(setSel)
   const byDate = new Map<string, KitEntry[]>()
   for (const e of entries) (byDate.get(e.date) ?? byDate.set(e.date, []).get(e.date)!).push(e)
