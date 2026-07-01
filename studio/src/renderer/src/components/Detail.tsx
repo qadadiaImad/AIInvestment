@@ -2,14 +2,16 @@ import { useEffect, useState } from 'react'
 import { useStudio } from '../store'
 
 export default function Detail() {
-  const { selected, select } = useStudio()
+  const { selected, select, nonce } = useStudio()
   const [data, setData] = useState<any>(null)
   const [caption, setCaption] = useState('')
+  // Refetch on `selected` AND on `nonce` so the header Refresh button pulls the
+  // freshly-written valuation/caption for the currently-open post, not just on select.
   useEffect(() => {
     if (!selected) return
     window.studio.stock.get(selected.ticker).then(setData)
     window.studio.caption.get(selected.date, selected.ticker).then(setCaption)
-  }, [selected])
+  }, [selected, nonce])
   if (!selected) return null
   const mp4 = selected.media.find(m => m.endsWith('.mp4'))
   const imgs = selected.media.filter(m => m.endsWith('.png'))
