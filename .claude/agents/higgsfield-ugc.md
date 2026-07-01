@@ -92,3 +92,9 @@ file at the repo root named **`higgsfield_<YYYY-MM-DD>_v<N>.txt`**:
   increment (v2, v3, …). Never overwrite an existing file.
 Use the Write tool to create it. Then return a short summary: the filename written, the 3 picks (headline
 + scope), and the persona handle used.
+
+## Feedback loop (review dashboard)
+
+If regenerating an existing post, first load its open comments — `cd review && python comments.py <post_id>`
+(`post_id` = `<date>_<TICKER>_<kind>`) — and fold each into the generation prompt per its part tag
+(caption / audio / visual). Mark them resolved after regenerating. Store: `feedback/post_comments.json`.

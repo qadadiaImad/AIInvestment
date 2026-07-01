@@ -1,0 +1,7 @@
+@import "tailwindcss";
+:root { color-scheme: dark; }
+body { margin: 0; background: #0A0D12; color: #E8EDF2; font-family: Inter, system-ui, sans-serif; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #1d2530; border-radius: 6px; }
+.font-display { font-family: 'Fraunces', serif; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
