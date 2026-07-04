@@ -1,0 +1,29 @@
+AI STACK — NARRATED REEL KIT (2026-06-27)  | 9:16 MP4, animated hero + Harrison AI voice + Ken-Burns data
+Numbers from the terminal, data as of 2026-06-27. Voice: ElevenLabs "Harrison". Educational / market commentary — not advice.
+Each reel: animated hero opener → data slide (Ken-Burns) → takeaway. Thin footer disclaimer only. No first person; no outlet named.
+News-driven selection; catalysts attributed as "reportedly / this week". Add a royalty-free music bed in your editor (Higgsfield is voice-only).
+NOTE: GuruFocus fundamental ("fair") values ARE populated this round → valuation framed as price vs the model's fair value (% below / "times above"). Tags (Undervalued / Fairly Valued / Overvalued) are ours: price vs GuruFocus fair value.
+
+=============== REEL 1 — TEAM (AI APPLICATION / SOFTWARE) ===============
+File: reel_team_2026-06-27.mp4   | hero: modern software office at night, emerald light
+Caption:
+The market sold the software stocks to the floor this year — and one of the most-used names in the building got cut the hardest. Atlassian, the maker of Jira and Confluence, trades near seventy-nine dollars while the model pegs fair value around two hundred seventy-nine — about seventy-two percent below, the deepest discount on the board. This isn't a broken company: eighty-five percent gross margins, revenue still growing about twenty-five percent, real free cash flow. Down roughly sixty percent in a year. The cheap software is the quality software, for once. Educational, not advice.
+Hashtags: #atlassian #team #aistocks #softwarestocks #saas #valuestocks #stocktok #fintok #investing101
+
+=============== REEL 2 — QBTS (QUANTUM SPREAD) ===============
+File: reel_qbts_2026-06-27.mp4   | hero: quantum lattice / dual-rail glow
+Caption:
+Quantum still gets traded like one lottery ticket — but the model says the names underneath are nothing alike. Against fair value, Rigetti trades about eighteen times above the model and D-Wave about nine times above, while Quantum Computing Inc. sits near fair. The exception is IonQ: roughly forty-three percent below — the only quantum name the model calls cheap. Real progress is shipping across the sector, but the prices have scattered. Watch the spread, not just the rally. Educational, not advice.
+Hashtags: #quantumcomputing #ionq #rigetti #dwave #qbts #quantumstocks #stocktok #fintok
+
+=============== REEL 3 — CONGRESS (PELOSI) ===============
+File: reel_cong_2026-06-27.mp4   | hero: Capitol + ticker-tape
+Caption:
+In a single day, one of the most-watched investors in Congress bought almost the entire AI stack. On January sixteenth, Nancy Pelosi disclosed purchases of Nvidia for the chips, Alphabet for the models, Amazon for the cloud, Vistra for the power to run it, and Tempus in AI health — five names, one day, ranging from fifty thousand to a million dollars each. Members are allowed to trade; this is just the public record of who bought what, and when. Not a signal, not an accusation. Educational, not advice.
+Hashtags: #congresstrading #stockact #pelosi #nvidia #transparency #aistocks #stocktok #fintok
+
+NOTES
+- Posting order suggestion: lead with Congress (hardest hook) or TEAM (cleanest value contrast). Space ~1/day.
+- All three built by the reel engine — see higgs/README_reels.md to rebuild from fresh data.
+- Valuation framing uses GuruFocus fair values (in the 2026-06-27 bundles): TEAM $78.74 / GF $279.31 → ~71.8% below (Undervalued); IONQ $49.31 / $86.99 → ~43.3% below; RGTI $18.36 / $1.01 → ~18.2x above; QBTS $22.76 / $2.45 → ~9.3x above; QUBT $9.18 / $10.51 → ~12.7% below. Tags are ours (price vs GF fair value).
+- Congress: Pelosi (CA11, D) PTR filed 1/23/2026, txns 01/16/2026 — NVDA $250K–$500K, GOOGL & AMZN $500K–$1M, VST $100K–$250K, TEM $50K–$100K (plus AB $1M–$5M, off-scope). No current committee assignments → framed as transparency, not accusation.

@@ -1,0 +1,42 @@
+AI STACK — NARRATED REEL KIT (2026-06-23)  | 9:16 MP4, animated hero + Harrison AI voice + Ken-Burns data
+Numbers from the terminal, data as of 2026-06-23. Voice: ElevenLabs "Harrison". Educational / market commentary — not advice.
+Each reel: animated hero opener → data slide (Ken-Burns) → takeaway. Thin footer disclaimer only. No first person; no outlet named.
+News-driven selection; catalysts attributed as "reportedly / this week". Add a royalty-free music bed in your editor (Higgsfield is voice-only).
+NOTE: GuruFocus fundamental ("fair") values ARE in this round → valuation framed as price vs the model's fair value (% above/below; "times above"), the 22/06 voice. Tags (Undervalued / Fairly Valued / Overvalued) are ours: price vs GuruFocus fair value.
+
+=============== REEL 1 — NBIS (AI NEOCLOUD / INFRA) ===============
+File: reel_nbis_2026-06-23.mp4   | hero: GPU data-center hall, emerald light
+Caption:
+The market sold AI chips again this week — but the company renting those chips out just got promoted. Nebius
+joined the Nasdaq-100 this week, carrying a reported $27 billion Meta compute deal after a roughly 491% year.
+It's the most expensive-looking name in the neocloud — near 101 times sales — yet the model pegs fair value
+around $278 against a $284 price. Roughly fairly valued: the growth is actually backing the multiple, for now.
+The cheap infra name? Still the chipmaker — Nvidia sits about 40% below the model, Palantir about 12% under.
+Educational, not advice.
+Hashtags: #nebius #nbis #aistocks #datacenter #neocloud #aiinfrastructure #stocktok #fintok #investing101
+
+=============== REEL 2 — QBTS (QUANTUM) ===============
+File: reel_qbts_2026-06-23.mp4   | hero: quantum lattice / dual-rail glow
+Caption:
+Quantum gets traded like one lottery ticket — but the model says the names underneath are nothing alike. D-Wave
+unveiled what it calls the first error-aware gate-model quantum simulator this week, as a reported $2 billion
+federal quantum push circled the sector. Real product shipped — yet against fair value, Rigetti trades about 21
+times above the model, D-Wave about 10 times above, and QUBT sits about fair. The exception is IonQ: roughly 33%
+below the model — the only quantum name it thinks is cheap. Watch the spread, not just the rally. Educational, not advice.
+Hashtags: #quantumcomputing #dwave #qbts #ionq #rigetti #quantumstocks #stocktok #fintok
+
+=============== REEL 3 — CONGRESS (CISNEROS) ===============
+File: reel_cong_2026-06-23.mp4   | hero: Capitol + ticker-tape
+Caption:
+A member of the House Armed Services Committee — the panel that helps steer defense and national-security tech —
+just disclosed a heavy week in those same names. In mid-May, newly filed this month, Rep. Gilbert Cisneros bought
+Microsoft in the $50,000-to-$100,000 range, added AMD twice, and picked up CrowdStrike, AppLovin and Ciena, while
+trimming Palantir, IBM and Workday. Members are allowed to trade — this is just the public record: who bought what,
+when, and the committee they sit on. Educational, not advice.
+Hashtags: #congresstrading #stockact #microsoft #amd #transparency #stocktok #fintok
+
+NOTES
+- Posting order suggestion: lead with Congress (hardest hook) or NBIS (freshest catalyst). Space ~1/day.
+- All three built by the reel engine — see higgs/README_reels.md to rebuild from fresh data.
+- News this week: NBIS Nasdaq-100 inclusion (eff. 6/22) + reported $27B Meta deal; D-Wave gate-model simulator (6/18) + reported $2B federal quantum funding; Cisneros PTR filed 6/8 (txns mid-May 2026). Catalysts verified via live search; outlets unnamed per rails.
+- Valuation framing uses GuruFocus fair values (fetched + computed 2026-06-23): NBIS ~1.8% above (Fairly Valued), NVDA ~39.9% below, PLTR ~12.2% below, CRWV ~4% above, ORCL ~3.9% below; QBTS ~10.1x above, RGTI ~21.4x above, IONQ ~32.8% below, QUBT ~fair. Tags are ours (price vs GF fair value).

@@ -14,17 +14,47 @@ references/playwright-mcp-protocol.md (Mode B) — the MCP real-browser session 
 """
 from __future__ import annotations
 
+import argparse
 import random
 import sys
 import time
 
 import fundamental_fetch as ff
+from aiinvest import ai_stack, quantum_stack
+
+
+def resolve_universe(scope="all"):
+    """Return a de-duplicated, sorted list of BARE symbols to backfill.
+
+    scope ∈ {"ai", "quantum", "all"}. The stack modules store TradingView
+    ``EXCHANGE:SYMBOL`` tickers; GuruFocus (the fair-value source) keys on the
+    bare symbol, so we strip the exchange prefix here.
+    """
+    def bare(tickers):
+        return [t.split(":")[-1].upper() for t in tickers]
+
+    ai = bare(ai_stack.all_tickers())
+    quantum = bare(quantum_stack.all_tickers())
+    if scope == "ai":
+        syms = ai
+    elif scope == "quantum":
+        syms = quantum
+    else:
+        syms = ai + quantum
+    return sorted(dict.fromkeys(syms))  # dedup, stable, sorted
 
 
 def main(argv=None):
-    tickers = [t.upper() for t in (argv if argv is not None else sys.argv[1:])]
+    ap = argparse.ArgumentParser(
+        description="Backfill GuruFocus fundamental (fair) values — fresh browser per ticker.")
+    ap.add_argument("tickers", nargs="*", help="Explicit bare symbols (e.g. NVDA MSFT).")
+    ap.add_argument("--universe", choices=["ai", "quantum", "all"],
+                    help="Backfill the whole AI / quantum universe instead of listing tickers.")
+    args = ap.parse_args(argv)
+
+    tickers = resolve_universe(args.universe) if args.universe else [t.upper() for t in args.tickers]
     if not tickers:
-        print("usage: python fundamental_backfill.py SYM1 SYM2 ...")
+        print("usage: python fundamental_backfill.py SYM1 SYM2 ...  |  --universe {ai,quantum,all}")
         return 2
     got_series = 0
     for i, sym in enumerate(tickers):

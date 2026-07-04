@@ -1,0 +1,8 @@
+# Source art & scratch — regenerable, keep out of git
+hero_*
+logo_*
+maya_*
+voice_*.mp3
+_check*
+*_anim.mp4
+# everything else under higgs/ (builder scripts, deliverables, manifests, README) is tracked

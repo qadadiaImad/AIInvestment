@@ -66,11 +66,33 @@ def _utc_now():
 # Network layer (thin; parsing/joining lives in aiinvest.congress + pure helpers)
 # ---------------------------------------------------------------------------
 
-def download_fd_index_xml(year, session=None, timeout=60):
+def _get_with_retry(http, url, *, timeout, retries=3, backoff=1.0, sleep=time.sleep):
+    """GET `url` with the honest UA, retrying transient connection errors with
+    exponential backoff. Re-raises the last error if every attempt fails.
+
+    The House disclosures server intermittently resets connections (WinError
+    10054 / ConnectionResetError) under sustained pulling; a single reset must
+    not abort a 500+ PTR run. Per the repo's anti-gating doctrine: back off and
+    retry, don't hammer.
+    """
+    last_exc = None
+    for attempt in range(retries):
+        try:
+            return http.get(url, headers={"User-Agent": _UA}, timeout=timeout)
+        except requests.exceptions.RequestException as exc:
+            last_exc = exc
+            if attempt < retries - 1:
+                sleep(backoff * (2 ** attempt))
+    raise last_exc
+
+
+def download_fd_index_xml(year, session=None, timeout=60, retries=3, backoff=1.0,
+                          sleep=time.sleep):
     """Download the annual FD ZIP and return the {YEAR}FD.xml bytes."""
     http = session or requests
     url = _ZIP_URL.format(year=year)
-    resp = http.get(url, headers={"User-Agent": _UA}, timeout=timeout)
+    resp = _get_with_retry(http, url, timeout=timeout, retries=retries,
+                           backoff=backoff, sleep=sleep)
     resp.raise_for_status()
     zf = zipfile.ZipFile(io.BytesIO(resp.content))
     name = f"{year}FD.xml"
@@ -83,17 +105,26 @@ def download_fd_index_xml(year, session=None, timeout=60):
     return zf.read(name)
 
 
-def download_ptr_text(year, docid, session=None, timeout=60):
+def download_ptr_text(year, docid, session=None, timeout=60, retries=3,
+                      backoff=1.0, sleep=time.sleep):
     """Download a PTR PDF and extract its text. Returns (text, pdf_url, status).
 
     text is "" when the HTTP fetch fails or the PDF carries no extractable text
     (scanned image) -- the caller flags is_scanned and skips, never guesses.
+
+    Transient connection errors are retried with backoff. If every attempt
+    fails, returns status 0 (a network-failed sentinel) instead of raising, so
+    one flaky download is logged in http_failed and the run continues.
     """
     import pdfplumber
 
     http = session or requests
     url = _PDF_URL.format(year=year, docid=docid)
-    resp = http.get(url, headers={"User-Agent": _UA}, timeout=timeout)
+    try:
+        resp = _get_with_retry(http, url, timeout=timeout, retries=retries,
+                               backoff=backoff, sleep=sleep)
+    except requests.exceptions.RequestException:
+        return "", url, 0
     if resp.status_code != 200:
         return "", url, resp.status_code
     try:
