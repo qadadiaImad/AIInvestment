@@ -1,0 +1,233 @@
+AI STACK — UGC SHORT-FORM PACKAGE — 2026-06-30 (v1)
+Campaign: June-30 tri-post (matches today's vetted carousels) — NVDA / AVGO / RGTI
+Fundamental values retrieved 2026-07-01 (UTC). Prices as of June-30 close.
+
+=====================================================================
+PERSONA (channel-consistent — reuse across all 3)
+=====================================================================
+Handle: @StackedWithMaya
+Maya, 24 — sharp young markets analyst. Understated, precise, quietly confident;
+dry wit, zero hype, no slang, no emoji-spam. Mixed-race, shoulder-length dark wavy
+hair, light natural makeup, gold hoops; cream ribbed knit or oversized blazer.
+Cozy modern home-office corner: bookshelf, small plant, warm desk lamp, faint
+monitor glow. Soft warm front-left key, gentle bokeh, 9:16 chest-up.
+Identity anchor: same Maya avatar as prior runs (avatar 0932dd65 /
+maya_anchor_2026-06-03.png) — same woman, every clip.
+Copy rules: NO first person on valuation ("analysts' model shows…", "the data
+says…", "the filing shows…"). Never name a news outlet — "reportedly". Never
+write a certain thing as rumored or vice versa. Voice via Higgsfield "Speak"
+(audio-driven lip-sync), calm fast-but-controlled cadence.
+
+=====================================================================
+POST 1 — NVDA (AI value chain)
+=====================================================================
+PICK & WHY-VIRAL
+Headline (reported, 6/30): Nvidia reportedly teaming with Palantir on sovereign
+AI for governments. Secondary color (reported): a "Rubin" product-cycle boost;
+(reported) a well-known investor placing an AI-bubble short.
+Hook angle: the paradox — the biggest stock on earth trades at HALF its own
+industry's earnings multiple. P/E 30.6 vs Semiconductors median 63.3.
+Concrete numbers: June-30 close $200.09 (cross-checked $198.34); 1y +26.3%;
+ROIC ~106% vs -2.1% industry median; revenue growth 71% vs 14.4%; gross 74%;
+net 63%; near-zero debt. NO fair-value dollar figure for NVDA (excluded —
+failed cross-validation). Frame: "cheaper multiple than peers despite the run."
+Dated public record (secondary, NOT the lead): Rep. Cleo Fields (LA-06)
+disclosed an NVDA purchase, $50,001–100,000, filing dated September 2025
+(transaction 9/3/2025). Public record for transparency only.
+
+HOOK (first 1.5–2s)
+"The most valuable company on the market is trading at half its industry's
+multiple. That math shouldn't work."
+
+SPOKEN SCRIPT (~30s, no first person on valuation)
+"The most valuable company on the market trades at half its own industry's
+earnings multiple. That math shouldn't work — but here it is. Nvidia closed
+June at two hundred dollars, up twenty-six percent in a year, and the data
+still shows a P/E of thirty point six against a semiconductor median of
+sixty-three. Return on invested capital: around a hundred and six percent,
+in an industry averaging negative. Revenue growing seventy-one percent versus
+fourteen for peers. Near-zero debt. And now it's reportedly teaming with
+Palantir on sovereign AI for governments — while, reportedly, a famous
+investor is shorting the whole AI trade. One more footnote from the public
+record: a Louisiana congressman disclosed an Nvidia buy, fifty to a hundred
+thousand dollars — back in September 2025. Disclosure, not a signal.
+The part nobody's pricing in is what 'sovereign AI' actually means for the
+next decade. That's the next video. Not financial advice — do your own
+research."
+
+ON-SCREEN CAPTIONS (flash big)
+- "P/E 30.6 vs 63.3"
+- "ROIC ~106%"
+- "REV +71% vs 14.4%"
+- "SOVEREIGN AI (reported)"
+- "NOT FINANCIAL ADVICE"
+
+B-ROLL / CUTAWAYS (unbranded)
+- Generic multiple-comparison bar chart: 30.6 vs 63.3
+- Clean line chart of a 1-year +26% run
+- Plain congressional-disclosure table row: "NVDA | $50,001–100,000 | Sept 2025"
+- Slow zoom on a government building silhouette for the sovereign-AI beat
+
+PLATFORM CAPTION + HASHTAGS
+"The biggest company on the market — at half its industry's multiple. The
+numbers, not the noise. Congress disclosure shown is public record (Sept 2025),
+not a signal. Educational only, not financial advice — DYOR.
+#nvidia #nvda #aistocks #semiconductors #stockmarket #investing #stocktok"
+
+HIGGSFIELD VIDEO PROMPT (copy-paste)
+"Vertical 9:16 UGC talking-head, same Maya identity anchor (avatar 0932dd65 /
+maya_anchor_2026-06-03.png): 24-year-old mixed-race woman, shoulder-length dark
+wavy hair, light natural makeup, gold hoops, cream ribbed knit sweater. Cozy
+modern home-office corner — bookshelf, small plant, warm desk lamp, faint
+monitor glow behind her. Soft warm front-left key light, gentle background
+bokeh, chest-up framing. Motion: fast push-in for the first 2 seconds on the
+hook, then settle into a slow dolly-in with very light handheld sway. Mood:
+calm, sharp, quietly confident analyst; small dry half-smile at the end.
+Photoreal, cinematic UGC style, no text, no logos, no graphics. Use Higgsfield
+Speak for lip-synced voiceover."
+
+=====================================================================
+POST 2 — AVGO (AI value chain — the debate post)
+=====================================================================
+PICK & WHY-VIRAL
+Headline (reported, 6/30): Broadcom reportedly down ~16% in a month, sparking
+a "sell or buy more?" debate. Secondary: Marvell-vs-Broadcom custom-ASIC
+comparison (reported); AI-inference upside angle (rumored).
+Hook angle: everyone is arguing about the dip — analysts' fundamental-value
+model says the stock is still ABOVE fair value even after the fall.
+Concrete numbers: fundamental value $312.62 vs price ~$370–378 → ~+18% premium
+("modestly overvalued"); P/E 62.9; revenue growth 32.3%; EPS growth 125.8%;
+gross margin 65.7%; 1y +37.5%.
+
+HOOK (first 1.5–2s)
+"A stock drops sixteen percent in a month and the model says it's STILL
+expensive. Here's the uncomfortable math."
+
+SPOKEN SCRIPT (~30s)
+"Broadcom is reportedly down about sixteen percent in a month, and the
+internet has split into two camps: 'sell everything' and 'buy the dip.'
+Here's what neither camp is saying. Analysts' fundamental-value model puts
+the stock at three hundred twelve dollars — and it still trades in the
+three-seventies. That's roughly an eighteen percent premium AFTER the drop.
+Modestly overvalued, per the data — not a crash, not a bargain. The business
+itself? Revenue up thirty-two percent, earnings per share up a hundred and
+twenty-six percent, sixty-six percent gross margins, still up thirty-seven
+percent on the year. Reportedly, the real fight is Broadcom versus Marvell
+for custom AI chips — and there's a rumored inference upside nobody can
+verify yet. A dip and a discount are not the same thing. Follow for the
+Marvell side of that fight. Not financial advice — do your own research."
+
+ON-SCREEN CAPTIONS (flash big)
+- "-16% IN A MONTH (reported)"
+- "FUNDAMENTAL VALUE $312.62"
+- "PRICE ~$370s → ~+18% PREMIUM"
+- "EPS +125.8%"
+- "NOT FINANCIAL ADVICE"
+
+B-ROLL / CUTAWAYS (unbranded)
+- Generic price-vs-fundamental-value chart: price line above a flat $312 band
+- Split-screen "SELL / BUY MORE?" text cards (plain, no branding)
+- Simple two-column ASIC comparison silhouette (AVGO vs MRVL, no logos)
+- Red monthly candle zoom for the -16% beat
+
+PLATFORM CAPTION + HASHTAGS
+"Down 16% in a month — and analysts' model says it's still ~18% above
+fundamental value. A dip is not automatically a discount. Educational only,
+not financial advice — DYOR.
+#broadcom #avgo #aichips #semiconductors #stockmarket #investing #stocktok #dip"
+
+HIGGSFIELD VIDEO PROMPT (copy-paste)
+"Vertical 9:16 UGC talking-head, same Maya identity anchor (avatar 0932dd65 /
+maya_anchor_2026-06-03.png): 24-year-old mixed-race woman, dark wavy
+shoulder-length hair, gold hoops, oversized neutral blazer over a plain top.
+Same cozy home-office corner — bookshelf, plant, warm desk lamp, faint monitor
+glow — but slightly cooler ambient grade with a subtle blue accent from the
+monitor, matching a 'debate' mood. Soft front-left key, gentle bokeh, chest-up.
+Motion: snap push-in on the hook, hold, then slow lateral drift with light
+handheld. Delivery: skeptical, measured, one raised eyebrow on 'STILL
+expensive.' Photoreal cinematic UGC, no text, no logos. Use Higgsfield Speak
+for lip-synced voiceover."
+
+=====================================================================
+POST 3 — RGTI (Quantum — momentum vs fundamentals)
+=====================================================================
+PICK & WHY-VIRAL
+Headline (reported, 6/30): Rigetti's liquidity reportedly strengthens its
+quantum outlook.
+Hook angle: the hottest quantum stock of the year trades at ~18.6x what
+analysts' fundamental-value model says it's worth — a pure narrative trade,
+stated honestly.
+Concrete numbers: fundamental value $1.03 vs price ~$19 → ~18.6x
+("significantly overvalued"); pre-revenue-scale; revenue DECLINED from
+$13.1M (2022) to $7.09M (2025); deeply negative margins and free cash flow;
+1y +72.7% — hottest quantum mover.
+
+HOOK (first 1.5–2s)
+"This stock is up seventy-two percent in a year. Its revenue went DOWN.
+Both of those are true."
+
+SPOKEN SCRIPT (~30s)
+"A quantum-computing stock is up seventy-two point seven percent in a year —
+the hottest name in the sector. Same company: revenue fell from thirteen
+point one million in 2022 to about seven million in 2025. Deeply negative
+margins, negative free cash flow. Analysts' fundamental-value model pegs it
+around one dollar and three cents a share. It trades near nineteen. That's
+roughly eighteen and a half times the model — the data calls that
+significantly overvalued, priced almost entirely on the story. The story did
+get a real update, though: Rigetti's liquidity reportedly strengthened its
+quantum outlook — more runway to actually build the thing the market is
+betting on. That's the honest frame: momentum and fundamentals pointing in
+opposite directions, and the market picking momentum. Follow for who's
+actually winning the quantum race. Not financial advice — do your own
+research."
+
+ON-SCREEN CAPTIONS (flash big)
+- "+72.7% IN 1 YEAR"
+- "REVENUE: $13.1M → $7.09M"
+- "MODEL: $1.03 | PRICE: ~$19"
+- "~18.6x THE MODEL"
+- "NOT FINANCIAL ADVICE"
+
+B-ROLL / CUTAWAYS (unbranded)
+- Diverging two-line chart: price curving up, revenue stepping down
+- Generic price-vs-fundamental-value gap visual ($1.03 band far below price)
+- Abstract quantum-chip / cryostat macro footage for the liquidity beat
+- Simple "MOMENTUM vs FUNDAMENTALS" split card (plain text, no branding)
+
+PLATFORM CAPTION + HASHTAGS
+"Up 72.7% in a year. Revenue down since 2022. Analysts' model says ~$1.03;
+the market says ~$19. Momentum vs fundamentals, stated plainly. Educational
+only, not financial advice — DYOR.
+#quantumcomputing #rgti #rigetti #quantum #stockmarket #investing #stocktok"
+
+HIGGSFIELD VIDEO PROMPT (copy-paste)
+"Vertical 9:16 UGC talking-head, same Maya identity anchor (avatar 0932dd65 /
+maya_anchor_2026-06-03.png): 24-year-old mixed-race woman, dark wavy
+shoulder-length hair, light makeup, gold hoops, cream ribbed knit. Same cozy
+home-office corner, evening grade — warm desk lamp dominant, faint cool
+monitor glow rim on one side for a slightly futuristic feel. Chest-up, gentle
+bokeh. Motion: fast push-in on the hook line, beat pause, then slow steady
+dolly-in with minimal handheld; subtle head tilt on 'both of those are true.'
+Delivery: neutral, credible, document-like calm — fewer gestures, dry.
+Photoreal cinematic UGC, no text, no logos. Use Higgsfield Speak for
+lip-synced voiceover."
+
+=====================================================================
+COMPLIANCE NOTE (all 3 posts)
+=====================================================================
+- Educational/market commentary only; every script and caption carries "not
+  financial advice / DYOR" spoken + on-screen.
+- No product, app, terminal, or brand mention anywhere (attention-first phase).
+  All B-roll visuals are generic/unbranded.
+- Valuation claims are third-person, attributed to "analysts' fundamental-value
+  model" / "the data". NVDA carries NO fair-value dollar figure (excluded after
+  failed cross-validation) — framed only as a cheaper multiple than peers.
+- Certainty labels respected: sovereign-AI deal, Rubin boost, bubble short,
+  AVGO -16% debate, Marvell comparison, Rigetti liquidity = "reportedly";
+  AI-inference upside = "rumored"; Congress item = "filing/disclosed".
+- Congress: Rep. Cleo Fields NVDA purchase $50,001–100,000, filing dated
+  Sept 2025 (txn 9/3/2025) — presented as dated public record for transparency,
+  secondary (not the lead), explicitly "disclosure, not a signal," no
+  accusation, no trade-copy framing.
+- No news outlets named. "GuruFocus"/"GF" never used — "fundamental value" only.
+- All numbers verbatim from the vetted 2026-07-01 harvest; nothing fabricated.
