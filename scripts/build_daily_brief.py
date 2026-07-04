@@ -77,8 +77,10 @@ def run(date, data_dir, out_dir, fetch=None):
     return meta
 
 if __name__ == "__main__":
+    from datetime import datetime, timezone
     ap = argparse.ArgumentParser()
-    ap.add_argument("--date", required=True)
+    ap.add_argument("--date", default=datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+                    help="brief date YYYY-MM-DD (default: today, UTC)")
     ap.add_argument("--data-dir", default="../web/public/data")
     ap.add_argument("--out-dir", default="../content/daily_brief")
     a = ap.parse_args()

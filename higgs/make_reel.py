@@ -8,12 +8,24 @@ Steps:  render 9:16 frames -> download animated hero + AI voice -> detect senten
 Ken-burns idiom is the CORRECTED one: `-loop 1` with NO `-t` on input + `-frames:v N` cap
 (prevents the zoompan frame-multiplication blowup) and `-crf` rate control.
 """
-import subprocess, sys, os, re, urllib.request, pathlib, datetime
+import subprocess, sys, os, re, json, urllib.request, pathlib, datetime
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent          # repo root
 HG = ROOT / "higgs"
 FPS = 30
-DATE = "2026-06-22"
+
+def _round_date():
+    """Content-round date for output filenames: the manifest's `date` (the kit round being
+    assembled), falling back to today (UTC) — never a hardcoded constant."""
+    try:
+        d = json.loads((HG / "reels_manifest.json").read_text(encoding="utf-8")).get("date")
+        if d and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(d)):
+            return str(d)
+    except Exception:
+        pass
+    return datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
+
+DATE = _round_date()
 
 def sh(cmd):
     r = subprocess.run(cmd, shell=True, cwd=str(ROOT), capture_output=True, text=True)

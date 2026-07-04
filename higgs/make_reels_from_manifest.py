@@ -52,6 +52,9 @@ def build_jobs(manifest):
         if not tk:
             skipped.append(("?", "missing ticker"))
             continue
+        if tk == "CONG":
+            skipped.append((tk, "congress reel uses its own builder (_build_reel_congress.py) — not the stock pipeline"))
+            continue
         if is_placeholder(hero) or is_placeholder(voice):
             skipped.append((tk, "placeholder/missing hero or voice URL — run Phase-1 (MCP) first"))
             continue

@@ -2,13 +2,17 @@
 Outputs: reel_cong_hook.png (TRANSPARENT overlay for the animated hero), reel_cong_card.png,
 reel_cong_takeaway.png (full 1080x1920 frames, Capitol hero baked). Rendered via headless Playwright.
 """
-import json, base64
+import json, base64, os, pathlib
 from playwright.sync_api import sync_playwright
+os.chdir(pathlib.Path(__file__).resolve().parent.parent)   # anchor to repo root — runnable from any cwd
 W,H=1080,1920
 cg=json.load(open('web/public/data/congress.json',encoding='utf-8'))
 ve=[t for t in cg['trades'] if 'van epps' in (t.get('politician') or '').lower() and t.get('txn_date')=='06/16/2026' and t.get('txn_type')=='S']
 ve_syms=[t['ticker'] for t in ve]
-HERO="data:image/png;base64,"+base64.b64encode(open('higgs/hero_congress_2026-06-21.png','rb').read()).decode()
+# newest generated Capitol hero — no per-round edit needed when only the date moves
+_heroes=sorted(pathlib.Path('higgs').glob('hero_congress_*.png'))
+if not _heroes: raise SystemExit("no higgs/hero_congress_*.png found — generate the hero first")
+HERO="data:image/png;base64,"+base64.b64encode(_heroes[-1].read_bytes()).decode()
 
 FONTS="@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700;800&display=swap');"
 BASE=f"""*{{margin:0;padding:0;box-sizing:border-box}}{FONTS}
