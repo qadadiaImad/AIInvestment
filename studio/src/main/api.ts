@@ -5,7 +5,7 @@ import { HIGGS, CONTENT, DATA, FEEDBACK_FILE } from './paths'
 import { buildIndex } from './indexer'
 import { parseCaptions } from './captions'
 import { joinStock, type Bundles } from './datajoin'
-import { parseScriptSheet, parseKitCfg, parseHeroPrompt, parseStory } from './kit'
+import { parseScriptSheet, parseKitCfg, parseHeroPrompt, parseHeroImage, parseStory } from './kit'
 import * as comments from './comments'
 
 function walk(dir: string, base = ''): string[] {
@@ -79,11 +79,17 @@ export function registerApi(): void {
     const b: Bundles = {
       site: readJson('site.json'), quantum: readJson('quantum.json'), congress: readJson('congress.json'),
     }
+    // Prefer the filename the kit CFG declares (MU/IONQ); fall back to the hero_<ticker>_<date>
+    // convention for reels with no CFG block (e.g. congress). Only surface it once the PNG is
+    // actually on disk, so an ungenerated reel shows its prompt, not a broken <img>.
+    const heroFile = (md ? parseHeroImage(md, tk) : null) || `hero_${tk.toLowerCase()}_${date}.png`
+    const hero_image = existsSync(join(HIGGS, heroFile)) ? heroFile : null
     return {
       id: `${date}_${tk}`, date, ticker: tk,
       theme: entry?.theme ?? '', script: entry?.script ?? '', hashtags: entry?.hashtags ?? '',
       slides: md ? parseKitCfg(md, tk) : null,
       hero_prompt: md ? parseHeroPrompt(md, tk) : null,
+      hero_image,
       story: md ? parseStory(md, tk) : null,
       source: joinStock(tk, b),
     }

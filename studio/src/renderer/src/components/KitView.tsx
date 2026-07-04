@@ -129,6 +129,12 @@ function KitDetailPanel({ d }: { d: KitDetail }) {
           </div>
         )}
       </Section>
+      {d.hero_image && (
+        <Section title="HERO IMAGE">
+          <img src={`media://higgs/${d.hero_image}`} alt={`${d.ticker} hero`}
+            className="rounded-xl border border-white/10 w-full max-w-sm" />
+        </Section>
+      )}
       {d.hero_prompt && <Section title="HERO PROMPT"><p className="text-sm text-white/70 whitespace-pre-wrap">{d.hero_prompt}</p></Section>}
       {d.story && <Section title="NEWS ANGLE"><p className="text-sm text-white/70">{d.story}</p></Section>}
       <KitComments date={d.date} ticker={d.ticker} />

@@ -107,6 +107,17 @@ export function parseHeroPrompt(md: string, ticker: string): string | null {
   return out || null
 }
 
+// the hero still's filename for a reel — from the CFG `"hero":"…png"` (MU/IONQ), else any
+// hero_*.png referenced in the ticker's section (e.g. the congress reel has no CFG block).
+export function parseHeroImage(md: string, ticker: string): string | null {
+  const block = cfgBlock(md, ticker)
+  const inCfg = block?.match(/"hero"\s*:\s*"((?:[^"\\]|\\.)*\.png)"/)
+  if (inCfg) return inCfg[1]
+  const sec = sectionFor(md, ticker)
+  const m = sec?.match(/hero_[a-z0-9]+_\d{4}-\d{2}-\d{2}\.png/i)
+  return m ? m[0] : null
+}
+
 export function parseStory(md: string, ticker: string): string | null {
   const sec = sectionFor(md, ticker)
   if (!sec) return null

@@ -22,6 +22,7 @@ declare global {
             takeaway: { kick?: string; big?: string; unit?: string; label?: string; body?: string }
           } | null
           hero_prompt: string | null
+          hero_image: string | null
           story: string | null
           source: { found: boolean; source?: string; layer?: string; valuation?: any; congress_trades: any[] }
         }>
