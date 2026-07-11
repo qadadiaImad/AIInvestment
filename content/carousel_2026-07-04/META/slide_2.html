@@ -1,0 +1,52 @@
+<meta charset="utf-8">
+<title>META — slide 2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+.slide{width:1080px;height:1350px;position:relative;overflow:hidden;background:#0A0D12;color:#E8EDF2;font-family:'Inter',sans-serif}
+.glow{position:absolute;width:1400px;height:1400px;left:-300px;top:-500px;background:radial-gradient(circle,rgba(16,185,129,.16) 0%,rgba(16,185,129,0) 60%);pointer-events:none}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(232,237,242,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(232,237,242,.035) 1px,transparent 1px);background-size:40px 40px}
+.inner{position:absolute;inset:90px;display:flex;flex-direction:column}
+.kicker{font:600 22px/1 'Inter';letter-spacing:.22em;text-transform:uppercase;color:#34D399}
+.h1{margin-top:26px;font:600 74px/1.08 'Fraunces',serif;letter-spacing:-0.01em;max-width:880px}
+.h1 em{font-style:normal;color:#34D399}
+.gapbox{margin-top:64px;display:flex;flex-direction:column;gap:26px}
+.row{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid rgba(232,237,242,.12);padding-bottom:24px}
+.lbl{font:500 26px/1.4 'Inter';color:#9AA6B2;max-width:440px}
+.val{font:600 76px/1 'JetBrains Mono',monospace}
+.val.mkt{color:#E8EDF2}
+.val.fv{color:#34D399}
+.discount{margin-top:52px;background:rgba(16,185,129,.08);border:1px solid rgba(52,211,153,.35);border-radius:20px;padding:44px 48px;display:flex;align-items:center;gap:44px}
+.bignum{font:600 108px/1 'JetBrains Mono',monospace;color:#34D399}
+.dtext{font:400 30px/1.45 'Inter';color:#C4CEd8}
+.note{margin-top:40px;font:400 23px/1.55 'Inter';color:#77828E;max-width:880px}
+.foot{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end}
+.wordmark{font:600 22px/1 'Inter';letter-spacing:.28em;color:#E8EDF2}
+.pagenum{font:500 22px/1 'JetBrains Mono',monospace;color:#77828E}
+</style>
+<div class="slide">
+  <div class="grid"></div><div class="glow"></div>
+  <div class="inner">
+    <div class="kicker">META &middot; The Set-Up</div>
+    <div class="h1">The market says one number.<br>The <em>fundamentals</em> say another.</div>
+    <div class="gapbox">
+      <div class="row">
+        <div class="lbl">Market price<br><span style="font-size:20px;color:#5E6873">July-3 close</span></div>
+        <div class="val mkt">$582.90</div>
+      </div>
+      <div class="row">
+        <div class="lbl">Fundamental value<br><span style="font-size:20px;color:#5E6873">analysts' fundamental-value model</span></div>
+        <div class="val fv">$813.62</div>
+      </div>
+    </div>
+    <div class="discount">
+      <div class="bignum">&minus;28.4%</div>
+      <div class="dtext">The stock trades <b>28.4% below</b> what the analysts' fundamental-value model estimates the business is worth.</div>
+    </div>
+    <div class="note">A gap is a question, not an answer. The next two slides walk through the ratios behind that $813.62 &mdash; and how Meta compares with its industry.</div>
+    <div class="foot">
+      <div class="wordmark">AI STACK</div>
+      <div class="pagenum">2 / 5</div>
+    </div>
+  </div>
+</div>
