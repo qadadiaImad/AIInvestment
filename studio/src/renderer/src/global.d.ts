@@ -23,9 +23,20 @@ declare global {
           } | null
           hero_prompt: string | null
           hero_image: string | null
+          slide_images: string[]
+          reel_video: string | null
           story: string | null
           source: { found: boolean; source?: string; layer?: string; valuation?: any; congress_trades: any[] }
         }>
+      }
+      brief: {
+        list(): Promise<string[]>
+        get(date: string): Promise<{
+          date: string; text: string; chart: string | null
+          meta: { picks?: { ai?: string; quantum?: string }; market_pulse?: any
+                  generated_at?: string; rails_passed?: boolean; chart_error?: string | null
+                  sources?: string[] } | null
+        } | null>
       }
       comments: {
         list(postId: string): Promise<Array<{ id: string; post_id: string; part: string; text: string; created_at: string; resolved: boolean }>>
