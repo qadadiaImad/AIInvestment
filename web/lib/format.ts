@@ -291,6 +291,103 @@ export function correlationColor(v: number | null | undefined): string {
   return mixHex(CORR_ZERO, CORR_NEG, -c);
 }
 
+// ---- Macro desk (terminal/macro) ----
+
+import type { MacroGroup, MacroRegimeKey, MacroUnitKind } from "@/lib/macro";
+
+export const MACRO_GROUP_ORDER: MacroGroup[] = [
+  "RATES",
+  "INFLATION",
+  "LIQUIDITY_VOL",
+  "ENERGY",
+];
+
+export const MACRO_GROUP_LABELS: Record<string, string> = {
+  RATES: "RATES",
+  INFLATION: "INFLATION",
+  LIQUIDITY_VOL: "LIQUIDITY & VOL",
+  ENERGY: "ENERGY",
+};
+
+// ENERGY reuses LAYER_COLORS["L0-energy"] deliberately — ties the macro
+// ENERGY group visually to the L0 chip color used everywhere else in the
+// terminal (energy is Layer 0 of the AI stack).
+export const MACRO_GROUP_COLORS: Record<string, string> = {
+  RATES: "#3b82f6",
+  INFLATION: "#a78bfa",
+  LIQUIDITY_VOL: "#06b6d4",
+  ENERGY: LAYER_COLORS["L0-energy"],
+};
+
+// Categorical traffic-light chip color — NOT interpolated (unlike
+// riskMagnitudeColor/riskDivergingColor above). Table is FINAL per macro
+// desk design doc §6/§10.6:
+//   green  = curve:normal | real_rate:accommodative | liquidity:expanding | vix:complacent|normal
+//   amber  = curve:flat   | real_rate:neutral        | liquidity:flat      | vix:elevated
+//   red    = curve:inverted | real_rate:restrictive  | liquidity:contracting | vix:stressed
+//   grey   = state == null (no-data, same convention as healthColor())
+export function regimeColor(key: MacroRegimeKey, state: string | null): string {
+  const GREEN = "#34d399";
+  const AMBER = "#f59e0b";
+  const RED = "#fb7185";
+  const GREY = "#6b7280";
+  if (state == null) return GREY;
+  if (key === "curve") {
+    return state === "normal" ? GREEN : state === "flat" ? AMBER : RED;
+  }
+  if (key === "real_rate") {
+    return state === "accommodative" ? GREEN : state === "neutral" ? AMBER : RED;
+  }
+  if (key === "liquidity") {
+    return state === "expanding" ? GREEN : state === "flat" ? AMBER : RED;
+  }
+  // vix
+  return state === "complacent" || state === "normal"
+    ? GREEN
+    : state === "elevated"
+      ? AMBER
+      : RED;
+}
+
+// The ONLY place that maps a regime chip's raw state string -> a
+// human-facing label. Never hardcode title-cased state strings elsewhere.
+export function regimeLabel(state: string | null): string {
+  return state == null ? DASH : titleCase(state);
+}
+
+// unit_kind -> display string. The ONE place that maps unit_kind -> a
+// formatted text value for a MacroSeries. usd_millions divides by 1000 and
+// renders "$B" for DISPLAY ONLY — the stamped number in macro.json stays
+// raw FRED-native millions, never rescaled at pull time.
+export function macroValue(
+  v: number | null,
+  unitKind: MacroUnitKind,
+  decimals: number,
+): string {
+  if (typeof v !== "number" || !Number.isFinite(v)) return DASH;
+  if (unitKind === "pct") return `${v.toFixed(decimals)}%`;
+  if (unitKind === "usd_millions") {
+    return `$${(v / 1000).toLocaleString("en-US", { maximumFractionDigits: 0 })}B`;
+  }
+  if (unitKind === "usd_small") return `$${v.toFixed(decimals)}`;
+  return v.toFixed(decimals); // index
+}
+
+// Display unit caption matching macroValue()'s rescaling: usd_millions values
+// are rendered in $B, so their caption must say "$B", not the raw FRED "$M".
+export function macroUnitLabel(unit: string, unitKind: MacroUnitKind): string {
+  return unitKind === "usd_millions" ? "$B" : unit;
+}
+
+// Thin wrapper reusing riskDivergingColor — no reimplementation. Used for
+// macro series change badges (change_pct) at panel granularity.
+export function macroChangeColor(
+  v: number | null,
+  domainAbsMax: number,
+): string {
+  return riskDivergingColor(v, domainAbsMax);
+}
+
 // WCAG-ish relative-luminance check for text-on-variable-background safety.
 // Used by heatmap tiles and correlation matrix cells — every tile/cell must
 // carry its numeric value as visible text, never hue-alone encoding.

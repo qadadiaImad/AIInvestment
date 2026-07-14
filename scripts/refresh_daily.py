@@ -70,6 +70,9 @@ def build_plan(args):
     if os.path.exists(str(SCRIPTS / "build_risk.py")):
         add("compute risk analytics -> risk.json", [PY, "build_risk.py"])
 
+    if os.path.exists(str(SCRIPTS / "pull_macro.py")):
+        add("pull macro dashboard -> macro.json", [PY, "pull_macro.py"])
+
     # Quantum sector vertical (OPTIONAL — only when the quantum CLIs exist). Runs AFTER
     # the AI export so the AI pipeline stays byte-identical: pull quantum fundamentals,
     # then export the quantum bundle (web/public/data/quantum.json).

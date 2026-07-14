@@ -9,6 +9,7 @@ import Link from "next/link";
 const SUB_NAV = [
   { href: "/terminal", label: "TA DESK" },
   { href: "/terminal/risk", label: "RISK" },
+  { href: "/terminal/macro", label: "MACRO" },
 ] as const;
 
 export default function TerminalSubNav({
