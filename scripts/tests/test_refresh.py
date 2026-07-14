@@ -14,6 +14,7 @@ if str(_SCRIPTS) not in sys.path:
 
 import refresh_daily  # noqa: E402
 import refresh_congress  # noqa: E402
+import refresh_ta  # noqa: E402
 
 
 def _ns(**kw):
@@ -185,6 +186,30 @@ def test_congress_delay_threaded_into_pull_commands():
         _ns(years=[2025, 2026], delay=1.5, deploy=False, keep_going=False))
     pulls = [s for s in steps if s["cmd"][1] == "pull_congress.py"]
     assert pulls and all("1.5" in s["cmd"] for s in pulls)
+
+
+# --------------------------------------------------------------------------- ta desk
+
+
+def test_ta_plan_has_one_pull_step_by_default():
+    steps = refresh_ta.build_plan(_ns(deploy=False, keep_going=False))
+    cmds = [s["cmd"][1] for s in steps]
+    assert cmds == ["pull_ta.py"]
+
+
+def test_ta_deploy_appends_vercel_in_web():
+    steps = refresh_ta.build_plan(_ns(deploy=True, keep_going=False))
+    last = steps[-1]
+    assert last["cmd"][0] == "vercel"
+    assert "--prod" in last["cmd"] and "--yes" in last["cmd"]
+    assert last["cwd"].endswith("web")
+    off = refresh_ta.build_plan(_ns(deploy=False, keep_going=False))
+    assert not any(s["cmd"][0] == "vercel" for s in off)
+
+
+def test_ta_plan_pull_step_runs_in_scripts_dir():
+    steps = refresh_ta.build_plan(_ns(deploy=False, keep_going=False))
+    assert steps[0]["cwd"].endswith("scripts")
 
 
 if __name__ == "__main__":

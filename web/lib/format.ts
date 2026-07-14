@@ -133,3 +133,48 @@ export function healthTextClass(v: number | null | undefined): string {
   if (v >= 50) return "text-amber-400";
   return "text-rose-400";
 }
+
+// ---- TA desk (terminal) ----
+
+export const TA_GROUP_ORDER = ["FX", "METALS", "ENERGY", "INDEX"] as const;
+
+export const TA_GROUP_LABELS: Record<string, string> = {
+  FX: "FX",
+  METALS: "METALS",
+  ENERGY: "ENERGY",
+  INDEX: "INDEX",
+};
+
+export const TA_GROUP_COLORS: Record<string, string> = {
+  FX: "#3b82f6",
+  METALS: "#f59e0b",
+  ENERGY: "#10b981",
+  INDEX: "#a78bfa",
+};
+
+// trend.state values are lowercase bullish/bearish/mixed/unknown (matches
+// the Python ta.py enum). trendColor() is a display color only.
+export function trendColor(t?: string | null): string {
+  if (t === "bullish") return "#34d399";
+  if (t === "bearish") return "#fb7185";
+  if (t === "mixed") return "#f59e0b";
+  return "#6b7280"; // unknown/null
+}
+
+// The ONLY place that maps trend.state -> a human-facing label. Never
+// hardcode "Uptrend"/"Downtrend"/"Mixed" elsewhere.
+export function trendLabel(t?: string | null): string {
+  return t === "bullish"
+    ? "Uptrend"
+    : t === "bearish"
+      ? "Downtrend"
+      : t === "mixed"
+        ? "Mixed"
+        : "—";
+}
+
+export function rsiColor(state?: string | null): string {
+  if (state === "overbought") return "#fb7185";
+  if (state === "oversold") return "#34d399";
+  return "#9ca3af";
+}
