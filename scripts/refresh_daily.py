@@ -67,6 +67,9 @@ def build_plan(args):
         add("backtest (heavy)", [PY, "run_backtest.py"])
     add("export site.json", [PY, "export_site.py"])
 
+    if os.path.exists(str(SCRIPTS / "build_risk.py")):
+        add("compute risk analytics -> risk.json", [PY, "build_risk.py"])
+
     # Quantum sector vertical (OPTIONAL — only when the quantum CLIs exist). Runs AFTER
     # the AI export so the AI pipeline stays byte-identical: pull quantum fundamentals,
     # then export the quantum bundle (web/public/data/quantum.json).

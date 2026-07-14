@@ -7,6 +7,7 @@ import TrendBadge from "@/components/terminal/TrendBadge";
 import LevelsPanel from "@/components/terminal/LevelsPanel";
 import PrevDayStats from "@/components/terminal/PrevDayStats";
 import TradingViewChart from "@/components/TradingViewChart";
+import TerminalSubNav from "@/components/terminal/TerminalSubNav";
 
 // ta_desk.json may not exist at Vercel build time (it's a gitignored,
 // owner-generated file) — force dynamic rendering so this route never gets
@@ -67,7 +68,9 @@ export default async function TerminalSymbolPage({
       : null;
 
   return (
-    <div className="px-3 py-3 flex flex-col gap-3">
+    <div className="flex flex-col">
+      <TerminalSubNav currentPath="/terminal" />
+      <div className="px-3 py-3 flex flex-col gap-3">
       <div className="text-[10.5px] text-term-muted">
         <Link href="/terminal" className="hover:text-emerald-400">
           ta desk
@@ -172,6 +175,7 @@ export default async function TerminalSymbolPage({
         Retrieved {inst.retrieved_at}. Educational research only — not
         financial advice. Levels are computed, not predictive.
       </p>
+      </div>
     </div>
   );
 }

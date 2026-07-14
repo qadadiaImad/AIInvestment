@@ -178,3 +178,130 @@ export function rsiColor(state?: string | null): string {
   if (state === "oversold") return "#34d399";
   return "#9ca3af";
 }
+
+// ---- Risk desk (terminal/risk) ----
+//
+// Color-interpolation technique reused from lib/stress.ts's
+// hexToRgb/rgbToHex/lerp/mix 3-stop ramp (that file stays scoped to the
+// macro-stress feature — this is a fresh, local implementation, not an
+// import). Rules (binding, see risk-desk design doc §"color rules"):
+//   - Magnitude-only metrics (vol, VaR95/VaR99) are ALWAYS >= 0 -> sequential
+//     grey -> amber -> red ONLY. Never diverging, never emerald/rose (that
+//     pair is reserved for signed price-direction readouts everywhere else
+//     on the site).
+//   - Signed metrics (day_change_pct) -> diverging, reusing the EXISTING
+//     emerald/rose brand pair from signedPct()/trendColor(), zinc-700 at
+//     true zero.
+//   - Correlation (-1..+1) -> diverging blue-white-red, a DIFFERENT hue pair
+//     from the day% ramp so "price direction" and "co-movement" are never
+//     visually conflated.
+//   - Every tile/cell carries its numeric value as visible text; contrastText()
+//     picks a safe text color for any of the above backgrounds.
+
+function clamp01(v: number): number {
+  return Math.min(1, Math.max(0, v));
+}
+
+function hexToRgb(hex: string): [number, number, number] {
+  const h = hex.replace("#", "");
+  return [
+    parseInt(h.slice(0, 2), 16),
+    parseInt(h.slice(2, 4), 16),
+    parseInt(h.slice(4, 6), 16),
+  ];
+}
+
+function rgbToHex(r: number, g: number, b: number): string {
+  const c = (n: number) => Math.round(Math.min(255, Math.max(0, n))).toString(16).padStart(2, "0");
+  return `#${c(r)}${c(g)}${c(b)}`;
+}
+
+function lerpN(a: number, b: number, t: number): number {
+  return a + (b - a) * t;
+}
+
+function mixHex(c1: string, c2: string, t: number): string {
+  const [r1, g1, b1] = hexToRgb(c1);
+  const [r2, g2, b2] = hexToRgb(c2);
+  return rgbToHex(lerpN(r1, r2, t), lerpN(g1, g2, t), lerpN(b1, b2, t));
+}
+
+const RISK_GREY = "#3f3f46"; // zinc-700 — calm
+const RISK_AMBER = "#f59e0b"; // caution
+const RISK_RED = "#ef4444"; // danger
+
+// Sequential grey -> amber -> red for magnitude-only metrics (vol,
+// var95_1d_pct, var99_1d_pct). `domainMax` is the value that maps to full
+// red (e.g. a sensible per-metric ceiling); values are clamped into [0,1]
+// first. Null -> grey (no-data, same convention as healthColor()).
+export function riskMagnitudeColor(
+  v: number | null | undefined,
+  domainMax: number,
+): string {
+  if (!isNum(v) || !isNum(domainMax) || domainMax <= 0) return RISK_GREY;
+  const t = clamp01(v / domainMax);
+  if (t <= 0.5) return mixHex(RISK_GREY, RISK_AMBER, t / 0.5);
+  return mixHex(RISK_AMBER, RISK_RED, (t - 0.5) / 0.5);
+}
+
+// Text-color companion to riskMagnitudeColor — same 3 bands, Tailwind
+// classes (no interpolation needed for text, coarser bands read fine).
+export function riskMagnitudeTextClass(
+  v: number | null | undefined,
+  domainMax: number,
+): string {
+  if (!isNum(v) || !isNum(domainMax) || domainMax <= 0) return "text-zinc-500";
+  const t = clamp01(v / domainMax);
+  if (t < 0.35) return "text-zinc-300";
+  if (t < 0.7) return "text-amber-400";
+  return "text-rose-400";
+}
+
+const RISK_DIVERGING_DOWN = "#fb7185"; // rose-400, matches signedPct()/trendColor()
+const RISK_DIVERGING_ZERO = "#3f3f46"; // zinc-700
+const RISK_DIVERGING_UP = "#34d399"; // emerald-400, matches trendColor()
+
+// Diverging rose -> zinc-700 -> emerald for signed metrics (day_change_pct
+// only). `domainAbsMax` is the |value| that maps to full saturation on
+// either side. Reuses the site's existing positive/negative price-move hue
+// pair — never invents new colors for a signed readout.
+export function riskDivergingColor(
+  v: number | null | undefined,
+  domainAbsMax: number,
+): string {
+  if (!isNum(v) || !isNum(domainAbsMax) || domainAbsMax <= 0) return "#27272a";
+  const t = clamp01(Math.abs(v) / domainAbsMax);
+  if (v >= 0) return mixHex(RISK_DIVERGING_ZERO, RISK_DIVERGING_UP, t);
+  return mixHex(RISK_DIVERGING_ZERO, RISK_DIVERGING_DOWN, t);
+}
+
+const CORR_NEG = "#3b82f6"; // blue-500
+const CORR_ZERO = "#f4f4f5"; // zinc-100 (white-ish)
+const CORR_POS = "#dc2626"; // red-600
+
+// Diverging blue-white-red for correlation matrix cells only, fixed domain
+// [-1, 1]. Deliberately a DIFFERENT hue pair from riskDivergingColor() so
+// "price direction" (emerald/rose) and "co-movement" (blue/red) are never
+// visually conflated. Null (missing pair / dropped from `order`) -> neutral
+// grey.
+export function correlationColor(v: number | null | undefined): string {
+  if (!isNum(v)) return "#27272a";
+  const c = Math.min(1, Math.max(-1, v));
+  if (c >= 0) return mixHex(CORR_ZERO, CORR_POS, c);
+  return mixHex(CORR_ZERO, CORR_NEG, -c);
+}
+
+// WCAG-ish relative-luminance check for text-on-variable-background safety.
+// Used by heatmap tiles and correlation matrix cells — every tile/cell must
+// carry its numeric value as visible text, never hue-alone encoding.
+export function contrastText(bgHex: string): "#0b0f17" | "#e5e7eb" {
+  const [r, g, b] = hexToRgb(bgHex);
+  // sRGB -> relative luminance (simplified, gamma-approximated — sufficient
+  // for a binary light/dark text pick, not a certified WCAG contrast ratio).
+  const srgb = [r, g, b].map((c) => c / 255);
+  const lin = srgb.map((c) =>
+    c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4),
+  );
+  const luminance = 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2];
+  return luminance > 0.5 ? "#0b0f17" : "#e5e7eb";
+}

@@ -3,6 +3,7 @@ import { getTaDeskData, getTaGroups } from "@/lib/ta";
 import { TA_GROUP_ORDER } from "@/lib/format";
 import SessionClockStrip from "@/components/terminal/SessionClockStrip";
 import GroupSection from "@/components/terminal/GroupSection";
+import TerminalSubNav from "@/components/terminal/TerminalSubNav";
 
 export const metadata: Metadata = {
   title: "TA Desk · AI STACK TERMINAL",
@@ -15,6 +16,7 @@ export default function TerminalPage() {
 
   return (
     <div className="flex flex-col">
+      <TerminalSubNav currentPath="/terminal" />
       <SessionClockStrip />
 
       <div className="px-3 py-3 flex flex-col gap-4">
