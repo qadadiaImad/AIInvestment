@@ -256,5 +256,99 @@ don't split focus before Phase 5.
 
 ---
 
+## 10. Earnings model — first 90 days (researched 2026-07-14)
+
+### What real trading Skools look like (live comparables)
+
+The distribution is brutally skewed. SEO-blog benchmarks profile the winners
+("typical" $5K MRR = 120–260 members at $19–39/mo, 68–74% 90-day retention);
+actual trading communities visible on Skool right now are mostly tiny:
+Options Day Trading = 22 members at $298/yr (~$550 MRR); WM Investing = $40/mo
+(discounted to $20); Rule-Based Trading = $9/mo founding pricing. Pricing bands
+across paid Skools: ~41% at $9–19, ~36% at $29–49, ~17% at $79–199, ~6% at $200+.
+Trading tolerates the higher bands; the *median* trading Skool earns closer to
+$0–500/mo than $5k. (Sources: communipass.com benchmarks 2026, skoolco.com
+pricing guide, skool.com community about-pages — blogs treated as indicative
+bands, not ground truth.)
+
+### 3-month scenarios (from zero, daily multi-platform posting, founding launch ~week 10 at $29→$39)
+
+Funnel assumptions: 1–3% followers→free members; 3–8% free→paid at founding launch.
+
+| Scenario (subjective probability) | Followers d90 | Free | Paid m3 | Month-3 MRR | 3-mo gross |
+|---|---|---|---|---|---|
+| Conservative — consistent, no breakout (~50%) | 3–8k | 100–250 | 5–12 | $150–400 | $200–600 |
+| Base — strong execution + 1 semi-viral reel (~35%) | 15–35k | 400–900 | 20–50 | $700–1,800 | $1–2.5k |
+| Aggressive — 1–2 viral reels, top ~10% (~10–15%) | 75–150k+ | 1.5–3k | 75–180 | $3–7k | $4–9k |
+
+Costs against that: Skool Pro $99/mo (+2.9% fees), all-out Higgsfield at 3–5
+posts/day ≈ $200–400/mo. **Median case is break-even-ish over the first 90 days;
+the payoff window is months 4–9**, when a retained funnel typically 3–5x's.
+
+### What "all-out AI budget" actually buys
+
+Budget moves the **ceiling and the floor, not the funnel percentages** — trust
+converts, and trust takes time. Spend it on:
+1. **Volume** (3–5 posts/day × 3 platforms ≈ 4× the viral lottery tickets) —
+   highest-leverage line item.
+2. **Speed** (congress filing / earnings print → reel within hours; first-mover
+   with a data-backed take beats polish).
+3. **Not** on ever-prettier heroes — past good-enough, polish has ~zero marginal
+   return on short-form; volume and hooks have all of it.
+
+Plan around **$500–2,000 total gross in the first 90 days** ($400–1,800 month-3
+MRR with full execution); treat >$3k MRR as the happy tail. The 90-day goal is a
+converting funnel with retention data, not income.
+
+---
+
+## 11. Two-community architecture (owner direction, 2026-07-14)
+
+Target end-state: **two separate Skools, two brands, one shared content factory.**
+
+| | Community A — "AI Stack" | Community B — "Technicals Desk" |
+|---|---|---|
+| Niche | Fundamentals + congress trades, AI value chain | Day-trading technical analysis: commodities & FX |
+| Audience | Patient investors, research-minded | Active day traders, faster decisions |
+| Data engine | This repo (dossiers, screener, capital web, congress) | **TradingView MCP** (charts, indicators, scanner) |
+| Content | Value carousels, capital-web maps, congress reels, daily brief | Chart-markup posts, setup-of-the-day, session recaps (London/NY), levels-to-watch |
+| Pricing gravity | $29–49/mo | $49–99/mo (day-trading tolerates higher; churns faster) |
+| Compliance heat | Moderate | **High** — strictly "levels and structure, not signals"; never "enter here" |
+
+Why split (correct): the audiences barely overlap — mixing them dilutes both
+feeds, and Skool's algorithm + about-page conversion reward a sharp single
+promise. Why *not* in parallel from day one: two communities double the human
+layer (posting, replies, DM welcomes — the part that can't be automated) and
+split audience-building across two personas before either has momentum.
+
+### Sequencing
+
+1. **Months 1–3 — Community A only** (this roadmap unchanged). It's the
+   differentiated moat; nobody else can generate capital-web/congress content
+   on demand. Meanwhile, build the TA pipeline quietly: TradingView MCP →
+   chart-snapshot generator → same carousel/reel factory, new template set.
+2. **Month 2–3 — demand test before building B:** run 1–2 TA posts/week
+   (commodities/FX levels) on a **separate handle** (or as a test pillar) and
+   measure saves/follows vs. Community A content. Data decides, not vibes.
+3. **Months 4–6 — launch B** only if (a) Community A's funnel is converting and
+   its rituals run without daily firefighting, and (b) the TA test showed pull.
+   B gets its own persona/handle/palette (dark/terminal aesthetic vs. A's
+   emerald), its own free Skool, same founding-launch playbook.
+4. **Shared infrastructure, separate brands:** one factory (`higgs/` templates ×2,
+   one review dashboard, one daily-brief generator per community), zero
+   cross-posting. Cross-*promote* only sparingly (A's about page may mention B).
+
+### Engineering prerequisites for B (build during months 2–3)
+
+- TradingView MCP wired as a data source (charts, indicators, multi-timeframe
+  snapshots for XAUUSD, EURUSD, WTI, etc.).
+- `_build_v4`-style template for chart posts: chart + marked levels + one-line
+  structure read + NFA footer.
+- Session-recap generator (analog of the daily brief): pre-London and pre-NY
+  "levels to watch" — this becomes B's paid-tier retention hook, same role the
+  daily brief plays in A.
+
+---
+
 *Roadmap for the project owner's content/community strategy. Educational project;
 nothing here or in the content it produces is financial advice.*
