@@ -74,6 +74,9 @@ def build_plan(args):
         add("compute investor-archetype scorecards -> archetypes.json",
             [PY, "build_archetypes.py"])
 
+    if os.path.exists(str(SCRIPTS / "build_portfolio.py")):
+        add("compute portfolio -> web/data/portfolio.json", [PY, "build_portfolio.py"])
+
     if os.path.exists(str(SCRIPTS / "pull_macro.py")):
         add("pull macro dashboard -> macro.json", [PY, "pull_macro.py"])
 

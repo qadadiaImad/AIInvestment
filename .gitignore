@@ -3,7 +3,20 @@
 .env.*
 
 # Retrieved data (timestamped pulls; regenerate, don't version)
-data/
+# NOTE: "data/*" (not bare "data/") is deliberate — git cannot re-include files inside a
+# directory excluded via a bare trailing-slash pattern (documented gitignore behavior:
+# "It is not possible to re-include a file if a parent directory of that file is
+# excluded"), so the negations below would silently no-op against a bare "data/". Verified
+# with `git check-ignore -v`.
+data/*
+
+# data/* above still ignores data/portfolio/positions.json (and everything else under
+# data/) by default. Re-include the dir, re-block its contents, then un-ignore only the
+# two committed template files:
+!data/portfolio/
+data/portfolio/*
+!data/portfolio/positions.example.json
+!data/portfolio/README.md
 
 # Playwright MCP scratch
 .playwright-mcp/
@@ -33,3 +46,12 @@ web/node_modules/
 web/.next/
 web/out/
 site_*.png
+
+# Portfolio module — server-only computed bundle (NOT public/, never gated-bypass-able;
+# see docs/superpowers/specs/2026-07-15-portfolio-design.md §0)
+web/data/
+
+# Generated web data bundles (produced by scripts/refresh_*.py + pull/build_*.py on the
+# owner's machine; sandbox copies are synthetic fixtures — never version either kind).
+# Needed explicitly since "data/*" above is root-anchored and no longer covers this dir.
+web/public/data/

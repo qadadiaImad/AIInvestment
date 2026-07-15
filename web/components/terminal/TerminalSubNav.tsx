@@ -12,6 +12,7 @@ const SUB_NAV = [
   { href: "/terminal/risk", label: "RISK" },
   { href: "/terminal/macro", label: "MACRO" },
   { href: "/terminal/archetypes", label: "ARCHETYPES" },
+  { href: "/terminal/portfolio", label: "PORTFOLIO" },
 ] as const;
 
 export default function TerminalSubNav({
