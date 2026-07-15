@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
-import type { CapitalWeb, ResiliencyNode } from "@/lib/data";
+import type { CapitalWeb, ResiliencyNode, Chokepoint } from "@/lib/data";
 import { LAYER_COLORS, healthColor } from "@/lib/format";
+import { categoryColor, categoryLabel } from "@/lib/chokepoints";
 import {
   buildLayerMap,
   scoreEdge,
@@ -39,6 +40,10 @@ export default function CapitalGraph({
   selectedId,
   onSelect,
   stress,
+  chokepoints,
+  chokepointMode = false,
+  activeChokepointId = null,
+  onSelectChokepoint,
 }: {
   web: CapitalWeb;
   resiliency?: ResiliencyNode[];
@@ -46,13 +51,21 @@ export default function CapitalGraph({
   selectedId?: string | null;
   onSelect?: (id: string | null) => void;
   stress?: StressOverlay;
+  // Chokepoint layer (Round 6) — all optional so every existing caller
+  // (none of which pass these props yet) is unaffected.
+  chokepoints?: Chokepoint[];
+  chokepointMode?: boolean;
+  activeChokepointId?: string | null;
+  onSelectChokepoint?: (id: string | null) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const networkRef = useRef<any>(null);
-  // Keep the edges DataSet around so the stress overlay can recolor edges live
+  // Keep the nodes/edges DataSets around so overlays can recolor/dim live
   // without rebuilding the whole network.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const nodesDsRef = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const edgesDsRef = useRef<any>(null);
   // Remember each edge's base (unstressed) color so we can restore it when the
@@ -60,10 +73,24 @@ export default function CapitalGraph({
   const baseEdgeColorRef = useRef<Record<number, { color: string; opacity: number }>>(
     {},
   );
-  // Keep the latest onSelect in a ref so the click handler stays stable
-  // without forcing a network rebuild whenever the parent re-renders.
+  // node id -> chokepoints touching it (severity-sorted, highest first),
+  // recomputed whenever the build effect runs; read by the focus effect
+  // below without forcing a network rebuild.
+  const nodeChokepointsRef = useRef<Map<string, Chokepoint[]>>(new Map());
+  // node id -> its base (unfocused) ring width, so the chokepoint-focus
+  // effect can bump it (glow) and restore it exactly without rebuilding.
+  const baseNodeRingRef = useRef<
+    Record<string, { borderWidth: number; borderWidthSelected: number }>
+  >({});
+  // Keep the latest onSelect/onSelectChokepoint in refs so the click handler
+  // stays stable without forcing a network rebuild whenever the parent
+  // re-renders.
   const onSelectRef = useRef(onSelect);
   onSelectRef.current = onSelect;
+  const onSelectChokepointRef = useRef(onSelectChokepoint);
+  useEffect(() => {
+    onSelectChokepointRef.current = onSelectChokepoint;
+  }, [onSelectChokepoint]);
 
   useEffect(() => {
     if (!ready || !containerRef.current || !window.vis) return;
@@ -81,10 +108,35 @@ export default function CapitalGraph({
       (resiliency ?? []).map((r) => [r.id, r]),
     );
 
+    // Join chokepoint membership onto the graph nodes by id (node_ids ->
+    // node). Only built when the overlay is on so ungated rendering paths
+    // pay zero cost. Severity-sorted (highest first) per node so the
+    // dominant/primary chokepoint drives the ring color when a node belongs
+    // to more than one.
+    const chokepointsByNode = new Map<string, Chokepoint[]>();
+    if (chokepointMode && chokepoints) {
+      for (const cp of chokepoints) {
+        for (const nid of cp.node_ids) {
+          const arr = chokepointsByNode.get(nid) ?? [];
+          arr.push(cp);
+          chokepointsByNode.set(nid, arr);
+        }
+      }
+      for (const arr of chokepointsByNode.values()) {
+        arr.sort((a, b) => b.severity_score - a.severity_score);
+      }
+    }
+    nodeChokepointsRef.current = chokepointsByNode;
+
+    const ringMap: Record<string, { borderWidth: number; borderWidthSelected: number }> = {};
+
     const nodes = web.nodes.map((n) => {
       const d = degree[n.id] ?? 0;
       const res = resById.get(n.id);
       const isArticulation = !!res?.is_articulation;
+      const memberCps = chokepointsByNode.get(n.id) ?? [];
+      const isChokepointMember = memberCps.length > 0;
+      const topCp = memberCps[0];
 
       // Color: by layer or by health, per the toggle.
       const color =
@@ -102,7 +154,9 @@ export default function CapitalGraph({
           : d + 1;
 
       const titleParts: (string | null)[] = [
-        (isArticulation ? "⚠ SPOF · " : "") + (n.name || n.id),
+        (isChokepointMember ? "⛓ " : "") +
+          (isArticulation ? "⚠ SPOF · " : "") +
+          (n.name || n.id),
         n.ticker ? `Ticker: ${n.ticker}` : null,
         n.layer ? `Layer: ${n.layer}` : null,
         `Type: ${n.type}`,
@@ -117,27 +171,51 @@ export default function CapitalGraph({
         if (isArticulation) titleParts.push("Single point of failure (SPOF)");
       }
       if (n.note) titleParts.push(`Note: ${n.note}`);
+      for (const cp of memberCps) {
+        titleParts.push(
+          `⛓ Chokepoint: ${cp.name} (${categoryLabel(cp.category)}) · severity ${cp.severity_score}/100`,
+        );
+      }
+
+      // Ring: articulation-point (SPOF, red) and chokepoint-membership
+      // (category color) rings share the same visual channel. When both
+      // apply, the width is BUMPED to the max of the two, never additive —
+      // and the chokepoint category color wins the border hue so the newer
+      // overlay stays legible; the SPOF fact is preserved via the "⚠ SPOF"
+      // label/tooltip text either way.
+      const ringWidth = isArticulation || isChokepointMember ? 4 : 1;
+      const ringWidthSelected = isArticulation || isChokepointMember ? 5 : 2;
+      const ringColor = isChokepointMember
+        ? categoryColor(topCp.category)
+        : isArticulation
+          ? "#ef4444"
+          : color;
+      ringMap[n.id] = { borderWidth: ringWidth, borderWidthSelected: ringWidthSelected };
 
       return {
         id: n.id,
-        label: (isArticulation ? "⚠ " : "") + (n.name || n.id),
+        label:
+          (isChokepointMember ? "⛓ " : "") +
+          (isArticulation ? "⚠ " : "") +
+          (n.name || n.id),
         value,
         shape: isPrivate ? "diamond" : "dot",
-        // Articulation points get a thick distinct red ring in BOTH modes.
-        borderWidth: isArticulation ? 4 : 1,
-        borderWidthSelected: isArticulation ? 5 : 2,
+        borderWidth: ringWidth,
+        borderWidthSelected: ringWidthSelected,
+        opacity: 1,
         color: {
           background: color,
-          border: isArticulation ? "#ef4444" : color,
+          border: ringColor,
           highlight: {
             background: color,
-            border: isArticulation ? "#ef4444" : "#ffffff",
+            border: isChokepointMember ? ringColor : "#ffffff",
           },
         },
         font: { color: "#e5e7eb", face: "JetBrains Mono, monospace", size: 12 },
         title: titleParts.filter(Boolean).join("\n"),
       };
     });
+    baseNodeRingRef.current = ringMap;
 
     const edges = web.edges.map((e, i) => {
       const aiExtracted = e.origin === "ai-extracted";
@@ -171,8 +249,10 @@ export default function CapitalGraph({
 
     const edgesDs = new vis.DataSet(edges);
     edgesDsRef.current = edgesDs;
+    const nodesDs = new vis.DataSet(nodes);
+    nodesDsRef.current = nodesDs;
     const data = {
-      nodes: new vis.DataSet(nodes),
+      nodes: nodesDs,
       edges: edgesDs,
     };
 
@@ -208,8 +288,19 @@ export default function CapitalGraph({
     networkRef.current = network;
 
     // Clicking a node selects it; clicking empty canvas clears selection.
+    // In chokepoint-overlay mode, clicking a chokepoint-member node surfaces
+    // that chokepoint (highest-severity one if it belongs to several)
+    // instead of drilling into the company value-chain view — the overlay's
+    // whole point is staying on the graph while exploring chokepoints.
     network.on("click", (params: { nodes: string[] }) => {
       const id = params.nodes && params.nodes.length ? params.nodes[0] : null;
+      if (id && chokepointMode) {
+        const members = nodeChokepointsRef.current.get(id);
+        if (members && members.length > 0) {
+          onSelectChokepointRef.current?.(members[0].id);
+          return;
+        }
+      }
       onSelectRef.current?.(id);
     });
 
@@ -217,8 +308,9 @@ export default function CapitalGraph({
       network.destroy?.();
       networkRef.current = null;
       edgesDsRef.current = null;
+      nodesDsRef.current = null;
     };
-  }, [ready, web, resiliency, colorMode]);
+  }, [ready, web, resiliency, colorMode, chokepoints, chokepointMode]);
 
   // Stress overlay: recolor edges live via the DataSet on slider change, without
   // rebuilding the network. When the shock is 0/0 (or no overlay), restore each
@@ -257,6 +349,103 @@ export default function CapitalGraph({
     ds.update(updates);
   }, [stress, web, ready]);
 
+  // Chokepoint focus overlay: when a chokepoint is active (selected from the
+  // side list, claims panel, or a canvas click), fit the view to its member
+  // nodes, glow them (opacity 1 + bumped-not-additive ring width), and dim
+  // every other node via the same rgba-alpha technique the stress overlay
+  // uses on edges. Edges recolor to the chokepoint's category color UNLESS
+  // the macro-stress overlay is simultaneously active — stress wins on
+  // edges (one live edge-color overlay at a time); node rings/opacity are a
+  // different channel and always reflect chokepoint focus regardless.
+  useEffect(() => {
+    const nodesDs = nodesDsRef.current;
+    const edgesDs = edgesDsRef.current;
+    const network = networkRef.current;
+    if (!nodesDs || !edgesDs || !network) return;
+
+    const cp =
+      activeChokepointId && chokepoints
+        ? chokepoints.find((c) => c.id === activeChokepointId)
+        : undefined;
+    const stressActive = !!stress && (stress.dRateBps !== 0 || stress.dElecPct !== 0);
+
+    if (!cp) {
+      // Restore full opacity + base ring width on every node.
+      nodesDs.update(
+        web.nodes.map((n) => {
+          const base = baseNodeRingRef.current[n.id] ?? {
+            borderWidth: 1,
+            borderWidthSelected: 2,
+          };
+          return {
+            id: n.id,
+            opacity: 1,
+            borderWidth: base.borderWidth,
+            borderWidthSelected: base.borderWidthSelected,
+          };
+        }),
+      );
+      // Only restore edge color here if the stress effect isn't the one
+      // currently driving it (its own effect owns restoration when active).
+      if (!stressActive) {
+        edgesDs.update(
+          web.edges.map((_e, i) => ({
+            id: i,
+            color: {
+              color: baseEdgeColorRef.current[i]?.color ?? "#475569",
+              highlight: "#ffffff",
+              opacity: baseEdgeColorRef.current[i]?.opacity ?? 0.85,
+            },
+          })),
+        );
+      }
+      return;
+    }
+
+    const memberSet = new Set(cp.node_ids);
+    nodesDs.update(
+      web.nodes.map((n) => {
+        const isMember = memberSet.has(n.id);
+        const base = baseNodeRingRef.current[n.id] ?? {
+          borderWidth: 1,
+          borderWidthSelected: 2,
+        };
+        return {
+          id: n.id,
+          opacity: isMember ? 1 : 0.15,
+          borderWidth: isMember ? Math.max(base.borderWidth, 6) : base.borderWidth,
+          borderWidthSelected: isMember
+            ? Math.max(base.borderWidthSelected, 7)
+            : base.borderWidthSelected,
+        };
+      }),
+    );
+
+    if (!stressActive) {
+      const color = categoryColor(cp.category);
+      edgesDs.update(
+        web.edges.map((e, i) => {
+          const memberEdge = memberSet.has(e.src) || memberSet.has(e.dst);
+          return {
+            id: i,
+            color: { color, highlight: "#ffffff", opacity: memberEdge ? 0.9 : 0.12 },
+          };
+        }),
+      );
+    }
+
+    if (memberSet.size > 0) {
+      try {
+        network.fit({
+          nodes: cp.node_ids,
+          animation: { duration: 500, easingFunction: "easeInOutQuad" },
+        });
+      } catch {
+        // member ids may not all exist in this filtered/sector view; ignore
+      }
+    }
+  }, [activeChokepointId, chokepoints, stress, web, ready]);
+
   // React to external selection (dropdown or click): focus + highlight.
   useEffect(() => {
     const network = networkRef.current;
@@ -290,13 +479,22 @@ export default function CapitalGraph({
             loading relationship graph…
           </div>
         )}
-        <GraphLegend colorMode={colorMode} />
+        <GraphLegend
+          colorMode={colorMode}
+          chokepoints={chokepointMode ? chokepoints : undefined}
+        />
       </div>
     </>
   );
 }
 
-function GraphLegend({ colorMode }: { colorMode: ColorMode }) {
+function GraphLegend({
+  colorMode,
+  chokepoints,
+}: {
+  colorMode: ColorMode;
+  chokepoints?: Chokepoint[];
+}) {
   const layerItems: { label: string; color: string }[] = [
     { label: "Energy", color: LAYER_COLORS["L0-energy"] },
     { label: "Chips", color: LAYER_COLORS["L1-chips"] },
@@ -312,8 +510,16 @@ function GraphLegend({ colorMode }: { colorMode: ColorMode }) {
     { label: "No data", color: "#6b7280" },
   ];
   const items = colorMode === "health" ? healthItems : layerItems;
+
+  // Chokepoint category swatches — only the categories actually present in
+  // the currently-loaded dataset, so the legend never lists a category with
+  // zero entries.
+  const chokepointCategories = chokepoints
+    ? [...new Set(chokepoints.map((cp) => cp.category))]
+    : [];
+
   return (
-    <div className="absolute bottom-2 left-2 z-10 rounded-sm border border-term-border bg-[#0b0f17]/90 px-2.5 py-2 text-[10px] leading-relaxed">
+    <div className="absolute bottom-2 left-2 z-10 rounded-sm border border-term-border bg-[#0b0f17]/90 px-2.5 py-2 text-[10px] leading-relaxed max-w-[280px]">
       <div className="flex flex-wrap gap-x-3 gap-y-1 max-w-[260px]">
         {items.map((it) => (
           <span key={it.label} className="flex items-center gap-1">
@@ -329,6 +535,22 @@ function GraphLegend({ colorMode }: { colorMode: ColorMode }) {
         ◇ private · — reported · - - rumored/AI-extracted ·{" "}
         <span className="text-rose-400">⚠ red ring = SPOF</span>
       </div>
+      {chokepointCategories.length > 0 && (
+        <div className="mt-1.5 pt-1.5 border-t border-term-border/60">
+          <div className="text-term-muted mb-0.5">⛓ Chokepoint category</div>
+          <div className="flex flex-wrap gap-x-3 gap-y-1">
+            {chokepointCategories.map((c) => (
+              <span key={c} className="flex items-center gap-1">
+                <span
+                  className="inline-block h-2 w-2 rounded-full"
+                  style={{ backgroundColor: categoryColor(c) }}
+                />
+                {categoryLabel(c)}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

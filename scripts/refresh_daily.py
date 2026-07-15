@@ -63,6 +63,10 @@ def build_plan(args):
     add("merge ai-extracted edges", [PY, "merge_enriched.py"])
     add("build capital web", [PY, "build_capital_web.py"])
     add("graph analysis (metrics/health/macro/fed/vuln)", [PY, "run_graph_analysis.py"])
+
+    if os.path.exists(str(SCRIPTS / "build_chokepoints.py")):
+        add("build chokepoint layer -> chokepoints.json", [PY, "build_chokepoints.py"])
+
     if args.with_backtest:
         add("backtest (heavy)", [PY, "run_backtest.py"])
     add("export site.json", [PY, "export_site.py"])

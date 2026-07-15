@@ -6,8 +6,10 @@ import type {
   GraphEdge,
   GraphNode,
   ResiliencyNode,
+  Chokepoint,
 } from "@/lib/data";
 import { usd, titleCase, healthColor, healthBand, num } from "@/lib/format";
+import { categoryColor, categoryLabel } from "@/lib/chokepoints";
 import LayerChip from "@/components/LayerChip";
 
 // ---- helpers ---------------------------------------------------------------
@@ -311,10 +313,17 @@ export default function NodeDetailPanel({
   web,
   selectedId,
   resiliency,
+  linkedChokepoints,
+  onSelectChokepoint,
 }: {
   web: CapitalWeb;
   selectedId: string | null;
   resiliency?: ResiliencyNode[];
+  // Chokepoints touching the selected node (Round 6), pre-filtered by the
+  // caller via chokepointsForNode() — optional so every existing caller is
+  // unaffected. Empty/absent renders no chip row.
+  linkedChokepoints?: Chokepoint[];
+  onSelectChokepoint?: (id: string) => void;
 }) {
   const nodeMap = new Map(web.nodes.map((n) => [n.id, n]));
   const node = selectedId ? nodeMap.get(selectedId) : undefined;
@@ -372,6 +381,28 @@ export default function NodeDetailPanel({
           {touching.length} relationship{touching.length === 1 ? "" : "s"} ·{" "}
           {outbound.length} out · {inbound.length} in
         </p>
+        {linkedChokepoints && linkedChokepoints.length > 0 && (
+          <div className="mt-1.5 flex flex-wrap items-center gap-1">
+            <span className="text-[9px] uppercase tracking-wider text-zinc-500">
+              Linked chokepoints
+            </span>
+            {linkedChokepoints.map((cp) => {
+              const color = categoryColor(cp.category);
+              return (
+                <button
+                  key={cp.id}
+                  type="button"
+                  onClick={() => onSelectChokepoint?.(cp.id)}
+                  title={`${cp.name} — ${categoryLabel(cp.category)} · severity ${cp.severity_score}/100`}
+                  className="inline-block px-1.5 py-px text-[9.5px] font-semibold uppercase tracking-wider rounded-sm border transition-colors hover:brightness-125"
+                  style={{ color, borderColor: color, backgroundColor: `${color}1a` }}
+                >
+                  ⛓ {cp.name}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* scrollable body */}

@@ -36,18 +36,26 @@ def test_daily_plan_order_default():
     """Default daily plan is in the documented order and OMITS the backtest."""
     steps = refresh_daily.build_plan(_ns(with_backtest=False, deploy=False, keep_going=False))
     cmds = [s["cmd"][1] if len(s["cmd"]) > 1 else s["cmd"][0] for s in steps]
-    # the core AI pipeline order is preserved (quantum steps slot in after export_site)
-    assert cmds[:6] == [
+    # the core AI pipeline order is preserved (quantum steps slot in after export_site).
+    # build_chokepoints.py (guarded, optional) slots in right after run_graph_analysis.py
+    # and before export_site.py, since graph_crossref depends on a freshly-computed
+    # graph_analysis.json but chokepoints.json is consumed standalone (no need to wait
+    # for site export).
+    assert cmds[:7] == [
         "pull_ai_stack.py",
         "pull_prices.py",
         "merge_enriched.py",
         "build_capital_web.py",
         "run_graph_analysis.py",
+        "build_chokepoints.py",
         "export_site.py",
     ]
     assert "build_screener.py" in cmds
     # graph analysis must come before site export (site reads graph artifacts/order matters)
     assert cmds.index("run_graph_analysis.py") < cmds.index("export_site.py")
+    # chokepoints build sits between graph analysis and site export
+    assert cmds.index("run_graph_analysis.py") < cmds.index("build_chokepoints.py") \
+        < cmds.index("export_site.py")
     # the AI export still precedes the screener rebuild
     assert cmds.index("export_site.py") < cmds.index("build_screener.py")
 

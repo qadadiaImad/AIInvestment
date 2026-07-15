@@ -1,0 +1,646 @@
+{
+  "schema_version": "chokepoints-source-v1",
+  "chokepoints": [
+    {
+      "id": "tsmc-advanced-node",
+      "name": "TSMC leading-edge fab concentration (Taiwan)",
+      "category": "fab_concentration",
+      "layers": [
+        "L1-chips",
+        "L2-infra",
+        "L3-models"
+      ],
+      "severity_score": 92,
+      "severity_rationale": "No foundry outside TSMC currently matches leading-edge yield/volume; Samsung and Intel trail materially in commercial sub-7nm output, so a Taiwan-side disruption (natural, military, or blockade) has no near-term substitution path for frontier AI compute.",
+      "summary": "Sub-7nm logic - the silicon under every AI accelerator - runs through one company, on one island.",
+      "card_tagline": "ONE EARTHQUAKE AWAY",
+      "description": "TSMC manufactures the overwhelming majority of the world's leading-edge (sub-7nm) logic chips, and Taiwan hosts essentially all of that capacity today. Every frontier AI accelerator (Nvidia, AMD, Google TPU, custom hyperscaler silicon) is fabricated on a TSMC process node, with no qualified alternative at comparable yield/volume. The concentration is simultaneously a manufacturing bottleneck (fab capacity/yield) and a geopolitical one (Taiwan Strait tension).",
+      "node_ids": [
+        "TSM"
+      ],
+      "external_entities": [],
+      "tickers": [
+        "NVDA",
+        "AMD",
+        "AVGO",
+        "MRVL",
+        "QCOM",
+        "ASML",
+        "AMKR"
+      ],
+      "claims": [
+        {
+          "text": "Chips at 7nm-and-below made up 74% of TSMC's own wafer revenue in 2025, and TSMC's share of leading-edge (sub-7nm) global foundry output exceeds 90%.",
+          "class": "reported",
+          "source_name": "Silicon Canals",
+          "source_url": "https://siliconcanals.com/j-v-advanced-chips-of-7-nanometers-and-beyond-made-up-74-of-tsmcs-wafer-revenue-in-2025-the-frontier-the-rest-of-the-world-depends-on-has-quietly-become-the-companys-entire-business/",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": false
+        },
+        {
+          "text": "Advanced nodes (3nm-and-below) are projected to capture roughly 60% of global foundry shipment share in 2026, with TSMC the dominant supplier at that tier.",
+          "class": "reported",
+          "source_name": "Counterpoint Research",
+          "source_url": "https://counterpointresearch.com/en/insights/advanced-nodes-shipment-to-capture-60-percent-in-2026",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": false
+        },
+        {
+          "text": "Analysts characterize the most likely near-term (pre-2027) China coercive action against Taiwan as a maritime/aerial quarantine rather than invasion; some models estimate a full Taiwan Strait conflict could reduce global GDP roughly 9.6% after one year and cost the global economy on the order of $2.5T/year via semiconductor disruption.",
+          "class": "reported",
+          "source_name": "Abhishek Gautam (analysis blog, citing broader macro-shock estimates)",
+          "source_url": "https://www.abhs.in/blog/china-taiwan-chip-war-2026-global-semiconductor-cloud-impact",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": true
+        }
+      ],
+      "mitigation_watch": [
+        "TSMC Arizona (Fab 21) yield ramp to leading-edge parity",
+        "TSMC Kumamoto (Japan, JASM) or any announced non-Taiwan 2nm-class fab",
+        "Samsung Foundry / Intel 18A yield catch-up",
+        "Any formal US-Taiwan semiconductor security arrangement"
+      ],
+      "last_reviewed": "2026-07-15"
+    },
+    {
+      "id": "asml-euv-monopoly",
+      "name": "ASML EUV lithography monopoly",
+      "category": "equipment_monopoly",
+      "layers": [
+        "L1-chips"
+      ],
+      "severity_score": 90,
+      "severity_rationale": "Critical structural monopoly - every leading-edge fab on earth (TSMC, Samsung, Intel, and China's SMIC for sub-EUV nodes) is dependent on ASML tool deliveries; there is no qualified second source for EUV systems.",
+      "summary": "No EUV machine, no leading-edge chip - and there is exactly one company on earth that makes EUV machines.",
+      "card_tagline": "ONE SUPPLIER, ZERO ALTERNATIVES",
+      "description": "ASML is the sole commercial supplier of extreme ultraviolet (EUV) lithography systems, the tool required to pattern any logic chip at 7nm and below. Nikon and Canon, ASML's only nominal lithography competitors, exited advanced (EUV-class) lithography R&D years ago and sell only mature-node DUV systems. Next-generation High-NA EUV (for 2nm-class production) extends the same monopoly into the following node generation.",
+      "node_ids": [
+        "ASML"
+      ],
+      "external_entities": [],
+      "tickers": [
+        "TSM",
+        "NVDA",
+        "AMD",
+        "AMAT",
+        "LRCX",
+        "KLAC"
+      ],
+      "claims": [
+        {
+          "text": "ASML holds effectively 100% of the EUV lithography market and roughly 94% of the overall lithography-systems market; it is described as the world's sole supplier of EUV systems, the technology required for chips at 7nm and below.",
+          "class": "reported",
+          "source_name": "Asia Times",
+          "source_url": "https://asiatimes.com/2026/04/asml-as-the-last-polite-monopolist/",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": false
+        },
+        {
+          "text": "High-NA EUV systems ($400M+ per unit), enabling 2nm-and-below production, began commercial rollout in 2025-2026, extending ASML's monopoly position into the next lithography generation.",
+          "class": "reported",
+          "source_name": "MindRemix (industry-analysis blog)",
+          "source_url": "https://www.mindremix.com/2026/01/asml-monopoly-euv-lithography-semiconductor-future-2026.html",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": true
+        }
+      ],
+      "mitigation_watch": [
+        "China's SMEE domestic (non-EUV, DUV-multipatterning) lithography program",
+        "Any credible second EUV entrant (none known as of this review)",
+        "Dutch/EU export-license posture toward China on High-NA tools"
+      ],
+      "last_reviewed": "2026-07-15"
+    },
+    {
+      "id": "cowos-advanced-packaging",
+      "name": "CoWoS / advanced packaging capacity (TSMC)",
+      "category": "packaging",
+      "layers": [
+        "L1-chips",
+        "L2-infra"
+      ],
+      "severity_score": 78,
+      "severity_rationale": "CoWoS, not wafer starts, is the near-term gating factor on AI accelerator shipments; capacity is concentrated almost entirely at TSMC, with Amkor and other OSAT players as minority alternatives not fully qualified at the same performance tier.",
+      "summary": "The wafer isn't the bottleneck anymore - the package it ships in is.",
+      "card_tagline": "THE PACKAGE IS THE BOTTLENECK",
+      "description": "TSMC's CoWoS (Chip-on-Wafer-on-Substrate) advanced packaging is the step that binds compute dies to HBM stacks for every modern AI accelerator, and it has become the binding capacity constraint ahead of raw wafer supply. Nvidia alone has booked roughly half or more of TSMC's 2026-2027 CoWoS capacity, crowding out smaller/rival buyers. TSMC has been rapidly expanding capacity but by its own CEO's account remains sold out through 2026.",
+      "node_ids": [
+        "TSM",
+        "AMKR"
+      ],
+      "external_entities": [],
+      "tickers": [
+        "NVDA",
+        "AMD",
+        "AVGO",
+        "MU"
+      ],
+      "claims": [
+        {
+          "text": "TSMC's CoWoS capacity scaled from roughly 35,000 wafers/month (end-2024) to roughly 75,000 (end-2025), targeting roughly 125,000-130,000/month by end-2026 - a near-4x expansion in two years that industry reporting still characterizes as insufficient to meet demand; Nvidia has booked on the order of half to 60% of 2026-2027 capacity.",
+          "class": "reported",
+          "source_name": "CNBC",
+          "source_url": "https://www.cnbc.com/2026/04/08/tsmc-nvidia-advanced-packaging-intel.html",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": false
+        },
+        {
+          "text": "TSMC CEO C.C. Wei told shareholders at the company's June 4, 2026 annual meeting that CoWoS capacity remains 'extremely tight and sold out through 2026.'",
+          "class": "reported",
+          "source_name": "NextWaves Insight (trade press, quoting the shareholder meeting)",
+          "source_url": "https://nextwavesinsight.com/tsmc-advanced-packaging-nvidia-ai-supply-chain-2026/",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": false
+        }
+      ],
+      "mitigation_watch": [
+        "TSMC CoWoS capacity additions in Chiayi (AP7) and other Taiwan/overseas sites",
+        "Amkor/ASE and other OSAT advanced-packaging qualification for AI-tier interposers",
+        "Panel-level packaging R&D as a longer-run alternative to wafer-level CoWoS"
+      ],
+      "last_reviewed": "2026-07-15"
+    },
+    {
+      "id": "hbm-memory-concentration",
+      "name": "HBM (high-bandwidth memory) concentration",
+      "category": "memory",
+      "layers": [
+        "L1-chips",
+        "L2-infra"
+      ],
+      "severity_score": 68,
+      "severity_rationale": "A three-firm oligopoly (effectively a duopoly by revenue) with long multi-year qualification cycles per accelerator generation; a supply disruption at the leading supplier cannot be absorbed quickly by the other two given each vendor's own multi-quarter qualification lead time with GPU vendors.",
+      "summary": "Every AI accelerator needs HBM stacked next to the die - and only three companies on earth make it.",
+      "card_tagline": "THREE COMPANIES, ONE STACK",
+      "description": "High-bandwidth memory, the DRAM stacked directly onto AI accelerators, is produced by only three qualified suppliers worldwide - SK hynix, Samsung, and Micron - and every frontier AI chip (Nvidia, AMD, custom silicon) depends on one of the three for HBM supply. SK hynix has held the leading position through the HBM3E generation, with Micron gaining share faster than Samsung as the market transitions to HBM4.",
+      "node_ids": [
+        "MU"
+      ],
+      "external_entities": [
+        "SK hynix (KRX:000660)",
+        "Samsung Electronics (KRX:005930)"
+      ],
+      "tickers": [
+        "NVDA",
+        "AMD",
+        "MU"
+      ],
+      "claims": [
+        {
+          "text": "SK hynix's HBM revenue share is estimated in the roughly 50-62% range across Q1-Q2 2026 depending on the tracker, with Micron overtaking Samsung for the #2 position as the market pivots to HBM4; estimates diverge notably by source (e.g. one tracker puts Samsung at 35-40% vs. another at 17%), reflecting genuine measurement uncertainty in a fast-shifting oligopoly rather than a single settled figure.",
+          "class": "reported",
+          "source_name": "Astute Group (aggregating multiple trackers)",
+          "source_url": "https://www.astutegroup.com/news/general/sk-hynix-holds-62-of-hbm-micron-overtakes-samsung-2026-battle-pivots-to-hbm4/",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": true
+        }
+      ],
+      "mitigation_watch": [
+        "Samsung HBM4 qualification with Nvidia/AMD (the main swing factor in the duopoly-vs-triopoly balance)",
+        "Micron's HBM capacity buildout pace",
+        "Any new entrant (none currently qualified at volume)"
+      ],
+      "last_reviewed": "2026-07-15"
+    },
+    {
+      "id": "us-export-controls-ai-chips",
+      "name": "US export controls on advanced AI chips to China",
+      "category": "export_controls",
+      "layers": [
+        "L1-chips",
+        "L3-models"
+      ],
+      "severity_score": 74,
+      "severity_rationale": "Not a supply constraint but a demand-gating one; the policy directly determines a large addressable market's accessibility for the two leading GPU vendors, and reverses direction on a timescale of months, not years - re-verify every refresh, not on a fixed cadence.",
+      "summary": "The rules on who can buy the world's best AI chips changed twice in 2026 alone - and can change again with one memo.",
+      "card_tagline": "ONE MEMO AWAY",
+      "description": "US Commerce Department (BIS) licensing policy governs which AI accelerators may be exported to China, directly gating Nvidia/AMD's addressable China revenue and shaping gray-market smuggling incentives. Policy has swung between near-total denial and case-by-case review across administrations, making it a genuinely volatile regulatory chokepoint rather than a fixed one.",
+      "node_ids": [],
+      "external_entities": [
+        "US Bureau of Industry and Security (BIS)"
+      ],
+      "tickers": [
+        "NVDA",
+        "AMD",
+        "AVGO",
+        "MRVL",
+        "TSM"
+      ],
+      "claims": [
+        {
+          "text": "Effective January 15, 2026, BIS revised its license-review policy for advanced computing chips (including Nvidia H200-class and AMD MI325X-class parts) destined for China/Macau from a presumption of denial to case-by-case review, conditioned on certifications including US market supply sufficiency, no diversion of global foundry capacity from higher-priority US customers, and independent US-based third-party performance verification; chips must fall below TPP 21,000 and total DRAM bandwidth 6,500 GB/s thresholds to qualify.",
+          "class": "fact",
+          "source_name": "Federal Register",
+          "source_url": "https://www.federalregister.gov/documents/2026/01/15/2026-00789/revision-to-license-review-policy-for-advanced-computing-commodities",
+          "source_class": "filing",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": false
+        },
+        {
+          "text": "The same policy shift was reportedly accompanied by a 25% duty on advanced computing chips manufactured outside the US that pass through the US en route to non-US customers.",
+          "class": "reported",
+          "source_name": "Morgan Lewis (law-firm client alert summarizing the proclamation)",
+          "source_url": "https://www.morganlewis.com/pubs/2026/01/bis-revises-export-review-policy-for-advanced-ai-chips-destined-for-china-and-macau",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": false
+        },
+        {
+          "text": "A subsequent BIS rule announced in late May 2026 tightened controls again on Nvidia's most advanced (Blackwell-class) processors, requiring export licenses for transfers to China/Macau-headquartered entities and closing an offshore-subsidiary loophole.",
+          "class": "reported",
+          "source_name": "Congressional Research Service (Congress.gov)",
+          "source_url": "https://www.congress.gov/crs-product/R48642",
+          "source_class": "filing",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": false
+        }
+      ],
+      "mitigation_watch": [
+        "Any further BIS rule revision - the single fastest-moving item in the whole dataset",
+        "China's domestic accelerator progress (Huawei Ascend) reducing export-control leverage",
+        "Enforcement actions on gray-market/transshipment smuggling routes"
+      ],
+      "last_reviewed": "2026-07-15"
+    },
+    {
+      "id": "china-critical-minerals-leverage",
+      "name": "China's critical-minerals export leverage (gallium, germanium, antimony, heavy rare earths)",
+      "category": "export_controls",
+      "layers": [
+        "L0-energy",
+        "L1-chips"
+      ],
+      "severity_score": 71,
+      "severity_rationale": "China's refining share for several of these materials exceeds 80-90%, but the controls themselves have been suspended/reinstated multiple times within a single year, so severity is more about policy-reversal risk than a static supply gap today.",
+      "summary": "China refines the materials inside the chips, the magnets, and the grid gear - and has already used that leverage twice this year.",
+      "card_tagline": "THE REFINERY IS THE LEVERAGE",
+      "description": "China dominates global refining/processing of gallium, germanium, antimony and several heavy rare-earth elements used in semiconductor manufacturing, permanent magnets (wind turbines, generators, motors), and defense/energy equipment, and has repeatedly used export licensing/bans as leverage in trade disputes. Controls have oscillated sharply - an outright US export ban (Dec 2024), an extraterritorial extension to any product with 0.1%-or-more Chinese-origin rare-earth content (Oct 2025), then a suspension of both measures through Nov 27, 2026 (Nov 2025).",
+      "node_ids": [],
+      "external_entities": [
+        "China Ministry of Commerce (MOFCOM)"
+      ],
+      "tickers": [
+        "GEV",
+        "VRT",
+        "ETN",
+        "TSM"
+      ],
+      "claims": [
+        {
+          "text": "China banned exports of gallium, germanium, antimony and superhard materials to the US in December 2024; extended controls to any foreign-made product containing 0.1%-or-more Chinese-origin rare-earth content or made with Chinese processing technology in October 2025; then suspended both the October 2025 extraterritorial rule and the December 2024 US-specific ban (via MOFCOM Announcements No. 70 and No. 72, 2025) through November 27, 2026.",
+          "class": "reported",
+          "source_name": "Pillsbury Law",
+          "source_url": "https://www.pillsburylaw.com/en/news-and-insights/china-suspends-export-controls-certain-critical-minerals-related-items.html",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": false
+        },
+        {
+          "text": "Chinese antimony exports fell roughly 97% following the August 2024 restrictions, with global antimony prices roughly tripling.",
+          "class": "reported",
+          "source_name": "Fastmarkets",
+          "source_url": "https://www.fastmarkets.com/insights/china-suspends-export-prohibition-on-superhard-materials-us/",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": false
+        }
+      ],
+      "mitigation_watch": [
+        "Non-China gallium/germanium refining capacity build-out (US, EU, Canada critical-minerals initiatives)",
+        "Rare-earth magnet recycling and non-rare-earth motor designs for turbines/generators",
+        "The Nov 27 2026 suspension expiry date - a hard near-term date to re-check"
+      ],
+      "last_reviewed": "2026-07-15"
+    },
+    {
+      "id": "grid-interconnection-queue-backlog",
+      "name": "Grid interconnection queue backlog",
+      "category": "power_grid",
+      "layers": [
+        "L0-energy",
+        "L2-infra"
+      ],
+      "severity_score": 63,
+      "severity_rationale": "A process/regulatory bottleneck, not a single-company one, so there is no single entity to fix; it constrains essentially every new large load or generation project in the US simultaneously, regardless of vendor.",
+      "summary": "Compute scales in months. The queue to connect it to the grid scales in years.",
+      "card_tagline": "THE QUEUE CAN'T KEEP UP",
+      "description": "New generation (and the large loads data centers represent) must clear a multi-year utility/ISO interconnection study queue before receiving grid power, and that queue has become the dominant near-term bottleneck on new AI data-center power availability in most US regions. Wait times have more than doubled over 15 years and now regularly exceed the construction timeline of the data center itself, pushing hyperscalers toward behind-the-meter gas and on-site generation as a workaround.",
+      "node_ids": [],
+      "external_entities": [
+        "US regional ISOs/RTOs (PJM, ERCOT, MISO, etc.) and their interconnection-study processes"
+      ],
+      "tickers": [
+        "VST",
+        "CEG",
+        "NRG",
+        "PEG",
+        "SO",
+        "D",
+        "NEE",
+        "DUK",
+        "AEP",
+        "XEL",
+        "EXC",
+        "GEV",
+        "VRT",
+        "ETN",
+        "PWR"
+      ],
+      "claims": [
+        {
+          "text": "LBNL's 'Queued Up: 2025 Edition' reports that the average time from initial interconnection request to commercial operation reached approximately 5 years by 2024, up from under 2 years in 2008; as of end-2025, over 2,060 GW of generation and storage capacity across roughly 8,200 projects were actively seeking grid interconnection in the US.",
+          "class": "fact",
+          "source_name": "Lawrence Berkeley National Laboratory (LBNL), Energy Markets & Policy Dept.",
+          "source_url": "https://eta-publications.lbl.gov/sites/default/files/2025-12/queued_up_2025_edition_12.15.2025.pdf",
+          "source_class": "filing",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": false
+        }
+      ],
+      "mitigation_watch": [
+        "FERC Order 2023 interconnection-reform implementation pace by ISO",
+        "Behind-the-meter/co-located generation deals bypassing the queue entirely",
+        "Any 'fast lane' queue reform specifically for data-center loads"
+      ],
+      "last_reviewed": "2026-07-15"
+    },
+    {
+      "id": "gas-turbine-manufacturing-backlog",
+      "name": "Gas turbine manufacturing backlog",
+      "category": "power_grid",
+      "layers": [
+        "L0-energy"
+      ],
+      "severity_score": 72,
+      "severity_rationale": "A 3-firm oligopoly with backlogs already extending to 2029-2030 at the largest player; even a buyer willing to pay a premium cannot compress the manufacturing lead time, making this a genuine physical (not just financial) bottleneck.",
+      "summary": "Three companies build the turbines that power the AI buildout's bridge fuel - and they're sold out for years.",
+      "card_tagline": "THE TURBINE QUEUE BEHIND THE AI POWER BUILDOUT",
+      "description": "Heavy-duty gas turbines - the near-term workhorse for new dispatchable power to serve AI data-center load growth - are built by only three manufacturers worldwide (GE Vernova, Siemens Energy, Mitsubishi Heavy Industries), and order backlogs at the market leader now stretch years past the order date. This turns turbine manufacturing capacity itself, not fuel or siting, into a hard multi-year lead-time constraint on new gas-fired capacity.",
+      "node_ids": [
+        "GEV"
+      ],
+      "external_entities": [
+        "Siemens Energy (ETR:ENR)",
+        "Mitsubishi Heavy Industries (TSE:7011)"
+      ],
+      "tickers": [
+        "VST",
+        "CEG",
+        "NRG",
+        "PEG",
+        "SO",
+        "D"
+      ],
+      "claims": [
+        {
+          "text": "GE Vernova's gas-turbine order backlog reached 100 GW in Q1 2026 (up 17 GW from year-end 2025), with guidance to reach at least 110 GW of combined backlog plus slot-reservation agreements by end-2026; the company's backlog stretches into 2029, with turbine delivery slots expected to be effectively sold out through 2030 by end-2026. The heavy-duty gas turbine market is controlled by just three manufacturers (GE Vernova, Siemens Energy, Mitsubishi Heavy Industries).",
+          "class": "reported",
+          "source_name": "Utility Dive (citing GE Vernova investor disclosures/earnings press releases)",
+          "source_url": "https://www.utilitydive.com/news/ge-vernova-gas-turbine-backlog-hits-100-gw-as-prices-rise/818332/",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": true
+        }
+      ],
+      "mitigation_watch": [
+        "New entrant capacity (none credible at scale currently)",
+        "GE Vernova/Siemens Energy factory-expansion capex and its multi-year lag before shipping",
+        "SMR/advanced-nuclear or behind-the-meter renewables+storage substituting for gas as the near-term bridge fuel"
+      ],
+      "last_reviewed": "2026-07-15"
+    },
+    {
+      "id": "power-transformer-shortage",
+      "name": "Power transformer shortage",
+      "category": "power_grid",
+      "layers": [
+        "L0-energy"
+      ],
+      "severity_score": 66,
+      "severity_rationale": "Fragmented, capital-intensive manufacturing base (specialized steel, bushings, tap-changers with their own long lead times) that cannot be quickly expanded; domestic production covers only roughly 20% of US demand, so the bottleneck is import-dependent as well as manufacturing-constrained.",
+      "summary": "Even a project that clears the interconnection queue and secures a turbine still needs a transformer to energize.",
+      "card_tagline": "FOUR-YEAR LEAD TIMES",
+      "description": "Large power transformers and generator step-up transformers - required to connect any new generation or large load (including data centers) to the transmission grid - face lead times that have roughly quadrupled versus pre-pandemic norms, and the US sources only about a fifth of its transformer needs domestically. This sits directly behind both the interconnection-queue and gas-turbine bottlenecks.",
+      "node_ids": [
+        "GEV"
+      ],
+      "external_entities": [
+        "Hitachi Energy (Hitachi Ltd., TSE:6501)",
+        "Siemens Energy (ETR:ENR)"
+      ],
+      "tickers": [
+        "GEV",
+        "ETN",
+        "HUBB",
+        "PWR"
+      ],
+      "claims": [
+        {
+          "text": "As of Q2 2025, lead times for large power transformers averaged roughly 128 weeks (generator step-up transformers roughly 144 weeks), with some units requiring over four years; distribution-transformer lead times have stretched from roughly 12 weeks pre-pandemic to 30-50 weeks in 2026. The US sources only about 20% of its power-transformer needs domestically.",
+          "class": "reported",
+          "source_name": "pv magazine USA",
+          "source_url": "https://pv-magazine-usa.com/2026/05/11/u-s-transformer-market-faces-severe-supply-constraints-as-lead-times-extend-to-four-years/",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": false
+        }
+      ],
+      "mitigation_watch": [
+        "~$2B of announced North American transformer manufacturing expansion (Hitachi Energy, Siemens Energy and others), projected online by 2028",
+        "Any DOE/utility bulk-procurement or standardization program to shorten custom-spec lead times"
+      ],
+      "last_reviewed": "2026-07-15"
+    },
+    {
+      "id": "eda-design-software-duopoly",
+      "name": "EDA design-software duopoly (Synopsys / Cadence)",
+      "category": "other",
+      "layers": [
+        "L1-chips"
+      ],
+      "severity_score": 55,
+      "severity_rationale": "Not a physical-supply chokepoint like fabs or lithography, but a structural software dependency with essentially no viable second source for cutting-edge design flows; a disruption at either firm would stall chip design broadly, not just at one customer.",
+      "summary": "Every advanced chip is designed inside software made by two companies.",
+      "card_tagline": "TWO COMPANIES DESIGN EVERY CHIP",
+      "description": "Synopsys and Cadence together control roughly 80-85% of the global electronic design automation (EDA) market - the software required to design any advanced logic chip - with Siemens EDA a distant third. Deep integration with foundry process-design kits and decades of accumulated verified IP make customer switching costs prohibitive, producing near-100% retention and a largely subscription-locked recurring-revenue base.",
+      "node_ids": [
+        "SNPS",
+        "CDNS"
+      ],
+      "external_entities": [
+        "Siemens EDA (Siemens AG, ETR:SIE, distant #3)"
+      ],
+      "tickers": [
+        "NVDA",
+        "AMD",
+        "AVGO",
+        "MRVL",
+        "TSM",
+        "ASML"
+      ],
+      "claims": [
+        {
+          "text": "Synopsys and Cadence together hold on the order of 80-85% of the global EDA market, with near-100% customer retention and 80-85% recurring/subscription revenue, driven by deep foundry PDK integration and switching costs that make customer churn effectively nonexistent.",
+          "class": "reported",
+          "source_name": "HeyGoTrade (industry-analysis blog)",
+          "source_url": "https://www.heygotrade.com/en/blog/synopsys-vs-cadence-snps-vs-cdns-eda-duopoly-ai-chip-boom/",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": true
+        }
+      ],
+      "mitigation_watch": [
+        "Open-source/AI-assisted EDA tooling maturing enough to lower switching costs (early-stage, unproven at leading-edge nodes)",
+        "Chinese domestic EDA vendors (Empyrean, Primarius) closing the gap under export-control pressure",
+        "Any US export restriction on EDA tool sales to China as a companion lever to the export-controls chokepoint"
+      ],
+      "last_reviewed": "2026-07-15"
+    },
+    {
+      "id": "japan-photoresist-euv-chemicals",
+      "name": "Japan's photoresist / EUV-chemicals concentration",
+      "category": "materials",
+      "layers": [
+        "L1-chips"
+      ],
+      "severity_score": 60,
+      "severity_rationale": "High within its narrow scope - only three volume-qualified EUV-resist suppliers exist globally, all Japanese, so a Japan-side export restriction (rumored but unconfirmed as of this review) would bite even a fab that has EUV tools and wafers ready.",
+      "summary": "Three Japanese chemical makers supply nearly all of the world's EUV photoresist.",
+      "card_tagline": "THREE SUPPLIERS, ONE COUNTRY",
+      "description": "A handful of Japanese chemical makers (JSR, Tokyo Ohka Kogyo, Shin-Etsu Chemical, Fujifilm) supply the large majority of the world's photoresist, and specifically the EUV-grade resist needed for leading-edge lithography is qualified at volume from only three suppliers (TOK, JSR, Shin-Etsu). This makes Japanese trade policy - not just ASML tool availability - a second, independent single point in the EUV process flow.",
+      "node_ids": [
+        "ENTG"
+      ],
+      "external_entities": [
+        "JSR Corp (Japan Investment Corp-owned, delisted 2024)",
+        "Tokyo Ohka Kogyo (TSE:4186)",
+        "Shin-Etsu Chemical (TSE:4063)",
+        "Fujifilm Holdings (TSE:4901)"
+      ],
+      "tickers": [
+        "TSM",
+        "ASML",
+        "AMAT",
+        "LRCX",
+        "KLAC"
+      ],
+      "claims": [
+        {
+          "text": "Japanese suppliers control over 70% of the global photoresist market and roughly 90-95% of the high-end EUV-photoresist segment specifically, with only three qualified volume suppliers (Tokyo Ohka Kogyo, JSR, Shin-Etsu Chemical) for leading-edge EUV resist.",
+          "class": "reported",
+          "source_name": "Fountyl Tech (industry-analysis blog)",
+          "source_url": "https://www.fountyltech.com/news/japanese-companies-monopolize-the-euv-photoresist-supply-market/",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": true
+        },
+        {
+          "text": "In Nov-Dec 2025, Japan was rumored to be weighing curbs on photoresist exports to China (in response to China's own rare-earth export measures), while China separately targeted 40% domestic photoresist self-sufficiency by 2026 - no formal Japanese export restriction has been confirmed as of this review.",
+          "class": "rumored",
+          "source_name": "TrendForce",
+          "source_url": "https://www.trendforce.com/news/2025/12/03/news-japan-rumored-to-curb-photoresist-exports-as-china-targets-40-self-sufficiency-by-2026/",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": true
+        }
+      ],
+      "mitigation_watch": [
+        "JSR's new Taiwan photoresist plant (co-located with TSMC) as geographic diversification",
+        "TOK's planned South Korea plant (targeted 2030 start)",
+        "China's stated 40% photoresist self-sufficiency target and whether it's met"
+      ],
+      "last_reviewed": "2026-07-15"
+    },
+    {
+      "id": "haleu-enrichment-capacity",
+      "name": "HALEU enrichment capacity / Russian dependency",
+      "category": "materials",
+      "layers": [
+        "L0-energy"
+      ],
+      "severity_score": 58,
+      "severity_rationale": "High for the advanced-nuclear sub-sector specifically - SMR economics/licensing already run on a 2035+ timeline per the investing brief, and fuel-supply concentration is an additional binding constraint on top of permitting; a Centrus production shortfall has no near-term domestic substitute.",
+      "summary": "Advanced reactors need a specific fuel that, until recently, only Russia made at scale.",
+      "card_tagline": "ONE US PLANT, ONE FUEL",
+      "description": "Most next-generation small modular/advanced reactors (TerraPower Natrium, X-energy Xe-100, Kairos Hermes, Oklo Aurora) require HALEU (High-Assay Low-Enriched Uranium, 5-20% U-235), which until a 2024 US import ban was supplied almost exclusively at commercial scale by Russia's Rosatom/TENEX. Centrus Energy's Piketon, Ohio plant is, as of 2026, the only US facility producing HALEU, making it a direct domestic single point for the entire advanced-nuclear pipeline this stack's Layer-0 energy story depends on.",
+      "node_ids": [
+        "LEU"
+      ],
+      "external_entities": [
+        "Rosatom/TENEX (Russia, sanctioned/phasing out by 2028)"
+      ],
+      "tickers": [
+        "OKLO",
+        "SMR",
+        "NNE",
+        "CCJ",
+        "BWXT"
+      ],
+      "claims": [
+        {
+          "text": "Until the 2024 US ban on Russian enriched-uranium imports (Russian deliveries phasing out through 2028 under the Prohibiting Russian Uranium Imports Act), Russia's Rosatom/TENEX was the only commercial-scale supplier of HALEU; Centrus Energy's American Centrifuge Plant in Piketon, Ohio is, as of 2026, the only US facility producing HALEU, having delivered over 900 kg to the DOE, with its DOE production contract extended and a roughly $2.7B DOE HALEU program announced in January 2026.",
+          "class": "reported",
+          "source_name": "Tech Times",
+          "source_url": "https://www.techtimes.com/articles/319669/20260703/doe-locks-1b-centrus-haleu-deal-end-us-reliance-russian-enrichment.htm",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": false
+        }
+      ],
+      "mitigation_watch": [
+        "Centrus Piketon capacity ramp and any second US HALEU producer (Orano, Urenco USA expansion plans)",
+        "DOE's $2.7B program disbursement pace",
+        "Whether SMR vendors qualify LEU+ (below-HALEU-assay) fuel cycles as a near-term workaround"
+      ],
+      "last_reviewed": "2026-07-15"
+    },
+    {
+      "id": "kla-process-control-dominance",
+      "name": "KLA process-control/inspection dominance",
+      "category": "equipment_monopoly",
+      "layers": [
+        "L1-chips"
+      ],
+      "severity_score": 52,
+      "severity_rationale": "Process control is a mandatory yield-gating step, not an optional one, and KLA's share has been rising (not stable), so a KLA-specific disruption would slow leading-edge and advanced-packaging output broadly even though nominal competitors exist.",
+      "summary": "Every advanced wafer has to pass inspection before the next step - and one company dominates that inspection.",
+      "card_tagline": "THE GATEKEEPER OF YIELD",
+      "description": "KLA Corporation supplies the wafer-inspection and metrology tools that must sign off on every advanced wafer (and, increasingly, advanced-packaging step) before it proceeds to the next process stage, and has been steadily gaining share against Applied Materials and other process-control vendors. Unlike ASML's binary sole-supplier position, KLA is a dominant-but-not-exclusive supplier - the risk here is concentration, not literal monopoly.",
+      "node_ids": [
+        "KLAC"
+      ],
+      "external_entities": [],
+      "tickers": [
+        "TSM",
+        "NVDA",
+        "AMD",
+        "AMAT",
+        "LRCX"
+      ],
+      "claims": [
+        {
+          "text": "KLA's semiconductor process-control market share reached approximately 58% in 2025 (up from roughly 50-54% in the 2010-2021 period), with over 85% share in optical wafer inspection specifically and the #1 share position in advanced wafer-level packaging process control; Applied Materials, the next-largest player, has meanwhile declined to under 8% share in the segments where the two compete directly.",
+          "class": "reported",
+          "source_name": "Investing.com (citing KLA's own Q3 FY2026 investor slides)",
+          "source_url": "https://www.investing.com/news/company-news/kla-q3-fy2026-slides-market-share-hits-58-ambitious-2030-targets-93CH-4671214",
+          "source_class": "html",
+          "retrieved_at": "2026-07-15T16:00:00Z",
+          "needs_verification": false
+        }
+      ],
+      "mitigation_watch": [
+        "Applied Materials/other process-control vendors regaining share (currently trending the opposite direction)",
+        "Any qualification of a second inspection vendor at advanced-packaging nodes specifically, where KLA's share gain has been fastest"
+      ],
+      "last_reviewed": "2026-07-15"
+    }
+  ]
+}

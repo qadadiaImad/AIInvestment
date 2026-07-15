@@ -5,6 +5,7 @@ const NAV = [
   { href: "/terminal", label: "TA DESK" },
   { href: "/map", label: "MAP" },
   { href: "/resiliency", label: "RESILIENCY" },
+  { href: "/chokepoints", label: "CHOKEPOINTS" },
   { href: "/screener", label: "SCREENER" },
   { href: "/strategies", label: "STRATEGIES" },
   { href: "/congress", label: "CONGRESS" },
