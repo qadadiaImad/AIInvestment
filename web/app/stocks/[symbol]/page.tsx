@@ -18,6 +18,9 @@ import WhyConsider, {
 } from "@/components/WhyConsider";
 import ArchetypePanel from "@/components/terminal/ArchetypePanel";
 import { getArchetypeForSymbol } from "@/lib/archetypes";
+import DcfPanel from "@/components/terminal/DcfPanel";
+import { buildDefaultDcfInputs } from "@/lib/dcf";
+import { getMacroData } from "@/lib/macro";
 import {
   price as fmtPrice,
   ratio,
@@ -174,6 +177,7 @@ export default async function StockPage({
   const news = getNewsForSymbol(s.symbol);
   const congress = getCongressForSymbol(s.symbol);
   const archetype = getArchetypeForSymbol(s.symbol);
+  const dcfDefaults = buildDefaultDcfInputs(s, getMacroData());
 
   // peer comparison rows
   const industryPeers = s.peer_comparison?.industry ?? {};
@@ -357,6 +361,17 @@ export default async function StockPage({
       {archetype && (
         <Panel title="Investor archetype scorecards">
           <ArchetypePanel record={archetype} />
+        </Panel>
+      )}
+
+      {/* 2-stage FCF DCF — graceful absence: base FCF/share can't be
+          derived from any real fundamentals field for every name (never
+          fabricated), so the whole panel (including its header) is skipped
+          rather than showing an empty shell. Same degradation pattern as
+          every other optional section on this page. */}
+      {dcfDefaults.baseFcf.value != null && (
+        <Panel title="DCF — fair value estimate (toy model)">
+          <DcfPanel symbol={s.symbol} defaults={dcfDefaults} />
         </Panel>
       )}
 
