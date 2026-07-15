@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-// Server component — terminal-scoped sub-nav (TA DESK / RISK). Deliberately
+// Server component — terminal-scoped sub-nav (TA DESK / RISK / MACRO /
+// ARCHETYPES). Deliberately
 // NOT usePathname()/a client component: the active tab is passed down as a
 // plain prop from each server page, matching layout.tsx's own reasoning for
 // staying server-rendered (avoid a one-frame hydration flash / chrome
@@ -10,6 +11,7 @@ const SUB_NAV = [
   { href: "/terminal", label: "TA DESK" },
   { href: "/terminal/risk", label: "RISK" },
   { href: "/terminal/macro", label: "MACRO" },
+  { href: "/terminal/archetypes", label: "ARCHETYPES" },
 ] as const;
 
 export default function TerminalSubNav({

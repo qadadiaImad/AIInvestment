@@ -70,6 +70,10 @@ def build_plan(args):
     if os.path.exists(str(SCRIPTS / "build_risk.py")):
         add("compute risk analytics -> risk.json", [PY, "build_risk.py"])
 
+    if os.path.exists(str(SCRIPTS / "build_archetypes.py")):
+        add("compute investor-archetype scorecards -> archetypes.json",
+            [PY, "build_archetypes.py"])
+
     if os.path.exists(str(SCRIPTS / "pull_macro.py")):
         add("pull macro dashboard -> macro.json", [PY, "pull_macro.py"])
 

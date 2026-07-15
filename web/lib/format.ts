@@ -388,6 +388,97 @@ export function macroChangeColor(
   return riskDivergingColor(v, domainAbsMax);
 }
 
+// ---- Investor-archetype scorecards (terminal/archetypes) ----
+//
+// Verdict bands are computed server-side in build_archetypes.py using the
+// SAME thresholds as healthColor()/healthTextClass() (score>70 strong_fit,
+// 50-70 partial_fit, <50 poor_fit — byte-identical, confirmed against the
+// design doc). archetypeScoreColor/archetypeScoreTextClass are therefore
+// THIN WRAPPERS over the existing health-band functions, not a new
+// threshold constant — do not reimplement the bands here.
+
+import type { ArchetypeKey, ArchetypeVerdict, CriterionUnit } from "@/lib/archetypes";
+
+export const ARCHETYPE_ORDER: ArchetypeKey[] = ["graham", "buffett", "lynch"];
+
+export const ARCHETYPE_LABELS: Record<ArchetypeKey, string> = {
+  graham: "Graham",
+  buffett: "Buffett",
+  lynch: "Lynch",
+};
+
+export const ARCHETYPE_SUBTITLES: Record<ArchetypeKey, string> = {
+  graham: "Defensive Value",
+  buffett: "Quality / Moat",
+  lynch: "Growth at a Reasonable Price",
+};
+
+// Distinct categorical hues per archetype (value / quality / growth) — a
+// different taxonomy from LAYER_COLORS, deliberately not reused from it.
+export const ARCHETYPE_COLORS: Record<ArchetypeKey, string> = {
+  graham: "#f59e0b", // amber — value
+  buffett: "#10b981", // emerald — quality/moat
+  lynch: "#3b82f6", // blue — growth
+};
+
+// Score -> color. Thin wrap over healthColor (score>70/50-70/<50 bands,
+// null/not_evaluable -> grey) — the backend's verdict gate emits the exact
+// same bands, so no new threshold constant is introduced here.
+export function archetypeScoreColor(score: number | null): string {
+  return healthColor(score);
+}
+
+export function archetypeScoreTextClass(score: number | null): string {
+  return healthTextClass(score);
+}
+
+// The ONLY place that maps an archetype verdict string -> a human-facing
+// label. Never hardcode "Strong fit"/"Poor fit" elsewhere.
+export function archetypeVerdictLabel(verdict: ArchetypeVerdict): string {
+  if (verdict === "strong_fit") return "Strong fit";
+  if (verdict === "partial_fit") return "Partial fit";
+  if (verdict === "poor_fit") return "Poor fit";
+  return "Not evaluable";
+}
+
+// Pass/fail/not-evaluable mark color for one criterion row. Reuses the
+// site's existing emerald/rose pass-fail pair (same hex as
+// riskDivergingColor's up/down stops) rather than inventing a new pair;
+// null (not evaluable) -> neutral grey, same convention as healthColor().
+export function criterionMarkColor(pass: boolean | null): string {
+  if (pass === true) return "#34d399"; // emerald-400
+  if (pass === false) return "#fb7185"; // rose-400
+  return "#6b7280"; // zinc-500 — not evaluable
+}
+
+export function criterionMarkGlyph(pass: boolean | null): string {
+  if (pass === true) return "✓";
+  if (pass === false) return "✗";
+  return "–";
+}
+
+// Dispatches a criterion's `actual` value to the right formatter for its
+// `unit`. "x" -> ratio (1dp), "pct" -> percentage (1dp), "num" -> plain
+// number (2dp) EXCEPT very large magnitudes (e.g. market_cap's
+// $200,000,000,000 threshold) which read far better as $B/$T via usd() —
+// a formatting nicety, not a change to the underlying stamped number.
+export function archetypeCriterionValue(
+  v: number | null,
+  unit: CriterionUnit,
+): string {
+  if (unit === "x") return ratio(v, 1);
+  if (unit === "pct") return pct(v, 1);
+  if (v != null && Number.isFinite(v) && Math.abs(v) >= 1_000_000) return usd(v);
+  return num(v, 2);
+}
+
+// Fallback disclaimer text — byte-identical to archetypes.json's own
+// top-level `disclaimer` field. Used only where ArchetypeData isn't
+// available (e.g. an absent-data banner rendered before any data.disclaimer
+// exists to read from). Prefer data.disclaimer when data is present.
+export const ARCHETYPE_DISCLAIMER =
+  "Rule-based scorecard — not a prediction, not investment advice. Deterministic checklist against public fundamentals, not an opinion about what Graham/Buffett/Lynch would actually say about a name today.";
+
 // WCAG-ish relative-luminance check for text-on-variable-background safety.
 // Used by heatmap tiles and correlation matrix cells — every tile/cell must
 // carry its numeric value as visible text, never hue-alone encoding.

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getRiskData } from "@/lib/risk";
 import RiskCaptureCard from "@/components/terminal/RiskCaptureCard";
 import CardScaleShell from "@/components/terminal/CardScaleShell";
+import CaptureChromeStrip from "@/components/terminal/CaptureChromeStrip";
 
 // risk.json is generated on the owner's machine and never committed — this
 // route must never be statically prerendered against data that may not
@@ -30,12 +31,7 @@ export default async function RiskCaptureCardPage({
 
   return (
     <div className="flex flex-col items-center py-6 px-3">
-      {isCapture && (
-        // Belt-and-suspenders: kill all motion even though this card has no
-        // animated elements by construction (pure Server Component, no
-        // client state).
-        <style>{`* { animation: none !important; transition: none !important; }`}</style>
-      )}
+      {isCapture && <CaptureChromeStrip />}
       {isCapture ? (
         <RiskCaptureCard data={data} />
       ) : (

@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getTaDeskData, getTaInstrument } from "@/lib/ta";
-import CaptureCard from "@/components/terminal/CaptureCard";
+import { getArchetypeData, getArchetypeForSymbol } from "@/lib/archetypes";
+import ArchetypeCaptureCard from "@/components/terminal/ArchetypeCaptureCard";
 import CardScaleShell from "@/components/terminal/CardScaleShell";
 import CaptureChromeStrip from "@/components/terminal/CaptureChromeStrip";
 
-// ta_desk.json is generated on the owner's machine and never committed —
+// archetypes.json is generated on the owner's machine and never committed —
 // this route must never be statically prerendered against a symbol list
 // that may not exist at build time.
 export const dynamic = "force-dynamic";
 
-// Normalize [symbol] to uppercase [A-Z0-9.-] only before lookup.
+// Normalize [symbol] to uppercase [A-Z0-9.-] only before lookup — same
+// convention as terminal/card/[symbol]/page.tsx.
 function normalizeSymbol(raw: string): string {
   return raw.toUpperCase().replace(/[^A-Z0-9.\-]/g, "");
 }
@@ -21,14 +22,14 @@ export async function generateMetadata({
   params: Promise<{ symbol: string }>;
 }): Promise<Metadata> {
   const { symbol } = await params;
-  const inst = getTaInstrument(normalizeSymbol(symbol));
+  const rec = getArchetypeForSymbol(normalizeSymbol(symbol));
   return {
-    title: inst ? `${inst.symbol} card · TA Desk` : "Not found · TA Desk",
+    title: rec ? `${rec.symbol} archetype card · AI STACK TERMINAL` : "Not found · AI STACK TERMINAL",
     robots: { index: false, follow: false },
   };
 }
 
-export default async function CaptureCardPage({
+export default async function ArchetypeCaptureCardPage({
   params,
   searchParams,
 }: {
@@ -40,12 +41,11 @@ export default async function CaptureCardPage({
   const normalized = normalizeSymbol(symbol);
 
   // A 404 here is a loud, correct failure for a capture script to catch —
-  // never a broken screenshot. Missing ta_desk.json or unknown symbol both
-  // land here.
-  const data = getTaDeskData();
-  if (!data) notFound();
-  const inst = getTaInstrument(normalized);
-  if (!inst) notFound();
+  // never a broken screenshot. Missing archetypes.json or unknown symbol
+  // both land here.
+  const record = getArchetypeForSymbol(normalized);
+  if (!record) notFound();
+  const generatedAt = getArchetypeData()?.generated_at ?? null;
 
   const isCapture = sp.capture === "1";
 
@@ -53,10 +53,10 @@ export default async function CaptureCardPage({
     <div className="flex flex-col items-center py-6 px-3">
       {isCapture && <CaptureChromeStrip />}
       {isCapture ? (
-        <CaptureCard instrument={inst} source={data.source} />
+        <ArchetypeCaptureCard record={record} generatedAt={generatedAt} />
       ) : (
         <CardScaleShell>
-          <CaptureCard instrument={inst} source={data.source} />
+          <ArchetypeCaptureCard record={record} generatedAt={generatedAt} />
         </CardScaleShell>
       )}
     </div>

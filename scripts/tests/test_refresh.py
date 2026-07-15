@@ -117,6 +117,22 @@ def test_daily_includes_quantum_steps_after_ai_export():
     assert cmds.index("export_quantum.py") < cmds.index("build_screener.py")
 
 
+def test_daily_archetypes_step_is_guarded_and_follows_risk(monkeypatch):
+    """The archetypes step appears IFF build_archetypes.py exists on disk, and sits
+    right after the risk-analytics step (both are pure computed-from-site.json steps)."""
+    monkeypatch.setattr(refresh_daily.os.path, "exists", lambda p: False)
+    steps_absent = refresh_daily.build_plan(
+        _ns(with_backtest=False, deploy=False, keep_going=False))
+    assert not any("build_archetypes.py" in _cmd_str(s) for s in steps_absent)
+
+    monkeypatch.setattr(refresh_daily.os.path, "exists", lambda p: True)
+    steps_present = refresh_daily.build_plan(
+        _ns(with_backtest=False, deploy=False, keep_going=False))
+    cmds = [s["cmd"][1] if len(s["cmd"]) > 1 else s["cmd"][0] for s in steps_present]
+    assert "build_archetypes.py" in cmds
+    assert cmds.index("build_risk.py") < cmds.index("build_archetypes.py")
+
+
 def test_daily_quantum_steps_are_guarded(monkeypatch):
     """The quantum steps appear IFF the quantum CLIs exist on disk."""
     monkeypatch.setattr(refresh_daily.os.path, "exists", lambda p: False)

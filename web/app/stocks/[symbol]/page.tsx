@@ -16,6 +16,8 @@ import StockNews from "@/components/StockNews";
 import WhyConsider, {
   type CongressSummary,
 } from "@/components/WhyConsider";
+import ArchetypePanel from "@/components/terminal/ArchetypePanel";
+import { getArchetypeForSymbol } from "@/lib/archetypes";
 import {
   price as fmtPrice,
   ratio,
@@ -171,6 +173,7 @@ export default async function StockPage({
   const catalysts = (s.catalysts ?? []).filter((c) => c.date || c.display);
   const news = getNewsForSymbol(s.symbol);
   const congress = getCongressForSymbol(s.symbol);
+  const archetype = getArchetypeForSymbol(s.symbol);
 
   // peer comparison rows
   const industryPeers = s.peer_comparison?.industry ?? {};
@@ -346,6 +349,16 @@ export default async function StockPage({
           <Stat label="EPS YoY" value={epsG.text} cls={epsG.cls} />
         </div>
       </Panel>
+
+      {/* Investor archetype scorecards — graceful absence: renders nothing
+          when archetypes.json hasn't been generated yet or this symbol
+          isn't in it (same degradation pattern as every other optional
+          section on this page). */}
+      {archetype && (
+        <Panel title="Investor archetype scorecards">
+          <ArchetypePanel record={archetype} />
+        </Panel>
+      )}
 
       {/* History sparklines */}
       <Panel title="History — annual (oldest → newest)">
