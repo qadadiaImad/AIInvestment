@@ -27,11 +27,34 @@ def _scripts(steps):
     return [s["cmd"][1] for s in steps]
 
 
-def test_full_plan_order_fundamentals_then_daily_then_congress():
+def test_full_plan_order_fundamentals_then_daily_then_ta_then_congress():
     steps = refresh_all.build_plan(_ns(fundamentals="all", years=[2026], keep_going=True, deploy=False))
     scr = _scripts(steps)
-    assert scr == ["fundamental_backfill.py", "refresh_daily.py", "refresh_congress.py"]
+    assert scr == ["fundamental_backfill.py", "refresh_daily.py",
+                   "refresh_ta.py", "refresh_congress.py"]
     assert scr.index("fundamental_backfill.py") < scr.index("refresh_daily.py") < scr.index("refresh_congress.py")
+
+
+def test_full_plan_includes_ta():
+    """Regression: refresh_ta.py was in no orchestrator, so a scheduled
+    "refresh everything" silently skipped the TA desk and ta_desk.json went
+    missing (2026-07-20). It is a separate driver, not an optional one."""
+    scr = _scripts(refresh_all.build_plan(
+        _ns(fundamentals="all", years=[2026], keep_going=True, deploy=False)))
+    assert "refresh_ta.py" in scr
+
+
+def test_ta_runs_after_daily_not_concurrently():
+    """Both hit Yahoo; CLAUDE.md requires honouring rate limits."""
+    scr = _scripts(refresh_all.build_plan(
+        _ns(fundamentals="all", years=[2026], keep_going=True, deploy=False)))
+    assert scr.index("refresh_daily.py") < scr.index("refresh_ta.py")
+
+
+def test_no_ta_flag_omits_the_step():
+    scr = _scripts(refresh_all.build_plan(
+        _ns(fundamentals="all", years=[2026], keep_going=True, deploy=False, ta=False)))
+    assert "refresh_ta.py" not in scr
 
 
 def test_fundamentals_step_targets_the_universe():

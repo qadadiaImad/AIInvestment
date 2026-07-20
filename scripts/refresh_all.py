@@ -66,9 +66,19 @@ def build_plan(args):
 
     add("daily AI/quantum/news refresh", [PY, "refresh_daily.py"])
 
-    years = [str(y) for y in args.years]
-    add("monthly congress refresh",
-        [PY, "refresh_congress.py", "--years", *years, "--keep-going"])
+    # Separate driver by design (how_to_update.md:85-95) -- but that must not
+    # mean "never runs": no orchestrator called it, hence the missing
+    # ta_desk.json. Serial after daily; both hit Yahoo.
+    if getattr(args, "ta", True):
+        add("TA-desk refresh", [PY, "refresh_ta.py"])
+
+    # PTR filings move monthly (how_to_update.md:157-159). Re-downloading ~300
+    # PDFs nightly is not "scraping politely" (CLAUDE.md §8), so the nightly
+    # task passes --no-congress and a separate monthly task covers it.
+    if getattr(args, "congress", True):
+        years = [str(y) for y in args.years]
+        add("monthly congress refresh",
+            [PY, "refresh_congress.py", "--years", *years, "--keep-going"])
 
     if getattr(args, "deploy", False):
         add("deploy to Vercel (prod)", ["vercel", "--prod", "--yes"], cwd=str(WEB))
@@ -90,6 +100,12 @@ def _parse_args(argv):
                     help="Print the ordered plan and exit 0 without running anything.")
     ap.add_argument("--deploy", action="store_true",
                     help="After a successful pipeline, run `vercel --prod --yes` in web/.")
+    ap.add_argument("--no-ta", dest="ta", action="store_false", default=True,
+                    help="Skip the TA-desk refresh step.")
+    ap.add_argument("--no-congress", dest="congress", action="store_false",
+                    default=True,
+                    help="Skip the congress leg (nightly runs should: PTRs "
+                         "move monthly and re-pulling ~300 PDFs daily is rude).")
     ap.add_argument("--no-notify", action="store_true",
                     help="Do not raise a desktop notification on failure.")
     ap.add_argument("--notify-success", action="store_true",
