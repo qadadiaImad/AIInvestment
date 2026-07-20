@@ -6,7 +6,7 @@
           {
             "type": "command",
             "shell": "powershell",
-            "command": "[Console]::OutputEncoding=[Text.Encoding]::UTF8; $p='C:\\Users\\imadq\\AIInvestment\\cowork_instructions.txt'; if (Test-Path $p) { Write-Output '===== COWORK INSTRUCTIONS (live) ====='; Get-Content -Raw $p }",
+            "command": "[Console]::OutputEncoding=[Text.Encoding]::UTF8; $d=$env:CLAUDE_PROJECT_DIR; if (-not $d) { $d=(Get-Location).Path }; $p=Join-Path $d 'cowork_instructions.txt'; if (Test-Path $p) { Write-Output '===== COWORK INSTRUCTIONS (live) ====='; Get-Content -Raw $p }",
             "statusMessage": "Reading cowork channel...",
             "timeout": 10
           }
@@ -19,7 +19,7 @@
           {
             "type": "command",
             "shell": "powershell",
-            "command": "[Console]::OutputEncoding=[Text.Encoding]::UTF8; $p='C:\\Users\\imadq\\AIInvestment\\cowork_instructions.txt'; if (Test-Path $p) { Write-Output '===== COWORK INSTRUCTIONS (live) ====='; Get-Content -Raw $p }",
+            "command": "[Console]::OutputEncoding=[Text.Encoding]::UTF8; $d=$env:CLAUDE_PROJECT_DIR; if (-not $d) { $d=(Get-Location).Path }; $p=Join-Path $d 'cowork_instructions.txt'; if (Test-Path $p) { Write-Output '===== COWORK INSTRUCTIONS (live) ====='; Get-Content -Raw $p }",
             "statusMessage": "Reading cowork channel...",
             "timeout": 10
           }

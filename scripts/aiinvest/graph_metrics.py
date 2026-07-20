@@ -12,6 +12,7 @@ Educational/research only — not investment advice.
 """
 from __future__ import annotations
 
+import pathlib
 import random
 from typing import Any
 
@@ -33,8 +34,9 @@ def load_graph() -> dict:
     Returns ``{"nodes": [...], "edges": [...]}``.
     """
     g = capital_web.build_graph()
+    repo = pathlib.Path(__file__).resolve().parents[2]
     store = enrich.load_store(
-        "C:/Users/imadq/AIInvestment/capital_web_enriched.json"
+        str(repo / "capital_web_enriched.json")
     )
     merged = enrich.merge_enriched(g["edges"], store)
     return {"nodes": g["nodes"], "edges": merged}

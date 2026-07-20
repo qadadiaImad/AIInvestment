@@ -55,3 +55,6 @@ web/data/
 # owner's machine; sandbox copies are synthetic fixtures — never version either kind).
 # Needed explicitly since "data/*" above is root-anchored and no longer covers this dir.
 web/public/data/
+
+# Local secrets dir — API keys live here, never committed
+.secrets/
