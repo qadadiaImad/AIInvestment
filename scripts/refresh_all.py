@@ -41,7 +41,7 @@ import subprocess
 import sys
 import time
 
-from aiinvest import bundles
+from aiinvest import bundles, fundamental_quality
 
 SCRIPTS = pathlib.Path(__file__).resolve().parent
 WEB = SCRIPTS.parent / "web"
@@ -155,7 +155,14 @@ def _summary(results, failures, aborted):
     lines, n_failed = bundles.render_verification(SCRIPTS.parent, driver=None)
     for line in lines:
         print(line)
-    return n_failed
+
+    # Files existing is not the same as fields being populated: the fair-value
+    # step can write 108 records whose GF values are all null.
+    q_lines, q_failed = fundamental_quality.check(SCRIPTS.parent)
+    for line in q_lines:
+        print(line)
+
+    return n_failed + q_failed
 
 
 if __name__ == "__main__":

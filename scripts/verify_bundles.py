@@ -24,7 +24,7 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
-from aiinvest import bundles  # noqa: E402
+from aiinvest import bundles, fundamental_quality  # noqa: E402
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 SCRIPTS = REPO / "scripts"
@@ -178,9 +178,15 @@ def main(argv=None):
         if rc:
             print(f"\n(one or more producer scripts exited non-zero: rc={rc})")
 
+    print("\nFUNDAMENTAL STORE (GuruFocus)")
+    q_lines, q_failed = fundamental_quality.check(REPO)
+    for line in q_lines:
+        print(line)
+
     fails = bundles.failures(results)
     warns = bundles.warnings(results)
-    print(f"\nsummary: {len(results)} checked, {len(fails)} failed, {len(warns)} warned")
+    print(f"\nsummary: {len(results)} checked, {len(fails) + q_failed} failed, "
+          f"{len(warns)} warned")
     if fails and not args.fix:
         print("hint: rerun the producers automatically with  python verify_bundles.py --fix")
     return 1 if fails else 0
