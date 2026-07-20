@@ -41,6 +41,8 @@ import subprocess
 import sys
 import time
 
+from aiinvest import bundles
+
 SCRIPTS = pathlib.Path(__file__).resolve().parent
 WEB = SCRIPTS.parent / "web"
 PY = sys.executable
@@ -132,8 +134,8 @@ def main(argv=None):
                 _summary(results, failures, aborted=step["label"])
                 return 1
 
-    _summary(results, failures, aborted=None)
-    return 1 if failures else 0
+    n_bundle_failed = _summary(results, failures, aborted=None)
+    return 1 if (failures or n_bundle_failed) else 0
 
 
 def _summary(results, failures, aborted):
@@ -147,6 +149,13 @@ def _summary(results, failures, aborted):
     if aborted:
         print(f"  ABORTED at: {aborted} (use --keep-going to continue past failures)")
     print(f"  failures: {len(failures) if failures else 'none'}")
+
+    # Full run: verify every declared artifact, not just the ones a single
+    # driver owns. Steps exiting 0 is not evidence the bundles landed.
+    lines, n_failed = bundles.render_verification(SCRIPTS.parent, driver=None)
+    for line in lines:
+        print(line)
+    return n_failed
 
 
 if __name__ == "__main__":

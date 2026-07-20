@@ -32,6 +32,8 @@ __all__ = [
     "PUBLIC", "WEBDATA", "Bundle", "BUNDLES", "Result",
     "OK", "MISSING", "STALE", "TOO_SMALL", "UNPARSEABLE",
     "check_bundle", "check_all", "failures", "warnings",
+    "for_driver", "render_verification",
+    "DRV_DAILY", "DRV_TA", "DRV_CONGRESS",
 ]
 
 # ---------------------------------------------------------------------------
@@ -74,6 +76,9 @@ class Bundle:
     required: bool = True
     max_age_h: int = 30
     min_bytes: int = 1_000
+    #: Owning refresh driver; each verifies only its own outputs, so a
+    #: not-yet-run monthly job never false-alarms a daily one. None = manual.
+    driver: str | None = None
     note: str = ""
 
 
@@ -83,51 +88,56 @@ _WEEKLY = 192     # 8d
 _MONTHLY = 744    # 31d
 _RARELY = 2_160   # 90d — curated datasets that change by hand
 
+# Owning drivers.
+DRV_DAILY = "refresh_daily.py"
+DRV_TA = "refresh_ta.py"
+DRV_CONGRESS = "refresh_congress.py"
+
 
 BUNDLES: dict[str, Bundle] = {
     b.name: b
     for b in [
         # --- core, rebuilt every day -------------------------------------
-        Bundle("site.json", PUBLIC, "export_site.py",
+        Bundle("site.json", PUBLIC, "export_site.py", driver=DRV_DAILY,
                max_age_h=_DAILY, min_bytes=400_000),
-        Bundle("quantum.json", PUBLIC, "export_quantum.py",
+        Bundle("quantum.json", PUBLIC, "export_quantum.py", driver=DRV_DAILY,
                max_age_h=_DAILY, min_bytes=30_000),
-        Bundle("news.json", PUBLIC, "pull_news.py",
+        Bundle("news.json", PUBLIC, "pull_news.py", driver=DRV_DAILY,
                max_age_h=_DAILY, min_bytes=150_000),
-        Bundle("macro.json", PUBLIC, "pull_macro.py",
+        Bundle("macro.json", PUBLIC, "pull_macro.py", driver=DRV_DAILY,
                max_age_h=_DAILY, min_bytes=10_000),
-        Bundle("risk.json", PUBLIC, "build_risk.py",
+        Bundle("risk.json", PUBLIC, "build_risk.py", driver=DRV_DAILY,
                max_age_h=_DAILY, min_bytes=20_000),
-        Bundle("archetypes.json", PUBLIC, "build_archetypes.py",
+        Bundle("archetypes.json", PUBLIC, "build_archetypes.py", driver=DRV_DAILY,
                max_age_h=_DAILY, min_bytes=300_000),
         Bundle("graph_analysis.json", PUBLIC, "run_graph_analysis.py",
-               max_age_h=_DAILY, min_bytes=20_000),
+               driver=DRV_DAILY, max_age_h=_DAILY, min_bytes=20_000),
 
         # --- own schedule: refresh_ta.py, deliberately not in refresh_daily
-        Bundle("ta_desk.json", PUBLIC, "refresh_ta.py",
+        Bundle("ta_desk.json", PUBLIC, "refresh_ta.py", driver=DRV_TA,
                max_age_h=_DAILY, min_bytes=20_000,
                note="separate driver by design (how_to_update.md)"),
 
         # --- slower cadences ---------------------------------------------
-        Bundle("backtests.json", PUBLIC, "run_backtest.py",
+        Bundle("backtests.json", PUBLIC, "run_backtest.py", driver=DRV_DAILY,
                max_age_h=_WEEKLY, min_bytes=200_000),
-        Bundle("congress.json", PUBLIC, "export_congress.py",
+        Bundle("congress.json", PUBLIC, "export_congress.py", driver=DRV_CONGRESS,
                max_age_h=_MONTHLY, min_bytes=1_000_000,
                note="PTR filings move monthly"),
-        Bundle("chokepoints.json", PUBLIC, "build_chokepoints.py",
+        Bundle("chokepoints.json", PUBLIC, "build_chokepoints.py", driver=DRV_DAILY,
                max_age_h=_RARELY, min_bytes=10_000,
                note="hand-curated source dataset"),
 
         # --- optional merges: absent is legitimate ------------------------
         Bundle("congress_stocks.json", PUBLIC, "export_congress_stocks.py",
-               required=False, max_age_h=_MONTHLY, min_bytes=1_000,
-               note="optional merge in data.ts"),
+               driver=DRV_CONGRESS, required=False, max_age_h=_MONTHLY,
+               min_bytes=1_000, note="optional merge in data.ts"),
         Bundle("extra_stocks.json", PUBLIC, "pull_kalray.py",
-               required=False, max_age_h=_MONTHLY, min_bytes=200,
-               note="optional merge in data.ts"),
+               driver=None, required=False, max_age_h=_MONTHLY, min_bytes=200,
+               note="optional merge in data.ts; no driver builds it"),
 
         # --- server-only, owner-supplied ---------------------------------
-        Bundle("portfolio.json", WEBDATA, "build_portfolio.py",
+        Bundle("portfolio.json", WEBDATA, "build_portfolio.py", driver=DRV_DAILY,
                required=False, max_age_h=_DAILY, min_bytes=500,
                note="needs data/portfolio/positions.json; NEVER public"),
     ]
@@ -250,3 +260,38 @@ def failures(results) -> list[Result]:
 
 def warnings(results) -> list[Result]:
     return [r for r in results if r.is_warning]
+
+
+def for_driver(driver: str) -> list[Bundle]:
+    """The bundles a given refresh driver is responsible for producing."""
+    return [b for b in BUNDLES.values() if b.driver == driver]
+
+
+def render_verification(repo_root, driver: str | None = None,
+                        now: str | None = None) -> tuple[list[str], int]:
+    """Verify bundles and render driver-summary lines.
+
+    Returns ``(lines, n_failed)``. Drivers print the lines and fold
+    ``n_failed`` into their exit code, so a run that produced no artifacts
+    can no longer report success.
+
+    ASCII only: these land in a cp1252 Windows console.
+    """
+    names = None if driver is None else [b.name for b in for_driver(driver)]
+    if names is not None and not names:
+        return ([], 0)
+
+    results = check_all(repo_root, now, names)
+    fails, warns = failures(results), warnings(results)
+    scope = "all" if driver is None else driver
+
+    lines = [f"  bundles: {len(results) - len(fails)}/{len(results)} verified "
+             f"({len(fails)} failed, {len(warns)} warned) [scope: {scope}]"]
+
+    for r in fails:
+        lines.append(f"    FAIL {r.bundle.name}: {r.detail}")
+        lines.append(f"         fix: cd scripts && python {r.bundle.produced_by}")
+    for r in warns:
+        lines.append(f"    WARN {r.bundle.name}: {r.detail}")
+
+    return (lines, len(fails))

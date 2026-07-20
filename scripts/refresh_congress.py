@@ -33,6 +33,8 @@ import subprocess
 import sys
 import time
 
+from aiinvest import bundles
+
 SCRIPTS = pathlib.Path(__file__).resolve().parent
 WEB = SCRIPTS.parent / "web"
 PY = sys.executable
@@ -144,8 +146,8 @@ def main(argv=None):
                 _summary(results, failures, args, deploy_url, aborted=step["label"])
                 return 1
 
-    _summary(results, failures, args, deploy_url, aborted=None)
-    return 1 if failures else 0
+    n_bundle_failed = _summary(results, failures, args, deploy_url, aborted=None)
+    return 1 if (failures or n_bundle_failed) else 0
 
 
 def _summary(results, failures, args, deploy_url, aborted):
@@ -170,6 +172,12 @@ def _summary(results, failures, args, deploy_url, aborted):
             print("  deployed: attempted (no URL line captured / see step output)")
     else:
         print("  deployed: no (--deploy not set)")
+
+    lines, n_failed = bundles.render_verification(
+        SCRIPTS.parent, driver=bundles.DRV_CONGRESS)
+    for line in lines:
+        print(line)
+    return n_failed
 
 
 if __name__ == "__main__":
