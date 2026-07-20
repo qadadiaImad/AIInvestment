@@ -41,7 +41,7 @@ import subprocess
 import sys
 import time
 
-from aiinvest import bundles, fundamental_quality
+from aiinvest import bundles, fundamental_quality, notify
 
 SCRIPTS = pathlib.Path(__file__).resolve().parent
 WEB = SCRIPTS.parent / "web"
@@ -90,6 +90,11 @@ def _parse_args(argv):
                     help="Print the ordered plan and exit 0 without running anything.")
     ap.add_argument("--deploy", action="store_true",
                     help="After a successful pipeline, run `vercel --prod --yes` in web/.")
+    ap.add_argument("--no-notify", action="store_true",
+                    help="Do not raise a desktop notification on failure.")
+    ap.add_argument("--notify-success", action="store_true",
+                    help="Also notify on a clean run (off by default: nightly "
+                         "success toasts are noise, and noise gets ignored).")
     ap.add_argument("--keep-going", action="store_true",
                     help="Continue on step failure; collect errors and report at the end.")
     return ap.parse_args(argv)
@@ -134,8 +139,32 @@ def main(argv=None):
                 _summary(results, failures, aborted=step["label"])
                 return 1
 
-    n_bundle_failed = _summary(results, failures, aborted=None)
-    return 1 if (failures or n_bundle_failed) else 0
+    n_bundle_failed, problems = _summary(results, failures, aborted=None)
+    rc = 1 if (failures or n_bundle_failed) else 0
+    _announce(args, rc, problems, results)
+    return rc
+
+
+def _announce(args, rc, problems, results):
+    """Surface the outcome. An unattended 06:00 job nobody is watching is
+    only useful if a failure reaches the owner."""
+    if getattr(args, "no_notify", False):
+        return
+    elapsed = sum(e for _, _, e in results) if results else None
+    try:
+        if rc:
+            out = notify.notify_failure(SCRIPTS.parent, job="AI STACK refresh",
+                                        problems=problems, duration_s=elapsed)
+            print(f"  notified: {out['channel'] or 'status file only'}")
+        else:
+            out = notify.notify_success(
+                SCRIPTS.parent, job="AI STACK refresh",
+                summary=f"{len(results)} steps ok, all bundles verified",
+                duration_s=elapsed,
+                announce=getattr(args, "notify_success", False))
+            print(f"  status written: {out['status_file']}")
+    except Exception as exc:  # noqa: BLE001 - never fail a good run on the notifier
+        print(f"  notify skipped ({type(exc).__name__}: {exc})")
 
 
 def _summary(results, failures, aborted):
@@ -162,7 +191,9 @@ def _summary(results, failures, aborted):
     for line in q_lines:
         print(line)
 
-    return n_failed + q_failed
+    problems = [ln.strip() for ln in lines + q_lines if "FAIL" in ln]
+    problems += [f"{l} (exit {rc})" for l, rc in (failures or [])]
+    return n_failed + q_failed, problems
 
 
 if __name__ == "__main__":
