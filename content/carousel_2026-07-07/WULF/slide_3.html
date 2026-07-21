@@ -1,0 +1,70 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><title>WULF 3/5 — Building Blocks</title><style>@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1080px;height:1350px;overflow:hidden;}
+body{font-family:'Inter',sans-serif;position:relative;}
+.serif{font-family:'Fraunces',serif;}
+.mono{font-family:'JetBrains Mono',monospace;}
+.foot{position:absolute;left:90px;right:90px;bottom:56px;display:flex;justify-content:space-between;align-items:center;}
+.wordmark{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;letter-spacing:.34em;}
+.pageno{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.18em;}
+.tag{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.30em;text-transform:uppercase;}
+
+body{background:#0A0D12;color:#E8EDF2;}
+body::before{content:'';position:absolute;inset:0;
+ background-image:linear-gradient(rgba(232,237,242,.035) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(232,237,242,.035) 1px,transparent 1px);
+ background-size:40px 40px;pointer-events:none;}
+body::after{content:'';position:absolute;width:1200px;height:1200px;left:50%;top:-15%;transform:translateX(-50%);
+ background:radial-gradient(circle,rgba(16,185,129,.14) 0%,rgba(16,185,129,0) 60%);pointer-events:none;}
+.wordmark{color:#E8EDF2;} .pageno{color:rgba(232,237,242,.5);}
+.accent{color:#34D399;}
+.card{background:rgba(232,237,242,.045);border:1px solid rgba(232,237,242,.10);border-radius:20px;position:relative;z-index:2;}
+
+.wrap{position:absolute;inset:90px;display:flex;flex-direction:column;z-index:2;}
+h2{font-family:'Fraunces',serif;font-size:52px;line-height:1.15;font-weight:600;margin-top:22px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:44px;}
+.rcard{padding:32px 34px;}
+.rlab{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,237,242,.55);}
+.rrow{display:flex;align-items:center;justify-content:space-between;margin-top:12px;}
+.rval{font-family:'Fraunces',serif;font-size:60px;font-weight:700;letter-spacing:-.02em;}
+.rbadge{font-family:'JetBrains Mono',monospace;font-size:16px;letter-spacing:.1em;border:1px solid;border-radius:999px;padding:8px 16px;}
+.rmed{font-family:'JetBrains Mono',monospace;font-size:19px;color:rgba(232,237,242,.5);margin-top:10px;}
+.factor{margin-top:40px;padding:40px 44px;border-left:5px solid #34D399;background:rgba(16,185,129,.08);border-radius:0 20px 20px 0;position:relative;z-index:2;}
+.factorlab{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.26em;color:#34D399;text-transform:uppercase;}
+.factortxt{font-size:26px;line-height:1.5;color:rgba(232,237,242,.9);margin-top:14px;}
+</style></head><body>
+<div class='wrap'>
+  <div class='tag accent'>Building Blocks &middot; WULF vs. AI-Infrastructure Peer Medians</div>
+  <h2>The trailing numbers are ugly on purpose &mdash; the market isn't buying the trailing numbers.</h2>
+  <div class='grid'>
+
+    <div class='card rcard'>
+      <div class='rlab'>Net margin</div>
+      <div class='rrow'><div class='rval'>&minus;611%</div><div class='rbadge' style='color:#E0A23B;border-color:#E0A23B;'>BELOW</div></div>
+      <div class='rmed'>peer median +12.2%</div>
+    </div>
+
+    <div class='card rcard'>
+      <div class='rlab'>ROE</div>
+      <div class='rrow'><div class='rval'>&minus;2244%</div><div class='rbadge' style='color:#E0A23B;border-color:#E0A23B;'>BELOW</div></div>
+      <div class='rmed'>peer median +16.1%</div>
+    </div>
+
+    <div class='card rcard'>
+      <div class='rlab'>Revenue growth YoY</div>
+      <div class='rrow'><div class='rval'>+27.3%</div><div class='rbadge' style='color:#34D399;border-color:#34D399;'>ABOVE</div></div>
+      <div class='rmed'>peer median +23.3%</div>
+    </div>
+
+    <div class='card rcard'>
+      <div class='rlab'>P/E (TTM)</div>
+      <div class='rrow'><div class='rval'>n/a</div><div class='rbadge' style='color:rgba(232,237,242,.6);border-color:rgba(232,237,242,.35);'>LOSS-MAKER</div></div>
+      <div class='rmed'>peer median 39.5&times;</div>
+    </div>
+  </div>
+  <div class='factor'>
+    <div class='factorlab'>Top factor</div>
+    <div class='factortxt'>The market is pricing the <b>reported $19B multi-year AI-compute lease</b> &mdash; contracted future revenue &mdash; not the trailing statements. With profitability this deeply negative, the analysts' model has almost nothing to underwrite yet, so it lags the price by <b>~230%</b>. The whole debate lives in whether that pipeline converts.</div>
+  </div>
+</div>
+<div class='foot'><div class='wordmark'>AI STACK</div><div class='pageno'>03 / 05</div></div></body></html>

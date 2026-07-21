@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><title>INTC — Cover</title><style>@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1080px;height:1350px;overflow:hidden;}
+body{font-family:'Inter',sans-serif;position:relative;background:#0A0D12;color:#E8EDF2;}
+body::before{content:'';position:absolute;inset:0;
+ background-image:linear-gradient(rgba(232,237,242,.03) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(232,237,242,.03) 1px,transparent 1px);
+ background-size:40px 40px;pointer-events:none;z-index:1;}
+.glow{position:absolute;width:1400px;height:1400px;left:50%;top:38%;transform:translate(-50%,-50%);
+ background:radial-gradient(circle,rgba(16,185,129,.22) 0%,rgba(16,185,129,.06) 40%,rgba(16,185,129,0) 65%);pointer-events:none;z-index:0;}
+.wafer{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);z-index:1;}
+.content{position:absolute;inset:90px;display:flex;flex-direction:column;z-index:3;}
+.tag{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.30em;text-transform:uppercase;color:#34D399;}
+.ticker{font-family:'Fraunces',serif;font-size:230px;font-weight:700;letter-spacing:-.03em;line-height:1;margin-top:auto;
+ background:linear-gradient(180deg,#E8EDF2 30%,#34D399 130%);-webkit-background-clip:text;background-clip:text;color:transparent;
+ text-shadow:0 0 90px rgba(16,185,129,.25);}
+.hook{font-family:'Fraunces',serif;font-size:52px;line-height:1.2;font-weight:600;color:#E8EDF2;margin-top:26px;max-width:860px;}
+.hook b{color:#34D399;font-weight:700;}
+.sub{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,237,242,.55);margin-top:26px;}
+.foot{position:absolute;left:90px;right:90px;bottom:56px;display:flex;justify-content:space-between;align-items:center;z-index:3;}
+.wordmark{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;letter-spacing:.34em;color:#E8EDF2;}
+.nfa{font-family:'JetBrains Mono',monospace;font-size:16px;letter-spacing:.14em;color:rgba(232,237,242,.45);text-transform:uppercase;}
+</style></head><body>
+<div class='glow'></div>
+<div class='wafer'>
+<svg width='980' height='980' viewBox='0 0 980 980' xmlns='http://www.w3.org/2000/svg'>
+  <defs>
+    <radialGradient id='waferbody' cx='50%' cy='42%' r='65%'>
+      <stop offset='0%' stop-color='#10B981' stop-opacity='.10'/>
+      <stop offset='55%' stop-color='#0F1720' stop-opacity='.9'/>
+      <stop offset='100%' stop-color='#0A0D12' stop-opacity='1'/>
+    </radialGradient>
+    <linearGradient id='trace' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0%' stop-color='#34D399' stop-opacity='.9'/>
+      <stop offset='100%' stop-color='#10B981' stop-opacity='.15'/>
+    </linearGradient>
+    <clipPath id='waferclip'><circle cx='490' cy='490' r='430'/></clipPath>
+  </defs>
+  <!-- wafer disc -->
+  <circle cx='490' cy='490' r='430' fill='url(#waferbody)' stroke='rgba(52,211,153,.55)' stroke-width='2'/>
+  <circle cx='490' cy='490' r='452' fill='none' stroke='rgba(52,211,153,.18)' stroke-width='1'/>
+  <circle cx='490' cy='490' r='475' fill='none' stroke='rgba(52,211,153,.08)' stroke-width='1'/>
+  <!-- die lattice clipped to wafer -->
+  <g clip-path='url(#waferclip)'>
+    <g stroke='rgba(52,211,153,.28)' stroke-width='1.2'>
+      <path d='M60,190 H920 M60,290 H920 M60,390 H920 M60,490 H920 M60,590 H920 M60,690 H920 M60,790 H920'/>
+      <path d='M190,60 V920 M290,60 V920 M390,60 V920 M490,60 V920 M590,60 V920 M690,60 V920 M790,60 V920'/>
+    </g>
+    <!-- lit dies -->
+    <g>
+      <rect x='392' y='292' width='96' height='96' fill='rgba(16,185,129,.22)' stroke='#34D399' stroke-width='1.5'/>
+      <rect x='492' y='492' width='96' height='96' fill='rgba(16,185,129,.34)' stroke='#34D399' stroke-width='2'/>
+      <rect x='592' y='392' width='96' height='96' fill='rgba(16,185,129,.14)' stroke='rgba(52,211,153,.7)' stroke-width='1.2'/>
+      <rect x='292' y='592' width='96' height='96' fill='rgba(16,185,129,.10)' stroke='rgba(52,211,153,.5)' stroke-width='1'/>
+      <rect x='692' y='592' width='96' height='96' fill='rgba(16,185,129,.18)' stroke='rgba(52,211,153,.6)' stroke-width='1.2'/>
+    </g>
+    <!-- circuit traces radiating from the hot die -->
+    <g fill='none' stroke='url(#trace)' stroke-width='2.4' stroke-linecap='round'>
+      <path d='M540,540 L540,250 L640,150'/>
+      <path d='M540,540 L780,540 L880,440'/>
+      <path d='M540,540 L540,830 L440,930'/>
+      <path d='M540,540 L300,540 L200,640'/>
+      <path d='M540,540 L700,380 L820,380'/>
+      <path d='M540,540 L380,700 L380,840'/>
+    </g>
+    <g fill='#34D399'>
+      <circle cx='640' cy='150' r='6'/><circle cx='880' cy='440' r='6'/>
+      <circle cx='440' cy='930' r='6'/><circle cx='200' cy='640' r='6'/>
+      <circle cx='820' cy='380' r='5'/><circle cx='380' cy='840' r='5'/>
+    </g>
+    <!-- fine inner grid shimmer on the hot die -->
+    <g stroke='rgba(232,237,242,.5)' stroke-width='.8'>
+      <path d='M504,516 H576 M504,540 H576 M504,564 H576 M516,504 V588 M540,504 V588 M564,504 V588'/>
+    </g>
+  </g>
+  <!-- wafer notch -->
+  <circle cx='490' cy='918' r='14' fill='#0A0D12' stroke='rgba(52,211,153,.55)' stroke-width='2'/>
+</svg>
+</div>
+<div class='content'>
+  <div class='tag'>Carousel &middot; 2026-07-07 &middot; Semiconductors</div>
+  <div class='ticker'>INTC</div>
+  <div class='hook'>The <b>$5M disclosure</b> and the <b>$500B question</b>.</div>
+  <div class='sub'>A public filing &middot; a quadrupled stock &middot; a model that disagrees</div>
+</div>
+<div class='foot'><div class='wordmark'>AI STACK</div><div class='nfa'>Educational &mdash; not financial advice</div></div>
+</body></html>

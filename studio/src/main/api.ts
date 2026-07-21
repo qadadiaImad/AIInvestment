@@ -84,15 +84,48 @@ export function registerApi(): void {
     // actually on disk, so an ungenerated reel shows its prompt, not a broken <img>.
     const heroFile = (md ? parseHeroImage(md, tk) : null) || `hero_${tk.toLowerCase()}_${date}.png`
     const hero_image = existsSync(join(HIGGS, heroFile)) ? heroFile : null
+    // Rendered outputs, shown once generated: slide frames (hook/data|card/takeaway — congress
+    // files use the "cong" stem) and the assembled reel MP4 (this kit's date, else newest).
+    const tkl = tk === 'CONGRESS' ? 'cong' : tk.toLowerCase()
+    const slide_images = ['hook', 'data', 'card', 'takeaway']
+      .map((k) => `reel_${tkl}_${k}.png`)
+      .filter((f) => existsSync(join(HIGGS, f)))
+    let reel_video: string | null = `reel_${tkl}_${date}.mp4`
+    if (!existsSync(join(HIGGS, reel_video))) {
+      const mp4s = readdirSync(HIGGS).filter((f) => f.startsWith(`reel_${tkl}_`) && f.endsWith('.mp4')).sort()
+      reel_video = mp4s.length ? mp4s[mp4s.length - 1] : null
+    }
     return {
       id: `${date}_${tk}`, date, ticker: tk,
       theme: entry?.theme ?? '', script: entry?.script ?? '', hashtags: entry?.hashtags ?? '',
       slides: md ? parseKitCfg(md, tk) : null,
       hero_prompt: md ? parseHeroPrompt(md, tk) : null,
       hero_image,
+      slide_images,
+      reel_video,
       story: md ? parseStory(md, tk) : null,
       source: joinStock(tk, b),
     }
+  })
+
+  ipcMain.handle('brief:list', () => {
+    const dir = join(CONTENT, 'daily_brief')
+    if (!existsSync(dir)) return []
+    return readdirSync(dir)
+      .filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d) && existsSync(join(dir, d, 'brief.md')))
+      .sort()
+      .reverse()
+  })
+
+  ipcMain.handle('brief:get', (_e, date: string) => {
+    const day = join(CONTENT, 'daily_brief', date)
+    const md = join(day, 'brief.md')
+    if (!existsSync(md)) return null
+    let meta: Record<string, any> | null = null
+    try { meta = JSON.parse(readFileSync(join(day, 'meta.json'), 'utf-8')) } catch { /* meta optional */ }
+    const chart = meta?.chart && existsSync(join(day, meta.chart))
+      ? `content/daily_brief/${date}/${meta.chart}` : null
+    return { date, text: readFileSync(md, 'utf-8'), meta, chart }
   })
 
   ipcMain.handle('comments:list', (_e, postId: string) =>

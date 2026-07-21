@@ -1,0 +1,5209 @@
+{
+  "generated_at": "2026-07-11T13:43:59Z",
+  "disclaimer": "Educational/research only - not financial advice. Structural/indicative; not a dollar-loss estimate.",
+  "graph": {
+    "n_nodes": 117,
+    "n_edges": 342,
+    "articulation_points": [
+      "AMZN",
+      "DELL",
+      "GEV",
+      "GOOGL",
+      "KMI",
+      "META",
+      "MSFT",
+      "NVDA",
+      "SO",
+      "TSM",
+      "spacex"
+    ],
+    "bridges": [
+      [
+        "TLN",
+        "AMZN"
+      ],
+      [
+        "SO",
+        "KMI"
+      ],
+      [
+        "GEV",
+        "BWXT"
+      ],
+      [
+        "GEV",
+        "crusoe"
+      ],
+      [
+        "WMB",
+        "META"
+      ],
+      [
+        "KMI",
+        "LNG"
+      ],
+      [
+        "NVDA",
+        "MPWR"
+      ],
+      [
+        "NVDA",
+        "TER"
+      ],
+      [
+        "TSM",
+        "KLAC"
+      ],
+      [
+        "STX",
+        "DELL"
+      ],
+      [
+        "MSFT",
+        "lambda"
+      ],
+      [
+        "GOOGL",
+        "APP"
+      ],
+      [
+        "META",
+        "CIEN"
+      ],
+      [
+        "spacex",
+        "musk"
+      ]
+    ],
+    "largest_scc_size": 31,
+    "fragility_ratio": 4.854368932038835,
+    "assortativity": -0.3005975960208826
+  },
+  "nodes": [
+    {
+      "id": "TSM",
+      "name": "TSM",
+      "layer": "L1-chips",
+      "health": 89.9310282910904,
+      "components": {
+        "concentration": 0.9409722222222222,
+        "spof": 0.9477172227852808,
+        "redundancy": 0.8177103493587502,
+        "certainty": 0.8551724137931035
+      },
+      "ens": 16.941176470588236,
+      "flags": [],
+      "vulnerability": 0.33895275339120007,
+      "vulnerability_components": {
+        "S_DE": 0.25,
+        "S_FCF": 0.22115384615384615,
+        "S_CR": 0.33644859813084116,
+        "S_ROIC": 0.14953271028037385,
+        "S_VAL": 0.5690065681444992,
+        "S_GR": 0.8476190476190476
+      },
+      "pagerank": 0.16957810618835736,
+      "betweenness": 0.010456555442943829,
+      "in_scc": true,
+      "is_articulation": true,
+      "in_degree": 19,
+      "out_degree": 4
+    },
+    {
+      "id": "ARM",
+      "name": "ARM",
+      "layer": "L1-chips",
+      "health": 90.99010515583925,
+      "components": {
+        "concentration": 0.9273356401384083,
+        "spof": 1.0,
+        "redundancy": 0.7568014380674801,
+        "certainty": 0.9500000000000001
+      },
+      "ens": 13.761904761904761,
+      "flags": [],
+      "vulnerability": 0.4291865568768969,
+      "vulnerability_components": {
+        "S_DE": 0.14423076923076922,
+        "S_FCF": 0.41346153846153844,
+        "S_CR": 0.10280373831775702,
+        "S_ROIC": 0.4018691588785047,
+        "S_VAL": 0.9754720853858786,
+        "S_GR": 0.6
+      },
+      "pagerank": 0.06801722838376495,
+      "betweenness": 0.00037249744915648805,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 15,
+      "out_degree": 1
+    },
+    {
+      "id": "NVDA",
+      "name": "NVDA",
+      "layer": "L1-chips",
+      "health": 78.34786412070495,
+      "components": {
+        "concentration": 0.9706994328922496,
+        "spof": 0.4361341330360111,
+        "redundancy": 1.0,
+        "certainty": 0.7428571428571429
+      },
+      "ens": 34.12903225806452,
+      "flags": [],
+      "vulnerability": 0.22741782588986909,
+      "vulnerability_components": {
+        "S_DE": 0.17307692307692307,
+        "S_FCF": 0.028846153846153855,
+        "S_CR": 0.16822429906542058,
+        "S_ROIC": 0.0,
+        "S_VAL": 0.49655172413793097,
+        "S_GR": 0.9428571428571428
+      },
+      "pagerank": 0.05798699670701507,
+      "betweenness": 0.11277317339279777,
+      "in_scc": true,
+      "is_articulation": true,
+      "in_degree": 38,
+      "out_degree": 17
+    },
+    {
+      "id": "ASML",
+      "name": "ASML",
+      "layer": "L1-chips",
+      "health": 70.66001797584349,
+      "components": {
+        "concentration": 0.6399999999999999,
+        "spof": 1.0,
+        "redundancy": 0.37840071903374006,
+        "certainty": 0.7999999999999999
+      },
+      "ens": 2.7777777777777772,
+      "flags": [],
+      "vulnerability": 0.32930279497331544,
+      "vulnerability_components": {
+        "S_DE": 0.21153846153846154,
+        "S_FCF": 0.25,
+        "S_CR": 0.5981308411214954,
+        "S_ROIC": 0.06542056074766356,
+        "S_VAL": 0.6804939792008757,
+        "S_GR": 0.49523809523809526
+      },
+      "pagerank": 0.04244994821011948,
+      "betweenness": 0.0,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 3,
+      "out_degree": 1
+    },
+    {
+      "id": "LRCX",
+      "name": "LRCX",
+      "layer": "L1-chips",
+      "health": 71.4100179758435,
+      "components": {
+        "concentration": 0.625,
+        "spof": 1.0,
+        "redundancy": 0.37840071903374006,
+        "certainty": 0.8800000000000001
+      },
+      "ens": 2.6666666666666665,
+      "flags": [],
+      "vulnerability": 0.3483747560850365,
+      "vulnerability_components": {
+        "S_DE": 0.36538461538461536,
+        "S_FCF": 0.21153846153846156,
+        "S_CR": 0.30841121495327106,
+        "S_ROIC": 0.05607476635514019,
+        "S_VAL": 0.7452380952380953,
+        "S_GR": 0.6857142857142857
+      },
+      "pagerank": 0.04244994821011948,
+      "betweenness": 0.0,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 3,
+      "out_degree": 1
+    },
+    {
+      "id": "ENTG",
+      "name": "ENTG",
+      "layer": "L1-chips",
+      "health": 65.24688687393001,
+      "components": {
+        "concentration": 0.5,
+        "spof": 1.0,
+        "redundancy": 0.2998754749572002,
+        "certainty": 0.85
+      },
+      "ens": 2.0,
+      "flags": [],
+      "vulnerability": 0.5316385138923811,
+      "vulnerability_components": {
+        "S_DE": 0.625,
+        "S_FCF": 0.5288461538461539,
+        "S_CR": 0.2149532710280374,
+        "S_ROIC": 0.7757009345794392,
+        "S_VAL": 0.5948002189381499,
+        "S_GR": 0.08571428571428572
+      },
+      "pagerank": 0.039631791283267916,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 2,
+      "out_degree": 0
+    },
+    {
+      "id": "AMZN",
+      "name": "AMZN",
+      "layer": "L2-infra",
+      "health": 85.0,
+      "components": {
+        "concentration": 0.9577777777777777,
+        "spof": 0.7868745715146528,
+        "redundancy": 1.0,
+        "certainty": 0.8565217391304347
+      },
+      "ens": 23.684210526315788,
+      "flags": [],
+      "vulnerability": 0.4989060849184117,
+      "vulnerability_components": {
+        "S_DE": 0.4423076923076923,
+        "S_FCF": 0.7788461538461539,
+        "S_CR": 0.6822429906542056,
+        "S_ROIC": 0.31775700934579443,
+        "S_VAL": 0.28669950738916256,
+        "S_GR": 0.4095238095238095
+      },
+      "pagerank": 0.024005703187371018,
+      "betweenness": 0.04262508569706944,
+      "in_scc": true,
+      "is_articulation": true,
+      "in_degree": 26,
+      "out_degree": 12
+    },
+    {
+      "id": "MSFT",
+      "name": "MSFT",
+      "layer": "L2-infra",
+      "health": 83.90566472727033,
+      "components": {
+        "concentration": 0.9565217391304348,
+        "spof": 0.6389550924013956,
+        "redundancy": 0.9642630869047908,
+        "certainty": 0.7956521739130435
+      },
+      "ens": 23.0,
+      "flags": [],
+      "vulnerability": 0.3391852192549099,
+      "vulnerability_components": {
+        "S_DE": 0.2980769230769231,
+        "S_FCF": 0.29807692307692313,
+        "S_CR": 0.6261682242990654,
+        "S_ROIC": 0.19626168224299068,
+        "S_VAL": 0.370415982484948,
+        "S_GR": 0.47619047619047616
+      },
+      "pagerank": 0.02119377762380785,
+      "betweenness": 0.07220898151972088,
+      "in_scc": true,
+      "is_articulation": true,
+      "in_degree": 23,
+      "out_degree": 20
+    },
+    {
+      "id": "GOOGL",
+      "name": "GOOGL",
+      "layer": "L2-infra",
+      "health": 85.0,
+      "components": {
+        "concentration": 0.9536,
+        "spof": 0.8642793877041884,
+        "redundancy": 0.9642630869047908,
+        "certainty": 0.7783783783783783
+      },
+      "ens": 21.551724137931032,
+      "flags": [],
+      "vulnerability": 0.3746761988280277,
+      "vulnerability_components": {
+        "S_DE": 0.25961538461538464,
+        "S_FCF": 0.5384615384615384,
+        "S_CR": 0.4672897196261683,
+        "S_ROIC": 0.11214953271028039,
+        "S_VAL": 0.48208128078817736,
+        "S_GR": 0.4666666666666667
+      },
+      "pagerank": 0.020321302715703995,
+      "betweenness": 0.027144122459162305,
+      "in_scc": true,
+      "is_articulation": true,
+      "in_degree": 23,
+      "out_degree": 10
+    },
+    {
+      "id": "openai",
+      "name": "OpenAI",
+      "layer": "private-lab",
+      "health": 85.0,
+      "components": {
+        "concentration": 0.9183673469387755,
+        "spof": 1.0,
+        "redundancy": 1.0,
+        "certainty": 0.7869565217391303
+      },
+      "ens": 12.250000000000002,
+      "flags": [],
+      "vulnerability": null,
+      "vulnerability_components": {},
+      "pagerank": 0.014987609529168885,
+      "betweenness": 0.02494663382594417,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 13,
+      "out_degree": 8
+    },
+    {
+      "id": "MU",
+      "name": "MU",
+      "layer": "L1-chips",
+      "health": 83.00793496790357,
+      "components": {
+        "concentration": 0.8641975308641976,
+        "spof": 1.0,
+        "redundancy": 0.5997509499144004,
+        "certainty": 0.8058823529411764
+      },
+      "ens": 7.363636363636363,
+      "flags": [],
+      "vulnerability": 0.26201588560757105,
+      "vulnerability_components": {
+        "S_DE": 0.16346153846153846,
+        "S_FCF": 0.16346153846153844,
+        "S_CR": 0.17757009345794394,
+        "S_ROIC": 0.03738317757009346,
+        "S_VAL": 0.43419540229885056,
+        "S_GR": 0.9809523809523809
+      },
+      "pagerank": 0.01484740102715785,
+      "betweenness": 0.008552626739717403,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 8,
+      "out_degree": 6
+    },
+    {
+      "id": "INTC",
+      "name": "INTC",
+      "layer": "L1-chips",
+      "health": 84.37745562839994,
+      "components": {
+        "concentration": 0.88,
+        "spof": 1.0,
+        "redundancy": 0.6285099898418802,
+        "certainty": 0.8176470588235294
+      },
+      "ens": 8.333333333333332,
+      "flags": [],
+      "vulnerability": 0.5905861233781795,
+      "vulnerability_components": {
+        "S_DE": 0.3942307692307692,
+        "S_FCF": 0.7980769230769231,
+        "S_CR": 0.383177570093458,
+        "S_ROIC": 0.8504672897196262,
+        "S_VAL": 0.6285714285714286,
+        "S_GR": 0.09523809523809523
+      },
+      "pagerank": 0.014696010226755178,
+      "betweenness": 0.022137968808942525,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 9,
+      "out_degree": 7
+    },
+    {
+      "id": "AVGO",
+      "name": "AVGO",
+      "layer": "L1-chips",
+      "health": 83.10032628623073,
+      "components": {
+        "concentration": 0.859504132231405,
+        "spof": 1.0,
+        "redundancy": 0.5997509499144004,
+        "certainty": 0.8214285714285714
+      },
+      "ens": 7.117647058823529,
+      "flags": [],
+      "vulnerability": 0.3871082744868195,
+      "vulnerability_components": {
+        "S_DE": 0.5480769230769231,
+        "S_FCF": 0.038461538461538436,
+        "S_CR": 0.4018691588785047,
+        "S_ROIC": 0.23364485981308414,
+        "S_VAL": 0.6730774493705528,
+        "S_GR": 0.8
+      },
+      "pagerank": 0.013924428092734621,
+      "betweenness": 0.000980943226267932,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 8,
+      "out_degree": 2
+    },
+    {
+      "id": "GEV",
+      "name": "GEV",
+      "layer": "L0-energy",
+      "health": 85.0,
+      "components": {
+        "concentration": 0.7999999999999999,
+        "spof": 0.8864652495180981,
+        "redundancy": 1.0,
+        "certainty": 0.69
+      },
+      "ens": 4.999999999999999,
+      "flags": [],
+      "vulnerability": 0.3400807929582503,
+      "vulnerability_components": {
+        "S_DE": 0.2692307692307692,
+        "S_FCF": 0.4423076923076923,
+        "S_CR": 0.8037383177570093,
+        "S_ROIC": 0.01869158878504673,
+        "S_VAL": 0.42617679255610286,
+        "S_GR": 0.2761904761904762
+      },
+      "pagerank": 0.013691916399023422,
+      "betweenness": 0.02270695009638038,
+      "in_scc": true,
+      "is_articulation": true,
+      "in_degree": 5,
+      "out_degree": 5
+    },
+    {
+      "id": "D",
+      "name": "D",
+      "layer": "L0-energy",
+      "health": 81.96764036172708,
+      "components": {
+        "concentration": 0.625,
+        "spof": 1.0,
+        "redundancy": 0.7737056144690831,
+        "certainty": 0.925
+      },
+      "ens": 2.6666666666666665,
+      "flags": [],
+      "vulnerability": 0.6992524102280789,
+      "vulnerability_components": {
+        "S_DE": 0.8557692307692307,
+        "S_FCF": 0.9038461538461539,
+        "S_CR": 0.8598130841121495,
+        "S_ROIC": 0.7009345794392523,
+        "S_VAL": 0.16995073891625617,
+        "S_GR": 0.5047619047619047
+      },
+      "pagerank": 0.012264163134075542,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 3,
+      "out_degree": 0
+    },
+    {
+      "id": "META",
+      "name": "META",
+      "layer": "L2-infra",
+      "health": 80.79784402210684,
+      "components": {
+        "concentration": 0.84375,
+        "spof": 0.8987366727606805,
+        "redundancy": 0.6309297535714574,
+        "certainty": 0.8499999999999999
+      },
+      "ens": 6.4,
+      "flags": [],
+      "vulnerability": 0.3495774435173807,
+      "vulnerability_components": {
+        "S_DE": 0.38461538461538464,
+        "S_FCF": 0.32692307692307687,
+        "S_CR": 0.3738317757009346,
+        "S_ROIC": 0.20560747663551404,
+        "S_VAL": 0.29866584564860427,
+        "S_GR": 0.6761904761904762
+      },
+      "pagerank": 0.012052019075505519,
+      "betweenness": 0.0202526654478639,
+      "in_scc": true,
+      "is_articulation": true,
+      "in_degree": 7,
+      "out_degree": 15
+    },
+    {
+      "id": "anthropic",
+      "name": "Anthropic",
+      "layer": "private-lab",
+      "health": 85.0,
+      "components": {
+        "concentration": 0.8977777777777778,
+        "spof": 1.0,
+        "redundancy": 0.9719187714029215,
+        "certainty": 0.75
+      },
+      "ens": 9.782608695652174,
+      "flags": [],
+      "vulnerability": null,
+      "vulnerability_components": {},
+      "pagerank": 0.010904828511164805,
+      "betweenness": 0.011700613437869808,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 12,
+      "out_degree": 8
+    },
+    {
+      "id": "MRVL",
+      "name": "MRVL",
+      "layer": "L1-chips",
+      "health": 75.98274075812526,
+      "components": {
+        "concentration": 0.7222222222222222,
+        "spof": 1.0,
+        "redundancy": 0.4393096303250101,
+        "certainty": 0.8888888888888888
+      },
+      "ens": 3.6,
+      "flags": [],
+      "vulnerability": 0.47770967243090995,
+      "vulnerability_components": {
+        "S_DE": 0.3076923076923077,
+        "S_FCF": 0.45192307692307687,
+        "S_CR": 0.19626168224299068,
+        "S_ROIC": 0.36448598130841126,
+        "S_VAL": 0.8647646414887795,
+        "S_GR": 0.8095238095238095
+      },
+      "pagerank": 0.009744665746471337,
+      "betweenness": 0.00010376305353816595,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 4,
+      "out_degree": 2
+    },
+    {
+      "id": "AMAT",
+      "name": "AMAT",
+      "layer": "L1-chips",
+      "health": 70.5225179758435,
+      "components": {
+        "concentration": 0.6666666666666667,
+        "spof": 1.0,
+        "redundancy": 0.37840071903374006,
+        "certainty": 0.7374999999999999
+      },
+      "ens": 3.0000000000000004,
+      "flags": [],
+      "vulnerability": 0.36934976446638546,
+      "vulnerability_components": {
+        "S_DE": 0.3173076923076923,
+        "S_FCF": 0.4807692307692307,
+        "S_CR": 0.31775700934579443,
+        "S_ROIC": 0.17757009345794394,
+        "S_VAL": 0.7131841817186645,
+        "S_GR": 0.11428571428571428
+      },
+      "pagerank": 0.009023987987172383,
+      "betweenness": 0.008252599890530924,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 3,
+      "out_degree": 5
+    },
+    {
+      "id": "CRWV",
+      "name": "CRWV",
+      "layer": "L2-infra",
+      "health": 79.60638740221113,
+      "components": {
+        "concentration": 0.7755102040816326,
+        "spof": 1.0,
+        "redundancy": 0.5436432511904858,
+        "certainty": 0.85
+      },
+      "ens": 4.454545454545455,
+      "flags": [],
+      "vulnerability": 0.8921727688199651,
+      "vulnerability_components": {
+        "S_DE": 0.9951923076923077,
+        "S_FCF": 0.9519230769230769,
+        "S_CR": 1.0,
+        "S_ROIC": 0.897196261682243,
+        "S_VAL": 0.5238095238095238,
+        "S_GR": 0.9714285714285714
+      },
+      "pagerank": 0.008825920771372137,
+      "betweenness": 0.018769354215578477,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 5,
+      "out_degree": 6
+    },
+    {
+      "id": "AMD",
+      "name": "AMD",
+      "layer": "L1-chips",
+      "health": 83.37752696376525,
+      "components": {
+        "concentration": 0.84375,
+        "spof": 1.0,
+        "redundancy": 0.56760107855061,
+        "certainty": 0.9249999999999999
+      },
+      "ens": 6.4,
+      "flags": [],
+      "vulnerability": 0.4567852553773437,
+      "vulnerability_components": {
+        "S_DE": 0.15384615384615385,
+        "S_FCF": 0.3076923076923077,
+        "S_CR": 0.2710280373831776,
+        "S_ROIC": 0.5514018691588785,
+        "S_VAL": 0.8590175150519977,
+        "S_GR": 0.8285714285714286
+      },
+      "pagerank": 0.008784073965715438,
+      "betweenness": 0.009732927879874143,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 7,
+      "out_degree": 4
+    },
+    {
+      "id": "COHR",
+      "name": "COHR",
+      "layer": "L1-chips",
+      "health": 75.33274075812525,
+      "components": {
+        "concentration": 0.72,
+        "spof": 1.0,
+        "redundancy": 0.4393096303250101,
+        "certainty": 0.85
+      },
+      "ens": 3.5714285714285707,
+      "flags": [],
+      "vulnerability": 0.6033083368452367,
+      "vulnerability_components": {
+        "S_DE": 0.3269230769230769,
+        "S_FCF": 0.8076923076923077,
+        "S_CR": 0.23364485981308414,
+        "S_ROIC": 0.7476635514018692,
+        "S_VAL": 0.7635467980295567,
+        "S_GR": 0.4857142857142857
+      },
+      "pagerank": 0.008727231756292048,
+      "betweenness": 0.0,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 4,
+      "out_degree": 1
+    },
+    {
+      "id": "NEE",
+      "name": "NEE",
+      "layer": "L0-energy",
+      "health": 86.80611004259818,
+      "components": {
+        "concentration": 0.72,
+        "spof": 1.0,
+        "redundancy": 0.8982444017039272,
+        "certainty": 0.85
+      },
+      "ens": 3.5714285714285707,
+      "flags": [],
+      "vulnerability": 0.6528426237931153,
+      "vulnerability_components": {
+        "S_DE": 0.8653846153846154,
+        "S_FCF": 0.6538461538461539,
+        "S_CR": 0.9719626168224299,
+        "S_ROIC": 0.5981308411214954,
+        "S_VAL": 0.44733853311439514,
+        "S_GR": 0.3238095238095238
+      },
+      "pagerank": 0.008627480607781866,
+      "betweenness": 0.0008870564717641178,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 4,
+      "out_degree": 1
+    },
+    {
+      "id": "ORCL",
+      "name": "ORCL",
+      "layer": "L2-infra",
+      "health": 84.55895812500071,
+      "components": {
+        "concentration": 0.8571428571428572,
+        "spof": 1.0,
+        "redundancy": 0.6309297535714574,
+        "certainty": 0.8714285714285713
+      },
+      "ens": 7.000000000000001,
+      "flags": [],
+      "vulnerability": 0.6659776651804528,
+      "vulnerability_components": {
+        "S_DE": 0.9519230769230769,
+        "S_FCF": 0.8942307692307693,
+        "S_CR": 0.719626168224299,
+        "S_ROIC": 0.42056074766355145,
+        "S_VAL": 0.33497536945812806,
+        "S_GR": 0.45714285714285713
+      },
+      "pagerank": 0.00859489756837948,
+      "betweenness": 0.018140291753189257,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 7,
+      "out_degree": 6
+    },
+    {
+      "id": "VRT",
+      "name": "VRT",
+      "layer": "L0-energy",
+      "health": 73.52867981913646,
+      "components": {
+        "concentration": 0.5,
+        "spof": 1.0,
+        "redundancy": 0.6131471927654585,
+        "certainty": 0.8800000000000001
+      },
+      "ens": 2.0,
+      "flags": [],
+      "vulnerability": 0.4687193291320346,
+      "vulnerability_components": {
+        "S_DE": 0.5576923076923077,
+        "S_FCF": 0.375,
+        "S_CR": 0.5233644859813085,
+        "S_ROIC": 0.22429906542056077,
+        "S_VAL": 0.6320402298850575,
+        "S_GR": 0.7142857142857143
+      },
+      "pagerank": 0.008371482577357791,
+      "betweenness": 0.008519338815440765,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 2,
+      "out_degree": 3
+    },
+    {
+      "id": "spacex",
+      "name": "SpaceX",
+      "layer": "L2-infra",
+      "health": 75.20811267264939,
+      "components": {
+        "concentration": 0.75,
+        "spof": 1.0,
+        "redundancy": 0.4883245069059757,
+        "certainty": 0.7
+      },
+      "ens": 4.0,
+      "flags": [],
+      "vulnerability": null,
+      "vulnerability_components": {},
+      "pagerank": 0.008331097924058497,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": true,
+      "in_degree": 4,
+      "out_degree": 0
+    },
+    {
+      "id": "LNG",
+      "name": "LNG",
+      "layer": "L0-energy",
+      "health": 50.17132018086354,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.3868528072345416,
+        "certainty": 0.7
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.6756179828335807,
+      "vulnerability_components": {
+        "S_DE": 0.9951923076923077,
+        "S_FCF": 0.6057692307692308,
+        "S_CR": 0.9532710280373832,
+        "S_ROIC": 0.6355140186915889,
+        "S_VAL": 0.25296934865900383,
+        "S_GR": 0.6476190476190476
+      },
+      "pagerank": 0.007619355657909438,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 0
+    },
+    {
+      "id": "CDNS",
+      "name": "CDNS",
+      "layer": "L1-chips",
+      "health": 63.89688687393,
+      "components": {
+        "concentration": 0.5,
+        "spof": 1.0,
+        "redundancy": 0.2998754749572002,
+        "certainty": 0.76
+      },
+      "ens": 2.0,
+      "flags": [],
+      "vulnerability": 0.4112169704020333,
+      "vulnerability_components": {
+        "S_DE": 0.4326923076923077,
+        "S_FCF": 0.24038461538461542,
+        "S_CR": 0.5420560747663552,
+        "S_ROIC": 0.33644859813084116,
+        "S_VAL": 0.7062944718117131,
+        "S_GR": 0.37142857142857144
+      },
+      "pagerank": 0.007519747770656879,
+      "betweenness": 0.001639537374170058,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 2,
+      "out_degree": 3
+    },
+    {
+      "id": "OKLO",
+      "name": "OKLO",
+      "layer": "L0-energy",
+      "health": 87.25611004259818,
+      "components": {
+        "concentration": 0.72,
+        "spof": 1.0,
+        "redundancy": 0.8982444017039272,
+        "certainty": 0.8800000000000001
+      },
+      "ens": 3.5714285714285707,
+      "flags": [],
+      "vulnerability": 0.3797627606038821,
+      "vulnerability_components": {
+        "S_DE": 0.028846153846153848,
+        "S_FCF": null,
+        "S_CR": 0.009345794392523366,
+        "S_ROIC": 0.9158878504672897,
+        "S_VAL": null,
+        "S_GR": null
+      },
+      "pagerank": 0.007491112626829685,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 4,
+      "out_degree": 0
+    },
+    {
+      "id": "DELL",
+      "name": "DELL",
+      "layer": "L2-infra",
+      "health": 79.4577934593063,
+      "components": {
+        "concentration": 0.8333333333333334,
+        "spof": 0.9482476294320372,
+        "redundancy": 0.5904145830538073,
+        "certainty": 0.75
+      },
+      "ens": 6.000000000000001,
+      "flags": [],
+      "vulnerability": 0.4802544639537066,
+      "vulnerability_components": {
+        "S_DE": null,
+        "S_FCF": 0.6634615384615384,
+        "S_CR": 0.7663551401869159,
+        "S_ROIC": 0.09345794392523366,
+        "S_VAL": 0.24864532019704433,
+        "S_GR": 0.8571428571428571
+      },
+      "pagerank": 0.007489489580565074,
+      "betweenness": 0.010350474113592552,
+      "in_scc": true,
+      "is_articulation": true,
+      "in_degree": 6,
+      "out_degree": 5
+    },
+    {
+      "id": "DUK",
+      "name": "DUK",
+      "layer": "L0-energy",
+      "health": 84.62277670926485,
+      "components": {
+        "concentration": 0.7222222222222222,
+        "spof": 1.0,
+        "redundancy": 0.8982444017039272,
+        "certainty": 0.7
+      },
+      "ens": 3.6,
+      "flags": [],
+      "vulnerability": 0.6453524209703714,
+      "vulnerability_components": {
+        "S_DE": 0.8269230769230769,
+        "S_FCF": 0.8269230769230769,
+        "S_CR": 0.9345794392523364,
+        "S_ROIC": 0.719626168224299,
+        "S_VAL": 0.09934318555008209,
+        "S_GR": 0.20952380952380953
+      },
+      "pagerank": 0.007273305136783972,
+      "betweenness": 0.014510244877561218,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 4,
+      "out_degree": 1
+    },
+    {
+      "id": "NBIS",
+      "name": "NBIS",
+      "layer": "L2-infra",
+      "health": 73.71549589285762,
+      "components": {
+        "concentration": 0.6666666666666667,
+        "spof": 1.0,
+        "redundancy": 0.42061983571430495,
+        "certainty": 0.8800000000000001
+      },
+      "ens": 3.0000000000000004,
+      "flags": [],
+      "vulnerability": 0.6518414059890051,
+      "vulnerability_components": {
+        "S_DE": 0.7115384615384616,
+        "S_FCF": null,
+        "S_CR": 0.06542056074766356,
+        "S_ROIC": 0.5607476635514019,
+        "S_VAL": 0.8525451559934318,
+        "S_GR": 1.0
+      },
+      "pagerank": 0.006999981159467894,
+      "betweenness": 0.0,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 3,
+      "out_degree": 1
+    },
+    {
+      "id": "SNPS",
+      "name": "SNPS",
+      "layer": "L1-chips",
+      "health": 63.258791635834754,
+      "components": {
+        "concentration": 0.4444444444444444,
+        "spof": 1.0,
+        "redundancy": 0.2998754749572002,
+        "certainty": 0.8285714285714285
+      },
+      "ens": 1.8,
+      "flags": [],
+      "vulnerability": 0.5011594179802366,
+      "vulnerability_components": {
+        "S_DE": 0.375,
+        "S_FCF": 0.14423076923076927,
+        "S_CR": 0.5700934579439252,
+        "S_ROIC": 0.794392523364486,
+        "S_VAL": 0.583648056923919,
+        "S_GR": 0.8666666666666667
+      },
+      "pagerank": 0.006950398732997092,
+      "betweenness": 0.00775944008515223,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 2,
+      "out_degree": 4
+    },
+    {
+      "id": "IREN",
+      "name": "IREN",
+      "layer": "L2-infra",
+      "health": 66.83333333333334,
+      "components": {
+        "concentration": 0.5,
+        "spof": 1.0,
+        "redundancy": 0.33333333333333337,
+        "certainty": 0.9
+      },
+      "ens": 2.0,
+      "flags": [],
+      "vulnerability": 0.7920412834560434,
+      "vulnerability_components": {
+        "S_DE": 0.7596153846153846,
+        "S_FCF": 0.9615384615384616,
+        "S_CR": 0.15887850467289721,
+        "S_ROIC": 0.7663551401869159,
+        "S_VAL": 0.8958949096880131,
+        "S_GR": 0.9619047619047619
+      },
+      "pagerank": 0.006317051735015157,
+      "betweenness": 0.006859930424398191,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 2,
+      "out_degree": 3
+    },
+    {
+      "id": "TXN",
+      "name": "TXN",
+      "layer": "L1-chips",
+      "health": 62.99688687393,
+      "components": {
+        "concentration": 0.5,
+        "spof": 1.0,
+        "redundancy": 0.2998754749572002,
+        "certainty": 0.7
+      },
+      "ens": 2.0,
+      "flags": [],
+      "vulnerability": 0.42375302717209745,
+      "vulnerability_components": {
+        "S_DE": 0.5865384615384616,
+        "S_FCF": 0.40384615384615385,
+        "S_CR": 0.14953271028037385,
+        "S_ROIC": 0.2710280373831776,
+        "S_VAL": 0.6231185002736727,
+        "S_GR": 0.42857142857142855
+      },
+      "pagerank": 0.006162125258496347,
+      "betweenness": 0.0003292996358963375,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 2,
+      "out_degree": 2
+    },
+    {
+      "id": "KMI",
+      "name": "KMI",
+      "layer": "L0-energy",
+      "health": 51.62296935627583,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.9733883058470765,
+        "redundancy": 0.3868528072345416,
+        "certainty": 0.85
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.48218288988914193,
+      "vulnerability_components": {
+        "S_DE": 0.6442307692307693,
+        "S_FCF": 0.27884615384615385,
+        "S_CR": 0.9906542056074766,
+        "S_ROIC": 0.6074766355140186,
+        "S_VAL": 0.19820744389709907,
+        "S_GR": 0.3333333333333333
+      },
+      "pagerank": 0.0060027774073957915,
+      "betweenness": 0.005322338830584707,
+      "in_scc": false,
+      "is_articulation": true,
+      "in_degree": 1,
+      "out_degree": 1
+    },
+    {
+      "id": "CRDO",
+      "name": "CRDO",
+      "layer": "L1-chips",
+      "health": 73.3350179758435,
+      "components": {
+        "concentration": 0.6666666666666667,
+        "spof": 1.0,
+        "redundancy": 0.37840071903374006,
+        "certainty": 0.925
+      },
+      "ens": 3.0000000000000004,
+      "flags": [],
+      "vulnerability": 0.3100841661561127,
+      "vulnerability_components": {
+        "S_DE": 0.07692307692307693,
+        "S_FCF": 0.13461538461538458,
+        "S_CR": 0.05607476635514019,
+        "S_ROIC": 0.12149532710280375,
+        "S_VAL": 0.8806102900930487,
+        "S_GR": 0.9904761904761905
+      },
+      "pagerank": 0.005849421746416308,
+      "betweenness": 0.00011869065467266366,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 3,
+      "out_degree": 1
+    },
+    {
+      "id": "QCOM",
+      "name": "QCOM",
+      "layer": "L1-chips",
+      "health": 70.8975179758435,
+      "components": {
+        "concentration": 0.6666666666666667,
+        "spof": 1.0,
+        "redundancy": 0.37840071903374006,
+        "certainty": 0.7625
+      },
+      "ens": 3.0000000000000004,
+      "flags": [],
+      "vulnerability": 0.2573933384801899,
+      "vulnerability_components": {
+        "S_DE": 0.46153846153846156,
+        "S_FCF": 0.1826923076923077,
+        "S_CR": 0.36448598130841126,
+        "S_ROIC": 0.2149532710280374,
+        "S_VAL": 0.17125068418171865,
+        "S_GR": 0.14285714285714285
+      },
+      "pagerank": 0.0058279551087724,
+      "betweenness": 0.001066216578427578,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 3,
+      "out_degree": 4
+    },
+    {
+      "id": "DLR",
+      "name": "DLR",
+      "layer": "L2-infra",
+      "health": 80.42441461309548,
+      "components": {
+        "concentration": 0.7777777777777778,
+        "spof": 1.0,
+        "redundancy": 0.5436432511904858,
+        "certainty": 0.9
+      },
+      "ens": 4.5,
+      "flags": [],
+      "vulnerability": 0.6138704523803622,
+      "vulnerability_components": {
+        "S_DE": 0.5769230769230769,
+        "S_FCF": 0.8557692307692308,
+        "S_CR": 0.07476635514018692,
+        "S_ROIC": 0.7570093457943925,
+        "S_VAL": 0.5711001642036124,
+        "S_GR": 0.4
+      },
+      "pagerank": 0.005621615105127478,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 5,
+      "out_degree": 0
+    },
+    {
+      "id": "EMR",
+      "name": "EMR",
+      "layer": "L0-energy",
+      "health": 52.42132018086354,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.3868528072345416,
+        "certainty": 0.85
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.4708069188036156,
+      "vulnerability_components": {
+        "S_DE": 0.5192307692307693,
+        "S_FCF": 0.5096153846153846,
+        "S_CR": 0.8130841121495327,
+        "S_ROIC": 0.4953271028037384,
+        "S_VAL": 0.31201423097974823,
+        "S_GR": 0.12380952380952381
+      },
+      "pagerank": 0.005416332378693928,
+      "betweenness": 0.002881962698304527,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 1
+    },
+    {
+      "id": "NVT",
+      "name": "NVT",
+      "layer": "L0-energy",
+      "health": 50.17132018086354,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.3868528072345416,
+        "certainty": 0.6999999999999998
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.554471172291024,
+      "vulnerability_components": {
+        "S_DE": 0.41346153846153844,
+        "S_FCF": 0.6442307692307692,
+        "S_CR": 0.4953271028037384,
+        "S_ROIC": 0.485981308411215,
+        "S_VAL": 0.5472495894909688,
+        "S_GR": 0.819047619047619
+      },
+      "pagerank": 0.005416332378693928,
+      "betweenness": 0.0025579147655609424,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 2
+    },
+    {
+      "id": "MPWR",
+      "name": "MPWR",
+      "layer": "L1-chips",
+      "health": 45.23000898792175,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.18920035951687003,
+        "certainty": 0.7
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.3560903220208731,
+      "vulnerability_components": {
+        "S_DE": 0.0673076923076923,
+        "S_FCF": 0.3653846153846154,
+        "S_CR": 0.13084112149532712,
+        "S_ROIC": 0.26168224299065423,
+        "S_VAL": 0.8136836343732895,
+        "S_GR": 0.638095238095238
+      },
+      "pagerank": 0.005416332378693928,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 0
+    },
+    {
+      "id": "TER",
+      "name": "TER",
+      "layer": "L1-chips",
+      "health": 40.0,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.18920035951687003,
+        "certainty": 0.3
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.4353346356887285,
+      "vulnerability_components": {
+        "S_DE": 0.10576923076923077,
+        "S_FCF": 0.5673076923076923,
+        "S_CR": 0.42056074766355145,
+        "S_ROIC": 0.1869158878504673,
+        "S_VAL": 0.7845101258894362,
+        "S_GR": 0.7523809523809524
+      },
+      "pagerank": 0.005416332378693928,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 0
+    },
+    {
+      "id": "DDOG",
+      "name": "DDOG",
+      "layer": "L4-application",
+      "health": 73.64536459234778,
+      "components": {
+        "concentration": 0.4444444444444444,
+        "spof": 1.0,
+        "redundancy": 0.7924812503605781,
+        "certainty": 0.6999999999999998
+      },
+      "ens": 1.8,
+      "flags": [],
+      "vulnerability": 0.4874385719420766,
+      "vulnerability_components": {
+        "S_DE": 0.33653846153846156,
+        "S_FCF": 0.17307692307692313,
+        "S_CR": 0.1869158878504673,
+        "S_ROIC": 0.7850467289719626,
+        "S_VAL": 0.858531746031746,
+        "S_GR": 0.7238095238095238
+      },
+      "pagerank": 0.0052681427110288555,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 2,
+      "out_degree": 0
+    },
+    {
+      "id": "XEL",
+      "name": "XEL",
+      "layer": "L0-energy",
+      "health": 51.971320180863536,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.3868528072345416,
+        "certainty": 0.82
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.6786833446658616,
+      "vulnerability_components": {
+        "S_DE": 0.8173076923076923,
+        "S_FCF": 0.9134615384615384,
+        "S_CR": 0.8691588785046729,
+        "S_ROIC": 0.7289719626168225,
+        "S_VAL": 0.2149425287356322,
+        "S_GR": 0.21904761904761905
+      },
+      "pagerank": 0.004844606028100771,
+      "betweenness": 0.0016134789747983152,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 3
+    },
+    {
+      "id": "BWXT",
+      "name": "BWXT",
+      "layer": "L0-energy",
+      "health": 50.17132018086354,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.3868528072345416,
+        "certainty": 0.7
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.5512591611981316,
+      "vulnerability_components": {
+        "S_DE": 0.7884615384615384,
+        "S_FCF": 0.625,
+        "S_CR": 0.3457943925233645,
+        "S_ROIC": 0.3738317757009346,
+        "S_VAL": 0.472188013136289,
+        "S_GR": 0.5714285714285714
+      },
+      "pagerank": 0.004844606028100771,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 0
+    },
+    {
+      "id": "EXC",
+      "name": "EXC",
+      "layer": "L0-energy",
+      "health": 75.32867981913645,
+      "components": {
+        "concentration": 0.5,
+        "spof": 1.0,
+        "redundancy": 0.6131471927654585,
+        "certainty": 1.0
+      },
+      "ens": 2.0,
+      "flags": [],
+      "vulnerability": 0.6208685128653707,
+      "vulnerability_components": {
+        "S_DE": 0.8461538461538461,
+        "S_FCF": 0.8173076923076923,
+        "S_CR": 0.7757009345794392,
+        "S_ROIC": 0.7383177570093458,
+        "S_VAL": 0.05829228243021346,
+        "S_GR": 0.13333333333333333
+      },
+      "pagerank": 0.00461224906622221,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 2,
+      "out_degree": 0
+    },
+    {
+      "id": "SMCI",
+      "name": "SMCI",
+      "layer": "L2-infra",
+      "health": 65.76190476190476,
+      "components": {
+        "concentration": 0.5,
+        "spof": 1.0,
+        "redundancy": 0.33333333333333337,
+        "certainty": 0.8285714285714285
+      },
+      "ens": 2.0,
+      "flags": [],
+      "vulnerability": 0.5696630343552677,
+      "vulnerability_components": {
+        "S_DE": 0.6923076923076923,
+        "S_FCF": 0.8846153846153846,
+        "S_CR": 0.28037383177570097,
+        "S_ROIC": 0.44859813084112155,
+        "S_VAL": 0.005747126436781609,
+        "S_GR": 0.9142857142857143
+      },
+      "pagerank": 0.004318129070043763,
+      "betweenness": 0.005014684216333391,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 2,
+      "out_degree": 4
+    },
+    {
+      "id": "xai",
+      "name": "xAI",
+      "layer": "private-lab",
+      "health": 46.06623837592984,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.26264953503719357,
+        "certainty": 0.6333333333333333
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": null,
+      "vulnerability_components": {},
+      "pagerank": 0.004301587360643601,
+      "betweenness": 0.007019239298099868,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 5
+    },
+    {
+      "id": "TLN",
+      "name": "TLN",
+      "layer": "L0-energy",
+      "health": 51.67132018086354,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.3868528072345416,
+        "certainty": 0.7999999999999999
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.6811239772688371,
+      "vulnerability_components": {
+        "S_DE": 0.9807692307692307,
+        "S_FCF": 0.5192307692307692,
+        "S_CR": 0.6448598130841121,
+        "S_ROIC": 0.822429906542056,
+        "S_VAL": 0.2380952380952381,
+        "S_GR": 0.9047619047619048
+      },
+      "pagerank": 0.0042174191458063046,
+      "betweenness": 0.0,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 1
+    },
+    {
+      "id": "CEG",
+      "name": "CEG",
+      "layer": "L0-energy",
+      "health": 75.32867981913645,
+      "components": {
+        "concentration": 0.5,
+        "spof": 1.0,
+        "redundancy": 0.6131471927654585,
+        "certainty": 1.0
+      },
+      "ens": 2.0,
+      "flags": [],
+      "vulnerability": 0.5160903928491747,
+      "vulnerability_components": {
+        "S_DE": 0.5,
+        "S_FCF": 0.7211538461538461,
+        "S_CR": 0.5887850467289719,
+        "S_ROIC": 0.4299065420560748,
+        "S_VAL": 0.32691570881226056,
+        "S_GR": 0.41904761904761906
+      },
+      "pagerank": 0.004100704511948246,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 2,
+      "out_degree": 0
+    },
+    {
+      "id": "SO",
+      "name": "SO",
+      "layer": "L0-energy",
+      "health": 70.75446692558323,
+      "components": {
+        "concentration": 0.5,
+        "spof": 0.9475262368815592,
+        "redundancy": 0.6131471927654585,
+        "certainty": 0.7999999999999999
+      },
+      "ens": 2.0,
+      "flags": [],
+      "vulnerability": 0.6869082870883548,
+      "vulnerability_components": {
+        "S_DE": 0.8846153846153846,
+        "S_FCF": 0.875,
+        "S_CR": 0.9439252336448598,
+        "S_ROIC": 0.6822429906542056,
+        "S_VAL": 0.25024630541871923,
+        "S_GR": 0.22857142857142856
+      },
+      "pagerank": 0.004100704511948246,
+      "betweenness": 0.010494752623688154,
+      "in_scc": false,
+      "is_articulation": true,
+      "in_degree": 2,
+      "out_degree": 1
+    },
+    {
+      "id": "ANET",
+      "name": "ANET",
+      "layer": "L2-infra",
+      "health": 65.76666666666667,
+      "components": {
+        "concentration": 0.4444444444444444,
+        "spof": 1.0,
+        "redundancy": 0.33333333333333337,
+        "certainty": 0.9400000000000001
+      },
+      "ens": 1.8,
+      "flags": [],
+      "vulnerability": 0.23125243103389254,
+      "vulnerability_components": {
+        "S_DE": 0.009615384615384616,
+        "S_FCF": 0.009615384615384581,
+        "S_CR": 0.25233644859813087,
+        "S_ROIC": 0.16822429906542058,
+        "S_VAL": 0.6123768472906405,
+        "S_GR": 0.7619047619047619
+      },
+      "pagerank": 0.004100704511948246,
+      "betweenness": 0.00012966730920254156,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 2,
+      "out_degree": 1
+    },
+    {
+      "id": "PLTR",
+      "name": "PLTR",
+      "layer": "L4-application",
+      "health": 53.64285714285714,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.5,
+        "certainty": 0.7428571428571428
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.29130357939675533,
+      "vulnerability_components": {
+        "S_DE": 0.09615384615384616,
+        "S_FCF": 0.019230769230769273,
+        "S_CR": 0.08411214953271029,
+        "S_ROIC": 0.15887850467289721,
+        "S_VAL": 0.8916324575807334,
+        "S_GR": 0.9333333333333333
+      },
+      "pagerank": 0.004041482301717364,
+      "betweenness": 0.005657885343042764,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 6
+    },
+    {
+      "id": "CSCO",
+      "name": "CSCO",
+      "layer": "L2-infra",
+      "health": 63.833333333333336,
+      "components": {
+        "concentration": 0.5,
+        "spof": 1.0,
+        "redundancy": 0.33333333333333337,
+        "certainty": 0.6999999999999998
+      },
+      "ens": 2.0,
+      "flags": [],
+      "vulnerability": 0.4344108147733671,
+      "vulnerability_components": {
+        "S_DE": 0.5096153846153846,
+        "S_FCF": 0.4326923076923077,
+        "S_CR": 0.7850467289719626,
+        "S_ROIC": 0.28037383177570097,
+        "S_VAL": 0.4395046524356869,
+        "S_GR": 0.23809523809523808
+      },
+      "pagerank": 0.0038456911253277933,
+      "betweenness": 0.0,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 2,
+      "out_degree": 1
+    },
+    {
+      "id": "STX",
+      "name": "STX",
+      "layer": "L1-chips",
+      "health": 45.23000898792175,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.18920035951687003,
+        "certainty": 0.7
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.5342087718785673,
+      "vulnerability_components": {
+        "S_DE": 0.9423076923076923,
+        "S_FCF": 0.3557692307692307,
+        "S_CR": 0.6168224299065421,
+        "S_ROIC": 0.04672897196261683,
+        "S_VAL": 0.7686713191023536,
+        "S_GR": 0.7047619047619048
+      },
+      "pagerank": 0.0037902542782526673,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 0
+    },
+    {
+      "id": "mistral",
+      "name": "Mistral",
+      "layer": "private-lab",
+      "health": 73.63247675185967,
+      "components": {
+        "concentration": 0.6666666666666667,
+        "spof": 1.0,
+        "redundancy": 0.5252990700743871,
+        "certainty": 0.6999999999999998
+      },
+      "ens": 3.0000000000000004,
+      "flags": [],
+      "vulnerability": null,
+      "vulnerability_components": {},
+      "pagerank": 0.0036572023677836508,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 3,
+      "out_degree": 0
+    },
+    {
+      "id": "SNOW",
+      "name": "SNOW",
+      "layer": "L4-application",
+      "health": 85.9090909090909,
+      "components": {
+        "concentration": 0.6666666666666667,
+        "spof": 1.0,
+        "redundancy": 1.0,
+        "certainty": 0.7272727272727273
+      },
+      "ens": 3.0000000000000004,
+      "flags": [],
+      "vulnerability": 0.6629520985245284,
+      "vulnerability_components": {
+        "S_DE": 0.7403846153846154,
+        "S_FCF": 0.28846153846153844,
+        "S_CR": 0.7383177570093458,
+        "S_ROIC": 0.9532710280373832,
+        "S_VAL": 0.6678571428571429,
+        "S_GR": 0.780952380952381
+      },
+      "pagerank": 0.0036427758507537604,
+      "betweenness": 0.0004616144308797982,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 3,
+      "out_degree": 7
+    },
+    {
+      "id": "LEU",
+      "name": "LEU",
+      "layer": "L0-energy",
+      "health": 51.67132018086354,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.3868528072345416,
+        "certainty": 0.7999999999999999
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.6052469930434803,
+      "vulnerability_components": {
+        "S_DE": 0.7788461538461539,
+        "S_FCF": 0.8653846153846154,
+        "S_CR": 0.11214953271028039,
+        "S_ROIC": 0.6542056074766356,
+        "S_VAL": 0.5627257799671592,
+        "S_GR": 0.06666666666666667
+      },
+      "pagerank": 0.0035868458257549904,
+      "betweenness": 0.0016848718497893909,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 2
+    },
+    {
+      "id": "CRM",
+      "name": "CRM",
+      "layer": "L4-application",
+      "health": 85.5,
+      "components": {
+        "concentration": 0.6666666666666667,
+        "spof": 1.0,
+        "redundancy": 1.0,
+        "certainty": 0.7
+      },
+      "ens": 3.0000000000000004,
+      "flags": [],
+      "vulnerability": 0.3799813979795047,
+      "vulnerability_components": {
+        "S_DE": 0.7019230769230769,
+        "S_FCF": 0.09615384615384615,
+        "S_CR": 0.9065420560747663,
+        "S_ROIC": 0.4112149532710281,
+        "S_VAL": 0.08758210180623975,
+        "S_GR": 0.29523809523809524
+      },
+      "pagerank": 0.003492609462290193,
+      "betweenness": 0.0025137133814045354,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 3,
+      "out_degree": 11
+    },
+    {
+      "id": "lambda",
+      "name": "Lambda",
+      "layer": "L2-infra",
+      "health": 45.757747946428815,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.21030991785715247,
+        "certainty": 0.7
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": null,
+      "vulnerability_components": {},
+      "pagerank": 0.0034177750874955087,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 0
+    },
+    {
+      "id": "IBM",
+      "name": "IBM",
+      "layer": "L4-application",
+      "health": 84.59615384615384,
+      "components": {
+        "concentration": 0.625,
+        "spof": 1.0,
+        "redundancy": 1.0,
+        "certainty": 0.723076923076923
+      },
+      "ens": 2.6666666666666665,
+      "flags": [],
+      "vulnerability": 0.524097656291501,
+      "vulnerability_components": {
+        "S_DE": 0.9038461538461539,
+        "S_FCF": 0.46153846153846156,
+        "S_CR": 0.8785046728971962,
+        "S_ROIC": 0.39252336448598135,
+        "S_VAL": 0.23916256157635465,
+        "S_GR": 0.2571428571428571
+      },
+      "pagerank": 0.0033260978498409017,
+      "betweenness": 0.0010458163775255228,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 3,
+      "out_degree": 9
+    },
+    {
+      "id": "CRWD",
+      "name": "CRWD",
+      "layer": "L4-application",
+      "health": 53.34615384615385,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.5,
+        "certainty": 0.723076923076923
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.5134612710109205,
+      "vulnerability_components": {
+        "S_DE": 0.23076923076923078,
+        "S_FCF": 0.1923076923076923,
+        "S_CR": 0.5607476635514019,
+        "S_ROIC": 0.8317757009345794,
+        "S_VAL": 0.9056547619047619,
+        "S_GR": 0.6095238095238096
+      },
+      "pagerank": 0.003296405656544571,
+      "betweenness": 0.0016106232597986718,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 12
+    },
+    {
+      "id": "cohere",
+      "name": "Cohere",
+      "layer": "private-lab",
+      "health": 68.15724159664498,
+      "components": {
+        "concentration": 0.5,
+        "spof": 1.0,
+        "redundancy": 0.4162896638657993,
+        "certainty": 0.85
+      },
+      "ens": 2.0,
+      "flags": [],
+      "vulnerability": null,
+      "vulnerability_components": {},
+      "pagerank": 0.0032148598129214754,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 2,
+      "out_degree": 0
+    },
+    {
+      "id": "NOW",
+      "name": "NOW",
+      "layer": "L4-application",
+      "health": 74.45488840187159,
+      "components": {
+        "concentration": 0.5,
+        "spof": 1.0,
+        "redundancy": 0.7924812503605781,
+        "certainty": 0.6428571428571429
+      },
+      "ens": 2.0,
+      "flags": [],
+      "vulnerability": 0.3651561727159939,
+      "vulnerability_components": {
+        "S_DE": 0.27884615384615385,
+        "S_FCF": 0.11538461538461542,
+        "S_CR": 0.8504672897196262,
+        "S_ROIC": 0.3457943925233645,
+        "S_VAL": 0.4549329501915709,
+        "S_GR": 0.580952380952381
+      },
+      "pagerank": 0.0031368479751808895,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 2,
+      "out_degree": 4
+    },
+    {
+      "id": "HPE",
+      "name": "HPE",
+      "layer": "L2-infra",
+      "health": 47.68631937500024,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.21030991785715247,
+        "certainty": 0.8285714285714285
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.5821270742363234,
+      "vulnerability_components": {
+        "S_DE": 0.5961538461538461,
+        "S_FCF": 0.6153846153846154,
+        "S_CR": 0.7289719626168225,
+        "S_ROIC": 0.7102803738317758,
+        "S_VAL": 0.21461412151067324,
+        "S_GR": 0.6190476190476191
+      },
+      "pagerank": 0.002911885651590183,
+      "betweenness": 0.0004666416791604198,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 5
+    },
+    {
+      "id": "EQIX",
+      "name": "EQIX",
+      "layer": "L2-infra",
+      "health": 47.445247946428815,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.21030991785715247,
+        "certainty": 0.8125
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.6985284062805817,
+      "vulnerability_components": {
+        "S_DE": 0.8076923076923077,
+        "S_FCF": 0.8461538461538461,
+        "S_CR": 0.6728971962616823,
+        "S_ROIC": 0.691588785046729,
+        "S_VAL": 0.6783251231527094,
+        "S_GR": 0.18095238095238095
+      },
+      "pagerank": 0.002786943775089191,
+      "betweenness": 0.0011350574712643677,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 6
+    },
+    {
+      "id": "ZS",
+      "name": "ZS",
+      "layer": "L4-application",
+      "health": 53.0,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.5,
+        "certainty": 0.7
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.5004434759166068,
+      "vulnerability_components": {
+        "S_DE": 0.5673076923076923,
+        "S_FCF": 0.20192307692307687,
+        "S_CR": 0.47663551401869164,
+        "S_ROIC": 0.8598130841121495,
+        "S_VAL": 0.3410714285714286,
+        "S_GR": 0.6571428571428571
+      },
+      "pagerank": 0.002750555493188643,
+      "betweenness": 0.0,
+      "in_scc": true,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 3
+    },
+    {
+      "id": "NET",
+      "name": "NET",
+      "layer": "L4-application",
+      "health": 53.0,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.5,
+        "certainty": 0.7
+      },
+      "ens": 1.0,
+      "flags": [
+        "topology-estimate"
+      ],
+      "vulnerability": 0.7696971389202698,
+      "vulnerability_components": {
+        "S_DE": 0.9134615384615384,
+        "S_FCF": 0.5865384615384616,
+        "S_CR": 0.4579439252336449,
+        "S_ROIC": 0.8691588785046729,
+        "S_VAL": 0.9446428571428571,
+        "S_GR": 0.7904761904761904
+      },
+      "pagerank": 0.002750555493188643,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 1,
+      "out_degree": 1
+    },
+    {
+      "id": "VST",
+      "name": "VST",
+      "layer": "L0-energy",
+      "health": 45.0,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 1.0
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.5461031131694603,
+      "vulnerability_components": {
+        "S_DE": 0.9326923076923077,
+        "S_FCF": 0.5961538461538461,
+        "S_CR": 0.794392523364486,
+        "S_ROIC": 0.4579439252336449,
+        "S_VAL": 0.24427339901477832,
+        "S_GR": 0.02857142857142857
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 3
+    },
+    {
+      "id": "NRG",
+      "name": "NRG",
+      "layer": "L0-energy",
+      "health": 42.75,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.85
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.7341104762140856,
+      "vulnerability_components": {
+        "S_DE": 0.9615384615384616,
+        "S_FCF": 0.7884615384615384,
+        "S_CR": 0.822429906542056,
+        "S_ROIC": 0.8130841121495327,
+        "S_VAL": 0.4750410509031199,
+        "S_GR": 0.2857142857142857
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 2
+    },
+    {
+      "id": "PEG",
+      "name": "PEG",
+      "layer": "L0-energy",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.6377047779001533,
+      "vulnerability_components": {
+        "S_DE": 0.7211538461538461,
+        "S_FCF": 0.7596153846153846,
+        "S_CR": 0.7476635514018692,
+        "S_ROIC": 0.5887850467289719,
+        "S_VAL": 0.37840722495894913,
+        "S_GR": 0.5428571428571428
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "AEP",
+      "name": "AEP",
+      "layer": "L0-energy",
+      "health": 42.0,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.7999999999999999
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.6400783611865629,
+      "vulnerability_components": {
+        "S_DE": 0.7980769230769231,
+        "S_FCF": 0.8365384615384616,
+        "S_CR": 0.9813084112149533,
+        "S_ROIC": 0.6261682242990654,
+        "S_VAL": 0.15467980295566502,
+        "S_GR": 0.24761904761904763
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 3
+    },
+    {
+      "id": "ETN",
+      "name": "ETN",
+      "layer": "L0-energy",
+      "health": 40.5,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.7
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.5221857407282803,
+      "vulnerability_components": {
+        "S_DE": 0.6730769230769231,
+        "S_FCF": 0.5769230769230769,
+        "S_CR": 0.6635514018691588,
+        "S_ROIC": 0.383177570093458,
+        "S_VAL": 0.4340722495894909,
+        "S_GR": 0.3523809523809524
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 2
+    },
+    {
+      "id": "PWR",
+      "name": "PWR",
+      "layer": "L0-energy",
+      "health": 40.5,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.7
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.588340230239199,
+      "vulnerability_components": {
+        "S_DE": 0.5288461538461539,
+        "S_FCF": 0.6923076923076923,
+        "S_CR": 0.7009345794392523,
+        "S_ROIC": 0.514018691588785,
+        "S_VAL": 0.542391899288451,
+        "S_GR": 0.5523809523809524
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 2
+    },
+    {
+      "id": "PH",
+      "name": "PH",
+      "layer": "L0-energy",
+      "health": 40.5,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.7
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.43433155569052284,
+      "vulnerability_components": {
+        "S_DE": 0.49038461538461536,
+        "S_FCF": 0.5,
+        "S_CR": 0.7102803738317758,
+        "S_ROIC": 0.3271028037383178,
+        "S_VAL": 0.39077038861521624,
+        "S_GR": 0.1619047619047619
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 2
+    },
+    {
+      "id": "HUBB",
+      "name": "HUBB",
+      "layer": "L0-energy",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.4242598250658999,
+      "vulnerability_components": {
+        "S_DE": 0.5384615384615384,
+        "S_FCF": 0.5480769230769231,
+        "S_CR": 0.514018691588785,
+        "S_ROIC": 0.2990654205607477,
+        "S_VAL": 0.3222222222222222,
+        "S_GR": 0.2
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "SMR",
+      "name": "SMR",
+      "layer": "L0-energy",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.6089728184587998,
+      "vulnerability_components": {
+        "S_DE": 0.057692307692307696,
+        "S_FCF": 1.0,
+        "S_CR": 0.028037383177570097,
+        "S_ROIC": 0.9719626168224299,
+        "S_VAL": 0.9952380952380953,
+        "S_GR": 0.009523809523809525
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "NNE",
+      "name": "NNE",
+      "layer": "L0-energy",
+      "health": 42.75,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.85
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.3818475916606758,
+      "vulnerability_components": {
+        "S_DE": 0.04807692307692308,
+        "S_FCF": null,
+        "S_CR": 0.0,
+        "S_ROIC": 0.9065420560747663,
+        "S_VAL": null,
+        "S_GR": null
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 2
+    },
+    {
+      "id": "CCJ",
+      "name": "CCJ",
+      "layer": "L0-energy",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.3707968309352051,
+      "vulnerability_components": {
+        "S_DE": 0.22115384615384615,
+        "S_FCF": 0.2692307692307693,
+        "S_CR": 0.22429906542056077,
+        "S_ROIC": 0.5046728971962617,
+        "S_VAL": 0.7027846195949644,
+        "S_GR": 0.3047619047619048
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "WMB",
+      "name": "WMB",
+      "layer": "L0-energy",
+      "health": 40.5,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.7
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.6649508562256307,
+      "vulnerability_components": {
+        "S_DE": 0.9230769230769231,
+        "S_FCF": 0.6826923076923077,
+        "S_CR": 0.8317757009345794,
+        "S_ROIC": 0.5700934579439252,
+        "S_VAL": 0.571996442255063,
+        "S_GR": 0.26666666666666666
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 1
+    },
+    {
+      "id": "ET",
+      "name": "ET",
+      "layer": "L0-energy",
+      "health": 42.75,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.85
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.6044048423243961,
+      "vulnerability_components": {
+        "S_DE": 0.8942307692307693,
+        "S_FCF": 0.7115384615384616,
+        "S_CR": 0.691588785046729,
+        "S_ROIC": 0.6728971962616823,
+        "S_VAL": 0.0643336070060208,
+        "S_GR": 0.34285714285714286
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 2
+    },
+    {
+      "id": "OKE",
+      "name": "OKE",
+      "layer": "L0-energy",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.6319411580604378,
+      "vulnerability_components": {
+        "S_DE": 0.7692307692307693,
+        "S_FCF": 0.6730769230769231,
+        "S_CR": 0.9158878504672897,
+        "S_ROIC": 0.5794392523364487,
+        "S_VAL": 0.09185139573070607,
+        "S_GR": 0.8857142857142857
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "TRGP",
+      "name": "TRGP",
+      "layer": "L0-energy",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.6392136295195835,
+      "vulnerability_components": {
+        "S_DE": 0.9711538461538461,
+        "S_FCF": 0.75,
+        "S_CR": 0.897196261682243,
+        "S_ROIC": 0.4392523364485982,
+        "S_VAL": 0.4819581280788177,
+        "S_GR": 0.0761904761904762
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "UEC",
+      "name": "UEC",
+      "layer": "L0-energy",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.5857208329054123,
+      "vulnerability_components": {
+        "S_DE": 0.009615384615384616,
+        "S_FCF": 0.9903846153846154,
+        "S_CR": 0.01869158878504673,
+        "S_ROIC": 0.9252336448598131,
+        "S_VAL": 0.9952380952380953,
+        "S_GR": 0.0
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "UUUU",
+      "name": "UUUU",
+      "layer": "L0-energy",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.7404521841087262,
+      "vulnerability_components": {
+        "S_DE": 0.6346153846153846,
+        "S_FCF": 0.9326923076923077,
+        "S_CR": 0.03738317757009346,
+        "S_ROIC": 0.8878504672897196,
+        "S_VAL": 0.9333333333333333,
+        "S_GR": 0.5904761904761905
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "MCHP",
+      "name": "MCHP",
+      "layer": "L1-chips",
+      "health": 40.5,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.7
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.5678980373477635,
+      "vulnerability_components": {
+        "S_DE": 0.6153846153846154,
+        "S_FCF": 0.47115384615384615,
+        "S_CR": 0.4299065420560748,
+        "S_ROIC": 0.8037383177570093,
+        "S_VAL": 0.6949781061850028,
+        "S_GR": 0.19047619047619047
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 2
+    },
+    {
+      "id": "ADI",
+      "name": "ADI",
+      "layer": "L1-chips",
+      "health": 42.0,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.7999999999999999
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.3908211575056161,
+      "vulnerability_components": {
+        "S_DE": 0.28846153846153844,
+        "S_FCF": 0.07692307692307687,
+        "S_CR": 0.485981308411215,
+        "S_ROIC": 0.5233644859813085,
+        "S_VAL": 0.5819581280788177,
+        "S_GR": 0.7333333333333333
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 2
+    },
+    {
+      "id": "ON",
+      "name": "ON",
+      "layer": "L1-chips",
+      "health": 40.5,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.7
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.39902394985238204,
+      "vulnerability_components": {
+        "S_DE": 0.40384615384615385,
+        "S_FCF": 0.42307692307692313,
+        "S_CR": 0.12149532710280375,
+        "S_ROIC": 0.6168224299065421,
+        "S_VAL": 0.47504789272030656,
+        "S_GR": 0.05714285714285714
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 2
+    },
+    {
+      "id": "NXPI",
+      "name": "NXPI",
+      "layer": "L1-chips",
+      "health": 43.5,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.9
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.3851792465108208,
+      "vulnerability_components": {
+        "S_DE": 0.6634615384615384,
+        "S_FCF": 0.34615384615384615,
+        "S_CR": 0.39252336448598135,
+        "S_ROIC": 0.3551401869158879,
+        "S_VAL": 0.30127941981390255,
+        "S_GR": 0.10476190476190476
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 2
+    },
+    {
+      "id": "KLAC",
+      "name": "KLAC",
+      "layer": "L1-chips",
+      "health": 42.75,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.85
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.35593289726709,
+      "vulnerability_components": {
+        "S_DE": 0.6538461538461539,
+        "S_FCF": 0.125,
+        "S_CR": 0.2429906542056075,
+        "S_ROIC": 0.07476635514018692,
+        "S_VAL": 0.7771072796934866,
+        "S_GR": 0.38095238095238093
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 1
+    },
+    {
+      "id": "WDC",
+      "name": "WDC",
+      "layer": "L1-chips",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.26820574352599813,
+      "vulnerability_components": {
+        "S_DE": 0.2403846153846154,
+        "S_FCF": 0.2596153846153846,
+        "S_CR": 0.5327102803738317,
+        "S_ROIC": 0.028037383177570097,
+        "S_VAL": 0.6169129720853859,
+        "S_GR": 0.0380952380952381
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "ALAB",
+      "name": "ALAB",
+      "layer": "L1-chips",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.34242593204142513,
+      "vulnerability_components": {
+        "S_DE": 0.11538461538461539,
+        "S_FCF": 0.10576923076923073,
+        "S_CR": 0.04672897196261683,
+        "S_ROIC": 0.2429906542056075,
+        "S_VAL": 0.9626505199781062,
+        "S_GR": 0.9523809523809523
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "AMKR",
+      "name": "AMKR",
+      "layer": "L1-chips",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.5128307954667526,
+      "vulnerability_components": {
+        "S_DE": 0.3557692307692308,
+        "S_FCF": 0.7403846153846154,
+        "S_CR": 0.4392523364485982,
+        "S_ROIC": 0.5327102803738317,
+        "S_VAL": 0.4661535303776683,
+        "S_GR": 0.3619047619047619
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "FN",
+      "name": "FN",
+      "layer": "L1-chips",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.4450864754538618,
+      "vulnerability_components": {
+        "S_DE": 0.038461538461538464,
+        "S_FCF": 0.7692307692307692,
+        "S_CR": 0.2990654205607477,
+        "S_ROIC": 0.25233644859813087,
+        "S_VAL": 0.6028461959496442,
+        "S_GR": 0.7428571428571429
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "NTAP",
+      "name": "NTAP",
+      "layer": "L2-infra",
+      "health": 41.4,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.76
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.36914262267166714,
+      "vulnerability_components": {
+        "S_DE": 0.875,
+        "S_FCF": 0.23076923076923073,
+        "S_CR": 0.5794392523364487,
+        "S_ROIC": 0.14018691588785048,
+        "S_VAL": 0.23487274220032842,
+        "S_GR": 0.1523809523809524
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 5
+    },
+    {
+      "id": "CIEN",
+      "name": "CIEN",
+      "layer": "L2-infra",
+      "health": 40.5,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.7
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.5383593531428288,
+      "vulnerability_components": {
+        "S_DE": 0.4519230769230769,
+        "S_FCF": 0.5576923076923077,
+        "S_CR": 0.26168224299065423,
+        "S_ROIC": 0.4672897196261683,
+        "S_VAL": 0.7452175697865352,
+        "S_GR": 0.7714285714285715
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 1
+    },
+    {
+      "id": "AKAM",
+      "name": "AKAM",
+      "layer": "L2-infra",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.4969555125962232,
+      "vulnerability_components": {
+        "S_DE": 0.6826923076923077,
+        "S_FCF": 0.4903846153846154,
+        "S_CR": 0.44859813084112155,
+        "S_ROIC": 0.6448598130841121,
+        "S_VAL": 0.31230842911877393,
+        "S_GR": 0.17142857142857143
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "APLD",
+      "name": "APLD",
+      "layer": "L2-infra",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.8465492023552771,
+      "vulnerability_components": {
+        "S_DE": 0.8365384615384616,
+        "S_FCF": 0.9711538461538461,
+        "S_CR": 0.3551401869158879,
+        "S_ROIC": 0.8785046728971962,
+        "S_VAL": 0.8857142857142857,
+        "S_GR": 0.9238095238095239
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "CORZ",
+      "name": "CORZ",
+      "layer": "L2-infra",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.8184141890041422,
+      "vulnerability_components": {
+        "S_DE": null,
+        "S_FCF": 0.9423076923076923,
+        "S_CR": 0.9626168224299065,
+        "S_ROIC": 0.9906542056074766,
+        "S_VAL": 0.8,
+        "S_GR": 0.047619047619047616
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "WULF",
+      "name": "WULF",
+      "layer": "L2-infra",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.8943964816336311,
+      "vulnerability_components": {
+        "S_DE": null,
+        "S_FCF": 0.9807692307692307,
+        "S_CR": 0.6542056074766356,
+        "S_ROIC": 0.9626168224299065,
+        "S_VAL": 0.9523809523809523,
+        "S_GR": 0.6952380952380952
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "CLS",
+      "name": "CLS",
+      "layer": "L2-infra",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.5116188619898739,
+      "vulnerability_components": {
+        "S_DE": 0.4230769230769231,
+        "S_FCF": 0.7307692307692308,
+        "S_CR": 0.6355140186915889,
+        "S_ROIC": 0.13084112149532712,
+        "S_VAL": 0.4464833059660646,
+        "S_GR": 0.8761904761904762
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "GLW",
+      "name": "GLW",
+      "layer": "L2-infra",
+      "health": null,
+      "components": {
+        "concentration": 0.0,
+        "spof": 0.0,
+        "redundancy": 0.0,
+        "certainty": 0.0
+      },
+      "ens": null,
+      "flags": [
+        "no-data"
+      ],
+      "vulnerability": 0.5983206808901701,
+      "vulnerability_components": {
+        "S_DE": 0.6057692307692307,
+        "S_FCF": 0.6346153846153846,
+        "S_CR": 0.5046728971962617,
+        "S_ROIC": 0.47663551401869164,
+        "S_VAL": 0.7959017515051997,
+        "S_GR": 0.5333333333333333
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 0
+    },
+    {
+      "id": "FIG",
+      "name": "FIG",
+      "layer": "L4-application",
+      "health": 45.0,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 1.0
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.5148542822053337,
+      "vulnerability_components": {
+        "S_DE": 0.125,
+        "S_FCF": 0.3942307692307693,
+        "S_CR": 0.3271028037383178,
+        "S_ROIC": 1.0,
+        "S_VAL": 0.4604166666666667,
+        "S_GR": 0.8952380952380953
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 3
+    },
+    {
+      "id": "DUOL",
+      "name": "DUOL",
+      "layer": "L4-application",
+      "health": 43.5,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.9
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.20557224545784006,
+      "vulnerability_components": {
+        "S_DE": 0.18269230769230768,
+        "S_FCF": 0.05769230769230771,
+        "S_CR": 0.28971962616822433,
+        "S_ROIC": 0.10280373831775702,
+        "S_VAL": 0.14178981937602628,
+        "S_GR": 0.8380952380952381
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 3
+    },
+    {
+      "id": "ADBE",
+      "name": "ADBE",
+      "layer": "L4-application",
+      "health": 40.5,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.6999999999999998
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.2523519821300195,
+      "vulnerability_components": {
+        "S_DE": 0.4807692307692308,
+        "S_FCF": 0.04807692307692313,
+        "S_CR": 0.8878504672897196,
+        "S_ROIC": 0.08411214953271029,
+        "S_VAL": 0.047619047619047616,
+        "S_GR": 0.3142857142857143
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 6
+    },
+    {
+      "id": "INTU",
+      "name": "INTU",
+      "layer": "L4-application",
+      "health": 41.4,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.76
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.26176559019452994,
+      "vulnerability_components": {
+        "S_DE": 0.34615384615384615,
+        "S_FCF": 0.06730769230769229,
+        "S_CR": 0.5514018691588785,
+        "S_ROIC": 0.30841121495327106,
+        "S_VAL": 0.10050629447181171,
+        "S_GR": 0.4380952380952381
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 4
+    },
+    {
+      "id": "PANW",
+      "name": "PANW",
+      "layer": "L4-application",
+      "health": 42.1875,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.8125
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.44962896963118526,
+      "vulnerability_components": {
+        "S_DE": 0.19230769230769232,
+        "S_FCF": 0.08653846153846156,
+        "S_CR": 0.8411214953271028,
+        "S_ROIC": 0.6635514018691588,
+        "S_VAL": 0.8085454296661193,
+        "S_GR": 0.5142857142857142
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 7
+    },
+    {
+      "id": "MDB",
+      "name": "MDB",
+      "layer": "L4-application",
+      "health": 45.0,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 1.0
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.41999367746739247,
+      "vulnerability_components": {
+        "S_DE": 0.08653846153846154,
+        "S_FCF": 0.3173076923076923,
+        "S_CR": 0.14018691588785048,
+        "S_ROIC": 0.8411214953271028,
+        "S_VAL": 0.5217261904761905,
+        "S_GR": 0.6285714285714286
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 5
+    },
+    {
+      "id": "WDAY",
+      "name": "WDAY",
+      "layer": "L4-application",
+      "health": 43.2,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.8800000000000001
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.3904528562397963,
+      "vulnerability_components": {
+        "S_DE": 0.47115384615384615,
+        "S_FCF": 0.15384615384615385,
+        "S_CR": 0.7570093457943925,
+        "S_ROIC": 0.5420560747663552,
+        "S_VAL": 0.23067186644772852,
+        "S_GR": 0.3904761904761905
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 5
+    },
+    {
+      "id": "AI",
+      "name": "AI",
+      "layer": "L4-application",
+      "health": 43.2,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.8800000000000001
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.5329517989798364,
+      "vulnerability_components": {
+        "S_DE": 0.20192307692307693,
+        "S_FCF": 0.9230769230769231,
+        "S_CR": 0.09345794392523366,
+        "S_ROIC": 0.9813084112149533,
+        "S_VAL": 0.3619047619047619,
+        "S_GR": 0.01904761904761905
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 5
+    },
+    {
+      "id": "PATH",
+      "name": "PATH",
+      "layer": "L4-application",
+      "health": 40.5,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.7
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.2707029568750081,
+      "vulnerability_components": {
+        "S_DE": 0.1346153846153846,
+        "S_FCF": 0.33653846153846156,
+        "S_CR": 0.4112149532710281,
+        "S_ROIC": 0.28971962616822433,
+        "S_VAL": 0.10545292829775588,
+        "S_GR": 0.44761904761904764
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 5
+    },
+    {
+      "id": "S",
+      "name": "S",
+      "layer": "L4-application",
+      "health": 42.75,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.85
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.574734175481839,
+      "vulnerability_components": {
+        "S_DE": 0.009615384615384616,
+        "S_FCF": 0.7019230769230769,
+        "S_CR": 0.6074766355140186,
+        "S_ROIC": 0.9439252336448598,
+        "S_VAL": 0.6107142857142858,
+        "S_GR": 0.5619047619047619
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 2
+    },
+    {
+      "id": "APP",
+      "name": "APP",
+      "layer": "L4-application",
+      "health": 40.5,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.7
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.31395392132038125,
+      "vulnerability_components": {
+        "S_DE": 0.75,
+        "S_FCF": 0.0,
+        "S_CR": 0.20560747663551404,
+        "S_ROIC": 0.009345794392523366,
+        "S_VAL": 0.5942870826491516,
+        "S_GR": 0.5238095238095238
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 1
+    },
+    {
+      "id": "TEAM",
+      "name": "TEAM",
+      "layer": "L4-application",
+      "health": 41.4,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.76
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": 0.606404682739379,
+      "vulnerability_components": {
+        "S_DE": 0.7307692307692307,
+        "S_FCF": 0.3846153846153846,
+        "S_CR": 0.9252336448598131,
+        "S_ROIC": 0.9345794392523364,
+        "S_VAL": 0.1199404761904762,
+        "S_GR": 0.6666666666666666
+      },
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 5
+    },
+    {
+      "id": "crusoe",
+      "name": "Crusoe",
+      "layer": "L2-infra",
+      "health": 40.5,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.7
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": null,
+      "vulnerability_components": {},
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 1
+    },
+    {
+      "id": "musk",
+      "name": "Elon Musk",
+      "layer": "private-lab",
+      "health": 40.5,
+      "components": {
+        "concentration": 0.0,
+        "spof": 1.0,
+        "redundancy": 0.0,
+        "certainty": 0.7
+      },
+      "ens": null,
+      "flags": [],
+      "vulnerability": null,
+      "vulnerability_components": {},
+      "pagerank": 0.0025170557311742785,
+      "betweenness": 0.0,
+      "in_scc": false,
+      "is_articulation": false,
+      "in_degree": 0,
+      "out_degree": 1
+    }
+  ],
+  "layers": {
+    "L0-energy": {
+      "mean": 57.989052083134666,
+      "min": 40.5,
+      "max": 87.25611004259818,
+      "n": 26
+    },
+    "L1-chips": {
+      "mean": 65.24547242472578,
+      "min": 40.0,
+      "max": 90.99010515583925,
+      "n": 26
+    },
+    "L2-infra": {
+      "mean": 66.65796121387969,
+      "min": 40.5,
+      "max": 85.0,
+      "n": 20
+    },
+    "L4-application": {
+      "mean": 53.6300956542131,
+      "min": 40.5,
+      "max": 85.9090909090909,
+      "n": 21
+    },
+    "private-lab": {
+      "mean": 66.39265945407242,
+      "min": 40.5,
+      "max": 85.0,
+      "n": 6
+    }
+  },
+  "overall_health": 73.1807727917403,
+  "top_spofs": [
+    {
+      "id": "NVDA",
+      "name": "NVDA",
+      "layer": "L1-chips",
+      "betweenness": 0.11277317339279777
+    },
+    {
+      "id": "MSFT",
+      "name": "MSFT",
+      "layer": "L2-infra",
+      "betweenness": 0.07220898151972088
+    },
+    {
+      "id": "AMZN",
+      "name": "AMZN",
+      "layer": "L2-infra",
+      "betweenness": 0.04262508569706944
+    },
+    {
+      "id": "GOOGL",
+      "name": "GOOGL",
+      "layer": "L2-infra",
+      "betweenness": 0.027144122459162305
+    },
+    {
+      "id": "GEV",
+      "name": "GEV",
+      "layer": "L0-energy",
+      "betweenness": 0.02270695009638038
+    },
+    {
+      "id": "META",
+      "name": "META",
+      "layer": "L2-infra",
+      "betweenness": 0.0202526654478639
+    },
+    {
+      "id": "SO",
+      "name": "SO",
+      "layer": "L0-energy",
+      "betweenness": 0.010494752623688154
+    },
+    {
+      "id": "TSM",
+      "name": "TSM",
+      "layer": "L1-chips",
+      "betweenness": 0.010456555442943829
+    },
+    {
+      "id": "DELL",
+      "name": "DELL",
+      "layer": "L2-infra",
+      "betweenness": 0.010350474113592552
+    },
+    {
+      "id": "KMI",
+      "name": "KMI",
+      "layer": "L0-energy",
+      "betweenness": 0.005322338830584707
+    },
+    {
+      "id": "spacex",
+      "name": "SpaceX",
+      "layer": "L2-infra",
+      "betweenness": 0.0
+    }
+  ],
+  "macro": {
+    "snapshot": {
+      "dff": 3.62,
+      "dgs10": 4.54,
+      "elec": 0.196,
+      "retrieved_at": "2026-07-11T13:44:02Z"
+    },
+    "scenario_note": "Unit scenario +100bps; headline +200bps / +30% elec. Betas are analyst priors, not regressed. Indicative ordinal signal only."
+  },
+  "edge_stress": [
+    {
+      "src": "GOOGL",
+      "dst": "anthropic",
+      "type": "equity_stake",
+      "stress_score": 1.0,
+      "stressed_weight": 1.4
+    },
+    {
+      "src": "anthropic",
+      "dst": "GOOGL",
+      "type": "compute_commitment",
+      "stress_score": 1.0,
+      "stressed_weight": 2.0999999999999996
+    },
+    {
+      "src": "AMZN",
+      "dst": "anthropic",
+      "type": "equity_stake",
+      "stress_score": 1.0,
+      "stressed_weight": 1.4
+    },
+    {
+      "src": "anthropic",
+      "dst": "AMZN",
+      "type": "compute_commitment",
+      "stress_score": 1.0,
+      "stressed_weight": 2.0999999999999996
+    },
+    {
+      "src": "anthropic",
+      "dst": "spacex",
+      "type": "compute_commitment",
+      "stress_score": 1.0,
+      "stressed_weight": 2.0999999999999996
+    },
+    {
+      "src": "anthropic",
+      "dst": "NVDA",
+      "type": "compute_commitment",
+      "stress_score": 1.0,
+      "stressed_weight": 2.0999999999999996
+    },
+    {
+      "src": "anthropic",
+      "dst": "MSFT",
+      "type": "compute_commitment",
+      "stress_score": 1.0,
+      "stressed_weight": 2.0999999999999996
+    },
+    {
+      "src": "MSFT",
+      "dst": "openai",
+      "type": "equity_stake",
+      "stress_score": 1.0,
+      "stressed_weight": 1.4
+    },
+    {
+      "src": "MSFT",
+      "dst": "openai",
+      "type": "infra_partner",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "ORCL",
+      "dst": "openai",
+      "type": "infra_partner",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "xai",
+      "dst": "spacex",
+      "type": "subsidiary",
+      "stress_score": 1.0,
+      "stressed_weight": 1.4
+    },
+    {
+      "src": "musk",
+      "dst": "spacex",
+      "type": "voting_power",
+      "stress_score": 1.0,
+      "stressed_weight": 1.4
+    },
+    {
+      "src": "NVDA",
+      "dst": "TSM",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "AMD",
+      "dst": "TSM",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "AVGO",
+      "dst": "TSM",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "ARM",
+      "dst": "TSM",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "NVDA",
+      "dst": "MU",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "ASML",
+      "dst": "TSM",
+      "type": "infra_partner",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "AMAT",
+      "dst": "TSM",
+      "type": "infra_partner",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "LRCX",
+      "dst": "TSM",
+      "type": "infra_partner",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "KLAC",
+      "dst": "TSM",
+      "type": "infra_partner",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "MSFT",
+      "dst": "NVDA",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "AMZN",
+      "dst": "NVDA",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "GOOGL",
+      "dst": "NVDA",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "META",
+      "dst": "NVDA",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "ORCL",
+      "dst": "NVDA",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "CRWV",
+      "dst": "NVDA",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "NBIS",
+      "dst": "NVDA",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "IREN",
+      "dst": "NVDA",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "DELL",
+      "dst": "NVDA",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "SMCI",
+      "dst": "NVDA",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "HPE",
+      "dst": "NVDA",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "GOOGL",
+      "dst": "AVGO",
+      "type": "infra_partner",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "META",
+      "dst": "AVGO",
+      "type": "infra_partner",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "GOOGL",
+      "dst": "AVGO",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 1.0
+    },
+    {
+      "src": "anthropic",
+      "dst": "AVGO",
+      "type": "compute_commitment",
+      "stress_score": 1.0,
+      "stressed_weight": 3.0
+    },
+    {
+      "src": "openai",
+      "dst": "MSFT",
+      "type": "compute_commitment",
+      "stress_score": 1.0,
+      "stressed_weight": 2.0999999999999996
+    },
+    {
+      "src": "MSFT",
+      "dst": "anthropic",
+      "type": "equity_stake",
+      "stress_score": 1.0,
+      "stressed_weight": 1.4
+    },
+    {
+      "src": "MSFT",
+      "dst": "CRWV",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "NVDA",
+      "dst": "TSM",
+      "type": "infra_partner",
+      "stress_score": 1.0,
+      "stressed_weight": 1.0
+    },
+    {
+      "src": "NVDA",
+      "dst": "MU",
+      "type": "infra_partner",
+      "stress_score": 1.0,
+      "stressed_weight": 1.0
+    },
+    {
+      "src": "NVDA",
+      "dst": "INTC",
+      "type": "equity_stake",
+      "stress_score": 1.0,
+      "stressed_weight": 1.4
+    },
+    {
+      "src": "NVDA",
+      "dst": "INTC",
+      "type": "infra_partner",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "NVDA",
+      "dst": "openai",
+      "type": "equity_stake",
+      "stress_score": 1.0,
+      "stressed_weight": 0.6
+    },
+    {
+      "src": "openai",
+      "dst": "NVDA",
+      "type": "compute_commitment",
+      "stress_score": 1.0,
+      "stressed_weight": 2.0999999999999996
+    },
+    {
+      "src": "NVDA",
+      "dst": "CRWV",
+      "type": "equity_stake",
+      "stress_score": 1.0,
+      "stressed_weight": 1.4
+    },
+    {
+      "src": "NVDA",
+      "dst": "CRWV",
+      "type": "compute_commitment",
+      "stress_score": 1.0,
+      "stressed_weight": 2.0999999999999996
+    },
+    {
+      "src": "TSM",
+      "dst": "ASML",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    },
+    {
+      "src": "TSM",
+      "dst": "LRCX",
+      "type": "customer",
+      "stress_score": 1.0,
+      "stressed_weight": 1.0
+    },
+    {
+      "src": "ADBE",
+      "dst": "NVDA",
+      "type": "infra_partner",
+      "stress_score": 1.0,
+      "stressed_weight": 0.7
+    }
+  ],
+  "cascades": [
+    {
+      "scenario": "tsm_disruption",
+      "seeds": [
+        "TSM"
+      ],
+      "direction": "forward",
+      "affected_count": 4,
+      "reach": 0.029008620689655172
+    },
+    {
+      "scenario": "hyperscaler_capex_cut",
+      "seeds": [
+        "MSFT",
+        "AMZN",
+        "GOOGL",
+        "META"
+      ],
+      "direction": "reverse",
+      "affected_count": 66,
+      "reach": 0.49765486725663716
+    },
+    {
+      "scenario": "energy_bridge_loss",
+      "seeds": [
+        "GEV"
+      ],
+      "direction": "forward",
+      "affected_count": 55,
+      "reach": 0.33620689655172414
+    }
+  ],
+  "fed_path": {
+    "path": {
+      "2026-07-29": 3.723304951985677,
+      "2026-09-16": 3.8299942016601562,
+      "2026-11-04": 3.9055574205186634,
+      "2026-12-16": 4.030417283376058
+    },
+    "scenarios": {
+      "base": {
+        "2026-07-29": 3.723304951985677,
+        "2026-09-16": 3.8299942016601562,
+        "2026-11-04": 3.9055574205186634,
+        "2026-12-16": 4.030417283376058
+      },
+      "bull": {
+        "2026-07-29": 3.723304951985677,
+        "2026-09-16": 3.8299942016601562,
+        "2026-11-04": 3.9055574205186634,
+        "2026-12-16": 3.7804172833760576
+      },
+      "bear": {
+        "2026-07-29": 3.723304951985677,
+        "2026-09-16": 3.8299942016601562,
+        "2026-11-04": 3.9055574205186634,
+        "2026-12-16": 4.280417283376058
+      }
+    },
+    "sep_dots": {
+      "median": 3.4,
+      "range_high": 3.9,
+      "range_low": 2.9,
+      "neutral": 3.1
+    },
+    "source": "zq_futures",
+    "note": "ZQ quotes fetched: 9 contracts. Live DFF from FRED: 3.62%.",
+    "retrieved_at": "2026-07-11T13:44:02.326642Z"
+  },
+  "vulnerability": {
+    "ADBE": {
+      "vulnerability": 0.2523519821300195,
+      "components": {
+        "S_DE": 0.4807692307692308,
+        "S_FCF": 0.04807692307692313,
+        "S_CR": 0.8878504672897196,
+        "S_ROIC": 0.08411214953271029,
+        "S_VAL": 0.047619047619047616,
+        "S_GR": 0.3142857142857143
+      }
+    },
+    "ADI": {
+      "vulnerability": 0.3908211575056161,
+      "components": {
+        "S_DE": 0.28846153846153844,
+        "S_FCF": 0.07692307692307687,
+        "S_CR": 0.485981308411215,
+        "S_ROIC": 0.5233644859813085,
+        "S_VAL": 0.5819581280788177,
+        "S_GR": 0.7333333333333333
+      }
+    },
+    "AEP": {
+      "vulnerability": 0.6400783611865629,
+      "components": {
+        "S_DE": 0.7980769230769231,
+        "S_FCF": 0.8365384615384616,
+        "S_CR": 0.9813084112149533,
+        "S_ROIC": 0.6261682242990654,
+        "S_VAL": 0.15467980295566502,
+        "S_GR": 0.24761904761904763
+      }
+    },
+    "AI": {
+      "vulnerability": 0.5329517989798364,
+      "components": {
+        "S_DE": 0.20192307692307693,
+        "S_FCF": 0.9230769230769231,
+        "S_CR": 0.09345794392523366,
+        "S_ROIC": 0.9813084112149533,
+        "S_VAL": 0.3619047619047619,
+        "S_GR": 0.01904761904761905
+      }
+    },
+    "AKAM": {
+      "vulnerability": 0.4969555125962232,
+      "components": {
+        "S_DE": 0.6826923076923077,
+        "S_FCF": 0.4903846153846154,
+        "S_CR": 0.44859813084112155,
+        "S_ROIC": 0.6448598130841121,
+        "S_VAL": 0.31230842911877393,
+        "S_GR": 0.17142857142857143
+      }
+    },
+    "ALAB": {
+      "vulnerability": 0.34242593204142513,
+      "components": {
+        "S_DE": 0.11538461538461539,
+        "S_FCF": 0.10576923076923073,
+        "S_CR": 0.04672897196261683,
+        "S_ROIC": 0.2429906542056075,
+        "S_VAL": 0.9626505199781062,
+        "S_GR": 0.9523809523809523
+      }
+    },
+    "AMAT": {
+      "vulnerability": 0.36934976446638546,
+      "components": {
+        "S_DE": 0.3173076923076923,
+        "S_FCF": 0.4807692307692307,
+        "S_CR": 0.31775700934579443,
+        "S_ROIC": 0.17757009345794394,
+        "S_VAL": 0.7131841817186645,
+        "S_GR": 0.11428571428571428
+      }
+    },
+    "AMD": {
+      "vulnerability": 0.4567852553773437,
+      "components": {
+        "S_DE": 0.15384615384615385,
+        "S_FCF": 0.3076923076923077,
+        "S_CR": 0.2710280373831776,
+        "S_ROIC": 0.5514018691588785,
+        "S_VAL": 0.8590175150519977,
+        "S_GR": 0.8285714285714286
+      }
+    },
+    "AMKR": {
+      "vulnerability": 0.5128307954667526,
+      "components": {
+        "S_DE": 0.3557692307692308,
+        "S_FCF": 0.7403846153846154,
+        "S_CR": 0.4392523364485982,
+        "S_ROIC": 0.5327102803738317,
+        "S_VAL": 0.4661535303776683,
+        "S_GR": 0.3619047619047619
+      }
+    },
+    "AMZN": {
+      "vulnerability": 0.4989060849184117,
+      "components": {
+        "S_DE": 0.4423076923076923,
+        "S_FCF": 0.7788461538461539,
+        "S_CR": 0.6822429906542056,
+        "S_ROIC": 0.31775700934579443,
+        "S_VAL": 0.28669950738916256,
+        "S_GR": 0.4095238095238095
+      }
+    },
+    "ANET": {
+      "vulnerability": 0.23125243103389254,
+      "components": {
+        "S_DE": 0.009615384615384616,
+        "S_FCF": 0.009615384615384581,
+        "S_CR": 0.25233644859813087,
+        "S_ROIC": 0.16822429906542058,
+        "S_VAL": 0.6123768472906405,
+        "S_GR": 0.7619047619047619
+      }
+    },
+    "APLD": {
+      "vulnerability": 0.8465492023552771,
+      "components": {
+        "S_DE": 0.8365384615384616,
+        "S_FCF": 0.9711538461538461,
+        "S_CR": 0.3551401869158879,
+        "S_ROIC": 0.8785046728971962,
+        "S_VAL": 0.8857142857142857,
+        "S_GR": 0.9238095238095239
+      }
+    },
+    "APP": {
+      "vulnerability": 0.31395392132038125,
+      "components": {
+        "S_DE": 0.75,
+        "S_FCF": 0.0,
+        "S_CR": 0.20560747663551404,
+        "S_ROIC": 0.009345794392523366,
+        "S_VAL": 0.5942870826491516,
+        "S_GR": 0.5238095238095238
+      }
+    },
+    "ARM": {
+      "vulnerability": 0.4291865568768969,
+      "components": {
+        "S_DE": 0.14423076923076922,
+        "S_FCF": 0.41346153846153844,
+        "S_CR": 0.10280373831775702,
+        "S_ROIC": 0.4018691588785047,
+        "S_VAL": 0.9754720853858786,
+        "S_GR": 0.6
+      }
+    },
+    "ASML": {
+      "vulnerability": 0.32930279497331544,
+      "components": {
+        "S_DE": 0.21153846153846154,
+        "S_FCF": 0.25,
+        "S_CR": 0.5981308411214954,
+        "S_ROIC": 0.06542056074766356,
+        "S_VAL": 0.6804939792008757,
+        "S_GR": 0.49523809523809526
+      }
+    },
+    "AVGO": {
+      "vulnerability": 0.3871082744868195,
+      "components": {
+        "S_DE": 0.5480769230769231,
+        "S_FCF": 0.038461538461538436,
+        "S_CR": 0.4018691588785047,
+        "S_ROIC": 0.23364485981308414,
+        "S_VAL": 0.6730774493705528,
+        "S_GR": 0.8
+      }
+    },
+    "BWXT": {
+      "vulnerability": 0.5512591611981316,
+      "components": {
+        "S_DE": 0.7884615384615384,
+        "S_FCF": 0.625,
+        "S_CR": 0.3457943925233645,
+        "S_ROIC": 0.3738317757009346,
+        "S_VAL": 0.472188013136289,
+        "S_GR": 0.5714285714285714
+      }
+    },
+    "CCJ": {
+      "vulnerability": 0.3707968309352051,
+      "components": {
+        "S_DE": 0.22115384615384615,
+        "S_FCF": 0.2692307692307693,
+        "S_CR": 0.22429906542056077,
+        "S_ROIC": 0.5046728971962617,
+        "S_VAL": 0.7027846195949644,
+        "S_GR": 0.3047619047619048
+      }
+    },
+    "CDNS": {
+      "vulnerability": 0.4112169704020333,
+      "components": {
+        "S_DE": 0.4326923076923077,
+        "S_FCF": 0.24038461538461542,
+        "S_CR": 0.5420560747663552,
+        "S_ROIC": 0.33644859813084116,
+        "S_VAL": 0.7062944718117131,
+        "S_GR": 0.37142857142857144
+      }
+    },
+    "CEG": {
+      "vulnerability": 0.5160903928491747,
+      "components": {
+        "S_DE": 0.5,
+        "S_FCF": 0.7211538461538461,
+        "S_CR": 0.5887850467289719,
+        "S_ROIC": 0.4299065420560748,
+        "S_VAL": 0.32691570881226056,
+        "S_GR": 0.41904761904761906
+      }
+    },
+    "CIEN": {
+      "vulnerability": 0.5383593531428288,
+      "components": {
+        "S_DE": 0.4519230769230769,
+        "S_FCF": 0.5576923076923077,
+        "S_CR": 0.26168224299065423,
+        "S_ROIC": 0.4672897196261683,
+        "S_VAL": 0.7452175697865352,
+        "S_GR": 0.7714285714285715
+      }
+    },
+    "CLS": {
+      "vulnerability": 0.5116188619898739,
+      "components": {
+        "S_DE": 0.4230769230769231,
+        "S_FCF": 0.7307692307692308,
+        "S_CR": 0.6355140186915889,
+        "S_ROIC": 0.13084112149532712,
+        "S_VAL": 0.4464833059660646,
+        "S_GR": 0.8761904761904762
+      }
+    },
+    "COHR": {
+      "vulnerability": 0.6033083368452367,
+      "components": {
+        "S_DE": 0.3269230769230769,
+        "S_FCF": 0.8076923076923077,
+        "S_CR": 0.23364485981308414,
+        "S_ROIC": 0.7476635514018692,
+        "S_VAL": 0.7635467980295567,
+        "S_GR": 0.4857142857142857
+      }
+    },
+    "CORZ": {
+      "vulnerability": 0.8184141890041422,
+      "components": {
+        "S_DE": null,
+        "S_FCF": 0.9423076923076923,
+        "S_CR": 0.9626168224299065,
+        "S_ROIC": 0.9906542056074766,
+        "S_VAL": 0.8,
+        "S_GR": 0.047619047619047616
+      }
+    },
+    "CRDO": {
+      "vulnerability": 0.3100841661561127,
+      "components": {
+        "S_DE": 0.07692307692307693,
+        "S_FCF": 0.13461538461538458,
+        "S_CR": 0.05607476635514019,
+        "S_ROIC": 0.12149532710280375,
+        "S_VAL": 0.8806102900930487,
+        "S_GR": 0.9904761904761905
+      }
+    },
+    "CRM": {
+      "vulnerability": 0.3799813979795047,
+      "components": {
+        "S_DE": 0.7019230769230769,
+        "S_FCF": 0.09615384615384615,
+        "S_CR": 0.9065420560747663,
+        "S_ROIC": 0.4112149532710281,
+        "S_VAL": 0.08758210180623975,
+        "S_GR": 0.29523809523809524
+      }
+    },
+    "CRWD": {
+      "vulnerability": 0.5134612710109205,
+      "components": {
+        "S_DE": 0.23076923076923078,
+        "S_FCF": 0.1923076923076923,
+        "S_CR": 0.5607476635514019,
+        "S_ROIC": 0.8317757009345794,
+        "S_VAL": 0.9056547619047619,
+        "S_GR": 0.6095238095238096
+      }
+    },
+    "CRWV": {
+      "vulnerability": 0.8921727688199651,
+      "components": {
+        "S_DE": 0.9951923076923077,
+        "S_FCF": 0.9519230769230769,
+        "S_CR": 1.0,
+        "S_ROIC": 0.897196261682243,
+        "S_VAL": 0.5238095238095238,
+        "S_GR": 0.9714285714285714
+      }
+    },
+    "CSCO": {
+      "vulnerability": 0.4344108147733671,
+      "components": {
+        "S_DE": 0.5096153846153846,
+        "S_FCF": 0.4326923076923077,
+        "S_CR": 0.7850467289719626,
+        "S_ROIC": 0.28037383177570097,
+        "S_VAL": 0.4395046524356869,
+        "S_GR": 0.23809523809523808
+      }
+    },
+    "DDOG": {
+      "vulnerability": 0.4874385719420766,
+      "components": {
+        "S_DE": 0.33653846153846156,
+        "S_FCF": 0.17307692307692313,
+        "S_CR": 0.1869158878504673,
+        "S_ROIC": 0.7850467289719626,
+        "S_VAL": 0.858531746031746,
+        "S_GR": 0.7238095238095238
+      }
+    },
+    "DELL": {
+      "vulnerability": 0.4802544639537066,
+      "components": {
+        "S_DE": null,
+        "S_FCF": 0.6634615384615384,
+        "S_CR": 0.7663551401869159,
+        "S_ROIC": 0.09345794392523366,
+        "S_VAL": 0.24864532019704433,
+        "S_GR": 0.8571428571428571
+      }
+    },
+    "DLR": {
+      "vulnerability": 0.6138704523803622,
+      "components": {
+        "S_DE": 0.5769230769230769,
+        "S_FCF": 0.8557692307692308,
+        "S_CR": 0.07476635514018692,
+        "S_ROIC": 0.7570093457943925,
+        "S_VAL": 0.5711001642036124,
+        "S_GR": 0.4
+      }
+    },
+    "DUK": {
+      "vulnerability": 0.6453524209703714,
+      "components": {
+        "S_DE": 0.8269230769230769,
+        "S_FCF": 0.8269230769230769,
+        "S_CR": 0.9345794392523364,
+        "S_ROIC": 0.719626168224299,
+        "S_VAL": 0.09934318555008209,
+        "S_GR": 0.20952380952380953
+      }
+    },
+    "DUOL": {
+      "vulnerability": 0.20557224545784006,
+      "components": {
+        "S_DE": 0.18269230769230768,
+        "S_FCF": 0.05769230769230771,
+        "S_CR": 0.28971962616822433,
+        "S_ROIC": 0.10280373831775702,
+        "S_VAL": 0.14178981937602628,
+        "S_GR": 0.8380952380952381
+      }
+    },
+    "D": {
+      "vulnerability": 0.6992524102280789,
+      "components": {
+        "S_DE": 0.8557692307692307,
+        "S_FCF": 0.9038461538461539,
+        "S_CR": 0.8598130841121495,
+        "S_ROIC": 0.7009345794392523,
+        "S_VAL": 0.16995073891625617,
+        "S_GR": 0.5047619047619047
+      }
+    },
+    "EMR": {
+      "vulnerability": 0.4708069188036156,
+      "components": {
+        "S_DE": 0.5192307692307693,
+        "S_FCF": 0.5096153846153846,
+        "S_CR": 0.8130841121495327,
+        "S_ROIC": 0.4953271028037384,
+        "S_VAL": 0.31201423097974823,
+        "S_GR": 0.12380952380952381
+      }
+    },
+    "ENTG": {
+      "vulnerability": 0.5316385138923811,
+      "components": {
+        "S_DE": 0.625,
+        "S_FCF": 0.5288461538461539,
+        "S_CR": 0.2149532710280374,
+        "S_ROIC": 0.7757009345794392,
+        "S_VAL": 0.5948002189381499,
+        "S_GR": 0.08571428571428572
+      }
+    },
+    "EQIX": {
+      "vulnerability": 0.6985284062805817,
+      "components": {
+        "S_DE": 0.8076923076923077,
+        "S_FCF": 0.8461538461538461,
+        "S_CR": 0.6728971962616823,
+        "S_ROIC": 0.691588785046729,
+        "S_VAL": 0.6783251231527094,
+        "S_GR": 0.18095238095238095
+      }
+    },
+    "ETN": {
+      "vulnerability": 0.5221857407282803,
+      "components": {
+        "S_DE": 0.6730769230769231,
+        "S_FCF": 0.5769230769230769,
+        "S_CR": 0.6635514018691588,
+        "S_ROIC": 0.383177570093458,
+        "S_VAL": 0.4340722495894909,
+        "S_GR": 0.3523809523809524
+      }
+    },
+    "ET": {
+      "vulnerability": 0.6044048423243961,
+      "components": {
+        "S_DE": 0.8942307692307693,
+        "S_FCF": 0.7115384615384616,
+        "S_CR": 0.691588785046729,
+        "S_ROIC": 0.6728971962616823,
+        "S_VAL": 0.0643336070060208,
+        "S_GR": 0.34285714285714286
+      }
+    },
+    "EXC": {
+      "vulnerability": 0.6208685128653707,
+      "components": {
+        "S_DE": 0.8461538461538461,
+        "S_FCF": 0.8173076923076923,
+        "S_CR": 0.7757009345794392,
+        "S_ROIC": 0.7383177570093458,
+        "S_VAL": 0.05829228243021346,
+        "S_GR": 0.13333333333333333
+      }
+    },
+    "FIG": {
+      "vulnerability": 0.5148542822053337,
+      "components": {
+        "S_DE": 0.125,
+        "S_FCF": 0.3942307692307693,
+        "S_CR": 0.3271028037383178,
+        "S_ROIC": 1.0,
+        "S_VAL": 0.4604166666666667,
+        "S_GR": 0.8952380952380953
+      }
+    },
+    "FN": {
+      "vulnerability": 0.4450864754538618,
+      "components": {
+        "S_DE": 0.038461538461538464,
+        "S_FCF": 0.7692307692307692,
+        "S_CR": 0.2990654205607477,
+        "S_ROIC": 0.25233644859813087,
+        "S_VAL": 0.6028461959496442,
+        "S_GR": 0.7428571428571429
+      }
+    },
+    "GEV": {
+      "vulnerability": 0.3400807929582503,
+      "components": {
+        "S_DE": 0.2692307692307692,
+        "S_FCF": 0.4423076923076923,
+        "S_CR": 0.8037383177570093,
+        "S_ROIC": 0.01869158878504673,
+        "S_VAL": 0.42617679255610286,
+        "S_GR": 0.2761904761904762
+      }
+    },
+    "GLW": {
+      "vulnerability": 0.5983206808901701,
+      "components": {
+        "S_DE": 0.6057692307692307,
+        "S_FCF": 0.6346153846153846,
+        "S_CR": 0.5046728971962617,
+        "S_ROIC": 0.47663551401869164,
+        "S_VAL": 0.7959017515051997,
+        "S_GR": 0.5333333333333333
+      }
+    },
+    "GOOGL": {
+      "vulnerability": 0.3746761988280277,
+      "components": {
+        "S_DE": 0.25961538461538464,
+        "S_FCF": 0.5384615384615384,
+        "S_CR": 0.4672897196261683,
+        "S_ROIC": 0.11214953271028039,
+        "S_VAL": 0.48208128078817736,
+        "S_GR": 0.4666666666666667
+      }
+    },
+    "HPE": {
+      "vulnerability": 0.5821270742363234,
+      "components": {
+        "S_DE": 0.5961538461538461,
+        "S_FCF": 0.6153846153846154,
+        "S_CR": 0.7289719626168225,
+        "S_ROIC": 0.7102803738317758,
+        "S_VAL": 0.21461412151067324,
+        "S_GR": 0.6190476190476191
+      }
+    },
+    "HUBB": {
+      "vulnerability": 0.4242598250658999,
+      "components": {
+        "S_DE": 0.5384615384615384,
+        "S_FCF": 0.5480769230769231,
+        "S_CR": 0.514018691588785,
+        "S_ROIC": 0.2990654205607477,
+        "S_VAL": 0.3222222222222222,
+        "S_GR": 0.2
+      }
+    },
+    "IBM": {
+      "vulnerability": 0.524097656291501,
+      "components": {
+        "S_DE": 0.9038461538461539,
+        "S_FCF": 0.46153846153846156,
+        "S_CR": 0.8785046728971962,
+        "S_ROIC": 0.39252336448598135,
+        "S_VAL": 0.23916256157635465,
+        "S_GR": 0.2571428571428571
+      }
+    },
+    "INTC": {
+      "vulnerability": 0.5905861233781795,
+      "components": {
+        "S_DE": 0.3942307692307692,
+        "S_FCF": 0.7980769230769231,
+        "S_CR": 0.383177570093458,
+        "S_ROIC": 0.8504672897196262,
+        "S_VAL": 0.6285714285714286,
+        "S_GR": 0.09523809523809523
+      }
+    },
+    "INTU": {
+      "vulnerability": 0.26176559019452994,
+      "components": {
+        "S_DE": 0.34615384615384615,
+        "S_FCF": 0.06730769230769229,
+        "S_CR": 0.5514018691588785,
+        "S_ROIC": 0.30841121495327106,
+        "S_VAL": 0.10050629447181171,
+        "S_GR": 0.4380952380952381
+      }
+    },
+    "IREN": {
+      "vulnerability": 0.7920412834560434,
+      "components": {
+        "S_DE": 0.7596153846153846,
+        "S_FCF": 0.9615384615384616,
+        "S_CR": 0.15887850467289721,
+        "S_ROIC": 0.7663551401869159,
+        "S_VAL": 0.8958949096880131,
+        "S_GR": 0.9619047619047619
+      }
+    },
+    "KLAC": {
+      "vulnerability": 0.35593289726709,
+      "components": {
+        "S_DE": 0.6538461538461539,
+        "S_FCF": 0.125,
+        "S_CR": 0.2429906542056075,
+        "S_ROIC": 0.07476635514018692,
+        "S_VAL": 0.7771072796934866,
+        "S_GR": 0.38095238095238093
+      }
+    },
+    "KMI": {
+      "vulnerability": 0.48218288988914193,
+      "components": {
+        "S_DE": 0.6442307692307693,
+        "S_FCF": 0.27884615384615385,
+        "S_CR": 0.9906542056074766,
+        "S_ROIC": 0.6074766355140186,
+        "S_VAL": 0.19820744389709907,
+        "S_GR": 0.3333333333333333
+      }
+    },
+    "LEU": {
+      "vulnerability": 0.6052469930434803,
+      "components": {
+        "S_DE": 0.7788461538461539,
+        "S_FCF": 0.8653846153846154,
+        "S_CR": 0.11214953271028039,
+        "S_ROIC": 0.6542056074766356,
+        "S_VAL": 0.5627257799671592,
+        "S_GR": 0.06666666666666667
+      }
+    },
+    "LNG": {
+      "vulnerability": 0.6756179828335807,
+      "components": {
+        "S_DE": 0.9951923076923077,
+        "S_FCF": 0.6057692307692308,
+        "S_CR": 0.9532710280373832,
+        "S_ROIC": 0.6355140186915889,
+        "S_VAL": 0.25296934865900383,
+        "S_GR": 0.6476190476190476
+      }
+    },
+    "LRCX": {
+      "vulnerability": 0.3483747560850365,
+      "components": {
+        "S_DE": 0.36538461538461536,
+        "S_FCF": 0.21153846153846156,
+        "S_CR": 0.30841121495327106,
+        "S_ROIC": 0.05607476635514019,
+        "S_VAL": 0.7452380952380953,
+        "S_GR": 0.6857142857142857
+      }
+    },
+    "MCHP": {
+      "vulnerability": 0.5678980373477635,
+      "components": {
+        "S_DE": 0.6153846153846154,
+        "S_FCF": 0.47115384615384615,
+        "S_CR": 0.4299065420560748,
+        "S_ROIC": 0.8037383177570093,
+        "S_VAL": 0.6949781061850028,
+        "S_GR": 0.19047619047619047
+      }
+    },
+    "MDB": {
+      "vulnerability": 0.41999367746739247,
+      "components": {
+        "S_DE": 0.08653846153846154,
+        "S_FCF": 0.3173076923076923,
+        "S_CR": 0.14018691588785048,
+        "S_ROIC": 0.8411214953271028,
+        "S_VAL": 0.5217261904761905,
+        "S_GR": 0.6285714285714286
+      }
+    },
+    "META": {
+      "vulnerability": 0.3495774435173807,
+      "components": {
+        "S_DE": 0.38461538461538464,
+        "S_FCF": 0.32692307692307687,
+        "S_CR": 0.3738317757009346,
+        "S_ROIC": 0.20560747663551404,
+        "S_VAL": 0.29866584564860427,
+        "S_GR": 0.6761904761904762
+      }
+    },
+    "MPWR": {
+      "vulnerability": 0.3560903220208731,
+      "components": {
+        "S_DE": 0.0673076923076923,
+        "S_FCF": 0.3653846153846154,
+        "S_CR": 0.13084112149532712,
+        "S_ROIC": 0.26168224299065423,
+        "S_VAL": 0.8136836343732895,
+        "S_GR": 0.638095238095238
+      }
+    },
+    "MRVL": {
+      "vulnerability": 0.47770967243090995,
+      "components": {
+        "S_DE": 0.3076923076923077,
+        "S_FCF": 0.45192307692307687,
+        "S_CR": 0.19626168224299068,
+        "S_ROIC": 0.36448598130841126,
+        "S_VAL": 0.8647646414887795,
+        "S_GR": 0.8095238095238095
+      }
+    },
+    "MSFT": {
+      "vulnerability": 0.3391852192549099,
+      "components": {
+        "S_DE": 0.2980769230769231,
+        "S_FCF": 0.29807692307692313,
+        "S_CR": 0.6261682242990654,
+        "S_ROIC": 0.19626168224299068,
+        "S_VAL": 0.370415982484948,
+        "S_GR": 0.47619047619047616
+      }
+    },
+    "MU": {
+      "vulnerability": 0.26201588560757105,
+      "components": {
+        "S_DE": 0.16346153846153846,
+        "S_FCF": 0.16346153846153844,
+        "S_CR": 0.17757009345794394,
+        "S_ROIC": 0.03738317757009346,
+        "S_VAL": 0.43419540229885056,
+        "S_GR": 0.9809523809523809
+      }
+    },
+    "NBIS": {
+      "vulnerability": 0.6518414059890051,
+      "components": {
+        "S_DE": 0.7115384615384616,
+        "S_FCF": null,
+        "S_CR": 0.06542056074766356,
+        "S_ROIC": 0.5607476635514019,
+        "S_VAL": 0.8525451559934318,
+        "S_GR": 1.0
+      }
+    },
+    "NEE": {
+      "vulnerability": 0.6528426237931153,
+      "components": {
+        "S_DE": 0.8653846153846154,
+        "S_FCF": 0.6538461538461539,
+        "S_CR": 0.9719626168224299,
+        "S_ROIC": 0.5981308411214954,
+        "S_VAL": 0.44733853311439514,
+        "S_GR": 0.3238095238095238
+      }
+    },
+    "NET": {
+      "vulnerability": 0.7696971389202698,
+      "components": {
+        "S_DE": 0.9134615384615384,
+        "S_FCF": 0.5865384615384616,
+        "S_CR": 0.4579439252336449,
+        "S_ROIC": 0.8691588785046729,
+        "S_VAL": 0.9446428571428571,
+        "S_GR": 0.7904761904761904
+      }
+    },
+    "NNE": {
+      "vulnerability": 0.3818475916606758,
+      "components": {
+        "S_DE": 0.04807692307692308,
+        "S_FCF": null,
+        "S_CR": 0.0,
+        "S_ROIC": 0.9065420560747663,
+        "S_VAL": null,
+        "S_GR": null
+      }
+    },
+    "NOW": {
+      "vulnerability": 0.3651561727159939,
+      "components": {
+        "S_DE": 0.27884615384615385,
+        "S_FCF": 0.11538461538461542,
+        "S_CR": 0.8504672897196262,
+        "S_ROIC": 0.3457943925233645,
+        "S_VAL": 0.4549329501915709,
+        "S_GR": 0.580952380952381
+      }
+    },
+    "NRG": {
+      "vulnerability": 0.7341104762140856,
+      "components": {
+        "S_DE": 0.9615384615384616,
+        "S_FCF": 0.7884615384615384,
+        "S_CR": 0.822429906542056,
+        "S_ROIC": 0.8130841121495327,
+        "S_VAL": 0.4750410509031199,
+        "S_GR": 0.2857142857142857
+      }
+    },
+    "NTAP": {
+      "vulnerability": 0.36914262267166714,
+      "components": {
+        "S_DE": 0.875,
+        "S_FCF": 0.23076923076923073,
+        "S_CR": 0.5794392523364487,
+        "S_ROIC": 0.14018691588785048,
+        "S_VAL": 0.23487274220032842,
+        "S_GR": 0.1523809523809524
+      }
+    },
+    "NVDA": {
+      "vulnerability": 0.22741782588986909,
+      "components": {
+        "S_DE": 0.17307692307692307,
+        "S_FCF": 0.028846153846153855,
+        "S_CR": 0.16822429906542058,
+        "S_ROIC": 0.0,
+        "S_VAL": 0.49655172413793097,
+        "S_GR": 0.9428571428571428
+      }
+    },
+    "NVT": {
+      "vulnerability": 0.554471172291024,
+      "components": {
+        "S_DE": 0.41346153846153844,
+        "S_FCF": 0.6442307692307692,
+        "S_CR": 0.4953271028037384,
+        "S_ROIC": 0.485981308411215,
+        "S_VAL": 0.5472495894909688,
+        "S_GR": 0.819047619047619
+      }
+    },
+    "NXPI": {
+      "vulnerability": 0.3851792465108208,
+      "components": {
+        "S_DE": 0.6634615384615384,
+        "S_FCF": 0.34615384615384615,
+        "S_CR": 0.39252336448598135,
+        "S_ROIC": 0.3551401869158879,
+        "S_VAL": 0.30127941981390255,
+        "S_GR": 0.10476190476190476
+      }
+    },
+    "OKE": {
+      "vulnerability": 0.6319411580604378,
+      "components": {
+        "S_DE": 0.7692307692307693,
+        "S_FCF": 0.6730769230769231,
+        "S_CR": 0.9158878504672897,
+        "S_ROIC": 0.5794392523364487,
+        "S_VAL": 0.09185139573070607,
+        "S_GR": 0.8857142857142857
+      }
+    },
+    "OKLO": {
+      "vulnerability": 0.3797627606038821,
+      "components": {
+        "S_DE": 0.028846153846153848,
+        "S_FCF": null,
+        "S_CR": 0.009345794392523366,
+        "S_ROIC": 0.9158878504672897,
+        "S_VAL": null,
+        "S_GR": null
+      }
+    },
+    "ON": {
+      "vulnerability": 0.39902394985238204,
+      "components": {
+        "S_DE": 0.40384615384615385,
+        "S_FCF": 0.42307692307692313,
+        "S_CR": 0.12149532710280375,
+        "S_ROIC": 0.6168224299065421,
+        "S_VAL": 0.47504789272030656,
+        "S_GR": 0.05714285714285714
+      }
+    },
+    "ORCL": {
+      "vulnerability": 0.6659776651804528,
+      "components": {
+        "S_DE": 0.9519230769230769,
+        "S_FCF": 0.8942307692307693,
+        "S_CR": 0.719626168224299,
+        "S_ROIC": 0.42056074766355145,
+        "S_VAL": 0.33497536945812806,
+        "S_GR": 0.45714285714285713
+      }
+    },
+    "PANW": {
+      "vulnerability": 0.44962896963118526,
+      "components": {
+        "S_DE": 0.19230769230769232,
+        "S_FCF": 0.08653846153846156,
+        "S_CR": 0.8411214953271028,
+        "S_ROIC": 0.6635514018691588,
+        "S_VAL": 0.8085454296661193,
+        "S_GR": 0.5142857142857142
+      }
+    },
+    "PATH": {
+      "vulnerability": 0.2707029568750081,
+      "components": {
+        "S_DE": 0.1346153846153846,
+        "S_FCF": 0.33653846153846156,
+        "S_CR": 0.4112149532710281,
+        "S_ROIC": 0.28971962616822433,
+        "S_VAL": 0.10545292829775588,
+        "S_GR": 0.44761904761904764
+      }
+    },
+    "PEG": {
+      "vulnerability": 0.6377047779001533,
+      "components": {
+        "S_DE": 0.7211538461538461,
+        "S_FCF": 0.7596153846153846,
+        "S_CR": 0.7476635514018692,
+        "S_ROIC": 0.5887850467289719,
+        "S_VAL": 0.37840722495894913,
+        "S_GR": 0.5428571428571428
+      }
+    },
+    "PH": {
+      "vulnerability": 0.43433155569052284,
+      "components": {
+        "S_DE": 0.49038461538461536,
+        "S_FCF": 0.5,
+        "S_CR": 0.7102803738317758,
+        "S_ROIC": 0.3271028037383178,
+        "S_VAL": 0.39077038861521624,
+        "S_GR": 0.1619047619047619
+      }
+    },
+    "PLTR": {
+      "vulnerability": 0.29130357939675533,
+      "components": {
+        "S_DE": 0.09615384615384616,
+        "S_FCF": 0.019230769230769273,
+        "S_CR": 0.08411214953271029,
+        "S_ROIC": 0.15887850467289721,
+        "S_VAL": 0.8916324575807334,
+        "S_GR": 0.9333333333333333
+      }
+    },
+    "PWR": {
+      "vulnerability": 0.588340230239199,
+      "components": {
+        "S_DE": 0.5288461538461539,
+        "S_FCF": 0.6923076923076923,
+        "S_CR": 0.7009345794392523,
+        "S_ROIC": 0.514018691588785,
+        "S_VAL": 0.542391899288451,
+        "S_GR": 0.5523809523809524
+      }
+    },
+    "QCOM": {
+      "vulnerability": 0.2573933384801899,
+      "components": {
+        "S_DE": 0.46153846153846156,
+        "S_FCF": 0.1826923076923077,
+        "S_CR": 0.36448598130841126,
+        "S_ROIC": 0.2149532710280374,
+        "S_VAL": 0.17125068418171865,
+        "S_GR": 0.14285714285714285
+      }
+    },
+    "SMCI": {
+      "vulnerability": 0.5696630343552677,
+      "components": {
+        "S_DE": 0.6923076923076923,
+        "S_FCF": 0.8846153846153846,
+        "S_CR": 0.28037383177570097,
+        "S_ROIC": 0.44859813084112155,
+        "S_VAL": 0.005747126436781609,
+        "S_GR": 0.9142857142857143
+      }
+    },
+    "SMR": {
+      "vulnerability": 0.6089728184587998,
+      "components": {
+        "S_DE": 0.057692307692307696,
+        "S_FCF": 1.0,
+        "S_CR": 0.028037383177570097,
+        "S_ROIC": 0.9719626168224299,
+        "S_VAL": 0.9952380952380953,
+        "S_GR": 0.009523809523809525
+      }
+    },
+    "SNOW": {
+      "vulnerability": 0.6629520985245284,
+      "components": {
+        "S_DE": 0.7403846153846154,
+        "S_FCF": 0.28846153846153844,
+        "S_CR": 0.7383177570093458,
+        "S_ROIC": 0.9532710280373832,
+        "S_VAL": 0.6678571428571429,
+        "S_GR": 0.780952380952381
+      }
+    },
+    "SNPS": {
+      "vulnerability": 0.5011594179802366,
+      "components": {
+        "S_DE": 0.375,
+        "S_FCF": 0.14423076923076927,
+        "S_CR": 0.5700934579439252,
+        "S_ROIC": 0.794392523364486,
+        "S_VAL": 0.583648056923919,
+        "S_GR": 0.8666666666666667
+      }
+    },
+    "SO": {
+      "vulnerability": 0.6869082870883548,
+      "components": {
+        "S_DE": 0.8846153846153846,
+        "S_FCF": 0.875,
+        "S_CR": 0.9439252336448598,
+        "S_ROIC": 0.6822429906542056,
+        "S_VAL": 0.25024630541871923,
+        "S_GR": 0.22857142857142856
+      }
+    },
+    "STX": {
+      "vulnerability": 0.5342087718785673,
+      "components": {
+        "S_DE": 0.9423076923076923,
+        "S_FCF": 0.3557692307692307,
+        "S_CR": 0.6168224299065421,
+        "S_ROIC": 0.04672897196261683,
+        "S_VAL": 0.7686713191023536,
+        "S_GR": 0.7047619047619048
+      }
+    },
+    "S": {
+      "vulnerability": 0.574734175481839,
+      "components": {
+        "S_DE": 0.009615384615384616,
+        "S_FCF": 0.7019230769230769,
+        "S_CR": 0.6074766355140186,
+        "S_ROIC": 0.9439252336448598,
+        "S_VAL": 0.6107142857142858,
+        "S_GR": 0.5619047619047619
+      }
+    },
+    "TEAM": {
+      "vulnerability": 0.606404682739379,
+      "components": {
+        "S_DE": 0.7307692307692307,
+        "S_FCF": 0.3846153846153846,
+        "S_CR": 0.9252336448598131,
+        "S_ROIC": 0.9345794392523364,
+        "S_VAL": 0.1199404761904762,
+        "S_GR": 0.6666666666666666
+      }
+    },
+    "TER": {
+      "vulnerability": 0.4353346356887285,
+      "components": {
+        "S_DE": 0.10576923076923077,
+        "S_FCF": 0.5673076923076923,
+        "S_CR": 0.42056074766355145,
+        "S_ROIC": 0.1869158878504673,
+        "S_VAL": 0.7845101258894362,
+        "S_GR": 0.7523809523809524
+      }
+    },
+    "TLN": {
+      "vulnerability": 0.6811239772688371,
+      "components": {
+        "S_DE": 0.9807692307692307,
+        "S_FCF": 0.5192307692307692,
+        "S_CR": 0.6448598130841121,
+        "S_ROIC": 0.822429906542056,
+        "S_VAL": 0.2380952380952381,
+        "S_GR": 0.9047619047619048
+      }
+    },
+    "TRGP": {
+      "vulnerability": 0.6392136295195835,
+      "components": {
+        "S_DE": 0.9711538461538461,
+        "S_FCF": 0.75,
+        "S_CR": 0.897196261682243,
+        "S_ROIC": 0.4392523364485982,
+        "S_VAL": 0.4819581280788177,
+        "S_GR": 0.0761904761904762
+      }
+    },
+    "TSM": {
+      "vulnerability": 0.33895275339120007,
+      "components": {
+        "S_DE": 0.25,
+        "S_FCF": 0.22115384615384615,
+        "S_CR": 0.33644859813084116,
+        "S_ROIC": 0.14953271028037385,
+        "S_VAL": 0.5690065681444992,
+        "S_GR": 0.8476190476190476
+      }
+    },
+    "TXN": {
+      "vulnerability": 0.42375302717209745,
+      "components": {
+        "S_DE": 0.5865384615384616,
+        "S_FCF": 0.40384615384615385,
+        "S_CR": 0.14953271028037385,
+        "S_ROIC": 0.2710280373831776,
+        "S_VAL": 0.6231185002736727,
+        "S_GR": 0.42857142857142855
+      }
+    },
+    "UEC": {
+      "vulnerability": 0.5857208329054123,
+      "components": {
+        "S_DE": 0.009615384615384616,
+        "S_FCF": 0.9903846153846154,
+        "S_CR": 0.01869158878504673,
+        "S_ROIC": 0.9252336448598131,
+        "S_VAL": 0.9952380952380953,
+        "S_GR": 0.0
+      }
+    },
+    "UUUU": {
+      "vulnerability": 0.7404521841087262,
+      "components": {
+        "S_DE": 0.6346153846153846,
+        "S_FCF": 0.9326923076923077,
+        "S_CR": 0.03738317757009346,
+        "S_ROIC": 0.8878504672897196,
+        "S_VAL": 0.9333333333333333,
+        "S_GR": 0.5904761904761905
+      }
+    },
+    "VRT": {
+      "vulnerability": 0.4687193291320346,
+      "components": {
+        "S_DE": 0.5576923076923077,
+        "S_FCF": 0.375,
+        "S_CR": 0.5233644859813085,
+        "S_ROIC": 0.22429906542056077,
+        "S_VAL": 0.6320402298850575,
+        "S_GR": 0.7142857142857143
+      }
+    },
+    "VST": {
+      "vulnerability": 0.5461031131694603,
+      "components": {
+        "S_DE": 0.9326923076923077,
+        "S_FCF": 0.5961538461538461,
+        "S_CR": 0.794392523364486,
+        "S_ROIC": 0.4579439252336449,
+        "S_VAL": 0.24427339901477832,
+        "S_GR": 0.02857142857142857
+      }
+    },
+    "WDAY": {
+      "vulnerability": 0.3904528562397963,
+      "components": {
+        "S_DE": 0.47115384615384615,
+        "S_FCF": 0.15384615384615385,
+        "S_CR": 0.7570093457943925,
+        "S_ROIC": 0.5420560747663552,
+        "S_VAL": 0.23067186644772852,
+        "S_GR": 0.3904761904761905
+      }
+    },
+    "WDC": {
+      "vulnerability": 0.26820574352599813,
+      "components": {
+        "S_DE": 0.2403846153846154,
+        "S_FCF": 0.2596153846153846,
+        "S_CR": 0.5327102803738317,
+        "S_ROIC": 0.028037383177570097,
+        "S_VAL": 0.6169129720853859,
+        "S_GR": 0.0380952380952381
+      }
+    },
+    "WMB": {
+      "vulnerability": 0.6649508562256307,
+      "components": {
+        "S_DE": 0.9230769230769231,
+        "S_FCF": 0.6826923076923077,
+        "S_CR": 0.8317757009345794,
+        "S_ROIC": 0.5700934579439252,
+        "S_VAL": 0.571996442255063,
+        "S_GR": 0.26666666666666666
+      }
+    },
+    "WULF": {
+      "vulnerability": 0.8943964816336311,
+      "components": {
+        "S_DE": null,
+        "S_FCF": 0.9807692307692307,
+        "S_CR": 0.6542056074766356,
+        "S_ROIC": 0.9626168224299065,
+        "S_VAL": 0.9523809523809523,
+        "S_GR": 0.6952380952380952
+      }
+    },
+    "XEL": {
+      "vulnerability": 0.6786833446658616,
+      "components": {
+        "S_DE": 0.8173076923076923,
+        "S_FCF": 0.9134615384615384,
+        "S_CR": 0.8691588785046729,
+        "S_ROIC": 0.7289719626168225,
+        "S_VAL": 0.2149425287356322,
+        "S_GR": 0.21904761904761905
+      }
+    },
+    "ZS": {
+      "vulnerability": 0.5004434759166068,
+      "components": {
+        "S_DE": 0.5673076923076923,
+        "S_FCF": 0.20192307692307687,
+        "S_CR": 0.47663551401869164,
+        "S_ROIC": 0.8598130841121495,
+        "S_VAL": 0.3410714285714286,
+        "S_GR": 0.6571428571428571
+      }
+    }
+  }
+}

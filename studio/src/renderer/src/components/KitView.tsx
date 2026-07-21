@@ -129,6 +129,23 @@ function KitDetailPanel({ d }: { d: KitDetail }) {
           </div>
         )}
       </Section>
+      {d.slide_images.length > 0 && (
+        <Section title="RENDERED SLIDES">
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {d.slide_images.map((f) => (
+              <img key={f} src={`media://higgs/${f}`} alt={f}
+                className="rounded-lg border border-white/10 h-72 shrink-0 bg-black/40" />
+            ))}
+          </div>
+        </Section>
+      )}
+      {d.reel_video && (
+        <Section title="REEL">
+          <video controls preload="metadata" src={`media://higgs/${d.reel_video}`}
+            className="rounded-xl border border-white/10 w-full max-w-xs" />
+          <div className="text-white/40 text-xs mt-1 font-mono">{d.reel_video}</div>
+        </Section>
+      )}
       {d.hero_image && (
         <Section title="HERO IMAGE">
           <img src={`media://higgs/${d.hero_image}`} alt={`${d.ticker} hero`}

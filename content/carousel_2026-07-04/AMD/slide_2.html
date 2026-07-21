@@ -1,0 +1,44 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><title>AMD 2/5 — Price vs Model</title><style>@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1080px;height:1350px;overflow:hidden;}
+body{font-family:'Inter',sans-serif;position:relative;}
+.serif{font-family:'Fraunces',serif;}
+.mono{font-family:'JetBrains Mono',monospace;}
+.foot{position:absolute;left:90px;right:90px;bottom:56px;display:flex;justify-content:space-between;align-items:center;}
+.wordmark{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;letter-spacing:.34em;}
+.pageno{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.18em;}
+.tag{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.30em;text-transform:uppercase;}
+
+body{background:#0A0D12;color:#E8EDF2;}
+body::before{content:'';position:absolute;inset:0;
+ background-image:linear-gradient(rgba(232,237,242,.035) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(232,237,242,.035) 1px,transparent 1px);
+ background-size:40px 40px;pointer-events:none;}
+body::after{content:'';position:absolute;width:1200px;height:1200px;left:50%;top:-15%;transform:translateX(-50%);
+ background:radial-gradient(circle,rgba(16,185,129,.14) 0%,rgba(16,185,129,0) 60%);pointer-events:none;}
+.wordmark{color:#E8EDF2;} .pageno{color:rgba(232,237,242,.5);}
+.accent{color:#34D399;}
+.card{background:rgba(232,237,242,.045);border:1px solid rgba(232,237,242,.10);border-radius:20px;position:relative;z-index:2;}
+
+.wrap{position:absolute;inset:90px;display:flex;flex-direction:column;z-index:2;}
+h2{font-family:'Fraunces',serif;font-size:58px;line-height:1.14;font-weight:600;margin-top:24px;}
+.vs{display:flex;gap:28px;margin-top:56px;}
+.box{flex:1;padding:44px 40px;}
+.boxlab{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.22em;text-transform:uppercase;color:rgba(232,237,242,.55);}
+.boxnum{font-family:'Fraunces',serif;font-size:96px;font-weight:700;margin-top:14px;letter-spacing:-.02em;}
+.gap{margin-top:56px;padding:44px 48px;border:1px solid rgba(224,162,59,.45);border-radius:20px;background:rgba(224,162,59,.07);position:relative;z-index:2;}
+.gapnum{font-family:'Fraunces',serif;font-size:84px;font-weight:700;color:#E0A23B;letter-spacing:-.02em;}
+.gaplab{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.2em;color:rgba(232,237,242,.65);text-transform:uppercase;margin-top:8px;}
+.note{margin-top:44px;font-size:27px;line-height:1.55;color:rgba(232,237,242,.82);max-width:880px;position:relative;z-index:2;}
+</style></head><body>
+<div class='wrap'>
+  <div class='tag accent'>The Set-Up &middot; Price vs. The Model</div>
+  <h2>The market and the analysts' model are looking at two different companies.</h2>
+  <div class='vs'>
+    <div class='box card'><div class='boxlab'>Market price</div><div class='boxnum accent'>$517.82</div></div>
+    <div class='box card'><div class='boxlab'>Fundamental value</div><div class='boxnum' style='color:rgba(232,237,242,.85);'>$238.81</div></div>
+  </div>
+  <div class='gap'><div class='gapnum'>+116.8%</div><div class='gaplab'>price above the analysts' model</div></div>
+  <div class='note'>That gap is a <b style='color:#34D399;'>premium, not a prediction</b>. The model anchors on today's cash flows; the price is a bet on what the AI-accelerator ramp does to tomorrow's. One of them will move toward the other.</div>
+</div>
+<div class='foot'><div class='wordmark'>AI STACK</div><div class='pageno'>02 / 05</div></div></body></html>

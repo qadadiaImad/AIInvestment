@@ -1,0 +1,51 @@
+{
+  "date": "2026-07-04",
+  "generated_at": "2026-07-04T21:18Z",
+  "picks": {
+    "ai": "WDC",
+    "quantum": "IONQ"
+  },
+  "market_pulse": {
+    "sp500": {
+      "symbol": "^GSPC",
+      "price": 7483.24,
+      "change_pct": 1.71,
+      "retrieved_at": "2026-07-04T21:18Z",
+      "source": "yahoo:^GSPC",
+      "source_class": "xhr-json"
+    },
+    "nasdaq": {
+      "symbol": "^IXIC",
+      "price": 25832.67,
+      "change_pct": 1.87,
+      "retrieved_at": "2026-07-04T21:18Z",
+      "source": "yahoo:^IXIC",
+      "source_class": "xhr-json"
+    },
+    "vix": {
+      "symbol": "^VIX",
+      "price": 15.81,
+      "change_pct": -10.42,
+      "retrieved_at": "2026-07-04T21:18Z",
+      "source": "yahoo:^VIX",
+      "source_class": "xhr-json"
+    },
+    "ten_year": {
+      "symbol": "^TNX",
+      "price": 4.48,
+      "change_pct": 0.11,
+      "retrieved_at": "2026-07-04T21:18Z",
+      "source": "yahoo:^TNX",
+      "source_class": "xhr-json"
+    }
+  },
+  "chart": "chart.png",
+  "chart_error": null,
+  "rails_passed": true,
+  "sources": [
+    "yahoo:^GSPC",
+    "yahoo:^IXIC",
+    "yahoo:^VIX",
+    "yahoo:^TNX"
+  ]
+}
