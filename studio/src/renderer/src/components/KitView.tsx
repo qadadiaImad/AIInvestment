@@ -143,6 +143,13 @@ export default function KitView() {
   // re-fetch on mount AND whenever the header Refresh button bumps the nonce,
   // so newly generated kits (e.g. reels_2026-06-27.*) show without an app restart.
   useEffect(() => { window.studio.kit.list().then(setEntries) }, [nonce])
+  // Also re-pull the currently-open kit on Refresh so its fundamentals/slides reflect
+  // freshly-written data. `sel` is intentionally excluded from deps — we only want this
+  // to fire on nonce; opening a kit already fetches via `open`.
+  useEffect(() => {
+    if (sel) window.studio.kit.get(sel.date, sel.ticker).then(setSel)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nonce])
   const open = (e: KitEntry) => window.studio.kit.get(e.date, e.ticker).then(setSel)
   const byDate = new Map<string, KitEntry[]>()
   for (const e of entries) (byDate.get(e.date) ?? byDate.set(e.date, []).get(e.date)!).push(e)
