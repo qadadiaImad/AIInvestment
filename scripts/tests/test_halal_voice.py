@@ -1,3 +1,4 @@
+import copy
 import pathlib
 import sys
 
@@ -34,3 +35,9 @@ def test_merge_manifest_updates_existing_and_appends():
     assert out["reels"][0]["voice"] == "NEW" and out["reels"][0]["hero"] == "H"
     out2 = gv.merge_manifest(out, "2026-07-21", "GEV", "V2")
     assert {"tk": "GEV", "hero": "", "voice": "V2", "voice_name": "Karim"} in out2["reels"]
+
+def test_merge_manifest_does_not_mutate_input():
+    m = {"date": "2026-06-30", "reels": [{"tk": "WULF", "hero": "H", "voice": "OLD"}]}
+    snapshot = copy.deepcopy(m)
+    gv.merge_manifest(m, "2026-07-21", "WULF", "NEW")
+    assert m == snapshot

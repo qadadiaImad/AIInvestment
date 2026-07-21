@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import pathlib
 import subprocess
 import sys
@@ -19,7 +20,7 @@ ROOT = HIGGS.parent
 if str(ROOT / "scripts") not in sys.path:
     sys.path.insert(0, str(ROOT / "scripts"))
 from aiinvest.kit_md import parse_cfg                       # noqa: E402
-from aiinvest.halal_join import load_halal, screen_card_data  # noqa: E402
+from aiinvest.halal_join import load_halal, screen_card_data, HalalDataMissing  # noqa: E402
 from aiinvest.halal_lint import lint_halal_script           # noqa: E402
 import re                                                    # noqa: E402
 
@@ -54,13 +55,14 @@ def compose_tts_cmd(script, voice):
 def merge_manifest(manifest, date, tk, voice_url):
     manifest = dict(manifest)
     manifest["date"] = date
-    reels = list(manifest.get("reels", []))
-    for e in reels:
+    reels = []
+    found = False
+    for e in manifest.get("reels", []):
         if e.get("tk") == tk:
-            e["voice"] = voice_url
-            e["voice_name"] = "Karim"
-            break
-    else:
+            e = {**e, "voice": voice_url, "voice_name": "Karim"}
+            found = True
+        reels.append(e)
+    if not found:
         reels.append({"tk": tk, "hero": "", "voice": voice_url, "voice_name": "Karim"})
     manifest["reels"] = reels
     return manifest
@@ -80,7 +82,10 @@ def main(argv=None):
     m = re.search(r"reels_(\d{4}-\d{2}-\d{2})_kit", kit.name)
     date = args.date or (m.group(1) if m else "")
 
-    verdicts, warns = load_halal(ROOT / "web/public/data/halal.json")
+    try:
+        verdicts, warns = load_halal(ROOT / "web/public/data/halal.json")
+    except HalalDataMissing as e:
+        raise SystemExit(f"REFUSED: {e}")
     for w in warns:
         print("WARN", w)
 
@@ -125,8 +130,10 @@ def main(argv=None):
         if not url:
             raise SystemExit(f"could not find voice URL in CLI output for {tk}:\n{r.stdout[-800:]}")
         manifest = json.loads(MANIFEST.read_text(encoding="utf-8")) if MANIFEST.exists() else {"reels": []}
-        MANIFEST.write_text(json.dumps(merge_manifest(manifest, date, tk, url), indent=1),
-                            encoding="utf-8")
+        tmp = MANIFEST.with_suffix(".json.tmp")
+        tmp.write_text(json.dumps(merge_manifest(manifest, date, tk, url), indent=1),
+                       encoding="utf-8")
+        os.replace(tmp, MANIFEST)
         print(f"OK {tk} voice -> {url}")
     return 1 if failed else 0
 
