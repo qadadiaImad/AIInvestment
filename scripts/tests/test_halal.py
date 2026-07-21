@@ -235,3 +235,27 @@ def test_interest_income_adds_to_activity_pct():
 def test_no_xbrl_behaves_exactly_as_v1():
     a = halal.verdict("NVDA", NVDA_METRICS, {**CLEAN, "impermissible_revenue_pct": {"value": 0.0}})
     assert a["overall"] == "halal"          # v1 golden unchanged
+
+
+# ---------------------------------------------------------------------------
+# Task 9: trailing-average market cap builder
+# ---------------------------------------------------------------------------
+
+def _series(months, close):
+    # one entry per month-end (the 28th) for `months` months
+    return [{"date": f"20{23 + (i // 12):02d}-{(i % 12) + 1:02d}-28", "close": close}
+            for i in range(months)]
+
+
+def test_avg_mcap_constant_series_equals_spot_shares_times_close():
+    series = _series(36, 10.0)
+    out = halal.avg_market_cap(series, 36, spot_mcap=1000.0, spot_close=10.0)
+    assert abs(out - 1000.0) < 1e-6          # 100 shares x avg close 10.0
+
+
+def test_avg_mcap_insufficient_months_is_none():
+    assert halal.avg_market_cap(_series(12, 10.0), 36, 1000.0, 10.0) is None
+
+
+def test_avg_mcap_missing_spot_is_none():
+    assert halal.avg_market_cap(_series(36, 10.0), 36, None, 10.0) is None

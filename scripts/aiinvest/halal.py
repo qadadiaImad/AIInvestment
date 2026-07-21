@@ -254,6 +254,64 @@ def verdict(symbol, metrics, curated, xbrl_facts=None):
 
 
 # ---------------------------------------------------------------------------
+# Task 9: trailing-average market cap from stored price series
+# ---------------------------------------------------------------------------
+
+def avg_market_cap(price_series, months, spot_mcap, spot_close):
+    """Compute trailing-average market cap from a stored price series.
+
+    Args:
+        price_series: list of {"date": "YYYY-MM-DD", "close": float} dicts
+                      (the ``"series"`` array from web/public/data/prices/<SYM>.json).
+        months:       number of trailing calendar months to average.
+        spot_mcap:    current (spot) market capitalisation in USD.
+        spot_close:   closing price on the same date as spot_mcap.
+
+    Returns:
+        float: avg month-end close × implied shares (spot_mcap / spot_close).
+        None: if spot_mcap or spot_close is missing/zero, if the series is
+              empty/None, or if fewer than ceil(months × 0.75) distinct months
+              are present.
+
+    Method:
+        Group by YYYY-MM, take the last entry per month (sorted by date),
+        sort the resulting month list, take the trailing ``months`` entries,
+        check coverage threshold (≥ months × 0.75 distinct months), compute
+        average close, multiply by implied shares.
+    """
+    if not price_series or spot_mcap is None or spot_close is None or spot_close == 0:
+        return None
+
+    # Group by YYYY-MM, keep the last (latest date) close per month.
+    monthly = {}
+    for entry in price_series:
+        d = entry.get("date", "")
+        if len(d) < 7:
+            continue
+        ym = d[:7]
+        # Keep the entry with the latest date string within the month.
+        if ym not in monthly or d > monthly[ym][0]:
+            monthly[ym] = (d, entry.get("close"))
+
+    # Sort months and take the trailing `months` entries.
+    sorted_months = sorted(monthly.keys())
+    tail = sorted_months[-months:]  # at most `months` entries
+
+    # Coverage gate: require ≥ 75% of requested months to be present.
+    required = months * 0.75
+    if len(tail) < required:
+        return None
+
+    closes = [monthly[ym][1] for ym in tail if monthly[ym][1] is not None]
+    if not closes:
+        return None
+
+    avg_close = sum(closes) / len(closes)
+    implied_shares = spot_mcap / spot_close
+    return avg_close * implied_shares
+
+
+# ---------------------------------------------------------------------------
 # Task 4: curated business-activity loader + validator
 # ---------------------------------------------------------------------------
 import json as _json
