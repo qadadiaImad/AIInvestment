@@ -1,7 +1,29 @@
 # Remotion Reel Factory — Design Spec
 
-**Date:** 2026-07-21 · **Status:** Approved (owner, this session)
+**Date:** 2026-07-21 · **Status:** Approved (owner, this session; bubble contract amended same day)
 **Owner decisions:** bubble mode = **talking on camera** (podcast feel) · first template = **halal verdict story** · approach = **scaffold from the official Remotion TikTok template**
+
+## 0-bis. Bubble contract (owner amendment, 2026-07-21 evening)
+
+1. **The bubble spans the full reel with NO loops.** Talking clips run back-to-back
+   (`<Series>` of clips, one per script beat), each generated so **his lips read the
+   exact line that narrates that scene's slide**. Reel duration derives from the
+   concatenated clips; the revoiced speech is the master audio; whisper captions run
+   over the full track. Looping B-roll is dead — it reads as fake.
+2. **Setting = his podcast room, not the kitchen.** A serious content creator's setup:
+   **always next to his microphone**, projecting confidence and professionalism.
+   **Pose may vary between clips/reels** — sometimes seated at the desk mic, sometimes
+   standing at a boom mic — but the room, mic presence, wardrobe register (smart
+   casual/blazer) and grade stay consistent. (The kitchen theme survives as an
+   occasional creative variant, e.g. the S2 metaphor piece — not the default set.)
+3. **One-time set anchors:** 2–3 podcast-room stills (seated-at-mic, standing-at-mic)
+   generated once with the persona identity reference and reused as start frames for
+   every talking clip — same room forever. Gated on the persona decision (Karim vs
+   Gentle Planner); if Karim, his pinned IDs in `course/persona/higgsfield-ids.json`
+   apply.
+4. **Cost per ~24s reel** updates to: 3 × 8s talking clips (SD 2.0 Mini ~20 cr) +
+   3 × voice_change (2 cr) ≈ **66 cr** + free render. The zero-credit VO-only mode
+   (friend's slide style, no bubble) remains available per reel.
 
 ---
 
