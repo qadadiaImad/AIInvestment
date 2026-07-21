@@ -39,13 +39,13 @@ export default function Home() {
 
       {/* Graph hero */}
       <section className="relative border-b border-term-border">
-        <div className="flex items-center justify-between px-3 py-1.5">
-          <h1 className="text-[12px] font-semibold uppercase tracking-wider text-zinc-300">
+        <div className="flex items-start justify-between gap-3 px-3 py-1.5">
+          <h1 className="text-[12px] font-semibold uppercase tracking-wider text-zinc-300 min-w-0">
             Capital Web — who funds, builds, and buys across the AI value chain
           </h1>
           <Link
             href="/map"
-            className="text-[11px] text-blue-400 hover:text-blue-300"
+            className="text-[11px] text-blue-400 hover:text-blue-300 shrink-0 whitespace-nowrap"
           >
             Full map →
           </Link>
@@ -57,13 +57,13 @@ export default function Home() {
 
       {/* Screener */}
       <section className="px-3 py-3 flex flex-col gap-2">
-        <div className="flex items-center justify-between">
-          <h2 className="text-[12px] font-semibold uppercase tracking-wider text-zinc-300">
+        <div className="flex items-start justify-between gap-3">
+          <h2 className="text-[12px] font-semibold uppercase tracking-wider text-zinc-300 min-w-0">
             Screener — {data.screener.length} names (click headers to sort)
           </h2>
           <Link
             href="/screener"
-            className="text-[11px] text-blue-400 hover:text-blue-300"
+            className="text-[11px] text-blue-400 hover:text-blue-300 shrink-0 whitespace-nowrap"
           >
             Open screener →
           </Link>
