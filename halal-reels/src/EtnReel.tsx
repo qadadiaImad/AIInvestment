@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Sequence, interpolate, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Sequence, interpolate, useCurrentFrame, Audio, staticFile } from "remotion";
 import { DATE, ETN } from "./data";
 import { C, FONT } from "./theme";
 import { Bg, Caption, EndCard, Foot, Head, Kicker, Slam, Stamp, clamp, easeOut, inOut, pop } from "./ui";
@@ -101,18 +101,20 @@ const PanelMeter: React.FC<{
 };
 
 const PAD = 84;
+const S = (f: number) => Math.round(f * 1.9655172413793103);
 
 export const EtnReel: React.FC = () => {
   const frame = useCurrentFrame();
   return (
     <AbsoluteFill style={{ fontFamily: FONT.body }}>
       <Bg />
+      <Audio src={staticFile("voice_etn.wav")} />
       <AbsoluteFill style={{ padding: PAD }}>
         <Head tk="ETN" sub="POWER MANAGEMENT · NYSE" badge={ETN.badge} />
       </AbsoluteFill>
 
       {/* S1 — hook + books */}
-      <Sequence from={8} durationInFrames={132} name="Hook">
+      <Sequence from={S(8)} durationInFrames={S(132)} name="Hook">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center" }}>
           <Slam size={104}>One stock.</Slam>
           <Slam size={104} delay={14}>
@@ -136,7 +138,7 @@ export const EtnReel: React.FC = () => {
       </Sequence>
 
       {/* S2 — split meters */}
-      <Sequence from={140} durationInFrames={190} name="SplitTest">
+      <Sequence from={S(140)} durationInFrames={S(190)} name="SplitTest">
         <AbsoluteFill style={{ padding: PAD, paddingTop: 250, gap: 30 }}>
           <Kicker text="SAME DEBT — TWO MEASURES" />
           <div style={{ display: "flex", gap: 30, flex: 1, maxHeight: 900 }}>
@@ -167,7 +169,7 @@ export const EtnReel: React.FC = () => {
       </Sequence>
 
       {/* S3 — the lesson */}
-      <Sequence from={330} durationInFrames={170} name="Lesson">
+      <Sequence from={S(330)} durationInFrames={S(170)} name="Lesson">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center", gap: 44 }}>
           <Slam size={116}>Same numbers.</Slam>
           <Slam size={116} color={C.amber} delay={14}>
@@ -180,7 +182,7 @@ export const EtnReel: React.FC = () => {
               fontSize: 74,
               color: C.ink,
               marginTop: 30,
-              opacity: interpolate(frame, [330 + 40, 330 + 54], [0, 1], clamp),
+              opacity: interpolate(frame, [S(330) + 40, S(330) + 54], [0, 1], clamp),
             }}
           >
             <span style={{ color: C.redHot }}>2/3 say no</span>
@@ -198,13 +200,13 @@ export const EtnReel: React.FC = () => {
       </Sequence>
 
       {/* S4 — end card */}
-      <Sequence from={500} name="EndCard">
+      <Sequence from={S(500)} name="EndCard">
         <Bg />
         <EndCard badge={ETN.badge} line="Passes AAOIFI. Fails FTSE & MSCI. Always check the rulebook." date={DATE} />
       </Sequence>
 
       <AbsoluteFill style={{ padding: PAD, justifyContent: "flex-end", pointerEvents: "none" }}>
-        <Sequence from={0} durationInFrames={500} layout="none" name="Footer">
+        <Sequence from={0} durationInFrames={S(500)} layout="none" name="Footer">
           <Foot />
         </Sequence>
       </AbsoluteFill>

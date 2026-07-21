@@ -11,9 +11,9 @@ const H = 1920;
 export const RemotionRoot: React.FC = () => {
   return (
     <>
-      <Composition id="WulfReel" component={WulfReel} durationInFrames={640} fps={FPS} width={W} height={H} />
-      <Composition id="EtnReel" component={EtnReel} durationInFrames={580} fps={FPS} width={W} height={H} />
-      <Composition id="GevReel" component={GevReel} durationInFrames={545} fps={FPS} width={W} height={H} />
+      <Composition id="WulfReel" component={WulfReel} durationInFrames={1020} fps={FPS} width={W} height={H} />
+      <Composition id="EtnReel" component={EtnReel} durationInFrames={1140} fps={FPS} width={W} height={H} />
+      <Composition id="GevReel" component={GevReel} durationInFrames={900} fps={FPS} width={W} height={H} />
     </>
   );
 };

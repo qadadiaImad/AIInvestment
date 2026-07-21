@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Easing, Sequence, interpolate, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Easing, Sequence, interpolate, useCurrentFrame, Audio, staticFile } from "remotion";
 import { DATE, WULF } from "./data";
 import { C, FONT } from "./theme";
 import { Bg, Caption, CoinDrop, EndCard, Foot, Head, Kicker, LimitMeter, Slam, Stamp, clamp } from "./ui";
@@ -46,17 +46,19 @@ const Donut: React.FC<{ pct: number; from: number }> = ({ pct, from }) => {
 };
 
 const PAD = 84;
+const S = (f: number) => Math.round(f * 1.59375);
 
 export const WulfReel: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily: FONT.body }}>
       <Bg tint={C.amber} />
+      <Audio src={staticFile("voice_wulf.wav")} />
       <AbsoluteFill style={{ padding: PAD }}>
         <Head tk="WULF" sub="AI DATACENTERS · NASDAQ" badge={WULF.badge} />
       </AbsoluteFill>
 
       {/* S1 — cold open */}
-      <Sequence from={8} durationInFrames={92} name="Hook">
+      <Sequence from={S(8)} durationInFrames={S(92)} name="Hook">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center" }}>
           <Slam size={118}>This stock earns</Slam>
           <Slam size={132} color={C.amber} delay={14}>
@@ -72,7 +74,7 @@ export const WulfReel: React.FC = () => {
       </Sequence>
 
       {/* S2 — debt counter */}
-      <Sequence from={100} durationInFrames={150} name="DebtTest">
+      <Sequence from={S(100)} durationInFrames={S(150)} name="DebtTest">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center", gap: 40 }}>
           <Kicker text="TEST 1 — THE DEBT" color={C.amber} />
           <LimitMeter
@@ -94,7 +96,7 @@ export const WulfReel: React.FC = () => {
       </Sequence>
 
       {/* S3 — three stamps */}
-      <Sequence from={250} durationInFrames={100} name="Stamps">
+      <Sequence from={S(250)} durationInFrames={S(100)} name="Stamps">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center", gap: 46 }}>
           <Kicker text="THE RULEBOOKS AGREE" color={C.redHot} />
           {WULF.stamps.map((s, i) => (
@@ -107,7 +109,7 @@ export const WulfReel: React.FC = () => {
       </Sequence>
 
       {/* S4 — bitcoin slice */}
-      <Sequence from={350} durationInFrames={120} name="BitcoinSlice">
+      <Sequence from={S(350)} durationInFrames={S(120)} name="BitcoinSlice">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center", gap: 44, alignItems: "center" }}>
           <Kicker text="TEST 2 — THE BUSINESS" color={C.amber} />
           <Donut pct={WULF.miningPct} from={10} />
@@ -121,7 +123,7 @@ export const WulfReel: React.FC = () => {
       </Sequence>
 
       {/* S5 — purification */}
-      <Sequence from={470} durationInFrames={92} name="Purification">
+      <Sequence from={S(470)} durationInFrames={S(92)} name="Purification">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center", gap: 40, alignItems: "center" }}>
           <Kicker text="THE FIX HAS A NAME" />
           <CoinDrop from={16} label="13¢" />
@@ -135,13 +137,13 @@ export const WulfReel: React.FC = () => {
       </Sequence>
 
       {/* S6 — end card */}
-      <Sequence from={562} name="EndCard">
+      <Sequence from={S(562)} name="EndCard">
         <Bg tint={C.amber} />
         <EndCard badge={WULF.badge} line="Real business. Flagged twice. Verdict: review." date={DATE} />
       </Sequence>
 
       <AbsoluteFill style={{ padding: PAD, justifyContent: "flex-end", pointerEvents: "none" }}>
-        <Sequence from={0} durationInFrames={562} layout="none" name="Footer">
+        <Sequence from={0} durationInFrames={S(562)} layout="none" name="Footer">
           <Foot />
         </Sequence>
       </AbsoluteFill>
