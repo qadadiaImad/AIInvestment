@@ -58,3 +58,4 @@ web/public/data/
 
 # Local secrets dir — API keys live here, never committed
 .secrets/
+studio/.claude/
