@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { getSiteData } from "@/lib/data";
+import { getSiteData, getHalalData } from "@/lib/data";
+import type { HalalOverall } from "@/lib/halal";
 import ScreenerTable from "@/components/ScreenerTable";
 
 export const metadata: Metadata = {
@@ -10,6 +11,14 @@ export const metadata: Metadata = {
 
 export default function ScreenerPage() {
   const data = getSiteData();
+
+  // Build symbol -> HalalOverall map from halal.json (null-safe: absent -> undefined).
+  const halalData = getHalalData();
+  const halalMap: Record<string, HalalOverall> | undefined = halalData
+    ? Object.fromEntries(
+        Object.entries(halalData.verdicts).map(([sym, v]) => [sym, v.overall]),
+      )
+    : undefined;
 
   // Detect whether the merged dataset includes any Quantum-tagged rows.
   const hasQuantum = data.screener.some((r) => {
@@ -34,6 +43,7 @@ export default function ScreenerPage() {
       <ScreenerTable
         rows={data.screener}
         caption={`${scopeLabel} screener`}
+        halal={halalMap}
       />
       <p className="text-[10px] text-term-muted mt-1">
         Metrics are date-stamped point-in-time figures derived from public

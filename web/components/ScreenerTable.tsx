@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { ScreenerRow } from "@/lib/data";
+import type { HalalOverall } from "@/lib/halal";
+import { overallLabel, overallTone } from "@/lib/halal";
 import LayerChip from "@/components/LayerChip";
 
 // Optional sector tagging added by the merged AI + Quantum loader. AI-only data
@@ -115,12 +117,41 @@ function cmp(a: ScreenerRow, b: ScreenerRow, key: SortKey): number {
   return (av as number) - (bv as number);
 }
 
+// Tone -> inline style colors for the halal badge (mirrors existing SectorChip idiom).
+const HALAL_TONE_COLOR: Record<string, string> = {
+  pass: "#4ade80",   // emerald-400 — halal
+  fail: "#f87171",   // red-400     — not_halal
+  warn: "#facc15",   // yellow-400  — questionable
+  muted: "#71717a",  // zinc-500    — insufficient_data
+};
+
+function HalalBadge({ symbol, overall }: { symbol: string; overall: HalalOverall }) {
+  const tone = overallTone(overall);
+  const color = HALAL_TONE_COLOR[tone] ?? HALAL_TONE_COLOR.muted;
+  return (
+    <Link
+      href="/halal"
+      title={`${symbol} halal screening — ${overallLabel(overall)}`}
+      className="inline-block px-1.5 py-px text-[9.5px] font-semibold uppercase tracking-wider rounded-sm no-underline"
+      style={{
+        color,
+        border: `1px solid ${color}`,
+        backgroundColor: `${color}1a`,
+      }}
+    >
+      {overallLabel(overall)}
+    </Link>
+  );
+}
+
 export default function ScreenerTable({
   rows,
   caption,
+  halal,
 }: {
   rows: ScreenerRow[];
   caption?: string;
+  halal?: Record<string, HalalOverall>;
 }) {
   const [sortKey, setSortKey] = useState<SortKey>("perf_1y");
   const [dir, setDir] = useState<Dir>("desc");
@@ -214,6 +245,7 @@ export default function ScreenerTable({
               </th>
             ))}
             {hasSectors && <th>Sector</th>}
+            {halal && <th>Halal</th>}
           </tr>
         </thead>
         <tbody>
@@ -265,6 +297,15 @@ export default function ScreenerTable({
                 {hasSectors && (
                   <td>
                     <SectorChip sectors={rowSectors(r as SectorRow)} />
+                  </td>
+                )}
+                {halal && (
+                  <td>
+                    {halal[r.symbol] ? (
+                      <HalalBadge symbol={r.symbol} overall={halal[r.symbol]} />
+                    ) : (
+                      <span className="text-term-muted">{DASH}</span>
+                    )}
                   </td>
                 )}
               </tr>
