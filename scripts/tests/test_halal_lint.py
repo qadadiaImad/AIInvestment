@@ -24,3 +24,62 @@ def test_missing_disclaimer_rejected():
 def test_no_card_number_rejected():
     errs = lint_halal_script("A company did things. Educational, not financial or religious advice.", CARD)
     assert any("number" in e.lower() for e in errs)
+
+
+# --- Regression: FINDING 1 — qualified/negated verdict claims must not bypass the linter ---
+
+def test_qualified_totally_halal_rejected():
+    errs = lint_halal_script(
+        "WULF is totally halal. Educational, not financial or religious advice.", CARD)
+    assert any("halal" in e.lower() or "haram" in e.lower() for e in errs)
+
+
+def test_qualified_definitely_haram_rejected():
+    errs = lint_halal_script(
+        "This stock is definitely haram. Educational, not financial or religious advice.", CARD)
+    assert any("halal" in e.lower() or "haram" in e.lower() for e in errs)
+
+
+def test_negated_is_not_halal_rejected():
+    errs = lint_halal_script(
+        "The screen shows this is not halal. Educational, not financial or religious advice.", CARD)
+    assert any("halal" in e.lower() or "haram" in e.lower() for e in errs)
+
+
+def test_possessive_apostrophe_s_halal_rejected():
+    errs = lint_halal_script(
+        "WULF's halal, according to the numbers. Educational, not financial or religious advice.", CARD)
+    assert any("halal" in e.lower() or "haram" in e.lower() for e in errs)
+
+
+# --- Regression: FINDING 2 — number-anchor must not accept invented figures ---
+
+def test_spoken_single_digit_word_nine_does_not_anchor():
+    errs = lint_halal_script(
+        "The board raised nine concerns regarding governance during the review. "
+        "Educational, not financial or religious advice.", CARD)
+    assert any("number" in e.lower() for e in errs)
+
+
+def test_spoken_single_digit_word_zero_does_not_anchor():
+    errs = lint_halal_script(
+        "The company has zero debt covenant breaches. "
+        "Educational, not financial or religious advice.", CARD)
+    assert any("number" in e.lower() for e in errs)
+
+
+def test_raw_number_substring_does_not_anchor():
+    errs = lint_halal_script(
+        "Metric came in at 19.05 percent. "
+        "Educational, not financial or religious advice.", CARD)
+    assert any("number" in e.lower() for e in errs)
+
+
+# --- Regression: legitimate qualified-screen phrasing must stay CLEAN ---
+
+def test_legit_passes_the_screen_phrasing_stays_clean():
+    good = (
+        "TeraWulf's crypto-mining revenue is thirty-eight point two percent, which "
+        "passes the AAOIFI screen given the margin. "
+        "Educational, not financial or religious advice.")
+    assert lint_halal_script(good, CARD) == []
