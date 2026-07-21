@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-07-21T13:07:37Z",
+  "verdicts": {
+    "GEV": {
+      "symbol": "GEV", "overall": "halal", "overall_basis": "AAOIFI",
+      "standards": {
+        "AAOIFI": {"status": "pass", "tests": [
+          {"id": "debt_mcap", "label": "debt / market cap", "ratio": 0.0099, "threshold": 0.30, "margin": 0.2901, "status": "pass"},
+          {"id": "cash_mcap", "label": "cash / market cap", "ratio": 0.05, "threshold": 0.30, "margin": 0.25, "status": "pass"}],
+          "activity_status": "pass"},
+        "FTSE": {"status": "pass", "tests": [
+          {"id": "debt_assets", "label": "debt / total assets", "ratio": 0.10, "threshold": 0.333, "margin": 0.233, "status": "pass"}],
+          "activity_status": "pass"},
+        "MSCI": {"status": "pass", "tests": [
+          {"id": "debt_assets", "label": "debt / total assets", "ratio": 0.10, "threshold": 0.3333, "margin": 0.2333, "status": "pass"}],
+          "activity_status": "pass"}
+      },
+      "business": {"status": "clean", "categories": [], "impermissible_revenue_pct": null},
+      "purification": {"per_share": 0.0, "status": "computed"},
+      "inputs_asof": "2026-07-21T13:07:36Z"
+    },
+    "WULF": {
+      "symbol": "WULF", "overall": "questionable", "overall_basis": "AAOIFI",
+      "standards": {
+        "AAOIFI": {"status": "pass", "tests": [
+          {"id": "debt_mcap", "label": "debt / market cap", "ratio": 0.21, "threshold": 0.30, "margin": 0.09, "status": "pass"}],
+          "activity_status": "review"},
+        "FTSE": {"status": "pass", "tests": [
+          {"id": "debt_assets", "label": "debt / total assets", "ratio": 0.28, "threshold": 0.333, "margin": 0.053, "status": "pass"}],
+          "activity_status": "review"},
+        "MSCI": {"status": "pass", "tests": [
+          {"id": "debt_assets", "label": "debt / total assets", "ratio": 0.28, "threshold": 0.3333, "margin": 0.0533, "status": "pass"}],
+          "activity_status": "review"}
+      },
+      "business": {"status": "questionable", "categories": ["crypto-mining"],
+        "impermissible_revenue_pct": {"value": 38.2, "basis": "Q1-2026 revenue mix"}},
+      "purification": {"per_share": 0.1296, "status": "computed"},
+      "inputs_asof": "2026-07-21T13:07:36Z"
+    }
+  }
+}
