@@ -79,6 +79,7 @@ def parse_cfg(md, ticker):
         "logo": _field(block, "logo"),
         "ex": _field(block, "ex"),
         "src": _field(block, "src"),
+        "halal_script": _field(block, "halal_script"),
         "hook": {
             "kick": _field(block, "kick"),
             "head": _field(block, "head"),
