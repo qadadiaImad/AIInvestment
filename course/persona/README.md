@@ -16,7 +16,7 @@
 | Wardrobe C | Plain white thobe (Ramadan / religious-calendar content) |
 | Set | Ordinary modern Western interiors (home office, desk + monitor, café) — neutral, lived-in. **No Islamic patterns/tiles or cultural set dressing** (owner rule 2026-07-21 — see RULES.md; original master/grid backgrounds predate this rule) |
 | Tone | Calm, warm, sober "financial educator, not guru." No hype, no luxury flash, no signals. Cite-never-rule ("passes the AAOIFI screen at X%", never "this is halal"). |
-| Voice | TBD — lock ONE preset at pilot review and never change it (precedent: "Harrison" for the reels) |
+| Voice | Locked via VOICE.md — cloned "Karim" element voice (id in higgsfield-ids.json; null until owner completes the one-time web-UI clone) |
 | Aesthetic rails | No lambos, no green-candle porn, no "1000%" thumbnails, no logos, no watches. Thin NFA footer on published content. |
 
 ## Prompt block

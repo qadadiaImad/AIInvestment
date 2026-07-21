@@ -119,3 +119,30 @@ def test_stale_boundary_seven_days_one_hour_warns():
     now = ts + dt.timedelta(days=7, hours=1)
     _, warnings = load_halal(FIX, now=now)
     assert any("older than 7 days" in w for w in warnings)
+
+
+def test_business_line_bounded_when_basis_is_huge():
+    # CRITICAL 1: real ticker IREN rendered business_line at 344 chars, which
+    # can push the mandatory disclaimer off the fixed-size slide. The basis
+    # parenthetical must be truncated to <=80 chars, and the overall
+    # business_line to ~200 chars, both with a trailing ellipsis.
+    verdicts, _ = load_halal(FIX, now=NOW)
+    verdicts2 = json.loads(json.dumps(verdicts))
+    verdicts2["WULF"]["business"]["impermissible_revenue_pct"]["basis"] = (
+        "x" * 250)
+    card = screen_card_data(verdicts2, "WULF")
+    assert len(card["business_line"]) <= 200
+    assert "…" in card["business_line"]                # basis parenthetical truncated
+    assert card["business_line"].endswith(")")          # closing paren preserved, not dangling
+    assert card["business_line"].startswith(
+        "Business activity: crypto-mining — 38.2% impermissible (")
+
+    # A verdict whose categories alone blow past 200 chars (even with basis
+    # truncated to <=80) must still be clamped as a whole, with a trailing "…".
+    verdicts3 = json.loads(json.dumps(verdicts))
+    long_cat = "crypto-mining-and-datacenter-hosting-and-bitcoin-related-ancillary-services"
+    verdicts3["WULF"]["business"]["categories"] = [long_cat] * 3
+    verdicts3["WULF"]["business"]["impermissible_revenue_pct"]["basis"] = "x" * 250
+    card3 = screen_card_data(verdicts3, "WULF")
+    assert len(card3["business_line"]) <= 200
+    assert card3["business_line"].endswith("…")

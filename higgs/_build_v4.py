@@ -30,6 +30,11 @@ from aiinvest.kit_md import parse_cfg, parse_congress_card  # noqa: E402
 
 W, H = 1080, 1350
 
+# Compliance footer for computed-screen-result slides (halal-screen cards and any
+# ordinary slide that carries a verdict badge). Single source of truth — used at
+# every slide/footer site below instead of a repeated literal.
+NOT_FATWA_FOOT = "Computed methodology result — not a fatwa · not financial advice"
+
 FONTS = "@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700;800&display=swap');"
 BASE = f"""*{{margin:0;padding:0;box-sizing:border-box}}{FONTS}
 .slide{{width:{W}px;height:{H}px;position:relative;overflow:hidden;background:#0A0D12;font-family:Inter;color:#E8EDF2}}
@@ -121,7 +126,7 @@ def slide_takeaway(hero, topbar, kick, big, unit, label, body, foot="Educational
       <div class='foot'>{foot}</div></div>""")
 
 
-def _screen_body(hero, topbar, card, foot="Computed methodology result — not a fatwa · not financial advice"):
+def _screen_body(hero, topbar, card, foot=NOT_FATWA_FOOT):
     rows = ""
     for r in card["standards_rows"]:
         mark = "✓" if r["ok"] else "✕"
@@ -146,7 +151,7 @@ def _screen_body(hero, topbar, card, foot="Computed methodology result — not a
       <div class='foot'>{foot}</div></div>"""
 
 
-def slide_screen(hero, topbar, card, foot="Computed methodology result — not a fatwa · not financial advice"):
+def slide_screen(hero, topbar, card, foot=NOT_FATWA_FOOT):
     return page(_screen_body(hero, topbar, card, foot))
 
 
@@ -206,9 +211,15 @@ def build_slides(md, site_stocks, quantum_stocks, hero_map, logo_map, date, hala
         c = parse_cfg(md, tk)
         if not c:
             continue
+        card = (halal_map or {}).get(tk)
+        if c.get("halal_script") and card is None and halal_map is not None:
+            # Bundle loaded (halal_map is a real dict, possibly {}) but this
+            # ticker isn't in it: exclude the ticker entirely rather than
+            # falling through to a broken ordinary bars slide (IMPORTANT 4).
+            # Legacy/no-bundle path (halal_map is None) keeps the old fallback.
+            continue
         stocks = quantum_stocks if c.get("src") == "quantum" else site_stocks
         hero = hero_map.get(c.get("hero")) or ""
-        card = (halal_map or {}).get(tk)
         is_halal_post = bool(c.get("halal_script")) and card is not None
         badge = card["badge"] if card else None
         hdr = header(tk, c.get("ex") or "", logo_map.get(c.get("logo")), badge=badge)
@@ -223,12 +234,18 @@ def build_slides(md, site_stocks, quantum_stocks, hero_map, logo_map, date, hala
             out[f"v4_{tkl}_3_takeaway.png"] = slide_takeaway(
                 hero, hdr, tkw["kick"] or "", tkw["big"] or "", tkw["unit"] or "",
                 tkw["label"] or "", tkw["body"] or "",
-                foot="Computed methodology result — not a fatwa · not financial advice")
+                foot=NOT_FATWA_FOOT)
         else:
+            # IMPORTANT 5: an ordinary post whose ticker still carries a verdict
+            # badge (card present, just not a halal_script post) must carry the
+            # compliance footer on its bars/takeaway slides too.
+            bars_foot = NOT_FATWA_FOOT if card else (dt["foot"] or "")
+            takeaway_foot_kw = {"foot": NOT_FATWA_FOOT} if card else {}
             out[f"v4_{tkl}_2_data.png"] = slide_bars(
-                hero, hdr, dt["kick"] or "", dt["title"] or "", rows, dt["cap"] or "", mode, foot=dt["foot"] or "")
+                hero, hdr, dt["kick"] or "", dt["title"] or "", rows, dt["cap"] or "", mode, foot=bars_foot)
             out[f"v4_{tkl}_3_takeaway.png"] = slide_takeaway(
-                hero, hdr, tkw["kick"] or "", tkw["big"] or "", tkw["unit"] or "", tkw["label"] or "", tkw["body"] or "")
+                hero, hdr, tkw["kick"] or "", tkw["big"] or "", tkw["unit"] or "", tkw["label"] or "", tkw["body"] or "",
+                **takeaway_foot_kw)
 
     card = parse_congress_card(md)
     if card:
@@ -284,7 +301,7 @@ def build_halal_frames(md, hero_map, halal_map):
             <div style="font-family:Fraunces;font-weight:700;font-size:260px;line-height:.86;letter-spacing:-6px;margin-top:16px;background:linear-gradient(180deg,#fff,#7FE9C2);-webkit-background-clip:text;-webkit-text-fill-color:transparent">{tkw['big'] or ''}<span style='font-size:130px'>{tkw['unit'] or ''}</span></div>
             <div style="font-family:'JetBrains Mono';font-size:30px;letter-spacing:2px;color:#CFE8DD;margin-top:16px">{tkw['label'] or ''}</div>
             <div style='font-size:36px;line-height:1.42;color:#D7DEE8;margin-top:40px'>{tkw['body'] or ''}</div></div>
-          <div class='foot'>Computed methodology result — not a fatwa · not financial advice</div></div>""")
+          <div class='foot'>{NOT_FATWA_FOOT}</div></div>""")
     return out
 
 
@@ -346,6 +363,15 @@ def main(argv=None):
         if wants_halal:
             print(f"REFUSED: kit has halal posts but {e}")
             return 3
+    except Exception as e:
+        # IMPORTANT 3: a malformed halal.json (e.g. json.JSONDecodeError) must
+        # not crash carousel builds that don't need it. Refuse only when the
+        # kit actually wants halal posts; otherwise degrade to no halal mode.
+        if wants_halal:
+            print(f"REFUSED: kit has halal posts but halal.json is malformed: {e}")
+            return 3
+        print(f"WARN halal.json failed to load ({e}) — continuing without halal mode")
+        halal_map = None
 
     hero_map, logo_map = {}, {}
     for tk in _cfg_tickers(md):

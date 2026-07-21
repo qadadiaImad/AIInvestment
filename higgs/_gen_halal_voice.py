@@ -55,6 +55,11 @@ def compose_tts_cmd(script, voice):
 def merge_manifest(manifest, date, tk, voice_url):
     manifest = dict(manifest)
     manifest["date"] = date
+    # Additive provenance for mixed-voice manifests: the legacy top-level "voice"
+    # field (e.g. "Harrison (ElevenLabs preset ...)") describes the ordinary-reel
+    # VO and is left untouched — it goes stale/misleading once halal reels (a
+    # different, cloned voice) are merged in, so record that voice separately.
+    manifest["voice_karim"] = "Karim (cloned element voice; per-entry voice_name=Karim)"
     reels = []
     found = False
     for e in manifest.get("reels", []):
@@ -72,24 +77,29 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--date")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--kit", help="Explicit kit path override (default: newest reels_<date>_kit.md).")
+    ap.add_argument("--halal-json", help="halal.json path override (default: web/public/data/halal.json).")
+    ap.add_argument("--ids", help="higgsfield-ids.json path override (default: course/persona/higgsfield-ids.json).")
     args = ap.parse_args(argv)
 
     from _build_v4 import pick_kit  # local import: same conventions
-    kit = pick_kit(HIGGS, args.date, None)
+    kit = pick_kit(HIGGS, args.date, args.kit)
     if not kit or not kit.exists():
         raise SystemExit(f"no kit found ({kit})")
     md = kit.read_text(encoding="utf-8")
     m = re.search(r"reels_(\d{4}-\d{2}-\d{2})_kit", kit.name)
     date = args.date or (m.group(1) if m else "")
 
+    halal_json_path = pathlib.Path(args.halal_json) if args.halal_json else ROOT / "web/public/data/halal.json"
     try:
-        verdicts, warns = load_halal(ROOT / "web/public/data/halal.json")
+        verdicts, warns = load_halal(halal_json_path)
     except HalalDataMissing as e:
         raise SystemExit(f"REFUSED: {e}")
     for w in warns:
         print("WARN", w)
 
-    voice = json.loads(IDS.read_text(encoding="utf-8")).get("voice") or {}
+    ids_path = pathlib.Path(args.ids) if args.ids else IDS
+    voice = json.loads(ids_path.read_text(encoding="utf-8")).get("voice") or {}
     entries = collect_halal_entries(md)
     if not entries:
         print("no halal_script entries in kit — nothing to do")
@@ -107,10 +117,15 @@ def main(argv=None):
             for e in errs:
                 print(f"LINT {tk}: {e}")
             continue
-        cmd = compose_tts_cmd(script, voice)
         if args.dry_run:
-            print(f"DRY {tk}:", " ".join(cmd[:8]), "...")
+            if voice.get("id"):
+                cmd = compose_tts_cmd(script, voice)
+                print(f"DRY {tk}: <lint ok, script {len(script)} chars>", " ".join(cmd[:8]), "...")
+            else:
+                print(f"DRY {tk}: lint ok; voice.id not set (see VOICE.md) — "
+                      "command will be composed at real run")
             continue
+        cmd = compose_tts_cmd(script, voice)
         r = subprocess.run(cmd, capture_output=True, text=True)
         if r.returncode != 0:
             raise SystemExit(f"TTS failed for {tk}:\n{r.stderr[-800:]}")

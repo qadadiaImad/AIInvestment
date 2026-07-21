@@ -38,6 +38,17 @@ def load_halal(path, now=None):
     return doc.get("verdicts", {}), warnings
 
 
+BASIS_MAX = 80
+BUSINESS_LINE_MAX = 200
+
+
+def _truncate(s, limit):
+    """Truncate ``s`` to at most ``limit`` chars, replacing the tail with '…'."""
+    if len(s) <= limit:
+        return s
+    return s[:max(limit - 1, 0)].rstrip() + "…"
+
+
 def _pct(x):
     return f"{x * 100:.1f}%"
 
@@ -74,10 +85,11 @@ def screen_card_data(verdicts, tk):
         basis = pct.get("basis", "")
         business_line = f"Business activity: {cats} — {pct['value']}% impermissible"
         if basis:
-            business_line += f" ({basis})"
+            business_line += f" ({_truncate(basis, BASIS_MAX)})"
     else:
         cats = ", ".join(biz.get("categories") or []) or "flagged"
         business_line = f"Business activity: {cats} — % undisclosed in filings"
+    business_line = _truncate(business_line, BUSINESS_LINE_MAX)
     pur = v.get("purification") or {}
     if pur.get("status") == "computed":
         ps = pur.get("per_share") or 0.0
