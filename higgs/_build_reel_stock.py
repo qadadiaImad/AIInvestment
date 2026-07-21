@@ -1,6 +1,18 @@
-"""9:16 reel frames for a stock reel (IONQ / ADBE). Outputs per ticker:
+"""9:16 reel frames for a stock reel (IONQ / ADBE / halal screens). Outputs per ticker:
   reel_<tk>_hook.png (TRANSPARENT overlay for the animated hero), reel_<tk>_data.png, reel_<tk>_takeaway.png
-Run: python higgs/_build_reel_stock.py IONQ   (or ADBE)
+Run: python higgs/_build_reel_stock.py IONQ   (or ADBE, or any CFG key)
+
+CFG mechanism (line ~26):
+  Each entry drives all three frames from a single dict.  The "mode" key picks the
+  data-frame renderer:
+    "raw"   — literal pre-filled strings, e.g. "+904%"
+    "mult"  — price / fundamental_value multiples read from site.json / quantum.json
+    "disc"  — fundamental_discount_pct read from site.json
+    "halal" — AAOIFI ratio-vs-threshold bars; "rows" is a list of 4-tuples:
+              (label: str, ratio: float|None, threshold: float, status: "pass"|"fail"|"unknown")
+              drawn from web/public/data/halal.json at run-time (or supplied directly in CFG).
+              "inputs_asof" key (ISO timestamp) stamps the caption.  Rows with
+              status == "unknown" render grey with "—".
 """
 import json, base64, math, sys, re, os, pathlib
 from playwright.sync_api import sync_playwright
@@ -8,6 +20,22 @@ os.chdir(pathlib.Path(__file__).resolve().parent.parent)   # anchor to repo root
 W,H=1080,1920
 site=json.load(open('web/public/data/site.json',encoding='utf-8'))['stocks']
 qs=json.load(open('web/public/data/quantum.json',encoding='utf-8'))['stocks']
+
+def _load_halal_verdict(sym):
+    """Load the AAOIFI tests for *sym* from the live halal.json bundle.
+    Returns (tests_list, inputs_asof) where tests_list is a list of
+    (label, ratio, threshold, status) 4-tuples. Returns ([], None) on miss."""
+    hpath = pathlib.Path('web/public/data/halal.json')
+    if not hpath.exists():
+        return [], None
+    bundle = json.loads(hpath.read_text(encoding='utf-8'))
+    verd = bundle.get('verdicts', {}).get(sym)
+    if not verd:
+        return [], None
+    tests = verd.get('standards', {}).get('AAOIFI', {}).get('tests', [])
+    rows = [(t.get('label', ''), t.get('ratio'), t.get('threshold', 0.3), t.get('status', 'unknown'))
+            for t in tests]
+    return rows, verd.get('inputs_asof')
 
 def b64(p): return "data:image/png;base64,"+base64.b64encode(open(p,'rb').read()).decode()
 
@@ -68,6 +96,23 @@ CFG={
    "tk_kick":"ADOBE","big":None,"unit":"%","tk_label":"BELOW ANALYSTS' FUNDAMENTAL VALUE",
    "tk_body":"The hype went to the chips. The discount&rsquo;s on the software that runs on them &mdash; just as the AI-software thesis starts to turn.",
    "src":"site"},
+ # ── HALAL MODE DEMO ──────────────────────────────────────────────────────────
+ # Uncomment to run: python higgs/_build_reel_stock.py CEG
+ # "rows" is auto-populated from halal.json when "rows" is absent or None;
+ # supply it explicitly to hard-code values for a specific date.
+ # Shape: list of (label, ratio, threshold, status) 4-tuples.
+ # "inputs_asof" is also read from halal.json automatically when absent.
+ # "CEG":{"hero":"hero_nvda_2026-06-22.png","logo":"logo_NVDA.png","ex":"HALAL SCREEN · NASDAQ",
+ #   "kick":"HALAL SCREEN · AAOIFI BASIS",
+ #   "head":"Every ratio<br>inside the cap.<br><em style='font-style:italic;color:#34D399'>CEG screens clean.</em>",
+ #   "sub":"Computed under AAOIFI SS 21 &mdash; debt, deposits and receivables all below their 30% cap.",
+ #   "data_kick":"AAOIFI RATIOS · CEG","data_title":"Ratio vs 30% threshold",
+ #   "mode":"halal","rows":None,
+ #   "data_cap":"All three screens pass. Computed methodology &mdash; not a fatwa.",
+ #   "data_foot":"AAOIFI SS 21 · halal.json · stamped · Educational only",
+ #   "tk_kick":"HALAL SCREEN","big":"PASS","unit":"","tk_label":"ALL AAOIFI RATIOS WITHIN THRESHOLD",
+ #   "tk_body":"Computed under AAOIFI Shari&rsquo;ah Standard No. 21. Methodology result &mdash; not a fatwa, not financial advice. Educational only.",
+ #   "src":"site"},
 }
 
 TK=sys.argv[1].upper() if len(sys.argv)>1 else "IONQ"
@@ -90,6 +135,14 @@ elif c["mode"]=="mult":
         rgti=qs['RGTI']['valuation']['price']/qs['RGTI']['valuation']['fundamental_value']
         qbts=qs['QBTS']['valuation']['price']/qs['QBTS']['valuation']['fundamental_value']
         c["tk_label"]=f"BELOW MODEL — RIGETTI ~{rgti:.0f}x · D-WAVE ~{qbts:.0f}x ABOVE"
+elif c["mode"]=="halal":
+    # "rows" may be None / absent → auto-populate from halal.json
+    cfg_rows = c.get("rows")
+    if not cfg_rows:
+        cfg_rows, _asof = _load_halal_verdict(TK)
+        if _asof and not c.get("inputs_asof"):
+            c["inputs_asof"] = _asof
+    rows = cfg_rows  # 4-tuples: (label, ratio, threshold, status)
 else:
     rows=[(s, site[s]['valuation']['fundamental_discount_pct']) for s,_ in c["rows"]]
     c["big"]=f"~{abs(site['ADBE']['valuation']['fundamental_discount_pct']):.0f}"
@@ -122,6 +175,8 @@ def hook():  # transparent overlay (no hero baked) — sits over the animated he
       <div class='foot' style='margin-top:40px'>Educational · not financial advice</div></div>""")
 
 def data():
+    if c["mode"]=="halal":
+        return _data_halal()
     if c["mode"]=="mult":
         def w(m): return 9+(math.log10(m)-math.log10(0.5))/(math.log10(40)-math.log10(0.5))*70
         def lab(m): return f"{m:.1f}x"
@@ -157,6 +212,66 @@ def data():
         <div style="color:#34D399;font-weight:600;font-size:33px;margin-top:46px">{c['data_cap']}</div></div>
       <div class='foot'>{c['data_foot']}</div></div>""")
 
+
+def _data_halal():
+    """Halal mode data frame: ratio-vs-threshold bars at 9:16 (1080×1920).
+    rows = list of (label, ratio, threshold, status) 4-tuples.
+    status "unknown" renders grey with "—".
+    Bar length = min(ratio/threshold, 4) on a scale where threshold is at 25% of bar area.
+    A vertical dashed marker at the threshold position is drawn across all bars.
+    """
+    # threshold marker sits at 25% of the bar container width
+    THRESH_PCT = 25.0
+    bars = ""
+    for label, ratio, threshold, status in rows:
+        if status == "unknown" or ratio is None:
+            bar_w = 0.0
+            bar_col = "#6B7787"
+            val_str = "—"
+            val_col = "#9AA6B6"
+        else:
+            # bar fills proportionally: threshold maps to THRESH_PCT; cap at 4× threshold
+            capped = min(ratio / (threshold or 1), 4.0)
+            bar_w = capped * THRESH_PCT   # 0%..100% of container
+            bar_w = max(bar_w, 2.0)       # always a sliver for zero values
+            if status == "pass":
+                bar_col = "#10B981"       # emerald — pass
+            else:
+                bar_col = "#EF4444"       # red — fail
+            val_str = f"{ratio*100:.1f}%"
+            val_col = "#E8EDF2"
+        # shorten label for display (strip common prefix)
+        short = label.replace("Interest-bearing ", "").replace(" / market cap", "").strip()
+        short = short[:28]  # cap width
+        bars += f"""<div style='margin:32px 0'>
+          <div style="font-family:'JetBrains Mono';font-weight:600;font-size:26px;color:#9AA6B6;margin-bottom:12px;letter-spacing:.5px">{short}</div>
+          <div style='position:relative;height:48px'>
+            <div style='position:absolute;left:0;top:0;height:48px;width:{bar_w:.1f}%;background:{bar_col};border-radius:10px;opacity:.9'></div>
+            <div style="position:absolute;left:{THRESH_PCT:.1f}%;top:-8px;bottom:-8px;border-left:2px dashed rgba(232,237,242,.5)"></div>
+            <div style="position:absolute;left:{THRESH_PCT + 2:.1f}%;top:10px;font-family:'JetBrains Mono';font-size:20px;color:rgba(232,237,242,.4)">30%</div>
+            <div style="position:absolute;left:calc({bar_w:.1f}% + 14px);top:8px;font-family:'JetBrains Mono';font-weight:700;font-size:30px;color:{val_col}">{val_str}</div>
+          </div>
+        </div>"""
+
+    # stamp line
+    asof = c.get("inputs_asof", "")
+    if asof:
+        # trim to date-only for display
+        asof_display = asof[:10]
+        foot_stamp = f"{c.get('data_foot', '')} · data {asof_display}"
+    else:
+        foot_stamp = c.get("data_foot", "AAOIFI SS 21 · halal.json · Educational only")
+
+    return page(f"""<div class='hero' style="background-image:url('{HERO}');opacity:.14;transform:scale(1.1)"></div>
+    <div class='scrim' style="background:linear-gradient(180deg,#0A0D12 22%,rgba(10,13,18,.5) 100%)"></div>
+    <div class='pad'>{header()}
+      <div style='margin-top:30px' class='kick'>{c['data_kick']}</div>
+      <div style="font-family:Fraunces;font-weight:600;font-size:56px;line-height:1.04;letter-spacing:-1px;margin-top:12px">{c['data_title']}</div>
+      <div style='flex:1;display:flex;flex-direction:column;justify-content:center'>
+        <div style='position:relative'>{bars}</div>
+        <div style="color:#34D399;font-weight:600;font-size:28px;margin-top:36px">{c['data_cap']}</div></div>
+      <div class='foot'>{foot_stamp}</div></div>""")
+
 def takeaway():
     scrim="linear-gradient(180deg,rgba(10,13,18,.80) 0%,rgba(10,13,18,.42) 45%,rgba(10,13,18,.93) 100%)"
     lab=f"<div style=\"font-family:'JetBrains Mono';font-size:27px;letter-spacing:2px;color:#CFE8DD;margin-top:18px;max-width:900px\">{c['tk_label']}</div>" if c['tk_label'] else ""
@@ -176,4 +291,7 @@ with sync_playwright() as p:
         pg.set_content(html,wait_until="networkidle"); pg.evaluate("document.fonts.ready"); pg.wait_for_timeout(800)
         pg.screenshot(path="higgs/"+name,omit_background=transparent,clip={"x":0,"y":0,"width":W,"height":H}); print("rendered",name)
     b.close()
-print(f"DONE {TK}  big={c['big']}{c['unit']}  rows={[(s,round(v,1)) for s,v in rows]}")
+if c["mode"] == "halal":
+    print(f"DONE {TK}  mode=halal  rows={[(lbl[:20], f'{r*100:.1f}%' if r is not None else '—', st) for lbl,r,_,st in rows]}")
+else:
+    print(f"DONE {TK}  big={c['big']}{c['unit']}  rows={[(s,round(v,1)) for s,v in rows]}")
