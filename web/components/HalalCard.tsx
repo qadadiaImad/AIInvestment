@@ -15,6 +15,7 @@ import type {
   HalalTestResult,
 } from "@/lib/halal";
 import { overallLabel, overallTone, fmtRatioPct } from "@/lib/halal";
+import PurificationCalc from "@/components/PurificationCalc";
 
 // ---- styling helpers ----
 
@@ -336,6 +337,11 @@ export default function HalalCard({
               {pur.missing ? ` — ${pur.missing}` : ""}
             </p>
           )}
+          <PurificationCalc
+            perShare={pur.per_share}
+            status={pur.status}
+            missing={pur.missing}
+          />
         </div>
 
         {/* Footer: disclaimer + conventions accordion */}

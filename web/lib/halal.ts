@@ -101,3 +101,20 @@ export function fmtRatioPct(r: number | null): string {
   if (r === null || r === undefined || Number.isNaN(r)) return "—";
   return `${(r * 100).toFixed(2)}%`;
 }
+
+/**
+ * Compute the total purification amount for a holder.
+ *
+ * @param perShare - Purification amount per share (from HalalVerdict.purification.per_share).
+ *                   null → insufficient data; propagate null.
+ * @param shares   - Number of shares held. Must be > 0; otherwise null.
+ * @returns Total purification amount, or null when inputs are missing/invalid.
+ */
+export function purificationAmount(
+  perShare: number | null,
+  shares: number,
+): number | null {
+  if (perShare === null) return null;
+  if (shares <= 0) return null;
+  return perShare * shares;
+}

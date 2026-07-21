@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fmtRatioPct, overallLabel, overallTone } from "./halal";
+import { fmtRatioPct, overallLabel, overallTone, purificationAmount } from "./halal";
 
 describe("halal display helpers", () => {
   it("labels every overall verdict", () => {
@@ -18,5 +18,20 @@ describe("halal display helpers", () => {
     expect(fmtRatioPct(0.0026)).toBe("0.26%");
     expect(fmtRatioPct(0.5)).toBe("50.00%");
     expect(fmtRatioPct(null)).toBe("—");
+  });
+});
+
+describe("purificationAmount", () => {
+  it("multiplies perShare by shares", () => {
+    expect(purificationAmount(0.031, 100)).toBeCloseTo(3.1, 9);
+  });
+  it("returns null when perShare is null", () => {
+    expect(purificationAmount(null, 100)).toBeNull();
+  });
+  it("returns null when shares is 0", () => {
+    expect(purificationAmount(0.03, 0)).toBeNull();
+  });
+  it("returns null when shares is negative", () => {
+    expect(purificationAmount(0.03, -5)).toBeNull();
   });
 });
