@@ -123,3 +123,17 @@ Hook line... <pause> key number... takeaway... Educational, not financial or rel
   hero regeneration; content-cadence production needs a top-up (owner decision, out of scope).
 - Caption/CTA posture for the halal handle (CTA-to-Skool from day one) is a content-ops decision
   recorded in the phase-2 briefing; kit captions carry it, not this framework's code.
+
+## 9. Run-book (one halal post, end-to-end)
+
+1. Fresh data: `cd scripts && python pull_halal.py && python export_halal.py`
+2. Author the kit entry in `higgs/reels_<date>_kit.md`: normal CFG + `"halal_script": "..."`
+   (write to the VOICE.md delivery canon; end with the spoken disclaimer line).
+3. Render slides + reel frames: `python higgs/_build_v4.py --date <date>`
+   (badge + screen card 4:5; `reel_<tk>_{hook,data,takeaway}.png` 9:16).
+4. Lint + voice: `python higgs/_gen_halal_voice.py --date <date> --dry-run` → review → run
+   without `--dry-run` (needs `voice.id` set after the one-time web-UI clone).
+5. Assemble: `python higgs/make_reel.py <TK> <HERO_MP4_URL> <VOICE_MP3_URL> --skip-frames`
+   (hero: reuse desk-set/hero art or generate via the usual Phase-1 flow).
+6. QA vs `course/persona/RULES.md` §7 checklist + listen for VOICE.md canon; then post via
+   Studio (copy caption / reveal file).
