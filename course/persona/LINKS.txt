@@ -1,0 +1,60 @@
+KARIM - COURSE PERSONA - ALL GENERATED ASSETS (2026-07-21)
+============================================================
+
+--- CURRENT (v2 - desk set, validated) ---
+
+[IMAGE] Face master (identity anchor):
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_112214_dbeec22c-e5f1-49d3-a6fc-387cb5c69e86.png
+
+[IMAGE] Desk master (set anchor):
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_114929_484bf90e-51d5-4982-9f7d-87d0a4e1d1f7.png
+
+[IMAGE] Front at desk:
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_121915_cb85663b-abcb-4c01-a3f5-b8e39a8e4569.png
+
+[IMAGE] Three-quarter at desk:
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_121915_74ee5c65-84c1-4400-9d62-34584fa53d46.png
+
+[IMAGE] Profile at monitor:
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_122032_29b07b6e-7988-4674-8af8-0b359d107f45.png
+
+[IMAGE] Presenting at desk:
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_122113_a6236540-47b9-41fa-88c2-ca37a3a5c2d4.png
+
+[IMAGE] Blazer variant at desk:
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_121915_b53e1b43-18d8-4753-988d-d91177acf2a7.png
+
+[IMAGE] Wide office 16:9:
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_121915_70a74354-c8d5-4aec-a6fd-8d5ad877752f.png
+
+[VIDEO] Course intro at the desk (15s, with voice):
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_122239_69bbfbc6-b513-498d-a0fe-29764a658e38.mp4
+
+--- ARCHIVED (v1 - emerald background, pre-rules) ---
+
+[IMAGE] Three-quarter portrait:
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_112842_70a11f48-7a64-41d5-bae3-a8e78b3af1e9.png
+
+[IMAGE] Profile portrait:
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_112844_06852a49-6360-46bd-be53-f2f20341d70f.png
+
+[IMAGE] Presenting at desk:
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_112842_b7a8d2e6-9d3d-49cb-b574-4665e3ed69fe.png
+
+[IMAGE] Sweater outfit:
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_112842_77a883ba-9828-494e-aa0f-270273263eb5.png
+
+[IMAGE] Thobe outfit:
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_112843_1fec9f39-d6bd-4693-be09-350b953a98ad.png
+
+[IMAGE] Wide set 16:9:
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_112843_422702b9-240b-4c72-8007-a87020253737.png
+
+[VIDEO] Pilot talking-head v1 (15s, with voice):
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_113114_280362ce-8a94-41ee-8fd0-dc58a8938bfb.mp4
+
+[VIDEO] Pilot B-roll push-in (Seedance Mini):
+https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_113810_f5573f33-c912-42c6-9c94-45629a898532.mp4
+
+Note: assets generated with Higgsfield (Nano Banana Pro / Marketing Studio / Seedance 2.0 Mini).
+Karim is an AI persona. Educational project - not financial advice.
