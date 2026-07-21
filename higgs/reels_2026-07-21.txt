@@ -24,3 +24,9 @@ Hashtags: #halalinvesting #halalstocks #islamicfinance #cleanenergy #aistocks #m
 NOTES
 - Slide 2 of every post = "headline + receipts": one big plain-words claim, $100 analogies, exact per-standard ratios in THE RECEIPTS strip with the data date.
 - Karim VO scripts (plain-speak r2) live in reels_2026-07-21_kit.md, lint-verified, ready for the voiced round once the cloned voice exists.
+
+=============== POST 4 — INTRO (KARIM EXPLAINS · HALAL INVESTING) ===============
+File: reel_intro_2026-07-21.mp4 (9:16, 93s)  |  intro_wide_2026-07-21.mp4 (16:9, for Skool/YouTube)
+Caption:
+What does "halal investing" actually mean? In 90 seconds, in plain words: it's a filter — no interest-based earnings, no gambling or haram industries, no casino-style debt bets. Then the screen: three questions about what a company sells, how much it borrows, and where its cash sits. And purification — the small impure slice you compute per share and give to charity. Screen. Own. Purify. Computed results, not fatwas — for your situation, ask a scholar. Karim is an AI presenter; the data is real. Educational, not financial advice — DYOR.
+Hashtags: #halalinvesting #islamicfinance #halalstocks #muslimmoney #investing101 #stocktok #fintok

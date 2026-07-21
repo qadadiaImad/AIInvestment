@@ -87,3 +87,15 @@ def lint_halal_script(script, card):
     if not any(_form_anchors(f, low) for f in _spoken_forms(card)):
         errs.append("no number in the script matches the joined screen data — scripts must cite real figures")
     return errs
+
+
+def lint_concept_script(script):
+    """Rails for ticker-less concept/explainer scripts: verdict-claim phrasing +
+    spoken disclaimer only (no per-ticker number anchor to check)."""
+    errs = []
+    low = script.lower().replace("’", "'").replace("ʼ", "'")
+    if _VERDICT_CLAIM.search(low):
+        errs.append('forbidden verdict claim - use screen phrasing, never "is halal/haram"')
+    if DISCLAIMER not in low:
+        errs.append(f'missing spoken disclaimer line: "{DISCLAIMER}"')
+    return errs

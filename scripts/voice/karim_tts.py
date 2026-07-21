@@ -49,13 +49,30 @@ def chunks(script: str) -> list[str]:
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("--date", required=True)
+    ap.add_argument("--date")
+    ap.add_argument("--text-file", nargs=2, metavar=("NAME", "PATH"),
+                    help="kit-independent concept script: output name + path to .txt")
     ap.add_argument("--out", default=str(ROOT / "halal-reels/public"))
     ap.add_argument("--tickers", nargs="*", help="subset filter, e.g. WULF GEV")
     ap.add_argument("--exaggeration", type=float, default=0.4, help="calm educator < default 0.5")
     ap.add_argument("--cfg-weight", type=float, default=0.5)
     args = ap.parse_args(argv)
 
+    if args.text_file:
+        from aiinvest.halal_lint import lint_concept_script
+        name, path = args.text_file
+        script = pathlib.Path(path).read_text(encoding="utf-8")
+        errs = lint_concept_script(script)
+        if errs:
+            for e in errs:
+                print("LINT", name + ":", e)
+            raise SystemExit("concept lint failed")
+        entries = [(name.upper(), script)]
+        _tts_entries(entries, args, skip_join=True)
+        return
+
+    if not args.date:
+        raise SystemExit("--date required (or use --text-file)")
     kit = ROOT / f"higgs/reels_{args.date}_kit.md"
     if not kit.exists():
         raise SystemExit(f"kit not found: {kit}")
@@ -86,6 +103,10 @@ def main(argv=None):
     if failed:
         raise SystemExit("lint failed — fix the kit scripts first")
 
+    _tts_entries(entries, args, skip_join=False, verdicts=verdicts)
+
+
+def _tts_entries(entries, args, skip_join, verdicts=None):
     import torch
     import torchaudio
 
@@ -101,7 +122,7 @@ def main(argv=None):
     out_dir = pathlib.Path(args.out)
     out_dir.mkdir(parents=True, exist_ok=True)
     for tk, script in entries:
-        if screen_card_data(verdicts, tk) is None:
+        if not skip_join and screen_card_data(verdicts, tk) is None:
             continue
         parts = chunks(script)
         print(f"{tk}: {len(parts)} chunk(s), {len(script)} chars")

@@ -360,6 +360,7 @@ export const CoinDrop: React.FC<{ from: number; label: string }> = ({ from, labe
   const frame = useCurrentFrame();
   const t = Math.max(0, frame - from);
   const y = interpolate(t, [0, 22], [-360, 0], { ...clamp, easing: Easing.bounce });
+  const coinIn = interpolate(frame, [from - 6, from], [0, 1], clamp);
   const boxP = interpolate(frame, [from - 10, from], [0, 1], { ...clamp, easing: easeOut });
   const settledP = interpolate(t, [22, 34], [0, 1], clamp);
   return (
@@ -382,6 +383,7 @@ export const CoinDrop: React.FC<{ from: number; label: string }> = ({ from, labe
           fontSize: 64,
           color: C.bg,
           boxShadow: "0 18px 50px rgba(0,0,0,.5)",
+          opacity: coinIn,
         }}
       >
         {label}
