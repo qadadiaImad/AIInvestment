@@ -33,7 +33,7 @@ def load_halal(path, now=None):
     gen = doc.get("generated_at")
     if gen:
         ts = _dt.datetime.fromisoformat(gen.replace("Z", "+00:00"))
-        if (now - ts).days > 7:
+        if (now - ts) > _dt.timedelta(days=7):
             warnings.append(f"halal.json generated_at {gen} is older than 7 days — regenerate.")
     return doc.get("verdicts", {}), warnings
 
@@ -44,10 +44,11 @@ def _pct(x):
 
 def _row(name, std):
     tests = std.get("tests") or []
-    if not tests:
+    numeric_tests = [t for t in tests if isinstance(t.get("margin"), (int, float))]
+    if not numeric_tests:
         return {"name": name, "ok": std.get("status") == "pass",
                 "binding_label": "activity", "ratio": "—", "threshold": "—", "margin": "—"}
-    binding = min(tests, key=lambda t: t.get("margin", 0))
+    binding = min(numeric_tests, key=lambda t: t["margin"])
     sign = "+" if binding["margin"] >= 0 else "−"
     return {
         "name": name,
@@ -70,7 +71,10 @@ def screen_card_data(verdicts, tk):
         business_line = "Business activity: clean"
     elif pct and pct.get("value") is not None:
         cats = ", ".join(biz.get("categories") or []) or "flagged"
-        business_line = f"Business activity: {cats} — {pct['value']}% impermissible ({pct.get('basis', '')})".rstrip(" ()")
+        basis = pct.get("basis", "")
+        business_line = f"Business activity: {cats} — {pct['value']}% impermissible"
+        if basis:
+            business_line += f" ({basis})"
     else:
         cats = ", ".join(biz.get("categories") or []) or "flagged"
         business_line = f"Business activity: {cats} — % undisclosed in filings"
