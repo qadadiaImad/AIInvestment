@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { getHalalData } from "@/lib/data";
+import { getHalalData, getHalalAlerts } from "@/lib/data";
 import HalalTable from "@/components/HalalTable";
+import Link from "next/link";
 import type { HalalVerdict } from "@/lib/halal";
+import { overallTone, fmtRatioPct } from "@/lib/halal";
 
 export const metadata: Metadata = {
   title: "Halal Screening · AI STACK",
@@ -58,8 +60,17 @@ const STANDARD_THRESHOLDS = [
   },
 ];
 
+// Map overallTone values to tailwind text/bg colors for alert badges
+const TONE_COLORS: Record<string, { text: string; bg: string }> = {
+  pass: { text: "text-emerald-300", bg: "bg-emerald-500/15" },
+  fail: { text: "text-red-300", bg: "bg-red-500/15" },
+  warn: { text: "text-amber-300", bg: "bg-amber-500/15" },
+  muted: { text: "text-zinc-400", bg: "bg-zinc-500/10" },
+};
+
 export default function HalalPage() {
   const data = getHalalData();
+  const alertsData = getHalalAlerts();
 
   // Methodology explainer is always rendered — even when halal.json absent
   const Explainer = (
@@ -237,6 +248,74 @@ export default function HalalPage() {
 
       {/* Methodology explainer */}
       {Explainer}
+
+      {/* What changed — compliance-change alerts feed */}
+      <section className="flex flex-col gap-2">
+        <h2 className="text-[11px] font-semibold uppercase tracking-wider text-zinc-300">
+          What changed
+        </h2>
+        {!alertsData || alertsData.alerts.length === 0 ? (
+          <p className="text-[10.5px] text-term-muted">
+            No compliance changes recorded yet.
+          </p>
+        ) : (
+          <div className="flex flex-col gap-1.5">
+            {alertsData.alerts.map((alert, i) => {
+              const fromTone = TONE_COLORS[overallTone(alert.from as Parameters<typeof overallTone>[0])] ?? TONE_COLORS.muted;
+              const toTone = TONE_COLORS[overallTone(alert.to as Parameters<typeof overallTone>[0])] ?? TONE_COLORS.muted;
+              return (
+                <div
+                  key={i}
+                  className="rounded border border-term-border bg-[#0d1220] px-3 py-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10.5px]"
+                >
+                  {/* Symbol link */}
+                  <Link
+                    href={`/stocks/${alert.symbol}`}
+                    className="font-semibold text-zinc-200 hover:text-white underline-offset-2 hover:underline"
+                  >
+                    {alert.symbol}
+                  </Link>
+                  {/* Date */}
+                  <span className="tnum text-term-muted">{alert.date}</span>
+                  {/* from → to badges */}
+                  <span className="flex items-center gap-1">
+                    <span
+                      className={`rounded px-1.5 py-0.5 text-[9.5px] font-semibold uppercase tracking-wider ${fromTone.bg} ${fromTone.text}`}
+                    >
+                      {alert.from.replace(/_/g, " ")}
+                    </span>
+                    <span className="text-term-muted">→</span>
+                    <span
+                      className={`rounded px-1.5 py-0.5 text-[9.5px] font-semibold uppercase tracking-wider ${toTone.bg} ${toTone.text}`}
+                    >
+                      {alert.to.replace(/_/g, " ")}
+                    </span>
+                  </span>
+                  {/* Worked before/after */}
+                  {alert.old_value !== null || alert.new_value !== null ? (
+                    <span className="tnum text-term-muted">
+                      {fmtRatioPct(alert.old_value)}
+                      <span className="mx-1">→</span>
+                      {fmtRatioPct(alert.new_value)}
+                      {alert.threshold !== null && (
+                        <span className="ml-1 text-zinc-500">
+                          (limit {fmtRatioPct(alert.threshold)})
+                        </span>
+                      )}
+                    </span>
+                  ) : null}
+                  {/* Driver test label */}
+                  {alert.driver_test && alert.driver_test !== "overall" && (
+                    <span className="text-zinc-500 text-[9.5px]">
+                      {alert.driver_test}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
 
       {/* Interactive table */}
       <div>

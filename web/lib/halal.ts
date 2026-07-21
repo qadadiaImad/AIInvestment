@@ -75,6 +75,26 @@ export interface HalalData {
   verdicts: Record<string, HalalVerdict>;
 }
 
+// Compliance-change alert produced by export_halal.py diff engine (Task 12).
+// Each entry records a single verdict or per-test flip between two daily snapshots.
+export interface HalalAlert {
+  symbol: string;
+  date: string;
+  from: string;
+  to: string;
+  driver_test: string;
+  old_value: number | null;
+  new_value: number | null;
+  threshold: number | null;
+  inputs_asof: string | null;
+}
+
+// Top-level shape of web/public/data/halal_alerts.json.
+export interface HalalAlertsData {
+  generated_at: string;
+  alerts: HalalAlert[];
+}
+
 // Display helpers (unit-tested in halal.test.ts):
 
 export function overallLabel(o: HalalOverall): string {
