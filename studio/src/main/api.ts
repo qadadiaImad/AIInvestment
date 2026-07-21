@@ -165,7 +165,11 @@ export function registerApi(): void {
     // (Higgsfield hero+voice via MCP) must fill the manifest URLs first; placeholder entries
     // are skipped with a notice. (Parallel variant: higgs/_workflow_make_reels.js via Workflow.)
     'make-reels': 'python higgs/make_reels_from_manifest.py',
-    'build-carousel': 'python higgs/_build_v4.py'
+    'build-carousel': 'python higgs/_build_v4.py',
+    // Unified SlideStoryReel factory (remotion/README_FACTORY.md): props builder picks
+    // the next story-worthy ticker (--auto), then Remotion renders it straight to higgs/.
+    // Zero Higgsfield spend (VO-less slide mode; bubbleClips stays [] until Phase 2b).
+    'render-slide-reel': 'python scripts/build_reel_props.py --auto --out remotion/src/fixtures/generated.json; cd remotion; npx remotion render SlideStoryReel ../higgs/reel_slide_latest.mp4 --props=src/fixtures/generated.json'
   }
 
   ipcMain.on('quick:cmd', (e, name: string) => { e.returnValue = QUICK[name] || '' })
