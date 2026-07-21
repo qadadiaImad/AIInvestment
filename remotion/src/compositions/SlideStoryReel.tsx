@@ -37,6 +37,7 @@ import {
 import type {Beat, SlideStoryProps} from '../slides/slideProps';
 import {C, FONT} from '../slides/theme';
 import {Bg, Caption, Foot, Head, Kicker, Slam, Stamp, clamp, easeOut} from '../slides/ui';
+import {BubbleFrame} from '../components/BubbleFrame';
 
 const PAD = 84;
 
@@ -280,6 +281,12 @@ export const SlideStoryReel: React.FC<SlideStoryProps> = (props) => {
           </Series.Sequence>
         ))}
       </Series>
+
+      {/* Non-looping full-span bubble (spec §0-bis): a <Series> of distinct
+          talking clips, one per beat, running back-to-back for the reel's
+          duration — no <Loop>. VO-less slide mode (bubbleClips: []) renders
+          no bubble at all, per the schema's default. */}
+      {props.bubbleClips.length > 0 ? <BubbleFrame clips={props.bubbleClips} /> : null}
 
       <AbsoluteFill style={{padding: PAD, justifyContent: 'flex-end', pointerEvents: 'none'}}>
         <Sequence from={0} durationInFrames={totalFrames} layout="none" name="Footer">
