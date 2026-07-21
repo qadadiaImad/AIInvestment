@@ -93,7 +93,9 @@ def test_manifest_entries_are_actually_used():
     unused = sorted(set(bundles.BUNDLES) - referenced)
     # portfolio.json is read via a dedicated fs path in portfolio.ts and may
     # not match the literal-string regex; tolerate a small known set.
-    tolerated = {"portfolio.json"}
+    # halal_alerts.json: manifest entry declared by Task 12; web/lib loader
+    # added by Task 13 (parallel lane) — tolerated until T13 lands.
+    tolerated = {"portfolio.json", "halal_alerts.json"}
     suspicious = [n for n in unused if n not in tolerated]
     assert not suspicious, (
         "declared in the manifest but not referenced by any web/lib loader: "

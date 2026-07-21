@@ -115,6 +115,9 @@ BUNDLES: dict[str, Bundle] = {
         Bundle("halal.json", PUBLIC, "export_halal.py", driver=DRV_DAILY,
                max_age_h=_DAILY, min_bytes=100_000,
                note="Sharia screening verdicts (AAOIFI/FTSE/MSCI worked math)"),
+        Bundle("halal_alerts.json", PUBLIC, "export_halal.py", driver=DRV_DAILY,
+               required=False, max_age_h=_DAILY, min_bytes=50,
+               note="halal compliance-change feed; empty is legitimate"),
 
         # --- own schedule: refresh_ta.py, deliberately not in refresh_daily
         Bundle("ta_desk.json", PUBLIC, "refresh_ta.py", driver=DRV_TA,
