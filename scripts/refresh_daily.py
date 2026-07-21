@@ -98,6 +98,11 @@ def build_plan(args):
     # One REST scan over the full universe + verdict export (halal.json).
     if os.path.exists(str(SCRIPTS / "pull_halal.py")):
         add("pull halal inputs", [PY, "pull_halal.py"])
+    # XBRL cache refresh: pull SEC companyfacts before the halal export reads them
+    # (Task 7 — placed between "pull halal inputs" and "export halal.json" so the
+    # export always sees up-to-date receivables / interest-income facts).
+    if os.path.exists(str(SCRIPTS / "pull_xbrl.py")):
+        add("pull xbrl facts", [PY, "pull_xbrl.py"])
     if os.path.exists(str(SCRIPTS / "export_halal.py")):
         add("export halal.json", [PY, "export_halal.py"])
 

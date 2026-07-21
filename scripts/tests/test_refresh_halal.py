@@ -18,3 +18,16 @@ def test_halal_steps_in_plan_between_quantum_and_screener():
     assert "export halal.json" in labels
     assert labels.index("export halal.json") < labels.index("build screener")
     assert labels.index("pull halal inputs") < labels.index("export halal.json")
+
+
+def test_pull_xbrl_facts_between_pull_halal_inputs_and_export_halal():
+    """'pull xbrl facts' step must appear between 'pull halal inputs' and 'export halal.json'."""
+    labels = [s["label"] for s in refresh_daily.build_plan(_args())]
+    assert "pull xbrl facts" in labels, "missing 'pull xbrl facts' step in daily plan"
+    hi = labels.index("pull halal inputs")
+    xf = labels.index("pull xbrl facts")
+    eh = labels.index("export halal.json")
+    assert hi < xf < eh, (
+        f"ordering violation: pull halal inputs={hi}, pull xbrl facts={xf}, "
+        f"export halal.json={eh}"
+    )
