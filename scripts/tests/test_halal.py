@@ -1,4 +1,5 @@
 """RED tests for the halal ruleset engine (pure computation, no I/O)."""
+import pytest
 from aiinvest import halal
 
 
@@ -22,8 +23,9 @@ NVDA_METRICS = {
 
 
 def test_standards_registry_shape():
+    # sanctioned v1-test edit (Task 10): registry grows from 3 to 5 keys
     keys = [s["key"] for s in halal.STANDARDS]
-    assert keys == ["AAOIFI", "FTSE", "MSCI"]
+    assert keys == ["AAOIFI", "FTSE", "MSCI", "SP", "DJIM"]
     for s in halal.STANDARDS:
         assert s["activity_threshold_pct"] == 5.0
         for t in s["tests"]:
@@ -38,8 +40,10 @@ def test_aaoifi_thresholds_are_30pct_of_market_cap():
 
 
 def test_ftse_msci_use_total_assets_denominator():
-    for s in halal.STANDARDS[1:]:
-        assert all(t["denominator"] == "total_assets" for t in s["tests"])
+    # Task 10 note: now filter by key instead of slice to exclude SP/DJIM
+    for s in halal.STANDARDS:
+        if s["key"] in ("FTSE", "MSCI"):
+            assert all(t["denominator"] == "total_assets" for t in s["tests"])
 
 
 def test_inputs_from_metrics_extracts_and_derives():
@@ -131,7 +135,8 @@ def test_verdict_clean_business_passing_ratios_is_halal():
                       "impermissible_revenue_pct": {"value": 0.0}})
     assert v["overall"] == "halal"
     assert v["overall_basis"] == "AAOIFI"
-    assert set(v["standards"]) == {"AAOIFI", "FTSE", "MSCI"}
+    # Task 10: SP and DJIM now included alongside AAOIFI/FTSE/MSCI
+    assert set(v["standards"]) == {"AAOIFI", "FTSE", "MSCI", "SP", "DJIM"}
 
 
 def test_verdict_prohibited_business_is_not_halal_regardless_of_ratios():
@@ -259,3 +264,74 @@ def test_avg_mcap_insufficient_months_is_none():
 
 def test_avg_mcap_missing_spot_is_none():
     assert halal.avg_market_cap(_series(36, 10.0), 36, None, 10.0) is None
+
+
+# ---------------------------------------------------------------------------
+# Task 10: S&P Shariah + DJIM leverage screens
+# ---------------------------------------------------------------------------
+
+def _std(key):
+    """Helper: look up a standard by key (AssertionError if missing)."""
+    matches = [s for s in halal.STANDARDS if s["key"] == key]
+    assert matches, f"Standard {key!r} not found in STANDARDS"
+    return matches[0]
+
+
+def test_sp_djim_in_standards_with_avg_mcap_denominators():
+    sp = _std("SP")
+    dj = _std("DJIM")
+    assert sp["tests"][0]["denominator"] == "avg_mcap_36m"
+    assert dj["tests"][0]["denominator"] == "avg_mcap_24m"
+    assert sp["tests"][0]["threshold"] == pytest.approx(1 / 3, rel=1e-4)
+    assert dj["tests"][0]["threshold"] == pytest.approx(1 / 3, rel=1e-4)
+    assert sp["activity_threshold_pct"] == 5.0
+    assert dj["activity_threshold_pct"] == 5.0
+    assert "incl" in sp["activity_citation"].lower() or "interest" in sp["activity_citation"].lower()
+
+
+def test_verdict_with_avg_mcap_gives_sp_djim_results():
+    # Build metrics with avg_mcap_36m / avg_mcap_24m present (via custom inputs)
+    inp = halal.inputs_from_metrics(NVDA_METRICS)
+    inp["avg_mcap_36m"] = 4000000000000.0   # 4T
+    inp["avg_mcap_24m"] = 4200000000000.0   # 4.2T
+    # total_debt = 12.814B -> ratio < 0.01 -> pass both
+    sp_std = _std("SP")
+    dj_std = _std("DJIM")
+    r_sp = halal.compute_test(sp_std["tests"][0], inp)
+    r_dj = halal.compute_test(dj_std["tests"][0], inp)
+    assert r_sp["status"] == "pass"
+    assert r_dj["status"] == "pass"
+    assert r_sp["ratio"] == pytest.approx(12814000000.0 / 4000000000000.0, rel=1e-6)
+
+
+def test_missing_avg_mcap_gives_sp_djim_unknown():
+    inp = halal.inputs_from_metrics(NVDA_METRICS)
+    # avg_mcap_36m / avg_mcap_24m are None by default
+    assert inp.get("avg_mcap_36m") is None
+    assert inp.get("avg_mcap_24m") is None
+    sp_std = _std("SP")
+    r_sp = halal.compute_test(sp_std["tests"][0], inp)
+    assert r_sp["status"] == "unknown"
+    assert r_sp["ratio"] is None
+
+
+def test_inputs_from_metrics_has_avg_mcap_keys():
+    inp = halal.inputs_from_metrics(NVDA_METRICS)
+    assert "avg_mcap_36m" in inp
+    assert "avg_mcap_24m" in inp
+    # Without price series, both are None
+    assert inp["avg_mcap_36m"] is None
+    assert inp["avg_mcap_24m"] is None
+
+
+def test_convention_5_is_constant_shares_approximation():
+    # CONVENTIONS list has a new entry about constant-shares approximation
+    text = " ".join(halal.CONVENTIONS).lower()
+    assert "constant" in text or "shares" in text or "buyback" in text or "approximat" in text
+
+
+def test_ftse_msci_still_use_total_assets_denominator():
+    # Regression: FTSE/MSCI must be unchanged
+    for s in halal.STANDARDS:
+        if s["key"] in ("FTSE", "MSCI"):
+            assert all(t["denominator"] == "total_assets" for t in s["tests"])

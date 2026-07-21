@@ -6,7 +6,7 @@ import type { HalalVerdict } from "@/lib/halal";
 export const metadata: Metadata = {
   title: "Halal Screening · AI STACK",
   description:
-    "AAOIFI, FTSE Yasaar and MSCI Islamic ratio screens over the AI + Quantum universe — worked math, every standard, every number date-stamped. Educational research only; not financial or religious advice.",
+    "AAOIFI, FTSE Yasaar, MSCI Islamic, S&P Shariah, and DJIM ratio screens over the AI + Quantum universe — worked math, every standard, every number date-stamped. Educational research only; not financial or religious advice.",
 };
 
 // Threshold table for the methodology explainer
@@ -38,6 +38,24 @@ const STANDARD_THRESHOLDS = [
     recv: "(receivables + cash) < 70%",
     activity: "< 5%",
   },
+  {
+    key: "SP",
+    name: "S&P Shariah",
+    denom: "36-month avg market cap",
+    debt: "< 33.3%",
+    cash: "—",
+    recv: "—",
+    activity: "< 5% incl. all interest",
+  },
+  {
+    key: "DJIM",
+    name: "DJIM",
+    denom: "24-month avg market cap",
+    debt: "< 33.3%",
+    cash: "—",
+    recv: "—",
+    activity: "< 5% incl. all interest",
+  },
 ];
 
 export default function HalalPage() {
@@ -49,7 +67,7 @@ export default function HalalPage() {
       {/* Standards threshold table */}
       <div>
         <h2 className="text-[11px] font-semibold uppercase tracking-wider text-zinc-300 mb-1.5">
-          Three standards at a glance
+          Five standards at a glance
         </h2>
         <div className="overflow-x-auto border border-term-border rounded-sm">
           <table className="term text-[10.5px]">
@@ -80,7 +98,12 @@ export default function HalalPage() {
         <p className="text-[10px] text-term-muted mt-1">
           The same company can pass one standard and fail another — denominators
           and thresholds genuinely differ. AAOIFI verdict is the primary basis
-          here; FTSE and MSCI are shown for comparison.
+          here; FTSE, MSCI, S&amp;P Shariah, and DJIM are shown for comparison.
+        </p>
+        <p className="text-[10px] text-term-muted mt-1">
+          Note: S&amp;P Shariah and DJIM dropped their cash and receivables
+          screens in 2023, leaving only the leverage ratio and activity test.
+          This is a meaningful methodological divergence from AAOIFI/FTSE/MSCI.
         </p>
       </div>
 
@@ -116,9 +139,9 @@ export default function HalalPage() {
             stamped.
           </h1>
           <p className="text-[11px] text-term-muted leading-relaxed">
-            AAOIFI SS 21, FTSE Yasaar, and MSCI Islamic ratio screens applied to
-            the full AI + Quantum investment universe — with the worked math
-            shown for every test.
+            AAOIFI SS 21, FTSE Yasaar, MSCI Islamic, S&amp;P Shariah, and DJIM
+            ratio screens applied to the full AI + Quantum investment universe —
+            with the worked math shown for every test.
           </p>
         </div>
 
@@ -232,9 +255,11 @@ export default function HalalPage() {
       <p className="text-[10px] leading-relaxed text-term-muted border-t border-term-border pt-2">
         Ratios computed from TradingView balance-sheet scanner (REST). Business
         activity from curated seed (2026-07-21). Standards: AAOIFI SS 21, FTSE
-        Yasaar v4.6 (Feb 2026), MSCI Islamic (Dec 2025). Verdicts are computed
-        methodology results, not fatwas. Educational only — not financial or
-        religious advice.
+        Yasaar v4.6 (Feb 2026), MSCI Islamic (Dec 2025), S&amp;P Shariah (May
+        2025 ed.), DJIM (May 2025 ed.). S&amp;P and DJIM leverage screens use a
+        trailing-average market cap with a constant-shares approximation (see
+        conventions). Verdicts are computed methodology results, not fatwas.
+        Educational only — not financial or religious advice.
       </p>
     </div>
   );

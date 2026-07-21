@@ -325,6 +325,8 @@ export default function HalalTable({
               <th>AAOIFI</th>
               <th>FTSE</th>
               <th>MSCI</th>
+              <th>S&amp;P</th>
+              <th>DJIM</th>
               <th>Business</th>
               <th
                 className="cursor-pointer hover:text-zinc-200"
@@ -360,6 +362,16 @@ export default function HalalTable({
                   | "pass"
                   | "fail"
                   | "unknown";
+              const spStatus =
+                (v.standards["SP"]?.status ?? "unknown") as
+                  | "pass"
+                  | "fail"
+                  | "unknown";
+              const djimStatus =
+                (v.standards["DJIM"]?.status ?? "unknown") as
+                  | "pass"
+                  | "fail"
+                  | "unknown";
               const bizStatus = v.business?.status ?? "unknown";
               return (
                 <tr key={v.symbol}>
@@ -385,6 +397,12 @@ export default function HalalTable({
                   </td>
                   <td>
                     <StatusChip status={msciStatus} label={msciStatus} />
+                  </td>
+                  <td>
+                    <StatusChip status={spStatus} label={spStatus} />
+                  </td>
+                  <td>
+                    <StatusChip status={djimStatus} label={djimStatus} />
                   </td>
                   <td>
                     <span

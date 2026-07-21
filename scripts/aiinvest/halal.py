@@ -30,6 +30,12 @@ CONVENTIONS = [
     "curated impermissible-revenue percentage in the activity screen "
     "(AAOIFI 3/4/4 'irrespective of source'); when absent, the screen falls "
     "back to curated data alone and the basis is disclosed.",
+    "S&P Shariah and DJIM trailing-average market value of equity uses a "
+    "constant-shares approximation: implied shares = spot market_cap / spot "
+    "close price, held fixed across the historical price series. Actual "
+    "historical shares outstanding are unavailable; error is proportional to "
+    "buyback/dilution drift over the averaging window (36 months for S&P, "
+    "24 months for DJIM). This approximation is disclosed per occurrence.",
 ]
 
 _AAOIFI_SRC = ("AAOIFI Shari'ah Standard No. 21, clause {c} (standard text via "
@@ -37,6 +43,10 @@ _AAOIFI_SRC = ("AAOIFI Shari'ah Standard No. 21, clause {c} (standard text via "
 _FTSE_SRC = ("FTSE Yasaar Global Equity Shariah Index Series Ground Rules v4.6 "
              "(Feb 2026), rule {c}")
 _MSCI_SRC = "MSCI Islamic Index Series Methodology (Dec 2025), section {c}"
+_SP_SRC = ("S&P Dow Jones Indices — S&P Shariah Indices Methodology (May 2025 "
+           "ed., via Wayback; re-check on next methodology update); {c}")
+_DJIM_SRC = ("Dow Jones Islamic Market Index Methodology (May 2025 ed., via "
+             "Wayback; re-check on next methodology update); {c}")
 
 STANDARDS = [
     {
@@ -87,6 +97,38 @@ STANDARDS = [
              "threshold": 0.70, "citation": _MSCI_SRC.format(c="2.2, Apr-2025 revision")},
         ],
     },
+    {
+        "key": "SP",
+        "name": "S&P Shariah Indices",
+        "activity_threshold_pct": 5.0,
+        "activity_citation": _SP_SRC.format(
+            c="NPI < 5% incl. all interest income (post-2023 rules, "
+              "cash+receivables screens removed 2023)"),
+        "tests": [
+            {"id": "sp_debt", "label": "Interest-bearing debt / 36-month avg market cap",
+             "numerator": ["total_debt"], "denominator": "avg_mcap_36m",
+             "threshold": 1 / 3,
+             "citation": _SP_SRC.format(
+                 c="leverage ratio: debt < 33.3% of 36-month trailing avg "
+                   "market value of equity (post-2023 rules)")},
+        ],
+    },
+    {
+        "key": "DJIM",
+        "name": "Dow Jones Islamic Market Index",
+        "activity_threshold_pct": 5.0,
+        "activity_citation": _DJIM_SRC.format(
+            c="NPI < 5% incl. all interest income (post-2023 rules, "
+              "cash+receivables screens removed 2023)"),
+        "tests": [
+            {"id": "djim_debt", "label": "Interest-bearing debt / 24-month avg market cap",
+             "numerator": ["total_debt"], "denominator": "avg_mcap_24m",
+             "threshold": 1 / 3,
+             "citation": _DJIM_SRC.format(
+                 c="leverage ratio: interest-bearing debt < 33.3% of 24-month "
+                   "trailing avg market cap (post-2023 rules)")},
+        ],
+    },
 ]
 
 
@@ -97,7 +139,7 @@ def _val(metrics, col):
     return None
 
 
-def inputs_from_metrics(metrics, xbrl_facts=None):
+def inputs_from_metrics(metrics, xbrl_facts=None, avg_mcap_36m=None, avg_mcap_24m=None):
     """Extract + derive the screen inputs from a per-symbol metrics dict.
 
     When xbrl_facts["receivables"] is present, uses the exact XBRL balance-sheet
@@ -105,6 +147,10 @@ def inputs_from_metrics(metrics, xbrl_facts=None):
     (basis "turnover-proxy" — disclosed convention #4). None-safe throughout.
 
     xbrl_facts["interest_income"] is passed through for use in verdict().
+
+    avg_mcap_36m / avg_mcap_24m: trailing-average market caps (Task 9/10) computed
+    externally from the stored price series (web/public/data/prices/<SYM>.json) and
+    passed in here; both default to None (yields "unknown" for SP/DJIM screens).
     """
     rev_fy = _val(metrics, "total_revenue_fy")
     turns = _val(metrics, "receivables_turnover_fy")
@@ -134,6 +180,8 @@ def inputs_from_metrics(metrics, xbrl_facts=None):
         "receivables_basis": receivables_basis,
         "total_assets": _val(metrics, "total_assets_fq"),
         "market_cap": _val(metrics, "market_cap_basic"),
+        "avg_mcap_36m": avg_mcap_36m,
+        "avg_mcap_24m": avg_mcap_24m,
         "revenue_ttm": _val(metrics, "total_revenue_ttm"),
         "close": _val(metrics, "close"),
         "interest_income": interest_income,
@@ -209,7 +257,7 @@ def purification(inputs, activity_pct):
                      "shares outstanding (market_cap/close, derived)"}
 
 
-def verdict(symbol, metrics, curated, xbrl_facts=None):
+def verdict(symbol, metrics, curated, xbrl_facts=None, avg_mcap_36m=None, avg_mcap_24m=None):
     """Assemble the per-ticker verdict object (spec §6). Precedence:
     business prohibited -> not_halal; questionable -> questionable; no curated
     entry -> insufficient_data; else AAOIFI outcome decides.
@@ -218,8 +266,12 @@ def verdict(symbol, metrics, curated, xbrl_facts=None):
     proxy and interest income is added to the activity pct (capped at 100.0)
     per AAOIFI 3/4/4 'irrespective of source'. Purification impermissible
     amount likewise includes the interest income stream when known.
+
+    avg_mcap_36m / avg_mcap_24m: trailing-average market caps (Task 10) for
+    S&P Shariah and DJIM leverage screens; None -> those standards show "unknown".
     """
-    inputs = inputs_from_metrics(metrics, xbrl_facts=xbrl_facts)
+    inputs = inputs_from_metrics(metrics, xbrl_facts=xbrl_facts,
+                                 avg_mcap_36m=avg_mcap_36m, avg_mcap_24m=avg_mcap_24m)
     pct = None
     if curated:
         ipr = curated.get("impermissible_revenue_pct") or {}

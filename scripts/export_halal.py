@@ -35,18 +35,33 @@ def _layer_of(ticker):
     return ai_stack.layer_of(ticker) or quantum_stack.layer_of(ticker)
 
 
-def build(batch, activity, xbrl=None):
+def build(batch, activity, xbrl=None, price_series=None):
     """Assemble the halal.json bundle. Pure (no I/O).
 
     xbrl: optional dict mapping symbol -> xbrl facts dict (as produced by
     aiinvest.xbrl.extract_facts). When present, exact XBRL receivables replace
     the turnover proxy and interest income is added to the activity screen.
+
+    price_series: optional dict mapping symbol -> list of {"date", "close"} dicts
+    (the "series" array from web/public/data/prices/<SYM>.json). When present,
+    trailing-average market caps are computed for SP/DJIM screens.
     """
     verdicts = {}
     xbrl = xbrl or {}
+    price_series = price_series or {}
     for sym, rec in (batch.get("financial_data") or {}).items():
-        v = halal.verdict(sym, rec.get("metrics", {}) or {}, activity.get(sym),
-                          xbrl_facts=xbrl.get(sym))
+        metrics = rec.get("metrics", {}) or {}
+
+        # Compute trailing-average market caps for S&P (36m) and DJIM (24m) screens.
+        series = price_series.get(sym)
+        spot_mcap = (metrics.get("market_cap_basic") or {}).get("value")
+        spot_close = (metrics.get("close") or {}).get("value")
+        avg_mcap_36m = halal.avg_market_cap(series, 36, spot_mcap, spot_close) if series else None
+        avg_mcap_24m = halal.avg_market_cap(series, 24, spot_mcap, spot_close) if series else None
+
+        v = halal.verdict(sym, metrics, activity.get(sym),
+                          xbrl_facts=xbrl.get(sym),
+                          avg_mcap_36m=avg_mcap_36m, avg_mcap_24m=avg_mcap_24m)
         v["layer"] = _layer_of(rec.get("ticker"))
         verdicts[sym] = v
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -105,7 +120,22 @@ def main(argv=None):
             except Exception:
                 pass  # corrupt cache file — skip, use proxy
 
-    bundle = build(batch, activity, xbrl=xbrl_cache)
+    # Load price series cache (web/public/data/prices/<SYM>.json) for S&P/DJIM
+    # trailing-average market cap computation. Absent dir or missing files degrade
+    # silently — the SP/DJIM screens show "unknown" (disclosed approximation).
+    price_series_cache = {}
+    prices_dir = repo / "web" / "public" / "data" / "prices"
+    if prices_dir.is_dir():
+        for pf in prices_dir.glob("*.json"):
+            try:
+                rec = json.loads(pf.read_text(encoding="utf-8"))
+                sym = pf.stem  # filename is <SYM>.json
+                if isinstance(rec.get("series"), list):
+                    price_series_cache[sym] = rec["series"]
+            except Exception:
+                pass  # corrupt price file — skip, SP/DJIM will show unknown
+
+    bundle = build(batch, activity, xbrl=xbrl_cache, price_series=price_series_cache)
 
     # Provenance-mandatory: any verdict with computed ratios must carry inputs_asof.
     unstamped = [s for s, v in bundle["verdicts"].items()
