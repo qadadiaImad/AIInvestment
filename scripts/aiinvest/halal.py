@@ -134,3 +134,81 @@ def compute_test(test, inputs):
             "margin": test["threshold"] - ratio,
             "status": "pass" if ratio < test["threshold"] else "fail",
             "citation": test["citation"]}
+
+
+def compute_standard(std, inputs, activity_pct):
+    """All ratio tests + the impermissible-income test for one standard.
+
+    Ratio fail OR activity fail -> "fail"; any unknown (none failing) ->
+    "unknown"; else "pass". activity_pct None -> activity unknown (honest).
+    """
+    tests = [compute_test(t, inputs) for t in std["tests"]]
+    if activity_pct is None:
+        activity_status = "unknown"
+    else:
+        activity_status = "pass" if activity_pct < std["activity_threshold_pct"] else "fail"
+    statuses = [t["status"] for t in tests] + [activity_status]
+    if "fail" in statuses:
+        status = "fail"
+    elif "unknown" in statuses:
+        status = "unknown"
+    else:
+        status = "pass"
+    return {"key": std["key"], "name": std["name"], "status": status,
+            "tests": tests, "activity_status": activity_status,
+            "activity_threshold_pct": std["activity_threshold_pct"],
+            "activity_citation": std["activity_citation"]}
+
+
+def purification(inputs, activity_pct):
+    """AAOIFI 3/4/6 purification per share: impermissible income / shares.
+
+    v1: impermissible income = curated activity_pct × revenue_ttm; shares
+    implied as market_cap / close (disclosed as derived). Anything missing ->
+    insufficient_data with the missing input NAMED.
+    """
+    if activity_pct is None:
+        return {"per_share": None, "status": "insufficient_data",
+                "missing": "impermissible income share (curated segment data; "
+                           "interest income lands v1.1 via SEC XBRL)",
+                "basis": None}
+    rev, mcap, close = inputs.get("revenue_ttm"), inputs.get("market_cap"), inputs.get("close")
+    if not rev or not mcap or not close:
+        return {"per_share": None, "status": "insufficient_data",
+                "missing": "revenue_ttm / market_cap / close", "basis": None}
+    shares = mcap / close
+    return {"per_share": (activity_pct / 100.0) * rev / shares,
+            "status": "computed",
+            "missing": None,
+            "basis": "curated impermissible-income % × TTM revenue ÷ implied "
+                     "shares outstanding (market_cap/close, derived)"}
+
+
+def verdict(symbol, metrics, curated):
+    """Assemble the per-ticker verdict object (spec §6). Precedence:
+    business prohibited -> not_halal; questionable -> questionable; no curated
+    entry -> insufficient_data; else AAOIFI outcome decides."""
+    inputs = inputs_from_metrics(metrics)
+    pct = None
+    if curated:
+        ipr = curated.get("impermissible_revenue_pct") or {}
+        pct = ipr.get("value")
+        if pct is None and curated.get("status") == "clean":
+            pct = 0.0   # curated clean == no identified impermissible stream
+    standards = {s["key"]: compute_standard(s, inputs, pct) for s in STANDARDS}
+
+    if curated is None:
+        overall = "insufficient_data"
+    elif curated["status"] == "prohibited":
+        overall = "not_halal"
+    elif curated["status"] == "questionable":
+        overall = "questionable"
+    else:
+        aaoifi = standards["AAOIFI"]["status"]
+        overall = {"pass": "halal", "fail": "not_halal"}.get(aaoifi, "insufficient_data")
+
+    return {"symbol": symbol, "overall": overall, "overall_basis": "AAOIFI",
+            "standards": standards,
+            "business": curated or {"status": "unknown", "methodology_notes": {}},
+            "purification": purification(inputs, pct),
+            "inputs_asof": inputs["inputs_asof"]}

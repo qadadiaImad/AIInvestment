@@ -90,3 +90,71 @@ def test_utility_debt_load_fails_aaoifi_debt_test():
     r = halal.compute_test(halal.STANDARDS[0]["tests"][0], inp)
     assert r["status"] == "fail"
     assert r["margin"] < 0
+
+
+CLEAN = {"status": "clean", "impermissible_revenue_pct": None,
+         "methodology_notes": {}, "confidence": "high"}
+BANK = {"status": "prohibited", "impermissible_revenue_pct": {"value": 100.0},
+        "methodology_notes": {"aaoifi": {"stance": "fail",
+                                         "reason": "conventional banking"}},
+        "confidence": "high"}
+CRYPTO_Q = {"status": "questionable", "impermissible_revenue_pct": None,
+            "methodology_notes": {"aaoifi": {"stance": "questionable",
+                                             "reason": "crypto scholar split"}},
+            "confidence": "medium"}
+
+
+def test_compute_standard_all_pass_is_pass():
+    r = halal.compute_standard(halal.STANDARDS[0],
+                               halal.inputs_from_metrics(NVDA_METRICS), 0.0)
+    assert r["status"] == "pass"
+    assert len(r["tests"]) == 2
+    assert r["activity_status"] == "pass"
+
+
+def test_compute_standard_activity_breach_fails():
+    r = halal.compute_standard(halal.STANDARDS[0],
+                               halal.inputs_from_metrics(NVDA_METRICS), 12.0)
+    assert r["activity_status"] == "fail"
+    assert r["status"] == "fail"
+
+
+def test_compute_standard_unknown_activity_is_unknown_not_pass():
+    r = halal.compute_standard(halal.STANDARDS[0],
+                               halal.inputs_from_metrics(NVDA_METRICS), None)
+    assert r["activity_status"] == "unknown"
+    assert r["status"] == "unknown"      # ratios pass but activity undetermined
+
+
+def test_verdict_clean_business_passing_ratios_is_halal():
+    v = halal.verdict("NVDA", NVDA_METRICS, {**CLEAN,
+                      "impermissible_revenue_pct": {"value": 0.0}})
+    assert v["overall"] == "halal"
+    assert v["overall_basis"] == "AAOIFI"
+    assert set(v["standards"]) == {"AAOIFI", "FTSE", "MSCI"}
+
+
+def test_verdict_prohibited_business_is_not_halal_regardless_of_ratios():
+    v = halal.verdict("JPM", NVDA_METRICS, BANK)   # even with passing ratios
+    assert v["overall"] == "not_halal"
+
+
+def test_verdict_questionable_business_is_questionable():
+    assert halal.verdict("IREN", NVDA_METRICS, CRYPTO_Q)["overall"] == "questionable"
+
+
+def test_verdict_no_curated_entry_is_insufficient_data():
+    assert halal.verdict("XXXX", NVDA_METRICS, None)["overall"] == "insufficient_data"
+
+
+def test_purification_needs_activity_pct():
+    inp = halal.inputs_from_metrics(NVDA_METRICS)
+    p = halal.purification(inp, None)
+    assert p["status"] == "insufficient_data"
+    assert p["per_share"] is None
+    q = halal.purification(inp, 2.0)
+    # 2% of revenue_ttm / implied shares (mcap/close)
+    shares = 4919375940781.0 / 200.0
+    assert abs(q["per_share"] - 0.02 * 253491000000.0 / shares) < 1e-6
+    assert q["status"] == "computed"
+    assert "derived" in q["basis"]
