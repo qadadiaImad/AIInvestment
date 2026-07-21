@@ -1,0 +1,26 @@
+HALAL SCREEN — CAROUSEL KIT (2026-07-21, r2 plain-speak)  | 4:5 PNG carousels (v4_*), first halal round — no voice/video this round
+Numbers joined live from web/public/data/halal.json (generated 2026-07-21T13:07Z, 128 names screened: 82 pass / 8 review / 38 fail).
+Rails: computed methodology results, NOT fatwas — screen phrasing only, never "is halal / is haram". Plain-words copy, exact math in the receipts strip.
+Third person; no outlet named; thin footer disclaimers; no CTA this round.
+
+=============== POST 1 — WULF (HALAL SCREEN · REVIEW) ===============
+File: v4_wulf_1_hook.png / v4_wulf_2_data.png / v4_wulf_3_takeaway.png   | hero: mining rigs → AI racks, dusk
+Caption:
+This company runs AI datacenters now — but it still earns bitcoin money, and that's a problem for a halal portfolio. Two flags on the screen: of every $100 of company value, about $57 is borrowed (Islamic screens cap it at $30), and 38% of its income is still bitcoin mining. Owning it cleanly would mean giving about 13 cents a share to charity — that's called purification. Verdict on the card: review. A computed methodology result — not a fatwa. Educational, not financial advice — DYOR.
+Hashtags: #halalinvesting #halalstocks #islamicfinance #muslimmoney #aistocks #bitcoin #stocktok #fintok
+
+=============== POST 2 — ETN (HALAL SCREEN · ONE STOCK, TWO ANSWERS) ===============
+File: v4_etn_1_hook.png / v4_etn_2_data.png / v4_etn_3_takeaway.png   | hero: switchgear at blue hour, split light
+Caption:
+Can the same stock pass one halal screen and fail another? Yes — and it's not a scandal, it's math. One rulebook compares Eaton's debt to what the market says the company is worth: 14 cents per dollar, under the limit — pass. Two others compare it to everything the company owns: about 40 cents per dollar, over the limit — fail. Same company, same numbers, different rulebooks. That's why the rulebook is always on the card. Computed methodology results — not fatwas. Educational, not financial advice — DYOR.
+Hashtags: #halalinvesting #halalstocks #islamicfinance #AAOIFI #muslimmoney #aistocks #stocktok #fintok
+
+=============== POST 3 — GEV (HALAL SCREEN · PASS) ===============
+File: v4_gev_1_hook.png / v4_gev_2_data.png / v4_gev_3_takeaway.png   | hero: turbine hall at dawn, wind ridge
+Caption:
+The AI boom runs on electricity — and this is the company building the machines that make it. GE Vernova just cleared the halal screen the comfortable way: barely any borrowed money (about $3.50 of every $100 of company value, against a $30 limit), a clean business, and nothing to purify — $0.00 a share. All three rulebooks say pass. A computed screen result — not a ruling, not a buy call. Educational, not financial advice — DYOR.
+Hashtags: #halalinvesting #halalstocks #islamicfinance #cleanenergy #aistocks #muslimmoney #stocktok #fintok
+
+NOTES
+- Slide 2 of every post = "headline + receipts": one big plain-words claim, $100 analogies, exact per-standard ratios in THE RECEIPTS strip with the data date.
+- Karim VO scripts (plain-speak r2) live in reels_2026-07-21_kit.md, lint-verified, ready for the voiced round once the cloned voice exists.

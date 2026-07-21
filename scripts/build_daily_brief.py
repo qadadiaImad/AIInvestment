@@ -46,11 +46,13 @@ def run(date, data_dir, out_dir, fetch=None):
     # pharma) — not frontier pure-plays. The "quantum & frontier" spotlight wants a pure-play,
     # so drop the adopter layer before ranking. (Fixtures carry no "layer" → unaffected.)
     quantum_rows = [r for r in _rows(quantum) if not (isinstance(r, dict) and r.get("layer") == "Q5-applications")]
-    picks = pick_movers(_rows(site), quantum_rows, _articles(news))
+    site_rows = _rows(site)
+    picks = pick_movers(site_rows, quantum_rows, _articles(news))
     if picks["ai"] is None or picks["quantum"] is None:
         side = "ai" if picks["ai"] is None else "quantum"
         raise RuntimeError(f"no usable mover for {side}: bundle rows missing/non-numeric perf_1y")
-    brief = build_brief(date, pulse, picks, catalysts=["the next major macro print", "AI-sector earnings"])
+    brief = build_brief(date, pulse, picks, catalysts=["the next major macro print", "AI-sector earnings"],
+                        extras={"ai_rows": site_rows, "quantum_rows": quantum_rows})
     post = render_post(brief)
     violations = rail_check(post)
     if violations:

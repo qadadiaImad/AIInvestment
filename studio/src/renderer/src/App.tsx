@@ -4,10 +4,11 @@ import Gallery from './components/Gallery'
 import Detail from './components/Detail'
 import QuickActions from './components/QuickActions'
 import KitView from './components/KitView'
+import BriefView from './components/BriefView'
 import { StudioProvider, useStudio } from './store'
 
 function Shell() {
-  const [view, setView] = useState<'posts' | 'kit'>('posts')
+  const [view, setView] = useState<'posts' | 'kit' | 'brief'>('posts')
   const { refresh } = useStudio()
   return (
     <div className="h-screen flex flex-col">
@@ -18,11 +19,13 @@ function Shell() {
             className={`px-3 py-1 rounded ${view === 'posts' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-white/5 hover:bg-white/10'}`}>Posts</button>
           <button onClick={() => setView('kit')}
             className={`px-3 py-1 rounded ${view === 'kit' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-white/5 hover:bg-white/10'}`}>Kit</button>
+          <button onClick={() => setView('brief')}
+            className={`px-3 py-1 rounded ${view === 'brief' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-white/5 hover:bg-white/10'}`}>Brief</button>
         </nav>
         <button onClick={refresh} className="font-mono text-xs bg-white/5 hover:bg-white/10 px-3 py-1 rounded">Refresh</button>
       </header>
       <div className="flex-1 flex overflow-hidden">
-        {view === 'posts' ? <><Gallery /><Detail /></> : <KitView />}
+        {view === 'posts' ? <><Gallery /><Detail /></> : view === 'kit' ? <KitView /> : <BriefView />}
       </div>
       <footer className="h-64 border-t border-white/10 bg-[#0A0D12] flex flex-col">
         <QuickActions />

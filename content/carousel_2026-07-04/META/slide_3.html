@@ -1,0 +1,69 @@
+<meta charset="utf-8">
+<title>META — slide 3</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+.slide{width:1080px;height:1350px;position:relative;overflow:hidden;background:#0A0D12;color:#E8EDF2;font-family:'Inter',sans-serif}
+.glow{position:absolute;width:1400px;height:1400px;right:-400px;top:-450px;background:radial-gradient(circle,rgba(16,185,129,.15) 0%,rgba(16,185,129,0) 60%);pointer-events:none}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(232,237,242,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(232,237,242,.035) 1px,transparent 1px);background-size:40px 40px}
+.inner{position:absolute;inset:90px;display:flex;flex-direction:column}
+.kicker{font:600 22px/1 'Inter';letter-spacing:.22em;text-transform:uppercase;color:#34D399}
+.h1{margin-top:22px;font:600 58px/1.1 'Fraunces',serif;max-width:900px}
+.cards{margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.card{background:rgba(232,237,242,.04);border:1px solid rgba(232,237,242,.10);border-radius:18px;padding:32px 34px}
+.cname{font:500 23px/1 'Inter';color:#9AA6B2;letter-spacing:.04em}
+.cval{margin-top:16px;font:600 56px/1 'JetBrains Mono',monospace}
+.cmed{margin-top:14px;font:400 22px/1.4 'Inter';color:#77828E}
+.cmed b{font-family:'JetBrains Mono',monospace;color:#C4CED8;font-weight:500}
+.badge{display:inline-block;margin-top:16px;font:600 19px/1 'Inter';letter-spacing:.06em;border-radius:999px;padding:10px 16px}
+.over{color:#F0B429;background:rgba(240,180,41,.10);border:1px solid rgba(240,180,41,.30)}
+.under{color:#34D399;background:rgba(52,211,153,.10);border:1px solid rgba(52,211,153,.30)}
+.topfactor{margin-top:44px;background:rgba(16,185,129,.08);border:1px solid rgba(52,211,153,.35);border-radius:20px;padding:38px 42px}
+.tf-k{font:600 20px/1 'Inter';letter-spacing:.2em;text-transform:uppercase;color:#34D399}
+.tf-t{margin-top:18px;font:400 33px/1.42 'Fraunces',serif;color:#E8EDF2}
+.tf-t b{color:#34D399;font-weight:600}
+.foot{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end}
+.wordmark{font:600 22px/1 'Inter';letter-spacing:.28em;color:#E8EDF2}
+.pagenum{font:500 22px/1 'JetBrains Mono',monospace;color:#77828E}
+</style>
+<div class="slide">
+  <div class="grid"></div><div class="glow"></div>
+  <div class="inner">
+    <div class="kicker">META &middot; Building Blocks of the $813.62</div>
+    <div class="h1">Meta vs. its industry<br><span style="color:#9AA6B2;font-size:34px;font-family:Inter;font-weight:400">Internet Software / Services &mdash; industry medians</span></div>
+    <div class="cards">
+      <div class="card">
+        <div class="cname">REVENUE GROWTH (YoY)</div>
+        <div class="cval" style="color:#34D399">+26.18%</div>
+        <div class="cmed">industry median <b>+6.79%</b></div>
+        <div class="badge under">~4&times; THE MEDIAN</div>
+      </div>
+      <div class="card">
+        <div class="cname">P/E (TTM)</div>
+        <div class="cval">21.19&times;</div>
+        <div class="cmed">industry median <b>15.82&times;</b></div>
+        <div class="badge over">MODEST PREMIUM</div>
+      </div>
+      <div class="card">
+        <div class="cname">GROSS MARGIN</div>
+        <div class="cval" style="color:#34D399">81.94%</div>
+        <div class="cmed">industry median <b>57.71%</b></div>
+        <div class="badge under">WELL ABOVE</div>
+      </div>
+      <div class="card">
+        <div class="cname">P/S (TTM)</div>
+        <div class="cval">6.95&times;</div>
+        <div class="cmed">industry median <b>1.93&times;</b></div>
+        <div class="badge over">PREMIUM &mdash; MARGIN-JUSTIFIED?</div>
+      </div>
+    </div>
+    <div class="topfactor">
+      <div class="tf-k">Top factor in the model</div>
+      <div class="tf-t">Meta compounds revenue at <b>26%</b> a year on an <b>82% gross margin</b>, yet trades at <b>21&times; earnings</b> &mdash; a small premium to an industry median of 15.8&times; that is set mostly by companies growing ~7%. Growth priced like maturity is the core of the $813.62 case.</div>
+    </div>
+    <div class="foot">
+      <div class="wordmark">AI STACK</div>
+      <div class="pagenum">3 / 5</div>
+    </div>
+  </div>
+</div>

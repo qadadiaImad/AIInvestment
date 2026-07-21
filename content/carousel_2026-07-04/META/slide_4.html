@@ -1,0 +1,69 @@
+<meta charset="utf-8">
+<title>META — slide 4</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+.slide{width:1080px;height:1350px;position:relative;overflow:hidden;background:#0A0D12;color:#E8EDF2;font-family:'Inter',sans-serif}
+.glow{position:absolute;width:1400px;height:1400px;left:-350px;bottom:-550px;background:radial-gradient(circle,rgba(16,185,129,.14) 0%,rgba(16,185,129,0) 60%);pointer-events:none}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(232,237,242,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(232,237,242,.035) 1px,transparent 1px);background-size:40px 40px}
+.inner{position:absolute;inset:90px;display:flex;flex-direction:column}
+.kicker{font:600 22px/1 'Inter';letter-spacing:.22em;text-transform:uppercase;color:#34D399}
+.h1{margin-top:22px;font:600 60px/1.1 'Fraunces',serif;max-width:900px}
+.cards{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.card{background:rgba(232,237,242,.04);border:1px solid rgba(232,237,242,.10);border-radius:18px;padding:30px 34px}
+.cname{font:500 23px/1 'Inter';color:#9AA6B2;letter-spacing:.04em}
+.cval{margin-top:14px;font:600 52px/1 'JetBrains Mono',monospace;color:#34D399}
+.cmed{margin-top:12px;font:400 22px/1.4 'Inter';color:#77828E}
+.cmed b{font-family:'JetBrains Mono',monospace;color:#C4CED8;font-weight:500}
+.tension{margin-top:46px;border:1px solid rgba(232,237,242,.14);border-radius:20px;padding:40px 44px;background:rgba(232,237,242,.03)}
+.t-k{font:600 20px/1 'Inter';letter-spacing:.2em;text-transform:uppercase;color:#F0B429}
+.t-row{margin-top:26px;display:flex;gap:40px;align-items:center}
+.t-num{font:600 72px/1 'JetBrains Mono',monospace}
+.t-lbl{font:400 24px/1.4 'Inter';color:#9AA6B2}
+.t-close{margin-top:28px;font:400 31px/1.45 'Fraunces',serif;color:#E8EDF2}
+.t-close b{color:#34D399;font-weight:600}
+.foot{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end}
+.wordmark{font:600 22px/1 'Inter';letter-spacing:.28em;color:#E8EDF2}
+.pagenum{font:500 22px/1 'JetBrains Mono',monospace;color:#77828E}
+</style>
+<div class="slide">
+  <div class="grid"></div><div class="glow"></div>
+  <div class="inner">
+    <div class="kicker">META &middot; Quality Check</div>
+    <div class="h1">The machine behind the margin</div>
+    <div class="cards">
+      <div class="card">
+        <div class="cname">NET MARGIN</div>
+        <div class="cval">32.84%</div>
+        <div class="cmed">industry median <b>0.54%</b> &middot; 88th percentile</div>
+      </div>
+      <div class="card">
+        <div class="cname">RETURN ON EQUITY</div>
+        <div class="cval">32.93%</div>
+        <div class="cmed">industry median <b>0.27%</b> &middot; 86th percentile</div>
+      </div>
+      <div class="card">
+        <div class="cname">OPERATING MARGIN</div>
+        <div class="cval">41.21%</div>
+        <div class="cmed">of every revenue dollar, 41&cent; is operating profit</div>
+      </div>
+      <div class="card">
+        <div class="cname">DEBT / EQUITY</div>
+        <div class="cval">0.36</div>
+        <div class="cmed">current ratio <b>2.35</b> &mdash; a lightly levered balance sheet</div>
+      </div>
+    </div>
+    <div class="tension">
+      <div class="t-k">The tension</div>
+      <div class="t-row">
+        <div><div class="t-num" style="color:#E36049">&minus;18.51%</div><div class="t-lbl">stock, past 12 months</div></div>
+        <div><div class="t-num" style="color:#34D399">+26.18%</div><div class="t-lbl">revenue, year over year</div></div>
+      </div>
+      <div class="t-close">The share price fell while the business grew. That is exactly how the model's gap widened to <b>28.4%</b> &mdash; the market is pricing the AI-spending bill, not the P&amp;L above.</div>
+    </div>
+    <div class="foot">
+      <div class="wordmark">AI STACK</div>
+      <div class="pagenum">4 / 5</div>
+    </div>
+  </div>
+</div>

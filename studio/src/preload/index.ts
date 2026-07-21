@@ -18,6 +18,10 @@ contextBridge.exposeInMainWorld('studio', {
     list: () => ipcRenderer.invoke('kit:list'),
     get: (date: string, ticker: string) => ipcRenderer.invoke('kit:get', date, ticker),
   },
+  brief: {
+    list: () => ipcRenderer.invoke('brief:list'),
+    get: (date: string) => ipcRenderer.invoke('brief:get', date),
+  },
   comments: {
     list: (postId: string) => ipcRenderer.invoke('comments:list', postId),
     add: (postId: string, part: string, text: string) => ipcRenderer.invoke('comments:add', postId, part, text),

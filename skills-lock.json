@@ -5,25 +5,43 @@
       "source": "higgsfield-ai/skills",
       "sourceType": "github",
       "skillPath": "higgsfield-generate/SKILL.md",
-      "computedHash": "159e4be7dc9d77fcd9ea5e26dbc11574b4c61f2592b18c946607c2099ae53418"
+      "computedHash": "aa3473510b70d2f214a669779e587869373d57b40510a98f03f9d8655d07a076"
     },
     "higgsfield-marketplace-cards": {
       "source": "higgsfield-ai/skills",
       "sourceType": "github",
       "skillPath": "higgsfield-marketplace-cards/SKILL.md",
-      "computedHash": "bfc8753f857d0cedb630d3f9c0801ecb2f6ba799de093b8cefccf1550cf7608b"
+      "computedHash": "16107629e9e4bcede3bda9a49f8260f02314c8f9f2010e6eaab1a6e0f857f1a2"
     },
     "higgsfield-product-photoshoot": {
       "source": "higgsfield-ai/skills",
       "sourceType": "github",
       "skillPath": "higgsfield-product-photoshoot/SKILL.md",
-      "computedHash": "b1ad2f39573cd04eb32af603a641a87b114ad69b83c0ee0e38ff37dbbe9663b3"
+      "computedHash": "139c38f3b8a33a4ef37a1066850e4bcddc0976b4143cc6ea0c3b7ad9de3b3b9e"
     },
     "higgsfield-soul-id": {
       "source": "higgsfield-ai/skills",
       "sourceType": "github",
       "skillPath": "higgsfield-soul-id/SKILL.md",
-      "computedHash": "6d468aafc15bacee9f4e86c2726e8351e18fe588301974332535db5a666de7c6"
+      "computedHash": "1ce57e956e412a4dc9134683bd53a084643c5339a532899a8de5f944e76ef8ef"
+    },
+    "higgsfield-video-explainer": {
+      "source": "higgsfield-ai/skills",
+      "sourceType": "github",
+      "skillPath": "higgsfield-video-explainer/SKILL.md",
+      "computedHash": "aef0cd18d919818996cd63a993443fe527627af4a463cb887e6cdf127c36ef09"
+    },
+    "higgsfield-websites": {
+      "source": "higgsfield-ai/skills",
+      "sourceType": "github",
+      "skillPath": "higgsfield-websites/SKILL.md",
+      "computedHash": "25729eb45fa1b27f215733335769583930356b5624d9bb6c932860932ef1e317"
+    },
+    "higgsfield-game-generation": {
+      "source": "higgsfield-ai/skills",
+      "sourceType": "github",
+      "skillPath": "higgsfield-game-generation/SKILL.md",
+      "computedHash": "3f55f272e011fa53d98b25bfacdaebd6ea59a9d5ccb7be244fc060c4fcbf8a88"
     }
   }
 }

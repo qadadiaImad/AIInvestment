@@ -54,9 +54,10 @@ def main():
     tkl = tk.lower()
     os.chdir(str(ROOT))
 
-    # 1. frames (local, free)
-    rc, out, err = sh(f'python "{HG/"_build_reel_stock.py"}" {tk}')
-    if rc != 0: raise SystemExit(f"frame build failed:\n{err[-1200:]}")
+    # 1. frames (local, free) — skipped when pre-rendered (halal kit-driven frames)
+    if "--skip-frames" not in sys.argv:
+        rc, out, err = sh(f'python "{HG/"_build_reel_stock.py"}" {tk}')
+        if rc != 0: raise SystemExit(f"frame build failed:\n{err[-1200:]}")
     hook_png = HG/f"reel_{tkl}_hook.png"; data_png = HG/f"reel_{tkl}_data.png"; take_png = HG/f"reel_{tkl}_takeaway.png"
     for p in (hook_png, data_png, take_png):
         if not p.exists(): raise SystemExit(f"missing frame {p}")

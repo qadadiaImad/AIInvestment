@@ -350,5 +350,132 @@ split audience-building across two personas before either has momentum.
 
 ---
 
+## 12. Identity & story (decided 2026-07-15)
+
+### The founder story (proof artifact, not audience filter)
+
+The founder is a working engineer with a day job who got tired of paying for — or
+being blocked by — paywalled financial data, and built his own terminal instead:
+live TradingView/Yahoo/GuruFocus/EDGAR/FRED pulls, a capital-web map, a screener,
+congress-trade tracking, daily briefs, all stamped with `retrieved_at`/`source` so
+nothing is a stale screenshot. That story is **real, checkable, and stays exactly
+as it is** — it's the credibility asset, the thing no lifestyle-flex or fake-P&L
+competitor in this niche can fake (`docs/trading-brand-playbook.md` Rule 2 and
+Part II's fake-proof case ledger). What changes is what the story is *for*: it
+proves the terminal is trustworthy. It is not, and should never be written as, a
+description of who the community is for.
+
+### The corrected buyer avatar
+
+Not "engineers" or "AI-stack builders." The buyer is the **mass-market, time-poor,
+9-to-5 retail investor/trader** — often a **second-attempt trader**: tried
+investing or trading before, alone or via a guru/course, got burned by losses or
+hype, and now wants structure and someone/something to trust rather than more raw
+information. Three things pull in the same direction:
+
+- **Time-poor by default, not by exception.** Most retail accounts trade only
+  about once a month on average — trading is a side activity for most people, not
+  a full-time occupation (Stanford GSB research). Roughly 39% of working
+  Americans — about 80 million people — report income on the side (BLS-cited).
+  Design cadence, session length, and "catch-up" mechanics for evenings and
+  weekends, not a trader who watches four screens all day.
+- **Second attempts are close to the statistical default, not an edge case.**
+  Independent studies out of Brazil, Taiwan, and the EU/UK's own mandated
+  CFD-loss disclosures all land in the same range: the large majority of people
+  who trade persistently lose money. First-attempt failure is closer to the
+  default outcome than the exception — assume it in copy, don't tiptoe around it.
+- **Burned traders don't come back on hype — they come back on a credible "this
+  time is different."** Investors are meaningfully less likely to repurchase
+  something they lost money on than something that made them money
+  (Strahilevitz, Odean & Barber, *Journal of Marketing Research*, 2011) — regret
+  from a loss creates real reluctance unless something about the situation has
+  visibly changed. That "something different" is the terminal, the timestamp,
+  the visible Failure File — never a bigger promise.
+
+Full trigger-stack, objection-stack, and sourcing detail lives in
+`docs/trading-brand-playbook.md` Part 0 — treat that section as this roadmap's
+psychology appendix; don't re-derive it from memory.
+
+### The bridge line
+
+Every piece of founder-story copy should resolve to some version of this line
+before the CTA:
+
+> *"You don't need to be an engineer — I already did that part. You just show up,
+> the terminal's already prepped the numbers, and you follow the process."*
+
+That's the entire founder-identity-vs-buyer-avatar distinction in one sentence:
+his competence is spent so the member's time doesn't have to be. Use it (or a
+close paraphrase) on the `/join` page (Phase 2), in the founding-member launch
+copy (Phase 4), and in any "build-in-public" pillar content (Phase 1) — it's the
+line that converts "impressive, but not for me" into "then this is for me."
+
+### Villain rules: systems, never names
+
+Unchanged from, and now formally shared with, the playbook's Rule 4 and
+Anti-Rule 9: the foil is always a structural enemy — gatekept institutional
+tooling, the paywalled-Bloomberg-terminal model, hustle-guru culture, "another
+course that's just information you can get free" — **never** a named competitor,
+creator, or brand, even implicitly, even as a "here's what not to do" example.
+This is hygiene, not a growth lever (every brand the playbook studied, including
+every enforcement-action case, already avoids naming rivals) — but it's
+non-negotiable: it can't be defamation-tested, it can't hand a rival a rebuttal
+moment, and the content well never runs dry because new examples of the
+*system's* failure keep appearing on their own.
+
+### Per-community sharpening
+
+| | Community A — AI Stack | Community B — Technicals Desk |
+|---|---|---|
+| Corrected filter | *"the time-poor investor who wants Bloomberg-grade fundamentals without needing to be the engineer who builds the terminal"* | *"the day-job trader who needs session-scoped setups that fit around a 9-to-5, not a full trading-floor screen commitment"* (already correctly aimed — A now matches this model) |
+| Founder's role in the copy | Proof only: "I built the pipeline so you don't have to read a 10-K to know where a name sits in the stack." | Proof only: "I built the session-level data feed so you don't have to watch four screens through London and NY open." |
+| Buyer's felt need | Clarity without the CNBC noise; a reusable mental model (the stack), not a pile of raw filings. | A process that fits around a day job; structure at session open/close, not a full-time trading-floor commitment. |
+| Second-attempt framing | "You've read the headlines and still didn't know if a name was cheap or expensive — that's not a you problem, that's a missing-tool problem." | "You've watched a level break with no plan for it before your shift started — that's the gap this closes." |
+| Compliance register | Moderate heat — never let a fundamentals read imply a price target or "buy." | High heat — structure and levels-to-watch only, never "enter here" (playbook Anti-Rule 11). |
+
+### Hook bank — 10 hooks written for the corrected avatar
+
+All ten follow Part 0's trigger stack (hope channeled into process, belonging,
+borrowed competence, loss-framed on time not profit, real scarcity only) and stay
+inside the playbook's SAFE column (Part 0.5) — no dollar figures, no win rates, no
+"guru," nothing a second-attempt trader would pattern-match to what already
+burned them.
+
+1. "You don't have time to read a 10-K before work. The terminal already did —
+   here's what it found." *(time-poor, borrowed competence)*
+2. "Tried trading before and it didn't stick? You're not the exception — you're
+   the majority. Here's what's actually different this time." *(second-attempt,
+   honesty-as-trust)*
+3. "I got tired of paying for data I couldn't verify, so I built a terminal that
+   stamps every number with when and where it came from. You don't have to build
+   one — just use mine." *(founder-as-proof, bridge line)*
+4. "No guru calls, no 'buy this now.' Just the stack, the numbers, and the
+   timestamp — you decide." *(trust via transparency, not hype)*
+5. "Where does NVDA actually sit in the AI stack — chips, infra, or both? Most
+   people guess. Here's the number." *(curiosity hook, process not outcome)*
+6. "Session opens in nine minutes and you're still in a meeting. Here's what to
+   have open when you get out." *(day-job trader, time-poor)*
+7. "The paywalled terminal costs more than your rent. Here's the same read, built
+   from scratch, without the four-figure monthly bill." *(system villain, never a
+   name)*
+8. "You don't need to become an engineer to get engineer-grade data. That part's
+   already done — you just show up." *(bridge line, direct)*
+9. "Congress just filed a trade in a name you've never heard of. Here's what it
+   actually means — not a headline, the filing." *(curiosity + transparency)*
+10. "Burned once by a course that promised more than it delivered? Come see what
+    happens when the process is the product, not the promise." *(second-attempt,
+    ethical hope)*
+
+### See also
+
+The full evidence base for this section — every stat's fact/reported label and
+source, the trigger stack, the objection stack, and the SAFE/LINE-RISK conversion
+rules the hook bank above is built to stay inside — lives in
+`docs/trading-brand-playbook.md` Part 0 (Buyer psychology), and Part 0.5
+specifically for anything copy-adjacent. Read that before writing new
+founder-story or hook copy; don't re-derive it from memory.
+
+---
+
 *Roadmap for the project owner's content/community strategy. Educational project;
 nothing here or in the content it produces is financial advice.*
