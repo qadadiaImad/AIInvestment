@@ -48,6 +48,14 @@ def build(batch, activity):
             "conventions": halal.CONVENTIONS, "verdicts": verdicts}
 
 
+def write_history_snapshot(bundle, data_root, date_str):
+    """Persist today's bundle under data/halal/history/ (Task-12 alerts diff input)."""
+    out = pathlib.Path(data_root) / "halal" / "history" / f"halal_{date_str}.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(bundle, indent=2), encoding="utf-8")
+    return out
+
+
 def _latest_batch(data_root):
     paths = sorted(glob.glob(str(data_root / "halal" / "*" / "tradingview_halal_*.json")))
     if not paths:
@@ -91,6 +99,9 @@ def main(argv=None):
     out = pathlib.Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(bundle, indent=2), encoding="utf-8")
+
+    date_str = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
+    write_history_snapshot(bundle, pathlib.Path(args.data), date_str)
 
     counts = {}
     for v in bundle["verdicts"].values():

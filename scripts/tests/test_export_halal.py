@@ -48,3 +48,11 @@ def test_build_never_emits_gurufocus_terms():
     s = json.dumps(export_halal.build(BATCH, ACTIVITY)).lower()
     for term in ("guru", "gf value", "gf_value", "gf score"):
         assert term not in s
+
+
+def test_write_history_snapshot(tmp_path):
+    bundle = export_halal.build(BATCH, ACTIVITY)
+    out = export_halal.write_history_snapshot(bundle, tmp_path, "2026-07-21")
+    assert out == tmp_path / "halal" / "history" / "halal_2026-07-21.json"
+    import json
+    assert json.loads(out.read_text(encoding="utf-8"))["verdicts"].keys() == bundle["verdicts"].keys()
