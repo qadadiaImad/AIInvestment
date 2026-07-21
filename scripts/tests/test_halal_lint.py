@@ -83,3 +83,17 @@ def test_legit_passes_the_screen_phrasing_stays_clean():
         "passes the AAOIFI screen given the margin. "
         "Educational, not financial or religious advice.")
     assert lint_halal_script(good, CARD) == []
+
+
+# --- Regression: re-review round 2 — contracted negation + curly apostrophe ---
+
+def test_contracted_negation_isnt_halal_rejected():
+    errs = lint_halal_script(
+        "The screen shows this isn't halal. Educational, not financial or religious advice.", CARD)
+    assert any("halal" in e.lower() or "haram" in e.lower() for e in errs)
+
+
+def test_curly_apostrophe_possessive_halal_rejected():
+    errs = lint_halal_script(
+        "WULF’s halal, according to the numbers. Educational, not financial or religious advice.", CARD)
+    assert any("halal" in e.lower() or "haram" in e.lower() for e in errs)

@@ -46,7 +46,9 @@ def _spoken_forms(card):
 
 _NUMERIC_FORM = re.compile(r"^[\d.]+$")
 _VERDICT_CLAIM = re.compile(
-    r"(?:\b(?:is|are|was|were)|'s)\s+(?:\w+[\s-]+){0,2}(?:halal|haram)\b")
+    r"(?:\b(?:is|are|was|were|isn't|aren't|wasn't|weren't|ain't)|'s)"
+    r"\s+(?:\w+[\s-]+){0,2}(?:halal|haram)\b")
+_CURLY_APOSTROPHES = ("’", "ʼ")
 
 
 def _form_anchors(form, low):
@@ -65,6 +67,8 @@ def _form_anchors(form, low):
 def lint_halal_script(script, card):
     errs = []
     low = script.lower()
+    for apo in _CURLY_APOSTROPHES:
+        low = low.replace(apo, "'")
     m = _VERDICT_CLAIM.search(low)
     if m:
         hit = m.group(0)
