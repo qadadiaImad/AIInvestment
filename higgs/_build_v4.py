@@ -52,10 +52,15 @@ def page(body):
     return f"<!doctype html><html><head><meta charset='utf-8'><style>{BASE}</style></head><body><div class='slide'>{body}</div></body></html>"
 
 
-def header(tk, ex, logo_b64=None):
+def header(tk, ex, logo_b64=None, badge=None):
     inner = f'<img src="{logo_b64}">' if logo_b64 else ""
+    b = ""
+    if badge:
+        b = (f"<div style=\"margin-left:auto;font-family:'JetBrains Mono';font-weight:700;"
+             f"font-size:22px;letter-spacing:2px;color:#0A0D12;background:{badge['color']};"
+             f"padding:12px 20px;border-radius:12px\">{badge['text']}</div>")
     return f"""<div class='hdr'><div class='logochip'>{inner}</div>
-    <div><div class='tkr'>{tk}</div><div class='ex'>{ex}</div></div></div>"""
+    <div><div class='tkr'>{tk}</div><div class='ex'>{ex}</div></div>{b}</div>"""
 
 
 def slide_hook(hero, kick, head, sub, foot="Educational · not financial advice   ·   swipe →", topbar=None, big_head=80):
@@ -116,6 +121,35 @@ def slide_takeaway(hero, topbar, kick, big, unit, label, body, foot="Educational
       <div class='foot'>{foot}</div></div>""")
 
 
+def _screen_body(hero, topbar, card, foot="Computed methodology result — not a fatwa · not financial advice"):
+    rows = ""
+    for r in card["standards_rows"]:
+        mark = "✓" if r["ok"] else "✕"
+        mcol = "#10B981" if r["ok"] else "#C25E5E"
+        rows += f"""<div style='display:flex;align-items:center;margin:20px 0;gap:18px'>
+        <div style="width:120px;font-family:'JetBrains Mono';font-weight:700;font-size:28px">{r['name']}</div>
+        <div style='font-size:34px;color:{mcol};width:44px'>{mark}</div>
+        <div style='flex:1'>
+          <div style='font-size:24px;color:#9FB0A8'>{r['binding_label']}</div>
+          <div style="font-family:'JetBrains Mono';font-weight:700;font-size:28px;color:#E8EDF2">
+            {r['ratio']} <span style='color:#8893A4'>vs cap {r['threshold']}</span>
+            <span style='color:{mcol}'>({r['margin']})</span></div></div></div>"""
+    return f"""<div class='hero' style="background-image:url('{hero}');opacity:.12;transform:scale(1.1)"></div>
+    <div class='scrim' style="background:linear-gradient(180deg,#0A0D12 30%,rgba(10,13,18,.55) 100%)"></div>
+    <div class='pad'>{topbar}
+      <div style='margin-top:22px' class='kick'>THE SCREEN — WORKED MATH</div>
+      <div style='flex:1;display:flex;flex-direction:column;justify-content:center'>
+        <div style='background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.12);border-radius:18px;padding:30px 36px'>{rows}</div>
+        <div style='font-size:27px;color:#D7DEE8;margin-top:26px'>{card['business_line']}</div>
+        <div style='font-size:27px;color:#7FE9C2;margin-top:10px'>{card['purification_line']}</div>
+        <div class='foot' style='margin-top:18px'>inputs as of {card['inputs_asof'][:10]}</div></div>
+      <div class='foot'>{foot}</div></div>"""
+
+
+def slide_screen(hero, topbar, card, foot="Computed methodology result — not a fatwa · not financial advice"):
+    return page(_screen_body(hero, topbar, card, foot))
+
+
 def slide_basket(hero, name, subhead, pill, tickers, meta, note):
     chips = "".join(f"<div style=\"font-family:'JetBrains Mono';font-weight:700;font-size:27px;color:#fff;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.18);border-radius:11px;padding:12px 18px\">{t}</div>" for t in tickers)
     mr = "".join(f"<div style='display:flex;margin:10px 0'><div style=\"width:150px;font-family:'JetBrains Mono';font-size:21px;color:#9FB0A8\">{k}</div><div style='font-family:Inter;font-weight:600;font-size:25px;color:#fff'>{v}</div></div>" for k, v in meta)
@@ -159,9 +193,14 @@ def _rows_from_bundle(tickers, stocks, mode):
     return rows
 
 
-def build_slides(md, site_stocks, quantum_stocks, hero_map, logo_map, date):
+def build_slides(md, site_stocks, quantum_stocks, hero_map, logo_map, date, halal_map=None):
     """kit md + bundle stocks -> {filename: html}. Pure: hero/logo art injected as
-    {filename: data-uri-or-None}; missing art => '' (solid-bg fallback)."""
+    {filename: data-uri-or-None}; missing art => '' (solid-bg fallback).
+
+    halal_map: optional {ticker: screen_card_data dict} (aiinvest.halal_join). When a
+    ticker's kit CFG has a halal_script AND a card is present, slide 2 becomes the
+    screen-card (worked-math) slide instead of the ordinary bars slide, and every slide
+    for that ticker carries the verdict badge in its header."""
     out = {}
     for tk in _cfg_tickers(md):
         c = parse_cfg(md, tk)
@@ -169,17 +208,27 @@ def build_slides(md, site_stocks, quantum_stocks, hero_map, logo_map, date):
             continue
         stocks = quantum_stocks if c.get("src") == "quantum" else site_stocks
         hero = hero_map.get(c.get("hero")) or ""
-        hdr = header(tk, c.get("ex") or "", logo_map.get(c.get("logo")))
+        card = (halal_map or {}).get(tk)
+        is_halal_post = bool(c.get("halal_script")) and card is not None
+        badge = card["badge"] if card else None
+        hdr = header(tk, c.get("ex") or "", logo_map.get(c.get("logo")), badge=badge)
         mode = c["data"]["mode"] or "disc"
         rows = _rows_from_bundle(c["data"]["rows"], stocks, mode)
         tkl = tk.lower()
         hk = c["hook"]; dt = c["data"]; tkw = c["takeaway"]
         out[f"v4_{tkl}_1_hook.png"] = slide_hook(
             hero, hk["kick"] or "", hk["head"] or "", hk["sub"] or "", topbar=hdr)
-        out[f"v4_{tkl}_2_data.png"] = slide_bars(
-            hero, hdr, dt["kick"] or "", dt["title"] or "", rows, dt["cap"] or "", mode, foot=dt["foot"] or "")
-        out[f"v4_{tkl}_3_takeaway.png"] = slide_takeaway(
-            hero, hdr, tkw["kick"] or "", tkw["big"] or "", tkw["unit"] or "", tkw["label"] or "", tkw["body"] or "")
+        if is_halal_post:
+            out[f"v4_{tkl}_2_data.png"] = slide_screen(hero, hdr, card)
+            out[f"v4_{tkl}_3_takeaway.png"] = slide_takeaway(
+                hero, hdr, tkw["kick"] or "", tkw["big"] or "", tkw["unit"] or "",
+                tkw["label"] or "", tkw["body"] or "",
+                foot="Computed methodology result — not a fatwa · not financial advice")
+        else:
+            out[f"v4_{tkl}_2_data.png"] = slide_bars(
+                hero, hdr, dt["kick"] or "", dt["title"] or "", rows, dt["cap"] or "", mode, foot=dt["foot"] or "")
+            out[f"v4_{tkl}_3_takeaway.png"] = slide_takeaway(
+                hero, hdr, tkw["kick"] or "", tkw["big"] or "", tkw["unit"] or "", tkw["label"] or "", tkw["body"] or "")
 
     card = parse_congress_card(md)
     if card:
@@ -196,6 +245,46 @@ def build_slides(md, site_stocks, quantum_stocks, hero_map, logo_map, date):
             hero, f"<div class='pill'>{pill}</div>", "", card.get("big") or "", "",
             card.get("big_label") or "", card.get("body") or "",
             foot=card.get("footer") or "public record · not an accusation · educational")
+    return out
+
+
+RW, RH = 1080, 1920
+
+
+def _page916(body, transparent=False):
+    bg = "background:transparent" if transparent else ""
+    return (f"<!doctype html><html><head><meta charset='utf-8'><style>{BASE}"
+            f".slide{{width:{RW}px;height:{RH}px;{bg}}}</style></head>"
+            f"<body style='{bg}'><div class='slide' style='width:{RW}px;height:{RH}px;{bg}'>{body}</div></body></html>")
+
+
+def build_halal_frames(md, hero_map, halal_map):
+    """Halal entries -> 9:16 reel frames {reel_<tkl>_{hook,data,takeaway}.png: html}.
+    Hook frame is transparent (make_reel.py overlays it on the animated hero)."""
+    out = {}
+    for tk in _cfg_tickers(md):
+        c = parse_cfg(md, tk)
+        card = (halal_map or {}).get(tk)
+        if not c or not c.get("halal_script") or not card:
+            continue
+        tkl = tk.lower()
+        hdr = header(tk, c.get("ex") or "", badge=card["badge"])
+        hk = c["hook"]; tkw = c["takeaway"]
+        hero = hero_map.get(c.get("hero")) or ""
+        out[f"reel_{tkl}_hook.png"] = _page916(f"""<div class='pad'>{hdr}
+          <div style='margin-top:34px' class='kick'>{hk['kick'] or ''}</div>
+          <div class='head' style='margin-top:auto;font-size:96px'>{hk['head'] or ''}</div>
+          <div style='font-size:38px;line-height:1.4;color:#D7DEE8;margin-top:28px'>{hk['sub'] or ''}</div>
+          <div class='foot' style='margin-top:40px'>Educational · not financial or religious advice</div></div>""",
+          transparent=True)
+        out[f"reel_{tkl}_data.png"] = _page916(_screen_body(hero, hdr, card))
+        out[f"reel_{tkl}_takeaway.png"] = _page916(f"""<div class='pad'>{hdr}
+          <div style='flex:1;display:flex;flex-direction:column;justify-content:center'>
+            <div class='kick'>{tkw['kick'] or ''}</div>
+            <div style="font-family:Fraunces;font-weight:700;font-size:260px;line-height:.86;letter-spacing:-6px;margin-top:16px;background:linear-gradient(180deg,#fff,#7FE9C2);-webkit-background-clip:text;-webkit-text-fill-color:transparent">{tkw['big'] or ''}<span style='font-size:130px'>{tkw['unit'] or ''}</span></div>
+            <div style="font-family:'JetBrains Mono';font-size:30px;letter-spacing:2px;color:#CFE8DD;margin-top:16px">{tkw['label'] or ''}</div>
+            <div style='font-size:36px;line-height:1.42;color:#D7DEE8;margin-top:40px'>{tkw['body'] or ''}</div></div>
+          <div class='foot'>Computed methodology result — not a fatwa · not financial advice</div></div>""")
     return out
 
 
@@ -240,6 +329,24 @@ def main(argv=None):
     site = json.loads((ROOT / "web/public/data/site.json").read_text(encoding="utf-8"))["stocks"]
     quantum = json.loads((ROOT / "web/public/data/quantum.json").read_text(encoding="utf-8"))["stocks"]
 
+    halal_map = None
+    from aiinvest.halal_join import HalalDataMissing, load_halal, screen_card_data
+    tk_list = _cfg_tickers(md)
+    wants_halal = any((parse_cfg(md, t) or {}).get("halal_script") for t in tk_list)
+    try:
+        verdicts, warns = load_halal(ROOT / "web/public/data/halal.json")
+        for w in warns:
+            print("WARN", w)
+        halal_map = {t: screen_card_data(verdicts, t) for t in tk_list}
+        halal_map = {t: c for t, c in halal_map.items() if c}
+        skipped = [t for t in tk_list if (parse_cfg(md, t) or {}).get("halal_script") and t not in halal_map]
+        if skipped:
+            print(f"WARN halal_script tickers missing from halal.json (skipped halal mode): {skipped}")
+    except HalalDataMissing as e:
+        if wants_halal:
+            print(f"REFUSED: kit has halal posts but {e}")
+            return 3
+
     hero_map, logo_map = {}, {}
     for tk in _cfg_tickers(md):
         c = parse_cfg(md, tk)
@@ -252,7 +359,7 @@ def main(argv=None):
     chn = f"hero_congress_{date}.png"
     hero_map[chn] = _b64(HIGGS / chn)
 
-    sl = build_slides(md, site, quantum, hero_map, logo_map, date)
+    sl = build_slides(md, site, quantum, hero_map, logo_map, date, halal_map=halal_map)
     missing = [k for k, v in {**hero_map, **logo_map}.items() if v is None]
     if missing:
         print(f"WARN missing hero/logo art (solid-bg fallback): {missing}")
@@ -267,6 +374,17 @@ def main(argv=None):
             pg.wait_for_timeout(600)
             pg.screenshot(path=str(HIGGS / name), clip={"x": 0, "y": 0, "width": W, "height": H})
             print("rendered", name)
+
+        frames = build_halal_frames(md, hero_map, halal_map or {})
+        if frames:
+            pg2 = b.new_page(viewport={"width": RW, "height": RH})
+            for name, html in frames.items():
+                pg2.set_content(html, wait_until="networkidle")
+                pg2.evaluate("document.fonts.ready")
+                pg2.wait_for_timeout(600)
+                pg2.screenshot(path=str(HIGGS / name), omit_background=name.endswith("_hook.png"),
+                               clip={"x": 0, "y": 0, "width": RW, "height": RH})
+                print("rendered", name)
         b.close()
     print(f"DONE kit={kit.name} date={date} slides={len(sl)}")
     return 0
