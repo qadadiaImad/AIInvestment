@@ -19,3 +19,15 @@
 - Script text is written to be heard: digits as words where natural; no URLs; ticker letters
   spelled out only when ambiguous.
 - Every script ends with the spoken line: "Educational, not financial or religious advice."
+
+## Locked engine (2026-07-21): local Chatterbox clone — THE canon
+
+- Engine: **Chatterbox** (Resemble AI, MIT — commercial-safe), zero-shot clone of
+  `voice/karim_sample.wav`. Free, offline, vendor-proof; the Higgsfield clone path above is
+  now an unused alternative.
+- Reproducibility: fixed seeds (base 7, +chunk index), `exaggeration 0.4` (calm educator),
+  `cfg_weight 0.5`, sentence-chunked ≤240 chars with 0.35s pauses.
+- Generate: `C:/Users/Amsegt/.venvs/chatterbox/Scripts/python.exe scripts/voice/karim_tts.py
+  --date <kit-date>` → lint-gated (same rails as the cloud path) → `halal-reels/public/voice_<tk>.wav`.
+- First voiced round: 2026-07-21 (WULF 33.4s · ETN 37.5s · GEV 29.6s), muxed into the
+  Remotion reels via `<Audio>`.

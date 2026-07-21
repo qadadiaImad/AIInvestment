@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Sequence, interpolate, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Sequence, interpolate, useCurrentFrame, Audio, staticFile } from "remotion";
 import { DATE, GEV } from "./data";
 import { C, FONT } from "./theme";
 import { Bg, Caption, Confetti, EndCard, Foot, Head, Kicker, LimitMeter, Slam, Stamp, Turbine, clamp, easeOut, pop } from "./ui";
@@ -48,17 +48,19 @@ const Sparkle: React.FC<{ from: number }> = ({ from }) => {
 };
 
 const PAD = 84;
+const S = (f: number) => Math.round(f * 1.651376146788991);
 
 export const GevReel: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily: FONT.body }}>
       <Bg />
+      <Audio src={staticFile("voice_gev.wav")} />
       <AbsoluteFill style={{ padding: PAD }}>
         <Head tk="GEV" sub="POWER EQUIPMENT · NYSE" badge={GEV.badge} />
       </AbsoluteFill>
 
       {/* S1 — hook + turbine */}
-      <Sequence from={8} durationInFrames={102} name="Hook">
+      <Sequence from={S(8)} durationInFrames={S(102)} name="Hook">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center" }}>
           <div style={{ position: "absolute", right: 40, top: 380, opacity: 0.9 }}>
             <Turbine size={330} />
@@ -79,7 +81,7 @@ export const GevReel: React.FC = () => {
       </Sequence>
 
       {/* S2 — tiny debt (the joke) */}
-      <Sequence from={110} durationInFrames={150} name="DebtTest">
+      <Sequence from={S(110)} durationInFrames={S(150)} name="DebtTest">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center", gap: 40 }}>
           <Kicker text="THE DEBT TEST" />
           <LimitMeter
@@ -102,7 +104,7 @@ export const GevReel: React.FC = () => {
       </Sequence>
 
       {/* S3 — clean sweep stamps + confetti */}
-      <Sequence from={260} durationInFrames={110} name="Stamps">
+      <Sequence from={S(260)} durationInFrames={S(110)} name="Stamps">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center", gap: 46 }}>
           <Kicker text="ALL THREE RULEBOOKS" />
           {GEV.stamps.map((s, i) => (
@@ -118,7 +120,7 @@ export const GevReel: React.FC = () => {
       </Sequence>
 
       {/* S4 — nothing to purify */}
-      <Sequence from={370} durationInFrames={94} name="Purify">
+      <Sequence from={S(370)} durationInFrames={S(94)} name="Purify">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center", gap: 34, alignItems: "center" }}>
           <Kicker text="NOTHING TO PURIFY" />
           <Sparkle from={12} />
@@ -131,13 +133,13 @@ export const GevReel: React.FC = () => {
       </Sequence>
 
       {/* S5 — end card */}
-      <Sequence from={464} name="EndCard">
+      <Sequence from={S(464)} name="EndCard">
         <Bg />
         <EndCard badge={GEV.badge} line="The cleanest name on this week's screen." date={DATE} />
       </Sequence>
 
       <AbsoluteFill style={{ padding: PAD, justifyContent: "flex-end", pointerEvents: "none" }}>
-        <Sequence from={0} durationInFrames={464} layout="none" name="Footer">
+        <Sequence from={0} durationInFrames={S(464)} layout="none" name="Footer">
           <Foot />
         </Sequence>
       </AbsoluteFill>

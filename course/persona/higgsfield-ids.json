@@ -62,6 +62,17 @@
     "variant": "elevenlabs",
     "source": "video/intro_desk.mp4",
     "created": null,
-    "note": "null id = owner has not yet created the cloned voice in the Higgsfield web UI from voice/karim_sample.wav"
+    "note": "OPTIONAL cloud path (unused): Higgsfield web-UI clone. Canonical engine is voice_local (Chatterbox)."
+  },
+  "voice_local": {
+    "engine": "chatterbox (Resemble AI, MIT)",
+    "created": "2026-07-21",
+    "sample": "voice/karim_sample.wav",
+    "seed": 7,
+    "exaggeration": 0.4,
+    "cfg_weight": 0.5,
+    "venv": "C:/Users/Amsegt/.venvs/chatterbox",
+    "script": "scripts/voice/karim_tts.py",
+    "note": "THE canonical Karim voice engine \u2014 local zero-shot clone of the pilot sample; free, offline, reproducible. Higgsfield 'voice' block below stays as the optional cloud alternative (id still null)."
   }
 }
