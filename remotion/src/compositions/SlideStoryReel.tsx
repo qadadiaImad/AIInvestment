@@ -192,7 +192,8 @@ const HookScene: React.FC<{beat: Extract<Beat, {kind: 'hook'}>}> = ({beat}) => (
         {beat.headline2}
       </Slam>
     ) : null}
-    <div style={{marginTop: 60, maxWidth: 900}}>
+    {/* maxWidth 620 keeps the sub clear of the 30% bubble frame bottom-right */}
+    <div style={{marginTop: 60, maxWidth: 620}}>
       <Caption delay={40}>
         <RichText value={beat.sub} />
       </Caption>
@@ -437,7 +438,18 @@ export const SlideStoryReel: React.FC<SlideStoryProps> = (props) => {
           talking clips, one per beat, running back-to-back for the reel's
           duration — no <Loop>. VO-less slide mode (bubbleClips: []) renders
           no bubble at all, per the schema's default. */}
-      {props.bubbleClips.length > 0 ? <BubbleFrame clips={props.bubbleClips} /> : null}
+      {props.bubbleClips.length > 0 ? (
+        // Mount the bubble ONLY while its clips have footage — the container
+        // (border/shadow) must not linger as an empty box after the last clip.
+        <Sequence
+          from={0}
+          durationInFrames={props.bubbleClips.reduce((s, c) => s + c.durationInFrames, 0)}
+          layout="none"
+          name="Bubble"
+        >
+          <BubbleFrame clips={props.bubbleClips} />
+        </Sequence>
+      ) : null}
 
       <AbsoluteFill style={{padding: PAD, justifyContent: 'flex-end', pointerEvents: 'none'}}>
         <Sequence from={0} durationInFrames={totalFrames} layout="none" name="Footer">

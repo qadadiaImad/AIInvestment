@@ -1,6 +1,6 @@
 {
   "ticker": "AIHW",
-  "tickerSub": "AI HARDWARE BASKET · 4 NAMES",
+  "tickerSub": "AI HARDWARE BASKET \u00b7 4 NAMES",
   "badge": "ALL 5 SCREENS: PASS",
   "beats": [
     {
@@ -9,41 +9,95 @@
       "headline2": "One basket.",
       "headline2Tone": "amber",
       "sub": [
-        {"t": "Analysts cross-checked four AI names against a "},
-        {"t": "halal screen", "tone": "emerald", "b": true},
-        {"t": " and found every one trading "},
-        {"t": "below fundamental value", "tone": "amber", "b": true},
-        {"t": "."}
+        {
+          "t": "Analysts cross-checked four AI names against a "
+        },
+        {
+          "t": "halal screen",
+          "tone": "emerald",
+          "b": true
+        },
+        {
+          "t": " and found every one trading "
+        },
+        {
+          "t": "below fundamental value",
+          "tone": "amber",
+          "b": true
+        },
+        {
+          "t": "."
+        }
       ],
-      "durationInFrames": 260
+      "durationInFrames": 316
     },
     {
       "kind": "basket",
-      "title": "Passes every screen — AAOIFI, FTSE, MSCI, S&P, DJIM",
+      "title": "Passes every screen \u2014 AAOIFI, FTSE, MSCI, S&P, DJIM",
       "rows": [
-        {"ticker": "NVDA", "note": "41% below fundamental value · 127 congress trades", "badge": "HALAL · 5/5", "badgeTone": "emerald"},
-        {"ticker": "SNPS", "note": "32% below · 15 trades", "badge": "HALAL · 5/5", "badgeTone": "emerald"},
-        {"ticker": "MSFT", "note": "32% below · 132 trades", "badge": "HALAL · 5/5", "badgeTone": "emerald"},
-        {"ticker": "META", "note": "18% below · 66 trades", "badge": "HALAL · 5/5", "badgeTone": "emerald"}
+        {
+          "ticker": "NVDA",
+          "note": "41% below fundamental value \u00b7 127 congress trades",
+          "badge": "HALAL \u00b7 5/5",
+          "badgeTone": "emerald"
+        },
+        {
+          "ticker": "SNPS",
+          "note": "32% below \u00b7 15 trades",
+          "badge": "HALAL \u00b7 5/5",
+          "badgeTone": "emerald"
+        },
+        {
+          "ticker": "MSFT",
+          "note": "32% below \u00b7 132 trades",
+          "badge": "HALAL \u00b7 5/5",
+          "badgeTone": "emerald"
+        },
+        {
+          "ticker": "META",
+          "note": "18% below \u00b7 66 trades",
+          "badge": "HALAL \u00b7 5/5",
+          "badgeTone": "emerald"
+        }
       ],
-      "durationInFrames": 340
+      "durationInFrames": 450
     },
     {
       "kind": "basket",
       "title": "Congress filed 340+ trades in these names",
       "rows": [
-        {"ticker": "NVDA", "note": "127 trades", "badge": "PUBLIC RECORD", "badgeTone": "amber"},
-        {"ticker": "SNPS", "note": "15 trades", "badge": "PUBLIC RECORD", "badgeTone": "amber"},
-        {"ticker": "MSFT", "note": "132 trades", "badge": "PUBLIC RECORD", "badgeTone": "amber"},
-        {"ticker": "META", "note": "66 trades", "badge": "PUBLIC RECORD", "badgeTone": "amber"}
+        {
+          "ticker": "NVDA",
+          "note": "127 trades",
+          "badge": "PUBLIC RECORD",
+          "badgeTone": "amber"
+        },
+        {
+          "ticker": "SNPS",
+          "note": "15 trades",
+          "badge": "PUBLIC RECORD",
+          "badgeTone": "amber"
+        },
+        {
+          "ticker": "MSFT",
+          "note": "132 trades",
+          "badge": "PUBLIC RECORD",
+          "badgeTone": "amber"
+        },
+        {
+          "ticker": "META",
+          "note": "66 trades",
+          "badge": "PUBLIC RECORD",
+          "badgeTone": "amber"
+        }
       ],
-      "durationInFrames": 280
+      "durationInFrames": 339
     },
     {
       "kind": "endcard",
       "headline": "Check the math yourself.",
-      "sub": "Educational — not financial advice, not a fatwa. Data 2026-07-21.",
-      "durationInFrames": 240
+      "sub": "Educational \u2014 not financial advice, not a fatwa. Data 2026-07-21.",
+      "durationInFrames": 339
     }
   ],
   "vo": [
@@ -52,7 +106,12 @@
     "Congress members disclosed over three hundred trades across these four names. Public record, filed under the STOCK Act. Disclosures, not endorsements.",
     "The math is on the screen. Check it yourself before trusting anyone's opinion, including this one. Educational, not financial or religious advice."
   ],
-  "bubbleClips": [],
+  "bubbleClips": [
+    {
+      "src": "bubble_basket_hook.mp4",
+      "durationInFrames": 316
+    }
+  ],
   "captions": [],
-  "disclaimer": "Computed methodology result — not a fatwa · not financial advice"
+  "disclaimer": "Computed methodology result \u2014 not a fatwa \u00b7 not financial advice"
 }
