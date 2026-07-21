@@ -269,6 +269,14 @@ export default function HalalTable({
         </span>
       </div>
 
+      {/* Legend */}
+      <p className="text-[9.5px] text-term-muted leading-snug">
+        Halal = passes all ratio and activity screens under the selected
+        standard. Not halal = fails one or more screens. Questionable =
+        scholar-split or indeterminate business activity; it takes precedence
+        over passing or failing ratios. Insufficient data = missing inputs.
+      </p>
+
       {/* Table */}
       <div className="overflow-x-auto border border-term-border rounded-sm">
         <table className="term">

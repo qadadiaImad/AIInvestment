@@ -214,6 +214,15 @@ export default function HalalCard({
           )}
         </div>
 
+        {/* Questionable-precedence explainer */}
+        {verdict.overall === "questionable" &&
+          Object.values(verdict.standards).some((s) => s.status === "fail") && (
+            <p className="text-[10px] text-term-muted">
+              Business status takes precedence over ratio results — see business
+              notes below.
+            </p>
+          )}
+
         {/* Per-standard accordions */}
         <div className="flex flex-col gap-1.5">
           {Object.values(verdict.standards).map((std) => (
