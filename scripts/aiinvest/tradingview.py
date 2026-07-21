@@ -53,6 +53,19 @@ COLUMNS = {
     "beta_1_year": ("ratio", "num"),
     # --- classification ---
     "industry": ("text", "text"),
+    # --- halal screening balance-sheet / income inputs (verified live 2026-07-21;
+    #     scanner returns 200+null for unknown columns — every id below was checked
+    #     against GET /america/metainfo, the authoritative 3,771-field list) ---
+    "total_assets_fq": ("usd", "num"),
+    "total_debt_fq": ("usd", "num"),
+    "long_term_debt_fq": ("usd", "num"),
+    "short_term_debt_fq": ("usd", "num"),
+    "cash_n_short_term_invest_fq": ("usd", "num"),
+    "cash_n_equivalents_fq": ("usd", "num"),
+    "total_revenue_ttm": ("usd", "num"),
+    "total_revenue_fy": ("usd", "num"),
+    "receivables_turnover_fy": ("ratio", "num"),
+    "net_income_fy": ("usd", "num"),
 }
 
 # Sensible default fundamentals pull.
@@ -68,6 +81,17 @@ DEFAULT_COLUMNS = [
     "price_sales_current", "price_free_cash_flow_ttm",
     "total_revenue_yoy_growth_ttm", "earnings_per_share_diluted_yoy_growth_ttm",
     "Perf.Y", "Perf.YTD", "beta_1_year",
+]
+
+# Halal-screen pull (pull_halal.py). SEPARATE from DEFAULT_COLUMNS so the AI-stack
+# daily pull stays byte-identical. close + market_cap_basic ride along for the
+# spot-market-cap denominator and implied shares outstanding.
+HALAL_COLUMNS = [
+    "close", "market_cap_basic",
+    "total_assets_fq", "total_debt_fq", "long_term_debt_fq", "short_term_debt_fq",
+    "cash_n_short_term_invest_fq", "cash_n_equivalents_fq",
+    "total_revenue_ttm", "total_revenue_fy", "receivables_turnover_fy",
+    "net_income_fy",
 ]
 
 

@@ -103,3 +103,31 @@ def test_new_columns_in_default_columns():
         "beta_1_year", "industry",
     ]:
         assert col in tv.DEFAULT_COLUMNS, f"{col} not in DEFAULT_COLUMNS"
+
+
+# --- halal screening balance-sheet columns (verified live 2026-07-21) ---
+
+def test_halal_columns_registered_with_unit_and_kind():
+    expected = {
+        "total_assets_fq": ("usd", "num"),
+        "total_debt_fq": ("usd", "num"),
+        "long_term_debt_fq": ("usd", "num"),
+        "short_term_debt_fq": ("usd", "num"),
+        "cash_n_short_term_invest_fq": ("usd", "num"),
+        "cash_n_equivalents_fq": ("usd", "num"),
+        "total_revenue_ttm": ("usd", "num"),
+        "total_revenue_fy": ("usd", "num"),
+        "receivables_turnover_fy": ("ratio", "num"),
+        "net_income_fy": ("usd", "num"),
+    }
+    for col, (unit, kind) in expected.items():
+        assert col in tv.COLUMNS, f"{col} missing from COLUMNS"
+        assert tv.COLUMNS[col] == (unit, kind)
+
+
+def test_halal_columns_list_exists_and_is_not_in_default():
+    # HALAL_COLUMNS is a SEPARATE list: the AI-stack daily pull stays byte-identical.
+    for col in ["total_assets_fq", "total_debt_fq", "cash_n_short_term_invest_fq",
+                "receivables_turnover_fy", "market_cap_basic", "close"]:
+        assert col in tv.HALAL_COLUMNS, f"{col} not in HALAL_COLUMNS"
+    assert "total_assets_fq" not in tv.DEFAULT_COLUMNS
