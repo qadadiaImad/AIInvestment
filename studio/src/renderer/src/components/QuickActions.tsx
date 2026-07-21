@@ -2,7 +2,8 @@ import { typeIntoTerminal } from './Terminal'
 const ACTIONS = [
   { name: 'refresh-data', label: 'Refresh data' },
   { name: 'build-carousel', label: 'Build carousel' },
-  { name: 'make-reels', label: 'Make reels' }
+  { name: 'make-reels', label: 'Make reels' },
+  { name: 'render-slide-reel', label: 'Render slide reel' }
 ]
 export default function QuickActions() {
   // Type the command into the terminal WITHOUT auto-running it (no trailing Enter), so the

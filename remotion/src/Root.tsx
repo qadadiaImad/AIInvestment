@@ -9,8 +9,17 @@ import { loadFont as loadFraunces } from "@remotion/google-fonts/Fraunces";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
 import { loadFont as loadJBM } from "@remotion/google-fonts/JetBrainsMono";
 import fixture from "./fixtures/ddog.json";
+import wulfSlidesFixture from "./fixtures/wulf_slides.json";
 import { HalalVerdictReel } from "./compositions/HalalVerdictReel";
+import { SlideStoryReel } from "./compositions/SlideStoryReel";
 import { reelPropsSchema } from "./props";
+import { slideStoryPropsSchema } from "./slides/slideProps";
+
+const wulfSlidesProps = slideStoryPropsSchema.parse(wulfSlidesFixture);
+const wulfSlidesDuration = wulfSlidesProps.beats.reduce(
+  (sum, beat) => sum + beat.durationInFrames,
+  0
+);
 
 loadFraunces();
 loadInter();
@@ -41,6 +50,16 @@ export const RemotionRoot: React.FC = () => {
         height={1920}
         schema={reelPropsSchema}
         defaultProps={reelPropsSchema.parse(fixture)}
+      />
+      <Composition
+        id="SlideStoryReel"
+        component={SlideStoryReel}
+        durationInFrames={wulfSlidesDuration}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={slideStoryPropsSchema}
+        defaultProps={wulfSlidesProps}
       />
     </>
   );

@@ -1,0 +1,57 @@
+{
+  "ticker": "WULF",
+  "tickerSub": "AI DATACENTERS · NASDAQ",
+  "badge": "AAOIFI SCREEN: REVIEW",
+  "beats": [
+    {
+      "kind": "hook",
+      "headline": "This stock earns bitcoin money.",
+      "sub": "Muslim investors run a halal screen — a math test for stocks. Watch it work.",
+      "accentWord": "bitcoin",
+      "durationInFrames": 120
+    },
+    {
+      "kind": "bars",
+      "title": "THE RULEBOOKS AGREE",
+      "caption": "Too much debt — in all three rulebooks.",
+      "bars": [
+        {"label": "AAOIFI", "ratio": 56.9, "threshold": 30, "status": "fail"},
+        {"label": "FTSE", "ratio": 75.8, "threshold": 33.3, "status": "fail"},
+        {"label": "MSCI", "ratio": 75.8, "threshold": 33.3, "status": "fail"}
+      ],
+      "durationInFrames": 150
+    },
+    {
+      "kind": "donut",
+      "title": "TEST 2 — THE BUSINESS",
+      "pct": 38.2,
+      "centerLabel": "BITCOIN MINING",
+      "caption": "38% of its income is still bitcoin mining — that slice is flagged impermissible.",
+      "tone": "warn",
+      "durationInFrames": 130
+    },
+    {
+      "kind": "stamp",
+      "verdict": "questionable",
+      "basis": "Debt 57% of market cap vs a 30% cap · bitcoin mining 38% of revenue",
+      "line": "Purification: about 13¢ a share would go to charity — the impure slice doesn't belong in your pocket.",
+      "durationInFrames": 130
+    },
+    {
+      "kind": "endcard",
+      "headline": "Real business. Flagged twice.",
+      "sub": "Verdict: review. · THE HALAL SCREEN · data as of 2026-07-21",
+      "durationInFrames": 110
+    }
+  ],
+  "vo": [
+    "This stock earns bitcoin money — let's run the halal screen.",
+    "All three rulebooks agree: too much debt.",
+    "Thirty-eight percent of revenue is still bitcoin mining.",
+    "The debt and the business both trip the screen — purification would send about thirteen cents a share to charity.",
+    "Real business, flagged twice. The verdict: review."
+  ],
+  "bubbleClips": [],
+  "captions": [],
+  "disclaimer": "Computed methodology result — not a fatwa · not financial advice"
+}
