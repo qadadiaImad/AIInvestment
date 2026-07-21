@@ -126,7 +126,35 @@ def slide_takeaway(hero, topbar, kick, big, unit, label, body, foot="Educational
       <div class='foot'>{foot}</div></div>""")
 
 
-def _screen_body(hero, topbar, card, foot=NOT_FATWA_FOOT):
+def _receipts_strip(card):
+    """Compact one-strip proof line: per-standard ratio/cap + mark, plus the data stamp."""
+    parts = []
+    for r in card["standards_rows"]:
+        mark = "✓" if r["ok"] else "✕"
+        mcol = "#10B981" if r["ok"] else "#C25E5E"
+        parts.append(f"{r['name']} {r['ratio']}<span style='color:#8893A4'>/{r['threshold']}</span> "
+                     f"<span style='color:{mcol}'>{mark}</span>")
+    body = " <span style='color:#3A4652'>·</span> ".join(parts)
+    return (f"<div style='border-top:1.5px solid rgba(255,255,255,.14);padding-top:20px;margin-top:34px'>"
+            f"<div style=\"font-family:'JetBrains Mono';font-size:19px;letter-spacing:3px;color:#8893A4\">THE RECEIPTS</div>"
+            f"<div style=\"font-family:'JetBrains Mono';font-weight:700;font-size:24px;color:#E8EDF2;margin-top:12px\">{body}</div>"
+            f"<div style=\"font-family:'JetBrains Mono';font-size:18px;color:#8893A4;margin-top:10px\">data as of {card['inputs_asof'][:10]}</div></div>")
+
+
+def _screen_body(hero, topbar, card, foot=NOT_FATWA_FOOT, human=None):
+    if human and human.get("head"):
+        body2 = (f"<div style='font-size:33px;line-height:1.45;color:#D7DEE8;margin-top:26px;max-width:880px'>{human['body2']}</div>"
+                 if human.get("body2") else "")
+        return f"""<div class='hero' style="background-image:url('{hero}');opacity:.12;transform:scale(1.1)"></div>
+    <div class='scrim' style="background:linear-gradient(180deg,#0A0D12 30%,rgba(10,13,18,.55) 100%)"></div>
+    <div class='pad'>{topbar}
+      <div style='margin-top:22px' class='kick'>THE SCREEN — IN PLAIN WORDS</div>
+      <div style='flex:1;display:flex;flex-direction:column;justify-content:center'>
+        <div style="font-family:Fraunces;font-weight:700;font-size:92px;line-height:1.0;letter-spacing:-2px">{human['head']}</div>
+        <div style='font-size:33px;line-height:1.45;color:#E8EDF2;margin-top:34px;max-width:880px'>{human.get('body') or ''}</div>
+        {body2}
+        {_receipts_strip(card)}</div>
+      <div class='foot'>{foot}</div></div>"""
     rows = ""
     for r in card["standards_rows"]:
         mark = "✓" if r["ok"] else "✕"
@@ -151,8 +179,8 @@ def _screen_body(hero, topbar, card, foot=NOT_FATWA_FOOT):
       <div class='foot'>{foot}</div></div>"""
 
 
-def slide_screen(hero, topbar, card, foot=NOT_FATWA_FOOT):
-    return page(_screen_body(hero, topbar, card, foot))
+def slide_screen(hero, topbar, card, foot=NOT_FATWA_FOOT, human=None):
+    return page(_screen_body(hero, topbar, card, foot, human=human))
 
 
 def slide_basket(hero, name, subhead, pill, tickers, meta, note):
@@ -230,7 +258,8 @@ def build_slides(md, site_stocks, quantum_stocks, hero_map, logo_map, date, hala
         out[f"v4_{tkl}_1_hook.png"] = slide_hook(
             hero, hk["kick"] or "", hk["head"] or "", hk["sub"] or "", topbar=hdr)
         if is_halal_post:
-            out[f"v4_{tkl}_2_data.png"] = slide_screen(hero, hdr, card)
+            human = {"head": c.get("screen_head"), "body": c.get("screen_body"), "body2": c.get("screen_body2")}
+            out[f"v4_{tkl}_2_data.png"] = slide_screen(hero, hdr, card, human=human)
             out[f"v4_{tkl}_3_takeaway.png"] = slide_takeaway(
                 hero, hdr, tkw["kick"] or "", tkw["big"] or "", tkw["unit"] or "",
                 tkw["label"] or "", tkw["body"] or "",
@@ -294,7 +323,8 @@ def build_halal_frames(md, hero_map, halal_map):
           <div style='font-size:38px;line-height:1.4;color:#D7DEE8;margin-top:28px'>{hk['sub'] or ''}</div>
           <div class='foot' style='margin-top:40px'>Educational · not financial or religious advice</div></div>""",
           transparent=True)
-        out[f"reel_{tkl}_data.png"] = _page916(_screen_body(hero, hdr, card))
+        human = {"head": c.get("screen_head"), "body": c.get("screen_body"), "body2": c.get("screen_body2")}
+        out[f"reel_{tkl}_data.png"] = _page916(_screen_body(hero, hdr, card, human=human))
         out[f"reel_{tkl}_takeaway.png"] = _page916(f"""<div class='pad'>{hdr}
           <div style='flex:1;display:flex;flex-direction:column;justify-content:center'>
             <div class='kick'>{tkw['kick'] or ''}</div>

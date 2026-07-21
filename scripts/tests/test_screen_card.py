@@ -113,3 +113,27 @@ def test_build_slides_badge_only_carries_disclaimer():
                            halal_map={"GEV": GEV_CARD})
     assert "not a fatwa" in out["v4_gev_2_data.png"]
     assert "not a fatwa" in out["v4_gev_3_takeaway.png"]
+
+
+HUMAN = {"head": "Almost DOUBLE<br>the debt limit.",
+         "body": "Of every $100 of company value, $57 is borrowed money. Islamic screens cap it at $30.",
+         "body2": "And 38% of its income is bitcoin mining."}
+
+def test_screen_slide_human_layout():
+    html = b4.slide_screen("", "<div/>", CARD, human=HUMAN)
+    assert "Almost DOUBLE" in html and "borrowed money" in html
+    assert "THE RECEIPTS" in html
+    for needle in ("AAOIFI", "21.0%", "30.0%", "FTSE", "2026-07-21", "not a fatwa"):
+        assert needle in html
+    assert "binding" not in html  # analyst row layout replaced
+
+def test_screen_slide_no_human_fallback_unchanged():
+    html = b4.slide_screen("", "<div/>", CARD)
+    assert "debt / market cap" in html and "THE RECEIPTS" not in html
+
+KIT_HUMAN = KIT.replace('"halal_script":"', '"screen_head":"Almost DOUBLE the debt limit.", "screen_body":"Of every $100, $57 is borrowed.", "halal_script":"')
+
+def test_build_slides_passes_human_from_kit():
+    out = b4.build_slides(KIT_HUMAN, {}, {}, {}, {}, "2026-07-21", halal_map=HALAL_MAP)
+    assert "Almost DOUBLE the debt limit." in out["v4_wulf_2_data.png"]
+    assert "THE RECEIPTS" in out["v4_wulf_2_data.png"]
