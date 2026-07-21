@@ -212,3 +212,41 @@ def verdict(symbol, metrics, curated):
             "business": curated or {"status": "unknown", "methodology_notes": {}},
             "purification": purification(inputs, pct),
             "inputs_asof": inputs["inputs_asof"]}
+
+
+# ---------------------------------------------------------------------------
+# Task 4: curated business-activity loader + validator
+# ---------------------------------------------------------------------------
+import json as _json
+import pathlib as _pathlib
+
+_ACTIVITY_PATH = (_pathlib.Path(__file__).resolve().parent
+                  / "data" / "halal" / "business_activity.json")
+_STATUSES = {"clean", "prohibited", "questionable"}
+
+
+def load_business_activity(path=None):
+    """Curated business-activity entries, keyed by bare symbol."""
+    p = _pathlib.Path(path) if path else _ACTIVITY_PATH
+    entries = _json.loads(p.read_text(encoding="utf-8"))
+    return {e["ticker"]: e for e in entries}
+
+
+def validate_business_activity(entries, universe):
+    """Return a list of problem strings (empty == valid). Enforced (spec §5):
+    full universe coverage; status enum; non-clean entries carry evidence
+    (quote + source_url); last_reviewed present."""
+    problems = []
+    for sym in universe:
+        if sym not in entries:
+            problems.append(f"{sym}: missing from business_activity.json")
+    for sym, e in entries.items():
+        if e.get("status") not in _STATUSES:
+            problems.append(f"{sym}: bad status {e.get('status')!r}")
+        if not e.get("last_reviewed"):
+            problems.append(f"{sym}: missing last_reviewed")
+        if e.get("status") in ("prohibited", "questionable"):
+            ev = e.get("evidence") or {}
+            if not ev.get("quote") or not ev.get("source_url"):
+                problems.append(f"{sym}: non-clean entry lacks evidence quote/source_url")
+    return problems

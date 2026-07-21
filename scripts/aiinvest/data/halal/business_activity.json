@@ -1,0 +1,1939 @@
+[
+  {
+    "ticker": "ADBE",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "ADI",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "AEP",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "AI",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "AKAM",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "ALAB",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "AMAT",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "AMD",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "AMKR",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "AMZN",
+    "status": "clean",
+    "categories": [
+      "retail-alcohol-pork",
+      "advertising",
+      "media-streaming"
+    ],
+    "impermissible_revenue_pct": {
+      "value": null,
+      "basis": "Directly impermissible retail (alcohol + pork grocery/Whole Foods/Fresh) is a small, un-disclosed share of $716.9B FY2025 net sales — Amazon does not break it out, so it cannot be exactly quantified, but it is well under 5% of total. Advertising services FY2025 ≈ $68,635M (Q1 $13,921M + Q2 $15,694M + Q3 $17,703M + Q4 $21,317M) = ~9.6% of net sales; advertising is not AAOIFI-impermissible income."
+    },
+    "evidence": {
+      "quote": "'Net sales increased 12% to $716.9 billion in 2025, compared with $638.0 billion in 2024.' Advertising services by quarter FY2025: '$13,921 ... $15,694 ... $17,703 ... $21,317' (sum ≈ $68,635M, ~9.6% of net sales).",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000002/amzn-20251231xex991.htm",
+      "retrieved_at": "2026-07-21T10:20:00Z"
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "pass",
+        "reason": "Impermissible retail (alcohol/pork) is an un-broken-out sliver of $716.9B, well under the 5% impermissible-income threshold; advertising and Prime Video are not impermissible income."
+      },
+      "sector_exclusion": {
+        "stance": "flag",
+        "reason": "Advertising ~9.6% of revenue is flagged by advertising/media sector screens; Prime Video streaming content is a qualitative media flag."
+      }
+    },
+    "note": "Clean with note. Amazon retails alcohol and pork (grocery/Whole Foods/Fresh) but does not disclose the split; the impermissible retail share is small (<5% of $716.9B) yet not exactly quantifiable from filings — mark as un-quantified sliver. Advertising (~9.6%) and Prime Video are the sector-exclusion touchpoints. Re-quantify if Amazon ever discloses grocery-category revenue.",
+    "confidence": "medium-high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "ANET",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "APLD",
+    "status": "questionable",
+    "categories": [
+      "crypto-mining-hosting"
+    ],
+    "evidence": {
+      "quote": "Our Data Center Hosting Business provides energized infrastructure services to crypto mining customers. ... our 106 MW facility in Jamestown, North Dakota and our 180 MW facility in Ellendale, North Dakota continue to operate at full capacity. We recognized $37.5 million and $117.1 million, in revenue from this business segment during the three and nine months ended February 28, 2026, respectively. [Total revenue: $126,637K for the three months and $352,562K for the nine months ended February 28, 2026. HPC Hosting: $71.0M / $182.3M under 250 MW CoreWeave leases at Polaris Forge 1; Cloud Services (AI/ML compute): $18.1M / $53.2M.]",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1144879/000114487926000030/apld-20260228.htm",
+      "retrieved_at": "2026-07-21T10:16:16Z"
+    },
+    "impermissible_revenue_pct": {
+      "value": 33.2,
+      "basis": "segment-data: Data Center Hosting (crypto-mining hosting) $117.1M of $352.562M total revenue, nine months ended 2026-02-28 (Q3 FY2026 10-Q); Q3 quarter alone 29.6% ($37.5M of $126.637M). Conditionally impermissible — counts against the 5% threshold only under a crypto-prohibitive stance."
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "questionable",
+        "reason": "Crypto-mining hosting is 29.6% of Q3 / 33.2% of nine-month revenue — decisively above the 5% de-minimis IF crypto-mining service income is classed impermissible. AAOIFI has no ruling declaring hosting-for-miners impermissible per se; scholars split on cryptocurrency itself, so the AAOIFI outcome forks entirely on the board's crypto stance (permissive → pass; prohibitive → fail)."
+      },
+      "sector_exclusion": {
+        "stance": "fail-under-crypto-exclusion",
+        "reason": "Screens that exclude cryptocurrency-linked business capture the Data Center Hosting segment (energized space + O&M for customer-owned mining rigs at Jamestown 106MW and Ellendale 180MW). Screens without a crypto exclusion see only permissible infrastructure/colocation leasing — the core service (power, space, maintenance) is not intrinsically haram."
+      },
+      "crypto_stance": {
+        "note": "Scholar split: permissive views (crypto as mal/permissible asset; mining as legitimate service) render the whole company clean; prohibitive views (e.g., boards following Mufti Taqi Usmani's position) render ~30-33% of revenue impermissible — an unpurifiable level. This split, at this magnitude, is exactly the 'questionable' case."
+      },
+      "trajectory": {
+        "note": "Mix is shifting fast toward AI/HPC: HPC Hosting is now the largest segment (56% of Q3 revenue) via 250 MW CoreWeave leases at Polaris Forge 1 (first 100 MW operational Oct 2025), a ~15-yr 200 MW lease with a US investment-grade hyperscaler at Polaris Forge 2, and Delta Forge 1 (300 MW) groundbreaking Jan 2026. But crypto hosting is NOT winding down in absolute terms — 10-Q reports a $12.8M y/y nine-month increase and both mining facilities at full capacity. Cloud Services (AI compute, permissible) is being spun into ChronoScale via a proposed EKSO business combination (announced 2025-12-30). Re-review each filing season; crypto share should mechanically dilute as HPC ramps."
+      },
+      "note_on_ratios": {
+        "note": "Business-activity entry only. APLD also carries heavy conventional debt (2030 convertible notes, project financing, CoreWeave/Macquarie warrants) — handled by the ratio screens, not encoded here."
+      }
+    },
+    "confidence": "high on the figures (read directly from the 10-Q segment disclosures fetched from EDGAR this session; segment sum $37.5M+$18.1M+$71.0M reconciles to $126.6M total); the status itself is 'questionable' by construction — the classification hinges on the unresolved scholar split over crypto, not on data uncertainty",
+    "note": "Target status CONFIRMED, not contradicted. Prior brief said 'residual' crypto-hosting — that understates it: crypto-mining hosting is still ~30-33% of revenue (Q3/9M FY2026) and grew y/y in absolute dollars; it is 'residual' only as a shrinking share of a fast-growing AI/HPC total (HPC went from $0 to 56% of quarterly revenue in FY2026). If crypto income is judged impermissible, this fails AAOIFI's 5% test by ~6x — so 'questionable' (scholar-split), not 'clean-with-note'. All figures from the Q3 FY2026 10-Q (period ended 2026-02-28, filed 2026-04-08), CIK 1144879, accession 0001144879-26-000030.",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "APP",
+    "status": "questionable",
+    "categories": [
+      "gambling-adjacent-advertising"
+    ],
+    "evidence": {
+      "quote": "We also work with advertisers that operate sports gambling apps, apps that involve real money gambling, and apps and advertisers in other regulated industries and markets (including alcohol, CBD/hemp, financial services, and health & wellness) ... We face concentration risk in that our advertising solutions primarily operate in the mobile app ecosystem and specifically mobile gaming ... Following the sale of the Apps business, we operate as a single operating and reportable segment. Results related to our Apps business are presented as discontinued operations in our consolidated financial statements.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1751008/000175100826000010/app-20251231.htm",
+      "retrieved_at": "2026-07-21T10:17:35Z"
+    },
+    "impermissible_revenue_pct": {
+      "value": null,
+      "basis": "not-disclosed — FY2025 10-K contains no advertiser-category revenue breakdown; searched full text: 'social casino' absent, no gaming/gambling advertiser revenue table, no 10%-customer category disclosure. Gambling-advertiser share of ad revenue is unquantifiable from public filings."
+    },
+    "methodology_notes": {
+      "divestiture": {
+        "stance": "verified",
+        "reason": "Game-studio (Apps) business sale to Tripledot Studios closed 2025-06-30 for $400.0M cash + ~20% of Tripledot's fully-diluted equity; confirmed in IR press release (https://investors.applovin.com/news/news-details/2025/AppLovin-Completes-Sale-of-Mobile-Gaming-Business-to-Tripledot-Studios/default.aspx, fetched this session) and FY2025 10-K (Apps in discontinued operations; single reportable segment). APP is now a pure advertising platform — but retains an ~20% equity stake in Tripledot, a mobile-games company."
+      },
+      "aaoifi": {
+        "stance": "unknown",
+        "reason": "AAOIFI 5% impermissible-income test cannot be computed: 10-K confirms the platform serves advertisers operating sports-gambling and real-money-gambling apps, plus alcohol/CBD advertisers, and that revenue is concentrated in mobile gaming — but discloses no category revenue mix. Missing decisive input, honestly unknown, not a silent pass."
+      },
+      "sector_exclusion": {
+        "stance": "caution",
+        "reason": "Advertising is not per se an excluded sector under FTSE/MSCI, but this is the GOOGL/META methodology fork with sharper exposure: ad demand is concentrated in mobile gaming (10-K risk factor), a category with a large social-casino component, and the 10-K names real-money-gambling advertisers on the platform. Scholar-split on attributing ad-platform fees from haram advertisers."
+      }
+    },
+    "confidence": "medium-high",
+    "note": "Research supports the target status 'questionable'. Verified this session: (1) divestiture closed 2025-06-30 as briefed — confirmed by both the AppLovin IR press release and the FY2025 10-K (filed 2026-02-19, CIK 1751008, acc 0001751008-26-000010); (2) post-sale APP is a single-segment advertising platform; (3) its own 10-K risk factors admit advertisers operating sports-gambling and real-money-gambling apps and state revenue concentration in mobile gaming; (4) no filing quantifies the gambling/social-casino advertiser share — so the 5% test is indeterminate by disclosure, which is exactly the 'questionable' condition. Additional flag not in the brief: APP retains ~20% of Tripledot's fully-diluted equity (a games-industry holding). Local evidence copies: C:\\Users\\imadq\\AIInvestment\\data\\halal_evidence\\app-10k-fy2025.htm/.txt. Educational research, not a religious ruling.",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "ARM",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "ARQQ",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "ASML",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "AVGO",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "AZN",
+    "status": "clean",
+    "categories": [
+      "pharma-excipient"
+    ],
+    "impermissible_revenue_pct": {
+      "value": null,
+      "basis": "Not a revenue-share issue. Concern is that some formulations use porcine-derived gelatin (capsules) or trace alcohol as excipients. This is an ingredient-composition flag, not a percentage of impermissible revenue; the majority scholarly position holds such medicines permissible via istihalah (transformation) and/or darura (medical necessity)."
+    },
+    "evidence": {
+      "quote": "Jurisprudential opinion on medicines/vaccines containing pork gelatine: 'Gelatine is a pure material regardless of its origins since it undergoes a process in which it is chemically altered to the point of transformation into a new material' (istihalah); and on necessity, prohibited materials may be used medicinally 'if no other alternative exists'. Conclusion: 'The use of such treatment is permitted, the ruling correlates with the jurisprudential opinion of most jurists and there are no grounds to prohibit it.'",
+      "source_url": "https://jbima.com/article/a-jurisprudential-opinion-on-using-a-vaccine-containing-pork-gelatine/",
+      "retrieved_at": "2026-07-21T10:23:00Z"
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "pass",
+        "reason": "Pharmaceutical manufacturing is permissible activity; ~0% impermissible income. Excipient composition is an ingredient-level matter, not a business-screen fail; majority position permits via istihalah/darura."
+      },
+      "sector_exclusion": {
+        "stance": "pass",
+        "reason": "Pharmaceuticals are not an excluded sector under standard Shariah sector screens."
+      }
+    },
+    "note": "Clean with excipient note. Some products use porcine gelatin (capsule shells) or trace ethanol; the majority juristic view (istihalah/darura, per JBIMA) treats such medicines as permissible. Scholar-split minority (Shafi'i/Hanbali/Saudi Permanent Committee) is stricter on gelatin transformation — flag as a known disagreement, not a company-level prohibition. Same rationale applied to GSK and MRNA.",
+    "confidence": "medium",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "BBVA",
+    "status": "prohibited",
+    "categories": [
+      "conventional_banking",
+      "interest_income_riba"
+    ],
+    "evidence": {
+      "quote": "Net interest income (NII) rose 13.9 percent in the year, to €26.28 billion ... Gross income, which represents total revenues, rose to €36.93 billion in 2025, up 16.3 percent yoy. Net fees and commissions increased by 14.6 percent, to €8.22 billion. Lending increased by 16.2 percent (in constant euros).",
+      "source_url": "https://www.bbva.com/en/economy-and-finance/earnings-4q2025/",
+      "retrieved_at": "2026-07-21T10:14:49Z"
+    },
+    "impermissible_revenue_pct": {
+      "value": 71.2,
+      "basis": "FY2025 net interest income (€26.28B) as a share of gross income / total revenues (€36.93B) per BBVA's own 4Q2025 results press release. This is interest income alone; adding conventional-finance fees and commissions (€8.22B) pushes the impermissible share well above 90%."
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "fail",
+        "reason": "Core business is riba-based lending/deposit-taking; interest (NII) is ~71% of total revenues, vastly exceeding the 5% impermissible-income threshold. No purification treatment can apply to a primary business activity."
+      },
+      "sector_exclusion": {
+        "stance": "fail",
+        "reason": "Conventional financial institution (commercial/retail bank). Excluded outright at the business-activity stage by all major Shariah screens (AAOIFI, MSCI Islamic, FTSE Shariah, S&P Shariah, Dow Jones Islamic) regardless of ratio tests."
+      },
+      "financial_ratios": {
+        "stance": "not_applicable",
+        "reason": "Ratio screens (debt/assets, interest-bearing securities) are moot — the company fails the business-activity screen first."
+      }
+    },
+    "confidence": "high — evidence is from BBVA's own FY2025 results press release (company IR/news site, fetched this session); the figures directly establish interest as the dominant revenue source. Minor caveat: a search snippet elsewhere cited profit growth of +4.5% yoy vs the fetched page's +19.2%, but profit growth is not load-bearing for the screening verdict. Research confirms the target status; no contradiction found.",
+    "note": "Confirmed: BBVA (Banco Bilbao Vizcaya Argentaria) is a conventional Spanish bank. Its FY2025 results show net interest income of €26.28B against gross income of €36.93B — interest is the core of the business model, not an incidental revenue stream. Same shape as other conventional banks in the curated file. Educational research, not investment or religious advice.",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "BCS",
+    "status": "prohibited",
+    "categories": [
+      "conventional-banking",
+      "interest-based-finance"
+    ],
+    "impermissible_revenue_pct": {
+      "value": 49.8,
+      "basis": "income-statement floor: Group net interest income £14,501m / Group total income £29.1bn (FY2025) ≈ 49.8%. This is a conservative floor — the remaining ~50% (fees, commissions, trading) is also generated by conventional banking operations across all six divisions, so the effective impermissible share under sector-exclusion logic approaches 100%."
+    },
+    "evidence": {
+      "quote": "Group income of £29.1bn increased 9% year-on-year; Group net interest income £14,501m for FY2025, of which Barclays UK net interest income £7,653m (up 15%); profit before tax £9,139m (+13%). Divisions: Barclays UK, Barclays UK Corporate Bank, Barclays Private Bank and Wealth Management, Barclays Investment Bank, Barclays US Consumer Bank, Head Office. (Tightly paraphrased from the Barclays PLC 2025 Results Announcement as distributed via RNS.)",
+      "source_url": "https://www.investegate.co.uk/announcement/rns/barclays--barc/2025-results-announcement-/9422474",
+      "retrieved_at": "2026-07-21T10:14:00Z"
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "fail",
+        "reason": "Impermissible income far exceeds the 5% of total income threshold (AAOIFI SS 21, 3/4/4): net interest income alone is ~49.8% of FY2025 Group income (£14,501m of £29.1bn). Interest-taking deposits are the core business model, so the 30% interest-deposit screen also fails structurally."
+      },
+      "sector_exclusion": {
+        "stance": "fail",
+        "reason": "Conventional universal bank — SEC EDGAR classifies Barclays PLC as SIC 6029 'Commercial Banks, NEC' (verified via data.sec.gov submissions API, 2026-07-21T10:15:05Z; FY2025 20-F filed 2026-02-10, accession 0000312069-26-000004). Conventional financial services is a prohibited sector under FTSE Yasaar and MSCI Islamic business screens."
+      },
+      "financial_ratios": {
+        "stance": "moot",
+        "reason": "Business screen is dispositive regardless of ratio outcomes (verdict precedence: business prohibited → not_halal). Note TradingView cash fields are null for banks; irrelevant here."
+      }
+    },
+    "confidence": "high",
+    "note": "Research confirms the target status. Two independent sources fetched this session agree: the company's own FY2025 results announcement (RNS text via Investegate; the home.barclays PDF returns 403 to non-browser clients — same content, mirror used) and SEC EDGAR's REST API (SIC 6029 Commercial Banks). No Islamic-window carve-out changes the entity-level verdict: Barclays PLC consolidated income is dominated by interest and conventional-finance revenue. Quote is tightly paraphrased, not verbatim, because the source was read through a summarizing fetch; figures (£29.1bn, £14,501m, £7,653m, £9,139m) are as reported on the page. Educational research, not a fatwa or financial advice.",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "BTQ",
+    "status": "questionable",
+    "categories": [
+      "crypto-adjacent"
+    ],
+    "evidence": {
+      "quote": "The Company's two software products, Bitcoin Quantum and QSSN, are designed to generate revenue in advance of QCIM hardware commercialization. Bitcoin Quantum's mining pool model provides recurring transaction-based revenue from network operation, while the accumulation of BTQ tokens as a treasury asset provides potential appreciation value as the network scales. [Same AIF, business description: post-quantum solutions across 'three complementary pillars: post-quantum hardware, post-quantum software for blockchain and financial infrastructure, and neutral atom quantum computing'; 'BTQ is listed on the Nasdaq and Cboe Canada under the symbol \"BTQ\"']",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1821866/000106299326001710/exhibit99-1.htm",
+      "retrieved_at": "2026-07-21T10:16:58Z"
+    },
+    "impermissible_revenue_pct": {
+      "value": 45.5,
+      "basis": "audited-fs FY2025 (Form 40-F exhibit 99-2, CAD): interest income $263,231 / (license revenue $315,497 + interest income $263,231). Interest alone is 83% of revenue. Denominator note: adding the $322k unrealized gain on investments still yields ~29% — every reasonable basis is far above the 5% AAOIFI ceiling. Source: https://www.sec.gov/Archives/edgar/data/1821866/000106299326001710/exhibit99-2.htm retrieved 2026-07-21T10:16:58Z"
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "fail",
+        "reason": "FY2025 audited interest income C$263,231 vs total revenue C$315,497 — impermissible income ~45.5% of (revenue+interest), far above the 5% ceiling (SS 21 3/4/4). Structural pre-revenue artifact: treasury interest on cash raises against a tiny revenue denominator. Per spec §5 this is verified at the ratio stage, not encoded as business status."
+      },
+      "sector_exclusion": {
+        "stance": "questionable",
+        "reason": "Core post-quantum cryptography/security tech is a permissible sector. But the stated near-term revenue strategy is explicitly crypto: Bitcoin Quantum (quantum-safe Bitcoin fork; mining-pool transaction revenue; BTQ tokens held as treasury asset) and QSSN (stablecoin settlement network; validator node licensing, transaction-based validation fees, staking mechanisms). Crypto permissibility is scholar-split; staking mechanisms especially disputed. As of 2025-12-31 the audited FS show no digital assets on the balance sheet — crypto revenue is planned, not yet realized."
+      },
+      "revenue_provenance": {
+        "stance": "note",
+        "reason": "100% of FY2025 revenue (C$315,497) was software-license revenue from a company controlled by the former COO (related party, FS Note 18) — not blockchain revenue; a quality-of-revenue flag, not a sharia flag per se."
+      },
+      "entity_verification": {
+        "stance": "confirmed",
+        "reason": "BTQ Technologies Corp, Nasdaq + Cboe Canada 'BTQ' (CIK 1821866, SEC-registered via Form 40-F filed 2026-03-30 for FY ended 2025-12-31). Prior medium-confidence identity (post-quantum crypto, blockchain-security focus) was correct."
+      }
+    },
+    "confidence": "medium-high — entity identity and all FY2025 figures verified from the audited 40-F exhibits fetched from SEC EDGAR this session (high confidence on facts); the status call itself rests on scholar-split treatment of crypto-security/staking revenue that is still forward-looking (pre-commercial), hence not high.",
+    "note": "Target status CONFIRMED, not contradicted. Two findings beyond the brief: (1) FY2025 actual revenue is NOT blockchain-linked — it is a single related-party software license (company controlled by the former COO); the blockchain/crypto revenue (mining pool, token treasury, staking, validator fees) is the published 2026 roadmap, with no digital assets on the balance sheet as of 2025-12-31. (2) Audited interest income (C$263,231) dwarfs the 5% impermissible-income ceiling at ~45.5% of revenue+interest — an AAOIFI business-screen fail on FY2025 numbers, recorded in impermissible_revenue_pct/methodology_notes but kept out of business status per spec §5 lines 186-189 (pre-revenue treasury-interest is a ratio-stage matter). If the engine consumes impermissible_revenue_pct directly, BTQ will render as an AAOIFI fail despite the questionable business status — that is the intended, honest outcome. Educational research, not a fatwa or investment advice.",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "BWXT",
+    "status": "questionable",
+    "categories": [
+      "defense-concentration"
+    ],
+    "evidence": {
+      "quote": "Through this segment, we engineer, design and manufacture precision naval nuclear components, reactors and nuclear fuel for the U.S. Department of Energy (\"DOE\")/National Nuclear Security Administration's (\"NNSA\") Naval Nuclear Propulsion Program and we have over 100 years of experience in supplying components for defense applications. [...] During the years ended December 31, 2025, 2024 and 2023, the U.S. Government represented approximately 68%, 76% and 75% of our total consolidated revenues, respectively. [...] Our Government Operations segment also enters into contracts that include the management and operation of nuclear production facilities, environmental management sites and the management of spent nuclear fuel and transuranic waste for the U.S. Government, primarily the DOE.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1486957/000148695726000007/bwxt-20251231.htm",
+      "retrieved_at": "2026-07-21T10:14:00Z"
+    },
+    "impermissible_revenue_pct": {
+      "value": null,
+      "basis": "Methodology-dependent, so no single number: ~0% under AAOIFI category screens (defense manufacture is not an AAOIFI-prohibited activity; no alcohol/pork/gambling/riba revenue disclosed in FY2025 10-K), vs ~68% (US Government share of FY2025 consolidated revenue) to 73.5% (Government Operations segment $2,350.1M of $3,198.4M total, ~91% US Government) under weapons/defense-exclusion screens. FY2024 US Government share was 76%."
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "pass",
+        "reason": "Business-activity screen only: defense/weapons manufacture is not among AAOIFI SS 21 prohibited activities (alcohol, pork, gambling, riba-based finance, tobacco, adult entertainment). Naval nuclear reactors are warship propulsion, not munitions; no revenue from an AAOIFI-prohibited category is disclosed in the FY2025 10-K. Financial-ratio screens assessed separately by the engine."
+      },
+      "sector_exclusion": {
+        "stance": "fail",
+        "reason": "Weapons/defense-exclusion methodologies (MSCI Islamic-style): defense is the majority of the business — US Government ~68% of FY2025 consolidated revenue (76% FY2024, 75% FY2023); Government Operations segment (naval propulsion reactors for warships + NNSA weapons-complex/site-management services, ~91% US Government) is 73.5% of FY2025 revenue."
+      },
+      "scholar_divergence": {
+        "note": "Some scholars treat participation in the nuclear-weapons complex (NNSA production-facility and waste-site management, via JVs) more severely than propulsion work; conversely BWXT's HEU downblending is non-proliferation work. The dominant revenue driver remains naval propulsion components, which most classical-fiqh readings treat as permissible military supply."
+      }
+    },
+    "confidence": "high",
+    "note": "Research confirms the target status. Evidence is direct from the FY2025 10-K (filed 2026-02-23) fetched from SEC EDGAR this session: 68% of consolidated revenue from the US Government, Government Operations segment = 73.5% of revenue (naval nuclear propulsion for warships + weapons-complex site services). Not prohibited outright because AAOIFI's activity list does not exclude defense; fails only under defense-exclusion sector screens — hence questionable, methodology fork shown. US-government concentration declined 76%→68% YoY as Commercial Operations grew (Kinectrics acquisition), so the concentration figure decays; re-verify at next 10-K.",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "CCJ",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "CDNS",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "CEG",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "CIEN",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "CLS",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "COHR",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "CORZ",
+    "status": "questionable",
+    "categories": [
+      "cryptocurrency-mining",
+      "cryptocurrency-mining-hosting",
+      "crypto-asset-treasury"
+    ],
+    "evidence": {
+      "quote": "Q1 FY2026 (three months ended March 31, 2026) revenue, condensed consolidated statements of operations: Colocation revenue $77,539K; Digital asset self-mining revenue $30,105K; Digital asset hosted mining revenue from customers $7,600K; Total revenue $115,244K. 'Percentage of total revenue: Colocation revenue 67%, Digital asset self-mining revenue 26%' (vs 11%/84% in Q1 2025). Three operating segments: 'Colocation, consisting of providing high-density colocation services to customers employing AI and HPC related workloads; Digital Asset Self-Mining, consisting of performing digital asset mining for its own account; and Digital Asset Hosted Mining, consisting of providing hosting services to third-parties for digital asset mining.' Digital assets: sold $208,249K during the quarter, held $37,312K at period end; $266.5M non-cash impairment on mining equipment amid the pivot to colocation. Corroborated by IR press release (2026-05-06): colocation $77.5M, self-mining $30.1M, hosted $7.6M, total $115.2M; $129.9M of capex funded by CoreWeave under existing colocation service agreements.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1839341/000162828026031396/core-20260331.htm",
+      "retrieved_at": "2026-07-21T10:15:10Z"
+    },
+    "impermissible_revenue_pct": {
+      "value": 32.7,
+      "basis": "segment-data (Q1 FY2026 10-Q): crypto-linked revenue share = (self-mining 30,105 + hosted mining 7,600) / total 115,244 = 32.7%. This is the crypto-EXPOSED share, impermissible only under a crypto-impermissible stance — scholar-split, not settled impermissible income. TTM share is higher (Q1 2025 crypto share was 89.3%; colocation only scaled through 2025)."
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "questionable",
+        "reason": "Crypto-linked revenue = 32.7% of Q1 FY2026 revenue. Under a crypto-impermissible ruling this far exceeds the 5% impermissible-income threshold (SS 21, 3/4/4) → fail; under a crypto-permissible ruling the business screen passes (remaining 67% is AI/HPC colocation). No settled AAOIFI ruling on bitcoin mining income — genuine scholar split, so neither pass nor fail is honest."
+      },
+      "sector_exclusion": {
+        "stance": "questionable",
+        "reason": "FTSE Yasaar / MSCI prohibited-sector lists do not name crypto mining; screener treatment of crypto varies by Sharia board. Majority revenue (67%) is high-density colocation for AI/HPC workloads (CoreWeave, ~$10.2B contracted over 12-year terms per 10-Q), which raises no sector objection. Note: company also holds bitcoin on balance sheet ($37.3M at 2026-03-31, after selling $208.2M in Q1)."
+      },
+      "trajectory": {
+        "stance": "watch",
+        "reason": "Mix shifting fast toward clean: crypto share fell from 89.3% (Q1 2025) to 32.7% (Q1 2026); $266.5M impairment on mining equipment as the company exits self-mining. Re-review each filing season — could migrate to clean-with-note if self-mining winds down; the crypto stance itself remains the decisive fork until then."
+      }
+    },
+    "confidence": "high on the underlying data (revenue split verified this session from both the SEC 10-Q and the company IR press release); the 'questionable' verdict reflects a genuine scholar split on crypto income, not data uncertainty",
+    "note": "Evidence supports the target status — no contradiction. Primary sources fetched this session: SEC 10-Q for quarter ended 2026-03-31 (curl w/ declared UA, retrieved 2026-07-21 ~10:15Z, local copy C:\\Users\\imadq\\AIInvestment\\data\\corz10q.htm) and IR press release https://investors.corescientific.com/news-events/press-releases/detail/136/core-scientific-announces-first-quarter-fiscal-year-2026-results (WebFetch, 2026-07-21 ~10:14Z). Percentages 67%/26% are the 10-Q's own stated figures; 32.7% crypto-linked total is computed from the exact segment dollars. Educational research, not a religious ruling.",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "CRDO",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "CRM",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "CRWD",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "CRWV",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "CSCO",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "D",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "DDOG",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "DELL",
+    "status": "clean",
+    "categories": [
+      "captive-finance"
+    ],
+    "impermissible_revenue_pct": {
+      "value": null,
+      "basis": "Dell Financial Services is a captive finance arm. FY2026 (ended Jan 30, 2026) financing receivables, net = $14.3B (up from $11.2B) vs. total net revenue $113.538B; new originations $11.9B. The impermissible piece is the interest income earned on that book, not the receivables balance — that interest income is a small fraction of $113.5B revenue (likely <5%) but is not separately disclosed in the 10-K income statement, so it must be re-quantified (SEC XBRL / segment detail) each filing season."
+    },
+    "evidence": {
+      "quote": "'As of January 30, 2026 and January 31, 2025, our financing receivables, net were $14.3 billion and $11.2 billion, respectively. The increase ... was primarily attributable to our AI-optimized servers offerings. ... New financing originations were $11.9 billion for Fiscal 2026'. Consolidated: 'Total net revenue 113,538' ($113.5B) FY2026.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000008/dell-20260130.htm",
+      "retrieved_at": "2026-07-21T10:21:00Z"
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "pass",
+        "reason": "DFS interest income is the impermissible component; on a $113.5B revenue base it is very likely <5% of total income — but the exact figure is not disclosed on the face of the statements, so treat as pass-pending-quantification, not a clean verified pass."
+      },
+      "sector_exclusion": {
+        "stance": "pass",
+        "reason": "Core business is IT hardware/services; captive finance is a support function, not a primary excluded sector."
+      }
+    },
+    "note": "Clean but MUST be re-quantified each filing season. Financing receivables grew to $14.3B (12.6% of revenue) on AI-server demand; the decisive number for the 5% impermissible-income test is DFS interest income, which is not broken out in this 10-K. Flag for SEC-XBRL interest-income ingestion (spec v1.1) before treating as a hard pass.",
+    "confidence": "medium-high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "DLR",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "DUK",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "DUOL",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "EMR",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "ENTG",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "EQIX",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "ET",
+    "status": "clean",
+    "categories": [
+      "partnership-structure",
+      "mlp-k1"
+    ],
+    "impermissible_revenue_pct": {
+      "value": null,
+      "basis": "Structural, not activity-based. Energy Transfer LP is a master-limited-partnership pipeline/midstream operator; the business (transport/storage of hydrocarbons) is permissible. The screening concern is structural: it is a limited partnership whose 'Common Units' are LP interests, and it issues Schedule K-1s rather than 1099-DIV. Some Shariah methodologies exclude partnership units outright regardless of the underlying business; leverage/ratio screens are a separate later stage where MLPs commonly fail on debt."
+    },
+    "evidence": {
+      "quote": "'Energy Transfer LP is a Delaware limited partnership with common units publicly traded on the NYSE under the ticker symbol “ET.” ... references to ... the “Partnership” ... mean Energy Transfer LP and its consolidated subsidiaries'. Cover: 'Common Units ET New York Stock Exchange ... As of February 13, 2026, the registrant had 3,440,314,575 Common Units outstanding.'",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1276187/000127618726000013/et-20251231.htm",
+      "retrieved_at": "2026-07-21T10:21:00Z"
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "pass",
+        "reason": "Midstream/pipeline business is permissible activity; no impermissible-income business flag. (Debt/ratio screens are evaluated separately at the ratio stage, where MLP leverage often fails.)"
+      },
+      "sector_exclusion": {
+        "stance": "flag",
+        "reason": "Structural stance: some methodologies exclude limited-partnership units (K-1 issuers / MLP structure) outright, independent of the underlying activity."
+      }
+    },
+    "note": "Business-activity clean (permissible midstream). The distinct flag is STRUCTURAL: ET is a Delaware LP issuing Schedule K-1s to unitholders (confirmed as a partnership in the 10-K; K-1 tax packages published via ir.energytransfer.com), and a subset of Shariah screens exclude partnership units categorically. Expect the debt-ratio screen (later stage) to be the binding constraint for a levered midstream MLP; do not treat business-clean as an overall pass until ratios run.",
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "ETN",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "EXC",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "FIG",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "FN",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "GEV",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "GLW",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "GOOGL",
+    "status": "clean",
+    "categories": [
+      "advertising",
+      "media"
+    ],
+    "impermissible_revenue_pct": {
+      "value": null,
+      "basis": "Methodology fork, not a clean impermissible figure. FY2025 Google advertising = $294,691M of $402,836M total revenues = 73.2%. Under AAOIFI SS 21 (3/4/4) advertising is NOT on the impermissible-income list (interest/alcohol/pork/gambling/tobacco/adult), so its impermissible-income component is ~0% and it passes the 5% test. Under S&P/DJIM-style sector-exclusion screens, media/advertising is an excluded activity, so the full 73.2% ad share is flagged."
+    },
+    "evidence": {
+      "quote": "FY2025 revenue-by-type table: 'Google advertising 264,590 294,691 ... Google Services total 304,930 342,721 Google Cloud 43,229 58,705 ... Total revenues $ 350,018 $ 402,836' — i.e. FY2025 Google advertising $294,691M of total revenues $402,836M (73.2%); components Google Search & other $224,532M, YouTube ads $40,367M, Google Network $29,792M.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/goog-20251231.htm",
+      "retrieved_at": "2026-07-21T10:29:00Z"
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "pass",
+        "reason": "Advertising is not impermissible income under SS 21 3/4/4; impermissible share ~0% << 5% (interest income unquantified, assumed immaterial pending XBRL)."
+      },
+      "sector_exclusion": {
+        "stance": "fail",
+        "reason": "S&P/DJIM/some index sector-exclusion screens exclude advertising/media as an activity; 73.2% of revenue is advertising."
+      }
+    },
+    "note": "Clean under AAOIFI-threshold screeners, flagged under sector-exclusion methodologies (advertising/media). Both verdicts shown. Ad-content-nature concerns (some ads promote impermissible products) are a separate qualitative debate not captured by the 5% income test.",
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "GS",
+    "status": "prohibited",
+    "categories": [
+      "conventional-investment-banking",
+      "interest-based-lending",
+      "debt-underwriting",
+      "interest-based-trading-and-financing",
+      "prime-brokerage-financing",
+      "consumer-credit-card-lending"
+    ],
+    "evidence": {
+      "quote": "FY2025 consolidated statements of earnings (in $ millions, vs FY2024): Interest income 80,373 (81,397); Interest expense 66,814 (73,341); Net interest income 13,559 (8,056), up 68%; Total net revenues 58,283 (53,512). Segment detail: Global Banking & Markets $41.45 billion including Debt underwriting $2.83 billion, FICC $14.52 billion (FICC financing $4.25 billion, 'driven by higher net revenues in mortgages and structured lending'), Equities financing $7.20 billion ('driven by significantly higher net revenues in prime financing and portfolio financing'); Asset & Wealth Management $16.68 billion including Private banking and lending $3.35 billion; Platform Solutions holds the outstanding (Apple Card) credit card portfolio.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/886982/000088698226000008/a4q25gsearningsresults.htm",
+      "retrieved_at": "2026-07-21T10:16:44Z"
+    },
+    "impermissible_revenue_pct": {
+      "value": 23.3,
+      "basis": "floor-estimate: net interest income $13,559M / total net revenues $58,283M (FY2025), per SEC-filed earnings release (8-K ex. 99.1, accession 0000886982-26-000008) cross-validated against 10-K XBRL (data.sec.gov companyconcept us-gaap:InterestIncomeExpenseNet, accession 0000886982-26-000091). Understates the true impermissible share: excludes debt underwriting ($2.83B, ~4.9%), FICC rates/credit intermediation, FICC/Equities financing and prime brokerage revenues, all interest-derived. Gross interest income ($80.4B) exceeds total net revenues. Sector exclusion applies regardless of the ratio."
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "fail",
+        "reason": "Impermissible income far exceeds the 5% ceiling (SS 21, 3/4/4): net interest income alone is 23.3% of FY2025 total net revenues; adding debt underwriting, FICC financing/intermediation, and prime financing makes the majority of revenue interest-derived. Core business is riba-based financial intermediation."
+      },
+      "sector_exclusion": {
+        "stance": "fail",
+        "reason": "Conventional financial institution — global investment bank engaged in interest-based lending (private banking and lending $3.35B; relationship lending), debt underwriting ($2.83B), interest-based trading and structured lending (FICC $14.52B), prime brokerage/portfolio financing (Equities financing $7.20B), and consumer credit-card lending (Platform Solutions / Apple Card). Categorically excluded under AAOIFI, FTSE Yasaar, and MSCI Islamic prohibited-sector rules."
+      },
+      "financial_screens": {
+        "stance": "moot",
+        "reason": "Business screen is decisive; ratio screens irrelevant for a bank balance sheet (TradingView cash fields are null for banks per spec §3 — harmless, as GS fails the business screen)."
+      }
+    },
+    "confidence": "high",
+    "note": "Research confirms the target status. Evidence is from the SEC-filed FY2025 earnings release (8-K exhibit, filed 2026-01-15) fetched this session, cross-validated against FY2025 10-K XBRL via the data.sec.gov API — both primary sources. No plausible reading renders GS compliant under any of the five standards in scope. Educational research, not a religious ruling.",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "GSK",
+    "status": "clean",
+    "categories": [
+      "pharma-excipient"
+    ],
+    "impermissible_revenue_pct": {
+      "value": null,
+      "basis": "Same as AZN: ingredient-composition flag (possible porcine gelatin / trace alcohol excipients in some formulations and vaccines), not a share of impermissible revenue. Majority scholarly position permits via istihalah/darura."
+    },
+    "evidence": {
+      "quote": "Jurisprudential opinion on medicines/vaccines containing pork gelatine concludes: 'The use of such treatment is permitted, the ruling correlates with the jurisprudential opinion of most jurists and there are no grounds to prohibit it,' relying on istihalah ('chemically altered to the point of transformation into a new material') and medical necessity.",
+      "source_url": "https://jbima.com/article/a-jurisprudential-opinion-on-using-a-vaccine-containing-pork-gelatine/",
+      "retrieved_at": "2026-07-21T10:23:00Z"
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "pass",
+        "reason": "Pharma/vaccine manufacturing is permissible; ~0% impermissible income. Excipient origin handled at ingredient level; majority position permits."
+      },
+      "sector_exclusion": {
+        "stance": "pass",
+        "reason": "Pharmaceuticals not an excluded sector."
+      }
+    },
+    "note": "Clean with excipient note. GSK is a major vaccine maker; some vaccines/capsules historically use porcine gelatin as stabilizer/shell. Majority juristic view (istihalah/darura) permits; scholar-split minority stricter. Not a company-level prohibition. Shared scholarly basis with AZN and MRNA.",
+    "confidence": "medium",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "HPE",
+    "status": "questionable",
+    "categories": [
+      "captive-financing"
+    ],
+    "evidence": {
+      "quote": "FY2025 10-K (fiscal year ended Oct 31, 2025): Consolidated Statements of Earnings show Net Revenue of Products $21,956M, Services $11,573M, and Financing income $767M, for Total net revenue of $34,296M. Segment results: Financial Services total segment net revenue $3,504M (10.2% of consolidated), earnings from operations $361M; 'Financial Services net revenue decreased $8 million, or 0.2%, primarily due to lower rental revenue on lower average operating leases.' Lessor note: 'Interest income from sales-type leases and direct financing leases — Financing income — $767 [million]; Lease income from operating leases — Services — $2,156 [million]; Total lease income $2,923 [million].' FS portfolio: financing receivables gross $9,740M, net equipment under operating leases $3,159M, net portfolio assets $13,181M, debt-to-equity 7.0x, funded partly via asset-backed securitization (consolidated SPE/VIE).",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1645590/000164559025000130/hpe-20251031.htm",
+      "retrieved_at": "2026-07-21T10:16:30Z"
+    },
+    "impermissible_revenue_pct": {
+      "value": 2.24,
+      "basis": "Strict interest-line basis: FY2025 'Financing income' (interest from sales-type and direct financing leases) $767M / consolidated net revenue $34,296M = 2.24%. Conservative whole-segment basis: entire captive Financial Services segment $3,504M / $34,296M = 10.2%. The gap is the decisive mix, now resolved from the lessor note: of FS-related revenue, $2,156M is operating-lease rental income (ijarah-like equipment leasing, generally permissible if the leased asset is halal — here IT equipment) and ~$581M is asset-management/remarketing/other services; only $767M is explicit interest income."
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "pass-on-strict-basis",
+        "reason": "Explicit interest revenue (Financing income $767M) is 2.24% of total revenue, below the 5% impermissible-income threshold. Operating-lease rentals ($2.16B, booked in Services) are structurally ijarah-like and most standards do not count them as impermissible. Business-activity screen passes on this basis; note this does not assess AAOIFI financial ratios (debt/market-cap etc.), which are out of scope for this file."
+      },
+      "conservative_whole_segment": {
+        "stance": "fail",
+        "reason": "If the entire captive-financing segment is treated as an impermissible conventional-finance business — defensible because FS originates conventional interest-bearing sales-type/direct-financing leases, runs a $13.2B portfolio at 7.0x debt-to-equity, and funds itself with interest-bearing asset-backed securitization — the segment is 10.2% of revenue, well above 5%. HPE itself lists IBM Global Financing, Dell Financial Services, Cisco Capital, banks and other financial institutions as FS's competitors, i.e., it is a finance business."
+      },
+      "sector_exclusion": {
+        "stance": "pass",
+        "reason": "Core business (servers ~52%, networking ~20%, hybrid cloud ~17% of revenue) is permissible IT hardware/software/services; no haram core sector. The issue is confined to the captive-financing arm."
+      },
+      "screener_divergence": {
+        "note": "Interest-income-based screeners (Zoya/Musaffa-style, counting the $767M Financing income line) would likely pass HPE at ~2.2%; segment-based conservative screens fail it at ~10.2%. Hence 'questionable' rather than clean or prohibited. Watch item: effective Q1 FY2026 HPE merged Server, Hybrid Cloud, and Financial Services into one 'Cloud & AI' segment, so the FS revenue split will no longer be separately reported — future screening must rely on the Financing income line and the lessor note."
+      }
+    },
+    "confidence": "high on the underlying figures (all taken from the FY2025 10-K downloaded from SEC EDGAR this session); the questionable status itself is inherently a methodology-dependent judgment, not a factual uncertainty",
+    "note": "Target status confirmed, with one refinement to the prior brief: FS segment revenue is $3,504M = 10.2% of FY2025 consolidated revenue (not 11-12%; the share was diluted by Juniper Networks revenue — the 11.7% figure held for FY2024: $3,512M/$30,127M). The decisive unknown (rental vs interest mix) is resolved: 61.5% of FS-related lease revenue is operating-lease rental ($2,156M), only $767M (2.24% of total revenue) is explicit financing interest. Educational research, not a fatwa or investment advice.",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "HQ",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "HSBC",
+    "status": "prohibited",
+    "categories": [
+      "conventional-banking",
+      "interest-income"
+    ],
+    "evidence": {
+      "quote": "Net interest income ('NII') of $34.8bn was $2.1bn higher than 2024 ... Banking net interest income ('banking NII'), which excludes these funding costs, increased by $0.3bn to $44.1bn. ... Revenue of $68.3bn increased by $2.4bn or 4% compared with 2024.",
+      "source_url": "https://www.hsbc.com/news-and-views/news/media-releases/2026/hsbc-holdings-plc-annual-results-2025",
+      "retrieved_at": "2026-07-21T10:15:08Z"
+    },
+    "impermissible_revenue_pct": {
+      "value": 50.9,
+      "basis": "FY2025 reported: NII $34.8bn / total revenue $68.3bn = 50.9%. Conservative floor — uses NET interest income; gross interest income and banking NII ($44.1bn, 64.6%) are higher, and remaining fee/trading revenue also derives from conventional banking, so the effective impermissible share approaches 100% under strict screens."
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "fail",
+        "reason": "Impermissible (riba) income is the core business: NII alone is ~51% of FY2025 revenue vs the 5% AAOIFI tolerance — fails by an order of magnitude"
+      },
+      "sector_exclusion": {
+        "stance": "fail",
+        "reason": "Conventional financial services / banking is a categorically excluded sector under AAOIFI, MSCI Islamic, DJIM, and FTSE Shariah methodologies; HSBC Holdings plc is a conventional universal bank at the parent level"
+      }
+    },
+    "confidence": "high",
+    "note": "Evidence supports the target status. Verified this session from HSBC's own Annual Results 2025 media release (published 2026-02-25): NII $34.8bn, banking NII $44.1bn, revenue $68.3bn. The prior-research point that the former HSBC Amanah Islamic-finance window does not change the parent's classification stands but was not separately re-verified this session (inferred: any Islamic-window revenue is immaterial next to $34.8bn conventional NII). Also cross-checked: quick-read page (fetched) reports revenue $71.0bn ex-notable-items and PBT $29.9bn reported; ratio above uses reported revenue $68.3bn — using $71.0bn would still give 49%.",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "HUBB",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "IBM",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "INFQ",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "INTC",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "INTU",
+    "status": "prohibited",
+    "categories": [
+      "interest-based-finance-referrals"
+    ],
+    "evidence": {
+      "quote": "10-K Credit Karma segment note (FY ended 2025-07-31): \"Total segment revenue $ 2,263 [million] ... % of total revenue 12 % ... Revenue for our Credit Karma segment increased $555 million, or 32%, in fiscal 2025 compared with fiscal 2024 due to increases in revenue from our personal loan vertical of $221 million, our credit card vertical of $213 million, and our auto insurance vertical of $99 million.\" Segment table: Credit Karma 2,263 of Total net revenue $18,831 million.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/896878/000089687825000035/intu-20250731.htm",
+      "retrieved_at": "2026-07-21T10:15:28Z"
+    },
+    "impermissible_revenue_pct": {
+      "value": 12,
+      "basis": "segment-data"
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "fail",
+        "reason": "Impermissible-activity revenue ~12.0% of total revenue ($2,263M Credit Karma / $18,831M total, FY2025) exceeds the 5% AAOIFI business-activity threshold. The Credit Karma segment monetizes cost-per-action referrals to interest-based credit products — the 10-K attributes FY2025 growth to the personal-loan vertical (+$221M), credit-card vertical (+$213M), and auto-insurance vertical (+$99M), i.e., riba-based lending referrals plus conventional insurance leads."
+      },
+      "sector_exclusion": {
+        "stance": "not-excluded",
+        "reason": "Core business (TurboTax, QuickBooks, Mailchimp — tax/accounting/marketing software) is permissible; INTU fails on the revenue-share test, not on sector."
+      },
+      "scope_caveat": "The 12% treats the entire Credit Karma segment as impermissible. A small slice (e.g., Credit Karma Money deposit accounts) is arguable, but the dominant verticals are loan/card/insurance referrals, so even a conservative sub-split stays well above 5%. Additional interest-linked revenue elsewhere (TurboTax Refund Advance, QuickBooks lending/payments float) is NOT counted here; including it would only raise the figure. Note: effective 2025-08-01 Intuit merged Credit Karma into a combined Consumer segment for FY2026 reporting, so this segment-level visibility degrades next fiscal year."
+    },
+    "confidence": "medium-high",
+    "note": "Evidence supports the target status. Cross-checked against the Intuit IR press release of 2025-08-21 (https://investors.intuit.com/news-events/press-releases/detail/1266/...): \"Grew Credit Karma revenue 32 percent to $2.3 billion\" and Q4 growth \"driven by strength in personal loans, credit cards, and auto insurance\" — consistent with the 10-K exact figure of $2,263M. The press release only rounds to $2.3B; the exact $2,263M and the +$221M/+$213M/+$99M vertical breakdown come from the FY2025 10-K MD&A (filed 2025-09-03), which is the cited primary source.",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "IONQ",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "IREN",
+    "status": "questionable",
+    "categories": [
+      "crypto-mining"
+    ],
+    "evidence": {
+      "quote": "Q3 FY26 (three months ended March 31, 2026): total revenue $144.8m — Bitcoin mining revenue $111.2m (down from $167.4m), AI Cloud services revenue $33.6m (up from $17.3m). 'Results reflected continued progress in the transition from Bitcoin mining to AI Cloud.' Net loss of $(247.8)m included non-cash impairments of $(140.4)m primarily related to decommissioning of mining hardware ahead of GPU installation and billing.",
+      "source_url": "https://www.globenewswire.com/news-release/2026/05/07/3290719/0/en/iren-business-update-and-q3-fy26-results.html",
+      "retrieved_at": "2026-07-21T10:15:46Z"
+    },
+    "impermissible_revenue_pct": {
+      "value": 76.8,
+      "basis": "Bitcoin-mining share of Q3 FY26 revenue ($111.2m of $144.8m, quarter ended 2026-03-31) — counts as impermissible ONLY under the scholarly view that bitcoin-mining income is haram; under the permissive view this is 0%. AI Cloud was 23.2% and nearly doubled QoQ, so this ratio decays fast."
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "conditional-fail",
+        "reason": "Crypto-mining is not a classic AAOIFI prohibited category (alcohol/gambling/riba-finance), but scholar bodies are split on bitcoin itself. If bitcoin income is deemed impermissible, 76.8% of revenue vastly exceeds the 5% impermissible-revenue threshold -> fail; if bitcoin is deemed permissible, the business-activity screen passes (financial-ratio screens not assessed here)."
+      },
+      "sector_exclusion": {
+        "stance": "flag",
+        "reason": "Screeners that categorically exclude crypto-mining (some strict lists) would mark IREN prohibited; crypto-permissive screeners (e.g., those following scholars who accept BTC as mal/asset) would pass it."
+      },
+      "trajectory": {
+        "stance": "reassess-quarterly",
+        "reason": "Mix is shifting rapidly: AI Cloud went from $3.6m (2.4% of revenue) a year prior to $33.6m (23.2%) in Q3 FY26; mining hardware is being decommissioned for GPUs, $3.4B five-year NVIDIA AI Cloud contract and ~$3.1B ARR under contract reported. The BTC-mining share should fall materially in coming quarters — re-pull the split each quarter."
+      }
+    },
+    "confidence": "high on the revenue figures (company IR press release fetched this session); medium on the classification itself, which is inherently methodology-dependent due to the scholar split on bitcoin permissibility",
+    "note": "Scholar split on bitcoin permissibility + fast-shifting revenue mix. Latest quarter (Q3 FY26, ended 2026-03-31): BTC mining 76.8% / AI cloud 23.2% of $144.8m revenue. Evidence supports the target status 'questionable' — under a bitcoin-haram view the company fails outright today (77% impermissible), under a bitcoin-halal view it is clean; the AI-cloud share is compounding (~2x QoQ) and mining rigs are being decommissioned, so revisit after each quarterly release. Educational research, not a fatwa or investment advice.",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "JPM",
+    "status": "prohibited",
+    "categories": [
+      "conventional-banking"
+    ],
+    "evidence": {
+      "quote": "JPMorgan Chase & Co. ... a financial holding company incorporated under Delaware law in 1968, is a leading financial services firm based in the United States of America ... The Firm is a leader in investment banking, financial services for consumers and small businesses, commercial banking, financial transaction processing and asset management. ... [CCB segment:] Banking & Wealth Management offers deposit, investment and lending products, cash management, payments and services. Home Lending includes mortgage origination and servicing activities ... Card Services issues credit cards ... Auto originates and services auto loans and leases. [FY2025 income statement:] Net interest income 95,443 ... Total net revenue 182,447 (in millions).",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/jpm-20251231.htm",
+      "retrieved_at": "2026-07-21T10:14:54Z"
+    },
+    "impermissible_revenue_pct": {
+      "value": 52.3,
+      "basis": "Net interest income $95,443M / total net revenue $182,447M, FY2025 (2025 Form 10-K 'Financial performance of JPMorganChase' table). Conservative floor: counts only net interest income as impermissible; interest-adjacent noninterest revenue (e.g. conventional lending fees, card income) would push the true figure higher."
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "fail",
+        "reason": "Core business is riba-based: deposit-taking, interest-bearing lending (mortgage, auto, commercial), and credit-card issuance per its own 10-K segment descriptions. Net interest income alone is 52.3% of FY2025 total net revenue — an order of magnitude above the 5% impermissible-revenue tolerance. A conventional bank fails the AAOIFI business-activity screen categorically, before any financial-ratio screens."
+      },
+      "sector_exclusion": {
+        "stance": "fail",
+        "reason": "Self-described 'financial holding company' and 'leading financial services firm' whose principal subsidiary is JPMorgan Chase Bank, N.A., a national banking association. Conventional banking is a categorically excluded sector under every mainstream halal screening methodology (AAOIFI, S&P Shariah, MSCI Islamic, FTSE Shariah)."
+      }
+    },
+    "confidence": "high — evidence is the company's own FY2025 Form 10-K (filed 2026-02-13, accession 0001628280-26-008131), fetched from SEC EDGAR this session; both the qualitative business description and the quantitative income-statement figures independently support prohibition. The 52.3% figure uses NET interest income as numerator; gross interest income over gross revenue would be higher still, so the fail verdict is insensitive to basis choice.",
+    "note": "Research confirms the target status. No contradicting evidence: JPM's FY2025 10-K describes deposit, lending, mortgage, auto-loan and credit-card businesses as its core consumer segment, and interest income is the majority of firmwide revenue.",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "KLAC",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "KMI",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "LAES",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "LEU",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "LNG",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "LRCX",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "MCHP",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "MDB",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "META",
+    "status": "clean",
+    "categories": [
+      "advertising",
+      "media",
+      "dating-services"
+    ],
+    "impermissible_revenue_pct": {
+      "value": null,
+      "basis": "Same fork as GOOGL, more extreme: FY2025 Advertising = $196,175M of $200,966M total revenue = 97.6% (essentially no non-ad dilution; Reality Labs $2,207M + Other revenue $2,584M are the remainder). AAOIFI: advertising not impermissible income → passes 5% test. Sector-exclusion: ~98% advertising is flagged."
+    },
+    "evidence": {
+      "quote": "Segment Information (Twelve Months Ended December 31, 2025): 'Advertising $ 58,137 $ 46,783 $ 196,175 $ 160,633 ... Family of Apps 58,938 47,302 198,759 162,355 Reality Labs 955 1,083 2,207 2,146 Total revenue $ 59,893 $ 48,385 $ 200,966 $ 164,501' — FY2025 advertising $196,175M of total revenue $200,966M = 97.6%.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1326801/000162828026003832/meta-12312025xexhibit991.htm",
+      "retrieved_at": "2026-07-21T10:20:00Z"
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "pass",
+        "reason": "Advertising is not impermissible income under SS 21 3/4/4; ~0% impermissible << 5%."
+      },
+      "sector_exclusion": {
+        "stance": "fail",
+        "reason": "~98% advertising/media revenue; excluded activity under sector-exclusion screens. No non-ad dilution to soften the flag."
+      }
+    },
+    "note": "Same AAOIFI-pass / sector-exclusion-fail fork as GOOGL, but with ~98% ad concentration and no diluting segment. Meta also operates Facebook Dating (matchmaking service) within Family of Apps — a qualitative flag for some screeners on the nature of the service, though it is not a separately material revenue line in the disclosure.",
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "MPWR",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "MRNA",
+    "status": "clean",
+    "categories": [
+      "pharma-excipient"
+    ],
+    "impermissible_revenue_pct": {
+      "value": null,
+      "basis": "Same excipient rationale. Moderna's mRNA/lipid-nanoparticle products are less likely to contain porcine gelatin than traditional gelatin-stabilized vaccines, but the note is retained for any gelatin/alcohol-containing formulations. Ingredient-composition flag, not impermissible-revenue share; majority position permits via istihalah/darura."
+    },
+    "evidence": {
+      "quote": "Jurisprudential opinion on medicines/vaccines containing pork gelatine: permissible via istihalah ('a process in which it is chemically altered to the point of transformation into a new material') and necessity; conclusion 'The use of such treatment is permitted ... and there are no grounds to prohibit it.'",
+      "source_url": "https://jbima.com/article/a-jurisprudential-opinion-on-using-a-vaccine-containing-pork-gelatine/",
+      "retrieved_at": "2026-07-21T10:23:00Z"
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "pass",
+        "reason": "Biopharma/vaccine manufacturing is permissible; ~0% impermissible income. Excipient concern is ingredient-level; majority position permits."
+      },
+      "sector_exclusion": {
+        "stance": "pass",
+        "reason": "Pharmaceuticals not an excluded sector."
+      }
+    },
+    "note": "Clean with excipient note (carried for consistency with AZN/GSK). Moderna's core mRNA-LNP platform typically avoids gelatin, but the majority juristic permissibility (istihalah/darura, JBIMA) covers any porcine/alcohol excipient exposure. Scholar-split minority stricter; not a company-level prohibition.",
+    "confidence": "medium",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "MRVL",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "MSFT",
+    "status": "clean",
+    "categories": [
+      "gaming",
+      "advertising"
+    ],
+    "impermissible_revenue_pct": {
+      "value": null,
+      "basis": "FY2025 (ended June 30, 2025) by significant product/service: Gaming $23,455M = 8.3% and Search and news advertising $13,878M = 4.9% of $281,724M total. Combined gaming+ads = $37,333M = 13.25%. Neither is 'impermissible income' per the AAOIFI list, so the 5% impermissible test is not breached; but both are near/above the thresholds that sector-exclusion or conservative screeners apply to gaming and advertising individually."
+    },
+    "evidence": {
+      "quote": "Revenue, classified by significant product and service offerings, Year Ended June 30, 2025: 'Gaming 23,455 ... Search and news advertising 13,878 ... Total $ 281,724'. Gaming = 8.3%, Search and news advertising = 4.9%, combined 13.25% of FY2025 revenue.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/789019/000095017025100235/msft-20250630.htm",
+      "retrieved_at": "2026-07-21T10:21:00Z"
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "pass",
+        "reason": "Gaming and advertising are not on the SS 21 impermissible-income list; impermissible share ~0% << 5%."
+      },
+      "sector_exclusion": {
+        "stance": "flag",
+        "reason": "Gaming 8.3% and advertising 4.9% (combined 13.25%) sit at/above the 5% activity thresholds some screeners apply to gaming and advertising individually; conservative sector screens flag the combined questionable share."
+      }
+    },
+    "note": "Passes AAOIFI. The 'questionable' framing is the combined gaming (8.3%) + advertising (4.9%) = 13.3% share, near or above per-activity thresholds used by stricter/sector-exclusion methodologies. Xbox content also embeds advertising and in-game monetization. Re-check each filing year.",
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "MU",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "NBIS",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "NEE",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "NET",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "NNE",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "NOW",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "NRG",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "NTAP",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "NVDA",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "NVT",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "NXPI",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "OKE",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "OKLO",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "ON",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "ORCL",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "PANW",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "PATH",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "PEG",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "PH",
+    "status": "clean",
+    "categories": [
+      "aerospace-defense"
+    ],
+    "impermissible_revenue_pct": {
+      "value": null,
+      "basis": "FY2025 (ended June 30, 2025) Aerospace Systems segment net sales = $6,185M of $19,850M total = 31.2% (post-Meggitt acquisition). Aerospace/defense is not AAOIFI-impermissible income (~0% impermissible), so it passes the business screen; the ~31% aerospace share (with a defense/military subset) is what defense-exclusion overlays flag."
+    },
+    "evidence": {
+      "quote": "Business Segment Information, Twelve Months Ended June 30, 2025: 'Net sales Diversified Industrial $ 3,567 ... 13,665 14,458 Aerospace Systems 1,676 1,528 6,185 5,472 Total net sales $ ... 19,850 19,930' — FY2025 Aerospace Systems $6,185M of $19,850M = 31.2%; 'Aerospace backlog increased to a record $7.4 billion ... driven by continued strength in both commercial and defense markets.'",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/76334/000007633425000031/exhibit991q4fy25.htm",
+      "retrieved_at": "2026-07-21T10:20:00Z"
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "pass",
+        "reason": "Aerospace revenue is not impermissible income under SS 21; ~0% impermissible << 5%. Passes business screen."
+      },
+      "sector_exclusion": {
+        "stance": "flag",
+        "reason": "Aerospace Systems ~31.2% (with a defense/military subset per the commercial+defense backlog) is flagged by weapons/defense-exclusion overlays."
+      }
+    },
+    "note": "Clean under AAOIFI. Aerospace Systems is ~31% of revenue post-Meggitt, split across commercial and defense; the defense subset is the sector-exclusion touchpoint. Parker does not disaggregate commercial vs. defense within the segment, so the defense share is not exactly quantifiable from the release — flag qualitatively.",
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "PLTR",
+    "status": "clean",
+    "categories": [
+      "government-defense",
+      "military-software"
+    ],
+    "impermissible_revenue_pct": {
+      "value": null,
+      "basis": "FY2025 Government segment = $2,402,287K of $4,475,446K total = 53.7% (Commercial $2,073,159K = 46.3%). Government/defense revenue is permissible under AAOIFI (not on the impermissible-income list), so impermissible share ~0%. Defense/military-exclusion methodologies instead flag the full ~54% government (incl. military) concentration."
+    },
+    "evidence": {
+      "quote": "10-K Revenue by customer type, Years Ended December 31: 'Government $ 2,402,287 $ 1,569,605 ... Commercial 2,073,159 1,295,902 ... Total revenue $ 4,475,446 $ 2,865,507' — FY2025 Government = 53.7% of total. Press release: 'U.S. government revenue grew 55% year-over-year to $1.855 billion'.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1321655/000132165526000011/pltr-20251231.htm",
+      "retrieved_at": "2026-07-21T10:29:00Z"
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "pass",
+        "reason": "Government/defense software revenue is not impermissible income under SS 21; ~0% impermissible << 5%. Passes the business screen."
+      },
+      "sector_exclusion": {
+        "stance": "fail",
+        "reason": "Defense/military-exclusion screens (weapons/military-contracting exclusions used by some ethical+Shariah overlays) flag the ~53.7% government-incl.-military concentration."
+      }
+    },
+    "note": "AAOIFI-pass / defense-exclusion-fail fork. 53.7% of FY2025 revenue is government (a large military/defense subset). Screeners that only apply the AAOIFI impermissible-income list pass Palantir; those layering a weapons/defense sector exclusion flag it. Both shown.",
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "PWR",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "QBTS",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "QCOM",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "QNC",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "QUBT",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "RGTI",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "S",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "SMCI",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "SMR",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "SNOW",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "SNPS",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "SO",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "STX",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "TEAM",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "TER",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "TLN",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "TRGP",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "TSM",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "TXN",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "UEC",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "UUUU",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "VRT",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "VST",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "WDAY",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "WDC",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "WKEY",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "WMB",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "WULF",
+    "status": "questionable",
+    "categories": [
+      "cryptocurrency_mining",
+      "digital_assets_exposure"
+    ],
+    "evidence": {
+      "quote": "Q1 2026 10-Q revenue disaggregation (three months ended March 31, 2026): digital asset mining revenue $12,990 thousand; HPC lease revenue $21,022 thousand; total revenue $34,012 thousand (prior-year quarter: mining $34,405K, HPC $0). Digital assets held at fair value on the balance sheet: $1,237 thousand, earned as 'noncash consideration for providing hash computation services to a mining pool operator.' Corroborated by the company's preliminary Q1 2026 IR release (fetched this session): 'more than 50% of first quarter 2026 revenue derived from HPC hosting' and a 'business that has effectively transitioned to long-term, credit-enhanced revenues... backed by investment-grade counterparties.'",
+      "source_url": "https://investors.terawulf.com/sec-filings/all-sec-filings/content/0001083301-26-000092/wulf-20260331.htm",
+      "retrieved_at": "2026-07-21T10:15:33Z"
+    },
+    "impermissible_revenue_pct": {
+      "value": 38.2,
+      "basis": "Digital asset (bitcoin) mining revenue $12.99M of $34.01M total revenue, Q1 2026 10-Q. This is the CONTESTED share, not definitively impermissible: under rulings that deem bitcoin halal, mining is a permissible compute service and the figure drops to ~0%; under rulings that deem crypto impermissible, 38.2% far exceeds any 5% threshold. Remaining 61.8% is HPC datacenter leasing (permissible)."
+    },
+    "methodology_notes": {
+      "aaoifi": {
+        "stance": "conditional-fail",
+        "reason": "No definitive AAOIFI standard rules bitcoin mining haram; scholarly opinion is split. If crypto revenue is classed impermissible, 38.2% of Q1 2026 revenue fails any 5% de-minimis threshold (prohibited); if bitcoin is deemed a permissible asset, hash-computation services pass as a compute business."
+      },
+      "sector_exclusion": {
+        "stance": "fail-today",
+        "reason": "Screeners that exclude the crypto-mining sector outright would exclude WULF as of Q1 2026 (mining still 38% of revenue), though the company no longer derives its majority revenue from mining."
+      },
+      "trajectory": {
+        "stance": "improving",
+        "reason": "HPC hosting overtook mining for the first time in Q1 2026 ($21.0M vs $13.0M; Q1 2025 was 100% mining). Company states revenue mix will keep shifting to contracted HPC hosting with investment-grade counterparties — the questionable share is shrinking each quarter."
+      },
+      "balance_sheet": {
+        "stance": "note",
+        "reason": "Digital assets held are immaterial ($1.24M fair value; BTC sold/held briefly as mining-pool consideration, not a treasury strategy). Separately, $5.8B of debt obligations (per preliminary Q1 2026 IR release) should be routed to the financial-ratio screen stage — outside business-activity scope but likely a leverage-screen concern."
+      }
+    },
+    "confidence": "high on the underlying facts (revenue split taken from the Q1 2026 10-Q segment figures fetched this session, cross-checked against the IR preliminary release and multiple secondary reports); medium on the status call itself, which hinges on unresolved scholarly divergence over whether bitcoin mining revenue is impermissible",
+    "note": "Evidence supports the target status \"questionable\" — no contradiction. Bitcoin mining is still a material 38.2% of Q1 2026 revenue, so WULF is not clean, but the activity's impermissibility is genuinely contested and the majority (61.8%) of revenue is now permissible HPC datacenter leasing, with the mix contractually shifting further toward HPC. Re-screen after the next 10-Q: if mining falls below ~5% of revenue, the entry may upgrade toward clean under permissive rulings. Direct SEC EDGAR fetch was blocked (403/empty body); the filing was retrieved from TeraWulf's IR-hosted mirror of the same accession (0001083301-26-000092). Educational research, not investment or religious-compliance advice.",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "XEL",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "XNDU",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  },
+  {
+    "ticker": "ZS",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-07-21"
+  }
+]

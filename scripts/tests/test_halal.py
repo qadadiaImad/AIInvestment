@@ -158,3 +158,42 @@ def test_purification_needs_activity_pct():
     assert abs(q["per_share"] - 0.02 * 253491000000.0 / shares) < 1e-6
     assert q["status"] == "computed"
     assert "derived" in q["basis"]
+
+
+# ---------------------------------------------------------------------------
+# Task 4: curated business-activity seed + loader/validator
+# ---------------------------------------------------------------------------
+import pathlib  # noqa: E402  (added after task-3 block)
+
+from aiinvest import ai_stack, quantum_stack  # noqa: E402
+
+
+def _universe():
+    return sorted({t.split(":")[-1] for t in
+                   ai_stack.all_tickers() + quantum_stack.all_tickers()})
+
+
+def test_business_activity_file_covers_entire_universe():
+    entries = halal.load_business_activity()
+    problems = halal.validate_business_activity(entries, _universe())
+    assert problems == [], "\n".join(problems)
+
+
+def test_business_activity_known_seed_classifications():
+    entries = halal.load_business_activity()
+    for sym in ["JPM", "GS", "BCS", "BBVA", "HSBC", "INTU"]:
+        assert entries[sym]["status"] == "prohibited", sym
+    for sym in ["IREN", "CORZ", "WULF", "APLD", "APP", "BWXT", "HPE", "BTQ"]:
+        assert entries[sym]["status"] == "questionable", sym
+    assert entries["NVDA"]["status"] == "clean"
+    assert entries["GOOGL"]["status"] == "clean"
+    assert entries["GOOGL"]["methodology_notes"]["sector_exclusion"]["stance"] == "fail"
+
+
+def test_validate_flags_missing_evidence_on_non_clean():
+    bad = {"ZZZZ": {"ticker": "ZZZZ", "status": "prohibited", "categories": [],
+                    "impermissible_revenue_pct": None, "evidence": None,
+                    "methodology_notes": {}, "note": None,
+                    "confidence": "high", "last_reviewed": "2026-07-21"}}
+    problems = halal.validate_business_activity(bad, ["ZZZZ"])
+    assert any("evidence" in p for p in problems)
