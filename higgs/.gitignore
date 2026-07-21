@@ -1,8 +1,17 @@
-# Source art & scratch — regenerable, keep out of git
+# ALL media under higgs/ is regenerable output — keep out of git (owner rule 2026-07-21).
+# Builder scripts, kits, manifests, posts, README stay tracked.
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.mp4
+*.mp3
+*.wav
+*.m4a
+*.mov
+# legacy patterns (subsumed by the extension rules, kept for clarity)
 hero_*
 logo_*
 maya_*
-voice_*.mp3
 _check*
-*_anim.mp4
-# everything else under higgs/ (builder scripts, deliverables, manifests, README) is tracked
