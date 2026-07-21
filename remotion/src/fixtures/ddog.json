@@ -1,0 +1,28 @@
+{
+  "ticker": "DDOG",
+  "overall": "not_halal",
+  "overallBasis": "AAOIFI SS 21",
+  "decisive": {"valuePct": 5.29, "thresholdPct": 5.0, "label": "interest income / revenue"},
+  "tests": [
+    {"id": "aaoifi_debt", "label": "Debt / market cap", "ratio": 0.0137, "threshold": 0.3, "status": "pass"},
+    {"id": "aaoifi_cash", "label": "Cash & interest-bearing / market cap", "ratio": 0.0508, "threshold": 0.3, "status": "pass"}
+  ],
+  "activityStatus": "fail",
+  "purificationPerShare": 0.5462,
+  "inputsAsof": "2026-07-21",
+  "scenes": [
+    {"kind": "hook", "headline": "Every ratio passes.", "sub": "DDOG still fails the screen."},
+    {"kind": "math", "headline": "The worked math", "sub": "AAOIFI SS 21 — data as of 2026-07-21"},
+    {"kind": "takeaway", "headline": "0.29 points over the line", "sub": "Discipline is the whole recipe."}
+  ],
+  "bubbleSrc": "bubble_ddog.mp4",
+  "captions": [
+    {"text": "When", "fromMs": 800, "toMs": 1000}, {"text": "the", "fromMs": 1000, "toMs": 1120},
+    {"text": "pan", "fromMs": 1120, "toMs": 1350}, {"text": "flares,", "fromMs": 1350, "toMs": 1800},
+    {"text": "amateurs", "fromMs": 1900, "toMs": 2400}, {"text": "jump", "fromMs": 2400, "toMs": 2700},
+    {"text": "back.", "fromMs": 2700, "toMs": 3100}, {"text": "Cooks", "fromMs": 3600, "toMs": 4000},
+    {"text": "lower", "fromMs": 4000, "toMs": 4350}, {"text": "the", "fromMs": 4350, "toMs": 4500},
+    {"text": "flame.", "fromMs": 4500, "toMs": 5100}
+  ],
+  "disclaimer": "Educational research only — not financial advice, not a fatwa."
+}

@@ -1,0 +1,15 @@
+export const brand = {
+  bg: '#0A0D12',
+  pass: '#34D399',
+  fail: '#F87171',
+  warn: '#E0A23B',
+  text: '#E8EDF2',
+  muted: '#8B98A5',
+  card: '#11161F',
+  border: '#1E2733',
+  fontBig: 'Fraunces',
+  fontBody: 'Inter',
+  fontMono: 'JetBrains Mono',
+  safeTop: 120,
+  safeBottom: 220,
+} as const;
