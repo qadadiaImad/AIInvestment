@@ -29,3 +29,26 @@ describe('buildIndex', () => {
     expect(out[0].date >= out[out.length - 1].date).toBe(true)
   })
 })
+
+it('carousel-only round: orphan v4 slides become a dated carousel post (halal round shape)', () => {
+  const posts = buildIndex({
+    higgs: ['v4_wulf_1_hook.png', 'v4_wulf_2_data.png', 'v4_wulf_3_takeaway.png', 'reels_2026-07-21.txt'],
+    content: []
+  })
+  expect(posts).toHaveLength(1)
+  const p = posts[0]
+  expect(p.ticker).toBe('WULF')
+  expect(p.kind).toBe('carousel')
+  expect(p.date).toBe('2026-07-21')
+  expect(p.media).toEqual([
+    'media://higgs/v4_wulf_1_hook.png',
+    'media://higgs/v4_wulf_2_data.png',
+    'media://higgs/v4_wulf_3_takeaway.png'
+  ])
+  expect(p.captionFile).toBe('media://higgs/reels_2026-07-21.txt')
+})
+
+it('orphan v4 slides without any caption sheet stay dropped (legacy behavior)', () => {
+  const posts = buildIndex({ higgs: ['v4_zzz_1_hook.png'], content: [] })
+  expect(posts).toHaveLength(0)
+})

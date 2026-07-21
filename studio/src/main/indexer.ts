@@ -51,10 +51,15 @@ export function buildIndex(files: FileSets): Post[] {
     p.media.push(M(`content/carousel_${m[1]}/${m[2]}/slide_1.html`))
   }
 
-  // attach v4 slides to that ticker's bundle (any date for that ticker; prefer reel bundle)
-  for (const [ticker, file] of v4slides) {
+  // attach v4 slides to that ticker's bundle (any date for that ticker; prefer reel bundle).
+  // Orphans (ticker has NO bundle at all — e.g. a carousel-only round like the halal posts)
+  // become their own 'carousel' post, dated to the newest caption sheet (v4_* files always
+  // belong to the newest render round; the builder overwrites them per round).
+  const newestCaptionDate = [...captionByDate.keys()].sort().pop()
+  for (const [ticker, file] of v4slides.sort((a, b) => a[1].localeCompare(b[1]))) {
     const target = [...byKey.values()].filter(p => p.ticker === ticker).sort((a, b) => b.date.localeCompare(a.date))[0]
     if (target) target.media.push(M(`higgs/${file}`))
+    else if (newestCaptionDate) ensure(newestCaptionDate, ticker, 'carousel').media.push(M(`higgs/${file}`))
   }
 
   const out = [...byKey.values()]
