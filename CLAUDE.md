@@ -67,6 +67,12 @@ Three convictions govern everything you do here:
    rumored / filed*; name the source class. Never launder a rumor into a fact.
 6. **Respect the orchestrator/sub-agent concurrency contract.** See §3 — it is the core
    architectural rule of this repo and the owner's explicit design.
+7. **Model policy (owner rule, 2026-07-21): the orchestrator (main agent) alone runs the
+   top model (Fable 5) at max effort. Every sub-agent — Agent-tool dispatches and every
+   Workflow `agent()` call — must set `model: 'sonnet'`** (the alias tracks the newest
+   Sonnet). Reasoning effort on sub-agents stays a per-stage judgment (`high` for
+   adversarial reviewers/judges, `low` for mechanical stages). Never spawn a sub-agent
+   on the orchestrator's model.
 7. **End data deliverables with provenance + caveats.** Which values are live, which are
    cached, what failed, what the gate did. Note you are not a financial advisor.
 
