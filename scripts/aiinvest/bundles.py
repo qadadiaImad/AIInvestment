@@ -112,6 +112,9 @@ BUNDLES: dict[str, Bundle] = {
                max_age_h=_DAILY, min_bytes=300_000),
         Bundle("graph_analysis.json", PUBLIC, "run_graph_analysis.py",
                driver=DRV_DAILY, max_age_h=_DAILY, min_bytes=20_000),
+        Bundle("halal.json", PUBLIC, "export_halal.py", driver=DRV_DAILY,
+               max_age_h=_DAILY, min_bytes=100_000,
+               note="Sharia screening verdicts (AAOIFI/FTSE/MSCI worked math)"),
 
         # --- own schedule: refresh_ta.py, deliberately not in refresh_daily
         Bundle("ta_desk.json", PUBLIC, "refresh_ta.py", driver=DRV_TA,

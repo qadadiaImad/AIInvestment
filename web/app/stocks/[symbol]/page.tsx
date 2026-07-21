@@ -6,8 +6,10 @@ import {
   getStock,
   getNewsForSymbol,
   getCongressData,
+  getHalalData,
   type PeerMetric,
 } from "@/lib/data";
+import HalalCard from "@/components/HalalCard";
 import LayerChip from "@/components/LayerChip";
 import Sparkline from "@/components/Sparkline";
 import PriceChart from "@/components/PriceChart";
@@ -178,6 +180,8 @@ export default async function StockPage({
   const congress = getCongressForSymbol(s.symbol);
   const archetype = getArchetypeForSymbol(s.symbol);
   const dcfDefaults = buildDefaultDcfInputs(s, getMacroData());
+  const halalData = getHalalData();
+  const halalVerdict = halalData?.verdicts[s.symbol] ?? null;
 
   // peer comparison rows
   const industryPeers = s.peer_comparison?.industry ?? {};
@@ -605,6 +609,15 @@ export default async function StockPage({
             )}
           </div>
         </Panel>
+      )}
+
+      {/* Halal verdict card — renders only when halal.json has been generated */}
+      {halalVerdict && halalData && (
+        <HalalCard
+          verdict={halalVerdict}
+          disclaimer={halalData.disclaimer}
+          conventions={halalData.conventions}
+        />
       )}
 
       <p className="text-[10px] text-term-muted">

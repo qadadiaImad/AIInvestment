@@ -252,9 +252,9 @@ describe("getPortfolioData", () => {
     mod.getPortfolioData();
     expect(seen).toHaveLength(1);
     const p = seen[0];
-    expect(p.endsWith(["data", "portfolio.json"].join("/")) || p.includes(`${"data"}/portfolio.json`)).toBe(
-      true,
-    );
+    // Separator-agnostic (path.join emits "\" on Windows) — mirrors the
+    // negative check below.
+    expect(p).toMatch(/[\\/]data[\\/]portfolio\.json$/);
     expect(p).not.toMatch(/public[\\/]+data/);
   });
 });
