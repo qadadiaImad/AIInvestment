@@ -129,7 +129,8 @@ const SwipeArrow: React.FC = () => {
 const IntroVideoScene: React.FC<KurzIntroVideoProps> = (p) => (
   <AbsoluteFill>
     <div style={{position: 'absolute', top: 0, left: 0, right: 0, height: VIDEO_H, overflow: 'hidden', borderRadius: '0 0 56px 56px'}}>
-      <OffthreadVideo src={staticFile(p.videoSrc)} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+      {/* objectPosition biases the crop upward so the subject's head stays in frame */}
+      <OffthreadVideo src={staticFile(p.videoSrc)} style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 22%'}} />
     </div>
     <div style={{position: 'absolute', top: VIDEO_H, left: 0, right: 0, bottom: 0, overflow: 'hidden'}}>
       <FloatingBlob size={640} x={72} y={58} hue={C.emerald} hue2={C.mint} seed={2} opacity={0.26} />
@@ -227,7 +228,7 @@ export const KurzSlide: React.FC<KurzSlideProps> = (props) => {
         <TextScene {...props} />
       )}
       <AbsoluteFill style={{padding: '0 40px 22px', alignItems: 'center', justifyContent: 'flex-end', pointerEvents: 'none'}}>
-        <Foot />
+        <Foot text={props.footer} />
       </AbsoluteFill>
     </AbsoluteFill>
   );

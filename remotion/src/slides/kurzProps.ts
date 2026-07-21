@@ -11,6 +11,7 @@ const richOrString = () => z.union([z.string(), richTextSchema]);
 
 export const kurzIntroVideoSchema = z.object({
   kind: z.literal('introVideo'),
+  footer: z.string().optional(), // per-slide disclaimer override (default: theme NOT_FATWA)
   videoSrc: z.string(), // staticFile-relative, e.g. "intro_kitchen_counter.mp4"
   kick: z.string(),
   title: z.string(),
@@ -20,6 +21,7 @@ export const kurzIntroVideoSchema = z.object({
 
 export const kurzCompanySchema = z.object({
   kind: z.literal('company'),
+  footer: z.string().optional(),
   ticker: z.string(),
   name: z.string(),
   tagline: z.string(),
@@ -33,6 +35,7 @@ export const kurzCompanySchema = z.object({
 
 export const kurzTextSchema = z.object({
   kind: z.literal('text'),
+  footer: z.string().optional(),
   kick: z.string(),
   title: z.string(),
   body: richOrString(),

@@ -7,10 +7,20 @@
   "perfLabel": "past 12 months",
   "motif": "prism",
   "pills": [
-    {"label": "Debt / market cap", "value": "6.1% ✓"},
-    {"label": "Interest-bearing cash", "value": "4.4% ✓"},
-    {"label": "Impermissible income", "value": "under 5% ✓"}
+    {
+      "label": "Debt / market cap",
+      "value": "6.1% ✓"
+    },
+    {
+      "label": "Interest-bearing cash",
+      "value": "4.4% ✓"
+    },
+    {
+      "label": "Restricted income",
+      "value": "under 5% ✓"
+    }
   ],
-  "footnote": "AAOIFI screen — all pass · data 2026-07-21",
-  "durationInFrames": 270
+  "footnote": "Ethical screen — all pass · data 2026-07-21",
+  "durationInFrames": 270,
+  "footer": "Computed methodology result — educational only · not financial advice"
 }
