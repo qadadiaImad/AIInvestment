@@ -55,6 +55,28 @@ _BADGE_TEXT = {
     "insufficient_data": "AAOIFI SCREEN: INSUFFICIENT DATA",
 }
 
+# Rich-text tone per verdict, for the verdict word embedded in the stamp beat's
+# "Verdict: ..." line (remotion/src/slides/slideProps.ts's richTextSchema tone
+# enum has no direct "warn"/"unknown" — amber/muted are the closest matches to
+# the app's existing pass=emerald/fail=red/warn=amber/unknown=muted convention,
+# see SlideStoryReel.tsx's TONE_COLOR and the bars beat's pass/fail/unknown).
+_TONE_FOR_VERDICT = {
+    "halal": "emerald",
+    "not_halal": "red",
+    "questionable": "amber",
+    "insufficient_data": "muted",
+}
+
+
+def _seg(t, tone=None, b=False):
+    """One remotion richTextSchema segment: {t, tone?, b?}."""
+    seg = {"t": t}
+    if tone is not None:
+        seg["tone"] = tone
+    if b:
+        seg["b"] = True
+    return seg
+
 # Beat-kind durations (frames @ 30fps) — mirror the WULF reel's own section
 # lengths (halal-reels/src/WulfReel.tsx) so parity mode (Task 2/6) and the
 # live builder produce reels of a comparable pace.
@@ -198,7 +220,10 @@ def build_props(ticker, halal_bundle, story=None):
         beats.append({
             "kind": "donut", "title": "THE BUSINESS TEST", "pct": donut_pct,
             "centerLabel": "FLAGGED REVENUE",
-            "caption": f"{donut_pct}% of revenue comes from a flagged activity.",
+            "caption": [
+                _seg(f"{donut_pct}%", tone="amber", b=True),
+                _seg(" of revenue comes from a flagged activity."),
+            ],
             "tone": tone, "durationInFrames": _DUR_DONUT,
         })
         vo.append(f"{donut_pct} percent of revenue is still tied to a flagged activity.")
@@ -211,14 +236,21 @@ def build_props(ticker, halal_bundle, story=None):
         basis_parts.append(f"flagged business {donut_pct}% of revenue")
     basis = " · ".join(basis_parts) or (v.get("overall_basis") or "")
     if purify_cents is not None:
-        stamp_line = (
-            f"Purification: about {purify_cents} cents a share would go to charity — "
-            "the flagged slice doesn't belong in your pocket.")
+        stamp_line = [
+            _seg("Purification", tone="emerald", b=True),
+            _seg(": about "),
+            _seg(f"{purify_cents} cents a share", tone="amber", b=True),
+            _seg(" would go to charity — the flagged slice doesn't belong in your pocket."),
+        ]
         vo.append(
             f"Verdict: {_VERDICT_LABEL[overall].lower()}. Purification would send about "
             f"{purify_cents} cents a share to charity.")
     else:
-        stamp_line = f"Verdict: {_VERDICT_LABEL[overall].lower()} on the halal screen."
+        stamp_line = [
+            _seg("Verdict: "),
+            _seg(_VERDICT_LABEL[overall].lower(), tone=_TONE_FOR_VERDICT[overall], b=True),
+            _seg(" on the halal screen."),
+        ]
         vo.append(f"Verdict: {_VERDICT_LABEL[overall].lower()} on the halal screen.")
     beats.append({
         "kind": "stamp", "verdict": overall, "basis": basis, "line": stamp_line,

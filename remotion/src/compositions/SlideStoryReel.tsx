@@ -34,7 +34,7 @@ import {
   interpolate,
   useCurrentFrame,
 } from 'remotion';
-import type {Beat, SlideStoryProps} from '../slides/slideProps';
+import type {Beat, RichTextValue, SlideStoryProps} from '../slides/slideProps';
 import {C, FONT} from '../slides/theme';
 import {Bg, Caption, Foot, Head, Kicker, Slam, Stamp, clamp, easeOut} from '../slides/ui';
 import {BubbleFrame} from '../components/BubbleFrame';
@@ -45,6 +45,46 @@ const TONE_COLOR: Record<'pass' | 'fail' | 'warn', string> = {
   pass: C.emerald,
   fail: C.redHot,
   warn: C.amber,
+};
+
+// Rich-text segment tone -> theme color. 'text' (or an omitted tone) means
+// "inherit the surrounding element's color" — matches WulfReel.tsx's plain
+// <b> spans that only change weight, not color.
+const RICH_TONE_COLOR: Record<'emerald' | 'amber' | 'red' | 'muted', string> = {
+  emerald: C.emerald,
+  amber: C.amber,
+  red: C.redHot,
+  muted: C.muted,
+};
+
+// Second hook line's tone (fully colors the whole line, unlike per-segment
+// richText tones) — reuses the same palette.
+const HEADLINE2_TONE_COLOR: Record<'amber' | 'emerald' | 'red', string> = {
+  amber: C.amber,
+  emerald: C.emerald,
+  red: C.redHot,
+};
+
+/** Renders a sub/caption/line field: a plain string passes through unstyled;
+ * a richText segment array renders each `t` inline, bold when `b`, colored
+ * when `tone` is a real color (ports WulfReel.tsx's hand-authored
+ * `<b style={{color: C.amber}}>38%</b>`-style emphasis spans from data). */
+const RichText: React.FC<{value: RichTextValue}> = ({value}) => {
+  if (typeof value === 'string') return <>{value}</>;
+  return (
+    <>
+      {value.map((seg, i) => {
+        const style: React.CSSProperties = {};
+        if (seg.b) style.fontWeight = 700;
+        if (seg.tone && seg.tone !== 'text') style.color = RICH_TONE_COLOR[seg.tone];
+        return (
+          <span key={i} style={style}>
+            {seg.t}
+          </span>
+        );
+      })}
+    </>
+  );
 };
 
 const VERDICT_META: Record<
@@ -133,11 +173,23 @@ const Donut: React.FC<{pct: number; centerLabel: string; color: string; from: nu
   );
 };
 
+const HOOK_HEADLINE_SIZE = 118;
+// ~1.12x the headline size — matches WulfReel.tsx's two-Slam hook ("This stock
+// earns" @118 / "bitcoin money." @132; 132/118 ≈ 1.1186 ≈ 1.12x).
+const HOOK_HEADLINE2_SIZE = Math.round(HOOK_HEADLINE_SIZE * 1.12);
+
 const HookScene: React.FC<{beat: Extract<Beat, {kind: 'hook'}>}> = ({beat}) => (
   <AbsoluteFill style={{padding: PAD, justifyContent: 'center'}}>
-    <Slam size={118}>{renderAccentedHeadline(beat.headline, beat.accentWord)}</Slam>
+    <Slam size={HOOK_HEADLINE_SIZE}>{renderAccentedHeadline(beat.headline, beat.accentWord)}</Slam>
+    {beat.headline2 ? (
+      <Slam size={HOOK_HEADLINE2_SIZE} color={HEADLINE2_TONE_COLOR[beat.headline2Tone]} delay={14}>
+        {beat.headline2}
+      </Slam>
+    ) : null}
     <div style={{marginTop: 60, maxWidth: 900}}>
-      <Caption delay={40}>{beat.sub}</Caption>
+      <Caption delay={40}>
+        <RichText value={beat.sub} />
+      </Caption>
     </div>
   </AbsoluteFill>
 );
@@ -156,7 +208,9 @@ const BarsScene: React.FC<{beat: Extract<Beat, {kind: 'bars'}>}> = ({beat}) => (
     ))}
     {beat.caption ? (
       <div style={{maxWidth: 900}}>
-        <Caption delay={8 + beat.bars.length * 22 + 20}>{beat.caption}</Caption>
+        <Caption delay={8 + beat.bars.length * 22 + 20}>
+          <RichText value={beat.caption} />
+        </Caption>
       </div>
     ) : null}
   </AbsoluteFill>
@@ -167,7 +221,9 @@ const DonutScene: React.FC<{beat: Extract<Beat, {kind: 'donut'}>}> = ({beat}) =>
     <Kicker text={beat.title} color={TONE_COLOR[beat.tone]} />
     <Donut pct={beat.pct} centerLabel={beat.centerLabel} color={TONE_COLOR[beat.tone]} from={10} />
     <div style={{maxWidth: 900}}>
-      <Caption delay={60}>{beat.caption}</Caption>
+      <Caption delay={60}>
+        <RichText value={beat.caption} />
+      </Caption>
     </div>
   </AbsoluteFill>
 );
@@ -204,7 +260,9 @@ const StampScene: React.FC<{beat: Extract<Beat, {kind: 'stamp'}>}> = ({beat}) =>
         </div>
       </div>
       <div style={{maxWidth: 920}}>
-        <Caption delay={40}>{beat.line}</Caption>
+        <Caption delay={40}>
+          <RichText value={beat.line} />
+        </Caption>
       </div>
     </AbsoluteFill>
   );
@@ -248,7 +306,9 @@ const EndCardScene: React.FC<{beat: Extract<Beat, {kind: 'endcard'}>; badge: {te
       >
         {beat.headline}
       </div>
-      <div style={{fontFamily: FONT.mono, fontSize: 26, color: C.muted, opacity: p}}>{beat.sub}</div>
+      <div style={{fontFamily: FONT.mono, fontSize: 26, color: C.muted, opacity: p}}>
+        <RichText value={beat.sub} />
+      </div>
     </AbsoluteFill>
   );
 };

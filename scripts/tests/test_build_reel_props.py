@@ -120,6 +120,51 @@ def test_stamp_beat_verdict_is_a_valid_enum_member():
     assert stamp_beat["verdict"] == "questionable"
 
 
+# --- rich-text segments (numbers amber, pass/fail words toned) --------------
+
+def test_donut_caption_bolds_the_percentage_amber():
+    props = build_props("WULF", WULF_BUNDLE)
+    donut_beat = next(b for b in props["beats"] if b["kind"] == "donut")
+    caption = donut_beat["caption"]
+    assert isinstance(caption, list)
+    number_segs = [s for s in caption if s["t"] == "38.2%"]
+    assert len(number_segs) == 1
+    assert number_segs[0]["tone"] == "amber"
+    assert number_segs[0]["b"] is True
+    # no other segment carries the amber-number tone
+    assert sum(1 for s in caption if s.get("tone") == "amber") == 1
+
+
+def test_stamp_line_bolds_the_purification_amount_amber_when_purification_present():
+    props = build_props("WULF", WULF_BUNDLE)
+    stamp_beat = next(b for b in props["beats"] if b["kind"] == "stamp")
+    line = stamp_beat["line"]
+    assert isinstance(line, list)
+    amount_segs = [s for s in line if "cents a share" in s["t"]]
+    assert len(amount_segs) == 1
+    assert amount_segs[0]["tone"] == "amber"
+    assert amount_segs[0]["b"] is True
+    # "Purification" itself is bold-emerald (halal-reels/src/WulfReel.tsx's S5)
+    purification_segs = [s for s in line if s["t"] == "Purification"]
+    assert len(purification_segs) == 1
+    assert purification_segs[0]["tone"] == "emerald"
+    assert purification_segs[0]["b"] is True
+
+
+def test_stamp_line_tones_the_verdict_word_when_no_purification_data():
+    bundle = json.loads(json.dumps(WULF_BUNDLE))
+    bundle["verdicts"]["WULF"]["purification"] = {"per_share": None, "status": "insufficient_data"}
+    bundle["verdicts"]["WULF"]["overall"] = "not_halal"
+    props = build_props("WULF", bundle)
+    stamp_beat = next(b for b in props["beats"] if b["kind"] == "stamp")
+    line = stamp_beat["line"]
+    assert isinstance(line, list)
+    verdict_segs = [s for s in line if s["t"] == "fail"]
+    assert len(verdict_segs) == 1
+    assert verdict_segs[0]["tone"] == "red"
+    assert verdict_segs[0]["b"] is True
+
+
 # --- copy rails ------------------------------------------------------------
 
 def test_hook_copy_never_uses_haram_as_accusation():
@@ -130,12 +175,22 @@ def test_hook_copy_never_uses_haram_as_accusation():
     assert "haram" not in hook["sub"].lower()
 
 
+def _flatten_text(value):
+    """Collect all copy text out of a plain string or a richText segment list
+    (remotion/src/slides/slideProps.ts's richTextSchema: [{t, tone?, b?}, ...])."""
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, list):
+        return [seg["t"] for seg in value if isinstance(seg, dict) and "t" in seg]
+    return []
+
+
 def test_no_beat_or_vo_line_ever_uses_the_word_haram():
     props = build_props("WULF", WULF_BUNDLE)
     for beat in props["beats"]:
         for value in beat.values():
-            if isinstance(value, str):
-                assert "haram" not in value.lower()
+            for text in _flatten_text(value):
+                assert "haram" not in text.lower()
     for line in props["vo"]:
         assert "haram" not in line.lower()
 

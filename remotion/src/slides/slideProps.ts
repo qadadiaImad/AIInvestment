@@ -1,18 +1,40 @@
 import {z} from 'zod';
 
+// Rich-text: a sub/caption/line field can be a plain string (unstyled) or an
+// ordered array of inline segments — each with an optional tone color and an
+// optional bold flag — to reproduce halal-reels/src/WulfReel.tsx's hand-authored
+// <b style={{color: ...}}> emphasis spans (e.g. "38%" bold-amber, "impermissible"
+// bold-red) from data instead of hardcoded JSX per ticker.
+export const richTextSchema = z.array(z.object({
+  t: z.string(),
+  tone: z.enum(['text', 'emerald', 'amber', 'red', 'muted']).optional(),
+  b: z.boolean().optional(),
+}));
+export type RichTextSegments = z.infer<typeof richTextSchema>;
+// Convenience alias for the union every sub/caption/line field below accepts.
+export type RichTextValue = string | RichTextSegments;
+const richOrString = () => z.union([z.string(), richTextSchema]);
+
 export const beatSchema = z.discriminatedUnion('kind', [
-  z.object({kind: z.literal('hook'), headline: z.string(), sub: z.string(),
+  z.object({kind: z.literal('hook'), headline: z.string(),
+            // Second hook line (WulfReel's "bitcoin money." under "This stock
+            // earns") — its own size step + a single tone for the whole line,
+            // distinct from richText's per-segment tone (the reference renders
+            // this line fully toned, not word-by-word).
+            headline2: z.string().optional(),
+            headline2Tone: z.enum(['amber', 'emerald', 'red']).default('amber'),
+            sub: richOrString(),
             accentWord: z.string().optional(), durationInFrames: z.number()}),
   z.object({kind: z.literal('donut'), title: z.string(), pct: z.number(),
-            centerLabel: z.string(), caption: z.string(),
+            centerLabel: z.string(), caption: richOrString(),
             tone: z.enum(['pass', 'fail', 'warn']), durationInFrames: z.number()}),
-  z.object({kind: z.literal('bars'), title: z.string(), caption: z.string().optional(),
+  z.object({kind: z.literal('bars'), title: z.string(), caption: richOrString().optional(),
             bars: z.array(z.object({label: z.string(), ratio: z.number().nullable(),
               threshold: z.number(), status: z.enum(['pass', 'fail', 'unknown'])})),
             durationInFrames: z.number()}),
   z.object({kind: z.literal('stamp'), verdict: z.enum(['halal', 'not_halal', 'questionable', 'insufficient_data']),
-            basis: z.string(), line: z.string(), durationInFrames: z.number()}),
-  z.object({kind: z.literal('endcard'), headline: z.string(), sub: z.string(),
+            basis: z.string(), line: richOrString(), durationInFrames: z.number()}),
+  z.object({kind: z.literal('endcard'), headline: z.string(), sub: richOrString(),
             durationInFrames: z.number()}),
 ]);
 export const bubbleClipSchema = z.object({src: z.string(), durationInFrames: z.number()});
