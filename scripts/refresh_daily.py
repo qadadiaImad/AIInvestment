@@ -75,6 +75,13 @@ def build_plan(args):
     if os.path.exists(str(SCRIPTS / "export_quantum.py")):
         add("export quantum.json", [PY, "export_quantum.py"])
 
+    # Halal screening vertical (OPTIONAL — only when the halal CLIs exist).
+    # One REST scan over the full universe + verdict export (halal.json).
+    if os.path.exists(str(SCRIPTS / "pull_halal.py")):
+        add("pull halal inputs", [PY, "pull_halal.py"])
+    if os.path.exists(str(SCRIPTS / "export_halal.py")):
+        add("export halal.json", [PY, "export_halal.py"])
+
     add("build screener", [PY, "build_screener.py"])
 
     # News pull (OPTIONAL — only when pull_news.py exists). Runs after the site +
