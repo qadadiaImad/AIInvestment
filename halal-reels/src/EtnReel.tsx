@@ -41,10 +41,12 @@ const PanelMeter: React.FC<{
   cap: number;
   ok: boolean;
   from: number;
-}> = ({ title, question, value, cap, ok, from }) => {
+  countEnd: number;
+  stampDelay: number;
+}> = ({ title, question, value, cap, ok, from, countEnd, stampDelay }) => {
   const frame = useCurrentFrame();
   const appear = interpolate(frame, [from, from + 14], [0, 1], { ...clamp, easing: easeOut });
-  const p = interpolate(frame, [from + 14, from + 64], [0, 1], { ...clamp, easing: inOut });
+  const p = interpolate(frame, [from + 14, countEnd], [0, 1], { ...clamp, easing: inOut });
   const v = p * value;
   const over = v > cap;
   const color = ok ? C.emeraldDeep : C.redHot;
@@ -94,14 +96,17 @@ const PanelMeter: React.FC<{
       </div>
       <div style={{ fontFamily: FONT.mono, fontSize: 24, color: C.muted, marginTop: 18 }}>limit {cap}¢</div>
       <div style={{ marginTop: 26 }}>
-        <Stamp ok={ok} label={ok ? "PASS" : "FAIL"} delay={from + 78} />
+        <Stamp ok={ok} label={ok ? "PASS" : "FAIL"} delay={stampDelay} />
       </div>
     </div>
   );
 };
 
 const PAD = 84;
-const S = (f: number) => Math.round(f * 1.9655172413793103);
+// Beat-synced (voice_etn.wav): "Depends which rulebook" 6.2-7.5 ; "One compares" 8.64 ;
+// "14c/dollar" 12.3-13.0 ; "Pass" 16.4 ; "Two others" 17.3 ; "40c/dollar" 21.3-22.5 ;
+// "over their limit" 22.9-23.7 ; "Same company" 26.0 ; "Different math" 28.6-29.0 ;
+// "always on the card" 30.4-32.4
 
 export const EtnReel: React.FC = () => {
   const frame = useCurrentFrame();
@@ -114,7 +119,7 @@ export const EtnReel: React.FC = () => {
       </AbsoluteFill>
 
       {/* S1 — hook + books */}
-      <Sequence from={S(8)} durationInFrames={S(132)} name="Hook">
+      <Sequence from={8} durationInFrames={251} name="Hook">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center" }}>
           <Slam size={104}>One stock.</Slam>
           <Slam size={104} delay={14}>
@@ -124,12 +129,12 @@ export const EtnReel: React.FC = () => {
             Two different answers.
           </Slam>
           <div style={{ display: "flex", gap: 34, marginTop: 70 }}>
-            <Book label="AAOIFI" color={C.emerald} delay={44} />
-            <Book label="FTSE" color={C.amber} delay={54} />
-            <Book label="MSCI" color={C.amber} delay={64} />
+            <Book label="AAOIFI" color={C.emerald} delay={182} />
+            <Book label="FTSE" color={C.amber} delay={192} />
+            <Book label="MSCI" color={C.amber} delay={202} />
           </div>
           <div style={{ marginTop: 56, maxWidth: 920 }}>
-            <Caption delay={84}>
+            <Caption delay={100}>
               A <b style={{ color: C.emerald }}>halal screen</b> checks how much debt a company carries.
               But the rulebooks <b style={{ color: C.amber }}>measure it differently</b>…
             </Caption>
@@ -138,7 +143,7 @@ export const EtnReel: React.FC = () => {
       </Sequence>
 
       {/* S2 — split meters */}
-      <Sequence from={S(140)} durationInFrames={S(190)} name="SplitTest">
+      <Sequence from={259} durationInFrames={522} name="SplitTest">
         <AbsoluteFill style={{ padding: PAD, paddingTop: 250, gap: 30 }}>
           <Kicker text="SAME DEBT — TWO MEASURES" />
           <div style={{ display: "flex", gap: 30, flex: 1, maxHeight: 900 }}>
@@ -148,7 +153,9 @@ export const EtnReel: React.FC = () => {
               value={ETN.aaoifiPct}
               cap={ETN.aaoifiCap}
               ok
-              from={10}
+              from={6}
+              countEnd={130}
+              stampDelay={230}
             />
             <PanelMeter
               title="FTSE & MSCI"
@@ -156,11 +163,13 @@ export const EtnReel: React.FC = () => {
               value={ETN.assetsPct}
               cap={ETN.assetsCap}
               ok={false}
-              from={40}
+              from={255}
+              countEnd={410}
+              stampDelay={460}
             />
           </div>
           <div style={{ maxWidth: 950 }}>
-            <Caption delay={130}>
+            <Caption delay={420}>
               <b style={{ color: C.emerald }}>14¢ per $1 — pass.</b>{" "}
               <b style={{ color: C.redHot }}>40¢ per $1 — fail.</b> Same company. Same numbers.
             </Caption>
@@ -169,10 +178,10 @@ export const EtnReel: React.FC = () => {
       </Sequence>
 
       {/* S3 — the lesson */}
-      <Sequence from={S(330)} durationInFrames={S(170)} name="Lesson">
+      <Sequence from={781} durationInFrames={200} name="Lesson">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center", gap: 44 }}>
-          <Slam size={116}>Same numbers.</Slam>
-          <Slam size={116} color={C.amber} delay={14}>
+          <Slam size={116} delay={25}>Same numbers.</Slam>
+          <Slam size={116} color={C.amber} delay={72}>
             Different math.
           </Slam>
           <div
@@ -182,7 +191,7 @@ export const EtnReel: React.FC = () => {
               fontSize: 74,
               color: C.ink,
               marginTop: 30,
-              opacity: interpolate(frame, [S(330) + 40, S(330) + 54], [0, 1], clamp),
+              opacity: interpolate(frame, [781 + 104, 781 + 118], [0, 1], clamp),
             }}
           >
             <span style={{ color: C.redHot }}>2/3 say no</span>
@@ -190,7 +199,7 @@ export const EtnReel: React.FC = () => {
             <span style={{ color: C.emerald }}>1/3 says yes</span>
           </div>
           <div style={{ maxWidth: 950 }}>
-            <Caption delay={60}>
+            <Caption delay={130}>
               Neither is &quot;the truth&quot; — so anyone saying a stock is simply{" "}
               <b style={{ color: C.amber }}>&quot;fine&quot;</b> without naming their rulebook is skipping
               the part that decides the answer.
@@ -200,13 +209,13 @@ export const EtnReel: React.FC = () => {
       </Sequence>
 
       {/* S4 — end card */}
-      <Sequence from={S(500)} name="EndCard">
+      <Sequence from={981} name="EndCard">
         <Bg />
         <EndCard badge={ETN.badge} line="Passes AAOIFI. Fails FTSE & MSCI. Always check the rulebook." date={DATE} />
       </Sequence>
 
       <AbsoluteFill style={{ padding: PAD, justifyContent: "flex-end", pointerEvents: "none" }}>
-        <Sequence from={0} durationInFrames={S(500)} layout="none" name="Footer">
+        <Sequence from={0} durationInFrames={981} layout="none" name="Footer">
           <Foot />
         </Sequence>
       </AbsoluteFill>

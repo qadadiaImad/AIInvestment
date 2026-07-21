@@ -46,7 +46,9 @@ const Donut: React.FC<{ pct: number; from: number }> = ({ pct, from }) => {
 };
 
 const PAD = 84;
-const S = (f: number) => Math.round(f * 1.59375);
+// Beat-synced to word_timestamps.json (voice_wulf.wav, 30fps): "The debt" 8.08s ;
+// "$57 is borrowed" 11.5-12.3 ; "cap is $30" 13.3-14.6 ; "38%" 15.98 ; "Owning it
+// cleanly" 20.4 ; "13 cents a share" 22.6-24.1 ; "Verdict... Review" 27.4-28.5
 
 export const WulfReel: React.FC = () => {
   return (
@@ -58,7 +60,7 @@ export const WulfReel: React.FC = () => {
       </AbsoluteFill>
 
       {/* S1 — cold open */}
-      <Sequence from={S(8)} durationInFrames={S(92)} name="Hook">
+      <Sequence from={8} durationInFrames={229} name="Hook">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center" }}>
           <Slam size={118}>This stock earns</Slam>
           <Slam size={132} color={C.amber} delay={14}>
@@ -74,7 +76,7 @@ export const WulfReel: React.FC = () => {
       </Sequence>
 
       {/* S2 — debt counter */}
-      <Sequence from={S(100)} durationInFrames={S(150)} name="DebtTest">
+      <Sequence from={237} durationInFrames={162} name="DebtTest">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center", gap: 40 }}>
           <Kicker text="TEST 1 — THE DEBT" color={C.amber} />
           <LimitMeter
@@ -82,12 +84,12 @@ export const WulfReel: React.FC = () => {
             cap={30}
             scaleMax={70}
             from={14}
-            countFrames={75}
+            countFrames={104}
             capLabel="LIMIT $30"
             overLabel="OVER THE LIMIT"
           />
           <div style={{ marginTop: 30, maxWidth: 900 }}>
-            <Caption delay={95}>
+            <Caption delay={120}>
               Of every <b style={{ color: C.ink }}>$100</b> of company value, <b style={{ color: C.redHot }}>$57 is borrowed</b>.
               Islamic screens cap it at <b style={{ color: C.ink }}>$30</b>.
             </Caption>
@@ -96,25 +98,25 @@ export const WulfReel: React.FC = () => {
       </Sequence>
 
       {/* S3 — three stamps */}
-      <Sequence from={S(250)} durationInFrames={S(100)} name="Stamps">
+      <Sequence from={399} durationInFrames={78} name="Stamps">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center", gap: 46 }}>
           <Kicker text="THE RULEBOOKS AGREE" color={C.redHot} />
           {WULF.stamps.map((s, i) => (
-            <Stamp key={s.name} ok={s.ok} label={s.name} detail={`${s.ratioPct}% vs cap ${s.capPct}%`} delay={8 + i * 22} />
+            <Stamp key={s.name} ok={s.ok} label={s.name} detail={`${s.ratioPct}% vs cap ${s.capPct}%`} delay={6 + i * 16} />
           ))}
           <div style={{ maxWidth: 900 }}>
-            <Caption delay={72}>Too much debt — in all three rulebooks.</Caption>
+            <Caption delay={50}>Too much debt — in all three rulebooks.</Caption>
           </div>
         </AbsoluteFill>
       </Sequence>
 
       {/* S4 — bitcoin slice */}
-      <Sequence from={S(350)} durationInFrames={S(120)} name="BitcoinSlice">
+      <Sequence from={477} durationInFrames={135} name="BitcoinSlice">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center", gap: 44, alignItems: "center" }}>
           <Kicker text="TEST 2 — THE BUSINESS" color={C.amber} />
-          <Donut pct={WULF.miningPct} from={10} />
+          <Donut pct={WULF.miningPct} from={8} />
           <div style={{ maxWidth: 900 }}>
-            <Caption delay={60}>
+            <Caption delay={40}>
               <b style={{ color: C.amber }}>38%</b> of its income is still bitcoin mining — that slice is
               flagged <b style={{ color: C.redHot }}>impermissible</b>.
             </Caption>
@@ -123,12 +125,12 @@ export const WulfReel: React.FC = () => {
       </Sequence>
 
       {/* S5 — purification */}
-      <Sequence from={S(470)} durationInFrames={S(92)} name="Purification">
+      <Sequence from={612} durationInFrames={204} name="Purification">
         <AbsoluteFill style={{ padding: PAD, justifyContent: "center", gap: 40, alignItems: "center" }}>
           <Kicker text="THE FIX HAS A NAME" />
-          <CoinDrop from={16} label="13¢" />
+          <CoinDrop from={45} label="13¢" />
           <div style={{ maxWidth: 920 }}>
-            <Caption delay={40}>
+            <Caption delay={80}>
               <b style={{ color: C.emerald }}>Purification</b>: the impure slice doesn&apos;t belong in your
               pocket — you give it to charity. Here: about <b style={{ color: C.mint }}>13¢ a share</b>.
             </Caption>
@@ -137,13 +139,13 @@ export const WulfReel: React.FC = () => {
       </Sequence>
 
       {/* S6 — end card */}
-      <Sequence from={S(562)} name="EndCard">
+      <Sequence from={816} name="EndCard">
         <Bg tint={C.amber} />
         <EndCard badge={WULF.badge} line="Real business. Flagged twice. Verdict: review." date={DATE} />
       </Sequence>
 
       <AbsoluteFill style={{ padding: PAD, justifyContent: "flex-end", pointerEvents: "none" }}>
-        <Sequence from={0} durationInFrames={S(562)} layout="none" name="Footer">
+        <Sequence from={0} durationInFrames={816} layout="none" name="Footer">
           <Foot />
         </Sequence>
       </AbsoluteFill>
