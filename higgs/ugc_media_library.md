@@ -29,6 +29,15 @@
 | Blazer variant at desk | `c25cca3e-6599-45dc-bf5b-77b94706c80c` | image |
 | Wide office 16:9 | `043f640d-5d52-4bba-8624-24e163984ef1` | image |
 
+## Podcast set anchors (v3, 2026-07-21 evening — reel-factory spec §0-bis)
+
+Job IDs are valid `medias` inputs (start_image) for talking-clip generation.
+
+| Asset | job_id | Local copy |
+|---|---|---|
+| Seated at desk mic | `30368520-cb50-4a48-a280-4a9876933d01` | `higgs/karim_podcast_seated.png` |
+| Standing at boom mic | `f78735a8-b0c6-4029-93b1-5f1e28ed581a` | `higgs/karim_podcast_standing.png` |
+
 ## Video
 
 | Asset | media_id | Type |
