@@ -1,0 +1,16 @@
+{
+  "kind": "company",
+  "ticker": "CIEN",
+  "name": "Ciena",
+  "tagline": "the internet’s optical highways",
+  "perfPct": 478,
+  "perfLabel": "past 12 months",
+  "motif": "beams",
+  "pills": [
+    {"label": "Debt / market cap", "value": "2.9% ✓"},
+    {"label": "Interest-bearing cash", "value": "2.2% ✓"},
+    {"label": "Impermissible income", "value": "under 5% ✓"}
+  ],
+  "footnote": "AAOIFI screen — all pass · data 2026-07-21",
+  "durationInFrames": 270
+}

@@ -1,0 +1,116 @@
+[
+  {
+    "kind": "introVideo",
+    "videoSrc": "intro_kitchen_counter.mp4",
+    "kick": "THE QUIET ONES",
+    "title": "Three under-the-radar tech names",
+    "sub": "High past returns · all three Islamic metrics · math inside",
+    "durationInFrames": 240
+  },
+  {
+    "kind": "company",
+    "ticker": "CIEN",
+    "name": "Ciena",
+    "tagline": "the internet’s optical highways",
+    "perfPct": 478,
+    "perfLabel": "past 12 months",
+    "motif": "beams",
+    "pills": [
+      {
+        "label": "Debt / market cap",
+        "value": "2.9% ✓"
+      },
+      {
+        "label": "Interest-bearing cash",
+        "value": "2.2% ✓"
+      },
+      {
+        "label": "Impermissible income",
+        "value": "under 5% ✓"
+      }
+    ],
+    "footnote": "AAOIFI screen — all pass · data 2026-07-21",
+    "durationInFrames": 270
+  },
+  {
+    "kind": "company",
+    "ticker": "COHR",
+    "name": "Coherent",
+    "tagline": "lasers behind AI datacenters",
+    "perfPct": 248,
+    "perfLabel": "past 12 months",
+    "motif": "prism",
+    "pills": [
+      {
+        "label": "Debt / market cap",
+        "value": "6.1% ✓"
+      },
+      {
+        "label": "Interest-bearing cash",
+        "value": "4.4% ✓"
+      },
+      {
+        "label": "Impermissible income",
+        "value": "under 5% ✓"
+      }
+    ],
+    "footnote": "AAOIFI screen — all pass · data 2026-07-21",
+    "durationInFrames": 270
+  },
+  {
+    "kind": "company",
+    "ticker": "AMKR",
+    "name": "Amkor",
+    "tagline": "the chip packagers nobody names",
+    "perfPct": 218,
+    "perfLabel": "past 12 months",
+    "motif": "stack",
+    "pills": [
+      {
+        "label": "Debt / market cap",
+        "value": "9.8% ✓"
+      },
+      {
+        "label": "Interest-bearing cash",
+        "value": "11.9% ✓"
+      },
+      {
+        "label": "Impermissible income",
+        "value": "under 5% ✓"
+      }
+    ],
+    "footnote": "AAOIFI screen — all pass · data 2026-07-21",
+    "durationInFrames": 270
+  },
+  {
+    "kind": "text",
+    "kick": "THE REFEREE’S NOTE",
+    "title": "Great companies ≠ great prices.",
+    "body": [
+      {
+        "t": "After runs like these, all three now trade "
+      },
+      {
+        "t": "above our modeled fundamental value",
+        "tone": "amber",
+        "b": true
+      },
+      {
+        "t": ". The screen shows it — "
+      },
+      {
+        "t": "patience is a position.",
+        "tone": "emerald",
+        "b": true
+      }
+    ],
+    "durationInFrames": 270
+  },
+  {
+    "kind": "text",
+    "kick": "THE SCREEN",
+    "title": "Three Islamic metrics, checked daily.",
+    "body": "Debt under 30%. Interest-bearing cash under 30%. Impermissible income under 5%. Every number sourced and dated — link in bio. Educational — not financial advice, not a fatwa.",
+    "durationInFrames": 300
+  }
+]

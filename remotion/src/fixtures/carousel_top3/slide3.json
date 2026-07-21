@@ -1,0 +1,16 @@
+{
+  "kind": "company",
+  "ticker": "COHR",
+  "name": "Coherent",
+  "tagline": "lasers behind AI datacenters",
+  "perfPct": 248,
+  "perfLabel": "past 12 months",
+  "motif": "prism",
+  "pills": [
+    {"label": "Debt / market cap", "value": "6.1% ✓"},
+    {"label": "Interest-bearing cash", "value": "4.4% ✓"},
+    {"label": "Impermissible income", "value": "under 5% ✓"}
+  ],
+  "footnote": "AAOIFI screen — all pass · data 2026-07-21",
+  "durationInFrames": 270
+}
