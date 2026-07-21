@@ -60,6 +60,14 @@ export const RemotionRoot: React.FC = () => {
         height={1920}
         schema={slideStoryPropsSchema}
         defaultProps={wulfSlidesProps}
+        calculateMetadata={({ props }) => ({
+          // duration follows whatever props file is rendered (--props=...),
+          // not the default fixture — beats are the single source of truth.
+          durationInFrames: props.beats.reduce(
+            (sum, beat) => sum + beat.durationInFrames,
+            0
+          ),
+        })}
       />
     </>
   );

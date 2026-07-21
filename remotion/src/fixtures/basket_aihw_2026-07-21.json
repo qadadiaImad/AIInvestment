@@ -1,0 +1,117 @@
+{
+  "ticker": "AIHW",
+  "tickerSub": "AI HARDWARE BASKET \u00b7 4 NAMES",
+  "badge": "ALL 5 SCREENS: PASS",
+  "beats": [
+    {
+      "kind": "hook",
+      "headline": "Three screens.",
+      "headline2": "One basket.",
+      "headline2Tone": "amber",
+      "sub": [
+        {
+          "t": "Analysts cross-checked four AI names against a "
+        },
+        {
+          "t": "halal screen",
+          "tone": "emerald",
+          "b": true
+        },
+        {
+          "t": " and found every one trading "
+        },
+        {
+          "t": "below fundamental value",
+          "tone": "amber",
+          "b": true
+        },
+        {
+          "t": "."
+        }
+      ],
+      "durationInFrames": 316
+    },
+    {
+      "kind": "basket",
+      "title": "Passes every screen \u2014 AAOIFI, FTSE, MSCI, S&P, DJIM",
+      "rows": [
+        {
+          "ticker": "NVDA",
+          "note": "41% below fundamental value \u00b7 127 congress trades",
+          "badge": "HALAL \u00b7 5/5",
+          "badgeTone": "emerald"
+        },
+        {
+          "ticker": "SNPS",
+          "note": "32% below \u00b7 15 trades",
+          "badge": "HALAL \u00b7 5/5",
+          "badgeTone": "emerald"
+        },
+        {
+          "ticker": "MSFT",
+          "note": "32% below \u00b7 132 trades",
+          "badge": "HALAL \u00b7 5/5",
+          "badgeTone": "emerald"
+        },
+        {
+          "ticker": "META",
+          "note": "18% below \u00b7 66 trades",
+          "badge": "HALAL \u00b7 5/5",
+          "badgeTone": "emerald"
+        }
+      ],
+      "durationInFrames": 450
+    },
+    {
+      "kind": "basket",
+      "title": "Congress filed 340+ trades in these names",
+      "rows": [
+        {
+          "ticker": "NVDA",
+          "note": "127 trades",
+          "badge": "PUBLIC RECORD",
+          "badgeTone": "amber"
+        },
+        {
+          "ticker": "SNPS",
+          "note": "15 trades",
+          "badge": "PUBLIC RECORD",
+          "badgeTone": "amber"
+        },
+        {
+          "ticker": "MSFT",
+          "note": "132 trades",
+          "badge": "PUBLIC RECORD",
+          "badgeTone": "amber"
+        },
+        {
+          "ticker": "META",
+          "note": "66 trades",
+          "badge": "PUBLIC RECORD",
+          "badgeTone": "amber"
+        }
+      ],
+      "durationInFrames": 339
+    },
+    {
+      "kind": "endcard",
+      "headline": "Check the math yourself.",
+      "sub": "Educational \u2014 not financial advice, not a fatwa. Data 2026-07-21.",
+      "durationInFrames": 339
+    }
+  ],
+  "vo": [
+    "Four AI names showed up on three screens at once this week. The halal screen. The value screen. And congress's own trading disclosures.",
+    "Nvidia. Synopsys. Microsoft. Meta. Every one passes all five compliance standards, and every one trades below its modeled fundamental value. Nvidia sits forty one percent below.",
+    "Congress members disclosed over three hundred trades across these four names. Public record, filed under the STOCK Act. Disclosures, not endorsements.",
+    "The math is on the screen. Check it yourself before trusting anyone's opinion, including this one. Educational, not financial or religious advice."
+  ],
+  "bubbleClips": [
+    {
+      "src": "bubble_basket_hook.mp4",
+      "durationInFrames": 316
+    }
+  ],
+  "captions": [],
+  "disclaimer": "Computed methodology result \u2014 not a fatwa \u00b7 not financial advice"
+}

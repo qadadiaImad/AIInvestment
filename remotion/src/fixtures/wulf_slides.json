@@ -5,9 +5,14 @@
   "beats": [
     {
       "kind": "hook",
-      "headline": "This stock earns bitcoin money.",
-      "sub": "Muslim investors run a halal screen — a math test for stocks. Watch it work.",
-      "accentWord": "bitcoin",
+      "headline": "This stock earns",
+      "headline2": "bitcoin money.",
+      "headline2Tone": "amber",
+      "sub": [
+        {"t": "Muslim investors run a "},
+        {"t": "halal screen", "tone": "emerald", "b": true},
+        {"t": " — a math test for stocks. Watch it work."}
+      ],
       "durationInFrames": 120
     },
     {
@@ -26,7 +31,12 @@
       "title": "TEST 2 — THE BUSINESS",
       "pct": 38.2,
       "centerLabel": "BITCOIN MINING",
-      "caption": "38% of its income is still bitcoin mining — that slice is flagged impermissible.",
+      "caption": [
+        {"t": "38%", "tone": "amber", "b": true},
+        {"t": " of its income is still bitcoin mining — that slice is flagged "},
+        {"t": "impermissible", "tone": "red", "b": true},
+        {"t": "."}
+      ],
       "tone": "warn",
       "durationInFrames": 130
     },
@@ -34,7 +44,12 @@
       "kind": "stamp",
       "verdict": "questionable",
       "basis": "Debt 57% of market cap vs a 30% cap · bitcoin mining 38% of revenue",
-      "line": "Purification: about 13¢ a share would go to charity — the impure slice doesn't belong in your pocket.",
+      "line": [
+        {"t": "Purification", "tone": "emerald", "b": true},
+        {"t": ": about "},
+        {"t": "13¢ a share", "tone": "amber", "b": true},
+        {"t": " would go to charity — the impure slice doesn't belong in your pocket."}
+      ],
       "durationInFrames": 130
     },
     {

@@ -22,6 +22,12 @@
 //                  mono label + Caption) to carry the overall verdict + basis + line —
 //                  in the WULF fixture this also absorbs the original debt-test /
 //                  purification beats that have no dedicated kind in this schema.
+//   - 'basket'  -> a new multi-ticker scene (no 1:1 WulfReel scene, which is
+//                  single-ticker only): Kicker title + up to 5 rows (mono ticker +
+//                  note + right-aligned tone-colored badge pill), staggered in one
+//                  row at a time — reuses ui.tsx's pop/easeOut animation idiom
+//                  (same shape as <Stamp>'s entrance) rather than importing <Stamp>
+//                  itself, since a basket row has no boolean ok/fail glyph.
 //   - 'endcard' -> WulfReel S6 "EndCard": badge chip + display headline + sub line,
 //                  ported inline (not importing ui.tsx's EndCard, which requires a
 //                  mandatory `date` prop this schema doesn't carry).
@@ -34,7 +40,7 @@ import {
   interpolate,
   useCurrentFrame,
 } from 'remotion';
-import type {Beat, SlideStoryProps} from '../slides/slideProps';
+import type {Beat, RichTextValue, SlideStoryProps} from '../slides/slideProps';
 import {C, FONT} from '../slides/theme';
 import {Bg, Caption, Foot, Head, Kicker, Slam, Stamp, clamp, easeOut} from '../slides/ui';
 import {BubbleFrame} from '../components/BubbleFrame';
@@ -45,6 +51,46 @@ const TONE_COLOR: Record<'pass' | 'fail' | 'warn', string> = {
   pass: C.emerald,
   fail: C.redHot,
   warn: C.amber,
+};
+
+// Rich-text segment tone -> theme color. 'text' (or an omitted tone) means
+// "inherit the surrounding element's color" — matches WulfReel.tsx's plain
+// <b> spans that only change weight, not color.
+const RICH_TONE_COLOR: Record<'emerald' | 'amber' | 'red' | 'muted', string> = {
+  emerald: C.emerald,
+  amber: C.amber,
+  red: C.redHot,
+  muted: C.muted,
+};
+
+// Second hook line's tone (fully colors the whole line, unlike per-segment
+// richText tones) — reuses the same palette.
+const HEADLINE2_TONE_COLOR: Record<'amber' | 'emerald' | 'red', string> = {
+  amber: C.amber,
+  emerald: C.emerald,
+  red: C.redHot,
+};
+
+/** Renders a sub/caption/line field: a plain string passes through unstyled;
+ * a richText segment array renders each `t` inline, bold when `b`, colored
+ * when `tone` is a real color (ports WulfReel.tsx's hand-authored
+ * `<b style={{color: C.amber}}>38%</b>`-style emphasis spans from data). */
+const RichText: React.FC<{value: RichTextValue}> = ({value}) => {
+  if (typeof value === 'string') return <>{value}</>;
+  return (
+    <>
+      {value.map((seg, i) => {
+        const style: React.CSSProperties = {};
+        if (seg.b) style.fontWeight = 700;
+        if (seg.tone && seg.tone !== 'text') style.color = RICH_TONE_COLOR[seg.tone];
+        return (
+          <span key={i} style={style}>
+            {seg.t}
+          </span>
+        );
+      })}
+    </>
+  );
 };
 
 const VERDICT_META: Record<
@@ -133,11 +179,24 @@ const Donut: React.FC<{pct: number; centerLabel: string; color: string; from: nu
   );
 };
 
+const HOOK_HEADLINE_SIZE = 118;
+// ~1.12x the headline size — matches WulfReel.tsx's two-Slam hook ("This stock
+// earns" @118 / "bitcoin money." @132; 132/118 ≈ 1.1186 ≈ 1.12x).
+const HOOK_HEADLINE2_SIZE = Math.round(HOOK_HEADLINE_SIZE * 1.12);
+
 const HookScene: React.FC<{beat: Extract<Beat, {kind: 'hook'}>}> = ({beat}) => (
   <AbsoluteFill style={{padding: PAD, justifyContent: 'center'}}>
-    <Slam size={118}>{renderAccentedHeadline(beat.headline, beat.accentWord)}</Slam>
-    <div style={{marginTop: 60, maxWidth: 900}}>
-      <Caption delay={40}>{beat.sub}</Caption>
+    <Slam size={HOOK_HEADLINE_SIZE}>{renderAccentedHeadline(beat.headline, beat.accentWord)}</Slam>
+    {beat.headline2 ? (
+      <Slam size={HOOK_HEADLINE2_SIZE} color={HEADLINE2_TONE_COLOR[beat.headline2Tone]} delay={14}>
+        {beat.headline2}
+      </Slam>
+    ) : null}
+    {/* maxWidth 620 keeps the sub clear of the 30% bubble frame bottom-right */}
+    <div style={{marginTop: 60, maxWidth: 620}}>
+      <Caption delay={40}>
+        <RichText value={beat.sub} />
+      </Caption>
     </div>
   </AbsoluteFill>
 );
@@ -156,7 +215,9 @@ const BarsScene: React.FC<{beat: Extract<Beat, {kind: 'bars'}>}> = ({beat}) => (
     ))}
     {beat.caption ? (
       <div style={{maxWidth: 900}}>
-        <Caption delay={8 + beat.bars.length * 22 + 20}>{beat.caption}</Caption>
+        <Caption delay={8 + beat.bars.length * 22 + 20}>
+          <RichText value={beat.caption} />
+        </Caption>
       </div>
     ) : null}
   </AbsoluteFill>
@@ -167,7 +228,9 @@ const DonutScene: React.FC<{beat: Extract<Beat, {kind: 'donut'}>}> = ({beat}) =>
     <Kicker text={beat.title} color={TONE_COLOR[beat.tone]} />
     <Donut pct={beat.pct} centerLabel={beat.centerLabel} color={TONE_COLOR[beat.tone]} from={10} />
     <div style={{maxWidth: 900}}>
-      <Caption delay={60}>{beat.caption}</Caption>
+      <Caption delay={60}>
+        <RichText value={beat.caption} />
+      </Caption>
     </div>
   </AbsoluteFill>
 );
@@ -204,11 +267,96 @@ const StampScene: React.FC<{beat: Extract<Beat, {kind: 'stamp'}>}> = ({beat}) =>
         </div>
       </div>
       <div style={{maxWidth: 920}}>
-        <Caption delay={40}>{beat.line}</Caption>
+        <Caption delay={40}>
+          <RichText value={beat.line} />
+        </Caption>
       </div>
     </AbsoluteFill>
   );
 };
+
+// Basket row badge tone -> theme color (distinct enum from BarsScene's
+// pass/fail/warn tone: a basket row's badge is an independent per-row status,
+// not tied to a threshold test).
+const BASKET_TONE_COLOR: Record<'emerald' | 'amber' | 'red', string> = {
+  emerald: C.emerald,
+  amber: C.amber,
+  red: C.redHot,
+};
+
+const BasketRow: React.FC<{
+  row: Extract<Beat, {kind: 'basket'}>['rows'][number];
+  delay: number;
+}> = ({row, delay}) => {
+  const frame = useCurrentFrame();
+  // Same pop-in-then-settle idiom as ui.tsx's <Stamp>: quick overshoot in,
+  // slide-up-and-fade rather than Stamp's rotate (a row of text reads better
+  // sliding in than tumbling in), staggered per-row by the caller.
+  const p = interpolate(frame, [delay, delay + 12], [0, 1], {...clamp, easing: easeOut});
+  const color = BASKET_TONE_COLOR[row.badgeTone];
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 24,
+        opacity: p,
+        translate: `0px ${(1 - p) * 26}px`,
+      }}
+    >
+      <div style={{flex: '1 1 auto', minWidth: 0}}>
+        <div style={{fontFamily: FONT.mono, fontWeight: 800, fontSize: 52, color: C.ink, lineHeight: 1}}>
+          {row.ticker}
+        </div>
+        <div
+          style={{
+            fontFamily: FONT.body,
+            fontWeight: 500,
+            fontSize: 26,
+            color: C.inkSoft,
+            marginTop: 6,
+          }}
+        >
+          <RichText value={row.note} />
+        </div>
+      </div>
+      <div
+        style={{
+          flex: '0 0 auto',
+          fontFamily: FONT.mono,
+          fontWeight: 700,
+          fontSize: 22,
+          letterSpacing: 1.5,
+          whiteSpace: 'nowrap',
+          color: C.bg,
+          background: color,
+          padding: '12px 20px',
+          borderRadius: 12,
+        }}
+      >
+        {row.badge}
+      </div>
+    </div>
+  );
+};
+
+const BasketScene: React.FC<{beat: Extract<Beat, {kind: 'basket'}>}> = ({beat}) => (
+  <AbsoluteFill style={{padding: PAD, justifyContent: 'center', gap: 34}}>
+    <Kicker text={beat.title} color={C.emerald} />
+    <div style={{display: 'flex', flexDirection: 'column', gap: 30}}>
+      {beat.rows.map((row, i) => (
+        <BasketRow key={row.ticker} row={row} delay={10 + i * 12} />
+      ))}
+    </div>
+    {beat.caption ? (
+      <div style={{maxWidth: 900}}>
+        <Caption delay={10 + beat.rows.length * 12 + 16}>
+          <RichText value={beat.caption} />
+        </Caption>
+      </div>
+    ) : null}
+  </AbsoluteFill>
+);
 
 const EndCardScene: React.FC<{beat: Extract<Beat, {kind: 'endcard'}>; badge: {text: string; color: string}}> = ({
   beat,
@@ -248,7 +396,9 @@ const EndCardScene: React.FC<{beat: Extract<Beat, {kind: 'endcard'}>; badge: {te
       >
         {beat.headline}
       </div>
-      <div style={{fontFamily: FONT.mono, fontSize: 26, color: C.muted, opacity: p}}>{beat.sub}</div>
+      <div style={{fontFamily: FONT.mono, fontSize: 26, color: C.muted, opacity: p}}>
+        <RichText value={beat.sub} />
+      </div>
     </AbsoluteFill>
   );
 };
@@ -275,6 +425,8 @@ export const SlideStoryReel: React.FC<SlideStoryProps> = (props) => {
               <DonutScene beat={beat} />
             ) : beat.kind === 'stamp' ? (
               <StampScene beat={beat} />
+            ) : beat.kind === 'basket' ? (
+              <BasketScene beat={beat} />
             ) : (
               <EndCardScene beat={beat} badge={headerBadge} />
             )}
@@ -286,7 +438,18 @@ export const SlideStoryReel: React.FC<SlideStoryProps> = (props) => {
           talking clips, one per beat, running back-to-back for the reel's
           duration — no <Loop>. VO-less slide mode (bubbleClips: []) renders
           no bubble at all, per the schema's default. */}
-      {props.bubbleClips.length > 0 ? <BubbleFrame clips={props.bubbleClips} /> : null}
+      {props.bubbleClips.length > 0 ? (
+        // Mount the bubble ONLY while its clips have footage — the container
+        // (border/shadow) must not linger as an empty box after the last clip.
+        <Sequence
+          from={0}
+          durationInFrames={props.bubbleClips.reduce((s, c) => s + c.durationInFrames, 0)}
+          layout="none"
+          name="Bubble"
+        >
+          <BubbleFrame clips={props.bubbleClips} />
+        </Sequence>
+      ) : null}
 
       <AbsoluteFill style={{padding: PAD, justifyContent: 'flex-end', pointerEvents: 'none'}}>
         <Sequence from={0} durationInFrames={totalFrames} layout="none" name="Footer">
