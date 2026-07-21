@@ -22,6 +22,12 @@
 //                  mono label + Caption) to carry the overall verdict + basis + line —
 //                  in the WULF fixture this also absorbs the original debt-test /
 //                  purification beats that have no dedicated kind in this schema.
+//   - 'basket'  -> a new multi-ticker scene (no 1:1 WulfReel scene, which is
+//                  single-ticker only): Kicker title + up to 5 rows (mono ticker +
+//                  note + right-aligned tone-colored badge pill), staggered in one
+//                  row at a time — reuses ui.tsx's pop/easeOut animation idiom
+//                  (same shape as <Stamp>'s entrance) rather than importing <Stamp>
+//                  itself, since a basket row has no boolean ok/fail glyph.
 //   - 'endcard' -> WulfReel S6 "EndCard": badge chip + display headline + sub line,
 //                  ported inline (not importing ui.tsx's EndCard, which requires a
 //                  mandatory `date` prop this schema doesn't carry).
@@ -268,6 +274,89 @@ const StampScene: React.FC<{beat: Extract<Beat, {kind: 'stamp'}>}> = ({beat}) =>
   );
 };
 
+// Basket row badge tone -> theme color (distinct enum from BarsScene's
+// pass/fail/warn tone: a basket row's badge is an independent per-row status,
+// not tied to a threshold test).
+const BASKET_TONE_COLOR: Record<'emerald' | 'amber' | 'red', string> = {
+  emerald: C.emerald,
+  amber: C.amber,
+  red: C.redHot,
+};
+
+const BasketRow: React.FC<{
+  row: Extract<Beat, {kind: 'basket'}>['rows'][number];
+  delay: number;
+}> = ({row, delay}) => {
+  const frame = useCurrentFrame();
+  // Same pop-in-then-settle idiom as ui.tsx's <Stamp>: quick overshoot in,
+  // slide-up-and-fade rather than Stamp's rotate (a row of text reads better
+  // sliding in than tumbling in), staggered per-row by the caller.
+  const p = interpolate(frame, [delay, delay + 12], [0, 1], {...clamp, easing: easeOut});
+  const color = BASKET_TONE_COLOR[row.badgeTone];
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 24,
+        opacity: p,
+        translate: `0px ${(1 - p) * 26}px`,
+      }}
+    >
+      <div style={{flex: '1 1 auto', minWidth: 0}}>
+        <div style={{fontFamily: FONT.mono, fontWeight: 800, fontSize: 52, color: C.ink, lineHeight: 1}}>
+          {row.ticker}
+        </div>
+        <div
+          style={{
+            fontFamily: FONT.body,
+            fontWeight: 500,
+            fontSize: 26,
+            color: C.inkSoft,
+            marginTop: 6,
+          }}
+        >
+          <RichText value={row.note} />
+        </div>
+      </div>
+      <div
+        style={{
+          flex: '0 0 auto',
+          fontFamily: FONT.mono,
+          fontWeight: 700,
+          fontSize: 22,
+          letterSpacing: 1.5,
+          whiteSpace: 'nowrap',
+          color: C.bg,
+          background: color,
+          padding: '12px 20px',
+          borderRadius: 12,
+        }}
+      >
+        {row.badge}
+      </div>
+    </div>
+  );
+};
+
+const BasketScene: React.FC<{beat: Extract<Beat, {kind: 'basket'}>}> = ({beat}) => (
+  <AbsoluteFill style={{padding: PAD, justifyContent: 'center', gap: 34}}>
+    <Kicker text={beat.title} color={C.emerald} />
+    <div style={{display: 'flex', flexDirection: 'column', gap: 30}}>
+      {beat.rows.map((row, i) => (
+        <BasketRow key={row.ticker} row={row} delay={10 + i * 12} />
+      ))}
+    </div>
+    {beat.caption ? (
+      <div style={{maxWidth: 900}}>
+        <Caption delay={10 + beat.rows.length * 12 + 16}>
+          <RichText value={beat.caption} />
+        </Caption>
+      </div>
+    ) : null}
+  </AbsoluteFill>
+);
+
 const EndCardScene: React.FC<{beat: Extract<Beat, {kind: 'endcard'}>; badge: {text: string; color: string}}> = ({
   beat,
   badge,
@@ -335,6 +424,8 @@ export const SlideStoryReel: React.FC<SlideStoryProps> = (props) => {
               <DonutScene beat={beat} />
             ) : beat.kind === 'stamp' ? (
               <StampScene beat={beat} />
+            ) : beat.kind === 'basket' ? (
+              <BasketScene beat={beat} />
             ) : (
               <EndCardScene beat={beat} badge={headerBadge} />
             )}

@@ -1,0 +1,58 @@
+{
+  "ticker": "AIHW",
+  "tickerSub": "AI HARDWARE BASKET · 4 NAMES",
+  "badge": "ALL 5 SCREENS: PASS",
+  "beats": [
+    {
+      "kind": "hook",
+      "headline": "Three screens.",
+      "headline2": "One basket.",
+      "headline2Tone": "amber",
+      "sub": [
+        {"t": "Analysts cross-checked four AI names against a "},
+        {"t": "halal screen", "tone": "emerald", "b": true},
+        {"t": " and found every one trading "},
+        {"t": "below fundamental value", "tone": "amber", "b": true},
+        {"t": "."}
+      ],
+      "durationInFrames": 260
+    },
+    {
+      "kind": "basket",
+      "title": "Passes every screen — AAOIFI, FTSE, MSCI, S&P, DJIM",
+      "rows": [
+        {"ticker": "NVDA", "note": "41% below fundamental value · 127 congress trades", "badge": "HALAL · 5/5", "badgeTone": "emerald"},
+        {"ticker": "SNPS", "note": "32% below · 15 trades", "badge": "HALAL · 5/5", "badgeTone": "emerald"},
+        {"ticker": "MSFT", "note": "32% below · 132 trades", "badge": "HALAL · 5/5", "badgeTone": "emerald"},
+        {"ticker": "META", "note": "18% below · 66 trades", "badge": "HALAL · 5/5", "badgeTone": "emerald"}
+      ],
+      "durationInFrames": 340
+    },
+    {
+      "kind": "basket",
+      "title": "Congress filed 340+ trades in these names",
+      "rows": [
+        {"ticker": "NVDA", "note": "127 trades", "badge": "PUBLIC RECORD", "badgeTone": "amber"},
+        {"ticker": "SNPS", "note": "15 trades", "badge": "PUBLIC RECORD", "badgeTone": "amber"},
+        {"ticker": "MSFT", "note": "132 trades", "badge": "PUBLIC RECORD", "badgeTone": "amber"},
+        {"ticker": "META", "note": "66 trades", "badge": "PUBLIC RECORD", "badgeTone": "amber"}
+      ],
+      "durationInFrames": 280
+    },
+    {
+      "kind": "endcard",
+      "headline": "Check the math yourself.",
+      "sub": "Educational — not financial advice, not a fatwa. Data 2026-07-21.",
+      "durationInFrames": 240
+    }
+  ],
+  "vo": [
+    "Four AI names showed up on three screens at once this week. The halal screen. The value screen. And congress's own trading disclosures.",
+    "Nvidia. Synopsys. Microsoft. Meta. Every one passes all five compliance standards, and every one trades below its modeled fundamental value. Nvidia sits forty one percent below.",
+    "Congress members disclosed over three hundred trades across these four names. Public record, filed under the STOCK Act. Disclosures, not endorsements.",
+    "The math is on the screen. Check it yourself before trusting anyone's opinion, including this one. Educational, not financial or religious advice."
+  ],
+  "bubbleClips": [],
+  "captions": [],
+  "disclaimer": "Computed methodology result — not a fatwa · not financial advice"
+}

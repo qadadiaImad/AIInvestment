@@ -34,6 +34,15 @@ export const beatSchema = z.discriminatedUnion('kind', [
             durationInFrames: z.number()}),
   z.object({kind: z.literal('stamp'), verdict: z.enum(['halal', 'not_halal', 'questionable', 'insufficient_data']),
             basis: z.string(), line: richOrString(), durationInFrames: z.number()}),
+  z.object({kind: z.literal('basket'), title: z.string(),
+            rows: z.array(z.object({
+              ticker: z.string(),
+              note: richOrString(),
+              badge: z.string(),
+              badgeTone: z.enum(['emerald', 'amber', 'red']).default('emerald'),
+            })).min(1).max(5),
+            caption: richOrString().optional(),
+            durationInFrames: z.number()}),
   z.object({kind: z.literal('endcard'), headline: z.string(), sub: richOrString(),
             durationInFrames: z.number()}),
 ]);
