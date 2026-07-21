@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Post Review</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <span class="brand">POST REVIEW</span>
+      <nav class="views">
+        <button id="nav-posts" class="active">Posts</button>
+        <button id="nav-preview">Preview</button>
+      </nav>
+      <span class="filters">
+        <select id="filter-date"></select>
+        <select id="filter-ticker"></select>
+        <button id="refresh">Refresh</button>
+      </span>
+    </header>
+    <main>
+      <section id="posts-view">
+        <section id="gallery"></section>
+        <aside id="detail" hidden></aside>
+      </section>
+      <section id="preview-view" hidden>
+        <section id="script-list"></section>
+        <aside id="script-content"><div class="empty">Select a script to preview.</div></aside>
+      </section>
+    </main>
+    <footer>Educational / market-commentary only — not financial advice.</footer>
+    <script src="app.js"></script>
+  </body>
+</html>

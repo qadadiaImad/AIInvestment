@@ -16,6 +16,11 @@ export const metadata: Metadata = {
     "Educational AI-sector research terminal — fundamentals, relationships, and the AI value chain. Not financial advice.",
 };
 
+// MUST stay synchronous/static: calling headers() (or any request-scoped API)
+// here would drag every SSG route (e.g. /stocks/[symbol]) into dynamic
+// rendering and turn clean notFound() 404s into DYNAMIC_SERVER_USAGE 500s.
+// Chrome-stripping for ?capture=1 card screenshots is handled per-card-page
+// via <CaptureChromeStrip /> (a server-rendered global style), never here.
 export default function RootLayout({
   children,
 }: Readonly<{

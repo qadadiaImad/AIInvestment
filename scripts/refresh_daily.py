@@ -37,6 +37,8 @@ import subprocess
 import sys
 import time
 
+from aiinvest import bundles
+
 SCRIPTS = pathlib.Path(__file__).resolve().parent
 WEB = SCRIPTS.parent / "web"
 PY = sys.executable
@@ -63,9 +65,26 @@ def build_plan(args):
     add("merge ai-extracted edges", [PY, "merge_enriched.py"])
     add("build capital web", [PY, "build_capital_web.py"])
     add("graph analysis (metrics/health/macro/fed/vuln)", [PY, "run_graph_analysis.py"])
+
+    if os.path.exists(str(SCRIPTS / "build_chokepoints.py")):
+        add("build chokepoint layer -> chokepoints.json", [PY, "build_chokepoints.py"])
+
     if args.with_backtest:
         add("backtest (heavy)", [PY, "run_backtest.py"])
     add("export site.json", [PY, "export_site.py"])
+
+    if os.path.exists(str(SCRIPTS / "build_risk.py")):
+        add("compute risk analytics -> risk.json", [PY, "build_risk.py"])
+
+    if os.path.exists(str(SCRIPTS / "build_archetypes.py")):
+        add("compute investor-archetype scorecards -> archetypes.json",
+            [PY, "build_archetypes.py"])
+
+    if os.path.exists(str(SCRIPTS / "build_portfolio.py")):
+        add("compute portfolio -> web/data/portfolio.json", [PY, "build_portfolio.py"])
+
+    if os.path.exists(str(SCRIPTS / "pull_macro.py")):
+        add("pull macro dashboard -> macro.json", [PY, "pull_macro.py"])
 
     # Quantum sector vertical (OPTIONAL — only when the quantum CLIs exist). Runs AFTER
     # the AI export so the AI pipeline stays byte-identical: pull quantum fundamentals,
@@ -160,8 +179,8 @@ def main(argv=None):
                 _summary(results, failures, args, deploy_url, aborted=step["label"])
                 return 1
 
-    _summary(results, failures, args, deploy_url, aborted=None)
-    return 1 if failures else 0
+    n_bundle_failed = _summary(results, failures, args, deploy_url, aborted=None)
+    return 1 if (failures or n_bundle_failed) else 0
 
 
 def _summary(results, failures, args, deploy_url, aborted):
@@ -186,6 +205,14 @@ def _summary(results, failures, args, deploy_url, aborted):
             print("  deployed: attempted (no URL line captured / see step output)")
     else:
         print("  deployed: no (--deploy not set)")
+
+    # Steps exiting 0 does not mean the artifacts landed: a guarded step that
+    # skips writes nothing and still succeeds. Verify what is on disk.
+    lines, n_failed = bundles.render_verification(
+        SCRIPTS.parent, driver=bundles.DRV_DAILY)
+    for line in lines:
+        print(line)
+    return n_failed
 
 
 if __name__ == "__main__":

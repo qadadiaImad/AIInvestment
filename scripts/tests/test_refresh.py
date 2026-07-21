@@ -14,6 +14,7 @@ if str(_SCRIPTS) not in sys.path:
 
 import refresh_daily  # noqa: E402
 import refresh_congress  # noqa: E402
+import refresh_ta  # noqa: E402
 
 
 def _ns(**kw):
@@ -35,18 +36,26 @@ def test_daily_plan_order_default():
     """Default daily plan is in the documented order and OMITS the backtest."""
     steps = refresh_daily.build_plan(_ns(with_backtest=False, deploy=False, keep_going=False))
     cmds = [s["cmd"][1] if len(s["cmd"]) > 1 else s["cmd"][0] for s in steps]
-    # the core AI pipeline order is preserved (quantum steps slot in after export_site)
-    assert cmds[:6] == [
+    # the core AI pipeline order is preserved (quantum steps slot in after export_site).
+    # build_chokepoints.py (guarded, optional) slots in right after run_graph_analysis.py
+    # and before export_site.py, since graph_crossref depends on a freshly-computed
+    # graph_analysis.json but chokepoints.json is consumed standalone (no need to wait
+    # for site export).
+    assert cmds[:7] == [
         "pull_ai_stack.py",
         "pull_prices.py",
         "merge_enriched.py",
         "build_capital_web.py",
         "run_graph_analysis.py",
+        "build_chokepoints.py",
         "export_site.py",
     ]
     assert "build_screener.py" in cmds
     # graph analysis must come before site export (site reads graph artifacts/order matters)
     assert cmds.index("run_graph_analysis.py") < cmds.index("export_site.py")
+    # chokepoints build sits between graph analysis and site export
+    assert cmds.index("run_graph_analysis.py") < cmds.index("build_chokepoints.py") \
+        < cmds.index("export_site.py")
     # the AI export still precedes the screener rebuild
     assert cmds.index("export_site.py") < cmds.index("build_screener.py")
 
@@ -114,6 +123,22 @@ def test_daily_includes_quantum_steps_after_ai_export():
     assert cmds.index("pull_quantum.py") < cmds.index("export_quantum.py")
     # both before the screener rebuild
     assert cmds.index("export_quantum.py") < cmds.index("build_screener.py")
+
+
+def test_daily_archetypes_step_is_guarded_and_follows_risk(monkeypatch):
+    """The archetypes step appears IFF build_archetypes.py exists on disk, and sits
+    right after the risk-analytics step (both are pure computed-from-site.json steps)."""
+    monkeypatch.setattr(refresh_daily.os.path, "exists", lambda p: False)
+    steps_absent = refresh_daily.build_plan(
+        _ns(with_backtest=False, deploy=False, keep_going=False))
+    assert not any("build_archetypes.py" in _cmd_str(s) for s in steps_absent)
+
+    monkeypatch.setattr(refresh_daily.os.path, "exists", lambda p: True)
+    steps_present = refresh_daily.build_plan(
+        _ns(with_backtest=False, deploy=False, keep_going=False))
+    cmds = [s["cmd"][1] if len(s["cmd"]) > 1 else s["cmd"][0] for s in steps_present]
+    assert "build_archetypes.py" in cmds
+    assert cmds.index("build_risk.py") < cmds.index("build_archetypes.py")
 
 
 def test_daily_quantum_steps_are_guarded(monkeypatch):
@@ -185,6 +210,30 @@ def test_congress_delay_threaded_into_pull_commands():
         _ns(years=[2025, 2026], delay=1.5, deploy=False, keep_going=False))
     pulls = [s for s in steps if s["cmd"][1] == "pull_congress.py"]
     assert pulls and all("1.5" in s["cmd"] for s in pulls)
+
+
+# --------------------------------------------------------------------------- ta desk
+
+
+def test_ta_plan_has_one_pull_step_by_default():
+    steps = refresh_ta.build_plan(_ns(deploy=False, keep_going=False))
+    cmds = [s["cmd"][1] for s in steps]
+    assert cmds == ["pull_ta.py"]
+
+
+def test_ta_deploy_appends_vercel_in_web():
+    steps = refresh_ta.build_plan(_ns(deploy=True, keep_going=False))
+    last = steps[-1]
+    assert last["cmd"][0] == "vercel"
+    assert "--prod" in last["cmd"] and "--yes" in last["cmd"]
+    assert last["cwd"].endswith("web")
+    off = refresh_ta.build_plan(_ns(deploy=False, keep_going=False))
+    assert not any(s["cmd"][0] == "vercel" for s in off)
+
+
+def test_ta_plan_pull_step_runs_in_scripts_dir():
+    steps = refresh_ta.build_plan(_ns(deploy=False, keep_going=False))
+    assert steps[0]["cwd"].endswith("scripts")
 
 
 if __name__ == "__main__":

@@ -47,3 +47,13 @@ Assembly (ffmpeg) is free/local. Voice only; add music in your editor.
 ## Add a new stock reel
 1. Add a `CFG["TK"]` block in `_build_reel_stock.py` (hero filename, logo, ex-label, hook/data/takeaway copy, `mode` = `mult` or `disc`, `rows`).
 2. Phase 1 to make its hero+voice; append to `reels_manifest.json`; run the workflow.
+
+## Feedback loop (review dashboard)
+
+Before **regenerating** a reel, pull its open review comments and fold them into the prompt
+(respect the part tag — caption / audio / visual):
+
+    cd review && python comments.py <date>_<TICKER>_reel    # e.g. 2026-06-22_NVDA_reel
+
+Comments live in `feedback/post_comments.json` (written by the `review/` dashboard). After the reel
+is regenerated, mark those comments resolved (dashboard, or `PATCH /api/comments/<id> {"resolved":true}`).

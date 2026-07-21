@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getSiteData, getGraphAnalysis } from "@/lib/data";
+import { getSiteData, getGraphAnalysis, getChokepointsData } from "@/lib/data";
 import MapExplorer from "@/components/MapExplorer";
 
 export const metadata: Metadata = {
@@ -11,6 +11,10 @@ export const metadata: Metadata = {
 export default function MapPage() {
   const data = getSiteData();
   const analysis = getGraphAnalysis();
+  // Guarded per lib/chokepoints.ts contract — may legitimately be null on a
+  // fresh clone / pre-pipeline Vercel build; MapExplorer degrades the
+  // overlay toggle to "hidden" in that case, never a runtime error.
+  const chokepointsData = getChokepointsData();
   const { nodes, edges } = data.capital_web;
 
   return (
@@ -28,6 +32,7 @@ export default function MapPage() {
         web={data.capital_web}
         resiliency={analysis.nodes}
         dffBase={analysis.macro.snapshot.dff}
+        chokepointsData={chokepointsData}
       />
       <p className="px-3 py-2 border-t border-term-border text-[9.5px] text-term-muted">
         Relationships are reported / filed / rumored as labeled; AI-extracted

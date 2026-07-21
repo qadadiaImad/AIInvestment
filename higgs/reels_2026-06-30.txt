@@ -1,0 +1,30 @@
+AI STACK — NARRATED REEL KIT (2026-06-30)  | 9:16 MP4, animated hero + Harrison AI voice + Ken-Burns data
+Numbers from the terminal, data as of 2026-06-30 (site/quantum bundles generated 2026-06-30T22:12–22:22Z; congress refreshed 2026-06-28). Voice: ElevenLabs "Harrison". Educational / market commentary — not advice.
+Each reel: animated hero opener → data slide (Ken-Burns) → takeaway. Thin footer disclaimer only. No first person; no outlet named.
+News-driven selection; catalysts attributed as "reportedly / this week". Add a royalty-free music bed in your editor (Higgsfield is voice-only).
+NOTE: GuruFocus fundamental ("fair") values were NOT refreshed this round (fundamental_value is null in the 2026-06-30 bundles). So valuation is framed from the LIVE metrics that ARE present — 1-year return, revenue growth, margins, P/E — not price-vs-model. No fair-value figure is invented (CLAUDE.md Rule #1). CFG blocks use mode:"raw" with literal row values.
+
+=============== REEL 1 — MU (AI MEMORY / CHIPS) ===============
+File: reel_mu_2026-06-30.mp4   | hero: high-bandwidth memory / server DRAM macro, emerald light
+Caption:
+The AI boom has to put all that data somewhere — and this past year the memory and storage names went vertical. Western Digital is up about nine hundred percent, Micron more than eight hundred, Seagate near five hundred eighty, even Intel over five hundred. This isn't only momentum: Micron grew revenue about one hundred sixty-seven percent as AI servers soaked up high-bandwidth memory, and still trades near twenty-six times earnings. After a run like this, the risk isn't the story — it's the price you pay for it. Educational, not advice.
+Hashtags: #micron #memorychips #wdc #seagate #hbm #semiconductors #aistocks #stocktok #fintok #investing101
+
+=============== REEL 2 — IONQ (QUANTUM: MOMENTUM vs REVENUE) ===============
+File: reel_ionq_2026-06-30.mp4   | hero: quantum lattice / dual-rail glow
+Caption:
+Quantum computing still trades like one momentum basket — but the tape and the fundamentals are pointing different ways. Over the past year Rigetti and D-Wave each jumped about seventy percent, yet Rigetti grew revenue only in the single digits and D-Wave's actually fell. IonQ did the opposite: revenue up more than three hundred percent, the fastest in the group — and the stock rose only about twenty-nine percent. The names that ran hardest weren't the ones scaling fastest. Watch revenue, not just the rally. Educational, not advice.
+Hashtags: #quantumcomputing #ionq #rigetti #dwave #qbts #quantumstocks #stocktok #fintok #investing101
+
+=============== REEL 3 — CONGRESS (GOTTHEIMER) ===============
+File: reel_cong_2026-06-30.mp4   | hero: Capitol + ticker-tape
+Caption:
+One of the most active traders in Congress just leaned into the same chips the market is chasing. In a June third filing, Representative Josh Gottheimer — who sits on the House Intelligence and Financial Services committees — disclosed May purchases across the semiconductor chain: Micron and SanDisk in memory, AMD and Analog Devices in logic, plus Fabrinet and Lumentum in optical. Members are allowed to trade; this is simply the public record of who bought what, and when. Not a signal, not an accusation. Educational, not advice.
+Hashtags: #congresstrading #stockact #gottheimer #semiconductors #micron #transparency #aistocks #stocktok #fintok
+
+NOTES
+- Posting order suggestion: lead with Congress (hardest hook) or MU (cleanest number contrast). Space ~1/day.
+- Valuation framing this round uses LIVE bundle metrics, NOT GuruFocus fair value (fundamental_value was null in the 2026-06-30 refresh). To restore the "price vs the model" voice, run the gated GuruFocus GF-Value pass (Playwright MCP, Mode B) and rebuild.
+- 1-year returns (screener perf_1y, 2026-06-30): WDC +904.3%, MU +824.2%, STX +579.6%, INTC +507.9%. MU revenue growth +167.0% YoY, P/E ~26.1.
+- Quantum (quantum.json screener, 2026-06-30): RGTI +72.7% 1y / rev +8.8%; QBTS +69.9% 1y / rev −41.7%; IONQ +29.2% 1y / rev +334.6%; QUBT −44.8% 1y / rev +1025.7%. All four remain deeply unprofitable — a momentum-vs-revenue read, not a quality call.
+- Congress: Josh Gottheimer (NJ05, D), PTR filed 6/3/2026, txns mid-May 2026 — MU P (05/21), SNDK P (05/07), AMD P (05/05), ADI P (05/19), FN P (05/01), LITE P (05/22), all $1,001–$15,000; plus a same-day MSFT buy AND sell ($250K–$1M each leg — a reallocation, so omitted from the "bought" headline). Committees: House Permanent Select Committee on Intelligence + House Committee on Financial Services. Framed as transparency, not accusation.

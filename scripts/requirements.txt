@@ -3,5 +3,7 @@ pytest>=8.0
 pyyaml>=6.0  # congress-legislators YAML datasets (unitedstates/congress-legislators)
 yfinance>=0.2.0
 pdfplumber>=0.11  # House PTR PDF text extraction (congress trading)
+networkx>=3.0  # capital-web graph analysis (contagion, graph_metrics, health_score)
+scipy>=1.11  # networkx pagerank backend
 # Playwright batch (gated/no-API sources only) — install when first needed:
 # playwright>=1.48

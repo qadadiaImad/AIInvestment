@@ -2,25 +2,49 @@
   reel_<tk>_hook.png (TRANSPARENT overlay for the animated hero), reel_<tk>_data.png, reel_<tk>_takeaway.png
 Run: python higgs/_build_reel_stock.py IONQ   (or ADBE)
 """
-import json, base64, math, sys
+import json, base64, math, sys, re, os, pathlib
 from playwright.sync_api import sync_playwright
+os.chdir(pathlib.Path(__file__).resolve().parent.parent)   # anchor to repo root — runnable from any cwd
 W,H=1080,1920
 site=json.load(open('web/public/data/site.json',encoding='utf-8'))['stocks']
 qs=json.load(open('web/public/data/quantum.json',encoding='utf-8'))['stocks']
 
 def b64(p): return "data:image/png;base64,"+base64.b64encode(open(p,'rb').read()).decode()
 
+def hero_file(name):
+    """Resolve a CFG hero filename; if that exact (date-stamped) file is absent, fall back to
+    the newest sibling matching the same prefix (hero_<stem>_YYYY-MM-DD.png) so a new round
+    doesn't require editing this file when only the date moved."""
+    p = pathlib.Path('higgs')/name
+    if p.exists(): return str(p)
+    cands = sorted(pathlib.Path('higgs').glob(re.sub(r'\d{4}-\d{2}-\d{2}', '*', name)))
+    if cands:
+        print(f"note: {name} not found — using latest {cands[-1].name}")
+        return str(cands[-1])
+    raise SystemExit(f"hero image not found: higgs/{name} (and no dated sibling)")
+
 CFG={
- "IONQ":{"hero":"hero_quantum_2026-06-21.png","logo":"logo_IONQ.png","ex":"QUANTUM COMPUTING · NYSE",
-   "kick":"QUANTUM · THE ODD ONE OUT",
-   "head":"Quantum, priced like<br>a lottery ticket.<br><em style='font-style:italic;color:#34D399'>One name isn&rsquo;t.</em>",
-   "sub":"Same hype label, opposite math &mdash; and this week IonQ shipped real product while the rest ran on the story.",
-   "data_kick":"PRICE vs ANALYSTS' FUNDAMENTAL VALUE","data_title":"How many times above fair value",
-   "mode":"mult","rows":[("IONQ",None),("QUBT",None),("QBTS",None),("RGTI",None)],
-   "data_cap":"IonQ is the only one trading <em style='font-style:normal;color:#fff'>below</em> the model.",
-   "data_foot":"dashed line = price equals fundamental value · analysts' model · NFA",
-   "tk_kick":"THE OUTLIER","big":None,"unit":"%","tk_label":None,
-   "tk_body":"Most of quantum is priced on the story. One name is priced below analysts&rsquo; model.",
+ "MU":{"hero":"hero_memory_2026-06-30.png","logo":"logo_MU.png","ex":"AI MEMORY · NASDAQ",
+   "kick":"AI MEMORY · THE ONE-YEAR RUN",
+   "head":"The AI boom needs<br>somewhere to put it &mdash;<br><em style='font-style:italic;color:#34D399'>memory went vertical.</em>",
+   "sub":"Western Digital ~900% in a year, Micron ~820% &mdash; the memory &amp; storage names led the whole chip complex.",
+   "data_kick":"MEMORY &amp; STORAGE · 1-YEAR RETURN","data_title":"The one-year run in memory &amp; storage",
+   "mode":"raw","rows":[("WDC","+904%"),("MU","+824%"),("STX","+580%"),("INTC","+508%")],
+   "data_cap":"The strongest one-year moves on the board &mdash; <em style='font-style:normal;color:#fff'>led by memory, with Micron&rsquo;s revenue up ~167%.</em>",
+   "data_foot":"1-year price return · site.json screener · 2026-06-30 · NFA",
+   "tk_kick":"THE ENGINE","big":"167","unit":"%","tk_label":"MICRON REVENUE GROWTH YoY — THE FUNDAMENTAL UNDER A ~820% STOCK",
+   "tk_body":"Not pure momentum: Micron grew revenue ~167% on AI-server memory demand, stays profitable, and trades near 26x earnings. After a run this steep, the risk is the price you pay &mdash; not the story.",
+   "src":"site"},
+ "IONQ":{"hero":"hero_quantum_2026-06-30.png","logo":"logo_IONQ.png","ex":"QUANTUM COMPUTING · NYSE",
+   "kick":"QUANTUM · MOMENTUM vs REVENUE",
+   "head":"Quantum, priced like<br>one lottery ticket.<br><em style='font-style:italic;color:#34D399'>Revenue disagrees.</em>",
+   "sub":"Rigetti &amp; D-Wave each ran ~70% this year &mdash; but IonQ, scaling revenue the fastest, rose only ~29%.",
+   "data_kick":"QUANTUM NAMES · 1-YEAR RETURN","data_title":"Who the market rewarded this year",
+   "mode":"raw","rows":[("RGTI","+73%"),("QBTS","+70%"),("IONQ","+29%"),("QUBT","-45%")],
+   "data_cap":"The two that ran hardest grew revenue the least &mdash; <em style='font-style:normal;color:#fff'>IonQ scaled revenue fastest and lagged.</em>",
+   "data_foot":"1-year price return · quantum.json screener · 2026-06-30 · NFA",
+   "tk_kick":"THE DISCONNECT","big":"335","unit":"%","tk_label":"IONQ REVENUE GROWTH YoY — FASTEST IN QUANTUM, YET THE STOCK LAGGED",
+   "tk_body":"Rigetti grew revenue in single digits and D-Wave&rsquo;s fell, yet both jumped ~70%. IonQ grew revenue ~335% and rose ~29%. Momentum decoupled from the revenue trajectory. Watch the spread, not just the rally.",
    "src":"quantum"},
  "NVDA":{"hero":"hero_nvda_2026-06-22.png","logo":"logo_NVDA.png","ex":"AI CHIPS · NASDAQ",
    "kick":"AI CHIPS · THE ONE OUTLIER",
@@ -49,10 +73,17 @@ CFG={
 TK=sys.argv[1].upper() if len(sys.argv)>1 else "IONQ"
 c=CFG[TK]
 store=qs if c["src"]=="quantum" else site
-HERO=b64('higgs/'+c["hero"]); LOGO=b64('higgs/'+c["logo"])
+HERO=b64(hero_file(c["hero"])); LOGO=b64('higgs/'+c["logo"])
 
 # fill numbers
-if c["mode"]=="mult":
+if c["mode"]=="raw":
+    # literal LIVE metrics pre-filled in CFG (e.g. "+904%") — GuruFocus fair value was null
+    # this round, so nothing is read from the bundle. Parse to signed numbers for bar widths;
+    # big / tk_label stay the literal CFG strings (do NOT override).
+    def _num(x):
+        m=re.search(r'-?\d+(?:\.\d+)?', str(x)); return float(m.group()) if m else 0.0
+    rows=[(s, _num(v)) for s,v in c["rows"]]
+elif c["mode"]=="mult":
     rows=[(s, store[s]['valuation']['price']/store[s]['valuation']['fundamental_value']) for s,_ in c["rows"]]
     prim_dc=store[TK]['valuation']['fundamental_discount_pct']; c["big"]=f"~{abs(prim_dc):.0f}"
     if TK=="IONQ":   # quantum-specific peer callout; others keep their config tk_label
@@ -95,6 +126,11 @@ def data():
         def w(m): return 9+(math.log10(m)-math.log10(0.5))/(math.log10(40)-math.log10(0.5))*70
         def lab(m): return f"{m:.1f}x"
         def col(m): return "#10B981" if m<=1.05 else ("#E0A23B" if m<5 else "#6B7787")
+    elif c["mode"]=="raw":
+        mx=max((abs(v) for _,v in rows), default=1) or 1
+        def w(m): return 11+abs(m)/mx*68
+        def lab(m): return f"{m:+.0f}%"            # signed 1-year return, e.g. +904% / -45%
+        def col(m): return "#10B981" if m>=0 else "#E0A23B"
     else:
         mx=max(abs(v) for _,v in rows)
         def w(m): return 11+abs(m)/mx*68

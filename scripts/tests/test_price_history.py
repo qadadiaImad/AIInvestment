@@ -34,3 +34,32 @@ def test_returns_summary_keys():
     r = ph.returns_summary(s)
     assert set(r.keys()) == {"1y", "3y", "5y"}
     assert r["1y"] == 50.0
+
+
+OHLC_PAYLOAD = {"chart": {"result": [{
+    "timestamp": [1577836800, 1609459200, 1640995200],  # 2020-01-01, 2021-01-01, 2022-01-01
+    "indicators": {"quote": [{
+        "open": [99.0, 148.0, None],
+        "high": [101.0, 151.0, 160.0],
+        "low": [98.0, 147.0, 155.0],
+        "close": [100.0, 150.0, None],
+    }]},
+}]}}
+
+
+def test_parse_chart_ohlc_daily_skips_null_bars():
+    bars = ph.parse_chart_ohlc(OHLC_PAYLOAD, intraday=False)
+    assert bars == [
+        {"date": "2020-01-01", "open": 99.0, "high": 101.0, "low": 98.0, "close": 100.0},
+        {"date": "2021-01-01", "open": 148.0, "high": 151.0, "low": 147.0, "close": 150.0},
+    ]
+
+
+def test_parse_chart_ohlc_intraday_uses_datetime_key():
+    bars = ph.parse_chart_ohlc(OHLC_PAYLOAD, intraday=True)
+    assert bars[0]["datetime"] == "2020-01-01T00:00:00Z"
+    assert "date" not in bars[0]
+
+
+def test_parse_chart_ohlc_empty_returns_list():
+    assert ph.parse_chart_ohlc({"chart": {"result": None}}) == []

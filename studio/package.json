@@ -1,0 +1,34 @@
+{
+  "name": "ai-stack-studio",
+  "version": "0.1.0",
+  "description": "Local content cockpit for AI STACK reels/posts",
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "start": "electron-vite preview",
+    "test": "vitest run",
+    "rebuild": "electron-rebuild -f -w node-pty",
+    "dist": "electron-vite build && electron-builder --config electron-builder.yml"
+  },
+  "dependencies": {
+    "@xterm/addon-fit": "0.11.0",
+    "@xterm/xterm": "6.0.0",
+    "node-pty": "1.1.0"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "4.0.4",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.0.4",
+    "electron": "42.4.1",
+    "electron-builder": "26.15.3",
+    "electron-vite": "5.0.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "tailwindcss": "4.1.18",
+    "@tailwindcss/vite": "4.1.18",
+    "typescript": "5.9.3",
+    "vitest": "3.2.6"
+  }
+}

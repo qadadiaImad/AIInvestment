@@ -34,7 +34,7 @@ def main():
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     # Prices cover BOTH sectors so every displayed name (incl. quantum) has a
     # price file for the Price-vs-Fundamental-Value chart. De-dup bridge names.
-    tickers = list(dict.fromkeys(ai_stack.all_tickers() + quantum_stack.all_tickers()))
+    tickers = list(dict.fromkeys(ai_stack.all_tickers() + quantum_stack.all_tickers() + ["SPY"]))
 
     ok, fail = 0, []
     with cf.ThreadPoolExecutor(max_workers=8) as ex:

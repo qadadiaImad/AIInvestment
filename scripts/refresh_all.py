@@ -1,46 +1,215 @@
-"""Daily refresh: re-pull the cheap/fast data, recompute, rebuild the site, redeploy to Vercel.
+"""Full-refresh orchestrator: fair value + daily AI/quantum/news + congress.
 
-Cheap DAILY tier (no gated GuruFocus / no AI-narrative re-runs):
-  prices (Yahoo 5y) -> backtests -> graph analysis (fresh FRED macro) -> site export
-  -> Next build -> `vercel deploy --prod`.
-Heavy tier (per-stock fundamentals/factsheets + AI narratives + the gated fundamental
-series) changes slowly — refresh those on a weekly cadence, not here.
+This is the "Refresh data" one-button pipeline for the Studio. It chains the three
+refreshers in the ONE correct order:
 
-Usage:  python refresh_all.py            # refresh + redeploy
-        python refresh_all.py --no-deploy
+    1. fair-value backfill (GuruFocus scalar, headless fresh-browser-per-ticker)
+         -> writes data/fundamental/<SYM>.json
+         -> MUST run BEFORE the export, because export_site.py folds these values
+            into site.json/quantum.json and computes our valuation tag from live price.
+    2. refresh_daily.py
+         -> pull_ai_stack + prices + merge + capital web + graph + EXPORT (picks up the
+            fresh fair values) + quantum + screener + news.
+    3. refresh_congress.py --years <Y> --keep-going
+         -> rebuilds web/public/data/congress.json (monthly-cadence source).
+
+Fair value is a GATED source (GuruFocus). The headless path reliably gets the current
+scalar VALUE (the historical series still needs the Playwright MCP, Mode B); saves are
+merge-protected so a gated miss never downgrades an existing value. Backfilling the whole
+universe is slow (fresh Chromium + gentle pacing per ticker) — expect tens of minutes. Use
+--fundamentals none to skip it, or --fundamentals ai|quantum to narrow.
+
+(Supersedes the old prices-only refresh_all; the canonical daily pipeline is refresh_daily.py,
+which this calls as step 2.)
+
+Usage:
+    python refresh_all.py --dry-run                 # print the ordered plan, run nothing
+    python refresh_all.py                           # full refresh (fundamentals=all, congress 2026)
+    python refresh_all.py --fundamentals ai         # only AI-layer fair values
+    python refresh_all.py --fundamentals none       # skip fair value (daily + congress only)
+    python refresh_all.py --years 2025 2026         # also re-pull 2025 congress
+    python refresh_all.py --keep-going              # continue past a failed step
+    python refresh_all.py --deploy                  # rebuild + `vercel --prod --yes` in web/
+
+Educational/research only — not investment advice.
 """
 from __future__ import annotations
 
+import argparse
 import pathlib
 import subprocess
 import sys
+import time
 
-SCR = pathlib.Path(__file__).resolve().parent
-WEB = SCR.parent / "web"
+from aiinvest import bundles, fundamental_quality, notify
+
+SCRIPTS = pathlib.Path(__file__).resolve().parent
+WEB = SCRIPTS.parent / "web"
 PY = sys.executable
 
 
-def run(cmd, cwd=SCR):
-    print(f"\n$ {cmd}   (cwd={cwd})", flush=True)
-    r = subprocess.run(cmd, cwd=str(cwd), shell=True)
-    if r.returncode:
-        raise SystemExit(f"STEP FAILED ({r.returncode}): {cmd}")
+def build_plan(args):
+    """Ordered list of steps: {"label", "cmd" (list[str]), "cwd"}. Pure — no I/O.
+
+    fundamentals in {"all","ai","quantum","none"}; "none" omits the fair-value step.
+    The congress step always gets --keep-going (a flaky PDF download must not abort it).
+    """
+    steps = []
+
+    def add(label, cmd, cwd=str(SCRIPTS)):
+        steps.append({"label": label, "cmd": cmd, "cwd": cwd})
+
+    fundamentals = getattr(args, "fundamentals", "all")
+    if fundamentals and fundamentals != "none":
+        add(f"fair-value backfill (universe={fundamentals})",
+            [PY, "fundamental_backfill.py", "--universe", fundamentals])
+
+    add("daily AI/quantum/news refresh", [PY, "refresh_daily.py"])
+
+    # Separate driver by design (how_to_update.md:85-95) -- but that must not
+    # mean "never runs": no orchestrator called it, hence the missing
+    # ta_desk.json. Serial after daily; both hit Yahoo.
+    if getattr(args, "ta", True):
+        add("TA-desk refresh", [PY, "refresh_ta.py"])
+
+    # PTR filings move monthly (how_to_update.md:157-159). Re-downloading ~300
+    # PDFs nightly is not "scraping politely" (CLAUDE.md §8), so the nightly
+    # task passes --no-congress and a separate monthly task covers it.
+    if getattr(args, "congress", True):
+        years = [str(y) for y in args.years]
+        add("monthly congress refresh",
+            [PY, "refresh_congress.py", "--years", *years, "--keep-going"])
+
+    if getattr(args, "deploy", False):
+        add("deploy to Vercel (prod)", ["vercel", "--prod", "--yes"], cwd=str(WEB))
+
+    return steps
+
+
+def _fmt_cmd(step):
+    return f"{' '.join(step['cmd'])}   (cwd={step['cwd']})"
+
+
+def _parse_args(argv):
+    ap = argparse.ArgumentParser(description="Full AIInvestment refresh: fair value + daily + congress.")
+    ap.add_argument("--fundamentals", choices=["all", "ai", "quantum", "none"], default="all",
+                    help="Fair-value backfill scope (default: all). 'none' skips it.")
+    ap.add_argument("--years", type=int, nargs="+", default=[2026],
+                    help="Congress PTR years to pull (default: 2026; 2025 is stable/historical).")
+    ap.add_argument("--dry-run", action="store_true",
+                    help="Print the ordered plan and exit 0 without running anything.")
+    ap.add_argument("--deploy", action="store_true",
+                    help="After a successful pipeline, run `vercel --prod --yes` in web/.")
+    ap.add_argument("--no-ta", dest="ta", action="store_false", default=True,
+                    help="Skip the TA-desk refresh step.")
+    ap.add_argument("--no-congress", dest="congress", action="store_false",
+                    default=True,
+                    help="Skip the congress leg (nightly runs should: PTRs "
+                         "move monthly and re-pulling ~300 PDFs daily is rude).")
+    ap.add_argument("--no-notify", action="store_true",
+                    help="Do not raise a desktop notification on failure.")
+    ap.add_argument("--notify-success", action="store_true",
+                    help="Also notify on a clean run (off by default: nightly "
+                         "success toasts are noise, and noise gets ignored).")
+    ap.add_argument("--keep-going", action="store_true",
+                    help="Continue on step failure; collect errors and report at the end.")
+    return ap.parse_args(argv)
 
 
 def main(argv=None):
-    argv = list(argv if argv is not None else sys.argv[1:])
-    deploy = "--no-deploy" not in argv
-    run(f'"{PY}" pull_prices.py')          # 5y daily prices (ungated)
-    run(f'"{PY}" run_backtest.py')         # recompute strategy backtests on fresh prices
-    run(f'"{PY}" run_graph_analysis.py')   # recompute health + fresh FRED macro snapshot
-    run(f'"{PY}" export_site.py')          # rebuild site.json (fresh returns, leak-checked)
-    run("npm run build", cwd=WEB)          # static rebuild
-    if deploy:
-        run("vercel deploy --prod --yes", cwd=WEB)
-        print("\n[ok] refreshed + redeployed to production.")
-    else:
-        print("\n[ok] refreshed + rebuilt (skipped deploy).")
-    return 0
+    args = _parse_args(argv)
+    steps = build_plan(args)
+
+    if args.dry_run:
+        print("FULL REFRESH PLAN (dry-run — nothing will execute):")
+        print(f"  fundamentals={args.fundamentals}  years={args.years}  "
+              f"deploy={args.deploy}  keep_going={args.keep_going}")
+        for i, step in enumerate(steps, 1):
+            print(f"  {i:2d}. {step['label']}")
+            print(f"      $ {_fmt_cmd(step)}")
+        print(f"\n{len(steps)} step(s) planned.")
+        return 0
+
+    results = []
+    failures = []
+
+    for i, step in enumerate(steps, 1):
+        print("\n" + "=" * 70)
+        print(f"STEP {i}/{len(steps)}: {step['label']}")
+        print(f"$ {_fmt_cmd(step)}")
+        print("=" * 70, flush=True)
+        t0 = time.time()
+        try:
+            proc = subprocess.run(step["cmd"], cwd=step["cwd"], text=True)
+            rc = proc.returncode
+        except FileNotFoundError as exc:
+            rc = 127
+            print(f"  [error] command not found: {exc}", flush=True)
+        elapsed = time.time() - t0
+        results.append((step["label"], rc, elapsed))
+        print(f"  -> exit {rc} in {elapsed:.1f}s", flush=True)
+
+        if rc != 0:
+            failures.append((step["label"], rc))
+            if not args.keep_going:
+                _summary(results, failures, aborted=step["label"])
+                return 1
+
+    n_bundle_failed, problems = _summary(results, failures, aborted=None)
+    rc = 1 if (failures or n_bundle_failed) else 0
+    _announce(args, rc, problems, results)
+    return rc
+
+
+def _announce(args, rc, problems, results):
+    """Surface the outcome. An unattended 06:00 job nobody is watching is
+    only useful if a failure reaches the owner."""
+    if getattr(args, "no_notify", False):
+        return
+    elapsed = sum(e for _, _, e in results) if results else None
+    try:
+        if rc:
+            out = notify.notify_failure(SCRIPTS.parent, job="AI STACK refresh",
+                                        problems=problems, duration_s=elapsed)
+            print(f"  notified: {out['channel'] or 'status file only'}")
+        else:
+            out = notify.notify_success(
+                SCRIPTS.parent, job="AI STACK refresh",
+                summary=f"{len(results)} steps ok, all bundles verified",
+                duration_s=elapsed,
+                announce=getattr(args, "notify_success", False))
+            print(f"  status written: {out['status_file']}")
+    except Exception as exc:  # noqa: BLE001 - never fail a good run on the notifier
+        print(f"  notify skipped ({type(exc).__name__}: {exc})")
+
+
+def _summary(results, failures, aborted):
+    print("\n" + "#" * 70)
+    print("FULL REFRESH SUMMARY")
+    print("#" * 70)
+    for label, rc, elapsed in results:
+        mark = "ok " if rc == 0 else "FAIL"
+        print(f"  [{mark}] {label:42s} {elapsed:7.1f}s  (exit {rc})")
+    print(f"  steps run: {len(results)}")
+    if aborted:
+        print(f"  ABORTED at: {aborted} (use --keep-going to continue past failures)")
+    print(f"  failures: {len(failures) if failures else 'none'}")
+
+    # Full run: verify every declared artifact, not just the ones a single
+    # driver owns. Steps exiting 0 is not evidence the bundles landed.
+    lines, n_failed = bundles.render_verification(SCRIPTS.parent, driver=None)
+    for line in lines:
+        print(line)
+
+    # Files existing is not the same as fields being populated: the fair-value
+    # step can write 108 records whose GF values are all null.
+    q_lines, q_failed = fundamental_quality.check(SCRIPTS.parent)
+    for line in q_lines:
+        print(line)
+
+    problems = [ln.strip() for ln in lines + q_lines if "FAIL" in ln]
+    problems += [f"{l} (exit {rc})" for l, rc in (failures or [])]
+    return n_failed + q_failed, problems
 
 
 if __name__ == "__main__":

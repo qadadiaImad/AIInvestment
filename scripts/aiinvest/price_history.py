@@ -35,6 +35,44 @@ def parse_chart_history(payload):
     return out
 
 
+def parse_chart_ohlc(payload, intraday=False):
+    """Yahoo chart payload -> ascending list of OHLC bars.
+
+    Daily: `{date, open, high, low, close}` (`date` = ISO date string).
+    Intraday: `{datetime, open, high, low, close}` (`datetime` = ISO UTC string).
+    Any bar with a null OHLC field is skipped (Yahoo emits null bars for halts/gaps).
+    Co-located next to `parse_chart_history()` above, which only extracts {date, close}
+    — that one is left alone since other callers depend on its exact shape.
+    """
+    result = (payload.get("chart", {}) or {}).get("result")
+    if not result:
+        return []
+    res = result[0]
+    ts = res.get("timestamp") or []
+    quote = ((res.get("indicators", {}) or {}).get("quote") or [{}])
+    q0 = quote[0] if quote else {}
+    opens = q0.get("open") or []
+    highs = q0.get("high") or []
+    lows = q0.get("low") or []
+    closes = q0.get("close") or []
+    out = []
+    for i, t in enumerate(ts):
+        o = opens[i] if i < len(opens) else None
+        h = highs[i] if i < len(highs) else None
+        lo = lows[i] if i < len(lows) else None
+        c = closes[i] if i < len(closes) else None
+        if o is None or h is None or lo is None or c is None:
+            continue
+        dt = datetime.datetime.fromtimestamp(t, datetime.timezone.utc)
+        bar = {"open": round(float(o), 6), "high": round(float(h), 6),
+               "low": round(float(lo), 6), "close": round(float(c), 6)}
+        if intraday:
+            out.append({"datetime": dt.isoformat().replace("+00:00", "Z"), **bar})
+        else:
+            out.append({"date": dt.date().isoformat(), **bar})
+    return out
+
+
 def pct_return(series, days):
     """% change from the close at/before (last_date - days) to the latest close."""
     if not series or len(series) < 2:

@@ -1,0 +1,51 @@
+{
+  "date": "2026-07-02",
+  "generated_at": "2026-07-02T19:02Z",
+  "picks": {
+    "ai": "AMD",
+    "quantum": "IONQ"
+  },
+  "market_pulse": {
+    "sp500": {
+      "symbol": "^GSPC",
+      "price": 7453.44,
+      "change_pct": 1.3,
+      "retrieved_at": "2026-07-02T19:02Z",
+      "source": "yahoo:^GSPC",
+      "source_class": "xhr-json"
+    },
+    "nasdaq": {
+      "symbol": "^IXIC",
+      "price": 25732.39,
+      "change_pct": 1.47,
+      "retrieved_at": "2026-07-02T19:02Z",
+      "source": "yahoo:^IXIC",
+      "source_class": "xhr-json"
+    },
+    "vix": {
+      "symbol": "^VIX",
+      "price": 16.59,
+      "change_pct": -9.89,
+      "retrieved_at": "2026-07-02T19:02Z",
+      "source": "yahoo:^VIX",
+      "source_class": "xhr-json"
+    },
+    "ten_year": {
+      "symbol": "^TNX",
+      "price": 4.49,
+      "change_pct": 0.11,
+      "retrieved_at": "2026-07-02T19:02Z",
+      "source": "yahoo:^TNX",
+      "source_class": "xhr-json"
+    }
+  },
+  "chart": "chart.png",
+  "chart_error": null,
+  "rails_passed": true,
+  "sources": [
+    "yahoo:^GSPC",
+    "yahoo:^IXIC",
+    "yahoo:^VIX",
+    "yahoo:^TNX"
+  ]
+}

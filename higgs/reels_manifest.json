@@ -1,22 +1,22 @@
 {
   "_note": "Stock-reel manifest for the make-all-reels workflow. Each entry: ticker + pre-resolved Higgsfield animated-hero MP4 + AI-voice MP3 URLs. Regenerate hero/voice via MCP (orchestrator) when the story/data changes; then run the workflow with these as args. Congress reel uses its own builder (_build_reel_congress.py).",
-  "date": "2026-06-22",
+  "date": "2026-06-30",
   "voice": "Harrison (ElevenLabs preset 573e5163-59b3-4926-aab1-951ef2985f81)",
   "reels": [
     {
-      "tk": "NVDA",
-      "hero": "https://d8j0ntlcm91z4.cloudfront.net/user_3EcHFV4fsIm7E71S9njiQ0O2FLR/hf_20260622_135752_7cc5aaac-be12-4249-a7f1-9209eefd271a.mp4",
-      "voice": "https://d8j0ntlcm91z4.cloudfront.net/user_3EcHFV4fsIm7E71S9njiQ0O2FLR/hf_20260622_135646_a761f8d1-8f54-4e15-b7f8-4f006e845b37.mp3"
+      "tk": "MU",
+      "hero": "https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260704_122457_d42e9bdd-7551-4f87-8e6a-f3c7669dd6cb.mp4",
+      "voice": "https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260704_122531_06f2c375-0536-4910-a577-c8e24e378ca1.mp3"
     },
     {
       "tk": "IONQ",
-      "hero": "https://d8j0ntlcm91z4.cloudfront.net/user_3EcHFV4fsIm7E71S9njiQ0O2FLR/hf_20260622_133359_16ee54f7-e0fe-4fb0-8462-97a78932baac.mp4",
-      "voice": "https://d8j0ntlcm91z4.cloudfront.net/user_3EcHFV4fsIm7E71S9njiQ0O2FLR/hf_20260622_133407_c8067903-fde0-4cf6-8af3-7e27fd8803a9.mp3"
+      "hero": "https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260704_122451_66ebc87d-adb6-46c6-94fc-feb6a78f4174.mp4",
+      "voice": "https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260704_122545_eaf4a03c-4932-4f31-8a5f-5adec921fa57.mp3"
     },
     {
-      "tk": "ADBE",
-      "hero": "https://d8j0ntlcm91z4.cloudfront.net/user_3EcHFV4fsIm7E71S9njiQ0O2FLR/hf_20260622_133404_386fdcdf-c040-430c-b785-55a3fe1908d5.mp4",
-      "voice": "https://d8j0ntlcm91z4.cloudfront.net/user_3EcHFV4fsIm7E71S9njiQ0O2FLR/hf_20260622_133411_58eae848-74c1-4c12-b804-8c6c4d5dffa8.mp3"
+      "tk": "CONG",
+      "hero": "https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260704_122453_c9aca8d5-f07a-4bcb-9366-388d875f71e4.mp4",
+      "voice": "https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260704_122542_950ed1ec-c895-4e7d-ae35-7b1a6e5774f4.mp3"
     }
   ]
 }

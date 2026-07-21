@@ -1,11 +1,16 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { CapitalWeb, ResiliencyNode } from "@/lib/data";
+import type { CapitalWeb, ResiliencyNode, ChokepointsData } from "@/lib/data";
 import { LAYER_LABELS, LAYER_ORDER } from "@/lib/format";
+import { chokepointsForNode, type Chokepoint } from "@/lib/chokepoints";
+
+const EMPTY_CHOKEPOINTS: Chokepoint[] = [];
 import CapitalGraph, { type ColorMode } from "@/components/CapitalGraph";
 import CompanyValueChain from "@/components/CompanyValueChain";
 import NodeDetailPanel from "@/components/NodeDetailPanel";
+import ChokepointSideList from "@/components/ChokepointSideList";
+import ChokepointClaimsPanel from "@/components/ChokepointClaimsPanel";
 import StressControls, { STRESS_ZERO, type StressState } from "@/components/StressControls";
 
 type ViewMode = "global" | "company";
@@ -33,18 +38,43 @@ export default function MapExplorer({
   web,
   resiliency,
   dffBase,
+  chokepointsData,
 }: {
   web: CapitalWeb;
   resiliency?: ResiliencyNode[];
   dffBase: number;
+  // Supply-chain chokepoint layer (Round 6) — GENERATED/gitignored, may
+  // legitimately be null (getChokepointsData() guard). The overlay toggle
+  // hides entirely when null rather than rendering disabled-with-no-data.
+  chokepointsData?: ChokepointsData | null;
 }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("global");
   const [colorMode, setColorMode] = useState<ColorMode>("layer");
   const [shock, setShock] = useState<StressState>(STRESS_ZERO);
   const [sector, setSector] = useState<SectorFilter>("all");
+  const [chokepointMode, setChokepointMode] = useState(false);
+  const [activeChokepointId, setActiveChokepointId] = useState<string | null>(null);
   const stressActive = shock.dRateBps !== 0 || shock.dElecPct !== 0;
   const companyMode = viewMode === "company";
+  const hasChokepoints = !!chokepointsData && chokepointsData.chokepoints.length > 0;
+  // Stable reference when the bundle is absent: a fresh [] every render would
+  // retrigger CapitalGraph's full network-rebuild effect on every slider tick.
+  const chokepoints = chokepointsData?.chokepoints ?? EMPTY_CHOKEPOINTS;
+  const chokepointOverlayOn = chokepointMode && hasChokepoints && !companyMode;
+
+  const activeChokepoint = activeChokepointId
+    ? (chokepoints.find((cp) => cp.id === activeChokepointId) ?? null)
+    : null;
+
+  const linkedChokepoints = useMemo(() => {
+    if (!chokepointsData || !selectedId) return [];
+    return chokepointsForNode(chokepointsData, selectedId);
+  }, [chokepointsData, selectedId]);
+
+  function handleSelectChokepoint(id: string | null) {
+    setActiveChokepointId(id);
+  }
 
   // Distinct sectors present across nodes (e.g. ["AI", "Quantum"]). When empty,
   // the dataset is AI-only / unsectored and the sector control stays hidden.
@@ -228,6 +258,36 @@ export default function MapExplorer({
             ))}
           </div>
         </div>
+
+        {/* Chokepoint overlay toggle — hidden entirely when chokepoints.json
+            hasn't been generated (hasChokepoints false); disabled/grayed in
+            company-view mode, matching the "Color nodes by" pattern above. */}
+        {hasChokepoints && (
+          <div
+            className={companyMode ? "opacity-40 pointer-events-none" : ""}
+            title={
+              companyMode
+                ? "Chokepoint overlay applies to the global graph."
+                : undefined
+            }
+          >
+            <button
+              type="button"
+              disabled={companyMode}
+              onClick={() => {
+                setChokepointMode((v) => !v);
+                if (chokepointMode) setActiveChokepointId(null);
+              }}
+              className={`px-2 py-1 rounded-sm border text-[10.5px] uppercase tracking-wider transition-colors ${
+                chokepointMode
+                  ? "border-fuchsia-500/60 bg-fuchsia-500/15 text-fuchsia-300"
+                  : "border-term-border text-zinc-400 hover:text-zinc-200"
+              }`}
+            >
+              ⛓ Chokepoints
+            </button>
+          </div>
+        )}
       </div>
 
       {/* macro-stress slider bar (compact) — applies to the global graph. */}
@@ -272,15 +332,36 @@ export default function MapExplorer({
                 dElecPct: shock.dElecPct,
                 dffBase,
               }}
+              chokepoints={chokepoints}
+              chokepointMode={chokepointOverlayOn}
+              activeChokepointId={activeChokepointId}
+              onSelectChokepoint={handleSelectChokepoint}
             />
           )}
         </div>
         <aside className="lg:w-[360px] shrink-0 border-t lg:border-t-0 lg:border-l border-term-border bg-[#0a0d14] min-h-[40vh] lg:min-h-0 lg:h-auto flex flex-col">
-          <NodeDetailPanel
-            web={web}
-            selectedId={selectedId}
-            resiliency={resiliency}
-          />
+          {chokepointOverlayOn && (
+            <>
+              <ChokepointSideList
+                chokepoints={chokepoints}
+                activeId={activeChokepointId}
+                onSelect={handleSelectChokepoint}
+              />
+              <ChokepointClaimsPanel cp={activeChokepoint} />
+            </>
+          )}
+          <div className="flex-1 min-h-0 flex flex-col">
+            <NodeDetailPanel
+              web={web}
+              selectedId={selectedId}
+              resiliency={resiliency}
+              linkedChokepoints={linkedChokepoints}
+              onSelectChokepoint={(id) => {
+                setChokepointMode(true);
+                setActiveChokepointId(id);
+              }}
+            />
+          </div>
         </aside>
       </div>
     </div>
