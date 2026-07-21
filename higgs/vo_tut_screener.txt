@@ -1,0 +1,1 @@
+The screener adds the value lens. Fundamental value, next to today's price, so you can see which names trade below what the numbers say they're worth.

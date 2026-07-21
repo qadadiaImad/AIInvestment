@@ -1,93 +1,207 @@
 {
   "title": "THE TERMINAL",
-  "badge": "FREE · LIVE DATA",
+  "badge": "FREE \u00b7 LIVE DATA",
   "karimSrc": "karim_podcast_seated.png",
-  "disclaimer": "Educational tool only — not financial advice. Every number is source-stamped in the app.",
+  "disclaimer": "Educational tool only \u2014 not financial advice. Every number is source-stamped in the app.",
   "scenes": [
     {
       "id": "hero",
       "src": "caps/hero.webm",
-      "durationInFrames": 300,
-      "vo": "This is the terminal — free, live data on every company in the AI stack.",
+      "durationInFrames": 354,
+      "vo": "This is the terminal \u2014 free, live data on every company in the AI stack.",
       "zoom": {
-        "from": {"scale": 1.05, "x": 0.5, "y": 0.35},
-        "to": {"scale": 1.18, "x": 0.5, "y": 0.4}
+        "from": {
+          "scale": 1.05,
+          "x": 0.5,
+          "y": 0.35
+        },
+        "to": {
+          "scale": 1.18,
+          "x": 0.5,
+          "y": 0.4
+        }
       },
       "callouts": [
-        {"text": "free · no login", "atFrame": 60, "x": 0.5, "y": 0.28},
-        {"text": "live, not cached", "atFrame": 170, "x": 0.5, "y": 0.62}
+        {
+          "text": "free \u00b7 no login",
+          "atFrame": 60,
+          "x": 0.5,
+          "y": 0.28
+        },
+        {
+          "text": "live, not cached",
+          "atFrame": 170,
+          "x": 0.5,
+          "y": 0.62
+        }
       ]
     },
     {
       "id": "table",
       "src": "caps/table.webm",
-      "durationInFrames": 480,
+      "durationInFrames": 584,
       "vo": "Every stock in the table carries five compliance standards, side by side.",
       "zoom": {
-        "from": {"scale": 1.0, "x": 0.3, "y": 0.3},
-        "to": {"scale": 1.22, "x": 0.5, "y": 0.5}
+        "from": {
+          "scale": 1.0,
+          "x": 0.3,
+          "y": 0.3
+        },
+        "to": {
+          "scale": 1.22,
+          "x": 0.5,
+          "y": 0.5
+        }
       },
       "callouts": [
-        {"text": "128 stocks · 5 standards", "atFrame": 40, "x": 0.32, "y": 0.24},
-        {"text": "every number source-stamped", "atFrame": 220, "x": 0.68, "y": 0.55},
-        {"text": "sortable by sector", "atFrame": 380, "x": 0.5, "y": 0.82}
+        {
+          "text": "128 stocks \u00b7 5 standards",
+          "atFrame": 40,
+          "x": 0.32,
+          "y": 0.24
+        },
+        {
+          "text": "every number source-stamped",
+          "atFrame": 220,
+          "x": 0.68,
+          "y": 0.55
+        },
+        {
+          "text": "sortable by sector",
+          "atFrame": 380,
+          "x": 0.5,
+          "y": 0.82
+        }
       ]
     },
     {
       "id": "stock_math",
       "src": "caps/stock_math.webm",
-      "durationInFrames": 540,
-      "vo": "Open any ticker and the math behind the verdict is right there — nothing hidden.",
+      "durationInFrames": 545,
+      "vo": "Open any ticker and the math behind the verdict is right there \u2014 nothing hidden.",
       "zoom": {
-        "from": {"scale": 1.05, "x": 0.5, "y": 0.3},
-        "to": {"scale": 1.5, "x": 0.5, "y": 0.62}
+        "from": {
+          "scale": 1.05,
+          "x": 0.5,
+          "y": 0.3
+        },
+        "to": {
+          "scale": 1.5,
+          "x": 0.5,
+          "y": 0.62
+        }
       },
       "callouts": [
-        {"text": "the worked math — open it yourself", "atFrame": 60, "x": 0.5, "y": 0.3},
-        {"text": "every ratio, shown not claimed", "atFrame": 300, "x": 0.5, "y": 0.72}
+        {
+          "text": "the worked math \u2014 open it yourself",
+          "atFrame": 60,
+          "x": 0.5,
+          "y": 0.3
+        },
+        {
+          "text": "every ratio, shown not claimed",
+          "atFrame": 300,
+          "x": 0.5,
+          "y": 0.72
+        }
       ]
     },
     {
       "id": "screener",
       "src": "caps/screener.webm",
-      "durationInFrames": 360,
+      "durationInFrames": 395,
       "vo": "The screener lines up fundamental value against price so you see the gap.",
       "zoom": {
-        "from": {"scale": 1.0, "x": 0.5, "y": 0.3},
-        "to": {"scale": 1.16, "x": 0.5, "y": 0.55}
+        "from": {
+          "scale": 1.0,
+          "x": 0.5,
+          "y": 0.3
+        },
+        "to": {
+          "scale": 1.16,
+          "x": 0.5,
+          "y": 0.55
+        }
       },
       "callouts": [
-        {"text": "fundamental value vs price", "atFrame": 50, "x": 0.5, "y": 0.3},
-        {"text": "filter by sector, cap, yield", "atFrame": 200, "x": 0.5, "y": 0.68}
+        {
+          "text": "fundamental value vs price",
+          "atFrame": 50,
+          "x": 0.5,
+          "y": 0.3
+        },
+        {
+          "text": "filter by sector, cap, yield",
+          "atFrame": 200,
+          "x": 0.5,
+          "y": 0.68
+        }
       ]
     },
     {
       "id": "map",
       "src": "caps/map.webm",
-      "durationInFrames": 330,
+      "durationInFrames": 393,
       "vo": "The capital map shows who actually supplies whom across the AI value chain.",
       "zoom": {
-        "from": {"scale": 1.0, "x": 0.5, "y": 0.35},
-        "to": {"scale": 1.2, "x": 0.45, "y": 0.45}
+        "from": {
+          "scale": 1.0,
+          "x": 0.5,
+          "y": 0.35
+        },
+        "to": {
+          "scale": 1.2,
+          "x": 0.45,
+          "y": 0.45
+        }
       },
       "callouts": [
-        {"text": "who supplies whom", "atFrame": 50, "x": 0.5, "y": 0.32},
-        {"text": "trace the value chain", "atFrame": 180, "x": 0.5, "y": 0.72}
+        {
+          "text": "who supplies whom",
+          "atFrame": 50,
+          "x": 0.5,
+          "y": 0.32
+        },
+        {
+          "text": "trace the value chain",
+          "atFrame": 180,
+          "x": 0.5,
+          "y": 0.72
+        }
       ]
     },
     {
       "id": "news",
       "src": "caps/news.webm",
-      "durationInFrames": 300,
+      "durationInFrames": 456,
       "vo": "And headlines update all day, auto-tagged to the tickers they move.",
       "zoom": {
-        "from": {"scale": 1.05, "x": 0.5, "y": 0.28},
-        "to": {"scale": 1.14, "x": 0.5, "y": 0.4}
+        "from": {
+          "scale": 1.05,
+          "x": 0.5,
+          "y": 0.28
+        },
+        "to": {
+          "scale": 1.14,
+          "x": 0.5,
+          "y": 0.4
+        }
       },
       "callouts": [
-        {"text": "fresh headlines, ticker-tagged", "atFrame": 50, "x": 0.5, "y": 0.3},
-        {"text": "updated throughout the day", "atFrame": 170, "x": 0.5, "y": 0.65}
+        {
+          "text": "fresh headlines, ticker-tagged",
+          "atFrame": 50,
+          "x": 0.5,
+          "y": 0.3
+        },
+        {
+          "text": "updated throughout the day",
+          "atFrame": 170,
+          "x": 0.5,
+          "y": 0.65
+        }
       ]
     }
-  ]
+  ],
+  "audioSrc": "tut_vo.wav"
 }

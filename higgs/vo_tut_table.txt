@@ -1,0 +1,1 @@
+This is the halal screen. A hundred and twenty eight stocks, checked against five compliance standards, every single day. Green means it passes. Red means it doesn't. And the timestamp shows you exactly when we checked.
