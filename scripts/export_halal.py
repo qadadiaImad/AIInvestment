@@ -35,11 +35,18 @@ def _layer_of(ticker):
     return ai_stack.layer_of(ticker) or quantum_stack.layer_of(ticker)
 
 
-def build(batch, activity):
-    """Assemble the halal.json bundle. Pure (no I/O)."""
+def build(batch, activity, xbrl=None):
+    """Assemble the halal.json bundle. Pure (no I/O).
+
+    xbrl: optional dict mapping symbol -> xbrl facts dict (as produced by
+    aiinvest.xbrl.extract_facts). When present, exact XBRL receivables replace
+    the turnover proxy and interest income is added to the activity screen.
+    """
     verdicts = {}
+    xbrl = xbrl or {}
     for sym, rec in (batch.get("financial_data") or {}).items():
-        v = halal.verdict(sym, rec.get("metrics", {}) or {}, activity.get(sym))
+        v = halal.verdict(sym, rec.get("metrics", {}) or {}, activity.get(sym),
+                          xbrl_facts=xbrl.get(sym))
         v["layer"] = _layer_of(rec.get("ticker"))
         verdicts[sym] = v
     now = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -85,7 +92,20 @@ def main(argv=None):
             print(f"  - {p}")
         return 2
 
-    bundle = build(batch, activity)
+    # Load XBRL facts cache (data/xbrl/<SYM>.json). Absent dir or missing files
+    # degrade silently — the engine falls back to the turnover proxy (convention #4).
+    xbrl_cache = {}
+    xbrl_dir = pathlib.Path(args.data) / "xbrl"
+    if xbrl_dir.is_dir():
+        for xf in xbrl_dir.glob("*.json"):
+            try:
+                rec = json.loads(xf.read_text(encoding="utf-8"))
+                sym = xf.stem  # filename is <SYM>.json
+                xbrl_cache[sym] = rec.get("facts", {})
+            except Exception:
+                pass  # corrupt cache file — skip, use proxy
+
+    bundle = build(batch, activity, xbrl=xbrl_cache)
 
     # Provenance-mandatory: any verdict with computed ratios must carry inputs_asof.
     unstamped = [s for s, v in bundle["verdicts"].items()

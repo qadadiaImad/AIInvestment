@@ -11,7 +11,7 @@ not financial or religious advice.
 """
 from __future__ import annotations
 
-# Disclosed v1 conventions (spec §4) — rendered verbatim in the UI.
+# Disclosed v1/v1.1 conventions (spec §4) — rendered verbatim in the UI.
 CONVENTIONS = [
     "AAOIFI ratios use SPOT market capitalization per SS 21 clause 3/4/5 "
     "('last verified financial position'); trailing averages are screener "
@@ -21,8 +21,15 @@ CONVENTIONS = [
     "point (cross-validated in tests, disclosed here).",
     "Total cash + short-term investments proxies interest-bearing deposits "
     "and securities (conservative: overstates the numerator).",
-    "Receivables are approximated as revenue_fy / receivables_turnover_fy "
-    "(average AR); exact point-in-time AR arrives with SEC XBRL in v1.1.",
+    "Receivables are the exact point-in-time balance sheet figure from SEC "
+    "XBRL (AccountsReceivableNetCurrent or nearest available tag) when "
+    "present; otherwise approximated as revenue_fy / receivables_turnover_fy "
+    "(average AR proxy — fallback only, disclosed per occurrence).",
+    "Interest income is sourced from the most recent annual 10-K fact in SEC "
+    "XBRL (InvestmentIncomeInterest or bank variants) and added to the "
+    "curated impermissible-revenue percentage in the activity screen "
+    "(AAOIFI 3/4/4 'irrespective of source'); when absent, the screen falls "
+    "back to curated data alone and the basis is disclosed.",
 ]
 
 _AAOIFI_SRC = ("AAOIFI Shari'ah Standard No. 21, clause {c} (standard text via "
@@ -90,15 +97,31 @@ def _val(metrics, col):
     return None
 
 
-def inputs_from_metrics(metrics):
+def inputs_from_metrics(metrics, xbrl_facts=None):
     """Extract + derive the screen inputs from a per-symbol metrics dict.
 
-    Derived: receivables ≈ total_revenue_fy / receivables_turnover_fy (average
-    AR — disclosed convention #4). None-safe throughout: absent -> None.
+    When xbrl_facts["receivables"] is present, uses the exact XBRL balance-sheet
+    figure (basis "xbrl"); otherwise falls back to revenue_fy / receivables_turnover_fy
+    (basis "turnover-proxy" — disclosed convention #4). None-safe throughout.
+
+    xbrl_facts["interest_income"] is passed through for use in verdict().
     """
     rev_fy = _val(metrics, "total_revenue_fy")
     turns = _val(metrics, "receivables_turnover_fy")
-    receivables = (rev_fy / turns) if rev_fy and turns else None
+    proxy_receivables = (rev_fy / turns) if rev_fy and turns else None
+
+    xbrl_rec = (xbrl_facts or {}).get("receivables") or {}
+    xbrl_rec_val = xbrl_rec.get("value") if isinstance(xbrl_rec, dict) else None
+    if xbrl_rec_val is not None:
+        receivables = xbrl_rec_val
+        receivables_basis = "xbrl"
+    else:
+        receivables = proxy_receivables
+        receivables_basis = "turnover-proxy"
+
+    xbrl_ii = (xbrl_facts or {}).get("interest_income") or {}
+    interest_income = xbrl_ii.get("value") if isinstance(xbrl_ii, dict) else None
+
     asof = None
     for env in metrics.values():
         if isinstance(env, dict) and env.get("retrieved_at"):
@@ -108,10 +131,12 @@ def inputs_from_metrics(metrics):
         "total_debt": _val(metrics, "total_debt_fq"),
         "cash": _val(metrics, "cash_n_short_term_invest_fq"),
         "receivables": receivables,
+        "receivables_basis": receivables_basis,
         "total_assets": _val(metrics, "total_assets_fq"),
         "market_cap": _val(metrics, "market_cap_basic"),
         "revenue_ttm": _val(metrics, "total_revenue_ttm"),
         "close": _val(metrics, "close"),
+        "interest_income": interest_income,
         "inputs_asof": asof,
     }
 
@@ -184,17 +209,31 @@ def purification(inputs, activity_pct):
                      "shares outstanding (market_cap/close, derived)"}
 
 
-def verdict(symbol, metrics, curated):
+def verdict(symbol, metrics, curated, xbrl_facts=None):
     """Assemble the per-ticker verdict object (spec §6). Precedence:
     business prohibited -> not_halal; questionable -> questionable; no curated
-    entry -> insufficient_data; else AAOIFI outcome decides."""
-    inputs = inputs_from_metrics(metrics)
+    entry -> insufficient_data; else AAOIFI outcome decides.
+
+    When xbrl_facts is provided, exact XBRL receivables replace the turnover
+    proxy and interest income is added to the activity pct (capped at 100.0)
+    per AAOIFI 3/4/4 'irrespective of source'. Purification impermissible
+    amount likewise includes the interest income stream when known.
+    """
+    inputs = inputs_from_metrics(metrics, xbrl_facts=xbrl_facts)
     pct = None
     if curated:
         ipr = curated.get("impermissible_revenue_pct") or {}
         pct = ipr.get("value")
         if pct is None and curated.get("status") == "clean":
             pct = 0.0   # curated clean == no identified impermissible stream
+
+    # Add interest income to activity pct (AAOIFI 3/4/4) when both are known.
+    interest_income = inputs.get("interest_income")
+    revenue_ttm = inputs.get("revenue_ttm")
+    if pct is not None and interest_income is not None and revenue_ttm:
+        interest_pct = (interest_income / revenue_ttm) * 100.0
+        pct = min(100.0, pct + interest_pct)
+
     standards = {s["key"]: compute_standard(s, inputs, pct) for s in STANDARDS}
 
     if curated is None:

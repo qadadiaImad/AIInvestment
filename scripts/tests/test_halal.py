@@ -197,3 +197,41 @@ def test_validate_flags_missing_evidence_on_non_clean():
                     "confidence": "high", "last_reviewed": "2026-07-21"}}
     problems = halal.validate_business_activity(bad, ["ZZZZ"])
     assert any("evidence" in p for p in problems)
+
+
+# ---------------------------------------------------------------------------
+# Task 8: xbrl-backed exact receivables + interest income in the 5% screen
+# ---------------------------------------------------------------------------
+
+XBRL_FACTS = {"interest_income": {"value": 2534910000.0, "unit": "USD", "fy": 2025,
+                                  "fp": "FY", "end": "2025-12-31", "accession": "a", "tag": "InvestmentIncomeInterest"},
+              "interest_expense": None,
+              "receivables": {"value": 25000000000.0, "unit": "USD", "fy": 2025,
+                              "fp": "FY", "end": "2025-12-31", "accession": "a", "tag": "AccountsReceivableNetCurrent"}}
+
+
+def test_xbrl_receivables_replace_proxy_with_basis():
+    inp = halal.inputs_from_metrics(NVDA_METRICS, xbrl_facts=XBRL_FACTS)
+    assert inp["receivables"] == 25000000000.0
+    assert inp["receivables_basis"] == "xbrl"
+    assert halal.inputs_from_metrics(NVDA_METRICS)["receivables_basis"] == "turnover-proxy"
+
+
+def test_interest_income_adds_to_activity_pct():
+    # 2.53491B / 253.491B TTM = exactly 1.0% -> clean curated (0%) + 1.0% = 1.0% -> still passes
+    v = halal.verdict("NVDA", NVDA_METRICS, {**CLEAN, "impermissible_revenue_pct": {"value": 0.0}},
+                      xbrl_facts=XBRL_FACTS)
+    assert v["overall"] == "halal"
+    aaoifi = v["standards"]["AAOIFI"]
+    assert aaoifi["activity_status"] == "pass"
+    # and a big interest stream flips it:
+    big = {**XBRL_FACTS, "interest_income": {**XBRL_FACTS["interest_income"], "value": 15e9}}
+    v2 = halal.verdict("NVDA", NVDA_METRICS, {**CLEAN, "impermissible_revenue_pct": {"value": 0.0}},
+                       xbrl_facts=big)
+    assert v2["standards"]["AAOIFI"]["activity_status"] == "fail"
+    assert v2["overall"] == "not_halal"
+
+
+def test_no_xbrl_behaves_exactly_as_v1():
+    a = halal.verdict("NVDA", NVDA_METRICS, {**CLEAN, "impermissible_revenue_pct": {"value": 0.0}})
+    assert a["overall"] == "halal"          # v1 golden unchanged
