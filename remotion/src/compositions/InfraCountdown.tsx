@@ -32,6 +32,7 @@ export const infraCountdownSchema = z.object({
   bgSrc: z.string(),
   kick: z.string(),
   title: z.string(),
+  sub: z.string().optional(),
   tagline: z.string(),
   footer: z.string(),
   // reveal order = worst -> best (last-ranked revealed first, finale = #1)
@@ -293,6 +294,11 @@ export const InfraCountdown: React.FC<InfraCountdownProps> = (props) => {
           <div style={{fontFamily: FONT.display, fontWeight: 700, fontSize: 56, color: C.ink, textAlign: 'center', maxWidth: 920}}>
             {props.title}
           </div>
+          {props.sub ? (
+            <div style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 27, color: C.inkSoft, textAlign: 'center', maxWidth: 820, marginTop: 2}}>
+              {props.sub}
+            </div>
+          ) : null}
         </div>
       ) : null}
 

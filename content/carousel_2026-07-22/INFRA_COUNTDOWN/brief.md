@@ -20,7 +20,7 @@ Reveal order (worst → best): **CIEN → ANET → AVGO → SMCI**
 
 ## IG caption
 
-Four AI-infrastructure names. Same sector. Four completely different prices vs. what the fundamentals actually support.
+Four similar AI-infrastructure stocks — same sector, comparable business model. Four completely different prices vs. what the fundamentals actually support.
 
 We ranked them worst to best — not by hype, by the gap between price and modeled fair value. Watch the numbers build, then watch the ranking flip in real time as a better name knocks the previous "best" down a spot.
 
