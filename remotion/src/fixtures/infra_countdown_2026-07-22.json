@@ -6,6 +6,8 @@
   "tagline": "Same sector. Four completely different prices vs. fundamentals.",
   "footer": "Figures as of July 11, 2026 — educational, not financial advice",
   "durationInFrames": 1055,
+  "withVoice": false,
+  "voiceDir": "audio/infra_countdown",
   "tickers": [
     {
       "sym": "CIEN",

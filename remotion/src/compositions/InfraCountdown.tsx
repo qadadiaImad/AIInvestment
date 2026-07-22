@@ -10,7 +10,7 @@
 // stagger/rampedSlot) + the Polish finish layers, per
 // references/animation-craft-playbook.md.
 import React from 'react';
-import {AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, Img, interpolate, Sequence, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 import {C, FONT} from '../slides/theme';
 import {RIGS} from './FamilyRigShowcase';
@@ -38,6 +38,13 @@ export const infraCountdownSchema = z.object({
   // reveal order = worst -> best (last-ranked revealed first, finale = #1)
   tickers: z.array(tickerSchema).min(2).max(6),
   durationInFrames: z.number(),
+  // Karim VO (course/persona/VOICE.md) — off by default so the composition
+  // still renders before the audio files exist. Generate them with
+  // scripts/voice/infra_countdown_voice.py (run in the chatterbox venv),
+  // then flip this on and re-render. Expects <voiceDir>/voice_<sym>.wav per
+  // ticker (lowercased) plus <voiceDir>/voice_outro.wav.
+  withVoice: z.boolean().optional(),
+  voiceDir: z.string().optional(),
 });
 export type InfraCountdownProps = z.infer<typeof infraCountdownSchema>;
 
@@ -260,6 +267,21 @@ export const InfraCountdown: React.FC<InfraCountdownProps> = (props) => {
             'linear-gradient(180deg, rgba(10,13,18,.55) 0%, rgba(10,13,18,.15) 20%, rgba(10,13,18,.1) 55%, rgba(10,13,18,.7) 82%, rgba(10,13,18,.92) 100%)',
         }}
       />
+
+      {/* Karim VO — one clip per ticker at its segment start, one outro
+          disclaimer clip. See withVoice/voiceDir in the schema doc above. */}
+      {props.withVoice && props.voiceDir
+        ? [
+            ...props.tickers.map((t, j) => (
+              <Sequence key={`vo-${t.sym}`} from={segmentStart(j)} layout="none">
+                <Audio src={staticFile(`${props.voiceDir}/voice_${t.sym.toLowerCase()}.wav`)} />
+              </Sequence>
+            )),
+            <Sequence key="vo-outro" from={outroStart} layout="none">
+              <Audio src={staticFile(`${props.voiceDir}/voice_outro.wav`)} />
+            </Sequence>,
+          ]
+        : null}
 
       {/* intro title */}
       {frame < INTRO_END + 20 ? (
