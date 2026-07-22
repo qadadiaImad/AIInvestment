@@ -5,6 +5,9 @@
 # their own small functions in daily_post.py precisely so they stay OUT of
 # this file's import/collection path.
 import datetime as dt
+import json
+
+import pytest
 
 import daily_post
 
@@ -172,6 +175,36 @@ def test_choose_candidate_interactive_out_of_range_clamps():
     assert picked["symbol"] == "C"
 
 
+def test_choose_candidate_eof_on_closed_stdin_aborts_via_daily_post_error():
+    def _closed_stdin(prompt=""):
+        raise EOFError()
+
+    with pytest.raises(daily_post.DailyPostError) as exc:
+        daily_post.choose_candidate(
+            _plain_candidates(), ticker=None, auto=False, input_func=_closed_stdin)
+    msg = str(exc.value)
+    assert "--auto" in msg and "--ticker" in msg
+
+
+def test_choose_candidate_keyboard_interrupt_aborts_via_daily_post_error():
+    def _ctrl_c(prompt=""):
+        raise KeyboardInterrupt()
+
+    with pytest.raises(daily_post.DailyPostError):
+        daily_post.choose_candidate(
+            _plain_candidates(), ticker=None, auto=False, input_func=_ctrl_c)
+
+
+def test_choose_candidate_auto_never_touches_input_func():
+    def _boom(prompt=""):
+        raise EOFError()
+
+    # --auto short-circuits before input_func is ever called, so a closed stdin
+    # must not matter in that path.
+    picked = daily_post.choose_candidate(_plain_candidates(), ticker=None, auto=True, input_func=_boom)
+    assert picked["symbol"] == "A"
+
+
 # --- carousel_fields / build_kit_md --------------------------------------------
 
 def _fake_copy_result():
@@ -225,3 +258,68 @@ def test_build_kit_md_escapes_embedded_quotes():
     cfg = parse_cfg(md, "WULF")
     assert cfg is not None
     assert cfg["takeaway"]["body"] == 'contains a "quote" mid-sentence'
+
+
+# --- write_manifest / finalize: manifest lands before the move -----------------
+
+def test_write_manifest_writes_into_tmp_dir(tmp_path):
+    tmp_dir = tmp_path / "work"
+    tmp_dir.mkdir()
+    (tmp_dir / "daily_A.mp4").write_bytes(b"x")
+
+    manifest = daily_post.build_manifest(
+        ticker="WULF", reason="r", score=1.0, story=None, bundle={},
+        date_str="2026-07-22", seeds={"tts_seed": 7}, files=["daily_A.mp4", "manifest.json"])
+    path = daily_post.write_manifest(tmp_dir, manifest)
+
+    assert path == tmp_dir / "manifest.json"
+    assert path.exists()
+    written = json.loads(path.read_text(encoding="utf-8"))
+    assert written["ticker"] == "WULF"
+    assert written["files"] == ["daily_A.mp4", "manifest.json"]
+
+
+def test_write_manifest_happens_before_finalize_moves_the_folder(tmp_path):
+    """The pipeline's real contract: write_manifest(tmp_dir, ...) then finalize(tmp_dir,
+    dest) -- manifest.json must already be inside tmp_dir when the move (finalize)
+    happens, so a finalize failure can never strand a manifest-less folder and a
+    finalize success always yields a folder with the manifest already in it."""
+    tmp_dir = tmp_path / "work"
+    tmp_dir.mkdir()
+    (tmp_dir / "daily_A.mp4").write_bytes(b"x")
+    (tmp_dir / "daily_B.mp4").write_bytes(b"x")
+
+    manifest = daily_post.build_manifest(
+        ticker="WULF", reason="r", score=1.0, story=None, bundle={},
+        date_str="2026-07-22", seeds={"tts_seed": 7},
+        files=["daily_A.mp4", "daily_B.mp4", "manifest.json"])
+    daily_post.write_manifest(tmp_dir, manifest)
+
+    # manifest.json is inside tmp_dir *before* finalize ever runs.
+    assert (tmp_dir / "manifest.json").exists()
+
+    dest = tmp_path / "dest" / "2026-07-22_WULF"
+    files = daily_post.finalize(tmp_dir, dest)
+
+    assert not tmp_dir.exists()  # move consumed the temp dir
+    assert (dest / "manifest.json").exists()
+    assert "manifest.json" in files
+    assert "daily_A.mp4" in files and "daily_B.mp4" in files
+
+
+def test_finalize_raising_leaves_manifest_intact_in_still_present_tmp_dir(tmp_path):
+    """If finalize can't move (dest already exists), tmp_dir -- manifest included --
+    is untouched, so the caller's cleanup (rmtree of tmp_dir) never has to worry
+    about a half-written manifest; it just discards the whole (still-valid) temp dir."""
+    tmp_dir = tmp_path / "work"
+    tmp_dir.mkdir()
+    daily_post.write_manifest(tmp_dir, {"ticker": "WULF"})
+
+    dest = tmp_path / "dest" / "2026-07-22_WULF"
+    dest.mkdir(parents=True)  # pre-existing -- forces finalize to raise
+
+    with pytest.raises(daily_post.DailyPostError):
+        daily_post.finalize(tmp_dir, dest)
+
+    assert tmp_dir.exists()
+    assert (tmp_dir / "manifest.json").exists()

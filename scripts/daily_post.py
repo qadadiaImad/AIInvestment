@@ -16,16 +16,23 @@ Runs the full daily halal-screen content pipeline end to end:
                     `--dry-run` stops here, printing both VO scripts + the caption, exit 0.
   5. Voice        — renders VO A/B via the local Chatterbox clone (karim_tts.py, chatterbox venv).
   6. Align        — faster-whisper word timestamps -> per-beat durations + captions
-                    (`aiinvest.align_beats.apply_timing`); writes props_A.json/props_B.json.
+                    (`aiinvest.align_beats.apply_timing`); writes props_A.json/props_B.json,
+                    then copies the rendered WAVs to `remotion/public/daily/<folder>/`
+                    (Remotion's `voiceSrc` needs them there; `run_render` only asserts
+                    they landed).
   7. Render       — `npx remotion render SlideStoryReel ...` for both variants.
   8. Carousel     — a minimal one-ticker kit md + `higgs/_build_v4.py` -> 3 PNGs.
                     Skipped (without failing the run) if `_build_v4.py` errors, or with
                     `--skip-carousel`.
-  9. Finalize     — moves the working folder to `higgs/daily/YYYY-MM-DD_TICKER/`, writes
-                    `manifest.json`, and appends to the posted log.
+  9. Finalize     — writes `manifest.json` into the temp folder, moves it to
+                    `higgs/daily/YYYY-MM-DD_TICKER/` (the move is the last effectful
+                    step, so it can't strand a manifest-less folder), then appends to
+                    the posted log (a failure there is a warning, not a run failure --
+                    the folder is already complete).
 
 Every step prints one progress line. Any failure raises `DailyPostError` with a named
-reason, aborts, and removes the temp working dir (steps 1-4 run before any temp dir
+reason, aborts, and removes the temp working dir plus the `remotion/public/daily/<folder>/`
+WAV copy if the align step had already created it (steps 1-4 run before any temp dir
 exists, so a failure there has nothing to clean up).
 
 `manifest.json` schema (see `build_manifest`):
@@ -120,7 +127,12 @@ def choose_candidate(candidates, ticker=None, auto=False, input_func=input):
     if auto:
         return candidates[0]
 
-    raw = (input_func("Pick 1-3 [Enter=1]: ") or "").strip()
+    try:
+        raw = (input_func("Pick 1-3 [Enter=1]: ") or "").strip()
+    except (EOFError, KeyboardInterrupt):
+        raise DailyPostError(
+            "candidates: no interactive input available (stdin closed) -- "
+            "pass --auto or --ticker in non-interactive contexts")
     idx = 0
     if raw:
         try:
@@ -184,6 +196,20 @@ def build_manifest(*, ticker, reason, score, story, bundle, date_str, seeds, fil
         "files": files,
         "posting_instructions": "B = Trial Reel first, A = main slot",
     }
+
+
+def write_manifest(tmp_dir, manifest):
+    """Write `manifest.json` into `tmp_dir` -- BEFORE the temp-dir-to-`higgs/daily/`
+    move, so `finalize` (the move) is the last effectful step in the pipeline. This
+    means a failure after this point (e.g. `finalize` itself, or `append_posted`)
+    can never strand a manifest-less folder: either the folder doesn't exist yet
+    (temp dir, cleaned up by the caller) or it exists complete with its manifest.
+    Returns the written path.
+    """
+    tmp_dir = pathlib.Path(tmp_dir)
+    p = tmp_dir / "manifest.json"
+    p.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    return p
 
 
 # --- carousel kit-md assembly (pure) -------------------------------------------
@@ -257,14 +283,37 @@ def build_kit_md(ticker, fields, date_str):
 # pure helpers above stay importable/testable without a GPU or any process spawn.
 # ---------------------------------------------------------------------------
 
+def _run_and_echo(cmd, cwd, env, shell=False):
+    """`subprocess.run` with output captured *and* echoed live to the console.
+
+    Capturing (rather than letting stdio inherit) is what lets a failure embed
+    the tail of stderr in the raised `DailyPostError` (mirrors `run_carousel`'s
+    existing pattern); echoing keeps a human watching the console able to see
+    progress as each step runs.
+    """
+    proc = subprocess.run(cmd, cwd=str(cwd), env=env, capture_output=True, text=True, shell=shell)
+    if proc.stdout:
+        print(proc.stdout, end="" if proc.stdout.endswith("\n") else "\n")
+    if proc.stderr:
+        print(proc.stderr, end="" if proc.stderr.endswith("\n") else "\n")
+    return proc
+
+
+def _stderr_tail(proc, n=400):
+    """Last `n` chars of `proc`'s stderr (falls back to stdout), for error messages."""
+    tail = (proc.stderr or proc.stdout or "").strip()
+    return tail[-n:]
+
+
 def run_refresh(python_exe=None, cwd=SCRIPTS):
     """pull_halal.py then export_halal.py, cwd=scripts, PYTHONIOENCODING=utf-8."""
     python_exe = python_exe or sys.executable
     env = dict(os.environ, PYTHONIOENCODING="utf-8")
     for script in ("pull_halal.py", "export_halal.py"):
-        proc = subprocess.run([python_exe, script], cwd=str(cwd), env=env)
+        proc = _run_and_echo([python_exe, script], cwd=cwd, env=env)
         if proc.returncode != 0:
-            raise DailyPostError(f"refresh: {script} failed (exit {proc.returncode})")
+            raise DailyPostError(
+                f"refresh: {script} failed (exit {proc.returncode}): {_stderr_tail(proc)}")
 
 
 def _vo_script(vo_lines):
@@ -285,9 +334,10 @@ def run_tts(tmp_dir, copy_result, python_exe=CHATTERBOX_PYTHON):
         txt_path = tmp_dir / f"{name}.txt"
         txt_path.write_text(_vo_script(copy_result[props_key]["vo"]), encoding="utf-8")
         cmd = [python_exe, str(karim_tts), "--text-file", name, str(txt_path), "--out", str(tmp_dir)]
-        proc = subprocess.run(cmd, cwd=str(ROOT), env=env)
+        proc = _run_and_echo(cmd, cwd=ROOT, env=env)
         if proc.returncode != 0:
-            raise DailyPostError(f"voice: karim_tts.py failed for {name} (exit {proc.returncode})")
+            raise DailyPostError(
+                f"voice: karim_tts.py failed for {name} (exit {proc.returncode}): {_stderr_tail(proc)}")
         wav_path = tmp_dir / f"voice_{name}.wav"
         if not wav_path.exists():
             raise DailyPostError(f"voice: expected {wav_path} was not written")
@@ -295,10 +345,15 @@ def run_tts(tmp_dir, copy_result, python_exe=CHATTERBOX_PYTHON):
     return wavs
 
 
-def run_align(tmp_dir, folder, copy_result, wavs, python_exe=CHATTERBOX_PYTHON):
+def run_align(tmp_dir, folder, copy_result, wavs, python_exe=CHATTERBOX_PYTHON, side_effect_dirs=None):
     """whisper_align.py per WAV -> align_beats.apply_timing per variant.
 
-    Writes props_A.json/props_B.json (with `voiceSrc` set) into `tmp_dir`.
+    Writes props_A.json/props_B.json (with `voiceSrc` set) into `tmp_dir`. Also
+    copies the WAVs to `remotion/public/daily/<folder>/` (this is the align step
+    per the brief's step numbering; `run_render` only asserts they landed).
+    `dest_voice_dir` is appended to `side_effect_dirs` (if given) right after
+    it's created, so a caller-owned cleanup handler can remove it on any later
+    pipeline failure without orphaning WAV copies outside git's view.
     Returns {"A": props_dict, "B": props_dict}.
     """
     whisper_align = ROOT / "scripts" / "voice" / "whisper_align.py"
@@ -308,32 +363,42 @@ def run_align(tmp_dir, folder, copy_result, wavs, python_exe=CHATTERBOX_PYTHON):
         wav_path = wavs[name]
         words_path = tmp_dir / f"words_{variant}.json"
         cmd = [python_exe, str(whisper_align), str(wav_path), "--out", str(words_path)]
-        proc = subprocess.run(cmd, cwd=str(ROOT), env=env)
+        proc = _run_and_echo(cmd, cwd=ROOT, env=env)
         if proc.returncode != 0:
-            raise DailyPostError(f"align: whisper_align.py failed for {variant} (exit {proc.returncode})")
+            raise DailyPostError(
+                f"align: whisper_align.py failed for {variant} (exit {proc.returncode}): {_stderr_tail(proc)}")
         words = json.loads(words_path.read_text(encoding="utf-8"))
         props = apply_timing(copy_result[props_key], words)
         props["voiceSrc"] = f"daily/{folder}/voice_{variant}.wav"
         (tmp_dir / f"props_{variant}.json").write_text(json.dumps(props, indent=2), encoding="utf-8")
         props_out[variant] = props
+
+    dest_voice_dir = REMOTION / "public" / "daily" / folder
+    dest_voice_dir.mkdir(parents=True, exist_ok=True)
+    if side_effect_dirs is not None:
+        side_effect_dirs.append(dest_voice_dir)
+    shutil.copy2(wavs["daily_a"], dest_voice_dir / "voice_A.wav")
+    shutil.copy2(wavs["daily_b"], dest_voice_dir / "voice_B.wav")
     return props_out
 
 
-def run_render(tmp_dir, folder, props_out, wavs):
-    """Copy WAVs to remotion/public/daily/<folder>/, then `npx remotion render` A/B."""
+def run_render(tmp_dir, folder, props_out):
+    """`npx remotion render` A/B, after asserting `run_align`'s WAV copies landed."""
     dest_voice_dir = REMOTION / "public" / "daily" / folder
-    dest_voice_dir.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(wavs["daily_a"], dest_voice_dir / "voice_A.wav")
-    shutil.copy2(wavs["daily_b"], dest_voice_dir / "voice_B.wav")
+    for variant in ("A", "B"):
+        wav_path = dest_voice_dir / f"voice_{variant}.wav"
+        if not wav_path.exists():
+            raise DailyPostError(f"render: expected {wav_path} was not written by the align step")
 
     outputs = {}
     for variant in ("A", "B"):
         props_path = tmp_dir / f"props_{variant}.json"
         out_mp4 = tmp_dir / f"daily_{variant}.mp4"
         cmd = f'npx remotion render SlideStoryReel "{out_mp4}" --props="{props_path}"'
-        proc = subprocess.run(cmd, cwd=str(REMOTION), shell=True)
+        proc = _run_and_echo(cmd, cwd=REMOTION, env=os.environ.copy(), shell=True)
         if proc.returncode != 0:
-            raise DailyPostError(f"render: remotion render failed for {variant} (exit {proc.returncode})")
+            raise DailyPostError(
+                f"render: remotion render failed for {variant} (exit {proc.returncode}): {_stderr_tail(proc)}")
         if not out_mp4.exists():
             raise DailyPostError(f"render: expected {out_mp4} was not written")
         outputs[variant] = out_mp4
@@ -446,15 +511,20 @@ def run(args, now=None, input_func=input):
 
     folder = folder_name(date_str, ticker)
     tmp_dir = pathlib.Path(tempfile.mkdtemp(prefix="daily_post_"))
+    # Side-effect dirs created outside tmp_dir (currently just the WAV copies under
+    # remotion/public/daily/<folder>/, written by run_align) -- tracked here so any
+    # failure past that point cleans them up too, instead of orphaning them (that
+    # path isn't gitignored, so a leftover dir would pollute git status).
+    side_effect_dirs = []
     try:
         print("[5/9] voice: rendering VO A/B via Chatterbox (karim_tts.py) ...")
         wavs = run_tts(tmp_dir, copy_result)
 
-        print("[6/9] align: whisper word-timestamps -> beat timing ...")
-        props_out = run_align(tmp_dir, folder, copy_result, wavs)
+        print("[6/9] align: whisper word-timestamps -> beat timing (+ WAV copy to remotion/public/) ...")
+        props_out = run_align(tmp_dir, folder, copy_result, wavs, side_effect_dirs=side_effect_dirs)
 
         print("[7/9] render: SlideStoryReel A/B via remotion ...")
-        run_render(tmp_dir, folder, props_out, wavs)
+        run_render(tmp_dir, folder, props_out)
 
         carousel_note = None
         if args.skip_carousel:
@@ -464,23 +534,33 @@ def run(args, now=None, input_func=input):
             carousel_note, _pngs = run_carousel(
                 tmp_dir, ticker, copy_result["kit_fields"], copy_result, chosen["reason"], date_str)
 
-        print("[9/9] finalize: moving folder + writing manifest + posted log ...")
-        dest = HIGGS / "daily" / folder
-        files = finalize(tmp_dir, dest)
+        print("[9/9] finalize: writing manifest, moving folder, updating posted log ...")
+        files = sorted(p.name for p in tmp_dir.iterdir())
         manifest = build_manifest(
             ticker=ticker, reason=chosen["reason"], score=chosen.get("score"),
             story=chosen.get("story"), bundle=bundle, date_str=date_str,
-            seeds={"tts_seed": TTS_SEED}, files=files)
+            seeds={"tts_seed": TTS_SEED}, files=files + ["manifest.json"])
         if carousel_note:
             manifest["carousel_note"] = carousel_note
-        (dest / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
-        files.append("manifest.json")
+        write_manifest(tmp_dir, manifest)  # written pre-move: the move below is now the last effectful step
 
-        daily_pick.append_posted(POSTED_LOG, {"symbol": ticker, "date": date_str, "folder": folder})
+        dest = HIGGS / "daily" / folder
+        finalize(tmp_dir, dest)
+
+        try:
+            daily_pick.append_posted(POSTED_LOG, {"symbol": ticker, "date": date_str, "folder": folder})
+        except Exception as e:
+            # The folder itself (dest) is already complete and valid -- manifest.json
+            # was written before the move above -- so a posted-log write failure here
+            # is a warning, not a run failure.
+            print(f"  WARN append_posted failed (folder is complete and valid): {e}")
+
         print(f"  OK wrote {dest}")
         return 0
     except Exception:
         shutil.rmtree(tmp_dir, ignore_errors=True)
+        for d in side_effect_dirs:
+            shutil.rmtree(d, ignore_errors=True)
         raise
 
 

@@ -27,9 +27,13 @@ capital_web_render.png
 
 # The Daily Screen — daily_post.py's finished-folder output + verdict-snapshot/
 # posted-log history (data/halal_history/ is also covered by "data/*" above;
-# listed explicitly for clarity alongside higgs/daily/).
+# listed explicitly for clarity alongside higgs/daily/). remotion/public/daily/
+# holds the WAV copies daily_post.py's align step writes for Remotion's
+# `voiceSrc` -- they legitimately stay after a successful run (re-renders reuse
+# them), so this is a blanket ignore rather than a per-post cleanup.
 higgs/daily/
 data/halal_history/
+remotion/public/daily/
 
 # Generated analyst/dashboard artifacts + scratch
 *_dashboard.html
