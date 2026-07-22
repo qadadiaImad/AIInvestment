@@ -3,7 +3,7 @@ import { readFileSync, readdirSync, existsSync } from 'fs'
 import { join } from 'path'
 import { HIGGS, CONTENT, DATA, FEEDBACK_FILE } from './paths'
 import { buildIndex } from './indexer'
-import { parseCaptions } from './captions'
+import { resolveCaption } from './caption-resolve'
 import { joinStock, type Bundles } from './datajoin'
 import { parseScriptSheet, parseKitCfg, parseHeroPrompt, parseHeroImage, parseStory } from './kit'
 import * as comments from './comments'
@@ -56,16 +56,7 @@ export function registerApi(): void {
     return joinStock(ticker, b)
   })
 
-  ipcMain.handle('caption:get', (_e, date: string, ticker: string) => {
-    for (const name of [`reels_${date}.txt`, `posts_${date}.txt`]) {
-      const p = join(HIGGS, name)
-      if (existsSync(p)) {
-        const c = parseCaptions(readFileSync(p, 'utf-8'))
-        if (c[ticker.toUpperCase()]) return c[ticker.toUpperCase()]
-      }
-    }
-    return ''
-  })
+  ipcMain.handle('caption:get', (_e, date: string, ticker: string) => resolveCaption(date, ticker))
 
   ipcMain.handle('kit:list', () => {
     const files = existsSync(HIGGS) ? readdirSync(HIGGS) : []
