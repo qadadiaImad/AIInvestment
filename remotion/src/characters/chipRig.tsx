@@ -38,8 +38,7 @@ type Pose = {
   blink: number;
 };
 
-const useChipPose = (mode: ChipMode, speed = 1): Pose => {
-  const frame = useCurrentFrame() * speed;
+const computeChipPose = (frame: number, mode: ChipMode): Pose => {
   const blinkT = frame % 120;
   const blink = blinkT < 4 ? 0.12 : blinkT < 8 ? 1 - Math.abs(6 - blinkT) * 0.22 : 1;
   const idleBob = Math.sin(frame / 22) * 4;
@@ -118,21 +117,81 @@ const Eye: React.FC<{cx: number; cy: number; rx: number; blink: number; look: nu
   </g>
 );
 
-const Limb: React.FC<{x: number; y: number; angle: number; len?: number; color?: string}> = ({x, y, angle, len = 34, color = EMERALD_DARK}) => (
-  <g transform={`rotate(${angle} ${x} ${y})`}>
-    <line x1={x} y1={y} x2={x} y2={y + len} stroke={color} strokeWidth="15" strokeLinecap="round" />
-    <circle cx={x} cy={y + len + 1} r="9.5" fill={C.emerald} stroke={color} strokeWidth="3" />
+/** Brawlhalla-proportioned mitt: an oversized rounded hand with two finger
+ * bumps, a thumb, and a gold wrist cuff (echoes the chip pins). Drawn
+ * pointing DOWN in local space; rotate the parent to aim it. `grip`:
+ * 'mitt' (closed), 'open' (fingers splayed), 'point' (index out). */
+const Mitt: React.FC<{x: number; y: number; grip?: 'mitt' | 'open' | 'point'; flip?: boolean}> = ({x, y, grip = 'mitt', flip = false}) => (
+  <g transform={`translate(${x} ${y}) scale(${flip ? -1 : 1} 1)`}>
+    {/* cuff */}
+    <rect x="-13" y="-8" width="26" height="12" rx="5" fill={PIN_GOLD} />
+    {grip === 'point' ? (
+      <>
+        <path d="M-12,2 Q-16,20 -4,24 Q10,27 14,16 Q16,10 12,4 Z" fill={C.emerald} stroke={EMERALD_DARK} strokeWidth="3.5" strokeLinejoin="round" />
+        <rect x="6" y="10" width="22" height="11" rx="5.5" fill={C.emerald} stroke={EMERALD_DARK} strokeWidth="3.5" />
+      </>
+    ) : grip === 'open' ? (
+      <>
+        <path d="M-14,0 Q-20,18 -8,25 Q4,30 14,22 Q20,16 16,4 Z" fill={C.emerald} stroke={EMERALD_DARK} strokeWidth="3.5" strokeLinejoin="round" />
+        <circle cx="-10" cy="24" r="6" fill={C.emerald} stroke={EMERALD_DARK} strokeWidth="3" />
+        <circle cx="2" cy="28" r="6" fill={C.emerald} stroke={EMERALD_DARK} strokeWidth="3" />
+        <circle cx="13" cy="23" r="6" fill={C.emerald} stroke={EMERALD_DARK} strokeWidth="3" />
+      </>
+    ) : (
+      <>
+        <path d="M-13,0 Q-18,16 -8,23 Q2,29 12,23 Q19,17 14,2 Z" fill={C.emerald} stroke={EMERALD_DARK} strokeWidth="3.5" strokeLinejoin="round" />
+        {/* finger seams */}
+        <path d="M-2,6 L-2,22 M7,5 L8,19" stroke={EMERALD_DARK} strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.7" />
+        {/* thumb */}
+        <ellipse cx="-13" cy="10" rx="6" ry="8" fill={C.emerald} stroke={EMERALD_DARK} strokeWidth="3" />
+      </>
+    )}
   </g>
 );
 
-export const ChipRig: React.FC<{size?: number; mode?: ChipMode; thetaOverride?: number; speed?: number}> = ({
+/** Chunky boot: big rounded toe, heel, contrasting sole. Drawn with the
+ * ankle at local (0,0), sole resting ~15px below. */
+const Boot: React.FC<{x: number; y: number; flip?: boolean}> = ({x, y, flip = false}) => (
+  <g transform={`translate(${x} ${y}) scale(${flip ? -1 : 1} 1)`}>
+    <path d="M-11,-6 L-11,8 Q-11,14 -4,15 L18,15 Q26,15 25,7 Q24,0 16,-1 L9,-2 L9,-6 Q9,-11 -1,-11 Q-11,-11 -11,-6 Z" fill={EMERALD_DARK} stroke="#065c42" strokeWidth="3" strokeLinejoin="round" />
+    <path d="M-11,12 L25,12 L25,10 Q26,15 18,15 L-4,15 Q-11,14 -11,9 Z" fill="#065c42" />
+  </g>
+);
+
+/** Arm: slim two-point limb from shoulder to wrist with a slight elbow
+ * bow, ending in an oversized Mitt. Rotates about the shoulder. */
+const Arm: React.FC<{x: number; y: number; angle: number; len?: number; grip?: 'mitt' | 'open' | 'point'; flip?: boolean}> = ({
+  x,
+  y,
+  angle,
+  len = 36,
+  grip = 'mitt',
+  flip = false,
+}) => (
+  <g transform={`rotate(${angle} ${x} ${y})`}>
+    <path d={`M${x},${y} Q${x + (flip ? -7 : 7)},${y + len * 0.55} ${x},${y + len}`} fill="none" stroke={EMERALD_DARK} strokeWidth="13" strokeLinecap="round" />
+    <Mitt x={x} y={y + len} grip={grip} flip={flip} />
+  </g>
+);
+
+/** Leg: short thick limb from hip to ankle ending in a chunky Boot. */
+const Leg: React.FC<{x: number; y: number; angle: number; len?: number; flip?: boolean}> = ({x, y, angle, len = 20, flip = false}) => (
+  <g transform={`rotate(${angle} ${x} ${y})`}>
+    <line x1={x} y1={y} x2={x} y2={y + len} stroke={EMERALD_DARK} strokeWidth="14" strokeLinecap="round" />
+    <Boot x={x} y={y + len} flip={flip} />
+  </g>
+);
+
+export const ChipRig: React.FC<{size?: number; mode?: ChipMode; thetaOverride?: number; speed?: number; frameOverride?: number}> = ({
   size = 240,
   mode = 'idle',
   thetaOverride,
   speed = 1,
+  frameOverride,
 }) => {
-  const frame = useCurrentFrame();
-  const pose = useChipPose(mode, speed);
+  const currentFrame = useCurrentFrame();
+  const frame = (frameOverride ?? currentFrame) * speed;
+  const pose = computeChipPose(frame, mode);
   const theta = thetaOverride ?? pose.theta;
   const c = Math.cos(theta);
   const s = Math.sin(theta);
@@ -153,17 +212,15 @@ export const ChipRig: React.FC<{size?: number; mode?: ChipMode; thetaOverride?: 
     <svg width={size} height={size} viewBox="0 0 240 240">
       <ellipse cx="120" cy="220" rx={62 - pose.lift * 0.25 - pose.bob * 2} ry={9 - pose.lift * 0.04} fill="#000" opacity={0.28 - pose.lift * 0.0015} />
       {/* squash/stretch + jump pivot about the ground point */}
-      <g transform={`translate(0 ${pose.bob - pose.lift}) translate(120 ${groundY}) scale(${2 - pose.squash} ${pose.squash}) rotate(${pose.lean * s >= 0 ? pose.lean : pose.lean}) translate(-120 -${groundY})`}>
-        {/* legs */}
-        <Limb x={100} y={188} angle={pose.legL} len={22} />
-        <Limb x={140} y={188} angle={pose.legR} len={22} />
+      <g transform={`translate(0 ${pose.bob - pose.lift}) translate(120 ${groundY}) scale(${2 - pose.squash} ${pose.squash}) rotate(${pose.lean}) translate(-120 -${groundY})`}>
+        {/* legs + chunky boots; front-facing stance points the boots
+            outward, a turned/walking pose points both toes with the facing */}
+        <Leg x={100} y={184} angle={pose.legL} flip={s < 0.15} />
+        <Leg x={140} y={184} angle={pose.legR} />
 
-        {/* far arm (behind body) */}
-        {pose.wave || pose.point ? (
-          <Limb x={bodyX + 8} y={142} angle={pose.armL} />
-        ) : (
-          <Limb x={bodyX + 8} y={142} angle={pose.armL} />
-        )}
+        {/* far arm — anchored just OUTSIDE the body edge so the big mitt
+            always hangs visibly beside the body, Brawlhalla-style */}
+        <Arm x={bodyX - 5} y={140} angle={pose.armL + 8} grip="mitt" flip />
 
         {/* side extrusion slab (the faux-3D depth edge) */}
         {slabW > 1.5 ? (
@@ -234,20 +291,13 @@ export const ChipRig: React.FC<{size?: number; mode?: ChipMode; thetaOverride?: 
           </>
         )}
 
-        {/* near arm (in front of body) */}
+        {/* near arm — same outside-the-edge anchoring */}
         {pose.wave ? (
-          <g transform={`rotate(${-135 + pose.armR} ${bodyX + bodyW - 8} 142)`}>
-            <line x1={bodyX + bodyW - 8} y1={142} x2={bodyX + bodyW - 8} y2={142 + 36} stroke={EMERALD_DARK} strokeWidth="15" strokeLinecap="round" />
-            <circle cx={bodyX + bodyW - 8} cy={142 + 38} r="10" fill={C.emerald} stroke={EMERALD_DARK} strokeWidth="3" />
-          </g>
+          <Arm x={bodyX + bodyW + 5} y={140} angle={-148 + pose.armR} grip="open" />
         ) : pose.point ? (
-          <g transform={`rotate(-95 ${bodyX + bodyW - 8} 142)`}>
-            <line x1={bodyX + bodyW - 8} y1={142} x2={bodyX + bodyW - 8} y2={142 + 44} stroke={EMERALD_DARK} strokeWidth="15" strokeLinecap="round" />
-            <circle cx={bodyX + bodyW - 8} cy={142 + 46} r="9" fill={C.emerald} stroke={EMERALD_DARK} strokeWidth="3" />
-            <line x1={bodyX + bodyW - 8} y1={142 + 46} x2={bodyX + bodyW - 8} y2={142 + 60} stroke={EMERALD_DARK} strokeWidth="8" strokeLinecap="round" />
-          </g>
+          <Arm x={bodyX + bodyW + 5} y={140} angle={-96} len={42} grip="point" />
         ) : (
-          <Limb x={bodyX + bodyW - 8} y={142} angle={pose.armR} />
+          <Arm x={bodyX + bodyW + 5} y={140} angle={pose.armR - 8} grip="mitt" />
         )}
       </g>
     </svg>

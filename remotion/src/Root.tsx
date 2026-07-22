@@ -15,6 +15,7 @@ import { TutorialReel } from "./compositions/TutorialReel";
 import { KurzSlide } from "./compositions/KurzSlide";
 import { CharacterCard, characterCardSchema } from "./compositions/CharacterCard";
 import { ChipShowcase, chipShowcaseSchema } from "./compositions/ChipShowcase";
+import { ExplainerScene, explainerSceneSchema } from "./compositions/ExplainerScene";
 import { reelPropsSchema } from "./props";
 import { slideStoryPropsSchema } from "./slides/slideProps";
 import { tutorialPropsSchema } from "./slides/tutorialProps";
@@ -126,6 +127,33 @@ export const RemotionRoot: React.FC = () => {
           variant: "lineup" as const,
           footer: "Original AI STACK characters — educational content · not financial advice",
           durationInFrames: 300,
+        }}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: props.durationInFrames,
+        })}
+      />
+      <Composition
+        id="ExplainerScene"
+        component={ExplainerScene}
+        durationInFrames={430}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={explainerSceneSchema}
+        defaultProps={{
+          kick: "CHIP EXPLAINS",
+          title: "AMD: the model vs the market.",
+          bars: [
+            {label: "MODEL VALUE", value: 241, color: "#34D399"},
+            {label: "PRICE", value: 558, color: "#E0A23B"},
+          ],
+          beats: [
+            {text: "A fundamental-value model puts AMD near $241.", at: 100},
+            {text: "The market pays $558 — more than double the model.", at: 190},
+            {text: "That gap IS the story. Growth is real — so is the price of it.", at: 280},
+          ],
+          footer: "Figures as of July 11, 2026 — educational · not financial advice",
+          durationInFrames: 430,
         }}
         calculateMetadata={({ props }) => ({
           durationInFrames: props.durationInFrames,

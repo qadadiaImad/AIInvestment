@@ -45,11 +45,27 @@ const Sheet: React.FC = () => (
         </div>
       ))}
     </div>
-    <div style={{display: 'flex', justifyContent: 'center', gap: 60, marginTop: 24}}>
+    <div style={{display: 'flex', justifyContent: 'center', gap: 60, marginTop: 8}}>
       {ANGLES.slice(3).map((a) => (
         <div key={a.label} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <ChipRig size={330} thetaOverride={a.theta} />
           <div style={{fontFamily: FONT.mono, fontWeight: 700, fontSize: 24, letterSpacing: 3, color: C.muted}}>{a.label}</div>
+        </div>
+      ))}
+    </div>
+    {/* action poses — frozen mid-move via frameOverride */}
+    <div style={{display: 'flex', justifyContent: 'center', gap: 10, marginTop: 10}}>
+      {(
+        [
+          {label: 'WALK', mode: 'walk', f: 8},
+          {label: 'WAVE', mode: 'wave', f: 9},
+          {label: 'POINT', mode: 'point', f: 30},
+          {label: 'JUMP', mode: 'jump', f: 40},
+        ] as const
+      ).map((p) => (
+        <div key={p.label} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+          <ChipRig size={250} mode={p.mode} frameOverride={p.f} />
+          <div style={{fontFamily: FONT.mono, fontWeight: 700, fontSize: 21, letterSpacing: 3, color: C.emerald}}>{p.label}</div>
         </div>
       ))}
     </div>
