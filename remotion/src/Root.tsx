@@ -16,6 +16,7 @@ import { KurzSlide } from "./compositions/KurzSlide";
 import { CharacterCard, characterCardSchema } from "./compositions/CharacterCard";
 import { ChipShowcase, chipShowcaseSchema } from "./compositions/ChipShowcase";
 import { ExplainerScene, explainerSceneSchema } from "./compositions/ExplainerScene";
+import { FamilyRigShowcase, familyRigShowcaseSchema } from "./compositions/FamilyRigShowcase";
 import { reelPropsSchema } from "./props";
 import { slideStoryPropsSchema } from "./slides/slideProps";
 import { tutorialPropsSchema } from "./slides/tutorialProps";
@@ -154,6 +155,24 @@ export const RemotionRoot: React.FC = () => {
           ],
           footer: "Figures as of July 11, 2026 — educational · not financial advice",
           durationInFrames: 430,
+        }}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: props.durationInFrames,
+        })}
+      />
+      <Composition
+        id="FamilyRigShowcase"
+        component={FamilyRigShowcase}
+        durationInFrames={930}
+        fps={30}
+        width={1080}
+        height={1350}
+        schema={familyRigShowcaseSchema}
+        defaultProps={{
+          character: "watt" as const,
+          variant: "sheet" as const,
+          footer: "Original AI STACK character — educational content · not financial advice",
+          durationInFrames: 930,
         }}
         calculateMetadata={({ props }) => ({
           durationInFrames: props.durationInFrames,
