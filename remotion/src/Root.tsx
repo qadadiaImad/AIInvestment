@@ -18,6 +18,7 @@ import { ChipShowcase, chipShowcaseSchema } from "./compositions/ChipShowcase";
 import { ExplainerScene, explainerSceneSchema } from "./compositions/ExplainerScene";
 import { FamilyRigShowcase, familyRigShowcaseSchema } from "./compositions/FamilyRigShowcase";
 import { ExplainerSceneV2 } from "./compositions/ExplainerSceneV2";
+import { FaceoffOverlay, faceoffOverlaySchema } from "./compositions/FaceoffOverlay";
 import { reelPropsSchema } from "./props";
 import { slideStoryPropsSchema } from "./slides/slideProps";
 import { tutorialPropsSchema } from "./slides/tutorialProps";
@@ -160,6 +161,16 @@ export const RemotionRoot: React.FC = () => {
         calculateMetadata={({ props }) => ({
           durationInFrames: props.durationInFrames,
         })}
+      />
+      <Composition
+        id="FaceoffOverlay"
+        component={FaceoffOverlay}
+        durationInFrames={1}
+        fps={30}
+        width={1080}
+        height={1350}
+        schema={faceoffOverlaySchema}
+        defaultProps={{ img: "uploads/faceoff_hearts.png" }}
       />
       <Composition
         id="ExplainerSceneV2"
