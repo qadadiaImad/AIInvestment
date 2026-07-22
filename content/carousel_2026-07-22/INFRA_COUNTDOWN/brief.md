@@ -20,17 +20,23 @@ Reveal order (worst → best): **CIEN → ANET → AVGO → SMCI**
 
 ## IG caption
 
-Four similar AI-infrastructure stocks — same sector, comparable business model. Four completely different prices vs. what the fundamentals actually support.
+Same sector. Four AI-infrastructure names. Four wildly different prices vs. what the fundamentals actually support. 📊
 
-We ranked them worst to best — not by hype, by the gap between price and modeled fair value. Watch the numbers build, then watch the ranking flip in real time as a better name knocks the previous "best" down a spot.
+The ranking flips live in the reel — worst to best, judged purely on the gap between price and modeled fair value. Not by story, not by hype. 🔻🔺
 
-Quick honesty check: cheapest-vs-fair-value isn't automatically "best stock." Ciena and Arista both post excellent margins — they're just priced well ahead of the model right now. Broadcom is the highest-margin name in the group, still overvalued by our numbers. Super Micro is the value name here, but it also carries the most leverage of the four. Read the whole table, not just the rank.
+The reveal, worst → best:
+4️⃣ CIEN — Ciena: ~373% above modeled fair value
+3️⃣ ANET — Arista: ~33% above fair value
+2️⃣ AVGO — Broadcom: ~26% above fair value
+1️⃣ SMCI — Super Micro: ~68% BELOW fair value — the one worth watching 👀
 
-Part 1 of this series (CRDO vs NET) is a few posts back if you missed it. Save this one — it's the framework, not just the ranking.
+Honesty check before anyone screenshots just the ranking: cheapest-vs-model isn't automatically "best stock." Arista and Broadcom post the best margins of the four (38%+) — they're just priced well ahead of the model right now. Ciena pairs the steepest overvaluation with a thin margin. Super Micro is the value name here, but it also carries the thinnest margin and the most leverage of the group. Read past the rank.
+
+Part 1 of this series (CRDO vs NET) is a few posts back — save this one, it's the framework, not just the ranking. 🔖
 
 Educational only, not financial advice — DYOR.
 
-#SMCI #AVGO #ANET #CIEN #aiinfrastructure #aistocks #semiconductors #datacenters #fundamentalanalysis #investing #trading #stocktrading #stockmarket #wallstreet
+#SMCI #AVGO #ANET #CIEN #AIinfrastructure #AIstocks #semiconductors #datacenters #fundamentalanalysis #investing #stockstowatch #stocktrading #stockmarket #wallstreet
 
 ## Provenance
 
@@ -51,45 +57,31 @@ price exactly in this bundle — no distinct model estimate, not a genuine
   undervalued" as "best stock" and calls out each name's real fundamentals.
 - No company named without its number traced to the bundle.
 
-## Voiceover (Karim, opt-in — NOT yet generated in this render)
+## Voiceover (Karim — generated, `infra_countdown_voiced.mp4` is the post-ready file)
 
-Narration is wired into the composition but **off by default**
-(`withVoice: false` in the fixture) because generating it requires the
-Chatterbox voice-clone model, and this cloud session's network policy blocks
-both `huggingface.co` (Chatterbox's model weights host) and the edge-tts
-endpoint — confirmed via the proxy's own relay-failure log (403 on both).
-Neither TTS path is reachable from here. The voice asset itself
-(`course/persona/voice/karim_sample.wav`) IS in the repo; the generation step
-just has to run somewhere with model access — i.e., your machine, per
-`course/persona/VOICE.md`'s existing local-Chatterbox pipeline.
+Narration is on (`withVoice: true`) and rendered. Generated locally (Chatterbox
+needs `huggingface.co`, blocked from the cloud sandbox — see
+`GENERATE_VOICE.md` for the full local-run checklist and the exact timing
+mechanics). Six clips: an intro hook line, one per ticker, and an outro —
+`remotion/public/audio/infra_countdown/voice_{intro,cien,anet,avgo,smci,outro}.wav`.
 
-**One-time setup** (if not already done — see `VOICE.md`): a Python venv with
-`torch` + `chatterbox-tts` installed.
+**Scripts** (`content/carousel_2026-07-22/INFRA_COUNTDOWN/voice/*.txt`) —
+each ticker line ties the business to its on-screen valuation verdict rather
+than just describing what the company does:
+- INTRO: "Same sector wildly different prices"
+- CIEN: "Ciena builds optical networks for data centers, priced well above fair value."
+- ANET: "Arista builds switches for AI data centers, still trading above fair value."
+- AVGO: "Broadcom designs chips for major clouds, priced above fair value."
+- SMCI: "Super Micro builds AI servers, and trades well below fair value."
+- OUTRO: "Super Micro trades far below fair value — the one worth watching."
 
-**Generate the 5 clips** (4 ticker blurbs + 1 outro line, ~4.8s each, same
-voice/seed/delivery settings as the rest of the channel):
+No spoken disclaimer (owner direction 2026-07-22) — the on-screen footer
+("...educational, not financial advice") renders for the whole video, so the
+outro line instead calls back to the winner. See the Compliance section above:
+the caption and footer still carry the caveat.
+
+To regenerate after further script edits: `<chatterbox-venv-python>
+scripts/voice/infra_countdown_voice.py`, then re-render:
 ```
-<chatterbox-venv-python> scripts/voice/infra_countdown_voice.py
-```
-Writes `remotion/public/audio/infra_countdown/voice_{cien,anet,avgo,smci,outro}.wav`
-+ `durations.json`, and warns if any ticker clip runs past its 5.1667s
-display budget (155 frames) so you can trim the script before re-rendering.
-
-**Scripts** (`content/carousel_2026-07-22/INFRA_COUNTDOWN/voice/*.txt`,
-"briefly what they're good at," not the numbers already on screen):
-- CIEN: "Ciena builds the optical networks moving data across the world's data centers."
-- ANET: "Arista builds the high speed switches inside the world's biggest data centers."
-- AVGO: "Broadcom designs custom chips and networking silicon for the largest cloud providers."
-- SMCI: "Super Micro builds the servers that pack AI chips into deployable racks."
-- OUTRO: "Educational commentary only — not financial advice."
-
-Each ticker clip starts exactly when that ticker's card appears and is fully
-contained inside its number-display window (before the collapse-into-rail
-animation begins) — it does not run during the collapse or into the next
-ticker's segment.
-
-**Enable + re-render**: set `"withVoice": true` in
-`remotion/src/fixtures/infra_countdown_2026-07-22.json`, then:
-```
-cd remotion && npx remotion render InfraCountdown out.mp4
+cd remotion && npx remotion render InfraCountdown ../content/carousel_2026-07-22/INFRA_COUNTDOWN/infra_countdown_voiced.mp4
 ```
