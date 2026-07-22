@@ -5,7 +5,7 @@
   "title": "Close: $544.43",
   "body": [
     {
-      "t": "A cached (7/11) fundamental-value model reads "
+      "t": "A fundamental-value model (as of July 11) reads "
     },
     {
       "t": "$241 fair vs ~$558 price",
@@ -29,9 +29,10 @@
       "b": true
     },
     {
-      "t": " (cached 7/11)."
+      "t": " (as of July 11)."
     }
   ],
   "durationInFrames": 240,
-  "footer": "Educational market commentary — not financial advice · DYOR"
+  "footer": "Educational market commentary — not financial advice · DYOR",
+  "footnote": ""
 }

@@ -21,9 +21,10 @@
       "b": true
     },
     {
-      "t": ". Cached (7/11) model: $28.23 fair vs ~$110 price."
+      "t": ". A fundamental-value model (as of July 11): $28.23 fair vs ~$110 price."
     }
   ],
   "durationInFrames": 240,
-  "footer": "Educational market commentary — not financial advice · DYOR"
+  "footer": "Educational market commentary — not financial advice · DYOR",
+  "footnote": ""
 }

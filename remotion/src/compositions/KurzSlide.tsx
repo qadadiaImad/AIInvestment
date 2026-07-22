@@ -239,7 +239,9 @@ const CompanyScene: React.FC<KurzCompanyProps> = (p) => (
           <MetricPill key={pill.label} label={pill.label} value={pill.value} delay={70 + i * 10} />
         ))}
       </div>
-      <div style={{fontFamily: FONT.mono, fontSize: 19, color: C.muted, marginTop: 10, textAlign: 'center'}}>{p.footnote}</div>
+      {p.footnote ? (
+        <div style={{fontFamily: FONT.mono, fontSize: 19, color: C.muted, marginTop: 10, textAlign: 'center'}}>{p.footnote}</div>
+      ) : null}
     </div>
   </AbsoluteFill>
 );

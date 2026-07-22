@@ -6,8 +6,8 @@
   "fv": 241.23,
   "price": 557.89,
   "fvLabel": "MODEL VALUE",
-  "priceLabel": "PRICE (7/11)",
-  "verdict": "OVERVALUED · MODEL CACHED 7/11",
+  "priceLabel": "PRICE",
+  "verdict": "OVERVALUED",
   "stats": [
     {
       "label": "P/E (TTM)",
@@ -40,7 +40,7 @@
       "tone": "emerald"
     }
   ],
-  "footnote": "All figures cached 2026-07-11 bundle · 7/21 close was $544.43 (IBKR-checked)",
+  "footnote": "Figures as of July 11, 2026",
   "durationInFrames": 300,
   "footer": "Educational market commentary — not financial advice · DYOR"
 }

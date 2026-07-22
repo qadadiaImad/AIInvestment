@@ -39,7 +39,7 @@ export const kurzCompanySchema = z.object({
   perfLabel: z.string(),
   motif: z.enum(['beams', 'prism', 'stack']),
   pills: z.array(z.object({label: z.string(), value: z.string()})).length(3),
-  footnote: z.string(),
+  footnote: z.string().optional(),
   durationInFrames: z.number(),
 });
 

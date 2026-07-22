@@ -14,7 +14,7 @@
       "b": true
     },
     {
-      "t": ". Cached (7/11) model: $2.63 fair vs ~$20 price. The one real number: revenue "
+      "t": ". A fundamental-value model (as of July 11): $2.63 fair vs ~$20 price. The one real number: revenue "
     },
     {
       "t": "$7.2M (2022) → $24.6M (2025)",
@@ -26,5 +26,6 @@
     }
   ],
   "durationInFrames": 240,
-  "footer": "Educational market commentary — not financial advice · DYOR"
+  "footer": "Educational market commentary — not financial advice · DYOR",
+  "footnote": ""
 }

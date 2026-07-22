@@ -7,8 +7,8 @@
   "fv": 2.63,
   "price": 20.09,
   "fvLabel": "MODEL VALUE",
-  "priceLabel": "PRICE (7/11)",
-  "verdict": "OVERVALUED · MODEL CACHED 7/11",
+  "priceLabel": "PRICE",
+  "verdict": "OVERVALUED",
   "stats": [
     {
       "label": "P/S (TTM)",
@@ -41,7 +41,7 @@
       "tone": "emerald"
     }
   ],
-  "footnote": "All figures cached 2026-07-11 bundle · revenue $7.2M ('22) → $24.6M ('25) is real growth",
+  "footnote": "Figures as of July 11, 2026",
   "durationInFrames": 300,
   "footer": "Educational market commentary — not financial advice · DYOR"
 }

@@ -17,11 +17,11 @@
       "value": "Microsoft × Helios on Azure"
     },
     {
-      "label": "Model vs price (cached 7/11)",
+      "label": "Model value vs price",
       "value": "$241 vs $558"
     }
   ],
-  "footnote": "Live 7/21-22, cross-checked vs IBKR · cached items labeled (7/11)",
   "durationInFrames": 270,
-  "footer": "Educational market commentary — not financial advice · DYOR"
+  "footer": "Educational market commentary — not financial advice · DYOR",
+  "footnote": ""
 }
