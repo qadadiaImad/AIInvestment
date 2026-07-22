@@ -34,11 +34,14 @@
 import React from 'react';
 import {
   AbsoluteFill,
+  Audio,
   Easing,
   Sequence,
   Series,
   interpolate,
+  staticFile,
   useCurrentFrame,
+  useVideoConfig,
 } from 'remotion';
 import type {Beat, RichTextValue, SlideStoryProps} from '../slides/slideProps';
 import {C, FONT} from '../slides/theme';
@@ -403,12 +406,62 @@ const EndCardScene: React.FC<{beat: Extract<Beat, {kind: 'endcard'}>; badge: {te
   );
 };
 
+// Bottom-third whisper-timed caption pill (halal-reels caption look, applied
+// to this schema's top-level `captions` track rather than a per-scene
+// <Caption>). Positioned `CAPTION_BOTTOM_OFFSET` above the padded bottom
+// edge so it never covers the Foot disclaimer, which occupies that same
+// padded-bottom-edge slot one layer below it (PAD=84 + Foot's ~28px line
+// height ≈ 112px already spoken for — 130px clears it with margin).
+const CAPTION_BOTTOM_OFFSET = 130;
+
+const CaptionLayer: React.FC<{captions: SlideStoryProps['captions']}> = ({captions}) => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const ms = (frame / fps) * 1000;
+  // Half-open span match ([fromMs, toMs)) so adjacent whisper-word spans
+  // never both (or neither) claim the boundary frame.
+  const active = captions.find((c) => ms >= c.fromMs && ms < c.toMs);
+  if (!active) return null;
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: PAD,
+        right: PAD,
+        bottom: CAPTION_BOTTOM_OFFSET,
+        display: 'flex',
+        justifyContent: 'center',
+        pointerEvents: 'none',
+      }}
+    >
+      <span
+        style={{
+          fontFamily: FONT.mono,
+          fontWeight: 700,
+          fontSize: 34,
+          lineHeight: 1.35,
+          color: C.ink,
+          background: '#0009',
+          padding: '16px 28px',
+          borderRadius: 18,
+          maxWidth: 900,
+          textAlign: 'center',
+          textShadow: '0 2px 12px rgba(0,0,0,.6)',
+        }}
+      >
+        {active.text}
+      </span>
+    </div>
+  );
+};
+
 export const SlideStoryReel: React.FC<SlideStoryProps> = (props) => {
   const totalFrames = props.beats.reduce((sum, b) => sum + b.durationInFrames, 0);
   const headerBadge = {text: props.badge, color: badgeColor(props.badge)};
 
   return (
     <AbsoluteFill style={{fontFamily: FONT.body}}>
+      {props.voiceSrc ? <Audio src={staticFile(props.voiceSrc)} /> : null}
       <Bg tint={headerBadge.color} />
       <AbsoluteFill style={{padding: PAD}}>
         <Head tk={props.ticker} sub={props.tickerSub} badge={headerBadge} />
@@ -456,6 +509,15 @@ export const SlideStoryReel: React.FC<SlideStoryProps> = (props) => {
           <Foot text={props.disclaimer} />
         </Sequence>
       </AbsoluteFill>
+
+      {/* VO-less fixtures carry captions: [] (schema default) — CaptionLayer
+          renders nothing then, so the composition is pixel-identical to
+          pre-Task-5 output. */}
+      {props.captions.length > 0 ? (
+        <Sequence from={0} durationInFrames={totalFrames} layout="none" name="Captions">
+          <CaptionLayer captions={props.captions} />
+        </Sequence>
+      ) : null}
     </AbsoluteFill>
   );
 };
