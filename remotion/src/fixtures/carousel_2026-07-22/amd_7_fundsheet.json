@@ -1,0 +1,46 @@
+{
+  "logoSrc": "logos/AMD.svg",
+  "kind": "fundsheet",
+  "kick": "THE SHEET",
+  "title": "Fundamental value vs price.",
+  "fv": 241.23,
+  "price": 557.89,
+  "fvLabel": "MODEL VALUE",
+  "priceLabel": "PRICE (7/11)",
+  "verdict": "OVERVALUED · MODEL CACHED 7/11",
+  "stats": [
+    {
+      "label": "P/E (TTM)",
+      "value": "183×",
+      "tone": "amber"
+    },
+    {
+      "label": "P/S (TTM)",
+      "value": "24.6×",
+      "tone": "amber"
+    },
+    {
+      "label": "GROSS MARGIN",
+      "value": "47.1%",
+      "tone": "emerald"
+    },
+    {
+      "label": "NET MARGIN",
+      "value": "13.2%",
+      "tone": "emerald"
+    },
+    {
+      "label": "REV GROWTH YoY",
+      "value": "+35.0%",
+      "tone": "emerald"
+    },
+    {
+      "label": "DEBT / EQUITY",
+      "value": "0.06",
+      "tone": "emerald"
+    }
+  ],
+  "footnote": "All figures cached 2026-07-11 bundle · 7/21 close was $544.43 (IBKR-checked)",
+  "durationInFrames": 300,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

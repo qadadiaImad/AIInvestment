@@ -1,0 +1,67 @@
+{
+  "logoSrc": "logos/AMD.svg",
+  "kind": "news",
+  "kick": "WHY IT'S MOVING",
+  "title": "The last 48 hours.",
+  "items": [
+    {
+      "date": "7/21",
+      "tag": "REPORTED",
+      "text": [
+        {
+          "t": "Microsoft to deploy AMD's "
+        },
+        {
+          "t": "Helios",
+          "b": true
+        },
+        {
+          "t": " rack-scale AI systems across Azure — the stock closed "
+        },
+        {
+          "t": "+8.11% at $544.43",
+          "tone": "emerald",
+          "b": true
+        },
+        {
+          "t": "."
+        }
+      ]
+    },
+    {
+      "date": "7/22",
+      "tag": "FACT",
+      "text": [
+        {
+          "t": "AMD's own "
+        },
+        {
+          "t": "Advancing AI 2026",
+          "b": true
+        },
+        {
+          "t": " event opens in San Francisco (July 22–23) — keynote today."
+        }
+      ]
+    },
+    {
+      "date": "7/22",
+      "tag": "EXPECTED",
+      "text": [
+        {
+          "t": "A "
+        },
+        {
+          "t": "third gigawatt-scale AI customer",
+          "b": true
+        },
+        {
+          "t": " reportedly expected on stage — still unconfirmed."
+        }
+      ]
+    }
+  ],
+  "footnote": "Headlines web-sourced 7/22 · close cross-checked vs IBKR · certainty labeled",
+  "durationInFrames": 270,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

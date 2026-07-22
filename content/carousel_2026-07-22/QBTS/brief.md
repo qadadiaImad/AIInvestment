@@ -21,3 +21,16 @@ Save this for the Nasdaq debut (7/27).
 Price/52-wk range live-validated vs Interactive Brokers 2026-07-22T08:24Z (prior close ~$17.80,
 range $12.755-$46.75 exact). Model/revenue figures: cached 2026-07-11 quantum.json, labeled.
 Listing transfer: reported (company release, 7/14). Not financial advice.
+
+## Extra slides (added 2026-07-22, engine kinds business/news/fundsheet)
+5. slide_5_business.png — WHAT D-WAVE SELLS: Advantage systems (annealing), Leap cloud
+   (subscription access), Hybrid solvers (optimization services). Qualitative framing.
+6. slide_6_news.png — WHY IT'S MOVING timeline: 7/14 REPORTED NYSE->Nasdaq announcement,
+   7/24 REPORTED last NYSE session, 7/27 REPORTED Nasdaq debut (same ticker), 7/21 FACT
+   trades under $18 vs $46.75 52-wk high (IBKR-checked).
+7. slide_7_fundsheet.png — THE SHEET: model value $2.63 vs price $20.09 compare bars,
+   OVERVALUED verdict pill, ratio grid (P/S 593x, net margin deep negative, gross 32.9%,
+   revenue 2025 $24.6M, current ratio 21.4, D/E 0.04). All cached 2026-07-11, labeled.
+
+Suggested post order: 1 (cover) -> 5 (business) -> 6 (news) -> 7 (sheet) -> 4 (CTA);
+slides 2-3 optional inserts for a long-form carousel.

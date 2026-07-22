@@ -7,7 +7,15 @@
 // motion. No mascots, no borrowed trade dress.
 import React from 'react';
 import {AbsoluteFill, Img, OffthreadVideo, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
-import type {KurzCompanyProps, KurzIntroVideoProps, KurzSlideProps, KurzTextProps} from '../slides/kurzProps';
+import type {
+  KurzBusinessProps,
+  KurzCompanyProps,
+  KurzFundsheetProps,
+  KurzIntroVideoProps,
+  KurzNewsProps,
+  KurzSlideProps,
+  KurzTextProps,
+} from '../slides/kurzProps';
 import type {RichTextValue} from '../slides/slideProps';
 import {C, FONT} from '../slides/theme';
 import {Bg, Caption, Foot, Slam} from '../slides/ui';
@@ -254,8 +262,242 @@ const TextScene: React.FC<KurzTextProps> = (p) => (
   </AbsoluteFill>
 );
 
+/** Spring-in rounded card shared by the business/news scenes. */
+const PopCard: React.FC<{delay?: number; children: React.ReactNode; style?: React.CSSProperties}> = ({delay = 0, children, style}) => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const p = spring({frame: frame - delay, fps, config: {damping: 13, mass: 0.6, stiffness: 150}});
+  const s = Math.min(1, p);
+  return (
+    <div
+      style={{
+        background: C.panel,
+        border: `1.5px solid ${C.line}`,
+        borderRadius: 28,
+        opacity: Math.min(1, p * 1.5),
+        scale: String(0.92 + 0.08 * s),
+        translate: `0px ${(1 - s) * 34}px`,
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
+/** BUSINESS — "what the company sells": headline + stacked segment cards,
+ * each with a numbered accent dot, name and one-liner. */
+const BusinessScene: React.FC<KurzBusinessProps> = (p) => {
+  const accents = [C.emerald, C.mint, C.amber, C.inkSoft];
+  // 4-segment slides get a compact scale so the last card never collides
+  // with the footer disclaimer.
+  const compact = p.segments.length >= 4;
+  const titleSize = compact ? 56 : 66;
+  const subSize = compact ? 24 : 27;
+  const cardPad = compact ? '18px 26px' : '26px 32px';
+  const nameSize = compact ? 29 : 34;
+  const descSize = compact ? 22 : 25;
+  const listGap = compact ? 13 : 18;
+  return (
+    <AbsoluteFill style={{padding: compact ? '128px 72px 112px' : '150px 72px 130px'}}>
+      <FloatingBlob size={700} x={82} y={12} hue={C.emerald} hue2={C.mint} seed={4} opacity={0.18} />
+      <div style={{display: 'flex', flexDirection: 'column', gap: compact ? 14 : 20}}>
+        <KickChip text={p.kick} delay={4} />
+        <TitleWords text={p.title} delay={12} fontSize={titleSize} />
+        {p.sub ? (
+          <div style={{fontFamily: FONT.body, fontSize: subSize, color: C.inkSoft, maxWidth: 880, lineHeight: 1.38}}>
+            <Caption delay={34}>{p.sub}</Caption>
+          </div>
+        ) : null}
+        <div style={{display: 'flex', flexDirection: 'column', gap: listGap, marginTop: compact ? 12 : 18}}>
+          {p.segments.map((seg, i) => (
+            <PopCard key={seg.name} delay={46 + i * 12} style={{padding: cardPad, display: 'flex', gap: 24, alignItems: 'flex-start'}}>
+              <div
+                style={{
+                  minWidth: 48,
+                  height: 48,
+                  borderRadius: 16,
+                  background: `${accents[i % accents.length]}22`,
+                  border: `2px solid ${accents[i % accents.length]}`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontFamily: FONT.mono,
+                  fontWeight: 800,
+                  fontSize: 24,
+                  color: accents[i % accents.length],
+                }}
+              >
+                {i + 1}
+              </div>
+              <div style={{display: 'flex', flexDirection: 'column', gap: 5}}>
+                <div style={{fontFamily: FONT.display, fontWeight: 700, fontSize: nameSize, color: C.ink}}>{seg.name}</div>
+                <div style={{fontFamily: FONT.body, fontSize: descSize, color: C.inkSoft, lineHeight: 1.32}}>{seg.desc}</div>
+              </div>
+            </PopCard>
+          ))}
+        </div>
+        {p.footnote ? (
+          <div style={{fontFamily: FONT.mono, fontSize: 19, color: C.muted, marginTop: compact ? 10 : 16, textAlign: 'center'}}>{p.footnote}</div>
+        ) : null}
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+const TAG_COLOR: Record<'FACT' | 'REPORTED' | 'EXPECTED', string> = {
+  FACT: C.emerald,
+  REPORTED: C.amber,
+  EXPECTED: C.redHot,
+};
+
+/** NEWS — dated headline timeline: left rail with pulsing dots, date + a
+ * color-coded certainty tag per item, cards staggering in down the rail. */
+const NewsScene: React.FC<KurzNewsProps> = (p) => {
+  const frame = useCurrentFrame();
+  return (
+    <AbsoluteFill style={{padding: '150px 72px 130px'}}>
+      <FloatingBlob size={680} x={16} y={90} hue={C.amber} hue2={C.emerald} seed={6} opacity={0.14} />
+      <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
+        <KickChip text={p.kick} delay={4} color={C.amber} />
+        <TitleWords text={p.title} delay={12} fontSize={66} />
+        <div style={{position: 'relative', marginTop: 22, display: 'flex', flexDirection: 'column', gap: 22}}>
+          {/* the rail */}
+          <div style={{position: 'absolute', left: 25, top: 12, bottom: 12, width: 4, borderRadius: 2, background: C.line}} />
+          {p.items.map((it, i) => {
+            const pulse = 1 + Math.sin(frame / 24 + i * 1.7) * 0.18;
+            const col = TAG_COLOR[it.tag];
+            return (
+              <div key={i} style={{display: 'flex', gap: 26, alignItems: 'flex-start'}}>
+                <div style={{position: 'relative', minWidth: 54, display: 'flex', justifyContent: 'center', paddingTop: 26}}>
+                  <div
+                    style={{
+                      width: 22,
+                      height: 22,
+                      borderRadius: '50%',
+                      background: col,
+                      boxShadow: `0 0 ${14 * pulse}px ${col}aa`,
+                      scale: String(pulse),
+                    }}
+                  />
+                </div>
+                <PopCard delay={40 + i * 14} style={{padding: '22px 28px', flex: 1, display: 'flex', flexDirection: 'column', gap: 10}}>
+                  <div style={{display: 'flex', alignItems: 'center', gap: 14}}>
+                    <span style={{fontFamily: FONT.mono, fontWeight: 800, fontSize: 24, color: C.ink}}>{it.date}</span>
+                    <span
+                      style={{
+                        fontFamily: FONT.mono,
+                        fontWeight: 700,
+                        fontSize: 17,
+                        letterSpacing: 2,
+                        color: C.bg,
+                        background: col,
+                        padding: '5px 14px',
+                        borderRadius: 999,
+                      }}
+                    >
+                      {it.tag}
+                    </span>
+                  </div>
+                  <div style={{fontFamily: FONT.body, fontSize: 25, color: C.inkSoft, lineHeight: 1.38}}>
+                    <RichText value={it.text} />
+                  </div>
+                </PopCard>
+              </div>
+            );
+          })}
+        </div>
+        {p.footnote ? (
+          <div style={{fontFamily: FONT.mono, fontSize: 19, color: C.muted, marginTop: 16, textAlign: 'center'}}>{p.footnote}</div>
+        ) : null}
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+/** One animated compare bar: label, springing width, value at the end. */
+const CompareBar: React.FC<{label: string; value: number; max: number; color: string; delay: number}> = ({label, value, max, color, delay}) => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const p = spring({frame: frame - delay, fps, config: {damping: 14, mass: 0.8, stiffness: 90}});
+  const w = Math.max(0.06, (value / max) * Math.min(1, p));
+  return (
+    <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
+      <div style={{fontFamily: FONT.mono, fontWeight: 700, fontSize: 21, letterSpacing: 2, color: C.muted}}>{label}</div>
+      <div style={{display: 'flex', alignItems: 'center', gap: 18}}>
+        <div style={{flex: 1, height: 46, borderRadius: 14, background: C.panel, border: `1.5px solid ${C.line}`, overflow: 'hidden'}}>
+          <div
+            style={{
+              width: `${w * 100}%`,
+              height: '100%',
+              borderRadius: 12,
+              background: `linear-gradient(90deg, ${color}66, ${color})`,
+              boxShadow: `0 0 24px ${color}55`,
+            }}
+          />
+        </div>
+        <div style={{fontFamily: FONT.display, fontWeight: 700, fontSize: 40, color, minWidth: 170, textAlign: 'right', opacity: Math.min(1, p * 1.4)}}>
+          ${value.toFixed(2)}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/** FUNDSHEET — model fundamental value vs price as compare bars + verdict
+ * pill + a 2-column grid of the ratios behind the number. */
+const FundsheetScene: React.FC<KurzFundsheetProps> = (p) => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const max = Math.max(p.fv, p.price);
+  const TONE: Record<string, string> = {emerald: C.emerald, amber: C.amber, red: C.redHot, muted: C.muted};
+  const vp = spring({frame: frame - 70, fps, config: {damping: 10, mass: 0.5, stiffness: 190}});
+  return (
+    <AbsoluteFill style={{padding: '150px 72px 130px'}}>
+      <FloatingBlob size={720} x={86} y={86} hue={C.amber} hue2={C.emerald} seed={8} opacity={0.14} />
+      <div style={{display: 'flex', flexDirection: 'column', gap: 20}}>
+        <KickChip text={p.kick} delay={4} />
+        <TitleWords text={p.title} delay={12} fontSize={62} />
+        <div style={{display: 'flex', flexDirection: 'column', gap: 22, marginTop: 20}}>
+          <CompareBar label={p.priceLabel ?? 'PRICE'} value={p.price} max={max} color={C.amber} delay={34} />
+          <CompareBar label={p.fvLabel ?? 'MODEL VALUE'} value={p.fv} max={max} color={C.emerald} delay={48} />
+        </div>
+        <div style={{display: 'flex', justifyContent: 'center', marginTop: 6}}>
+          <div
+            style={{
+              fontFamily: FONT.mono,
+              fontWeight: 800,
+              fontSize: 25,
+              letterSpacing: 3,
+              color: C.bg,
+              background: C.amber,
+              padding: '12px 26px',
+              borderRadius: 999,
+              opacity: Math.min(1, vp * 1.5),
+              scale: String(Math.min(1, vp)),
+            }}
+          >
+            {p.verdict}
+          </div>
+        </div>
+        <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 14}}>
+          {p.stats.map((st, i) => (
+            <PopCard key={st.label} delay={84 + i * 8} style={{padding: '20px 26px', display: 'flex', flexDirection: 'column', gap: 6}}>
+              <div style={{fontFamily: FONT.mono, fontSize: 19, letterSpacing: 1.5, color: C.muted}}>{st.label}</div>
+              <div style={{fontFamily: FONT.mono, fontWeight: 800, fontSize: 33, color: st.tone ? TONE[st.tone] : C.ink}}>{st.value}</div>
+            </PopCard>
+          ))}
+        </div>
+        {p.footnote ? (
+          <div style={{fontFamily: FONT.mono, fontSize: 19, color: C.muted, marginTop: 14, textAlign: 'center'}}>{p.footnote}</div>
+        ) : null}
+      </div>
+    </AbsoluteFill>
+  );
+};
+
 export const KurzSlide: React.FC<KurzSlideProps> = (props) => {
-  const tint = props.kind === 'company' ? C.emerald : props.kind === 'text' ? C.amber : C.emerald;
+  const tint = props.kind === 'text' || props.kind === 'news' || props.kind === 'fundsheet' ? C.amber : C.emerald;
   return (
     <AbsoluteFill style={{fontFamily: FONT.body}}>
       <Bg tint={tint} />
@@ -263,6 +505,12 @@ export const KurzSlide: React.FC<KurzSlideProps> = (props) => {
         <IntroVideoScene {...props} />
       ) : props.kind === 'company' ? (
         <CompanyScene {...props} />
+      ) : props.kind === 'business' ? (
+        <BusinessScene {...props} />
+      ) : props.kind === 'news' ? (
+        <NewsScene {...props} />
+      ) : props.kind === 'fundsheet' ? (
+        <FundsheetScene {...props} />
       ) : (
         <TextScene {...props} />
       )}

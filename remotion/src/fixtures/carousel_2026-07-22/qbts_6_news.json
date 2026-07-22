@@ -1,0 +1,78 @@
+{
+  "logoSrc": "logos/QBTS.svg",
+  "logoLabel": "D-WAVE",
+  "kind": "news",
+  "kick": "WHY IT'S MOVING",
+  "title": "The listing switch, dated.",
+  "items": [
+    {
+      "date": "7/14",
+      "tag": "REPORTED",
+      "text": [
+        {
+          "t": "D-Wave announces it will transfer its listing "
+        },
+        {
+          "t": "NYSE → Nasdaq",
+          "b": true
+        },
+        {
+          "t": ", framed as joining 'a market known for technology innovators.'"
+        }
+      ]
+    },
+    {
+      "date": "7/24",
+      "tag": "REPORTED",
+      "text": [
+        {
+          "t": "Last NYSE trading session (after the close)."
+        }
+      ]
+    },
+    {
+      "date": "7/27",
+      "tag": "REPORTED",
+      "text": [
+        {
+          "t": "Nasdaq debut — "
+        },
+        {
+          "t": "same ticker, QBTS",
+          "tone": "emerald",
+          "b": true
+        },
+        {
+          "t": "."
+        }
+      ]
+    },
+    {
+      "date": "7/21",
+      "tag": "FACT",
+      "text": [
+        {
+          "t": "Meanwhile it trades "
+        },
+        {
+          "t": "under $18",
+          "b": true
+        },
+        {
+          "t": " — less than half the "
+        },
+        {
+          "t": "$46.75",
+          "tone": "amber",
+          "b": true
+        },
+        {
+          "t": " 52-week high."
+        }
+      ]
+    }
+  ],
+  "footnote": "Dates from company release · price/range cross-checked vs IBKR 7/22",
+  "durationInFrames": 270,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

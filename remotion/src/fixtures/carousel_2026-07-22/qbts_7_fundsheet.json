@@ -1,0 +1,47 @@
+{
+  "logoSrc": "logos/QBTS.svg",
+  "logoLabel": "D-WAVE",
+  "kind": "fundsheet",
+  "kick": "THE SHEET",
+  "title": "Fundamental value vs price.",
+  "fv": 2.63,
+  "price": 20.09,
+  "fvLabel": "MODEL VALUE",
+  "priceLabel": "PRICE (7/11)",
+  "verdict": "OVERVALUED · MODEL CACHED 7/11",
+  "stats": [
+    {
+      "label": "P/S (TTM)",
+      "value": "593×",
+      "tone": "red"
+    },
+    {
+      "label": "NET MARGIN",
+      "value": "deep negative",
+      "tone": "red"
+    },
+    {
+      "label": "GROSS MARGIN",
+      "value": "32.9%",
+      "tone": "amber"
+    },
+    {
+      "label": "REVENUE 2025",
+      "value": "$24.6M",
+      "tone": "emerald"
+    },
+    {
+      "label": "CURRENT RATIO",
+      "value": "21.4",
+      "tone": "emerald"
+    },
+    {
+      "label": "DEBT / EQUITY",
+      "value": "0.04",
+      "tone": "emerald"
+    }
+  ],
+  "footnote": "All figures cached 2026-07-11 bundle · revenue $7.2M ('22) → $24.6M ('25) is real growth",
+  "durationInFrames": 300,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

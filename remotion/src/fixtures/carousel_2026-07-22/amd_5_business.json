@@ -1,0 +1,28 @@
+{
+  "logoSrc": "logos/AMD.svg",
+  "kind": "business",
+  "kick": "WHAT AMD SELLS",
+  "title": "Chips for every layer of compute.",
+  "sub": "The only company fighting Nvidia with a full AI-compute stack — silicon, interconnect and software.",
+  "segments": [
+    {
+      "name": "Data Center",
+      "desc": "Instinct AI accelerators (the Helios rack platform) + EPYC server CPUs — the growth engine behind the AI story."
+    },
+    {
+      "name": "Client",
+      "desc": "Ryzen processors for desktops and laptops — the classic PC business."
+    },
+    {
+      "name": "Gaming",
+      "desc": "Radeon GPUs plus semi-custom chips inside PlayStation and Xbox."
+    },
+    {
+      "name": "Embedded",
+      "desc": "Xilinx adaptive chips (FPGAs) in industrial, automotive and comms gear."
+    }
+  ],
+  "footnote": "Segment framing qualitative · financials on the sheet →",
+  "durationInFrames": 270,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

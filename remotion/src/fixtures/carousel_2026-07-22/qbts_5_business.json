@@ -1,0 +1,25 @@
+{
+  "logoSrc": "logos/QBTS.svg",
+  "logoLabel": "D-WAVE",
+  "kind": "business",
+  "kick": "WHAT D-WAVE SELLS",
+  "title": "Quantum annealing, as a service.",
+  "sub": "A different bet than gate-model rivals: specialized quantum machines aimed at optimization problems, sold today.",
+  "segments": [
+    {
+      "name": "Advantage systems",
+      "desc": "Its annealing quantum computers — purpose-built for optimization, not general-purpose gate computing."
+    },
+    {
+      "name": "Leap cloud",
+      "desc": "Subscription access to quantum compute over the cloud — how most customers actually use it."
+    },
+    {
+      "name": "Hybrid solvers",
+      "desc": "Quantum + classical services for real scheduling, logistics and materials problems."
+    }
+  ],
+  "footnote": "Segment framing qualitative · financials on the sheet →",
+  "durationInFrames": 270,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

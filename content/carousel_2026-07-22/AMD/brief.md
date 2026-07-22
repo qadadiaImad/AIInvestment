@@ -20,3 +20,16 @@ after the Advancing AI keynote.
 ## Provenance
 Close/moves live-validated vs Interactive Brokers 2026-07-22T08:24Z (prior close $544.43 exact).
 Model/fundamental figures: cached 2026-07-11 site.json, labeled on-slide. Not financial advice.
+
+## Extra slides (added 2026-07-22, engine kinds business/news/fundsheet)
+5. slide_5_business.png — WHAT AMD SELLS: Data Center (Instinct/Helios + EPYC), Client
+   (Ryzen), Gaming (Radeon + consoles), Embedded (Xilinx). Qualitative framing.
+6. slide_6_news.png — WHY IT'S MOVING timeline: 7/21 REPORTED Microsoft/Helios (+8.11% to
+   $544.43), 7/22 FACT Advancing AI 2026 keynote, 7/22 EXPECTED third GW-scale customer
+   (unconfirmed). Certainty tags color-coded.
+7. slide_7_fundsheet.png — THE SHEET: model value $241.23 vs price $557.89 compare bars,
+   OVERVALUED verdict pill, ratio grid (P/E 183x, P/S 24.6x, gross 47.1%, net 13.2%,
+   rev +35.0% YoY, D/E 0.06). All cached 2026-07-11, labeled on-slide.
+
+Suggested post order: 1 (cover) -> 5 (business) -> 6 (news) -> 7 (sheet) -> 4 (CTA);
+slides 2-3 optional inserts for a long-form carousel.
