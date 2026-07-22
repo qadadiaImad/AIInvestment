@@ -197,16 +197,24 @@ export const ChipRig: React.FC<{size?: number; mode?: ChipMode; thetaOverride?: 
   const s = Math.sin(theta);
   const facingFront = c > -0.12;
 
-  // body geometry under rotation
-  const W0 = 124;
-  const bodyW = W0 * (0.68 + 0.32 * Math.abs(c));
-  const bodyX = 120 - bodyW / 2;
-  const slabW = 20 * Math.abs(s);
-  const faceShift = s * 30;
-  const eyeSep = 46 * (0.62 + 0.38 * Math.abs(c));
-  const eyeRx = 14.5 * (0.78 + 0.22 * Math.abs(c));
+  // ------- head + torso geometry under rotation -------
+  // The chip block is the HEAD (face, antenna, side pins). A separate,
+  // narrower TORSO sits below it — arms attach to the torso shoulders, so
+  // hands never read as sprouting from the head, and the body's center has
+  // its own visual space.
+  const HEAD_W0 = 104;
+  const headW = HEAD_W0 * (0.68 + 0.32 * Math.abs(c));
+  const headX = 120 - headW / 2;
+  const TORSO_W0 = 84;
+  const torsoW = TORSO_W0 * (0.7 + 0.3 * Math.abs(c));
+  const torsoX = 120 - torsoW / 2;
+  const slabW = 18 * Math.abs(s);
+  const faceShift = s * 24;
+  const eyeSep = 42 * (0.62 + 0.38 * Math.abs(c));
+  const eyeRx = 13.5 * (0.78 + 0.22 * Math.abs(c));
   const antennaGlow = 0.55 + Math.sin(frame / 14) * 0.35;
   const groundY = 214;
+  const shoulderY = 138;
 
   return (
     <svg width={size} height={size} viewBox="0 0 240 240">
@@ -215,61 +223,71 @@ export const ChipRig: React.FC<{size?: number; mode?: ChipMode; thetaOverride?: 
       <g transform={`translate(0 ${pose.bob - pose.lift}) translate(120 ${groundY}) scale(${2 - pose.squash} ${pose.squash}) rotate(${pose.lean}) translate(-120 -${groundY})`}>
         {/* legs + chunky boots; front-facing stance points the boots
             outward, a turned/walking pose points both toes with the facing */}
-        <Leg x={100} y={184} angle={pose.legL} flip={s < 0.15} />
-        <Leg x={140} y={184} angle={pose.legR} />
+        <Leg x={104} y={180} angle={pose.legL} len={18} flip={s < 0.15} />
+        <Leg x={136} y={180} angle={pose.legR} len={18} />
 
-        {/* far arm — anchored just OUTSIDE the body edge so the big mitt
-            always hangs visibly beside the body, Brawlhalla-style */}
-        <Arm x={bodyX - 5} y={140} angle={pose.armL + 8} grip="mitt" flip />
+        {/* far arm — anchored at the torso shoulder, outside its edge */}
+        <Arm x={torsoX - 4} y={shoulderY} angle={pose.armL + 9} len={32} grip="mitt" flip />
 
-        {/* side extrusion slab (the faux-3D depth edge) */}
+        {/* faux-3D depth slabs for head + torso */}
         {slabW > 1.5 ? (
-          <rect
-            x={s > 0 ? bodyX - slabW + 3 : bodyX + bodyW - 3}
-            y={72}
-            width={slabW}
-            height={130}
-            rx={12}
-            fill={EMERALD_SIDE}
-          />
+          <>
+            <rect x={s > 0 ? headX - slabW + 3 : headX + headW - 3} y={48} width={slabW} height={72} rx={11} fill={EMERALD_SIDE} />
+            <rect x={s > 0 ? torsoX - slabW * 0.8 + 3 : torsoX + torsoW - 3} y={126} width={slabW * 0.8} height={60} rx={9} fill="#076b4c" />
+          </>
         ) : null}
 
         {/* antenna */}
-        <line x1={120 + s * 10} y1="72" x2={120 + s * 14} y2="44" stroke={C.emeraldDeep} strokeWidth="7" strokeLinecap="round" />
-        <circle cx={120 + s * 14} cy="38" r="9" fill={C.mint} opacity={antennaGlow} />
-        <circle cx={120 + s * 14} cy="38" r="4.5" fill="#FDFEFF" opacity={antennaGlow} />
+        <line x1={120 + s * 10} y1="46" x2={120 + s * 14} y2="24" stroke={C.emeraldDeep} strokeWidth="7" strokeLinecap="round" />
+        <circle cx={120 + s * 14} cy="19" r="8.5" fill={C.mint} opacity={antennaGlow} />
+        <circle cx={120 + s * 14} cy="19" r="4.2" fill="#FDFEFF" opacity={antennaGlow} />
 
-        {/* body */}
         <defs>
-          <linearGradient id="chipRigBody" x1="0" y1="0" x2="0" y2="1">
+          <linearGradient id="chipRigHead" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" stopColor={C.emerald} />
             <stop offset="1" stopColor={C.emeraldDeep} />
           </linearGradient>
+          <linearGradient id="chipRigTorso" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor={C.emeraldDeep} />
+            <stop offset="1" stopColor="#0a8a5f" />
+          </linearGradient>
         </defs>
-        <rect x={bodyX} y="70" width={bodyW} height="132" rx="26" fill="url(#chipRigBody)" />
 
-        {/* side pins fade out as we rotate away from front */}
+        {/* torso first, head over it (slight overlap at the neck) */}
+        <rect x={torsoX} y="122" width={torsoW} height="70" rx="18" fill="url(#chipRigTorso)" />
+        {facingFront ? (
+          <g stroke="#FDFEFF" strokeWidth="3" opacity={0.26 * clamp01(c + 0.4)} fill="none" strokeLinecap="round">
+            <path d={`M${torsoX + 14},172 L${torsoX + 30},172 L${torsoX + 30},160`} />
+            <circle cx={torsoX + 30} cy={156} r="3" fill="#FDFEFF" stroke="none" />
+          </g>
+        ) : (
+          <rect x={98} y="140" width="44" height="24" rx="6" fill="#FDFEFF" opacity="0.85" />
+        )}
+        {!facingFront ? (
+          <text x={120} y="157" textAnchor="middle" fontFamily="monospace" fontSize="12" fontWeight="700" fill={EMERALD_SIDE}>
+            AI·STK
+          </text>
+        ) : null}
+
+        <rect x={headX} y="44" width={headW} height="84" rx="22" fill="url(#chipRigHead)" />
+
+        {/* head side pins fade out as we rotate away from front */}
         <g fill={PIN_GOLD} opacity={clamp01(1 - Math.abs(s) * 1.4)}>
-          {[96, 126, 156].map((y) => (
+          {[56, 76, 96].map((y) => (
             <React.Fragment key={y}>
-              <rect x={bodyX - 14} y={y} width="18" height="12" rx="4" />
-              <rect x={bodyX + bodyW - 4} y={y} width="18" height="12" rx="4" />
+              <rect x={headX - 13} y={y} width="17" height="11" rx="4" />
+              <rect x={headX + headW - 4} y={y} width="17" height="11" rx="4" />
             </React.Fragment>
           ))}
         </g>
 
         {facingFront ? (
           <>
-            {/* circuit traces */}
-            <g stroke="#FDFEFF" strokeWidth="3.5" opacity={0.28 * clamp01(c + 0.4)} fill="none" strokeLinecap="round">
-              <path d={`M${bodyX + 16},178 L${bodyX + 36},178 L${bodyX + 36},166`} />
-              <path d={`M${bodyX + bodyW - 16},178 L${bodyX + bodyW - 34},178 L${bodyX + bodyW - 34},168`} />
-            </g>
-            {/* face slides across the front as he turns */}
-            <Eye cx={120 + faceShift - eyeSep / 2} cy={118} rx={eyeRx} blink={pose.blink} look={s * 4 + 1.5} />
-            <Eye cx={120 + faceShift + eyeSep / 2} cy={118} rx={eyeRx} blink={pose.blink} look={s * 4 + 1.5} />
+            {/* face slides across the head as he turns */}
+            <Eye cx={120 + faceShift - eyeSep / 2} cy={84} rx={eyeRx} blink={pose.blink} look={s * 4 + 1.5} />
+            <Eye cx={120 + faceShift + eyeSep / 2} cy={84} rx={eyeRx} blink={pose.blink} look={s * 4 + 1.5} />
             <path
-              d={`M${120 + faceShift * 1.05 - 17},152 Q${120 + faceShift * 1.05},166 ${120 + faceShift * 1.05 + 17},152`}
+              d={`M${120 + faceShift * 1.05 - 15},108 Q${120 + faceShift * 1.05},120 ${120 + faceShift * 1.05 + 15},108`}
               fill="none"
               stroke={INKFACE}
               strokeWidth="5"
@@ -277,27 +295,20 @@ export const ChipRig: React.FC<{size?: number; mode?: ChipMode; thetaOverride?: 
             />
           </>
         ) : (
-          <>
-            {/* back panel: vents + serial sticker */}
-            <g stroke="#0c7c59" strokeWidth="6" strokeLinecap="round" opacity="0.75">
-              <line x1={102} y1="96" x2={138} y2="96" />
-              <line x1={102} y1="112" x2={138} y2="112" />
-              <line x1={102} y1="128" x2={138} y2="128" />
-            </g>
-            <rect x={98} y="150" width="44" height="26" rx="6" fill="#FDFEFF" opacity="0.85" />
-            <text x={120} y="168" textAnchor="middle" fontFamily="monospace" fontSize="13" fontWeight="700" fill={EMERALD_SIDE}>
-              AI·STK
-            </text>
-          </>
+          <g stroke="#0c7c59" strokeWidth="5.5" strokeLinecap="round" opacity="0.75">
+            <line x1={104} y1="68" x2={136} y2="68" />
+            <line x1={104} y1="84" x2={136} y2="84" />
+            <line x1={104} y1="100" x2={136} y2="100" />
+          </g>
         )}
 
-        {/* near arm — same outside-the-edge anchoring */}
+        {/* near arm — torso shoulder, outside its edge */}
         {pose.wave ? (
-          <Arm x={bodyX + bodyW + 5} y={140} angle={-148 + pose.armR} grip="open" />
+          <Arm x={torsoX + torsoW + 4} y={shoulderY} angle={-148 + pose.armR} len={32} grip="open" />
         ) : pose.point ? (
-          <Arm x={bodyX + bodyW + 5} y={140} angle={-96} len={42} grip="point" />
+          <Arm x={torsoX + torsoW + 4} y={shoulderY} angle={-96} len={40} grip="point" />
         ) : (
-          <Arm x={bodyX + bodyW + 5} y={140} angle={pose.armR - 8} grip="mitt" />
+          <Arm x={torsoX + torsoW + 4} y={shoulderY} angle={pose.armR - 9} len={32} grip="mitt" />
         )}
       </g>
     </svg>
