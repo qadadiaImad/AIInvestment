@@ -476,3 +476,35 @@ def test_run_and_echo_captures_nonzero_returncode():
 
     assert proc.returncode == 3
     assert "boom" in proc.stderr
+
+
+def test_run_and_echo_decodes_utf8_multibyte_progress_bytes_without_mojibake(capsys):
+    """Regression for the TTS pipe deadlock: tqdm-style progress bars (e.g. from
+    Chatterbox TTS) write multi-byte UTF-8 (box-drawing/block characters) to
+    stdout/stderr. `Popen(..., text=True)` without an explicit `encoding=` decodes
+    using the platform default -- cp1252 on Windows -- which raises on these
+    bytes, killing the `_tee_pipe` reader thread uncaught. A dead reader never
+    drains its pipe again, so the OS pipe buffer fills and the child (the real
+    GPU-bound TTS process) deadlocks writing to it. This spawns a child that
+    prints a UTF-8 multi-byte sequence to BOTH stdout and stderr (with
+    PYTHONIOENCODING=utf-8 so the child itself emits real UTF-8 bytes) and
+    asserts `_run_and_echo` returns it intact: no crash, no mojibake, no
+    U+FFFD replacement characters -- proving the parent decoded as UTF-8
+    rather than falling back to cp1252 (which would either raise or replace)."""
+    payload = "▌█ 50%█"  # "▌█ 50%█" -- box-drawing/block chars, invalid cp1252
+    env = dict(os.environ, PYTHONIOENCODING="utf-8")
+    cmd = [
+        sys.executable, "-c",
+        "import sys; "
+        f"sys.stdout.write({payload!r} + chr(10)); "
+        f"sys.stderr.write({payload!r} + chr(10))",
+    ]
+    proc = daily_post._run_and_echo(cmd, cwd=".", env=env)
+
+    captured = capsys.readouterr()
+    assert proc.returncode == 0
+    assert payload in proc.stdout
+    assert payload in proc.stderr
+    assert payload in captured.out
+    assert payload in captured.err
+    assert "�" not in proc.stdout and "�" not in proc.stderr

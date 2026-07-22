@@ -288,12 +288,38 @@ def _tee_pipe(pipe, sink, out_stream):
     """Read `pipe` line-by-line until EOF, appending each line to `sink` (a list)
     and writing it straight to `out_stream` as it arrives. Runs in its own thread
     (one per stream) so stdout and stderr can be drained -- and echoed live -- at
-    the same time without either one blocking on the other's OS pipe buffer."""
-    for line in iter(pipe.readline, ""):
-        sink.append(line)
-        out_stream.write(line)
-        out_stream.flush()
-    pipe.close()
+    the same time without either one blocking on the other's OS pipe buffer.
+
+    Wrapped in a broad try/except: if the reader itself ever throws (e.g. a
+    decoding error slipping past the parent's `errors="replace"`, or a write
+    failure on `out_stream`), a crash here must NOT leave `pipe` undrained --
+    an undrained OS pipe fills its buffer and deadlocks the child process
+    (this is exactly what happened with tqdm progress bytes from Chatterbox
+    TTS before the parent `Popen` call was given an explicit UTF-8 decode).
+    On any reader error we record the error into `sink` and fall back to a
+    binary-blind drain of whatever remains on the pipe, so the child can
+    always finish writing and exit.
+    """
+    try:
+        for line in iter(pipe.readline, ""):
+            sink.append(line)
+            out_stream.write(line)
+            out_stream.flush()
+    except Exception as e:
+        sink.append(f"\n[_tee_pipe reader error: {e!r} -- draining remainder binary-blind]\n")
+        try:
+            raw = getattr(pipe, "buffer", pipe)
+            while True:
+                chunk = raw.read(65536)
+                if not chunk:
+                    break
+        except Exception:
+            pass
+    finally:
+        try:
+            pipe.close()
+        except Exception:
+            pass
 
 
 def _run_and_echo(cmd, cwd, env, shell=False):
@@ -304,10 +330,20 @@ def _run_and_echo(cmd, cwd, env, shell=False):
     callers here rely on. Two reader threads (one per stream) drain stdout/stderr
     concurrently so a chatty stderr can't stall stdout's echo (or vice versa)
     behind the OS pipe buffer.
+
+    `encoding="utf-8", errors="replace"` (instead of the platform default --
+    cp1252 on Windows) is load-bearing: tqdm progress bars (e.g. Chatterbox
+    TTS) emit multi-byte UTF-8 (box-drawing/block characters) on stdout that
+    isn't valid cp1252. Without an explicit encoding, decoding that raises
+    inside the reader thread, the thread dies uncaught, its pipe is never
+    drained again, the OS pipe buffer fills, and the GPU child deadlocks
+    writing to a full pipe. UTF-8 decodes those bytes cleanly; `errors="replace"`
+    is a second line of defense for anything still undecodable.
     """
     proc = subprocess.Popen(
         cmd, cwd=str(cwd), env=env, shell=shell,
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        text=True, encoding="utf-8", errors="replace", bufsize=1,
     )
     stdout_lines = []
     stderr_lines = []
