@@ -9,9 +9,10 @@ import {z} from 'zod';
 import {C, FONT} from '../slides/theme';
 import {Bg, Foot} from '../slides/ui';
 import {FloatingBlob} from '../slides/kurz';
-import {ChipRig} from '../characters/chipRig';
+import {RIGS} from './FamilyRigShowcase';
 
 export const explainerSceneSchema = z.object({
+  character: z.enum(['chip', 'watt', 'qubit', 'cap', 'nova', 'cloudy']).optional(), // default chip
   kick: z.string(),
   title: z.string(),
   bars: z.array(z.object({label: z.string(), value: z.number(), color: z.string()})).length(2),
@@ -105,7 +106,10 @@ export const ExplainerScene: React.FC<ExplainerSceneProps> = (props) => {
         <Chart bars={props.bars} />
       </div>
       <div style={{position: 'absolute', left: chipX, bottom: 520}}>
-        <ChipRig size={520} mode={chipMode} />
+        {(() => {
+          const Rig = RIGS[props.character ?? 'chip'];
+          return <Rig size={520} mode={chipMode} />;
+        })()}
       </div>
       {/* ground line */}
       <div style={{position: 'absolute', left: 0, right: 0, bottom: 600, height: 3, background: C.line}} />

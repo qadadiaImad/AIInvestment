@@ -1,0 +1,16 @@
+{
+  "character": "cap",
+  "kick": "CAP EXPLAINS",
+  "title": "The Filing: $50 Strike vs Intel's Close",
+  "bars": [
+    {"label": "STRIKE", "value": 50, "color": "#34D399"},
+    {"label": "CLOSE", "value": 105.45, "color": "#E0A23B"}
+  ],
+  "beats": [
+    {"text": "Filed June 23: a household disclosure shows 200 Intel calls, $50 strike, bought May 29.", "at": 100},
+    {"text": "Intel closed July 21 at $105.45. That $50 strike is now deep in the money.", "at": 190},
+    {"text": "This is a public filing, not an accusation and not a signal to copy. Not financial advice.", "at": 280}
+  ],
+  "footer": "Filing as of June 23, 2026; price as of July 21, 2026 — educational · not financial advice",
+  "durationInFrames": 430
+}

@@ -16,7 +16,7 @@ import {CloudyRig} from '../characters/cloudyRig';
 import {CHARACTERS} from '../characters/family';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const RIGS: Record<string, React.FC<any>> = {
+export const RIGS: Record<string, React.FC<any>> = {
   chip: ChipRig,
   watt: WattRig,
   qubit: QubitRig,

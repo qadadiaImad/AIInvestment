@@ -1,0 +1,16 @@
+{
+  "character": "qubit",
+  "kick": "QUBIT EXPLAINS",
+  "title": "D-Wave: Model Value vs. Price",
+  "bars": [
+    {"label": "MODEL VALUE", "value": 2.63, "color": "#34D399"},
+    {"label": "MARKET PRICE", "value": 20.09, "color": "#E0A23B"}
+  ],
+  "beats": [
+    {"text": "D-Wave (QBTS) trades at $20.09 a share. What does a fundamental-value model say?", "at": 100},
+    {"text": "The model's fair-value estimate is just $2.63, as of July 11 — a wide gap.", "at": 190},
+    {"text": "Quantum computing is making real progress, but that price bakes in a lot of hope.", "at": 280}
+  ],
+  "footer": "Figures as of July 11, 2026 — educational · not financial advice",
+  "durationInFrames": 430
+}

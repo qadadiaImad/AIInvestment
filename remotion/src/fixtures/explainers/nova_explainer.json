@@ -1,0 +1,16 @@
+{
+  "character": "nova",
+  "kick": "NOVA EXPLAINS",
+  "title": "Cloudflare: Pricing In AI Growth",
+  "bars": [
+    {"label": "MODEL VALUE", "value": 172.29, "color": "#34D399"},
+    {"label": "MARKET PRICE", "value": 268.4, "color": "#E0A23B"}
+  ],
+  "beats": [
+    {"text": "Cloudflare (NET) sits in the AI application layer, running the edge for AI apps.", "at": 100},
+    {"text": "A fundamental-value model puts it near $172. The market pays $268, as of July 11.", "at": 190},
+    {"text": "That's roughly a 56% premium — the price assumes years of AI growth still to come.", "at": 280}
+  ],
+  "footer": "Figures as of July 11, 2026 — educational · not financial advice",
+  "durationInFrames": 430
+}

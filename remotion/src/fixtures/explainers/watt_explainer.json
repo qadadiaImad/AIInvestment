@@ -1,0 +1,16 @@
+{
+  "character": "watt",
+  "kick": "WATT EXPLAINS",
+  "title": "Constellation Energy: Power for AI",
+  "bars": [
+    {"label": "MODEL VALUE", "value": 274.56, "color": "#34D399"},
+    {"label": "MARKET PRICE", "value": 251.38, "color": "#E0A23B"}
+  ],
+  "beats": [
+    {"text": "Every AI datacenter needs electricity. Constellation Energy (CEG) supplies it.", "at": 100},
+    {"text": "CEG trades at $251.38. A fundamental-value model puts fair value at $274.56, as of July 11.", "at": 190},
+    {"text": "The model calls it fairly valued, close to market price. No signal to buy or sell.", "at": 280}
+  ],
+  "footer": "Figures as of July 11, 2026 — educational · not financial advice",
+  "durationInFrames": 430
+}

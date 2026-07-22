@@ -1,0 +1,16 @@
+{
+  "character": "cloudy",
+  "kick": "CLOUDY EXPLAINS",
+  "title": "Equinix: Renting Out The AI Boom",
+  "bars": [
+    {"label": "MODEL VALUE", "value": 918.06, "color": "#34D399"},
+    {"label": "MARKET PRICE", "value": 1051.21, "color": "#E0A23B"}
+  ],
+  "beats": [
+    {"text": "Equinix rents data-center space to the AI boom — the picks-and-shovels play of infra.", "at": 100},
+    {"text": "A fundamental-value model puts EQIX near $918, while the stock trades at $1,051.", "at": 190},
+    {"text": "That is about 14% above the model estimate, as of July 11 — not a buy or sell signal.", "at": 280}
+  ],
+  "footer": "Figures as of July 11, 2026 — educational · not financial advice",
+  "durationInFrames": 430
+}
