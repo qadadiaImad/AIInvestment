@@ -1,0 +1,150 @@
+AI STACK — HIGGSFIELD CAROUSEL PROMPT — "TWO BALANCE SHEETS"
+andreaolivari-style symbolic installation · same-sector good-vs-bad face-off
+Date: 2026-07-22
+Model: Higgsfield → GPT Image 2 (best for photoreal scenes + carved on-image text)
+Aspect: 4:5 vertical (1080×1350) — our carousel standard
+Educational only · not financial advice · figures as of July 11, 2026
+
+=====================================================================
+THE PAIRING & THE DATA (why good vs bad) — same sector, opposite balance sheets
+=====================================================================
+Sector: AI-infrastructure / IT services (both are picks-and-shovels AI names)
+
+RIGHT = the HEALTHY side — CREDO (CRDO)
+  • Net margin           +35.4%   → makes real profit on every dollar of sales
+  • ROIC                 +34.0%   → creates value on the capital it employs
+  • Debt / equity         0.01    → essentially debt-free → passes the Islamic
+                                    LEVERAGE screen cleanly (near-zero interest-
+                                    bearing debt)
+  • Revenue growth       +205% YoY
+  • Priced ~1.2× our modeled fundamental value (mildly rich, but earned)
+
+LEFT = the STRAINED side — CLOUDFLARE (NET)
+  • Net margin            −3.7%   → GAAP-unprofitable today
+  • ROIC                  −2.7%   → destroys value on capital on a GAAP basis
+  • Debt / equity         2.31    → heavily leveraged → TRIPS the leverage screen
+  • Revenue growth       +31.6% YoY (real growth — this is a growth company
+                                    investing hard, not a failing one)
+  • Priced ~1.6× our modeled fundamental value
+
+The honest one-line: one already prints cash with a spotless balance sheet;
+the other is still burning cash (by GAAP) while carrying real debt. Both are
+legitimate businesses — this is a FINANCIAL-STATE snapshot, not a character
+verdict.
+
+⚠ ETHICAL CAVEAT: the "ethical" axis here = the AAOIFI *leverage* screen (debt),
+the one screen computable from this bundle. A full halal PASS/FAIL also needs
+the interest-income and impermissible-revenue screens. Pull the real halal.json
+verdict (scripts/export_halal.py) before publishing a hard halal claim; until
+then, keep the on-image wording to the financial facts (as written below).
+
+=====================================================================
+PRIMARY PROMPT  (copy-paste everything between the lines into Higgsfield)
+=====================================================================
+A hyper-realistic editorial photograph of a modern art installation inside a
+bright, minimalist museum gallery — white walls, warm oak floors, soft ceiling
+track lighting, a few out-of-focus visitors in dark clothing in the background.
+Two large anatomically-shaped human-heart sculptures stand side by side on two
+white Carrara-marble plinth cubes, centered and symmetrical, shot straight-on
+at eye level with a wide lens, shallow depth of field.
+
+LEFT heart: dark oxidized bronze, cracked and fissured, bound in heavy rusted
+iron chains and thorny wire, a scatter of dead blackened leaves at its base —
+visibly strained and weighed down. Its marble plinth is carved with clean
+serif capital letters reading:  UNPROFITABLE · LEVERAGED
+
+RIGHT heart: the same heart shape but alive and thriving — sculpted from lush
+white roses, fresh green leaves and delicate gold-leaf veins, blooming outward
+and catching a warm light. Its marble plinth is carved with clean serif
+capital letters reading:  PROFITABLE · DEBT-FREE
+
+Lighting tells the story: a soft emerald-green glow washes the right sculpture,
+a cold grey shadow falls over the left, so the healthy-vs-strained contrast
+reads instantly even at a glance. Deep charcoal ambient tone with warm gold
+highlights, cinematic depth of field, ultra-detailed, high-end art-photography
+look, vertical 4:5 composition, high resolution, no text other than the two
+carved plinth phrases.
+---------------------------------------------------------------------
+
+=====================================================================
+SWAP-IN VARIANTS  (replace the matching lines in the prompt above)
+=====================================================================
+BACKGROUND (swap the first paragraph's setting):
+  • Museum gallery ...... (default, above)
+  • Financial plaza ..... "...on a grand stone financial-district plaza with
+      classical columns and glass towers rising behind, overcast daylight..."
+  • Alpine square ....... "...in a snow-covered European alpine town square,
+      pastel old buildings and a snowy mountain behind, crisp winter light..."
+  • Studio void ......... "...against a seamless deep-charcoal studio backdrop,
+      no location, a single dramatic key light per sculpture..."
+
+METAPHOR (swap both sculpture descriptions):
+  • Healthy vs strained heart ... (default, above)
+  • Tree ................ LEFT: "a blackened, leafless, cracked dead tree whose
+      roots are wrapped in iron chains"; RIGHT: "a lush golden-leaved thriving
+      tree in full bloom with white blossoms and green growth".
+  • Monument ............ LEFT: "a cracked, crumbling dark monolith fractured
+      and chained"; RIGHT: "a polished solid gold-and-marble monolith, flawless
+      and gleaming".
+  • Butterfly/caterpillar  LEFT: "a caterpillar tangled and pinned under heavy
+      chains"; RIGHT: "a radiant butterfly ascending, wings of white and gold".
+
+PALETTE / MOOD (swap the lighting sentence):
+  • Brand charcoal + emerald/gold ... (default, above)
+  • Natural daylight ... "bright natural daylight, realistic and un-stylized,
+      the contrast carried only by the two sculptures themselves"
+  • Moody cinematic .... "dramatic single-source spotlighting on each sculpture,
+      deep black shadows, gallery-at-night mood"
+  • White marble minimal  "bright near-monochrome white and stone palette, the
+      only strong colour coming from the healthy sculpture's green and gold"
+
+NAMING (choose how much to put on the plinths):
+  • Financial facts only . (default: UNPROFITABLE·LEVERAGED / PROFITABLE·DEBT-FREE)
+  • Add tickers .......... left carved "NET" small under the phrase, right "CRDO"
+      — names the companies. (Reputational note: naming a real company on the
+      "strained" plinth makes a public factual claim; every number is accurate
+      and dated, but consider ticker-only + reveal the names on a later slide.)
+  • Anonymized cover ..... plinths read "COMPANY A" / "COMPANY B"; reveal CRDO
+      and NET on slide 2 for a swipe-for-the-answer hook.
+
+NOTE ON NUMBERS IN THE IMAGE: GPT Image 2 renders SHORT carved phrases well but
+mangles long/precise numbers. Keep the stone text to the phrases above; put the
+exact figures (+35.4% vs −3.7% margin, 0.01 vs 2.31 debt) on the following
+carousel slides via our Remotion overlay, where they'll be pixel-perfect.
+
+=====================================================================
+CAROUSEL PLAN  (slide 1 = the Higgsfield hero above; 2–5 = our overlay engine)
+=====================================================================
+1 (HERO / Higgsfield): the installation image. Hook overlay top-safe-zone:
+   "Same sector. Opposite balance sheets." + swipe cue.
+2  THE NUMBERS: two-column card — Net margin +35.4% vs −3.7%, ROIC +34% vs −2.7%.
+3  THE DEBT (ethical): Debt/equity 0.01 vs 2.31 → "one passes the leverage
+   screen clean, one doesn't." Bar visual.
+4  THE NUANCE (fairness): Cloudflare is a fast-growing company investing hard
+   (+31% revenue, 73% gross margin) — GAAP-unprofitable ≠ bad business. Credo is
+   priced richly too (~1.2× fair value). No villains, just two balance sheets.
+5  THE TAKEAWAY: "Great story ≠ clean balance sheet. Read both." Save-CTA.
+   Footer: educational · not financial advice · figures as of July 11, 2026.
+
+=====================================================================
+CAPTION + HASHTAGS (per references/instagram-best-practices.md §5)
+=====================================================================
+Same sector, opposite balance sheets. One AI-infrastructure name already prints
+cash debt-free; the other is still burning it (by GAAP) with real leverage.
+Swipe for the numbers — and why "clean balance sheet" and "great story" aren't
+the same thing. Educational only, not financial advice — DYOR. Save this one.
+
+#CRDO #NET #Cloudflare #aistocks #semiconductors #fundamentals #investing
+#trading #stocktrading #stockmarket #valueinvesting #wallstreet
+
+=====================================================================
+COMPLIANCE (non-negotiable)
+=====================================================================
+• Educational / financial-commentary only — "not financial advice · DYOR" on
+  the last slide and in the caption.
+• Every number traces to web/public/data/site.json, generated 2026-07-11 —
+  labeled "as of July 11, 2026". Re-pull before posting if the date has moved.
+• Framed as a dated FINANCIAL-STATE snapshot, never a moral/character judgment
+  of either company; the "nuance" slide is mandatory for fairness.
+• Ethical axis = the leverage (debt) screen only until the full halal.json
+  verdict is folded in.
