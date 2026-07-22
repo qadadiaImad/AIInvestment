@@ -6,6 +6,8 @@
 # this file's import/collection path.
 import datetime as dt
 import json
+import os
+import sys
 
 import pytest
 
@@ -323,3 +325,154 @@ def test_finalize_raising_leaves_manifest_intact_in_still_present_tmp_dir(tmp_pa
 
     assert tmp_dir.exists()
     assert (tmp_dir / "manifest.json").exists()
+
+
+# --- cleanup_dirs (pure) ---------------------------------------------------------
+
+def test_cleanup_dirs_removes_tmp_dir_and_all_side_effect_dirs(tmp_path):
+    tmp_dir = tmp_path / "work"
+    tmp_dir.mkdir()
+    (tmp_dir / "f.txt").write_text("x", encoding="utf-8")
+    side1 = tmp_path / "side1"
+    side1.mkdir()
+    (side1 / "voice_A.wav").write_bytes(b"x")
+    side2 = tmp_path / "side2"
+    side2.mkdir()
+
+    daily_post.cleanup_dirs(tmp_dir, [side1, side2])
+
+    assert not tmp_dir.exists()
+    assert not side1.exists()
+    assert not side2.exists()
+
+
+def test_cleanup_dirs_ignores_already_missing_dirs(tmp_path):
+    tmp_dir = tmp_path / "never_created"
+    side = tmp_path / "also_never_created"
+
+    daily_post.cleanup_dirs(tmp_dir, [side])  # must not raise
+
+
+def test_cleanup_dirs_handles_empty_side_effect_list(tmp_path):
+    tmp_dir = tmp_path / "work"
+    tmp_dir.mkdir()
+
+    daily_post.cleanup_dirs(tmp_dir, [])
+
+    assert not tmp_dir.exists()
+
+
+# --- run(): BaseException (KeyboardInterrupt) during the wet steps still cleans up ---
+
+def _run_args(**overrides):
+    ns = daily_post.parse_args(["--auto", "--skip-refresh", "--skip-carousel"])
+    for k, v in overrides.items():
+        setattr(ns, k, v)
+    return ns
+
+
+def test_run_keyboard_interrupt_during_wet_steps_cleans_up_both_dirs_and_propagates(
+        tmp_path, monkeypatch):
+    """A Ctrl-C mid render (or TTS/whisper) must still remove tmp_dir AND the
+    remotion/public/daily/<folder>/ WAV-copy dir run_align already created --
+    per the review finding, a leftover WAV dir there would silently satisfy
+    run_render's existence assert on a same-day retry. Every subprocess-driving
+    step is stubbed (per the finding's instruction) so this exercises only the
+    orchestration/cleanup path in run(), not real TTS/whisper/remotion."""
+    now = dt.datetime(2026, 7, 22, 12, 0, tzinfo=dt.timezone.utc)
+    date_str = "2026-07-22"
+    ticker = "WULF"
+    folder = daily_post.folder_name(date_str, ticker)
+
+    web_data = tmp_path / "web"
+    web_data.mkdir()
+    (web_data / "halal.json").write_text(
+        json.dumps({"generated_at": "2026-07-22T09:00:00Z", "verdicts": {}}), encoding="utf-8")
+    halal_history = tmp_path / "halal_history"
+    higgs = tmp_path / "higgs"
+    remotion = tmp_path / "remotion"
+    work_tmp = tmp_path / "work_tmp"
+
+    monkeypatch.setattr(daily_post, "WEB_DATA", web_data)
+    monkeypatch.setattr(daily_post, "HALAL_HISTORY", halal_history)
+    monkeypatch.setattr(daily_post, "POSTED_LOG", halal_history / "posted_log.json")
+    monkeypatch.setattr(daily_post, "HIGGS", higgs)
+    monkeypatch.setattr(daily_post, "REMOTION", remotion)
+
+    monkeypatch.setattr(
+        daily_post.daily_pick, "rank_candidates",
+        lambda bundle, prev_map, news_bundle, posted_log, now: [
+            {"symbol": ticker, "score": 1.0, "reason": "test candidate", "story": None}])
+
+    copy_result = {
+        "props_a": {"beats": [{"kind": "hook", "headline": "h", "sub": "s"}], "vo": ["line a"]},
+        "props_b": {"beats": [{"kind": "hook", "headline": "h", "sub": "s"}], "vo": ["line b"]},
+        "caption": "cap",
+        "kit_fields": {"screen_head": "", "screen_body": "", "screen_body2": "", "halal_script": ""},
+    }
+    monkeypatch.setattr(daily_post.daily_copy, "build_daily", lambda *a, **k: copy_result)
+
+    def _fake_mkdtemp(prefix="daily_post_"):
+        work_tmp.mkdir(parents=True, exist_ok=True)
+        return str(work_tmp)
+
+    monkeypatch.setattr(daily_post.tempfile, "mkdtemp", _fake_mkdtemp)
+
+    def _fake_run_tts(tmp_dir, cr, python_exe=daily_post.CHATTERBOX_PYTHON):
+        return {"daily_a": tmp_dir / "voice_daily_a.wav", "daily_b": tmp_dir / "voice_daily_b.wav"}
+
+    def _fake_run_align(tmp_dir, folder_, cr, wavs, python_exe=daily_post.CHATTERBOX_PYTHON,
+                         side_effect_dirs=None):
+        # Mirrors the real run_align's side effect: create + register the WAV-copy
+        # dir under remotion/public/daily/<folder>/ BEFORE the interrupt below hits.
+        dest = daily_post.REMOTION / "public" / "daily" / folder_
+        dest.mkdir(parents=True, exist_ok=True)
+        (dest / "voice_A.wav").write_bytes(b"x")
+        (dest / "voice_B.wav").write_bytes(b"x")
+        if side_effect_dirs is not None:
+            side_effect_dirs.append(dest)
+        return {"A": {}, "B": {}}
+
+    def _fake_run_render(tmp_dir, folder_, props_out):
+        raise KeyboardInterrupt()
+
+    monkeypatch.setattr(daily_post, "run_tts", _fake_run_tts)
+    monkeypatch.setattr(daily_post, "run_align", _fake_run_align)
+    monkeypatch.setattr(daily_post, "run_render", _fake_run_render)
+
+    dest_voice_dir = remotion / "public" / "daily" / folder
+    args = _run_args()
+
+    with pytest.raises(KeyboardInterrupt):
+        daily_post.run(args, now=now, input_func=lambda prompt="": "")
+
+    assert not work_tmp.exists(), "tmp_dir must be removed even on KeyboardInterrupt"
+    assert not dest_voice_dir.exists(), (
+        "remotion/public/daily/<folder>/ WAV-copy dir must be removed on KeyboardInterrupt "
+        "-- a leftover copy would silently satisfy run_render's existence assert on retry")
+
+
+# --- _run_and_echo: live tee ------------------------------------------------------
+
+def test_run_and_echo_tees_stdout_and_stderr_live_and_returns_completed_process(capsys):
+    cmd = [sys.executable, "-c",
+           "import sys; print('out-line-1'); print('err-line-1', file=sys.stderr); "
+           "print('out-line-2')"]
+    proc = daily_post._run_and_echo(cmd, cwd=".", env=os.environ.copy())
+
+    captured = capsys.readouterr()
+    assert "out-line-1" in captured.out and "out-line-2" in captured.out
+    assert "err-line-1" in captured.err
+
+    assert proc.returncode == 0
+    assert "out-line-1" in proc.stdout and "out-line-2" in proc.stdout
+    assert "err-line-1" in proc.stderr
+    assert daily_post._stderr_tail(proc) == "err-line-1"
+
+
+def test_run_and_echo_captures_nonzero_returncode():
+    cmd = [sys.executable, "-c", "import sys; sys.stderr.write('boom'); sys.exit(3)"]
+    proc = daily_post._run_and_echo(cmd, cwd=".", env=os.environ.copy())
+
+    assert proc.returncode == 3
+    assert "boom" in proc.stderr

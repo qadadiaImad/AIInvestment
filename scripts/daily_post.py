@@ -61,6 +61,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SCRIPTS = ROOT / "scripts"
@@ -283,20 +284,42 @@ def build_kit_md(ticker, fields, date_str):
 # pure helpers above stay importable/testable without a GPU or any process spawn.
 # ---------------------------------------------------------------------------
 
-def _run_and_echo(cmd, cwd, env, shell=False):
-    """`subprocess.run` with output captured *and* echoed live to the console.
+def _tee_pipe(pipe, sink, out_stream):
+    """Read `pipe` line-by-line until EOF, appending each line to `sink` (a list)
+    and writing it straight to `out_stream` as it arrives. Runs in its own thread
+    (one per stream) so stdout and stderr can be drained -- and echoed live -- at
+    the same time without either one blocking on the other's OS pipe buffer."""
+    for line in iter(pipe.readline, ""):
+        sink.append(line)
+        out_stream.write(line)
+        out_stream.flush()
+    pipe.close()
 
-    Capturing (rather than letting stdio inherit) is what lets a failure embed
-    the tail of stderr in the raised `DailyPostError` (mirrors `run_carousel`'s
-    existing pattern); echoing keeps a human watching the console able to see
-    progress as each step runs.
+
+def _run_and_echo(cmd, cwd, env, shell=False):
+    """Run `cmd` via `Popen`, streaming stdout and stderr to the console *live*
+    (line-by-line, as each stream produces output) while also buffering both so
+    the result exposes `.returncode`/`.stdout`/`.stderr` like `subprocess.run`'s
+    `CompletedProcess` -- which is what `_stderr_tail` and the failure-message
+    callers here rely on. Two reader threads (one per stream) drain stdout/stderr
+    concurrently so a chatty stderr can't stall stdout's echo (or vice versa)
+    behind the OS pipe buffer.
     """
-    proc = subprocess.run(cmd, cwd=str(cwd), env=env, capture_output=True, text=True, shell=shell)
-    if proc.stdout:
-        print(proc.stdout, end="" if proc.stdout.endswith("\n") else "\n")
-    if proc.stderr:
-        print(proc.stderr, end="" if proc.stderr.endswith("\n") else "\n")
-    return proc
+    proc = subprocess.Popen(
+        cmd, cwd=str(cwd), env=env, shell=shell,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1,
+    )
+    stdout_lines = []
+    stderr_lines = []
+    t_out = threading.Thread(target=_tee_pipe, args=(proc.stdout, stdout_lines, sys.stdout))
+    t_err = threading.Thread(target=_tee_pipe, args=(proc.stderr, stderr_lines, sys.stderr))
+    t_out.start()
+    t_err.start()
+    t_out.join()
+    t_err.join()
+    proc.wait()
+    return subprocess.CompletedProcess(
+        cmd, proc.returncode, "".join(stdout_lines), "".join(stderr_lines))
 
 
 def _stderr_tail(proc, n=400):
@@ -445,6 +468,23 @@ def run_carousel(tmp_dir, ticker, kit_fields, copy_result, reason, date_str, pyt
     return None, collected
 
 
+def cleanup_dirs(tmp_dir, side_effect_dirs):
+    """Remove `tmp_dir` and every dir in `side_effect_dirs`, best-effort (missing
+    or locked paths are ignored, mirroring `shutil.rmtree(..., ignore_errors=True)`).
+
+    Called from `run()`'s cleanup handler on ANY exception that escapes the wet
+    steps -- including `KeyboardInterrupt`/`SystemExit` (i.e. `BaseException`, not
+    just `Exception`). A Ctrl-C during TTS/whisper/render must not skip cleanup:
+    besides orphaning `tmp_dir`, a stranded `remotion/public/daily/<folder>/` would
+    still hold the WAVs `run_align` copied there, and those stale files would
+    silently satisfy `run_render`'s existence assert on a same-day retry -- making
+    the retry render with yesterday's voice track instead of failing loudly.
+    """
+    shutil.rmtree(tmp_dir, ignore_errors=True)
+    for d in side_effect_dirs:
+        shutil.rmtree(d, ignore_errors=True)
+
+
 def finalize(tmp_dir, dest_dir):
     """Move `tmp_dir`'s contents into `dest_dir` (must not already exist). Returns
     the sorted list of filenames now in `dest_dir`."""
@@ -557,10 +597,12 @@ def run(args, now=None, input_func=input):
 
         print(f"  OK wrote {dest}")
         return 0
-    except Exception:
-        shutil.rmtree(tmp_dir, ignore_errors=True)
-        for d in side_effect_dirs:
-            shutil.rmtree(d, ignore_errors=True)
+    except BaseException:
+        # BaseException (not just Exception): KeyboardInterrupt/SystemExit during
+        # the long wet steps (TTS/whisper/render) must still trigger cleanup --
+        # see cleanup_dirs's docstring for why an orphaned side-effect dir is
+        # actively dangerous, not just untidy.
+        cleanup_dirs(tmp_dir, side_effect_dirs)
         raise
 
 
