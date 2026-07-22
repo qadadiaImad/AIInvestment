@@ -1,0 +1,28 @@
+{
+  "logoSrc": "logos/INTC.svg",
+  "kind": "business",
+  "kick": "WHAT INTEL SELLS",
+  "title": "CPUs — and now, other people's chips.",
+  "sub": "The old PC-and-server king is betting its comeback on becoming America's contract chip manufacturer.",
+  "segments": [
+    {
+      "name": "Client Computing",
+      "desc": "Core processors for desktops and laptops — still the revenue base."
+    },
+    {
+      "name": "Data Center & AI",
+      "desc": "Xeon server CPUs plus AI accelerators — fighting to stay in the AI buildout."
+    },
+    {
+      "name": "Intel Foundry",
+      "desc": "Manufacturing chips for other companies — the turnaround story the market is pricing."
+    },
+    {
+      "name": "Edge & other bets",
+      "desc": "Networking, edge and stakes like Mobileye in automotive autonomy."
+    }
+  ],
+  "footnote": "Segment framing qualitative · financials on the sheet →",
+  "durationInFrames": 270,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

@@ -1,0 +1,46 @@
+{
+  "logoSrc": "logos/INTC.svg",
+  "kind": "fundsheet",
+  "kick": "THE SHEET",
+  "title": "Fundamental value vs price.",
+  "fv": 28.23,
+  "price": 109.84,
+  "fvLabel": "MODEL VALUE",
+  "priceLabel": "PRICE (7/11)",
+  "verdict": "OVERVALUED · MODEL CACHED 7/11",
+  "stats": [
+    {
+      "label": "P/E (TTM)",
+      "value": "n/a — loss-making",
+      "tone": "red"
+    },
+    {
+      "label": "NET MARGIN",
+      "value": "-5.9%",
+      "tone": "red"
+    },
+    {
+      "label": "GROSS MARGIN",
+      "value": "35.9%",
+      "tone": "amber"
+    },
+    {
+      "label": "REV GROWTH YoY",
+      "value": "+1.4%",
+      "tone": "amber"
+    },
+    {
+      "label": "1-YEAR RETURN",
+      "value": "+365%",
+      "tone": "emerald"
+    },
+    {
+      "label": "DEBT / EQUITY",
+      "value": "0.40",
+      "tone": "muted"
+    }
+  ],
+  "footnote": "All figures cached 2026-07-11 bundle · 7/21 close was $105.45 (IBKR-checked)",
+  "durationInFrames": 300,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

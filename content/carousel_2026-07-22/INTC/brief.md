@@ -22,3 +22,17 @@ Close/move live-validated vs Interactive Brokers 2026-07-22T08:24Z (prior close 
 Disclosure record: congress.json (2026-07-11) cross-confirmed by live news coverage of the same
 PTR filing. Model figures cached 2026-07-11, labeled. Public record shown for transparency —
 not an accusation, not a signal, not financial advice.
+
+## Extra slides (added 2026-07-22, engine kinds business/news/fundsheet)
+5. slide_5_business.png — WHAT INTEL SELLS: Client Computing (Core), Data Center & AI
+   (Xeon + accelerators), Intel Foundry (the turnaround story), Edge & other bets
+   (Mobileye etc.). Qualitative framing.
+6. slide_6_news.png — WHY IT'S MOVING timeline: 7/21 REPORTED Google Cloud AI collab +
+   foundry win (+8.64% to $105.45), 6/23 FACT Pelosi-household PTR (200 calls, $50
+   strike; explicit not-an-accusation rail), 7/23 FACT Q2 earnings.
+7. slide_7_fundsheet.png — THE SHEET: model value $28.23 vs price $109.84 compare bars,
+   OVERVALUED verdict pill, ratio grid (P/E n/a loss-making, net -5.9%, gross 35.9%,
+   rev +1.4% YoY, 1-y return +365%, D/E 0.40). All cached 2026-07-11, labeled on-slide.
+
+Suggested post order: 1 (cover) -> 5 (business) -> 6 (news) -> 7 (sheet) -> 4 (CTA);
+slides 2-3 optional inserts for a long-form carousel.

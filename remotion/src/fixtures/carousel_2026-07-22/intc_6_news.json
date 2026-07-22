@@ -1,0 +1,72 @@
+{
+  "logoSrc": "logos/INTC.svg",
+  "kind": "news",
+  "kick": "WHY IT'S MOVING",
+  "title": "The run-up, dated.",
+  "items": [
+    {
+      "date": "7/21",
+      "tag": "REPORTED",
+      "text": [
+        {
+          "t": "Expanded "
+        },
+        {
+          "t": "Google Cloud AI collaboration",
+          "b": true
+        },
+        {
+          "t": " and a new foundry customer — the stock closed "
+        },
+        {
+          "t": "+8.64% at $105.45",
+          "tone": "emerald",
+          "b": true
+        },
+        {
+          "t": ", its sharpest day in months."
+        }
+      ]
+    },
+    {
+      "date": "6/23",
+      "tag": "FACT",
+      "text": [
+        {
+          "t": "Public-record PTR filing: Nancy Pelosi's household bought "
+        },
+        {
+          "t": "200 INTC calls, $50 strike",
+          "b": true
+        },
+        {
+          "t": " (txn 5/29, exp 3/19/2027, $1M–$5M). "
+        },
+        {
+          "t": "Disclosure — not an accusation, not a signal.",
+          "tone": "amber",
+          "b": true
+        }
+      ]
+    },
+    {
+      "date": "7/23",
+      "tag": "FACT",
+      "text": [
+        {
+          "t": "Q2 earnings land "
+        },
+        {
+          "t": "Thursday",
+          "b": true
+        },
+        {
+          "t": " — the run-up meets reality."
+        }
+      ]
+    }
+  ],
+  "footnote": "Headlines web-sourced 7/22 · close cross-checked vs IBKR · certainty labeled",
+  "durationInFrames": 270,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}
