@@ -44,6 +44,7 @@ since this reel isn't a halal screen.
 
 It writes:
 ```
+remotion/public/audio/infra_countdown/voice_intro.wav
 remotion/public/audio/infra_countdown/voice_cien.wav
 remotion/public/audio/infra_countdown/voice_anet.wav
 remotion/public/audio/infra_countdown/voice_avgo.wav
@@ -53,19 +54,26 @@ remotion/public/audio/infra_countdown/durations.json
 ```
 
 **Check the console output** — it prints each clip's actual duration and
-flags any ticker clip that runs past its 5.1667s (155-frame) on-screen
-window with `<-- OVER BUDGET, trim the script`. If that happens, shorten the
-matching `.txt` file in `voice/` and re-run.
+flags any clip that runs past its own on-screen/timing budget with
+`<-- OVER BUDGET, trim the script`. Budgets differ per clip (see the
+docstring in `scripts/voice/infra_countdown_voice.py`) because Chatterbox has
+a ~2-3s fixed floor per utterance regardless of word count — a bare 4-word
+intro line still costs ~3s, too long to fit inside the 70-frame intro card on
+its own. If a clip trips the flag, shorten the matching `.txt` file in
+`voice/` and re-run; if it's INTRO or CIEN specifically, also re-check
+`TICKER0_VO_DELAY` in `InfraCountdown.tsx` (see its comment) since the two
+are timed to hand off to each other without overlapping.
 
-The five scripts being spoken (edit these `.txt` files directly if you want
+The six scripts being spoken (edit these `.txt` files directly if you want
 different wording, then re-run step 2):
 
 | File | Text |
 |---|---|
-| `voice/CIEN.txt` | Ciena builds the optical networks moving data across the world's data centers. |
-| `voice/ANET.txt` | Arista builds the high speed switches inside the world's biggest data centers. |
-| `voice/AVGO.txt` | Broadcom designs custom chips and networking silicon for the largest cloud providers. |
-| `voice/SMCI.txt` | Super Micro builds the servers that pack AI chips into deployable racks. |
+| `voice/INTRO.txt` | Same sector wildly different prices |
+| `voice/CIEN.txt` | Ciena builds optical networks for data centers, priced well above fair value. |
+| `voice/ANET.txt` | Arista builds switches for AI data centers, still trading above fair value. |
+| `voice/AVGO.txt` | Broadcom designs chips for major clouds, priced above fair value. |
+| `voice/SMCI.txt` | Super Micro builds AI servers, and trades well below fair value. |
 | `voice/OUTRO.txt` | Educational commentary only — not financial advice. |
 
 ## 3. Enable the voice track and re-render

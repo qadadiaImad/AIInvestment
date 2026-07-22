@@ -10,10 +10,24 @@ see course/persona/VOICE.md "Locked engine" for the venv path.
 
     <venv-python> scripts/voice/infra_countdown_voice.py
 
-Reads the five .txt scripts in content/carousel_2026-07-22/INFRA_COUNTDOWN/voice/,
+Reads the six .txt scripts in content/carousel_2026-07-22/INFRA_COUNTDOWN/voice/,
 generates one WAV per file into remotion/public/audio/infra_countdown/, and writes
 durations.json (seconds per clip) so the Remotion side can warn if any clip overruns
-its 155-frame (5.1667s) display budget before you flip withVoice:true and re-render.
+its display budget before you flip withVoice:true and re-render.
+
+Per-clip budgets (see InfraCountdown.tsx timing constants — INTRO_END=70,
+SEGMENT_LEN=200, COLLAPSE_START=155, COLLAPSE_LEN=40, so a ticker card is still
+legible through local frame 195, not just the 155-frame hold). Chatterbox has a
+~2-3s fixed per-utterance floor regardless of word count, so the INTRO line
+can't fit inside the 70-frame intro card alone — it plays under the intro card
+AND the first ticker's entrance, and CIEN's own VO is delayed to start right
+after it (see TICKER0_VO_DELAY in InfraCountdown.tsx). Its budget below is
+sized so that delay still leaves CIEN's clip finishing before ANET's segment
+(and ANET's own VO) begins at frame 270 — re-check that constant if this
+clip's measured duration or CIEN's script length changes:
+  INTRO  — must land CIEN's delayed VO start early enough to finish by ~267: 92f
+  ticker — card fades out by local frame 195, next segment starts at 200 (5f buffer): 185f
+  OUTRO  — outroStart to durationInFrames (150f in the current fixture): 150f
 """
 from __future__ import annotations
 
@@ -28,8 +42,9 @@ SEED = 7
 EXAGGERATION = 0.4  # calm educator — same as VOICE.md canon
 CFG_WEIGHT = 0.5
 
-# ticker files -> output basename; OUTRO.txt is the closing disclaimer line
+# script files -> output basename
 CLIPS = {
+    "INTRO": "voice_intro",
     "CIEN": "voice_cien",
     "ANET": "voice_anet",
     "AVGO": "voice_avgo",
@@ -37,7 +52,15 @@ CLIPS = {
     "OUTRO": "voice_outro",
 }
 
-BUDGET_S = 155 / 30  # segment HOLD window, must not be exceeded by a ticker clip
+# per-clip budget in seconds (frame windows above, /30fps)
+CLIP_BUDGETS_S = {
+    "INTRO": 92 / 30,
+    "CIEN": 185 / 30,
+    "ANET": 185 / 30,
+    "AVGO": 185 / 30,
+    "SMCI": 185 / 30,
+    "OUTRO": 150 / 30,
+}
 
 
 def wav_duration_s(path: pathlib.Path) -> float:
@@ -83,7 +106,8 @@ def main() -> None:
         torchaudio.save(str(dest), audio, sr)
         dur = wav_duration_s(dest)
         durations[out_base] = round(dur, 3)
-        flag = "  <-- OVER BUDGET, trim the script" if name != "OUTRO" and dur > BUDGET_S else ""
+        budget = CLIP_BUDGETS_S[name]
+        flag = f"  <-- OVER BUDGET ({budget:.2f}s), trim the script" if dur > budget else ""
         print(f"OK {dest.name}  {dur:.2f}s{flag}")
 
     (OUT_DIR / "durations.json").write_text(json.dumps(durations, indent=2), encoding="utf-8")

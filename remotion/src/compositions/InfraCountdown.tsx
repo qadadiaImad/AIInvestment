@@ -57,6 +57,25 @@ const COLLAPSE_LEN = 40; // -> lands at local 195, 5f before next segment
 const segmentStart = (i: number) => INTRO_END + i * SEGMENT_LEN;
 const insertFrameOf = (i: number) => segmentStart(i) + COLLAPSE_START + COLLAPSE_LEN;
 
+// Karim's intro VO ("Same sector, wildly different prices") runs ~90f — too
+// long to fit inside the 70f intro card alone (Chatterbox has a ~3s floor
+// per utterance regardless of word count), so it plays under the intro card
+// AND the first ticker's entrance. CIEN's own VO is pushed back to start
+// right after (90f clip + 8f breathing room), still landing its own ~167f
+// line by frame 265 — exactly its rail-insert frame, 5f clear of ANET's
+// segment (and ANET's own VO) at 270. Re-check this if INTRO's or CIEN's
+// script length changes — see scripts/voice/infra_countdown_voice.py.
+const TICKER0_VO_DELAY = 98;
+
+// SMCI (the last ticker) finishes speaking well before its card collapse and
+// the rail settle, leaving an ~80f dead gap before the outro's own visual
+// cue (outroStart) fires the tagline. Pulling the outro VO forward to start
+// right after SMCI's line (670f start + its ~154f clip + 8f gap) closes that
+// gap; the outro TAGLINE/Chip-jump visual still waits for outroStart as
+// before — the spoken disclaimer just now plays under the settling rail and
+// carries into the tagline's fade-in instead of preceding it in silence.
+const OUTRO_VO_DELAY = 832;
+
 // ------------------------------------------------------------ stat card
 const Stat: React.FC<{label: string; value: string; tone?: 'good' | 'bad' | 'neutral'; delay: number; frame: number; fps: number}> = ({
   label,
@@ -268,16 +287,20 @@ export const InfraCountdown: React.FC<InfraCountdownProps> = (props) => {
         }}
       />
 
-      {/* Karim VO — one clip per ticker at its segment start, one outro
-          disclaimer clip. See withVoice/voiceDir in the schema doc above. */}
+      {/* Karim VO — a short hook line under the intro card, one clip per
+          ticker at its segment start, one outro disclaimer clip. See
+          withVoice/voiceDir in the schema doc above. */}
       {props.withVoice && props.voiceDir
         ? [
+            <Sequence key="vo-intro" from={0} layout="none">
+              <Audio src={staticFile(`${props.voiceDir}/voice_intro.wav`)} />
+            </Sequence>,
             ...props.tickers.map((t, j) => (
-              <Sequence key={`vo-${t.sym}`} from={segmentStart(j)} layout="none">
+              <Sequence key={`vo-${t.sym}`} from={j === 0 ? TICKER0_VO_DELAY : segmentStart(j)} layout="none">
                 <Audio src={staticFile(`${props.voiceDir}/voice_${t.sym.toLowerCase()}.wav`)} />
               </Sequence>
             )),
-            <Sequence key="vo-outro" from={outroStart} layout="none">
+            <Sequence key="vo-outro" from={OUTRO_VO_DELAY} layout="none">
               <Audio src={staticFile(`${props.voiceDir}/voice_outro.wav`)} />
             </Sequence>,
           ]
