@@ -1,0 +1,27 @@
+{
+  "logoSrc": "logos/INTC.svg",
+  "kind": "company",
+  "ticker": "INTC",
+  "name": "Intel",
+  "tagline": "the foundry turnaround bet",
+  "perfPct": 8,
+  "perfLabel": "day move · 7/21 close $105.45 (+8.64%)",
+  "motif": "stack",
+  "pills": [
+    {
+      "label": "Close (7/21)",
+      "value": "$105.45 · +8.64%"
+    },
+    {
+      "label": "Q2 earnings",
+      "value": "Thursday 7/23"
+    },
+    {
+      "label": "Drivers (reported)",
+      "value": "Google Cloud AI + foundry win"
+    }
+  ],
+  "footnote": "Live 7/21-22, cross-checked vs IBKR · cached items labeled (7/11)",
+  "durationInFrames": 270,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

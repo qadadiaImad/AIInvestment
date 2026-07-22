@@ -5,9 +5,6 @@ import {
   calculateCaptionedVideoMetadata,
   captionedVideoSchema,
 } from "./CaptionedVideo";
-import { loadFont as loadFraunces } from "@remotion/google-fonts/Fraunces";
-import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
-import { loadFont as loadJBM } from "@remotion/google-fonts/JetBrainsMono";
 import fixture from "./fixtures/ddog.json";
 import wulfSlidesFixture from "./fixtures/wulf_slides.json";
 import tutorialTerminalFixture from "./fixtures/tutorial_terminal.json";
@@ -34,10 +31,8 @@ const tutorialTerminalDuration = tutorialTerminalProps.scenes.reduce(
 );
 
 const kurzSlideDefaultProps = kurzSlidePropsSchema.parse(kurzSlide2Fixture);
-
-loadFraunces();
-loadInter();
-loadJBM();
+// Fonts (Fraunces/Inter/JetBrains Mono) are imported locally in slides/theme.ts
+// via @fontsource — no runtime Google Fonts fetch.
 
 // Each <Composition> is an entry in the sidebar!
 

@@ -1,0 +1,28 @@
+{
+  "logoSrc": "logos/AMD.svg",
+  "kind": "text",
+  "kick": "THE SETUP",
+  "title": "It moved before the keynote.",
+  "body": [
+    {
+      "t": "Reportedly, Microsoft is deploying AMD's "
+    },
+    {
+      "t": "Helios",
+      "b": true
+    },
+    {
+      "t": " rack-scale AI systems across Azure. The stock ran "
+    },
+    {
+      "t": "+8.11%",
+      "tone": "emerald",
+      "b": true
+    },
+    {
+      "t": " — one day before AMD's own Advancing AI 2026 event (July 22–23, SF)."
+    }
+  ],
+  "durationInFrames": 240,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

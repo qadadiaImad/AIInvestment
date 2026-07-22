@@ -1,0 +1,30 @@
+{
+  "logoSrc": "logos/QBTS.svg",
+  "logoLabel": "D-WAVE",
+  "kind": "text",
+  "kick": "THE NUMBERS",
+  "title": "Under half its year-high.",
+  "body": [
+    {
+      "t": "Trading under $18 against a "
+    },
+    {
+      "t": "$46.75 52-week high",
+      "tone": "amber",
+      "b": true
+    },
+    {
+      "t": ". Cached (7/11) model: $2.63 fair vs ~$20 price. The one real number: revenue "
+    },
+    {
+      "t": "$7.2M (2022) → $24.6M (2025)",
+      "tone": "emerald",
+      "b": true
+    },
+    {
+      "t": " — small, but real."
+    }
+  ],
+  "durationInFrames": 240,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

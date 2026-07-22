@@ -1,0 +1,29 @@
+{
+  "logoSrc": "logos/QBTS.svg",
+  "logoLabel": "D-WAVE",
+  "kind": "text",
+  "kick": "THE MOVE",
+  "title": "NYSE → Nasdaq, this week.",
+  "body": [
+    {
+      "t": "Reported 7/14: D-Wave is transferring its listing. Last NYSE session "
+    },
+    {
+      "t": "7/24",
+      "b": true
+    },
+    {
+      "t": "; Nasdaq debut "
+    },
+    {
+      "t": "7/27",
+      "tone": "emerald",
+      "b": true
+    },
+    {
+      "t": " — same ticker, QBTS. Framed as aligning with 'a market known for technology innovators.'"
+    }
+  ],
+  "durationInFrames": 240,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

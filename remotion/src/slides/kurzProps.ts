@@ -9,8 +9,17 @@ import {richTextSchema} from './slideProps';
 
 const richOrString = () => z.union([z.string(), richTextSchema]);
 
+// Corporate-logo chip, shown on every slide of a company's carousel when set.
+// logoSrc is staticFile-relative (e.g. "logos/AMD.svg"); logoLabel is the
+// small mono caption beside the mark (usually the ticker).
+const logoFields = {
+  logoSrc: z.string().optional(),
+  logoLabel: z.string().optional(),
+};
+
 export const kurzIntroVideoSchema = z.object({
   kind: z.literal('introVideo'),
+  ...logoFields,
   footer: z.string().optional(), // per-slide disclaimer override (default: theme NOT_FATWA)
   videoSrc: z.string(), // staticFile-relative, e.g. "intro_kitchen_counter.mp4"
   kick: z.string(),
@@ -21,6 +30,7 @@ export const kurzIntroVideoSchema = z.object({
 
 export const kurzCompanySchema = z.object({
   kind: z.literal('company'),
+  ...logoFields,
   footer: z.string().optional(),
   ticker: z.string(),
   name: z.string(),
@@ -35,6 +45,7 @@ export const kurzCompanySchema = z.object({
 
 export const kurzTextSchema = z.object({
   kind: z.literal('text'),
+  ...logoFields,
   footer: z.string().optional(),
   kick: z.string(),
   title: z.string(),

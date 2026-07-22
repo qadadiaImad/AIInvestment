@@ -6,7 +6,7 @@
 // geometric shapes, saturated accents on our deep ground, gentle constant
 // motion. No mascots, no borrowed trade dress.
 import React from 'react';
-import {AbsoluteFill, OffthreadVideo, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Img, OffthreadVideo, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import type {KurzCompanyProps, KurzIntroVideoProps, KurzSlideProps, KurzTextProps} from '../slides/kurzProps';
 import type {RichTextValue} from '../slides/slideProps';
 import {C, FONT} from '../slides/theme';
@@ -107,6 +107,45 @@ const TitleWords: React.FC<{text: string; delay?: number; fontSize?: number; col
           </span>
         );
       })}
+    </div>
+  );
+};
+
+/** Corporate-logo chip — the company's official mark (staticFile-relative
+ * SVG, e.g. "logos/AMD.svg") pinned top-right on every slide of that
+ * company's carousel. Springs in once, then keeps the engine's
+ * nothing-is-ever-static idiom with a slow float. Panel background keeps
+ * white monochrome marks legible over blobs. */
+const LogoChip: React.FC<{src: string; label?: string; delay?: number}> = ({src, label, delay = 2}) => {
+  const frame = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const p = spring({frame: frame - delay, fps, config: {damping: 12, mass: 0.6, stiffness: 160}});
+  const s = Math.min(1, p);
+  const float = Math.sin(frame / 46) * 4;
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: 44,
+        right: 48,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 14,
+        padding: '14px 22px',
+        borderRadius: 999,
+        background: C.panel,
+        border: `1.5px solid ${C.line}`,
+        backdropFilter: 'blur(6px)',
+        opacity: Math.min(1, p * 1.5),
+        scale: String(0.85 + 0.15 * s),
+        translate: `0px ${(1 - s) * -18 + float}px`,
+        zIndex: 5,
+      }}
+    >
+      <Img src={staticFile(src)} style={{width: 52, height: 52, display: 'block'}} />
+      {label ? (
+        <span style={{fontFamily: FONT.mono, fontWeight: 700, fontSize: 24, letterSpacing: 3, color: C.ink}}>{label}</span>
+      ) : null}
     </div>
   );
 };
@@ -227,6 +266,7 @@ export const KurzSlide: React.FC<KurzSlideProps> = (props) => {
       ) : (
         <TextScene {...props} />
       )}
+      {props.logoSrc ? <LogoChip src={props.logoSrc} label={props.logoLabel} /> : null}
       <AbsoluteFill style={{padding: '0 40px 22px', alignItems: 'center', justifyContent: 'flex-end', pointerEvents: 'none'}}>
         <Foot text={props.footer} />
       </AbsoluteFill>

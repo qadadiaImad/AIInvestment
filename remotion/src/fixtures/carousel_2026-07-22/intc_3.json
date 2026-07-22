@@ -1,0 +1,29 @@
+{
+  "logoSrc": "logos/INTC.svg",
+  "kind": "text",
+  "kick": "THE NUMBERS",
+  "title": "$105.45 — ~$55 in the money.",
+  "body": [
+    {
+      "t": "Intel closed "
+    },
+    {
+      "t": "+8.64%",
+      "tone": "emerald",
+      "b": true
+    },
+    {
+      "t": " — its sharpest day in months — two days before earnings. That May strike now sits "
+    },
+    {
+      "t": "~$55 in the money",
+      "tone": "emerald",
+      "b": true
+    },
+    {
+      "t": ". Cached (7/11) model: $28.23 fair vs ~$110 price."
+    }
+  ],
+  "durationInFrames": 240,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

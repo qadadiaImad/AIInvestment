@@ -1,0 +1,21 @@
+{
+  "logoSrc": "logos/AMD.svg",
+  "kind": "text",
+  "kick": "THE WATCH",
+  "title": "What's actually announced?",
+  "body": [
+    {
+      "t": "A third gigawatt-scale AI customer is "
+    },
+    {
+      "t": "reportedly expected",
+      "tone": "amber",
+      "b": true
+    },
+    {
+      "t": " at the keynote — still unconfirmed. Save this for after the event. Educational — not financial advice."
+    }
+  ],
+  "durationInFrames": 240,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

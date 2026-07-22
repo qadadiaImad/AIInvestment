@@ -1,0 +1,25 @@
+{
+  "logoSrc": "logos/INTC.svg",
+  "kind": "text",
+  "kick": "PUBLIC RECORD",
+  "title": "A $50 strike, filed in June.",
+  "body": [
+    {
+      "t": "A disclosure under Nancy Pelosi's household: "
+    },
+    {
+      "t": "200 INTC calls, $50 strike",
+      "b": true
+    },
+    {
+      "t": ", expiring 3/19/2027 — transaction 5/29, filed 6/23, range $1M–$5M. "
+    },
+    {
+      "t": "Public record — not an accusation, not a signal.",
+      "tone": "amber",
+      "b": true
+    }
+  ],
+  "durationInFrames": 240,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

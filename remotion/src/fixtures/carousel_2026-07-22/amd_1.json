@@ -1,0 +1,27 @@
+{
+  "logoSrc": "logos/AMD.svg",
+  "kind": "company",
+  "ticker": "AMD",
+  "name": "Advanced Micro Devices",
+  "tagline": "the other AI accelerator",
+  "perfPct": 8,
+  "perfLabel": "day move · 7/21 close $544.43 (+8.11%)",
+  "motif": "beams",
+  "pills": [
+    {
+      "label": "Close (7/21)",
+      "value": "$544.43 · +8.11%"
+    },
+    {
+      "label": "Driver (reported)",
+      "value": "Microsoft × Helios on Azure"
+    },
+    {
+      "label": "Model vs price (cached 7/11)",
+      "value": "$241 vs $558"
+    }
+  ],
+  "footnote": "Live 7/21-22, cross-checked vs IBKR · cached items labeled (7/11)",
+  "durationInFrames": 270,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

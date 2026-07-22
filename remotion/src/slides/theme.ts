@@ -1,15 +1,20 @@
-import { loadFont as loadFraunces } from "@remotion/google-fonts/Fraunces";
-import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
-import { loadFont as loadMono } from "@remotion/google-fonts/JetBrainsMono";
-
-const fraunces = loadFraunces("normal", { weights: ["600", "700"], subsets: ["latin"] });
-const inter = loadInter("normal", { weights: ["400", "500", "600", "700"], subsets: ["latin"] });
-const mono = loadMono("normal", { weights: ["600", "700", "800"], subsets: ["latin"] });
+// Fonts are bundled locally via @fontsource (Remotion's recommended offline
+// path) instead of @remotion/google-fonts: sandboxed/CI renderers can't reach
+// fonts.gstatic.com, and local woff2 makes renders deterministic everywhere.
+import "@fontsource/fraunces/600.css";
+import "@fontsource/fraunces/700.css";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/jetbrains-mono/600.css";
+import "@fontsource/jetbrains-mono/700.css";
+import "@fontsource/jetbrains-mono/800.css";
 
 export const FONT = {
-  display: fraunces.fontFamily,
-  body: inter.fontFamily,
-  mono: mono.fontFamily,
+  display: "'Fraunces', serif",
+  body: "'Inter', sans-serif",
+  mono: "'JetBrains Mono', monospace",
 };
 
 export const C = {
