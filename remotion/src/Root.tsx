@@ -13,6 +13,7 @@ import { HalalVerdictReel } from "./compositions/HalalVerdictReel";
 import { SlideStoryReel } from "./compositions/SlideStoryReel";
 import { TutorialReel } from "./compositions/TutorialReel";
 import { KurzSlide } from "./compositions/KurzSlide";
+import { CharacterCard, characterCardSchema } from "./compositions/CharacterCard";
 import { reelPropsSchema } from "./props";
 import { slideStoryPropsSchema } from "./slides/slideProps";
 import { tutorialPropsSchema } from "./slides/tutorialProps";
@@ -109,6 +110,23 @@ export const RemotionRoot: React.FC = () => {
           // duration follows whatever slide props file is rendered
           // (--props=fixtures/carousel_top3/slideN.json), not the default
           // fixture — durationInFrames is the single source of truth.
+          durationInFrames: props.durationInFrames,
+        })}
+      />
+      <Composition
+        id="CharacterCard"
+        component={CharacterCard}
+        durationInFrames={300}
+        fps={30}
+        width={1080}
+        height={1350}
+        schema={characterCardSchema}
+        defaultProps={{
+          variant: "lineup" as const,
+          footer: "Original AI STACK characters — educational content · not financial advice",
+          durationInFrames: 300,
+        }}
+        calculateMetadata={({ props }) => ({
           durationInFrames: props.durationInFrames,
         })}
       />
