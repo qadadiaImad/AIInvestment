@@ -1,9 +1,10 @@
 """Karim VO for the InfraCountdown reel (content/carousel_2026-07-22/INFRA_COUNTDOWN/) —
 same canonical voice/engine as scripts/voice/karim_tts.py (course/persona/VOICE.md),
 same sample, same seed/exaggeration/cfg_weight, but WITHOUT the halal-card lint gate:
-this reel is a general fundamentals comparison, not a halal screen, so the spoken
-disclaimer text is a short standalone outro line instead of the halal-specific
-"educational, not financial or religious advice" phrase lint_concept_script requires.
+this reel is a general fundamentals comparison, not a halal screen, so there's no
+lint_concept_script call. The spoken outro line calls out the winner (SMCI) rather
+than reading a disclaimer — the on-screen footer ("...educational, not financial
+advice") renders for the whole video already, per owner direction 2026-07-22.
 
 Run inside the chatterbox venv (torch + chatterbox-tts installed), NOT the repo python —
 see course/persona/VOICE.md "Locked engine" for the venv path.
@@ -27,7 +28,8 @@ sized so that delay still leaves CIEN's clip finishing before ANET's segment
 clip's measured duration or CIEN's script length changes:
   INTRO  — must land CIEN's delayed VO start early enough to finish by ~267: 92f
   ticker — card fades out by local frame 195, next segment starts at 200 (5f buffer): 185f
-  OUTRO  — outroStart to durationInFrames (150f in the current fixture): 150f
+  OUTRO  — OUTRO_VO_DELAY (832, right after SMCI's line) to durationInFrames,
+           minus a 15f tail buffer before the hard cut: 208f
 """
 from __future__ import annotations
 
@@ -59,7 +61,7 @@ CLIP_BUDGETS_S = {
     "ANET": 185 / 30,
     "AVGO": 185 / 30,
     "SMCI": 185 / 30,
-    "OUTRO": 150 / 30,
+    "OUTRO": 208 / 30,
 }
 
 

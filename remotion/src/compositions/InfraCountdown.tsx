@@ -72,8 +72,10 @@ const TICKER0_VO_DELAY = 98;
 // cue (outroStart) fires the tagline. Pulling the outro VO forward to start
 // right after SMCI's line (670f start + its ~154f clip + 8f gap) closes that
 // gap; the outro TAGLINE/Chip-jump visual still waits for outroStart as
-// before — the spoken disclaimer just now plays under the settling rail and
-// carries into the tagline's fade-in instead of preceding it in silence.
+// before — the spoken line (SMCI callback, per owner direction 2026-07-22 —
+// no more spoken disclaimer, the on-screen footer carries that) just now
+// plays under the settling rail and carries into the tagline's fade-in
+// instead of preceding it in silence.
 const OUTRO_VO_DELAY = 832;
 
 // ------------------------------------------------------------ stat card

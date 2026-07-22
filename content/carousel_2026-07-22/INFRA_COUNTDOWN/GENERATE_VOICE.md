@@ -74,7 +74,12 @@ different wording, then re-run step 2):
 | `voice/ANET.txt` | Arista builds switches for AI data centers, still trading above fair value. |
 | `voice/AVGO.txt` | Broadcom designs chips for major clouds, priced above fair value. |
 | `voice/SMCI.txt` | Super Micro builds AI servers, and trades well below fair value. |
-| `voice/OUTRO.txt` | Educational commentary only — not financial advice. |
+| `voice/OUTRO.txt` | Super Micro trades far below fair value — the one worth watching. |
+
+No spoken disclaimer line (owner direction 2026-07-22) — the on-screen footer
+("Figures as of July 11, 2026 — educational, not financial advice") renders
+for the whole video already, so the outro line instead calls back to the
+winner (SMCI) and why it stood out.
 
 ## 3. Enable the voice track and re-render
 
