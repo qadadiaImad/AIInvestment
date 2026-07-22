@@ -183,3 +183,39 @@ export const DEPTH = {bg: 0.3, mid: 0.6, fg: 1};
  */
 export const parallax = (cameraDeltaPx: number, depth: keyof typeof DEPTH): number =>
   cameraDeltaPx * DEPTH[depth];
+
+// ------------------------------------------------------- ranking rail
+/**
+ * Reusable "leaderboard rail" primitive: N items are revealed one at a time
+ * at known frames (`insertFrames`, ascending); each new item always takes
+ * slot 0 (the front) and every earlier item ramps one slot further back
+ * over `rampFrames`. This is the countdown-reveal pattern (worst-to-first,
+ * newest item always becomes the new best-so-far) — used by
+ * InfraCountdown.tsx and any future ranked-reveal scene.
+ *
+ * Returns null if `frame` is before this item's own insertFrame (not yet
+ * revealed — caller should skip rendering it).
+ */
+export const rampedSlot = (
+  frame: Frame,
+  itemIndex: number,
+  insertFrames: number[],
+  rampFrames = 18,
+): number | null => {
+  const myInsertFrame = insertFrames[itemIndex];
+  if (frame < myInsertFrame) return null;
+  let slot = 0;
+  for (let k = itemIndex + 1; k < insertFrames.length; k++) {
+    const evt = insertFrames[k];
+    if (frame >= evt + rampFrames) {
+      slot += 1;
+    } else if (frame >= evt) {
+      const p = Easing.bezier(0.05, 0.7, 0.1, 1)((frame - evt) / rampFrames);
+      slot += p;
+      break;
+    } else {
+      break;
+    }
+  }
+  return slot;
+};

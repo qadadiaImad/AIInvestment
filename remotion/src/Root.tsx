@@ -19,6 +19,8 @@ import { ExplainerScene, explainerSceneSchema } from "./compositions/ExplainerSc
 import { FamilyRigShowcase, familyRigShowcaseSchema } from "./compositions/FamilyRigShowcase";
 import { ExplainerSceneV2 } from "./compositions/ExplainerSceneV2";
 import { FaceoffOverlay, faceoffOverlaySchema } from "./compositions/FaceoffOverlay";
+import { InfraCountdown, infraCountdownSchema } from "./compositions/InfraCountdown";
+import infraCountdownFixture from "./fixtures/infra_countdown_2026-07-22.json";
 import { reelPropsSchema } from "./props";
 import { slideStoryPropsSchema } from "./slides/slideProps";
 import { tutorialPropsSchema } from "./slides/tutorialProps";
@@ -171,6 +173,19 @@ export const RemotionRoot: React.FC = () => {
         height={1350}
         schema={faceoffOverlaySchema}
         defaultProps={{ img: "uploads/faceoff_hearts.png" }}
+      />
+      <Composition
+        id="InfraCountdown"
+        component={InfraCountdown}
+        durationInFrames={infraCountdownFixture.durationInFrames}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={infraCountdownSchema}
+        defaultProps={infraCountdownSchema.parse(infraCountdownFixture)}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: props.durationInFrames,
+        })}
       />
       <Composition
         id="ExplainerSceneV2"

@@ -1,0 +1,50 @@
+{
+  "bgSrc": "bg/ai_infra_datacenter.webp",
+  "kick": "AI INFRA, RANKED",
+  "title": "Same sector. Four completely different prices.",
+  "tagline": "Same sector. Four completely different prices vs. fundamentals.",
+  "footer": "Figures as of July 11, 2026 — educational, not financial advice",
+  "durationInFrames": 1055,
+  "tickers": [
+    {
+      "sym": "CIEN",
+      "name": "Ciena",
+      "price": 460.72,
+      "fair": 97.46,
+      "discountPct": -372.7,
+      "verdict": "Overvalued",
+      "netMargin": 7.9,
+      "debtEquity": 0.55
+    },
+    {
+      "sym": "ANET",
+      "name": "Arista Networks",
+      "price": 186.96,
+      "fair": 140.4,
+      "discountPct": -33.2,
+      "verdict": "Overvalued",
+      "netMargin": 38.3,
+      "debtEquity": 0.0
+    },
+    {
+      "sym": "AVGO",
+      "name": "Broadcom",
+      "price": 399.97,
+      "fair": 318.65,
+      "discountPct": -25.5,
+      "verdict": "Overvalued",
+      "netMargin": 38.8,
+      "debtEquity": 0.74
+    },
+    {
+      "sym": "SMCI",
+      "name": "Super Micro Computer",
+      "price": 28.31,
+      "fair": 88.2,
+      "discountPct": 67.9,
+      "verdict": "Undervalued",
+      "netMargin": 3.7,
+      "debtEquity": 1.21
+    }
+  ]
+}
