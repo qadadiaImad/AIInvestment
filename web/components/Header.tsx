@@ -17,24 +17,24 @@ const NAV = [
 export default function Header({ generatedAt }: { generatedAt: string }) {
   return (
     <header className="sticky top-0 z-30 border-b border-term-border bg-[#0b0f17]/95 backdrop-blur">
-      <div className="flex items-center gap-3 px-3 h-9">
+      <div className="flex items-center gap-3 px-3 min-h-[44px]">
         <Link
           href="/"
-          className="font-bold tracking-tight text-[13px] whitespace-nowrap shrink-0"
+          className="flex items-center min-h-[44px] font-bold tracking-tight text-[13px] whitespace-nowrap shrink-0"
         >
           AI<span className="text-emerald-400">STACK</span>
           <span className="text-term-muted">·TERMINAL</span>
         </Link>
-        {/* Nav scrolls horizontally instead of wrapping — at 9 items this
-            collides with the wordmark on narrow phones otherwise (the
-            header row has a fixed height, so wrapped items would overlap
-            rather than push the row taller). */}
+        {/* Nav scrolls horizontally instead of wrapping — at 11 items it
+            would otherwise collide with the wordmark on narrow phones.
+            Each link is ≥44px tall for a comfortable touch target; the row
+            grows to match rather than clipping them. */}
         <nav className="flex items-center gap-3 text-[11px] overflow-x-auto whitespace-nowrap min-w-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {NAV.map((n) => (
             <Link
               key={n.href}
               href={n.href}
-              className="text-term-muted hover:text-emerald-400 transition-colors shrink-0"
+              className="flex items-center min-h-[44px] text-term-muted hover:text-emerald-400 transition-colors shrink-0"
             >
               {n.label}
             </Link>

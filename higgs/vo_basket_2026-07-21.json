@@ -1,0 +1,10 @@
+{
+  "date": "2026-07-21",
+  "story": "ai-hardware-congress-halal-value basket",
+  "beats": [
+    {"id": "hook", "text": "Four AI names showed up on three screens at once this week. The halal screen. The value screen. And congress's own trading disclosures."},
+    {"id": "basket", "text": "Nvidia. Synopsys. Microsoft. Meta. Every one passes all five compliance standards, and every one trades below its modeled fundamental value. Nvidia sits forty one percent below."},
+    {"id": "congress", "text": "Congress members disclosed over three hundred trades across these four names. Public record, filed under the STOCK Act. Disclosures, not endorsements."},
+    {"id": "close", "text": "The math is on the screen. Check it yourself before trusting anyone's opinion, including this one. Educational, not financial or religious advice."}
+  ]
+}

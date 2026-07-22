@@ -10,16 +10,30 @@ import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
 import { loadFont as loadJBM } from "@remotion/google-fonts/JetBrainsMono";
 import fixture from "./fixtures/ddog.json";
 import wulfSlidesFixture from "./fixtures/wulf_slides.json";
+import tutorialTerminalFixture from "./fixtures/tutorial_terminal.json";
+import kurzSlide2Fixture from "./fixtures/carousel_top3/slide2.json";
 import { HalalVerdictReel } from "./compositions/HalalVerdictReel";
 import { SlideStoryReel } from "./compositions/SlideStoryReel";
+import { TutorialReel } from "./compositions/TutorialReel";
+import { KurzSlide } from "./compositions/KurzSlide";
 import { reelPropsSchema } from "./props";
 import { slideStoryPropsSchema } from "./slides/slideProps";
+import { tutorialPropsSchema } from "./slides/tutorialProps";
+import { kurzSlidePropsSchema } from "./slides/kurzProps";
 
 const wulfSlidesProps = slideStoryPropsSchema.parse(wulfSlidesFixture);
 const wulfSlidesDuration = wulfSlidesProps.beats.reduce(
   (sum, beat) => sum + beat.durationInFrames,
   0
 );
+
+const tutorialTerminalProps = tutorialPropsSchema.parse(tutorialTerminalFixture);
+const tutorialTerminalDuration = tutorialTerminalProps.scenes.reduce(
+  (sum, scene) => sum + scene.durationInFrames,
+  0
+);
+
+const kurzSlideDefaultProps = kurzSlidePropsSchema.parse(kurzSlide2Fixture);
 
 loadFraunces();
 loadInter();
@@ -67,6 +81,40 @@ export const RemotionRoot: React.FC = () => {
             (sum, beat) => sum + beat.durationInFrames,
             0
           ),
+        })}
+      />
+      <Composition
+        id="TutorialReel"
+        component={TutorialReel}
+        durationInFrames={tutorialTerminalDuration}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={tutorialPropsSchema}
+        defaultProps={tutorialTerminalProps}
+        calculateMetadata={({ props }) => ({
+          // duration follows whatever props file is rendered (--props=...),
+          // not the default fixture — scenes are the single source of truth.
+          durationInFrames: props.scenes.reduce(
+            (sum, scene) => sum + scene.durationInFrames,
+            0
+          ),
+        })}
+      />
+      <Composition
+        id="KurzSlide"
+        component={KurzSlide}
+        durationInFrames={kurzSlideDefaultProps.durationInFrames}
+        fps={30}
+        width={1080}
+        height={1350}
+        schema={kurzSlidePropsSchema}
+        defaultProps={kurzSlideDefaultProps}
+        calculateMetadata={({ props }) => ({
+          // duration follows whatever slide props file is rendered
+          // (--props=fixtures/carousel_top3/slideN.json), not the default
+          // fixture — durationInFrames is the single source of truth.
+          durationInFrames: props.durationInFrames,
         })}
       />
     </>

@@ -1,0 +1,12 @@
+{
+  "kind": "text",
+  "kick": "THE REFEREE’S NOTE",
+  "title": "Great companies ≠ great prices.",
+  "body": [
+    {"t": "After runs like these, all three now trade "},
+    {"t": "above our modeled fundamental value", "tone": "amber", "b": true},
+    {"t": ". The screen shows it — "},
+    {"t": "patience is a position.", "tone": "emerald", "b": true}
+  ],
+  "durationInFrames": 270
+}

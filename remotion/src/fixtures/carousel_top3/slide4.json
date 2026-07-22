@@ -1,0 +1,26 @@
+{
+  "kind": "company",
+  "ticker": "AMKR",
+  "name": "Amkor",
+  "tagline": "the chip packagers nobody names",
+  "perfPct": 218,
+  "perfLabel": "past 12 months",
+  "motif": "stack",
+  "pills": [
+    {
+      "label": "Debt / market cap",
+      "value": "9.8% ✓"
+    },
+    {
+      "label": "Interest-bearing cash",
+      "value": "11.9% ✓"
+    },
+    {
+      "label": "Restricted income",
+      "value": "under 5% ✓"
+    }
+  ],
+  "footnote": "Ethical screen — all pass · data 2026-07-21",
+  "durationInFrames": 270,
+  "footer": "Computed methodology result — educational only · not financial advice"
+}
