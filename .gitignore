@@ -25,6 +25,12 @@ data/portfolio/*
 capital_web.html
 capital_web_render.png
 
+# The Daily Screen — daily_post.py's finished-folder output + verdict-snapshot/
+# posted-log history (data/halal_history/ is also covered by "data/*" above;
+# listed explicitly for clarity alongside higgs/daily/).
+higgs/daily/
+data/halal_history/
+
 # Generated analyst/dashboard artifacts + scratch
 *_dashboard.html
 stack_screener.html
