@@ -462,7 +462,11 @@ export const SlideStoryReel: React.FC<SlideStoryProps> = (props) => {
   return (
     <AbsoluteFill style={{fontFamily: FONT.body}}>
       {props.voiceSrc ? <Audio src={staticFile(props.voiceSrc)} /> : null}
-      <Bg tint={headerBadge.color} />
+      {/* Ambient background tint is intentionally decoupled from the verdict
+          color: C.redHot on a FAIL badge is ~33% dimmer than C.bg, which
+          makes the radial gradient + drifting motes read as "no background".
+          The badge chip below still carries its own verdict color. */}
+      <Bg tint={C.amber} />
       <AbsoluteFill style={{padding: PAD}}>
         <Head tk={props.ticker} sub={props.tickerSub} badge={headerBadge} />
       </AbsoluteFill>
