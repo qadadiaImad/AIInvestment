@@ -452,6 +452,100 @@ def test_run_keyboard_interrupt_during_wet_steps_cleans_up_both_dirs_and_propaga
         "-- a leftover copy would silently satisfy run_render's existence assert on retry")
 
 
+# --- run(): full success -- caption.txt lands in the folder (C1) --------------------
+
+def test_run_full_success_writes_caption_txt_into_dest_folder(tmp_path, monkeypatch):
+    """End-to-end (all subprocess-driving steps stubbed) success run: caption.txt
+    must exist in the finalized dest folder, be listed in `files`, and be listed
+    in manifest.json's own `files` array -- the C1 regression this pins."""
+    now = dt.datetime(2026, 7, 22, 12, 0, tzinfo=dt.timezone.utc)
+    date_str = "2026-07-22"
+    ticker = "WULF"
+    folder = daily_post.folder_name(date_str, ticker)
+
+    web_data = tmp_path / "web"
+    web_data.mkdir()
+    (web_data / "halal.json").write_text(
+        json.dumps({"generated_at": "2026-07-22T09:00:00Z", "verdicts": {}}), encoding="utf-8")
+    halal_history = tmp_path / "halal_history"
+    higgs = tmp_path / "higgs"
+    remotion = tmp_path / "remotion"
+    work_tmp = tmp_path / "work_tmp"
+
+    monkeypatch.setattr(daily_post, "WEB_DATA", web_data)
+    monkeypatch.setattr(daily_post, "HALAL_HISTORY", halal_history)
+    monkeypatch.setattr(daily_post, "POSTED_LOG", halal_history / "posted_log.json")
+    monkeypatch.setattr(daily_post, "HIGGS", higgs)
+    monkeypatch.setattr(daily_post, "REMOTION", remotion)
+
+    monkeypatch.setattr(
+        daily_post.daily_pick, "rank_candidates",
+        lambda bundle, prev_map, news_bundle, posted_log, now: [
+            {"symbol": ticker, "score": 1.0, "reason": "test candidate", "story": None}])
+
+    copy_result = {
+        "props_a": {"beats": [{"kind": "hook", "headline": "h", "sub": "s"}], "vo": ["line a"]},
+        "props_b": {"beats": [{"kind": "hook", "headline": "h", "sub": "s"}], "vo": ["line b"]},
+        "caption": "WULF, halal or not? We ran the 2026-07-22 screen.\n#halal #stocks",
+        "kit_fields": {"screen_head": "", "screen_body": "", "screen_body2": "", "halal_script": ""},
+    }
+    monkeypatch.setattr(daily_post.daily_copy, "build_daily", lambda *a, **k: copy_result)
+
+    def _fake_mkdtemp(prefix="daily_post_"):
+        work_tmp.mkdir(parents=True, exist_ok=True)
+        return str(work_tmp)
+
+    monkeypatch.setattr(daily_post.tempfile, "mkdtemp", _fake_mkdtemp)
+
+    def _fake_run_tts(tmp_dir, cr, python_exe=daily_post.CHATTERBOX_PYTHON):
+        (tmp_dir / "voice_daily_a.wav").write_bytes(b"x")
+        (tmp_dir / "voice_daily_b.wav").write_bytes(b"x")
+        return {"daily_a": tmp_dir / "voice_daily_a.wav", "daily_b": tmp_dir / "voice_daily_b.wav"}
+
+    def _fake_run_align(tmp_dir, folder_, cr, wavs, python_exe=daily_post.CHATTERBOX_PYTHON,
+                         side_effect_dirs=None):
+        dest = daily_post.REMOTION / "public" / "daily" / folder_
+        dest.mkdir(parents=True, exist_ok=True)
+        (dest / "voice_A.wav").write_bytes(b"x")
+        (dest / "voice_B.wav").write_bytes(b"x")
+        if side_effect_dirs is not None:
+            side_effect_dirs.append(dest)
+        return {"A": {}, "B": {}}
+
+    def _fake_run_render(tmp_dir, folder_, props_out):
+        (tmp_dir / "daily_A.mp4").write_bytes(b"x")
+        (tmp_dir / "daily_B.mp4").write_bytes(b"x")
+        return {"A": tmp_dir / "daily_A.mp4", "B": tmp_dir / "daily_B.mp4"}
+
+    monkeypatch.setattr(daily_post, "run_tts", _fake_run_tts)
+    monkeypatch.setattr(daily_post, "run_align", _fake_run_align)
+    monkeypatch.setattr(daily_post, "run_render", _fake_run_render)
+
+    args = _run_args()  # --auto --skip-refresh --skip-carousel
+    rc = daily_post.run(args, now=now, input_func=lambda prompt="": "")
+    assert rc == 0
+
+    dest = higgs / "daily" / folder
+    caption_path = dest / "caption.txt"
+    assert caption_path.exists(), "caption.txt must be written into the finalized folder"
+    assert caption_path.read_text(encoding="utf-8") == copy_result["caption"]
+
+    manifest = json.loads((dest / "manifest.json").read_text(encoding="utf-8"))
+    assert "caption.txt" in manifest["files"]
+
+
+# --- main(): DailyPostError exits 2 (spec literal), not 1 ---------------------------
+
+def test_main_daily_post_error_exits_2(monkeypatch, capsys):
+    def _boom(args):
+        raise daily_post.DailyPostError("no candidates ranked -- nothing to post today")
+
+    monkeypatch.setattr(daily_post, "run", _boom)
+    rc = daily_post.main(["--auto"])
+    assert rc == 2
+    assert "ABORT" in capsys.readouterr().out
+
+
 # --- _run_and_echo: live tee ------------------------------------------------------
 
 def test_run_and_echo_tees_stdout_and_stderr_live_and_returns_completed_process(capsys):

@@ -555,7 +555,11 @@ def run(args, now=None, input_func=input):
     print(f"  OK generated_at={generated_at}")
 
     print("[2/9] history: loading yesterday's snapshot, saving today's ...")
-    prev_map, prev_date = daily_pick.load_history(HALAL_HISTORY)
+    # exclude_date=date_str: today's own snapshot is written on the next line, but a
+    # same-day retry after a mid-pipeline crash must still diff against YESTERDAY's
+    # snapshot, not today's own (which would always show zero flips) -- mirrors
+    # export_halal.py's "newest PREVIOUS snapshot" pattern.
+    prev_map, prev_date = daily_pick.load_history(HALAL_HISTORY, exclude_date=date_str)
     daily_pick.save_snapshot(HALAL_HISTORY, date_str, daily_pick.verdict_map(bundle))
     print(f"  OK prev_date={prev_date}")
 
@@ -611,6 +615,10 @@ def run(args, now=None, input_func=input):
                 tmp_dir, ticker, copy_result["kit_fields"], copy_result, chosen["reason"], date_str)
 
         print("[9/9] finalize: writing manifest, moving folder, updating posted log ...")
+        # caption.txt -- Task 3's lint-clean, SEO-hooked, send-CTA caption, written into
+        # the folder (not just printed) so it lands in `files` below, in manifest.json,
+        # and Studio's indexer (higgs/daily/<folder>/caption.txt -> Post.captionFile).
+        (tmp_dir / "caption.txt").write_text(copy_result["caption"], encoding="utf-8")
         files = sorted(p.name for p in tmp_dir.iterdir())
         manifest = build_manifest(
             ticker=ticker, reason=chosen["reason"], score=chosen.get("score"),
@@ -659,8 +667,10 @@ def main(argv=None):
     try:
         return run(args)
     except DailyPostError as e:
+        # exit 2, not 1 -- the spec's literal "abort (exit 2, named reason)" convention,
+        # matching build_reel_props.py / export_halal.py's SystemExit(2)-for-data-refusal.
         print(f"ABORT: {e}")
-        return 1
+        return 2
 
 
 if __name__ == "__main__":
