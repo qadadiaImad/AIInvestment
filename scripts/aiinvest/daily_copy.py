@@ -16,7 +16,10 @@ props for the SlideStoryReel video, a lint-clean caption, and carousel-kit copy.
 
 Every VO line and the caption are lint-checked (`aiinvest.halal_lint`) before
 `build_daily` returns; any violation raises `LintError` rather than emit
-unvetted copy.
+unvetted copy. A code-enforced gate (`_pre_stamp_leak_violations`) also checks
+every beat before the `stamp` beat, in both hook variants, for verdict-leaking
+substrings ("pass"/"fail"/"review") — this rail is enforced on every future
+template edit, not just by test coverage.
 
 Pure — no file I/O. `copy.deepcopy` is used per variant so the A/B split never
 lets one variant's edits bleed into the other.
@@ -29,11 +32,17 @@ import copy
 import re
 
 import build_reel_props
+from build_reel_props import DISCLAIMER
 from aiinvest.halal_join import screen_card_data
 from aiinvest.halal_lint import lint_halal_script, lint_visceral
 
 # Re-exported so callers only need to import daily_copy (per the task-3 brief).
 InsufficientDataError = build_reel_props.InsufficientDataError
+
+# Substrings that would leak the still-hidden verdict before the stamp beat.
+# Checked against every variant's joined, lowercased pre-stamp VO — see
+# `_pre_stamp_leak_violations` below.
+_LEAK_SUBSTRINGS = ("pass", "fail", "review")
 
 
 class LintError(Exception):
@@ -115,13 +124,17 @@ def _hook_a(ticker, worst, donut_pct):
             f"Assalamu alaykum. {ticker}. ${r} of every hundred dollars of "
             f"this company is borrowed money. The screen has a limit. Watch."
         )
-    else:
+    elif donut_pct is not None:
         d = round(donut_pct)
         headline = f"${d} of every $100 in revenue here comes from a flagged activity."
         vo0 = (
             f"Assalamu alaykum. {ticker}. ${d} of every hundred dollars of "
             f"revenue here comes from a flagged activity. The screen has a limit. Watch."
         )
+    else:
+        raise InsufficientDataError(
+            f"{ticker}: no numeric bar ratio and no donut percentage — "
+            "hook A has no specific number to lead with")
     return headline, vo0
 
 
@@ -132,8 +145,8 @@ _HOOK_B = {
         "one — some clear it, some don't. Let's see why.",
     ),
     "fail": (
-        "Everyone assumes this one passes.",
-        "Assalamu alaykum. {ticker}. Everyone assumes this one passes the "
+        "Everyone assumes this one clears the screen.",
+        "Assalamu alaykum. {ticker}. Everyone assumes this one clears the "
         "screen. We ran the numbers anyway.",
     ),
     "pass": (
@@ -152,6 +165,32 @@ _HOOK_B = {
 def _hook_b(ticker, shape):
     headline, vo_tpl = _HOOK_B[shape]
     return headline, vo_tpl.format(ticker=ticker)
+
+
+# --- code-enforced pre-stamp verdict-leak gate ------------------------------
+
+def _pre_stamp_leak_violations(props, variant_name):
+    """Every beat/VO line before the `stamp` beat must not leak the verdict.
+
+    Code-enforced (not just tested) so a future template edit to either hook
+    bank, or `_rewrite_common`, trips this the moment it ships instead of
+    waiting for someone to notice a specific ticker's fail-shape copy reads
+    "...passes the screen."
+    """
+    kinds = [b["kind"] for b in props["beats"]]
+    try:
+        stamp_i = kinds.index("stamp")
+    except ValueError:
+        stamp_i = len(kinds)
+    errs = []
+    for i, line in enumerate(props["vo"][:stamp_i]):
+        low = str(line).lower()
+        for bad in _LEAK_SUBSTRINGS:
+            if bad in low:
+                errs.append(
+                    f"{variant_name}: vo[{i}] leaks verdict word {bad!r} "
+                    f"before the stamp beat: {line!r}")
+    return errs
 
 
 # --- flip override (Hook A only; the stamp basis note is shared) -----------
@@ -213,7 +252,10 @@ def _build_caption(ticker, layer, worst, donut_pct, date_str):
     body1 = _key_number_sentence(worst, donut_pct)
     body2 = "Three independent rulebooks each ran the same numbers — the reel breaks down where they agree and where they don't."
     cta = f"Send this to the friend who keeps asking about {ticker}."
-    footer = "Educational, not financial or religious advice — not a fatwa, not a stock tip."
+    footer = (
+        "Educational, not financial or religious advice — not a fatwa, "
+        f"not a stock tip.\n{DISCLAIMER}"
+    )
     topical = _LAYER_HASHTAG.get(layer, _DEFAULT_HASHTAG)
     hashtags = f"{HASHTAGS_CORE} {topical}"
     return f"{hook}\n\n{body1} {body2}\n\n{cta}\n\n{footer}\n\n{hashtags}"
@@ -279,6 +321,8 @@ def build_daily(ticker, halal_bundle, story, date_str):
 
     card = screen_card_data(verdicts, ticker)
     violations = []
+    violations += _pre_stamp_leak_violations(props_a, "props_a")
+    violations += _pre_stamp_leak_violations(props_b, "props_b")
     violations += lint_halal_script(" ".join(props_a["vo"]), card)
     violations += lint_halal_script(" ".join(props_b["vo"]), card)
     violations += lint_halal_script(caption, card)
