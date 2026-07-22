@@ -306,6 +306,101 @@ def test_captions_globally_non_decreasing_across_fixtures(vo_lines, words):
         assert caps[i]["toMs"] <= caps[i + 1]["fromMs"]
 
 
+# ---------------------------------------------------------------------------
+# Bug fix — bounded lookahead + stopword guard. Reproduced live in
+# higgs/daily/2026-07-22_WKEY: line 0's trailing low-information "the" token
+# unbounded-matched a "the" far down the transcript that actually belonged to
+# line 2's audio, jumping the shared forward-only pointer past ALL of lines
+# 1 and 2's real words -> both fell back to proportional allocation ->
+# scenes/captions landed ~4s early. Fix: (a) a token may only advance the
+# pointer within `_LOOKAHEAD_WINDOW` (15) words of the last confirmed match;
+# (b) stopwords may only match within `_STOPWORD_WINDOW` (3) words of the
+# last confirmed match, never as a long-range anchor.
+# ---------------------------------------------------------------------------
+
+COLLISION_WORDS = [
+    {"word": "Hello", "start": 0.0, "end": 0.5},     # idx0  -- line 0 real match
+    {"word": "World", "start": 0.5, "end": 1.0},     # idx1  -- line 0 real match
+    {"word": "Foo", "start": 1.0, "end": 1.5},        # idx2  -- line 1 real match
+    {"word": "Bar", "start": 1.5, "end": 2.0},        # idx3  -- line 1 real match
+    {"word": "Baz", "start": 2.0, "end": 2.5},        # idx4  -- line 1 real match
+    {"word": "pad0", "start": 2.5, "end": 2.6},       # idx5  -- filler (no "the")
+    {"word": "pad1", "start": 2.6, "end": 2.7},       # idx6
+    {"word": "pad2", "start": 2.7, "end": 2.8},       # idx7
+    {"word": "pad3", "start": 2.8, "end": 2.9},       # idx8
+    {"word": "pad4", "start": 2.9, "end": 3.0},       # idx9
+    {"word": "pad5", "start": 3.0, "end": 3.1},       # idx10
+    {"word": "pad6", "start": 3.1, "end": 3.2},       # idx11
+    {"word": "pad7", "start": 3.2, "end": 3.3},       # idx12
+    {"word": "pad8", "start": 3.3, "end": 3.4},       # idx13
+    {"word": "pad9", "start": 3.4, "end": 3.5},       # idx14
+    {"word": "pad10", "start": 3.5, "end": 3.6},      # idx15
+    {"word": "pad11", "start": 3.6, "end": 3.7},      # idx16
+    {"word": "Qux", "start": 10.0, "end": 10.5},      # idx17 -- line 2 real match (real gap here)
+    {"word": "Quux", "start": 10.5, "end": 11.0},     # idx18 -- line 2 real match
+    {"word": "the", "start": 11.0, "end": 11.1},      # idx19 -- line 2's OWN real "the" (the decoy)
+    {"word": "End", "start": 11.1, "end": 11.6},      # idx20 -- line 2 real match
+]
+COLLISION_LINES = ["Hello World Xyzzy the", "Foo Bar Baz", "Qux Quux the End"]
+
+
+def test_stray_trailing_stopword_does_not_pointer_jump_past_next_lines_real_words():
+    """The WKEY collision, reconstructed in miniature. Line 0 ends with a
+    garbled literal ("Xyzzy", matches nothing) followed by a low-information
+    stopword ("the"). The FIRST "the" occurring anywhere after line 0's last
+    confirmed match (idx1, "World") is idx19 -- 18 words further on, and it
+    genuinely belongs to line 2's audio, not line 0's. The old unbounded
+    pointer would greedily claim idx19 for line 0, stranding lines 1 and 2's
+    real words (idx2-4 and idx17-20) behind the now-advanced pointer, so both
+    would fall back to proportional allocation. The fix must let lines 1 and
+    2 keep their REAL matched spans."""
+    props = _props(COLLISION_LINES)
+    out = apply_timing(props, COLLISION_WORDS, fps=FPS, pad=PAD, min_frames=MIN_FRAMES)
+    caps = out["captions"]
+
+    # Line 1 ("Foo Bar Baz") must match its real words (idx2-4), NOT fall
+    # back to a proportional share starting wherever line 0 ended.
+    assert caps[1]["fromMs"] == round(COLLISION_WORDS[2]["start"] * 1000) == 1000
+    assert caps[1]["toMs"] == round(COLLISION_WORDS[4]["end"] * 1000) == 2500
+
+    # Line 2 ("Qux Quux the End") must match its real words (idx17-20),
+    # including its OWN legitimate "the" (idx19) -- not fall back, and
+    # definitely not have that "the" stolen by line 0.
+    assert caps[2]["fromMs"] == round(COLLISION_WORDS[17]["start"] * 1000) == 10000
+    assert caps[2]["toMs"] == round(COLLISION_WORDS[20]["end"] * 1000) == 11600
+
+
+# Isolates the stopword guard (b) from the general lookahead window (a): the
+# decoy "the" here sits at distance 8 from line 0's last confirmed match --
+# inside `_LOOKAHEAD_WINDOW` (15) so (a) alone would NOT reject it, but
+# outside `_STOPWORD_WINDOW` (3) so (b) must.
+STOPWORD_ONLY_WORDS = [
+    {"word": "Alpha", "start": 0.0, "end": 0.5},   # idx0 -- line 0 real match
+    {"word": "Beta", "start": 0.5, "end": 1.0},    # idx1 -- line 1 real match
+    {"word": "Gamma", "start": 1.0, "end": 1.5},   # idx2 -- line 1 real match
+    {"word": "pad0", "start": 1.5, "end": 1.6},    # idx3
+    {"word": "pad1", "start": 1.6, "end": 1.7},    # idx4
+    {"word": "pad2", "start": 1.7, "end": 1.8},    # idx5
+    {"word": "pad3", "start": 1.8, "end": 1.9},    # idx6
+    {"word": "pad4", "start": 1.9, "end": 2.0},    # idx7
+    {"word": "the", "start": 4.0, "end": 4.1},     # idx8 -- decoy, distance 8 from idx0
+]
+STOPWORD_ONLY_LINES = ["Alpha the", "Beta Gamma"]
+
+
+def test_stopword_beyond_stopword_window_but_inside_lookahead_window_still_rejected():
+    props = _props(STOPWORD_ONLY_LINES)
+    out = apply_timing(props, STOPWORD_ONLY_WORDS, fps=FPS, pad=PAD, min_frames=MIN_FRAMES)
+    caps = out["captions"]
+
+    # Line 1 ("Beta Gamma") must match its real words (idx1-2). If the
+    # stopword guard were missing, line 0's trailing "the" would have
+    # (wrongly, but within the general lookahead window) claimed idx8,
+    # leaving the pointer past idx1-2 and forcing line 1 to fall back.
+    assert caps[1]["fromMs"] == round(STOPWORD_ONLY_WORDS[1]["start"] * 1000) == 500
+    assert caps[1]["toMs"] == round(STOPWORD_ONLY_WORDS[2]["end"] * 1000) == 1500
+
+
 def test_pathological_many_tiny_beats_floor_at_min_frames_and_sum_exceeds_target():
     """Pin the documented pathological case (align_beats.py's final-beat
     fallback branch): with no audio at all, every line's span degenerates to

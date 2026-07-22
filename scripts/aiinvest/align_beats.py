@@ -22,11 +22,18 @@ Matching (per VO line, in beat order): normalize both VO tokens and
 whisper words (`lower()`, strip non-alphanumerics) and walk the word list
 **once** with a single forward-only pointer — each line consumes its
 matched words greedily, in order, without ever re-using a word claimed by
-an earlier line. A line's span is `first_matched_word.start .. last_matched_
-word.end`. If fewer than 60% of a line's tokens matched, that line falls
-back to *proportional allocation*: its share of the total VO character
-count (across all lines in this reel) times the audio time remaining after
-the previous line's span, laid down starting where the previous line ended.
+an earlier line. A token may only match a word within `_LOOKAHEAD_WINDOW`
+(15) words of the last CONFIRMED match — beyond that it is counted
+unmatched rather than letting a stray hit drag the shared pointer arbitrarily
+far ahead (see `_LOOKAHEAD_WINDOW`'s docstring). Low-information stopwords
+(`_STOPWORDS` — "the", "a", "of", ...) are trusted only within
+`_STOPWORD_WINDOW` (3) words of the last confirmed match; they never serve as
+a long-range anchor on their own. A line's span is `first_matched_word.start
+.. last_matched_word.end`. If fewer than 60% of a line's tokens matched, that
+line falls back to *proportional allocation*: its share of the total VO
+character count (across all lines in this reel) times the audio time
+remaining after the previous line's span, laid down starting where the
+previous line ended.
 
 Because a fallback span is computed purely from a proportional share of the
 *remaining* audio, it knows nothing about a later line's real (matched)
@@ -94,6 +101,26 @@ import re
 
 __all__ = ["apply_timing"]
 
+# Matching-loop bounds (see "Matching" section of the module docstring above).
+# `_LOOKAHEAD_WINDOW` caps how far ahead of the last CONFIRMED match a token
+# may search: without this, a single false hit on a low-information token
+# (e.g. a stray "the") can jump the shared forward-only pointer arbitrarily
+# far ahead, stranding every word the NEXT line actually needed. Reproduced
+# live in higgs/daily/2026-07-22_WKEY: line 0's trailing "the" unbounded-
+# matched words_A.json idx 40 (a "the" that really belongs to line 2's
+# audio), skipping lines 1-2's real spans entirely.
+# `_STOPWORDS` are low-information tokens that appear constantly throughout
+# any transcript -- they carry almost no positional signal, so even within
+# `_LOOKAHEAD_WINDOW` they're only trusted as a match when they land within
+# `_STOPWORD_WINDOW` words of the last confirmed match (i.e. right next to
+# content we already know is correct), never as a long-range anchor on their
+# own.
+_LOOKAHEAD_WINDOW = 15
+_STOPWORD_WINDOW = 3
+_STOPWORDS = frozenset({
+    "the", "a", "an", "of", "is", "to", "and", "in", "it", "that", "this",
+})
+
 
 def _normalize(token: str) -> str:
     return re.sub(r"[^a-z0-9]", "", token.lower())
@@ -135,8 +162,13 @@ def apply_timing(props: dict, words: list[dict], fps: int = 30, pad: int = 12,
         matched_indices: list[int] = []
         p = pointer
         for tok in tokens:
+            # `p` always equals "last confirmed match index + 1" (it only
+            # advances on a hit below), so it doubles as both the search
+            # start AND the anchor for the stopword/lookahead bounds.
+            window = _STOPWORD_WINDOW if tok in _STOPWORDS else _LOOKAHEAD_WINDOW
+            limit = min(p + window, len(words))
             found = None
-            for j in range(p, len(words)):
+            for j in range(p, limit):
                 if _normalize(words[j]["word"]) == tok:
                     found = j
                     break
