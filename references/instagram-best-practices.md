@@ -65,9 +65,11 @@ compliance rails (§7).
   fold and it's weighed by search. Front-load it.
 - Structure: hook line → 1–2 sentences of substance → soft CTA → disclaimer
   → hashtags.
-- **3–5 targeted hashtags.** Hashtag walls (15–30) read as spam and add
-  nothing post-2024; IG treats captions as search text now, so real
-  keywords in the caption matter more than tags.
+- **10–15 hashtags** (owner preference): 2–3 ticker/company tags + 3–4
+  niche tags (#aistocks #semiconductors #quantumcomputing) + broad reach
+  tags (#ai #investing #trading #stocktrading #stockmarket #wallstreet).
+  Stop short of a 20+ wall; captions are also search text, so keep real
+  keywords in the sentences too.
 - CTA: **save/share/follow** ("Save this for earnings Thursday"). Saves and
   shares are the top-weighted signals; comments next; likes last. Never
   hard-sell, never "link in bio" spam on educational posts.

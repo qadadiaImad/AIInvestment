@@ -8,7 +8,7 @@ slide, top-right chip.
 A quantum stock is switching exchanges this week — while trading at less than half its
 year-high. The one real number is on slide 3. Educational only, not financial advice — DYOR.
 Save this for the Nasdaq debut (7/27).
-#quantumcomputing #QBTS #DWave #stockmarket #investing
+#QBTS #quantumcomputing #dwave #quantum #ai #tech #investing #trading #stocktrading #stockmarket #nasdaq #growthstocks #wallstreet
 
 ## Slides
 1. Cover/company card — +6% day move, close ~$17.80 (7/21), pills: close / 52-wk range /

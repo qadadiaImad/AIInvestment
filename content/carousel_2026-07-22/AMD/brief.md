@@ -8,7 +8,7 @@ mark (simple-icons v16.27.0 official SVG) on every slide, top-right chip.
 AMD ran +8.11% — one day before its own keynote. Slide through what actually moved it, and
 what's still just "expected." Educational only, not financial advice — DYOR. Save this for
 after the Advancing AI keynote.
-#AMD #AIstocks #semiconductors #stockmarket #investing
+#AMD #ai #aistocks #chips #semiconductors #nvidia #investing #trading #stocktrading #stockmarket #daytrading #wallstreet #financialfreedom
 
 ## Slides
 1. Cover/company card — +8% day move, close $544.43 (7/21), pills: close / reported Microsoft

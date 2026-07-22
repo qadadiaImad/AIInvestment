@@ -7,7 +7,7 @@ KurzSlide. Intel corporate mark (simple-icons v16.27.0) on every slide, top-righ
 A disclosed May trade picked a $50 strike on Intel. Intel just closed at $105 — two days
 before earnings. Public record, not a signal. Educational only, not financial advice — DYOR.
 Save this for earnings Thursday.
-#congress #INTC #Intel #stockmarket #investing
+#INTC #intel #congress #pelosi #ai #chips #semiconductors #investing #trading #stocktrading #stockmarket #optionstrading #earnings #wallstreet
 
 ## Slides
 1. Cover/company card — +8% day move, close $105.45 (7/21), pills: close / Q2 earnings 7/23 /
