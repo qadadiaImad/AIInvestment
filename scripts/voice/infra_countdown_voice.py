@@ -19,7 +19,6 @@ from __future__ import annotations
 
 import json
 import pathlib
-import wave
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 SAMPLE = ROOT / "course/persona/voice/karim_sample.wav"
@@ -42,8 +41,12 @@ BUDGET_S = 155 / 30  # segment HOLD window, must not be exceeded by a ticker cli
 
 
 def wav_duration_s(path: pathlib.Path) -> float:
-    with wave.open(str(path), "rb") as w:
-        return w.getnframes() / w.getframerate()
+    # torchaudio.save writes 32-bit float PCM (format tag 3), which the stdlib
+    # `wave` module can't parse — use torchaudio's own reader instead.
+    import torchaudio
+
+    info = torchaudio.info(str(path))
+    return info.num_frames / info.sample_rate
 
 
 def main() -> None:

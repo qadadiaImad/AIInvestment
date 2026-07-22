@@ -1,1 +1,1 @@
-Super Micro builds the servers that pack AI chips into deployable racks.
+Super Micro builds servers that house AI chips.
