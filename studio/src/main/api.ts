@@ -29,7 +29,22 @@ export function registerApi(): void {
   ipcMain.handle('posts:list', () => {
     const higgs = existsSync(HIGGS) ? readdirSync(HIGGS) : []
     const content = walk(CONTENT)
-    return buildIndex({ higgs, content })
+    // higgs/daily/<date>_<ticker>/ — new one-folder-per-day pipeline (daily_A.mp4/daily_B.mp4,
+    // v4_*.png carousel slides, caption.txt, manifest.json). One level of subfolders; walk()
+    // returns paths already relative to dailyDir, e.g. "2026-07-22_WKEY/daily_A.mp4".
+    const dailyDir = join(HIGGS, 'daily')
+    const daily = existsSync(dailyDir) ? walk(dailyDir) : []
+    const dailyManifests: Record<string, { date?: string; ticker?: string }> = {}
+    if (existsSync(dailyDir)) {
+      for (const e of readdirSync(dailyDir, { withFileTypes: true })) {
+        if (!e.isDirectory()) continue
+        try {
+          const m = JSON.parse(readFileSync(join(dailyDir, e.name, 'manifest.json'), 'utf-8'))
+          dailyManifests[e.name] = { date: m.date, ticker: m.ticker }
+        } catch { /* manifest.json missing/invalid — folder-name parsing is the primary path anyway */ }
+      }
+    }
+    return buildIndex({ higgs, content, daily, dailyManifests })
   })
 
   ipcMain.handle('stock:get', (_e, ticker: string) => {

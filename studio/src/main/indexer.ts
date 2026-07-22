@@ -6,10 +6,29 @@ export type Post = {
   poster?: string
   captionFile?: string
 }
-export type FileSets = { higgs: string[]; content: string[] }
+export type FileSets = {
+  higgs: string[]
+  content: string[]
+  // higgs/daily/<folder>/<file> — one entry per file, path relative to higgs/daily/
+  // (as produced by a recursive walk of that dir). Optional so existing callers/tests
+  // that only pass {higgs, content} keep working.
+  daily?: string[]
+  // folder name -> parsed manifest.json fields, best-effort (fs I/O lives in api.ts;
+  // this stays a plain data bag so buildIndex remains a pure function of its inputs).
+  dailyManifests?: Record<string, { date?: string; ticker?: string }>
+}
 
 const M = (rel: string) => `media://${rel}`
 const EXCLUDE = /^(hero_|logo_|maya_|_)|\.json$/i
+
+// "2026-07-22_WKEY" -> { date: '2026-07-22', ticker: 'WKEY' }. Pure + exported so it's
+// unit-testable without touching the filesystem. Returns null on anything that doesn't
+// match the daily-pipeline convention.
+export function parseDailyFolderName(name: string): { date: string; ticker: string } | null {
+  const m = name.match(/^(\d{4}-\d{2}-\d{2})_([A-Za-z0-9]+)$/)
+  if (!m) return null
+  return { date: m[1], ticker: m[2].toUpperCase() }
+}
 
 export function buildIndex(files: FileSets): Post[] {
   const v4slides: [string, string][] = []
@@ -62,7 +81,43 @@ export function buildIndex(files: FileSets): Post[] {
     else if (newestCaptionDate) ensure(newestCaptionDate, ticker, 'carousel').media.push(M(`higgs/${file}`))
   }
 
-  const out = [...byKey.values()]
-  for (const p of out) { const c = captionByDate.get(p.date); if (c) p.captionFile = c }
-  return out.sort((a, b) => b.date.localeCompare(a.date) || a.ticker.localeCompare(b.ticker))
+  for (const p of byKey.values()) { const c = captionByDate.get(p.date); if (c) p.captionFile = c }
+
+  // higgs/daily/<date>_<ticker>/ — the new one-folder-per-day pipeline. Each folder yields a
+  // 'reel' bundle: A/B reel video variants + carousel slides + caption, mirroring the legacy
+  // reel branch above but scoped to that folder's own files only. `ensure` keys on date+ticker,
+  // so a same-day/ticker legacy reel_* bundle (unlikely, but possible) merges into one entry.
+  const dailyByFolder = new Map<string, string[]>() // folder name -> filenames (folder-relative)
+  for (const f of files.daily ?? []) {
+    const slash = f.indexOf('/')
+    if (slash < 0) continue // stray file directly under daily/, not in a per-post folder
+    const folder = f.slice(0, slash)
+    const rest = f.slice(slash + 1)
+    if (rest.includes('/')) continue // ignore anything nested deeper than one level
+    if (!dailyByFolder.has(folder)) dailyByFolder.set(folder, [])
+    dailyByFolder.get(folder)!.push(rest)
+  }
+
+  for (const [folder, names] of [...dailyByFolder.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+    const parsed = parseDailyFolderName(folder)
+    const manifest = files.dailyManifests?.[folder]
+    const date = parsed?.date ?? manifest?.date
+    const ticker = (parsed?.ticker ?? manifest?.ticker)?.toUpperCase()
+    if (!date || !ticker) continue // can't place this bundle (bad folder name + no/broken manifest) — skip, don't crash
+
+    const p = ensure(date, ticker, 'reel')
+    p.kind = 'reel'
+    const mp4A = names.find((f) => /^daily_a\.mp4$/i.test(f))
+    const mp4B = names.find((f) => /^daily_b\.mp4$/i.test(f))
+    if (mp4A) p.media.push(M(`higgs/daily/${folder}/${mp4A}`))
+    if (mp4B) p.media.push(M(`higgs/daily/${folder}/${mp4B}`))
+    const slides = names.filter((f) => /^v4_.*\.png$/i.test(f)).sort((a, b) => a.localeCompare(b))
+    for (const f of slides) p.media.push(M(`higgs/daily/${folder}/${f}`))
+    const caption = names.find((f) => /^caption\.txt$/i.test(f))
+    if (caption) p.captionFile = M(`higgs/daily/${folder}/${caption}`)
+  }
+
+  // Re-derive from byKey (not an earlier snapshot) so daily-folder bundles `ensure`d above
+  // — whether newly created or merged into an existing date+ticker entry — are included.
+  return [...byKey.values()].sort((a, b) => b.date.localeCompare(a.date) || a.ticker.localeCompare(b.ticker))
 }
