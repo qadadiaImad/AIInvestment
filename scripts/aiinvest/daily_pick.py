@@ -234,12 +234,24 @@ def rank_candidates(bundle, prev_map, news_bundle, posted_log, now):
 _POSTED_LOG_NAME = "posted_log.json"
 
 
-def load_history(dir_path):
-    """-> (prev_verdict_map|None, prev_date_str|None) from the newest snapshot."""
+def load_history(dir_path, exclude_date=None):
+    """-> (prev_verdict_map|None, prev_date_str|None) from the newest snapshot,
+    excluding `{exclude_date}.json` if given.
+
+    Mirrors `export_halal.py`'s "find the newest PREVIOUS snapshot" pattern: a
+    caller that has already written *today's* snapshot before calling this
+    (e.g. `daily_post.py`, which snapshots today's verdicts at step 2/9 before
+    ranking candidates) must pass today's date here so a same-day retry still
+    diffs against *yesterday's* snapshot instead of silently comparing today
+    against itself (which always yields zero flips).
+    """
     d = Path(dir_path)
     if not d.exists() or not d.is_dir():
         return None, None
-    files = sorted(p for p in d.glob("*.json") if p.name != _POSTED_LOG_NAME)
+    files = sorted(
+        p for p in d.glob("*.json")
+        if p.name != _POSTED_LOG_NAME and (exclude_date is None or p.name != f"{exclude_date}.json")
+    )
     if not files:
         return None, None
     try:

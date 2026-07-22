@@ -71,3 +71,44 @@ def test_history_roundtrip(tmp_path):
 
 def test_load_history_empty_dir(tmp_path):
     assert daily_pick.load_history(tmp_path) == (None, None)
+
+def test_load_history_exclude_date_skips_named_file(tmp_path):
+    daily_pick.save_snapshot(tmp_path, "2026-07-21", {"WULF": "halal"})
+    daily_pick.save_snapshot(tmp_path, "2026-07-22", {"WULF": "not_halal"})
+    prev, prev_date = daily_pick.load_history(tmp_path, exclude_date="2026-07-22")
+    assert prev == {"WULF": "halal"} and prev_date == "2026-07-21"
+
+def test_load_history_exclude_date_none_keeps_old_behavior(tmp_path):
+    daily_pick.save_snapshot(tmp_path, "2026-07-21", {"WULF": "halal"})
+    daily_pick.save_snapshot(tmp_path, "2026-07-22", {"WULF": "not_halal"})
+    prev, prev_date = daily_pick.load_history(tmp_path)
+    assert prev == {"WULF": "not_halal"} and prev_date == "2026-07-22"
+
+def test_load_history_exclude_date_only_snapshot_present_returns_none(tmp_path):
+    # Same-day retry with NO prior snapshot at all (first-ever run crashed mid-pipeline):
+    # excluding today's own (only) snapshot must degrade to (None, None), not raise.
+    daily_pick.save_snapshot(tmp_path, "2026-07-22", {"WULF": "halal"})
+    prev, prev_date = daily_pick.load_history(tmp_path, exclude_date="2026-07-22")
+    assert (prev, prev_date) == (None, None)
+
+def test_same_day_retry_still_detects_flip_against_yesterday(tmp_path):
+    """Reproduces the review's I1 scenario end to end via the public functions a
+    caller (daily_post.py) actually uses: run 1 snapshots today's verdicts (mirroring
+    a mid-pipeline crash right after the snapshot write); run 2 retries on the SAME
+    date and must still diff against YESTERDAY's snapshot, not today's own."""
+    daily_pick.save_snapshot(tmp_path, "2026-07-21", {"WULF": "halal"})
+
+    # run 1: loads yesterday (excluding today, which doesn't exist yet), then snapshots
+    # today -- then "crashes" (nothing else happens).
+    prev_map_1, prev_date_1 = daily_pick.load_history(tmp_path, exclude_date="2026-07-22")
+    assert prev_map_1 == {"WULF": "halal"} and prev_date_1 == "2026-07-21"
+    bundle = _bundle(WULF="not_halal")
+    daily_pick.save_snapshot(tmp_path, "2026-07-22", daily_pick.verdict_map(bundle))
+
+    # run 2 (same-day retry): must still load YESTERDAY's snapshot, not today's own.
+    prev_map_2, prev_date_2 = daily_pick.load_history(tmp_path, exclude_date="2026-07-22")
+    assert prev_map_2 == {"WULF": "halal"} and prev_date_2 == "2026-07-21"
+
+    flips = daily_pick.detect_flips(prev_map_2, bundle)
+    assert flips == [{"symbol": "WULF", "from": "halal", "to": "not_halal",
+                      "old_value": None, "new_value": None}]
