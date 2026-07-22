@@ -237,10 +237,13 @@ export const ChipRig: React.FC<{size?: number; mode?: ChipMode; thetaOverride?: 
           </>
         ) : null}
 
-        {/* antenna */}
-        <line x1={120 + s * 10} y1="46" x2={120 + s * 14} y2="24" stroke={C.emeraldDeep} strokeWidth="7" strokeLinecap="round" />
-        <circle cx={120 + s * 14} cy="19" r="8.5" fill={C.mint} opacity={antennaGlow} />
-        <circle cx={120 + s * 14} cy="19" r="4.2" fill="#FDFEFF" opacity={antennaGlow} />
+        {/* antenna — follow-through appendage (playbook §5): lags the body
+            bob by ~3 frames so it whips slightly and settles after him */}
+        <g transform={`rotate(${Math.sin((frame - 3) / 22) * 5 + (pose.lean ? -pose.lean * 0.8 : 0)} 120 46)`}>
+          <line x1={120 + s * 10} y1="46" x2={120 + s * 14} y2="24" stroke={C.emeraldDeep} strokeWidth="7" strokeLinecap="round" />
+          <circle cx={120 + s * 14} cy="19" r="8.5" fill={C.mint} opacity={antennaGlow} />
+          <circle cx={120 + s * 14} cy="19" r="4.2" fill="#FDFEFF" opacity={antennaGlow} />
+        </g>
 
         <defs>
           <linearGradient id="chipRigHead" x1="0" y1="0" x2="0" y2="1">
