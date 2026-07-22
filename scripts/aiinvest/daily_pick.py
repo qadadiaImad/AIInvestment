@@ -198,6 +198,20 @@ def rank_candidates(bundle, prev_map, news_bundle, posted_log, now):
 
     candidates.sort(key=lambda c: (-c["score"], c["symbol"]))
 
+    # A symbol can earn two story dicts from halal_stories.pick_stories (e.g.
+    # it both flips AND independently qualifies for a ratio/business story).
+    # Keep only each symbol's highest-scoring entry -- first-seen-wins after
+    # the sort above, so flips (score >= 1000) always survive over ratio/
+    # business stories for the same symbol.
+    seen_symbols = set()
+    deduped = []
+    for c in candidates:
+        if c["symbol"] in seen_symbols:
+            continue
+        seen_symbols.add(c["symbol"])
+        deduped.append(c)
+    candidates = deduped
+
     used = {c["symbol"] for c in candidates}
     for sym in _rotation_fillers(bundle, used, posted_log):
         if len(candidates) >= 3:
