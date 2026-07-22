@@ -1,0 +1,338 @@
+AI STACK — UGC IG REELS PACKAGE — 2026-07-22 (v1)
+Campaign: July-22 tri-post — AMD / QBTS / INTC
+Platform: INSTAGRAM REELS (9:16, 30-45s sweet spot, hook <=1.5s, sound-off-safe captions,
+designed cover frame, soft CTA, 3-5 targeted hashtags, native-feel footage).
+Prices/headlines are LIVE web-sourced today (see PROVENANCE at bottom); fundamental-value
+model figures are from the cached 2026-07-11 data bundle (site.json / quantum.json /
+congress.json) — the sandbox's direct finance-API access (TradingView/Yahoo/SEC/FRED) is
+blocked (proxy 403), so no fresher fundamentals pull was possible. Every cached number is
+labeled "(cached 7/11)" inline.
+
+=====================================================================
+PERSONA (channel-consistent — reused from higgsfield_2026-06-30_v1.txt)
+=====================================================================
+Handle: @StackedWithMaya
+Maya, 24 — sharp young markets analyst. Understated, precise, quietly confident; dry wit,
+zero hype, no slang, no emoji-spam. Mixed-race, shoulder-length dark wavy hair, light
+natural makeup, gold hoops; cream ribbed knit or oversized blazer. Cozy modern home-office
+corner: bookshelf, small plant, warm desk lamp, faint monitor glow. Soft warm front-left
+key, gentle bokeh, 9:16 chest-up.
+Identity anchor: same Maya avatar as prior runs — avatar 0932dd65 /
+maya_anchor_2026-06-03.png — same woman, every clip.
+Copy rules: NO first person on valuation ("a fundamental-value model shows…", "the filing
+says…"). Never name a news outlet — "reportedly". Never state a rumored thing as fact or
+vice versa. Voice via Higgsfield "Speak" (audio-driven lip-sync), calm fast-but-controlled
+cadence. No product/app/terminal/brand mention anywhere (attention-first phase). Congress
+items are public record for transparency — never an accusation, never a signal to copy.
+
+=====================================================================
+POST 1 — AMD (AI value chain)
+=====================================================================
+PICK & WHY-VIRAL
+Headline (reported, close 7/21/2026): AMD shares closed up 8.11% at $544.43 after Microsoft
+said it will deploy AMD's Helios rack-scale AI infrastructure across Azure — landing one day
+before AMD's own "Advancing AI 2026" conference opens today (San Francisco, July 22-23),
+where AMD is reportedly expected to name a third gigawatt-scale AI customer (still
+unconfirmed — "rumored/expected," not filed). Semiconductor sector broadly rallied the same
+session (SOXX +5.45%).
+Hook angle: the stock already moved on someone else's press release, before AMD said a word
+on its own stage.
+Concrete numbers: close $544.43, +8.11% (7/21/2026). Cached (7/11) fundamental-value model:
+fundamental value $241.23 vs cached price $557.89 → "Overvalued," price already >2x the
+model. Cached fundamentals: revenue growth +34.97% YoY, EPS growth +123.35% YoY, gross
+margin 47.09%.
+
+HOOK (first 1.5s)
+"AMD jumped eight percent yesterday — before AMD said a word."
+
+SPOKEN SCRIPT (~30s, ~105 words)
+"AMD jumped eight percent yesterday — before AMD said a word. Microsoft announced it's
+putting AMD's AI infrastructure across Azure, and the stock ran on someone else's news. That
+was one day before AMD's own event opens today in San Francisco, where it's reportedly
+expected to name a third gigawatt-scale AI customer — still unconfirmed. Tuesday's close:
+five hundred forty-four dollars, up eight percent. A fundamental-value read from a couple
+weeks back already had this stock priced at more than double what the model called fair.
+Real revenue growth, real earnings growth — just a lot of that story already sitting in the
+price before the keynote starts. Not financial advice. Follow for what's actually
+announced."
+
+ON-SCREEN CAPTIONS (big, sound-off safe, keep out of bottom ~15% / right UI edge)
+- "+8.11% (7/21)"
+- "BEFORE AMD SAID A WORD"
+- "ADVANCING AI 2026 — TODAY"
+- "MODEL $241 vs PRICE $558 (cached)"
+- "NOT FINANCIAL ADVICE"
+
+B-ROLL / CUTAWAYS (unbranded, generic)
+- Clean green single-day candle spike, no chart branding
+- Plain split card: "MICROSOFT ANNOUNCEMENT" vs "AMD KEYNOTE" (text only)
+- Simple two-bar price-vs-fundamental-value gap graphic ($558 vs $241)
+- Generic conference-crowd / stage-lights silhouette b-roll for the keynote beat
+
+COVER FRAME (designed title card, readable as a grid thumbnail)
+Bold white-on-dark text, top third, safe zone: "AMD PRICED IT IN —
+BEFORE THE KEYNOTE" over a freeze-frame of Maya mid-sentence, chest-up.
+
+PLATFORM CAPTION + HASHTAGS (hook restated in line 1, before the "…more" fold)
+"AMD jumped 8% yesterday — before AMD said anything. Here's what actually moved it, and
+what's still just 'expected.' Not financial advice, DYOR. Save this for when the keynote
+wraps.
+#AMD #AIstocks #semiconductors #stockmarket #investing"
+Soft CTA: save/follow, no hard sell.
+
+TRENDING-AUDIO NOTE
+Pick a current trending IG Reels audio (subtle build/whoosh or a low-key beat-drop style)
+from the Reels "Trending" tab the morning of posting; duck it to ~15-20% under the VO so the
+Speak lip-sync stays the focus. Avoid audio already >5 days old — trending sounds decay fast
+on Reels.
+
+HIGGSFIELD VIDEO PROMPT (copy-paste)
+"Vertical 9:16 UGC talking-head, same Maya identity anchor (avatar 0932dd65 /
+maya_anchor_2026-06-03.png): 24-year-old mixed-race woman, shoulder-length dark wavy hair,
+light natural makeup, gold hoops, cream ribbed knit sweater. Cozy modern home-office corner
+— bookshelf, small plant, warm desk lamp, faint monitor glow behind her. Soft warm
+front-left key light, gentle background bokeh, chest-up framing, native phone-camera feel
+(no watermark, no border). Motion: fast push-in for the first 1.5 seconds on the hook, then
+settle into a slow dolly-in with very light handheld sway. Mood: calm, sharp, quietly
+confident analyst; small dry half-smile at the end. Photoreal, cinematic UGC style, no
+on-screen text, no logos, no graphics (captions added in post). Use Higgsfield Speak for
+lip-synced voiceover."
+
+=====================================================================
+POST 2 — QBTS (Quantum — the exchange-switch post)
+=====================================================================
+PICK & WHY-VIRAL
+Headline (reported, announced 7/14/2026, effective this week): D-Wave Quantum is
+transferring its stock listing from the NYSE to Nasdaq — NYSE trading ends after close
+7/24/2026, shares begin trading on Nasdaq 7/27/2026 under the same ticker (QBTS). Company
+framed it as aligning with "a market known for technology innovators."
+Hook angle: dry contrast — switching exchanges to align with "tech innovators" the same week
+it's trading at less than half its own 52-week high.
+Concrete numbers (live, intraday 7/21/2026): price $17.81, previous close $16.72, day range
+$17.00-$18.02, 52-week range $12.75-$46.75. Cached (7/11) fundamental-value model:
+fundamental value $2.63 vs cached price $20.09 → "Overvalued" (price roughly ~7-8x the
+model). Cached annual revenue trend (real, not modeled): 2022 $7.17M -> 2025 $24.59M.
+
+HOOK (first 1.5s)
+"A quantum stock is switching exchanges this week. It's also under half its year-high."
+
+SPOKEN SCRIPT (~30s, ~105 words)
+"A quantum stock is switching exchanges this week — off the New York Stock Exchange, onto
+Nasdaq. The company calls it aligning with a market built for tech innovators. It's doing
+that while trading under eighteen dollars — less than half its year-high of forty-six
+seventy-five. A fundamental-value read from a couple weeks back had it priced near twenty
+dollars against a model value of two dollars sixty-three — call it seven times the model.
+The one real number in the story: revenue actually grew, from about seven million in
+twenty twenty-two to nearly twenty-five million last year. Small, but real. Not financial
+advice. Follow for what happens when it starts trading on Nasdaq."
+
+ON-SCREEN CAPTIONS (big, sound-off safe)
+- "NYSE -> NASDAQ (7/27)"
+- "PRICE $17.81 (7/21)"
+- "52-WK HIGH $46.75"
+- "MODEL $2.63 vs PRICE ~$20 (cached)"
+- "NOT FINANCIAL ADVICE"
+
+B-ROLL / CUTAWAYS (unbranded, generic)
+- Generic ticker-tape / exchange-floor style motion graphic (no logos)
+- Price line sliding down from a marked high point
+- Simple two-bar "model value vs price" gap graphic
+- Small upward revenue bar chart, 2022 -> 2025 (plain, unbranded)
+
+COVER FRAME
+Bold text, safe zone: "IT'S SWITCHING EXCHANGES.
+IT'S ALSO DOWN 60%+ FROM ITS HIGH." over Maya chest-up freeze frame.
+
+PLATFORM CAPTION + HASHTAGS
+"A quantum stock is changing exchanges this week — while trading at less than half its
+year-high. Here's the one real number behind the story. Not financial advice, DYOR. Save
+this for the Nasdaq debut.
+#quantumcomputing #QBTS #DWave #stockmarket #investing"
+Soft CTA: save/follow, no hard sell.
+
+TRENDING-AUDIO NOTE
+Pick a current trending IG Reels audio with a slightly moody/ambient current (fits the
+"story vs numbers" tone) at low volume; check Trending tab morning-of and swap if the sound
+already looks oversaturated on other Reels in your niche.
+
+HIGGSFIELD VIDEO PROMPT (copy-paste)
+"Vertical 9:16 UGC talking-head, same Maya identity anchor (avatar 0932dd65 /
+maya_anchor_2026-06-03.png): 24-year-old mixed-race woman, dark wavy shoulder-length hair,
+light makeup, gold hoops, cream ribbed knit. Same cozy home-office corner, evening grade —
+warm desk lamp dominant, faint cool monitor glow rim on one side for a slightly futuristic
+feel. Chest-up, gentle bokeh, native phone-camera feel, no watermark. Motion: fast push-in
+on the hook line, beat pause, then slow steady dolly-in with minimal handheld; subtle head
+tilt on 'it's also under half its year-high.' Delivery: neutral, credible, document-like
+calm — fewer gestures, dry. Photoreal cinematic UGC, no on-screen text, no logos. Use
+Higgsfield Speak for lip-synced voiceover."
+
+=====================================================================
+POST 3 — INTC (Congress — public-record disclosure)
+=====================================================================
+PICK & WHY-VIRAL
+Public record (filed 6/23/2026): a disclosure under Nancy Pelosi's household shows a
+purchase of 200 Intel call options, $50 strike, expiring 3/19/2027, transaction dated
+5/29/2026, disclosed value range $1,000,001-$5,000,000 for the Intel leg (source:
+disclosures-clerk.house.gov PTR filing; matches web/public/data/congress.json). Shown as
+transparency, NOT an accusation, NOT insider-trading claim, NOT a signal to copy.
+Fresh tie-in (live, 7/21/2026): Intel closed at $105.45, up 8.64%, its sharpest single-day
+gain in months, two days ahead of Q2 earnings due 7/23/2026 (this earnings date matches the
+cached 7/11 catalyst list exactly). Reported drivers: an expanded AI collaboration with
+Google Cloud and a new foundry customer.
+Hook angle: sharp, non-accusatory factual contrast — a $50 strike disclosed in May sits deep
+in-the-money against Tuesday's close.
+
+HOOK (first 1.5s)
+"In May, a disclosed trade picked a fifty-dollar strike on Intel. Intel just closed at a
+hundred and five."
+
+SPOKEN SCRIPT (~30s, ~100 words)
+"Public disclosure, filed in June: Nancy Pelosi's household bought two hundred Intel call
+options in May — fifty-dollar strike, expiring March twenty twenty-seven. Value disclosed:
+one to five million dollars. Intel closed Tuesday at a hundred five, up eight point six
+percent — two days before its own earnings report. That fifty-dollar strike is now roughly
+fifty-five dollars in the money. To be clear — public filing, not an accusation. Disclosure
+rules put this in plain sight; that's not a signal to copy. Just what the paperwork says,
+next to what the stock did. Not financial advice. Follow for the next disclosure worth
+reading."
+
+ON-SCREEN CAPTIONS (big, sound-off safe)
+- "FILED 6/23/2026"
+- "200 CALLS, $50 STRIKE"
+- "INTC CLOSE $105.45 (+8.64%)"
+- "~$55 IN THE MONEY"
+- "PUBLIC RECORD — NOT A SIGNAL"
+
+B-ROLL / CUTAWAYS (unbranded, generic)
+- Plain "PTR FILING" style disclosure table row (generic text card, no seal/logo)
+- Green single-day candle spike for Intel
+- Simple options payoff line: strike $50 marked against current price $105
+- "NOT FINANCIAL ADVICE / PUBLIC RECORD" plain text card
+
+COVER FRAME
+Bold text, safe zone: "SHE BOUGHT A $50 STRIKE.
+INTEL JUST CLOSED AT $105." over Maya chest-up freeze frame, neutral expression.
+
+PLATFORM CAPTION + HASHTAGS
+"A disclosed options trade from May picked a $50 strike on Intel. Intel just closed at $105
+— two days before earnings. Public record, not a signal. Not financial advice, DYOR. Save
+this for earnings Thursday.
+#congress #INTC #Intel #stockmarket #investing"
+Soft CTA: save/follow, no hard sell.
+
+TRENDING-AUDIO NOTE
+Pick a current trending IG Reels audio with a low-key "documentary reveal" feel (subtle
+tension build, no lyrics fighting the VO); duck under the Speak track. Swap for freshness
+if the trending sound is already flooding your For You/Explore feed.
+
+HIGGSFIELD VIDEO PROMPT (copy-paste)
+"Vertical 9:16 UGC talking-head, same Maya identity anchor (avatar 0932dd65 /
+maya_anchor_2026-06-03.png): 24-year-old mixed-race woman, shoulder-length dark wavy hair,
+gold hoops, oversized neutral blazer over a plain top. Same cozy home-office corner —
+bookshelf, plant, warm desk lamp, faint monitor glow — neutral, slightly clinical grade (no
+color push) to match a document-like tone. Soft front-left key, gentle bokeh, chest-up,
+native phone-camera feel, no watermark. Motion: snap push-in on the hook, hold, then slow
+lateral drift with light handheld. Delivery: even, measured, deliberately neutral — no
+raised eyebrows, no implication, just stating facts. Photoreal cinematic UGC, no on-screen
+text, no logos. Use Higgsfield Speak for lip-synced voiceover."
+
+=====================================================================
+PROVENANCE & CAVEATS
+=====================================================================
+LIVE, web-sourced today (2026-07-22, via WebSearch — direct exchange/API pulls are blocked
+in this sandbox, proxy 403 on TradingView/Yahoo/SEC/FRED):
+- AMD: close $544.43, +8.11%, 7/21/2026; driver = reported Microsoft/Azure AMD Helios
+  deployment; AMD "Advancing AI 2026" conference dates July 22-23, San Francisco (amd.com
+  events page + multiple outlets); "third gigawatt-scale customer" = reported/expected,
+  explicitly UNCONFIRMED in every source checked.
+- INTC: close $105.45, +8.64%, 7/21/2026 (sharpest single-day gain in months); drivers =
+  reported expanded Google Cloud AI collaboration + new foundry customer; Q2 earnings date
+  7/23/2026 confirmed live AND matches the cached 7/11 catalyst list exactly.
+- QBTS: intraday price $17.81, previous close $16.72, day range $17.00-$18.02, 52-week
+  range $12.75-$46.75, all as of 7/21/2026; NYSE-to-Nasdaq listing transfer announced
+  7/14/2026 (D-Wave release/8-K), NYSE trading ends after close 7/24/2026, Nasdaq trading
+  begins 7/27/2026, ticker unchanged.
+- Congress disclosure (Pelosi household, INTC calls): cross-confirmed against live news
+  coverage of the same PTR filing (multiple outlets independently reporting the same 200
+  contracts / $50 strike / 3/19/2027 expiry / txn 5/29/2026 / filed 6/23/2026 details).
+
+CACHED, 2026-07-11 (web/public/data/site.json, quantum.json, congress.json) — used ONLY for
+fundamental-value model figures, margin/growth context, and the underlying disclosure record
+(not presented as today's price):
+- AMD: fundamental value $241.23 vs cached price $557.89 ("Overvalued"); rev growth +34.97%
+  YoY; EPS growth +123.35% YoY; gross margin 47.09%.
+- INTC: fundamental value $28.23 vs cached price $109.84 ("Overvalued"); net margin -5.90%;
+  1y return +364.8% (cached).
+- QBTS: fundamental value $2.63 vs cached price $20.09 ("Overvalued"); annual revenue
+  2022 $7.17M -> 2025 $24.59M (real, reported figures, not modeled).
+- Congress record itself (ticker, txn type, $ range, dates) pulled from
+  web/public/data/congress.json, generated_at 2026-07-11 — cross-confirmed live above.
+
+What failed / limitations: no fresh REST/API pull possible for any of the three tickers
+(sandbox network policy blocks finance-data hosts); all "as of today" prices are WebSearch
+aggregations of secondary reporting, not a direct exchange feed — flagged below for
+orchestrator cross-check against live Interactive Brokers quotes before publishing. No
+headline was invented; every number above traces to either a cited live search result or
+the dated cached bundle.
+
+=====================================================================
+COMPLIANCE NOTE (all 3 posts)
+=====================================================================
+- Educational/market commentary only; every script and caption carries "not financial
+  advice / DYOR" spoken + on-screen.
+- No product, app, terminal, or brand mention anywhere (attention-first phase). All B-roll
+  visuals are generic/unbranded.
+- Valuation claims are third-person, attributed to "a fundamental-value model" / "the data" —
+  never the creator's own claim, never a price target as advice.
+- Certainty labels respected: Microsoft/Azure AMD deal, Google Cloud/Intel collab, foundry
+  customer = "reported"; AMD's third gigawatt-scale customer = "reportedly expected,"
+  explicitly flagged unconfirmed. QBTS exchange transfer = "reported" (dated 8-K/press
+  release). Congress item = "filed/disclosed," public record only.
+- Congress post: Nancy Pelosi household's INTC call-option disclosure presented strictly as
+  a dated public filing for transparency — explicit spoken + on-screen line that it is "not
+  an accusation" and "not a signal to copy," no insider-trading implication.
+- No news outlets named anywhere in scripts or captions — "reportedly" only.
+- "GuruFocus"/"GF" never used — "fundamental value" / "fundamental-value model" only.
+- IG Reels formatting applied throughout: hook in first 1.5s, captions sized/positioned for
+  sound-off viewing and safe zones (avoid bottom ~15% and right UI edge), designed cover
+  frame per post, caption hook restated before the "...more" fold, 5 targeted hashtags per
+  post (not a hashtag wall), soft save/follow CTA only — no hard sell, no terminal/app CTA.
+
+=====================================================================
+CROSS-VALIDATION RESULT (orchestrator, vs LIVE Interactive Brokers quotes,
+retrieved 2026-07-22T08:24Z, source_class: api, pre-US-market session)
+=====================================================================
+ALL THREE PICKS CONFIRMED. IBKR prior-close implied by last/change matches the
+WebSearch-sourced 7/21 closes to the cent:
+- AMD  (NASDAQ, conid 4391):      last $533.00, change -2.1% (-$11.43) → implied prior
+  close $544.43 — MATCHES script's $544.43 exactly. 52-wk range $149.22-$584.73 (IBKR).
+  Live note: AMD trading DOWN ~2.1% pre-market this morning ahead of the keynote — the
+  "save this for when the keynote wraps" CTA still works; do not claim the stock is up today.
+- QBTS (NYSE, conid 578031277):   last $17.54, change -1.46% (-$0.26) → implied prior
+  close $17.80 — consistent with script's "$17.81 intraday / under eighteen dollars."
+  52-wk range $12.755-$46.75 (IBKR) — MATCHES the $12.75-$46.75 used in captions.
+- INTC (NASDAQ, conid 270639):    last $102.40, change -2.89% (-$3.05) → implied prior
+  close $105.45 — MATCHES script's $105.45 exactly; the ~$55-in-the-money line holds
+  ($105.45 - $50 = $55.45; even at the live $102.40 it is ~$52 in the money).
+Decision on the AMD flag: kept the cached model-$241.23-vs-price-$557.89 pairing as-is —
+both legs come from the same 2026-07-11 snapshot (internally consistent) and are labeled
+"(cached)"; mixing today's price against a 7/11 model value would be worse provenance.
+The spoken line "more than double what the model called fair" also holds at $544.43 (2.26x).
+
+ORIGINAL CROSS-VALIDATION REQUEST (as filed by the sub-agent):
+1) AMD — price $544.43, move +8.11%, as-of close 2026-07-21 (source class: WebSearch
+   aggregation of secondary reporting, no direct feed). Valuation figures used in
+   script/captions: fundamental value $241.23 vs price $557.89 — BOTH from the cached
+   2026-07-11 bundle, NOT today's price; flagged in case this framing should be updated to
+   reference today's $544.43 instead of the cached $557.89.
+2) QBTS — price $17.81 intraday, previous close $16.72, day range $17.00-$18.02, 52-week
+   range $12.75-$46.75, as-of 2026-07-21 (WebSearch aggregation, no direct feed). Valuation
+   figures used: fundamental value $2.63 vs cached price $20.09 (cached 2026-07-11). Cached
+   annual revenue used in script: 2022 $7.17M -> 2025 $24.59M.
+3) INTC — price $105.45, move +8.64%, as-of close 2026-07-21 (WebSearch aggregation, no
+   direct feed). Congress disclosure figures used: Nancy Pelosi household, INTC call
+   options, 200 contracts, $50 strike, expiry 3/19/2027, txn date 5/29/2026, filed
+   6/23/2026, disclosed range $1,000,001-$5,000,000 (source: web/public/data/congress.json,
+   cross-confirmed via independent live news coverage of the same filing). In-the-money
+   figure used in script ("~$55 in the money") = $105.45 price minus $50 strike = $55.45,
+   rounded down to "$55" in the VO.
