@@ -14,6 +14,7 @@ import { SlideStoryReel } from "./compositions/SlideStoryReel";
 import { TutorialReel } from "./compositions/TutorialReel";
 import { KurzSlide } from "./compositions/KurzSlide";
 import { CharacterCard, characterCardSchema } from "./compositions/CharacterCard";
+import { ChipShowcase, chipShowcaseSchema } from "./compositions/ChipShowcase";
 import { reelPropsSchema } from "./props";
 import { slideStoryPropsSchema } from "./slides/slideProps";
 import { tutorialPropsSchema } from "./slides/tutorialProps";
@@ -125,6 +126,23 @@ export const RemotionRoot: React.FC = () => {
           variant: "lineup" as const,
           footer: "Original AI STACK characters — educational content · not financial advice",
           durationInFrames: 300,
+        }}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: props.durationInFrames,
+        })}
+      />
+      <Composition
+        id="ChipShowcase"
+        component={ChipShowcase}
+        durationInFrames={730}
+        fps={30}
+        width={1080}
+        height={1350}
+        schema={chipShowcaseSchema}
+        defaultProps={{
+          variant: "demo" as const,
+          footer: "Original AI STACK character — educational content · not financial advice",
+          durationInFrames: 730,
         }}
         calculateMetadata={({ props }) => ({
           durationInFrames: props.durationInFrames,
