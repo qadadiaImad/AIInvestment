@@ -1,0 +1,45 @@
+{
+  "kind": "text",
+  "logoSrc": "logos/INTC.svg",
+  "bgSrc": "bg/oval_office_flag.svg",
+  "kick": "PUBLIC RECORD",
+  "title": "A $50 strike, filed in June.",
+  "body": [
+    {
+      "t": "Pelosi's household picked up "
+    },
+    {
+      "t": "200 Intel calls",
+      "b": true
+    },
+    {
+      "t": " in May — "
+    },
+    {
+      "t": "$50 strike",
+      "b": true
+    },
+    {
+      "t": ", running to March 2027, worth "
+    },
+    {
+      "t": "$1M–$5M",
+      "tone": "amber",
+      "b": true
+    },
+    {
+      "t": ". Intel just closed at "
+    },
+    {
+      "t": "$105",
+      "tone": "emerald",
+      "b": true
+    },
+    {
+      "t": ". All public record."
+    }
+  ],
+  "footnote": "",
+  "footer": "Educational market commentary — not financial advice · DYOR",
+  "durationInFrames": 270
+}

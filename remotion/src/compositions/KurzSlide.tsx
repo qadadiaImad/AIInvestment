@@ -246,23 +246,38 @@ const CompanyScene: React.FC<KurzCompanyProps> = (p) => (
   </AbsoluteFill>
 );
 
-const TextScene: React.FC<KurzTextProps> = (p) => (
-  <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', padding: '0 84px'}}>
-    <FloatingBlob size={800} x={50} y={50} hue={C.emerald} hue2={C.amber} seed={3} opacity={0.2} />
-    <OrbitDots n={7} radius={330} x={50} y={44} />
-    <div style={{position: 'relative', display: 'flex', flexDirection: 'column', gap: 24, alignItems: 'center', textAlign: 'center', maxWidth: 880}}>
-      <KickChip text={p.kick} delay={4} />
-      <Slam size={76} delay={12}>
-        {p.title}
-      </Slam>
-      <div style={{marginTop: 8}}>
-        <Caption delay={40}>
-          <RichText value={p.body} />
-        </Caption>
+const TextScene: React.FC<KurzTextProps> = (p) => {
+  // Over a photo/illustration background the ambient blobs/orbits would haze
+  // the artwork, and the text sits lower where the scrim is strongest.
+  const overBg = Boolean(p.bgSrc);
+  return (
+    <AbsoluteFill
+      style={{
+        alignItems: 'center',
+        justifyContent: overBg ? 'flex-end' : 'center',
+        padding: overBg ? '0 84px 150px' : '0 84px',
+      }}
+    >
+      {overBg ? null : (
+        <>
+          <FloatingBlob size={800} x={50} y={50} hue={C.emerald} hue2={C.amber} seed={3} opacity={0.2} />
+          <OrbitDots n={7} radius={330} x={50} y={44} />
+        </>
+      )}
+      <div style={{position: 'relative', display: 'flex', flexDirection: 'column', gap: 24, alignItems: 'center', textAlign: 'center', maxWidth: 900}}>
+        <KickChip text={p.kick} delay={4} />
+        <Slam size={76} delay={12}>
+          {p.title}
+        </Slam>
+        <div style={{marginTop: 8}}>
+          <Caption delay={40}>
+            <RichText value={p.body} />
+          </Caption>
+        </div>
       </div>
-    </div>
-  </AbsoluteFill>
-);
+    </AbsoluteFill>
+  );
+};
 
 /** Spring-in rounded card shared by the business/news scenes. */
 const PopCard: React.FC<{delay?: number; children: React.ReactNode; style?: React.CSSProperties}> = ({delay = 0, children, style}) => {
@@ -503,6 +518,17 @@ export const KurzSlide: React.FC<KurzSlideProps> = (props) => {
   return (
     <AbsoluteFill style={{fontFamily: FONT.body}}>
       <Bg tint={tint} />
+      {props.bgSrc ? (
+        <AbsoluteFill>
+          <Img src={staticFile(props.bgSrc)} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+          {/* legibility scrim: gentle at the top, strong behind the text zone */}
+          <AbsoluteFill
+            style={{
+              background: `linear-gradient(180deg, rgba(10,13,18,.20) 0%, rgba(10,13,18,.06) 30%, rgba(10,13,18,.42) 58%, rgba(10,13,18,.86) 100%)`,
+            }}
+          />
+        </AbsoluteFill>
+      ) : null}
       {props.kind === 'introVideo' ? (
         <IntroVideoScene {...props} />
       ) : props.kind === 'company' ? (

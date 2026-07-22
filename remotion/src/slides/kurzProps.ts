@@ -15,6 +15,11 @@ const richOrString = () => z.union([z.string(), richTextSchema]);
 const logoFields = {
   logoSrc: z.string().optional(),
   logoLabel: z.string().optional(),
+  // Full-bleed background image (staticFile-relative, e.g. "bg/hero.svg" or a
+  // generated PNG). When set, the engine draws it under the scene with a
+  // legibility scrim. Empty string = none (explicit, so composition
+  // defaultProps never leak through).
+  bgSrc: z.string().optional(),
 };
 
 export const kurzIntroVideoSchema = z.object({
