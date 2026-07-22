@@ -120,22 +120,5 @@ export const FaceoffOverlay: React.FC<FaceoffOverlayProps> = ({img}) => (
       verdict="✓ PROFITABLE · DEBT-FREE"
       verdictTone="green"
     />
-
-    {/* bottom stamp */}
-    <div
-      style={{
-        position: 'absolute',
-        bottom: 26,
-        left: 0,
-        right: 0,
-        textAlign: 'center',
-        fontFamily: FONT.mono,
-        fontSize: 19,
-        color: 'rgba(30,34,42,0.72)',
-        textShadow: '0 0 6px rgba(255,255,255,0.9), 0 1px 2px rgba(255,255,255,0.9)',
-      }}
-    >
-      Same sector · figures as of July 11, 2026 · educational — not financial advice
-    </div>
   </AbsoluteFill>
 );
