@@ -89,6 +89,22 @@ def lint_halal_script(script, card):
     return errs
 
 
+_PCT_RE = re.compile(r"\d+(?:\.\d+)?\s*(?:%|percent)", re.IGNORECASE)
+_ANCHOR_RE = re.compile(
+    r"\$|cents|of every|for every|limit|cap|threshold|allowed", re.IGNORECASE)
+
+
+def lint_visceral(lines):
+    """Rails for spoken ratios: every percentage needs a plain-money analogy
+    ("$X of every $100") or an explicit limit comparison (cap/threshold/allowed),
+    never a bare percent left to float unanchored."""
+    errs = []
+    for line in lines:
+        if _PCT_RE.search(line) and not _ANCHOR_RE.search(line):
+            errs.append(f"bare ratio with no money analogy or limit comparison: {line!r}")
+    return errs
+
+
 def lint_concept_script(script):
     """Rails for ticker-less concept/explainer scripts: verdict-claim phrasing +
     spoken disclaimer only (no per-ticker number anchor to check)."""

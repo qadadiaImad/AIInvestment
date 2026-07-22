@@ -1,4 +1,4 @@
-from aiinvest.halal_lint import lint_halal_script
+from aiinvest.halal_lint import lint_halal_script, lint_visceral
 
 CARD = {"standards_rows": [{"name": "AAOIFI", "ratio": "21.0%", "threshold": "30.0%", "margin": "+9.0pt"}],
         "business_line": "Business activity: crypto-mining — 38.2% impermissible",
@@ -97,3 +97,24 @@ def test_curly_apostrophe_possessive_halal_rejected():
     errs = lint_halal_script(
         "WULF’s halal, according to the numbers. Educational, not financial or religious advice.", CARD)
     assert any("halal" in e.lower() or "haram" in e.lower() for e in errs)
+
+
+# --- lint_visceral: every spoken ratio needs a money analogy or limit comparison ---
+
+def test_visceral_rejects_bare_ratio():
+    bad = ["The AAOIFI debt ratio comes in at 56.9%."]
+    errs = lint_visceral(bad)
+    assert errs
+
+
+def test_visceral_accepts_money_analogy():
+    ok = ["About 57 percent — that's $57 of every $100 — is borrowed, against a $30 limit."]
+    assert lint_visceral(ok) == []
+
+
+def test_visceral_accepts_limit_comparison():
+    assert lint_visceral(["Debt is 14.0% against a 30% cap."]) == []
+
+
+def test_visceral_ignores_lines_without_percent():
+    assert lint_visceral(["Verdict: pass on the halal screen."]) == []
