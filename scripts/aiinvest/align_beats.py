@@ -8,8 +8,13 @@ faster-whisper word-timestamp list (`[{"word": str, "start": float, "end":
 float}, ...]`, seconds), and returns a new props dict (deepcopy — the input
 is never mutated) where:
 
-  - each beat's `durationInFrames` is derived from its VO line's matched
-    word span in the audio (+ `pad` frames, clamped to >= `min_frames`);
+  - each beat's `durationInFrames` is **start-anchored**: beat *i*'s
+    duration is the real gap from its own VO line's matched-span START to
+    the NEXT line's matched-span START (real inter-line pauses are absorbed
+    into the owning beat, not smoothed away by a flat pad), clamped to >=
+    `min_frames`. The final beat has no "next start" to anchor to, so it
+    runs from its own start to the true audio end, plus `pad` frames for a
+    trailing breath. (See "Duration model" below for why — I2.)
   - `captions` is filled with one `{"text", "fromMs", "toMs"}` entry per
     VO line, in milliseconds, for Task 5's caption track.
 
@@ -35,13 +40,38 @@ runs past the true audio length. Matched lines carry real whisper
 timestamps and are **never** altered by this clamp, even if that leaves a
 gap before them.
 
-The **total** reel duration always tracks the true audio length regardless
-of per-line match quality: the final beat absorbs whatever remainder is
-needed so `sum(durationInFrames) == ceil(audio_end * fps) + pad`, where
-`audio_end` is the end of the *last* word faster-whisper actually heard
-(not the last line's own, possibly-truncated, matched/fallback span) — the
-video must always end when the narration ends, not when the last line
-happened to text-match cleanly.
+Duration model (I2 — start-anchored boundaries): the Remotion `<Series>` lays
+out beats **cumulatively** by summing each beat's *relative* `durationInFrames`,
+while `captions[i].fromMs/toMs` are *absolute* whisper-true timestamps that
+`CaptionLayer` reads straight off the render clock. Those two clocks only
+agree if `durationInFrames` is derived from the gap between consecutive
+lines' real starts — deriving it from each line's OWN span length (`end -
+start`) plus a flat `pad` (the old model) implicitly assumes every line is
+followed immediately (exactly `pad` later) by the next, which real TTS
+audio does not honor (uneven inter-line pauses accumulate into growing
+drift — up to several seconds by the final beat on real Chatterbox output).
+Anchoring each beat's duration to `next_start - this_start` instead makes
+the cumulative relative-duration sum telescope back to the true absolute
+timeline: `sum(durationInFrames[:i]) == frames(spans[i][0] - spans[0][0])`
+for any beat *i* with no `min_frames` clamp upstream, so scene boundaries
+land exactly on the next line's real (whisper-true) start — zero drift by
+construction. The final beat has no next line to anchor to, so it instead
+runs from its own start to the true audio end (`audio_end - start`) plus
+`pad` frames for a trailing breath; `sum(durationInFrames) ==
+ceil(audio_end * fps) + pad` again follows naturally from that telescoping,
+*provided* no beat needed the `min_frames` floor (see below) — the total
+still always ends when the narration ends, never early, because the last
+beat's own end is computed directly against `audio_end`, not as a leftover
+remainder of the earlier beats.
+
+`min_frames` still floors any beat whose real gap (or trailing span) would
+be too short to render sensibly (e.g. a fast one-word matched line, or the
+degenerate all-fallback case with zero audio) — when that clamp fires for a
+non-final beat, later scene boundaries necessarily slip later than their
+true starts by the clamped amount (a deliberate, bounded trade-off: a
+beat is never shorter than `min_frames`, but a pathologically tiny real gap
+can no longer be represented exactly). This is the same trade-off the old
+model made; only the *unclamped* case's accuracy improved.
 
 Raises `ValueError` if `len(props["beats"]) != len(props["vo"])`.
 
@@ -160,17 +190,24 @@ def apply_timing(props: dict, words: list[dict], fps: int = 30, pad: int = 12,
                 start = end
             spans[-1] = (start, end)
 
-    durations = [max(_frames(end - start, fps) + pad, min_frames) for start, end in spans]
-
-    target = _frames(total_audio_duration, fps) + pad
-    nonfinal_sum = sum(durations[:-1])
-    final = target - nonfinal_sum
-    if final < min_frames:
-        # Pathological case (e.g. no/short audio, or every beat clamped to
-        # min_frames): keep durations sane rather than emit a negative or
-        # sub-min final beat. Sum == target is no longer guaranteed here.
-        final = min_frames
-    durations[-1] = final
+    # Start-anchored boundaries (I2): beat i's duration is the real gap between
+    # THIS line's span start and the NEXT line's span start, not this line's own
+    # span length + a flat pad -- see the module docstring's "Duration model"
+    # section for why this keeps the Remotion <Series>'s cumulative relative
+    # clock aligned with CaptionLayer's absolute whisper-true clock. Spans are
+    # non-decreasing by construction (matched spans walk the word list with a
+    # forward-only pointer; fallback spans are clamped against their neighbor
+    # above), so every non-final gap is >= 0 before the min_frames floor.
+    starts = [s for s, _ in spans]
+    durations = [
+        max(_frames(starts[i + 1] - starts[i], fps), min_frames)
+        for i in range(n - 1)
+    ]
+    # Final beat: no "next start" to anchor to -- runs from its own start to the
+    # true audio end, plus a trailing pad. Computed directly against
+    # `total_audio_duration` (not as a remainder of the other beats), so it
+    # always lands on the real audio end regardless of any upstream clamping.
+    durations.append(max(_frames(total_audio_duration - starts[-1], fps) + pad, min_frames))
 
     for beat, dur in zip(new_props["beats"], durations):
         beat["durationInFrames"] = dur
