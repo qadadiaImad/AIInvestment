@@ -141,3 +141,87 @@ def test_zero_duration_word_does_not_crash():
     out = apply_timing(props, words, fps=FPS, pad=PAD, min_frames=MIN_FRAMES)
     assert out["captions"][0]["fromMs"] == 1000
     assert out["captions"][0]["toMs"] == 1000
+
+
+# ---------------------------------------------------------------------------
+# Reviewer finding: proportional-fallback caption spans could overlap the
+# NEXT line's real matched span (e.g. fallback line's toMs landing past the
+# next line's already-known fromMs), producing overlapping caption pills at
+# render. Fix: after all lines get a span, fallback-derived spans are
+# clamped (end, and start if needed) so the list stays non-decreasing
+# (captions[i].toMs <= captions[i+1].fromMs) without ever touching a
+# matched line's real span.
+# ---------------------------------------------------------------------------
+
+FALLBACK_OVERLAP_WORDS = [
+    {"word": " Hello", "start": 0.0, "end": 1.0},
+    {"word": " World", "start": 2.0, "end": 3.0},
+]
+FALLBACK_OVERLAP_GARBAGE = "Xylophone Quokka Umbrella Zephyr"
+
+
+def test_fallback_span_clamped_to_not_overlap_next_matched_line():
+    # Reviewer-reproduced scenario: 3 lines, line 1 is garbage (falls back
+    # to proportional allocation), lines 0 and 2 match real whisper words.
+    # Unclamped, line 1's fallback share computes toMs ~= 2524ms, which
+    # overshoots line 2's real matched fromMs of 2000ms -> overlap.
+    props = _props(["Hello", FALLBACK_OVERLAP_GARBAGE, "World"])
+    out = apply_timing(props, FALLBACK_OVERLAP_WORDS, fps=FPS, pad=PAD, min_frames=MIN_FRAMES)
+    caps = out["captions"]
+
+    # Global monotonicity across the whole caption list: no span's toMs may
+    # exceed the next span's fromMs.
+    for i in range(len(caps) - 1):
+        assert caps[i]["toMs"] <= caps[i + 1]["fromMs"]
+    for cap in caps:
+        assert cap["fromMs"] <= cap["toMs"]
+
+    # Line 2's real matched span must be untouched by the clamp.
+    assert caps[2] == {"text": "World", "fromMs": 2000, "toMs": 3000}
+
+    # Line 1's fallback span was pulled in to stop exactly at line 2's start.
+    assert caps[1]["fromMs"] == 1000
+    assert caps[1]["toMs"] == 2000
+
+
+@pytest.mark.parametrize(
+    "vo_lines,words",
+    [
+        ([VO_LINE_0, VO_LINE_1, VO_LINE_2_MATCHED], WORDS),
+        ([VO_LINE_0, VO_LINE_1, "Xylophone Quokka Umbrella Zephyr"], WORDS),
+        ([VO_LINE_0, VO_LINE_1, VO_LINE_2_MATCHED], []),
+        ([VO_LINE_0, VO_LINE_1, VO_LINE_2_MATCHED], WORDS[:4]),
+        (["Hello", FALLBACK_OVERLAP_GARBAGE, "World"], FALLBACK_OVERLAP_WORDS),
+    ],
+)
+def test_captions_globally_non_decreasing_across_fixtures(vo_lines, words):
+    props = _props(vo_lines)
+    out = apply_timing(props, words, fps=FPS, pad=PAD, min_frames=MIN_FRAMES)
+    caps = out["captions"]
+
+    for cap in caps:
+        assert cap["fromMs"] <= cap["toMs"]
+    for i in range(len(caps) - 1):
+        assert caps[i]["toMs"] <= caps[i + 1]["fromMs"]
+
+
+def test_pathological_many_tiny_beats_floor_at_min_frames_and_sum_exceeds_target():
+    """Pin the documented pathological case (align_beats.py's final-beat
+    fallback branch): with no audio at all, every line's span degenerates to
+    zero length, so every beat -- including the one that would normally
+    absorb the remainder -- floors at min_frames instead. The
+    sum(durationInFrames) == target invariant is deliberately NOT guaranteed
+    here; this test pins that documented outcome so a future change to that
+    branch is a deliberate decision, not an accidental regression.
+    """
+    lines = [f"Line number {i} of five" for i in range(5)]
+    props = _props(lines)
+    out = apply_timing(props, [], fps=FPS, pad=PAD, min_frames=MIN_FRAMES)
+    durations = [b["durationInFrames"] for b in out["beats"]]
+
+    assert durations == [MIN_FRAMES] * len(lines)
+
+    audio_end = 0.0
+    target = math.ceil(audio_end * FPS) + PAD
+    assert sum(durations) > target
+    assert durations[-1] == MIN_FRAMES

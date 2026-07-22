@@ -22,9 +22,18 @@ word.end`. If fewer than 60% of a line's tokens matched, that line falls
 back to *proportional allocation*: its share of the total VO character
 count (across all lines in this reel) times the audio time remaining after
 the previous line's span, laid down starting where the previous line ended.
-This keeps every line's caption span monotonically increasing and inside
-the true audio length even when whisper's transcript diverges from the
-script (numbers spoken differently, a mumbled word, etc).
+
+Because a fallback span is computed purely from a proportional share of the
+*remaining* audio, it knows nothing about a later line's real (matched)
+span — it can run past the very next line's true start, which would
+otherwise produce overlapping caption pills at render. A second pass fixes
+this: after every line has a span, each **fallback-derived** span's end
+(and, if that collapses it below its own start, its start too) is clamped
+so the full caption list stays non-decreasing — `captions[i]["toMs"] <=
+captions[i + 1]["fromMs"]` for every `i`, and the last line's span never
+runs past the true audio length. Matched lines carry real whisper
+timestamps and are **never** altered by this clamp, even if that leaves a
+gap before them.
 
 The **total** reel duration always tracks the true audio length regardless
 of per-line match quality: the final beat absorbs whatever remainder is
@@ -87,6 +96,7 @@ def apply_timing(props: dict, words: list[dict], fps: int = 30, pad: int = 12,
     total_vo_chars = sum(len(line) for line in vo)
 
     spans: list[tuple[float, float]] = []
+    is_fallback: list[bool] = []
     pointer = 0
     prev_end = 0.0
     for line in vo:
@@ -110,14 +120,45 @@ def apply_timing(props: dict, words: list[dict], fps: int = 30, pad: int = 12,
         if matched_indices and fraction >= 0.6:
             start = words[matched_indices[0]]["start"]
             end = words[matched_indices[-1]]["end"]
+            is_fallback.append(False)
         else:
             remaining = max(total_audio_duration - prev_end, 0.0)
             share = (len(line) / total_vo_chars) if total_vo_chars > 0 else (1.0 / n)
             start = prev_end
             end = start + max(share * remaining, 0.0)
+            is_fallback.append(True)
 
         spans.append((start, end))
         prev_end = end
+
+    # A fallback span's end is a proportional guess at the REMAINING audio
+    # and has no idea where a later (possibly matched) line's real span
+    # begins. Clamp fallback spans only, walking backward so a run of
+    # consecutive fallback lines cascades correctly: each fallback span's
+    # end is capped at the next span's (by now possibly already-clamped)
+    # start, and its own start is pulled down to match if that would
+    # otherwise leave start > end. Matched spans carry real whisper
+    # timestamps and are never touched here.
+    for i in range(n - 2, -1, -1):
+        if not is_fallback[i]:
+            continue
+        start, end = spans[i]
+        next_start = spans[i + 1][0]
+        if end > next_start:
+            end = next_start
+            if start > end:
+                start = end
+            spans[i] = (start, end)
+
+    # The last line, if itself a fallback, has no "next" span to clamp
+    # against — cap it to the true audio length instead.
+    if is_fallback[-1]:
+        start, end = spans[-1]
+        if end > total_audio_duration:
+            end = total_audio_duration
+            if start > end:
+                start = end
+            spans[-1] = (start, end)
 
     durations = [max(_frames(end - start, fps) + pad, min_frames) for start, end in spans]
 
