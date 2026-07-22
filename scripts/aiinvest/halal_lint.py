@@ -89,9 +89,10 @@ def lint_halal_script(script, card):
     return errs
 
 
-_PCT_RE = re.compile(r"\d+(?:\.\d+)?\s*(?:%|percent)", re.IGNORECASE)
+_PCT_RE = re.compile(r"\d+(?:\.\d+)?\s*(?:%|percent|per\s?cent)", re.IGNORECASE)
 _ANCHOR_RE = re.compile(
-    r"\$|cents|of every|for every|limit|cap|threshold|allowed", re.IGNORECASE)
+    r"\$|\bcents\b|\bof every\b|\bfor every\b|\blimit(?:s)?\b|\bcap(?:s)?\b"
+    r"|\bthreshold(?:s)?\b|\ballowed\b", re.IGNORECASE)
 
 
 def lint_visceral(lines):

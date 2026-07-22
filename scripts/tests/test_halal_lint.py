@@ -118,3 +118,27 @@ def test_visceral_accepts_limit_comparison():
 
 def test_visceral_ignores_lines_without_percent():
     assert lint_visceral(["Verdict: pass on the halal screen."]) == []
+
+
+def test_visceral_rejects_capital_false_anchor():
+    bad = ["58% of institutional capital is allocated."]
+    assert lint_visceral(bad)
+
+
+def test_visceral_rejects_unlimited_false_anchor():
+    bad = ["Revenue could grow 200% with unlimited upside."]
+    assert lint_visceral(bad)
+
+
+def test_visceral_accepts_real_cap_word():
+    assert lint_visceral(["Debt sits at 14%, under the 30% cap."]) == []
+
+
+def test_visceral_accepts_per_cent_with_limit():
+    ok = ["56 per cent of revenue is flagged, against a 30 per cent limit."]
+    assert lint_visceral(ok) == []
+
+
+def test_visceral_rejects_per_cent_without_anchor():
+    bad = ["56 per cent of revenue comes from mining."]
+    assert lint_visceral(bad)
