@@ -35,8 +35,9 @@ import re
 
 import build_reel_props
 from build_reel_props import DISCLAIMER
+from aiinvest import heroes
 from aiinvest.halal_join import screen_card_data
-from aiinvest.halal_lint import lint_halal_script, lint_visceral
+from aiinvest.halal_lint import lint_halal_script, lint_visceral, lint_editorial
 
 # Re-exported so callers only need to import daily_copy (per the task-3 brief).
 InsufficientDataError = build_reel_props.InsufficientDataError
@@ -112,6 +113,88 @@ def _company_line(ticker, descriptor):
     return f"{ticker} — {descriptor}."
 
 
+# --- dramatize: shocking-but-factual line from the binding standards row ----
+
+_PCT_NUM_RE = re.compile(r"([\d.]+)")
+_MARGIN_RE = re.compile(r"^([+\-−])\s*(\d+(?:\.\d+)?)\s*pt$")
+_MCAP_RE = re.compile(r"mcap|market|cap", re.IGNORECASE)
+
+
+def _pct_value(s):
+    """Parse a screen_card_data row's '561.4%'-style string -> 561.4 (float);
+    None for a non-numeric placeholder ('—') or missing field."""
+    if not isinstance(s, str):
+        return None
+    m = _PCT_NUM_RE.search(s)
+    return float(m.group(1)) if m else None
+
+
+def _signed_margin_pt(s):
+    """Parse a row's '+9.0pt' / '−531.4pt' margin string -> signed float
+    (points), or None if unparseable. Accepts both the unicode minus
+    (−, what `_row` in halal_join.py actually emits) and a plain
+    ASCII hyphen, defensively."""
+    if not isinstance(s, str):
+        return None
+    m = _MARGIN_RE.match(s.strip())
+    if not m:
+        return None
+    sign, val = m.group(1), float(m.group(2))
+    return -val if sign in ("-", "−") else val
+
+
+def dramatize(card):
+    """A factual-extreme one-liner from `card["standards_rows"]`'s binding row
+    (the min-signed-margin numeric row — the one closest to, or furthest past,
+    its threshold). Severity is scaled by `ratio/threshold`:
+
+      * mcap-relative debt row (binding_label mentions mcap/market/cap) AND
+        severity >= 3x over its limit -> the real "times what the company is
+        worth" multiple (the row's raw ratio itself, since a market-cap-
+        denominated ratio already IS that multiple).
+      * severity > 1x over the limit (any binding row) -> the plain
+        ratio-vs-limit sentence.
+      * otherwise -> a neutral under-the-limit line.
+
+    Always $/%/limit-anchored (passes `lint_visceral`); the wording never uses
+    a banned editorial word (passes `lint_editorial`) or a "pass"/"fail"/
+    "review" token (verdict stays withheld) — by construction, not by luck:
+    every branch's string is a fixed template with only numbers/labels
+    interpolated. Pure; never raises — a missing/malformed card degrades to
+    the neutral line rather than crashing the reel build.
+    """
+    rows = (card or {}).get("standards_rows") or []
+    numeric = []
+    for row in rows:
+        ratio = _pct_value(row.get("ratio"))
+        threshold = _pct_value(row.get("threshold"))
+        margin = _signed_margin_pt(row.get("margin"))
+        if ratio is None or threshold is None or margin is None:
+            continue
+        numeric.append((margin, ratio, threshold, row))
+    if not numeric:
+        return "Every debt line lands under the limit."
+
+    margin, ratio, threshold, binding = min(numeric, key=lambda t: t[0])
+    if threshold <= 0:
+        return "Every debt line lands under the limit."
+
+    severity = ratio / threshold
+    label = binding.get("binding_label") or "debt line"
+    is_mcap = bool(_MCAP_RE.search(label))
+
+    if is_mcap and severity >= 3:
+        times = ratio / 100.0
+        return (
+            f"It owes {times:.1f} times what the whole company is worth — "
+            f"the screen's limit is {threshold:.0f}%, and it isn't close.")
+    if severity > 1:
+        return (
+            f"Its {label} sits at {binding['ratio']} — "
+            f"past the {binding['threshold']} limit.")
+    return "Every debt line lands under the limit."
+
+
 class LintError(Exception):
     """Raised by `build_daily` when any emitted text fails the halal-copy rails."""
 
@@ -181,51 +264,47 @@ def _shape_for(bars, overall):
     return "review"  # questionable / insufficient_data
 
 
-# --- Hook A (specific-number) + Hook B (contrarian) template banks ---------
+# --- Hook A (shocking-but-factual) + Hook B (contrarian) template banks ----
 
-def _hook_a(ticker, worst, donut_pct, company_line):
+def _hook_a(ticker, worst, donut_pct, descriptor, dramatize_line):
+    """Headline stays the specific-number lead (unchanged style); vo0 is the
+    task-3 shock intro. Caller guarantees `worst`/`donut_pct` aren't both
+    None — see `build_daily`'s InsufficientDataError guard, checked BEFORE
+    this is called so that guard fires before any card/dramatize work."""
     if worst is not None:
         r = round(worst["ratio"])
         headline = f"${r} of every $100 here is borrowed money."
-        vo0 = (
-            f"{company_line} {ticker}. ${r} of every hundred dollars of "
-            f"this company is borrowed money. The screen has a limit. Watch."
-        )
-    elif donut_pct is not None:
+    else:
         d = round(donut_pct)
         headline = f"${d} of every $100 in revenue here comes from a flagged activity."
-        vo0 = (
-            f"{company_line} {ticker}. ${d} of every hundred dollars of "
-            f"revenue here comes from a flagged activity. The screen has a limit. Watch."
-        )
-    else:
-        raise InsufficientDataError(
-            f"{ticker}: no numeric bar ratio and no donut percentage — "
-            "hook A has no specific number to lead with")
+    vo0 = f"{ticker} — {descriptor}. But here's the shock: {dramatize_line}"
     return headline, vo0
 
 
 # NOTE: no greeting here (owner call, task-9) — every variant opens with the
 # plain-words company line (`_company_line`), prepended in `_hook_b` below.
+# NOTE: no "{ticker}." repeated inside the template body either (task-3) —
+# `_company_line` already names the ticker once; a second bare mention here
+# was the "double-ticker seam" the task-3 brief calls out.
 _HOOK_B = {
     "split": (
         "The screeners don't agree on this one.",
-        "{ticker}. The three rulebooks don't agree on this "
+        "The three rulebooks don't agree on this "
         "one — some clear it, some don't. Let's see why.",
     ),
     "fail": (
         "Everyone assumes this one clears the screen.",
-        "{ticker}. Everyone assumes this one clears the "
+        "Everyone assumes this one clears the "
         "screen. We ran the numbers anyway.",
     ),
     "pass": (
         "This one looks too clean. We checked anyway.",
-        "{ticker}. This one looks too clean to flag. We "
+        "This one looks too clean to flag. We "
         "checked the numbers anyway.",
     ),
     "review": (
         "This one could go either way.",
-        "{ticker}. This one could go either way. Here's "
+        "This one could go either way. Here's "
         "what decides it.",
     ),
 }
@@ -280,7 +359,7 @@ def _apply_flip_hook(props_a):
 
 # --- common (shared-by-both-variants) transform -----------------------------
 
-def _rewrite_common(props, date_str, worst, donut_pct, company_line):
+def _rewrite_common(props, date_str, worst, donut_pct, company_line, dramatize_line):
     """tickerSub, cliffhanger insertion, endcard trust-close, visceral VO
     rewrite. Mutates `props` in place — caller deep-copies first."""
     props["tickerSub"] = f"THE DAILY SCREEN · {date_str}"
@@ -289,8 +368,10 @@ def _rewrite_common(props, date_str, worst, donut_pct, company_line):
 
     # Owner call (task-9): the hook beat's on-screen "sub" becomes the plain-
     # words company line, so viewers READ who the company is while hearing
-    # it — replaces build_reel_props's generic _HOOK_SUB.
-    beats[0]["sub"] = company_line
+    # it — replaces build_reel_props's generic _HOOK_SUB. Task-3: a second
+    # sentence carries the shock stat onto the hero, since the hero photo is
+    # full-bleed behind exactly this beat.
+    beats[0]["sub"] = f"{company_line} {dramatize_line}"
 
     stamp_i = next(i for i, b in enumerate(beats) if b["kind"] == "stamp")
     beats.insert(stamp_i, copy.deepcopy(TEASE_BEAT))
@@ -336,7 +417,7 @@ def _build_caption(ticker, layer, worst, donut_pct, date_str):
     return f"{hook}\n\n{body1} {body2}\n\n{cta}\n\n{footer}\n\n{hashtags}"
 
 
-def _build_kit_fields(ticker, worst, donut_pct, props_a):
+def _build_kit_fields(ticker, worst, donut_pct, props_a, descriptor):
     screen_head = f"{ticker}: the halal screen, plain-English."
     screen_body = _key_number_sentence(worst, donut_pct)
     screen_body2 = (
@@ -349,7 +430,25 @@ def _build_kit_fields(ticker, worst, donut_pct, props_a):
         "screen_body": screen_body,
         "screen_body2": screen_body2,
         "halal_script": halal_script,
+        # task-3: the plain-words company descriptor, for the carousel's
+        # dedicated company-definition slide (task-4 consumes this).
+        "company_def": descriptor,
     }
+
+
+def _editorial_check_lines(props_a, props_b, caption, dramatize_line):
+    """Every line `lint_editorial` (the task-3 banned-judgment-word gate)
+    should see: both variants' full VO, the caption, every on-screen `sub`
+    (where the dramatize shock line actually lands, per `_rewrite_common`),
+    and the raw dramatize line itself (belt-and-suspenders — already covered
+    via `sub`/`vo[0]`, but checked directly too)."""
+    lines = list(props_a["vo"]) + list(props_b["vo"]) + [caption, dramatize_line]
+    for props in (props_a, props_b):
+        for b in props["beats"]:
+            sub = b.get("sub")
+            if isinstance(sub, str):
+                lines.append(sub)
+    return lines
 
 
 # --- entry point --------------------------------------------------------------
@@ -371,11 +470,23 @@ def build_daily(ticker, halal_bundle, story, date_str):
     worst = _worst_bar(bars)
     shape = _shape_for(bars, overall)
 
+    # Checked BEFORE any card/dramatize work (and before the raise moved out
+    # of `_hook_a`) so a verdict with no numeric bar AND no donut split still
+    # aborts cleanly rather than reaching `screen_card_data`/`dramatize` with
+    # a shape those two don't guarantee they can handle.
+    if worst is None and donut_pct is None:
+        raise InsufficientDataError(
+            f"{ticker}: no numeric bar ratio and no donut percentage — "
+            "hook A has no specific number to lead with")
+
+    card = screen_card_data(verdicts, ticker)
+    dramatize_line = dramatize(card)
+
     descriptor = _company_descriptor(ticker, v)
     company_line = _company_line(ticker, descriptor)
 
     base = copy.deepcopy(props)
-    _rewrite_common(base, date_str, worst, donut_pct, company_line)
+    _rewrite_common(base, date_str, worst, donut_pct, company_line, dramatize_line)
 
     is_flip = bool(story and story.get("kind") == "flip")
     if is_flip:
@@ -384,7 +495,7 @@ def build_daily(ticker, halal_bundle, story, date_str):
     props_a = copy.deepcopy(base)
     props_b = copy.deepcopy(base)
 
-    a_headline, a_vo0 = _hook_a(ticker, worst, donut_pct, company_line)
+    a_headline, a_vo0 = _hook_a(ticker, worst, donut_pct, descriptor, dramatize_line)
     props_a["beats"][0]["headline"] = a_headline
     props_a["vo"][0] = a_vo0
     if is_flip:
@@ -394,10 +505,15 @@ def build_daily(ticker, halal_bundle, story, date_str):
     props_b["beats"][0]["headline"] = b_headline
     props_b["vo"][0] = b_vo0
 
-    caption = _build_caption(ticker, layer, worst, donut_pct, date_str)
-    kit_fields = _build_kit_fields(ticker, worst, donut_pct, props_a)
+    # task-3: sector-theme hero, same for both variants (keyed off the
+    # verdict's layer; unknown/missing layer -> heroes/_default.jpg).
+    hero_src = heroes.hero_for_layer(v.get("layer"))
+    props_a["heroSrc"] = hero_src
+    props_b["heroSrc"] = hero_src
 
-    card = screen_card_data(verdicts, ticker)
+    caption = _build_caption(ticker, layer, worst, donut_pct, date_str)
+    kit_fields = _build_kit_fields(ticker, worst, donut_pct, props_a, descriptor)
+
     violations = []
     violations += _pre_stamp_leak_violations(props_a, "props_a")
     violations += _pre_stamp_leak_violations(props_b, "props_b")
@@ -406,6 +522,7 @@ def build_daily(ticker, halal_bundle, story, date_str):
     violations += lint_halal_script(caption, card)
     violations += lint_visceral(props_a["vo"])
     violations += lint_visceral(props_b["vo"])
+    violations += lint_editorial(_editorial_check_lines(props_a, props_b, caption, dramatize_line))
     if violations:
         raise LintError(violations)
 

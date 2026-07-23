@@ -1,4 +1,4 @@
-from aiinvest.halal_lint import lint_halal_script, lint_visceral
+from aiinvest.halal_lint import lint_halal_script, lint_visceral, lint_editorial
 
 CARD = {"standards_rows": [{"name": "AAOIFI", "ratio": "21.0%", "threshold": "30.0%", "margin": "+9.0pt"}],
         "business_line": "Business activity: crypto-mining — 38.2% impermissible",
@@ -142,3 +142,46 @@ def test_visceral_accepts_per_cent_with_limit():
 def test_visceral_rejects_per_cent_without_anchor():
     bad = ["56 per cent of revenue comes from mining."]
     assert lint_visceral(bad)
+
+
+# --- lint_editorial: bans buy/sell-adjacent judgment words -------------------
+
+def test_editorial_flags_dangerous_leverage():
+    errs = lint_editorial(["This is dangerous leverage."])
+    assert errs and "dangerous" in errs[0].lower()
+
+
+def test_editorial_flags_debt_trap():
+    errs = lint_editorial(["It's a debt trap waiting to happen."])
+    assert errs and "trap" in errs[0].lower()
+
+
+def test_editorial_flags_each_banned_word():
+    words = ("dangerous", "danger", "trap", "too much", "overvalued", "avoid",
+              "risky", "terrible", "crash", "plummet", "soar", "guaranteed")
+    for w in words:
+        errs = lint_editorial([f"Some line with {w} in it."])
+        assert errs, f"{w!r} should be flagged"
+
+
+def test_editorial_is_word_bounded_not_substring():
+    # "guarantee" (no trailing d) must NOT trip on the "guaranteed" entry;
+    # "avoidance" must not trip on "avoid".
+    assert lint_editorial(["No guarantee is implied here."]) == []
+    assert lint_editorial(["Standard avoidance language applies."]) == []
+
+
+def test_editorial_case_insensitive():
+    errs = lint_editorial(["DANGEROUS territory."])
+    assert errs
+
+
+def test_editorial_passes_factual_extreme_wkey_line():
+    line = ("It owes 5.6 times what the whole company is worth — the "
+            "screen's limit is 30%, and it isn't close.")
+    assert lint_editorial([line]) == []
+
+
+def test_editorial_one_violation_per_line_even_with_two_banned_words():
+    errs = lint_editorial(["This dangerous, risky bet."])
+    assert len(errs) == 1

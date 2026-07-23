@@ -106,6 +106,31 @@ def lint_visceral(lines):
     return errs
 
 
+_EDITORIAL_WORDS = (
+    "dangerous", "danger", "trap", "too much", "overvalued", "avoid",
+    "risky", "terrible", "crash", "plummet", "soar", "guaranteed",
+)
+_EDITORIAL_RE = re.compile(
+    r"\b(?:" + "|".join(w.replace(" ", r"\s+") for w in _EDITORIAL_WORDS) + r")\b",
+    re.IGNORECASE)
+
+
+def lint_editorial(lines):
+    """Rails for factual-extreme copy (the Daily Screen v2 dramatize/hook lines):
+    bans buy/sell-adjacent judgment words so a shocking-but-factual number never
+    drifts into advice. Word-bounded, case-insensitive; one violation per line
+    that contains any banned word (a line with two banned words still only
+    reports once)."""
+    errs = []
+    for line in lines:
+        m = _EDITORIAL_RE.search(str(line))
+        if m:
+            errs.append(
+                f"banned editorial/judgment word {m.group(0)!r} — factual-extreme "
+                f"tone only, no buy/sell framing: {line!r}")
+    return errs
+
+
 def lint_concept_script(script):
     """Rails for ticker-less concept/explainer scripts: verdict-claim phrasing +
     spoken disclaimer only (no per-ticker number anchor to check)."""

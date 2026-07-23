@@ -1,9 +1,9 @@
 # scripts/tests/test_daily_copy.py — key cases (use the real bundle when present)
 import json, pathlib, pytest
-from aiinvest import daily_copy
+from aiinvest import daily_copy, heroes
 from build_reel_props import DISCLAIMER
 import build_reel_props
-from aiinvest.halal_lint import DISCLAIMER as SPOKEN_DISCLAIMER
+from aiinvest.halal_lint import DISCLAIMER as SPOKEN_DISCLAIMER, lint_editorial
 
 BUNDLE = json.loads((pathlib.Path(__file__).resolve().parents[2]
                      / "web/public/data/halal.json").read_text(encoding="utf-8"))
@@ -130,9 +130,12 @@ def test_vo0_starts_with_company_line_for_mapped_ticker():
         vo0 = d[variant]["vo"][0]
         assert vo0.startswith("NVDA — the company that"), vo0
         assert "assalamu" not in vo0.lower()
-        # on-screen sub mirrors the spoken company line, not the generic hook sub
+        # on-screen sub mirrors the spoken company line, not the generic hook
+        # sub — task-3 appends the dramatize shock line as a second sentence
+        # so the hero has something to show under the hook.
         sub = d[variant]["beats"][0]["sub"]
-        assert sub == "NVDA — the company that makes the chips that train AI."
+        assert sub.startswith("NVDA — the company that makes the chips that train AI.")
+        assert sub == f"NVDA — the company that makes the chips that train AI. {daily_copy.dramatize(daily_copy.screen_card_data(BUNDLE['verdicts'], 'NVDA'))}"
 
 
 def test_fallback_descriptor_for_unmapped_ticker_never_crashes_or_empty():
@@ -216,3 +219,148 @@ def test_hook_a_no_numeric_ratio_no_donut_raises_insufficient_data():
 
     with pytest.raises(daily_copy.InsufficientDataError):
         daily_copy.build_daily("ZZZZ", synthetic_bundle, None, "2026-07-22")
+
+
+# --- task-3: dramatize + shocking intro + lint_editorial + hero + company_def --
+
+def _wkey_card():
+    return daily_copy.screen_card_data(BUNDLE["verdicts"], "WKEY")
+
+
+def test_dramatize_wkey_owes_multiple_of_company_worth():
+    line = daily_copy.dramatize(_wkey_card())
+    # WKEY's binding row (AAOIFI interest-bearing deposits & securities /
+    # market cap) is ~561% of market cap against a 30% limit -> >=3x severity,
+    # mcap-relative -> the "owes N times what the company is worth" template.
+    assert "times what the whole company is worth" in line
+    assert "5." in line  # ~5.6x — the real ratio, not ratio/threshold (~18.7x)
+    assert "isn't close" in line
+
+
+def test_dramatize_no_banned_word_no_verdict_token():
+    line = daily_copy.dramatize(_wkey_card())
+    assert lint_editorial([line]) == []
+    low = line.lower()
+    for bad in ("pass", "fail", "review"):
+        assert bad not in low
+
+
+def test_dramatize_passes_lint_visceral():
+    from aiinvest.halal_lint import lint_visceral
+    line = daily_copy.dramatize(_wkey_card())
+    assert lint_visceral([line]) == []
+
+
+def test_dramatize_under_limit_case_has_no_banned_or_verdict_word():
+    card = {"standards_rows": [
+        {"name": "AAOIFI", "binding_label": "Interest-bearing debt / market cap",
+         "ratio": "12.0%", "threshold": "30.0%", "margin": "+18.0pt"},
+    ]}
+    line = daily_copy.dramatize(card)
+    assert line == "Every debt line lands under the limit."
+    assert lint_editorial([line]) == []
+
+
+def test_dramatize_moderate_severity_uses_generic_template():
+    card = {"standards_rows": [
+        {"name": "FTSE", "binding_label": "Debt / total assets",
+         "ratio": "45.0%", "threshold": "30.0%", "margin": "-15.0pt"},
+    ]}
+    line = daily_copy.dramatize(card)
+    assert "45.0%" in line and "30.0%" in line
+    assert "limit" in line
+    assert lint_editorial([line]) == []
+    assert lint_visceral_ok(line)
+
+
+def lint_visceral_ok(line):
+    from aiinvest.halal_lint import lint_visceral
+    return lint_visceral([line]) == []
+
+
+def test_dramatize_handles_none_or_empty_card_without_crashing():
+    assert daily_copy.dramatize(None) == "Every debt line lands under the limit."
+    assert daily_copy.dramatize({}) == "Every debt line lands under the limit."
+    assert daily_copy.dramatize({"standards_rows": []}) == "Every debt line lands under the limit."
+
+
+def test_lint_editorial_flags_and_wkey_line_stays_clean():
+    assert lint_editorial(["This is dangerous leverage."])
+    assert lint_editorial(["It's a debt trap."])
+    assert lint_editorial([daily_copy.dramatize(_wkey_card())]) == []
+
+
+def test_hero_src_on_wkey_props():
+    d = daily_copy.build_daily("WKEY", BUNDLE, None, "2026-07-22")
+    assert d["props_a"]["heroSrc"] == "heroes/Q4-security.jpg"
+    assert d["props_b"]["heroSrc"] == "heroes/Q4-security.jpg"
+    assert d["props_a"]["heroSrc"] == heroes.hero_for_layer(
+        BUNDLE["verdicts"]["WKEY"]["layer"])
+
+
+def test_company_def_in_kit_fields():
+    d = daily_copy.build_daily("WKEY", BUNDLE, None, "2026-07-22")
+    assert d["kit_fields"]["company_def"] == "the company that makes digital-security chips and keys"
+
+
+def test_wkey_hook_a_no_double_ticker_and_no_greeting():
+    d = daily_copy.build_daily("WKEY", BUNDLE, None, "2026-07-22")
+    vo0 = d["props_a"]["vo"][0]
+    assert vo0.startswith("WKEY — the company that makes digital-security chips and keys.")
+    assert "But here's the shock:" in vo0
+    # no double-ticker seam: "WKEY" appears exactly once
+    assert vo0.count("WKEY") == 1
+    assert "assalamu" not in vo0.lower()
+
+
+def test_wkey_hook_b_no_double_ticker():
+    d = daily_copy.build_daily("WKEY", BUNDLE, None, "2026-07-22")
+    vo0 = d["props_b"]["vo"][0]
+    assert vo0.count("WKEY") == 1
+
+
+def test_a_b_still_differ_only_beats0_vo0_with_hero_and_dramatize():
+    d = daily_copy.build_daily("WKEY", BUNDLE, None, "2026-07-22")
+    a, b = d["props_a"], d["props_b"]
+    assert a["beats"][0] != b["beats"][0] and a["vo"][0] != b["vo"][0]
+    assert a["beats"][1:] == b["beats"][1:] and a["vo"][1:] == b["vo"][1:]
+    assert a["heroSrc"] == b["heroSrc"]
+
+
+def test_128_ticker_sweep_lint_clean_under_all_lints_including_editorial():
+    from aiinvest.halal_lint import lint_visceral
+    total = ok = skipped = 0
+    for sym in BUNDLE["verdicts"]:
+        total += 1
+        try:
+            d = daily_copy.build_daily(sym, BUNDLE, None, "2026-07-22")
+        except daily_copy.InsufficientDataError:
+            skipped += 1
+            continue
+        ok += 1
+        for variant in ("props_a", "props_b"):
+            props = d[variant]
+            assert props["heroSrc"] == heroes.hero_for_layer(
+                BUNDLE["verdicts"][sym].get("layer"))
+            joined = " ".join(props["vo"]).lower()
+            for bad in ("pass", "fail", "review"):
+                kinds = [bt["kind"] for bt in props["beats"]]
+                stamp_i = kinds.index("stamp")
+                pre = " ".join(props["vo"][:stamp_i]).lower()
+                assert bad not in pre, f"{sym} {variant} pre-stamp leaks {bad!r}"
+            assert lint_editorial(props["vo"]) == [], f"{sym} {variant} editorial-word violation"
+        assert lint_editorial([d["caption"]]) == []
+    assert total == 128
+    assert ok + skipped == total
+    assert ok >= 100
+
+
+def test_verdict_withheld_holds_for_wkey():
+    d = daily_copy.build_daily("WKEY", BUNDLE, None, "2026-07-22")
+    for variant in ("props_a", "props_b"):
+        props = d[variant]
+        kinds = [b["kind"] for b in props["beats"]]
+        stamp_i = kinds.index("stamp")
+        pre = " ".join(props["vo"][:stamp_i]).lower()
+        for bad in ("pass", "fail", "review"):
+            assert bad not in pre
