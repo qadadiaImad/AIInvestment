@@ -99,6 +99,13 @@ company logos (Nvidia, AMD, Broadcom, Qualcomm, Arm, Intel, NXP, ASML)
 orbiting a TSM center mark, while on-screen captions tell the chokepoint's
 story beat by beat. No voiceover needed for this cut — every load-bearing
 line is on-screen text (muted-autoplay-safe per `references/instagram-best-practices.md`
-§3); Maya's `voice/maya_script.txt` can still be recorded later and laid over
-the same render once audio generation is available. See `video/README.md`
-for the composition/render details.
+§3); Maya's voiceover can still be recorded later and laid over the same
+render once audio generation is available. See `video/README.md` for the
+composition/render details.
+
+**Audio generation prompt for this exact render:**
+[`voice/chokepoint_audio_prompt.md`](voice/chokepoint_audio_prompt.md) — the
+7 caption beats' text, each with its exact start/end placement in
+milliseconds (derived from `ChokepointStory.tsx`'s frame timings), ready to
+hand to a TTS/voice-clone pipeline once one is available. Supersedes
+`voice/maya_script.txt` (a pre-video, non-beat-synced draft) for this cut.
