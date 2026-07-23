@@ -1,5 +1,6 @@
 import { Composition } from "remotion";
 import { CharacterSmokeTest, characterSmokeTestSchema } from "./compositions/CharacterSmokeTest";
+import { ChokepointStory, chokepointStorySchema } from "./compositions/ChokepointStory";
 
 const SMOKE_TEST_CHARACTERS = ["chip", "watt", "qubit", "cap", "nova", "cloudy"] as const;
 
@@ -19,6 +20,19 @@ export const RemotionRoot: React.FC = () => {
           defaultProps={{ character: key, debugSafeZone: false }}
         />
       ))}
+      <Composition
+        id="ChokepointStory-TSMC"
+        component={ChokepointStory}
+        durationInFrames={780}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={chokepointStorySchema}
+        defaultProps={{
+          character: "chip",
+          debugSafeZone: false,
+        }}
+      />
     </>
   );
 };

@@ -90,3 +90,15 @@ used for Karim can be adapted for her.
 
 Script: [`voice/maya_script.txt`](voice/maya_script.txt) — ~115 words, timed
 for a 35–45s Reel.
+
+## Video (silent-first, captions carry the story)
+
+`video/` (Remotion, `ChokepointStory-TSMC` composition, 26s/1080×1920): Chip —
+the chips-sector mascot — plays in front of a live animated ring of real
+company logos (Nvidia, AMD, Broadcom, Qualcomm, Arm, Intel, NXP, ASML)
+orbiting a TSM center mark, while on-screen captions tell the chokepoint's
+story beat by beat. No voiceover needed for this cut — every load-bearing
+line is on-screen text (muted-autoplay-safe per `references/instagram-best-practices.md`
+§3); Maya's `voice/maya_script.txt` can still be recorded later and laid over
+the same render once audio generation is available. See `video/README.md`
+for the composition/render details.

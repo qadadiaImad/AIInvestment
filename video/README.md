@@ -73,6 +73,21 @@ at 0.5s/2s/4s/7.5s and inspected): fonts load, brand-color glow/mesh render, tex
 stays inside the safe zone, no clipping, entrances stagger correctly (character
 settles before title, title before tagline).
 
+`ChokepointStory-TSMC` — a 26s (780 frame) vertical explainer: Chip plays in
+front of `src/components/OrbitBackground.tsx`, a live animated ring of real
+company logos orbiting a TSM center mark, while staged captions tell the
+TSMC chokepoint's story (`content/carousel_2026-07-23/CHOKEPOINT_TSMC/brief.md`).
+Logo source: `src/data/orbitLogos.ts`, generated from the `simple-icons` npm
+package (CC0-licensed real brand marks) — see that file's header comment for
+the exact regeneration command and the coverage note (only 7 of the
+chokepoint's ~20 related tickers have a real mark in `simple-icons`; the
+orbit is scoped to named-in-the-script companies plus the other available
+real logos, rather than mixing real logos with placeholder dots). An earlier
+version of this composition used a matplotlib-rendered dot graph as a static
+background image — replaced after review feedback that it looked bad;
+`OrbitBackground` is a live Remotion/SVG layer instead (animated ring drift +
+per-tile idle breathing), which also reads better than a flat image.
+
 ## Licensing
 
 Remotion is free for individuals, non-profits, and for-profit orgs with ≤3
