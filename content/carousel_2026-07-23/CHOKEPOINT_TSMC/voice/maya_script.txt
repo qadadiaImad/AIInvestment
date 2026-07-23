@@ -1,0 +1,11 @@
+Here's an uncomfortable fact for anyone bullish on AI chips: none of them exist without one company, in one country, running machines almost nobody else can build.
+
+TSMC. Taiwan. Sub-seven-nanometer logic — basically the entire AI accelerator stack — and TSMC prints more than ninety percent of the world's supply.
+
+The allocation tells you the pecking order. Nvidia's locked up roughly sixty percent of TSMC's advanced packaging capacity this year. Broadcom, about fifteen. AMD, eleven. Everyone else is fighting over what's left.
+
+And TSMC isn't even independent of its own chokepoint — ASML is the only company selling it the lithography machines that make any of this possible.
+
+One fab cluster. One strait. Every model you've ever prompted sits downstream of it.
+
+Educational only, not financial advice. Chokepoint one of the series — more coming.
