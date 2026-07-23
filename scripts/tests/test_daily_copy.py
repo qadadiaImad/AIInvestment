@@ -110,6 +110,84 @@ def test_leak_gate_raises_lint_error_on_doctored_hook_b_template(monkeypatch):
     assert any("props_b" in v and "fail" in v for v in exc.value.violations)
 
 
+# --- task-9 review fixes: plain-words company intro replaces greeting -----
+
+def test_no_assalamu_anywhere_in_vo_or_caption_across_several_tickers():
+    for sym in ("WULF", "GEV", "ETN", "NVDA", "PLTR", "WKEY"):
+        try:
+            d = daily_copy.build_daily(sym, BUNDLE, None, "2026-07-22")
+        except daily_copy.InsufficientDataError:
+            continue
+        for variant in ("props_a", "props_b"):
+            joined = " ".join(d[variant]["vo"]).lower()
+            assert "assalamu" not in joined, f"{sym} {variant} still greets: {joined!r}"
+        assert "assalamu" not in d["caption"].lower()
+
+
+def test_vo0_starts_with_company_line_for_mapped_ticker():
+    d = daily_copy.build_daily("NVDA", BUNDLE, None, "2026-07-22")
+    for variant in ("props_a", "props_b"):
+        vo0 = d[variant]["vo"][0]
+        assert vo0.startswith("NVDA — the company that"), vo0
+        assert "assalamu" not in vo0.lower()
+        # on-screen sub mirrors the spoken company line, not the generic hook sub
+        sub = d[variant]["beats"][0]["sub"]
+        assert sub == "NVDA — the company that makes the chips that train AI."
+
+
+def test_fallback_descriptor_for_unmapped_ticker_never_crashes_or_empty():
+    synthetic_bundle = {
+        "verdicts": {
+            "ZZZZ": {
+                "overall": "questionable",
+                "layer": "L1-chips",
+                "inputs_asof": "2026-07-22T00:00:00Z",
+                "standards": {
+                    "AAOIFI": {
+                        "status": "fail",
+                        "tests": [
+                            {"label": "Interest-bearing debt / market cap",
+                             "margin": -0.05, "ratio": 35.0, "threshold": 30.0, "status": "fail"},
+                        ]
+                    }
+                },
+                "business": {},
+            }
+        }
+    }
+    d = daily_copy.build_daily("ZZZZ", synthetic_bundle, None, "2026-07-22")
+    vo0 = d["props_a"]["vo"][0]
+    assert vo0.startswith("ZZZZ — the company")
+    assert vo0.strip() != "ZZZZ — ."   # never an empty descriptor
+    assert "assalamu" not in vo0.lower()
+    sub = d["props_a"]["beats"][0]["sub"]
+    assert sub and sub.startswith("ZZZZ — the company")
+
+
+def test_a_b_still_differ_only_in_hook_after_company_intro():
+    d = daily_copy.build_daily("WULF", BUNDLE, None, "2026-07-22")
+    a, b = d["props_a"], d["props_b"]
+    assert a["beats"][0] != b["beats"][0] and a["vo"][0] != b["vo"][0]
+    assert a["beats"][1:] == b["beats"][1:] and a["vo"][1:] == b["vo"][1:]
+
+
+def test_no_assalamu_and_lint_clean_across_full_bundle():
+    ok, skipped = 0, 0
+    for sym in BUNDLE["verdicts"]:
+        try:
+            d = daily_copy.build_daily(sym, BUNDLE, None, "2026-07-22")
+        except daily_copy.InsufficientDataError:
+            skipped += 1
+            continue
+        ok += 1
+        for variant in ("props_a", "props_b"):
+            joined = " ".join(d[variant]["vo"]).lower()
+            assert "assalamu" not in joined, f"{sym} {variant} still greets"
+        assert "assalamu" not in d["caption"].lower()
+    assert ok + skipped == len(BUNDLE["verdicts"]) == 128
+    assert ok >= 100  # lint/insufficient-data errors would raise, not silently skip
+
+
 def test_hook_a_no_numeric_ratio_no_donut_raises_insufficient_data():
     synthetic_bundle = {
         "verdicts": {

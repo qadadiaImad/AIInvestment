@@ -29,6 +29,8 @@ Educational/research only — not financial or religious advice.
 from __future__ import annotations
 
 import copy
+import json
+import pathlib
 import re
 
 import build_reel_props
@@ -43,6 +45,71 @@ InsufficientDataError = build_reel_props.InsufficientDataError
 # Checked against every variant's joined, lowercased pre-stamp VO — see
 # `_pre_stamp_leak_violations` below.
 _LEAK_SUBSTRINGS = ("pass", "fail", "review")
+
+
+# --- plain-words company intro (task-9: owner-requested, replaces the greeting) --
+
+_COMPANY_LINES_PATH = pathlib.Path(__file__).resolve().parent / "company_lines.json"
+_company_lines_cache = None
+
+
+def _load_company_lines():
+    """Read scripts/aiinvest/company_lines.json once, cache in-process.
+
+    Never raises — a missing/corrupt file just means every ticker falls back
+    to `_fallback_descriptor` (see below); the reel must still build."""
+    global _company_lines_cache
+    if _company_lines_cache is None:
+        try:
+            _company_lines_cache = json.loads(
+                _COMPANY_LINES_PATH.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            _company_lines_cache = {}
+    return _company_lines_cache
+
+
+# Human-readable fallback basis per AI/quantum-stack layer, used only when a
+# ticker is missing from company_lines.json AND has no business categories.
+_LAYER_FALLBACK_BASIS = {
+    "L0-energy": "the power business",
+    "L1-chips": "the chip business",
+    "L2-infra": "the datacenter and cloud business",
+    "L3-models": "the AI model business",
+    "L4-application": "the software business",
+    "Q1-hardware": "the quantum computing hardware business",
+    "Q3-software": "the quantum software business",
+    "Q4-security": "the digital security business",
+    "Q5-applications": "the finance and pharma business",
+}
+
+
+def _fallback_descriptor(ticker, verdict):
+    """"the company behind <basis>" — derived from business categories, then
+    layer, then a generic basis. Never crashes, never returns an empty string."""
+    verdict = verdict or {}
+    business = verdict.get("business") or {}
+    categories = business.get("categories") or []
+    if categories:
+        basis = " and ".join(
+            str(c).replace("-", " ").replace("_", " ") for c in categories if c)
+        if basis:
+            return f"the company behind {basis}"
+    layer = verdict.get("layer")
+    basis = _LAYER_FALLBACK_BASIS.get(layer, "this ticker's business")
+    return f"the company behind {basis}"
+
+
+def _company_descriptor(ticker, verdict):
+    """"the company that ..." (mapped) or the "the company behind ..." fallback."""
+    lines = _load_company_lines()
+    descriptor = lines.get(ticker)
+    if descriptor:
+        return descriptor
+    return _fallback_descriptor(ticker, verdict)
+
+
+def _company_line(ticker, descriptor):
+    return f"{ticker} — {descriptor}."
 
 
 class LintError(Exception):
@@ -116,19 +183,19 @@ def _shape_for(bars, overall):
 
 # --- Hook A (specific-number) + Hook B (contrarian) template banks ---------
 
-def _hook_a(ticker, worst, donut_pct):
+def _hook_a(ticker, worst, donut_pct, company_line):
     if worst is not None:
         r = round(worst["ratio"])
         headline = f"${r} of every $100 here is borrowed money."
         vo0 = (
-            f"Assalamu alaykum. {ticker}. ${r} of every hundred dollars of "
+            f"{company_line} {ticker}. ${r} of every hundred dollars of "
             f"this company is borrowed money. The screen has a limit. Watch."
         )
     elif donut_pct is not None:
         d = round(donut_pct)
         headline = f"${d} of every $100 in revenue here comes from a flagged activity."
         vo0 = (
-            f"Assalamu alaykum. {ticker}. ${d} of every hundred dollars of "
+            f"{company_line} {ticker}. ${d} of every hundred dollars of "
             f"revenue here comes from a flagged activity. The screen has a limit. Watch."
         )
     else:
@@ -138,33 +205,35 @@ def _hook_a(ticker, worst, donut_pct):
     return headline, vo0
 
 
+# NOTE: no greeting here (owner call, task-9) — every variant opens with the
+# plain-words company line (`_company_line`), prepended in `_hook_b` below.
 _HOOK_B = {
     "split": (
         "The screeners don't agree on this one.",
-        "Assalamu alaykum. {ticker}. The three rulebooks don't agree on this "
+        "{ticker}. The three rulebooks don't agree on this "
         "one — some clear it, some don't. Let's see why.",
     ),
     "fail": (
         "Everyone assumes this one clears the screen.",
-        "Assalamu alaykum. {ticker}. Everyone assumes this one clears the "
+        "{ticker}. Everyone assumes this one clears the "
         "screen. We ran the numbers anyway.",
     ),
     "pass": (
         "This one looks too clean. We checked anyway.",
-        "Assalamu alaykum. {ticker}. This one looks too clean to flag. We "
+        "{ticker}. This one looks too clean to flag. We "
         "checked the numbers anyway.",
     ),
     "review": (
         "This one could go either way.",
-        "Assalamu alaykum. {ticker}. This one could go either way. Here's "
+        "{ticker}. This one could go either way. Here's "
         "what decides it.",
     ),
 }
 
 
-def _hook_b(ticker, shape):
+def _hook_b(ticker, shape, company_line):
     headline, vo_tpl = _HOOK_B[shape]
-    return headline, vo_tpl.format(ticker=ticker)
+    return headline, f"{company_line} {vo_tpl.format(ticker=ticker)}"
 
 
 # --- code-enforced pre-stamp verdict-leak gate ------------------------------
@@ -211,12 +280,18 @@ def _apply_flip_hook(props_a):
 
 # --- common (shared-by-both-variants) transform -----------------------------
 
-def _rewrite_common(props, date_str, worst, donut_pct):
+def _rewrite_common(props, date_str, worst, donut_pct, company_line):
     """tickerSub, cliffhanger insertion, endcard trust-close, visceral VO
     rewrite. Mutates `props` in place — caller deep-copies first."""
     props["tickerSub"] = f"THE DAILY SCREEN · {date_str}"
 
     beats, vo = props["beats"], props["vo"]
+
+    # Owner call (task-9): the hook beat's on-screen "sub" becomes the plain-
+    # words company line, so viewers READ who the company is while hearing
+    # it — replaces build_reel_props's generic _HOOK_SUB.
+    beats[0]["sub"] = company_line
+
     stamp_i = next(i for i, b in enumerate(beats) if b["kind"] == "stamp")
     beats.insert(stamp_i, copy.deepcopy(TEASE_BEAT))
     vo.insert(stamp_i, TEASE_VO)
@@ -296,8 +371,11 @@ def build_daily(ticker, halal_bundle, story, date_str):
     worst = _worst_bar(bars)
     shape = _shape_for(bars, overall)
 
+    descriptor = _company_descriptor(ticker, v)
+    company_line = _company_line(ticker, descriptor)
+
     base = copy.deepcopy(props)
-    _rewrite_common(base, date_str, worst, donut_pct)
+    _rewrite_common(base, date_str, worst, donut_pct, company_line)
 
     is_flip = bool(story and story.get("kind") == "flip")
     if is_flip:
@@ -306,13 +384,13 @@ def build_daily(ticker, halal_bundle, story, date_str):
     props_a = copy.deepcopy(base)
     props_b = copy.deepcopy(base)
 
-    a_headline, a_vo0 = _hook_a(ticker, worst, donut_pct)
+    a_headline, a_vo0 = _hook_a(ticker, worst, donut_pct, company_line)
     props_a["beats"][0]["headline"] = a_headline
     props_a["vo"][0] = a_vo0
     if is_flip:
         _apply_flip_hook(props_a)
 
-    b_headline, b_vo0 = _hook_b(ticker, shape)
+    b_headline, b_vo0 = _hook_b(ticker, shape, company_line)
     props_b["beats"][0]["headline"] = b_headline
     props_b["vo"][0] = b_vo0
 

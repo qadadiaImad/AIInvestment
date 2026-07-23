@@ -401,6 +401,50 @@ def test_stopword_beyond_stopword_window_but_inside_lookahead_window_still_rejec
     assert caps[1]["toMs"] == round(STOPWORD_ONLY_WORDS[2]["end"] * 1000) == 1500
 
 
+# ---------------------------------------------------------------------------
+# Task-9 follow-up: a VO decimal like "561.4" is one whitespace-delimited word,
+# but whisper's word-timestamp output tokenizes numbers digit-run by digit-run
+# -- "561" and "4" arrive as two separate word entries with their own
+# timestamps. The old normalizer stripped the "." and merged the VO token into
+# "5614", which literal-matches neither of whisper's real tokens, so the line
+# silently fell back to proportional allocation instead of its real span.
+# ---------------------------------------------------------------------------
+
+NUMERIC_WORDS = [
+    {"word": "Debt", "start": 0.0, "end": 0.4},
+    {"word": "sits", "start": 0.4, "end": 0.7},
+    {"word": "at", "start": 0.7, "end": 0.9},
+    {"word": "561", "start": 0.9, "end": 1.3},
+    {"word": "4", "start": 1.3, "end": 1.6},
+    {"word": "percent", "start": 1.6, "end": 2.1},
+]
+NUMERIC_LINE = "Debt sits at 561.4 percent"
+
+
+def test_decimal_numeric_token_splits_to_match_whispers_separately_tokenized_digits():
+    props = _props([NUMERIC_LINE])
+    out = apply_timing(props, NUMERIC_WORDS, fps=FPS, pad=PAD, min_frames=MIN_FRAMES)
+    caps = out["captions"]
+
+    # Real match end-to-end (start at "Debt", end at "percent") -- NOT a
+    # proportional fallback guess. Under the old normalizer this line's
+    # single merged token ("5614") would match nothing at all, dropping
+    # matched-token fraction well below the 60% floor.
+    assert caps[0] == {"text": NUMERIC_LINE, "fromMs": 0, "toMs": 2100}
+
+    durations = [b["durationInFrames"] for b in out["beats"]]
+    # only beat: own real start (0.0s) to the true audio end (2.1s), + pad
+    assert durations[0] == math.ceil(2.1 * FPS) + PAD
+
+
+def test_normalize_parts_splits_on_internal_punctuation():
+    from aiinvest.align_beats import _normalize_parts
+    assert _normalize_parts("561.4") == ["561", "4"]
+    assert _normalize_parts("don't") == ["don", "t"]
+    assert _normalize_parts("WULF") == ["wulf"]          # plain token: single part, unchanged
+    assert _normalize_parts("...") == []                  # pure punctuation: no parts
+
+
 def test_pathological_many_tiny_beats_floor_at_min_frames_and_sum_exceeds_target():
     """Pin the documented pathological case (align_beats.py's final-beat
     fallback branch): with no audio at all, every line's span degenerates to

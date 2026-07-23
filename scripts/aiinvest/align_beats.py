@@ -122,8 +122,35 @@ _STOPWORDS = frozenset({
 })
 
 
-def _normalize(token: str) -> str:
-    return re.sub(r"[^a-z0-9]", "", token.lower())
+def _normalize_parts(token: str) -> list[str]:
+    """Split `token` into alphanumeric parts on internal punctuation, e.g.
+    "561.4" -> ["561", "4"], "don't" -> ["don", "t"]. A token with no
+    internal punctuation still returns a single-element list (so plain-word
+    matching is unchanged) — this replaces the old strip-only `_normalize`.
+
+    Fixes a real matching gap: a VO line writes a decimal like "561.4" as
+    one whitespace-delimited word, but whisper's word-timestamp output
+    tokenizes numbers digit-run by digit-run — "561" and "4" arrive as two
+    separate word entries with their own timestamps. The old normalizer
+    stripped the "." and merged them into "5614", which literal-matches
+    neither of whisper's two real tokens, so the line silently fell back to
+    proportional allocation instead of its real (whisper-true) span. Splitting
+    on internal punctuation — applied identically to VO tokens (see the
+    caller in `apply_timing`) and to whisper words (see `_flatten_words`) —
+    lets "561" and "4" each match their own whisper word."""
+    return [p for p in re.split(r"[^a-z0-9]+", token.lower()) if p]
+
+
+def _flatten_words(words: list[dict]) -> list[dict]:
+    """Expand each whisper word into one entry per `_normalize_parts` piece,
+    all pieces sharing the parent word's start/end (sub-word timing isn't
+    available from whisper, so this is the best approximation) — the
+    whisper-side half of the punctuation-splitting fix; see `_normalize_parts`."""
+    flat = []
+    for w in words:
+        for part in _normalize_parts(w["word"]):
+            flat.append({"word": part, "start": w["start"], "end": w["end"]})
+    return flat
 
 
 def _frames(seconds: float, fps: int) -> int:
@@ -149,6 +176,12 @@ def apply_timing(props: dict, words: list[dict], fps: int = 30, pad: int = 12,
         new_props["captions"] = []
         return new_props
 
+    # Flatten whisper's word list on internal punctuation (see
+    # `_flatten_words`/`_normalize_parts`) so a number like "561.4" — which
+    # whisper already tokenizes as separate "561"/"4" word entries — has a
+    # matching counterpart once the VO side is split the same way below.
+    flat_words = _flatten_words(words)
+
     total_audio_duration = max((w["end"] for w in words), default=0.0)
     total_vo_chars = sum(len(line) for line in vo)
 
@@ -157,7 +190,13 @@ def apply_timing(props: dict, words: list[dict], fps: int = 30, pad: int = 12,
     pointer = 0
     prev_end = 0.0
     for line in vo:
-        tokens = [t for t in (_normalize(tok) for tok in line.split()) if t]
+        # Split each VO word on internal punctuation too (the VO-side half of
+        # the fix) so "561.4" becomes two tokens ["561", "4"] that can each
+        # literal-match their own whisper word, instead of one merged token
+        # ("5614") that matches nothing.
+        tokens: list[str] = []
+        for raw in line.split():
+            tokens.extend(_normalize_parts(raw))
 
         matched_indices: list[int] = []
         p = pointer
@@ -166,10 +205,10 @@ def apply_timing(props: dict, words: list[dict], fps: int = 30, pad: int = 12,
             # advances on a hit below), so it doubles as both the search
             # start AND the anchor for the stopword/lookahead bounds.
             window = _STOPWORD_WINDOW if tok in _STOPWORDS else _LOOKAHEAD_WINDOW
-            limit = min(p + window, len(words))
+            limit = min(p + window, len(flat_words))
             found = None
             for j in range(p, limit):
-                if _normalize(words[j]["word"]) == tok:
+                if flat_words[j]["word"] == tok:
                     found = j
                     break
             if found is not None:
@@ -180,8 +219,8 @@ def apply_timing(props: dict, words: list[dict], fps: int = 30, pad: int = 12,
         fraction = (len(matched_indices) / len(tokens)) if tokens else 0.0
 
         if matched_indices and fraction >= 0.6:
-            start = words[matched_indices[0]]["start"]
-            end = words[matched_indices[-1]]["end"]
+            start = flat_words[matched_indices[0]]["start"]
+            end = flat_words[matched_indices[-1]]["end"]
             is_fallback.append(False)
         else:
             remaining = max(total_audio_duration - prev_end, 0.0)
