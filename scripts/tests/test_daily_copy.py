@@ -364,3 +364,79 @@ def test_verdict_withheld_holds_for_wkey():
         pre = " ".join(props["vo"][:stamp_i]).lower()
         for bad in ("pass", "fail", "review"):
             assert bad not in pre
+
+
+# --- review fixes: gated shock connective + factual extreme-multiple threshold --
+
+def test_dramatize_duk_style_mcap_under_3x_uses_milder_tier_not_isnt_close():
+    # DUK's binding row is 92.9% of market cap (0.9x) against a 30% limit —
+    # over the limit but nowhere near "owes 3x+ what it's worth". Must route
+    # to the plain ratio-vs-limit tier, never the extreme "isn't close" tier.
+    card = daily_copy.screen_card_data(BUNDLE["verdicts"], "DUK")
+    line = daily_copy.dramatize(card)
+    assert "isn't close" not in line
+    assert "owes" not in line.lower()
+    assert "92.9%" in line and "30.0%" in line
+    assert "limit" in line
+
+
+def test_dramatize_et_and_laes_also_use_milder_tier():
+    for sym in ("ET", "LAES"):
+        card = daily_copy.screen_card_data(BUNDLE["verdicts"], sym)
+        line = daily_copy.dramatize(card)
+        assert "isn't close" not in line, f"{sym}: {line!r}"
+        assert "owes" not in line.lower(), f"{sym}: {line!r}"
+
+
+def test_dramatize_wkey_still_extreme_after_threshold_fix():
+    # WKEY genuinely owes 5.6x its market cap — must still fire the extreme
+    # "owes N times ... isn't close" branch after the threshold fix.
+    line = daily_copy.dramatize(_wkey_card())
+    assert "owes 5.6 times" in line
+    assert "isn't close" in line
+
+
+def test_is_shock_true_for_over_limit_false_for_clean_and_missing():
+    assert daily_copy.is_shock(_wkey_card()) is True
+    assert daily_copy.is_shock(
+        daily_copy.screen_card_data(BUNDLE["verdicts"], "DUK")) is True
+    assert daily_copy.is_shock(
+        daily_copy.screen_card_data(BUNDLE["verdicts"], "ADBE")) is False
+    assert daily_copy.is_shock({"standards_rows": []}) is False
+    assert daily_copy.is_shock(None) is False
+
+
+def test_clean_ticker_vo0_has_no_false_shock_connective():
+    # ADBE is under every debt limit — "here's the shock: every debt line
+    # lands under the limit" would be self-negating. vo[0] must not claim a
+    # shock for a clean ticker, and must still be truthful/lint-clean.
+    d = daily_copy.build_daily("ADBE", BUNDLE, None, "2026-07-22")
+    vo0 = d["props_a"]["vo"][0]
+    assert "shock" not in vo0.lower()
+    assert "every debt line lands under the limit" in vo0.lower()
+    assert lint_editorial([vo0]) == []
+
+
+def test_no_vo0_self_negating_shock_every_debt_line_across_bundle():
+    for sym in BUNDLE["verdicts"]:
+        try:
+            d = daily_copy.build_daily(sym, BUNDLE, None, "2026-07-22")
+        except daily_copy.InsufficientDataError:
+            continue
+        vo0 = d["props_a"]["vo"][0].lower()
+        assert "shock: every debt line" not in vo0, f"{sym} self-negating shock line: {vo0!r}"
+
+
+def test_no_owes_line_with_multiple_under_3_across_bundle():
+    import re as _re
+    owes_re = _re.compile(r"owes ([\d.]+) times")
+    for sym in BUNDLE["verdicts"]:
+        try:
+            d = daily_copy.build_daily(sym, BUNDLE, None, "2026-07-22")
+        except daily_copy.InsufficientDataError:
+            continue
+        for variant in ("props_a", "props_b"):
+            for line in d[variant]["vo"]:
+                m = owes_re.search(str(line))
+                if m:
+                    assert float(m.group(1)) >= 3.0, f"{sym} {variant}: {line!r}"

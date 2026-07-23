@@ -106,12 +106,28 @@ def lint_visceral(lines):
     return errs
 
 
+# Fixed exact-match words (no stemming — stemming these would over-ban
+# legitimate finance vocabulary, e.g. "risk"/"avoidance" must stay clean).
 _EDITORIAL_WORDS = (
-    "dangerous", "danger", "trap", "too much", "overvalued", "avoid",
-    "risky", "terrible", "crash", "plummet", "soar", "guaranteed",
+    "trap", "too much", "overvalued", "avoid", "risky", "terrible",
+    "guaranteed",
+)
+# Bounded inflection stems for words whose common tenses/forms were slipping
+# past the exact-match list (soared/soaring, crashed/crashing, plummeted/
+# plummeting, dangerous/dangerously) — reviewed defect. Each stem is still
+# word-bounded on both ends via the shared \b(?:...)\b wrapper below, so
+# "risk" (not stemmed here) and "avoidance" (not stemmed here) stay clean.
+_EDITORIAL_STEMS = (
+    r"danger(?:ous|ously)?",
+    r"plummet(?:s|ed|ing)?",
+    r"soar(?:s|ed|ing)?",
+    r"crash(?:es|ed|ing)?",
 )
 _EDITORIAL_RE = re.compile(
-    r"\b(?:" + "|".join(w.replace(" ", r"\s+") for w in _EDITORIAL_WORDS) + r")\b",
+    r"\b(?:"
+    + "|".join(w.replace(" ", r"\s+") for w in _EDITORIAL_WORDS)
+    + "|" + "|".join(_EDITORIAL_STEMS)
+    + r")\b",
     re.IGNORECASE)
 
 

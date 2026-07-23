@@ -143,18 +143,30 @@ def _signed_margin_pt(s):
     return -val if sign in ("-", "−") else val
 
 
+# The neutral "nothing to see here" line — also the SHOCK/CLEAN discriminator
+# used by `is_shock` (see below): dramatize returns this exact string iff
+# every debt line is under its limit.
+_CLEAN_LINE = "Every debt line lands under the limit."
+
+
 def dramatize(card):
     """A factual-extreme one-liner from `card["standards_rows"]`'s binding row
     (the min-signed-margin numeric row — the one closest to, or furthest past,
-    its threshold). Severity is scaled by `ratio/threshold`:
+    its threshold).
 
       * mcap-relative debt row (binding_label mentions mcap/market/cap) AND
-        severity >= 3x over its limit -> the real "times what the company is
-        worth" multiple (the row's raw ratio itself, since a market-cap-
-        denominated ratio already IS that multiple).
-      * severity > 1x over the limit (any binding row) -> the plain
+        the row's DISPLAYED multiple (ratio/100 — the real "times what the
+        company is worth" figure) is >= 3.0x -> the extreme "owes N times
+        ... isn't close" line. Reviewed defect: this used to gate on
+        `ratio/threshold >= 3` while displaying `ratio/100`, so a row at
+        ~0.9x market cap (over its 30% limit, but nowhere near "isn't
+        close") could hit the extreme branch and read as absurd hyperbole
+        ("owes 0.9 times ... isn't close"). Gating on the displayed multiple
+        itself keeps the claim truthful by construction.
+      * severity (`ratio/threshold`) > 1x over the limit (any binding row,
+        including an mcap row below the 3x extreme gate) -> the plain
         ratio-vs-limit sentence.
-      * otherwise -> a neutral under-the-limit line.
+      * otherwise -> the neutral `_CLEAN_LINE`.
 
     Always $/%/limit-anchored (passes `lint_visceral`); the wording never uses
     a banned editorial word (passes `lint_editorial`) or a "pass"/"fail"/
@@ -173,18 +185,18 @@ def dramatize(card):
             continue
         numeric.append((margin, ratio, threshold, row))
     if not numeric:
-        return "Every debt line lands under the limit."
+        return _CLEAN_LINE
 
     margin, ratio, threshold, binding = min(numeric, key=lambda t: t[0])
     if threshold <= 0:
-        return "Every debt line lands under the limit."
+        return _CLEAN_LINE
 
     severity = ratio / threshold
     label = binding.get("binding_label") or "debt line"
     is_mcap = bool(_MCAP_RE.search(label))
+    times = ratio / 100.0
 
-    if is_mcap and severity >= 3:
-        times = ratio / 100.0
+    if is_mcap and times >= 3.0:
         return (
             f"It owes {times:.1f} times what the whole company is worth — "
             f"the screen's limit is {threshold:.0f}%, and it isn't close.")
@@ -192,7 +204,17 @@ def dramatize(card):
         return (
             f"Its {label} sits at {binding['ratio']} — "
             f"past the {binding['threshold']} limit.")
-    return "Every debt line lands under the limit."
+    return _CLEAN_LINE
+
+
+def is_shock(card):
+    """True when `dramatize(card)` returned an over-limit (SHOCK) line rather
+    than the neutral all-clear (CLEAN) `_CLEAN_LINE`. Reviewed defect: vo[0]
+    used to unconditionally say "But here's the shock: {dramatize_line}",
+    which for a CLEAN card produced the self-negating "here's the shock:
+    every debt line lands under the limit." This is the signal callers (see
+    `_hook_a`) use to pick a truthful connective instead."""
+    return dramatize(card) != _CLEAN_LINE
 
 
 class LintError(Exception):
@@ -266,18 +288,29 @@ def _shape_for(bars, overall):
 
 # --- Hook A (shocking-but-factual) + Hook B (contrarian) template banks ----
 
-def _hook_a(ticker, worst, donut_pct, descriptor, dramatize_line):
-    """Headline stays the specific-number lead (unchanged style); vo0 is the
-    task-3 shock intro. Caller guarantees `worst`/`donut_pct` aren't both
-    None — see `build_daily`'s InsufficientDataError guard, checked BEFORE
-    this is called so that guard fires before any card/dramatize work."""
+def _hook_a(ticker, worst, donut_pct, descriptor, dramatize_line, shock):
+    """Headline stays the specific-number lead (unchanged style); vo0's
+    connective is gated on `shock` (see `is_shock`) — reviewed defect: the
+    connective used to unconditionally say "But here's the shock:", which
+    for a CLEAN (under-every-limit) dramatize line was self-negating ("here's
+    the shock: every debt line lands under the limit"). SHOCK cards keep the
+    shock framing; CLEAN cards get a truthful non-shock connective instead —
+    no fabricated drama, verdict still withheld. Caller guarantees `worst`/
+    `donut_pct` aren't both None — see `build_daily`'s InsufficientDataError
+    guard, checked BEFORE this is called so that guard fires before any
+    card/dramatize work."""
     if worst is not None:
         r = round(worst["ratio"])
         headline = f"${r} of every $100 here is borrowed money."
     else:
         d = round(donut_pct)
         headline = f"${d} of every $100 in revenue here comes from a flagged activity."
-    vo0 = f"{ticker} — {descriptor}. But here's the shock: {dramatize_line}"
+    if shock:
+        vo0 = f"{ticker} — {descriptor}. But here's the shock: {dramatize_line}"
+    else:
+        vo0 = (
+            f"{ticker} — {descriptor}. And it clears the screen's debt "
+            f"test — {dramatize_line}")
     return headline, vo0
 
 
@@ -481,6 +514,7 @@ def build_daily(ticker, halal_bundle, story, date_str):
 
     card = screen_card_data(verdicts, ticker)
     dramatize_line = dramatize(card)
+    shock = is_shock(card)
 
     descriptor = _company_descriptor(ticker, v)
     company_line = _company_line(ticker, descriptor)
@@ -495,7 +529,8 @@ def build_daily(ticker, halal_bundle, story, date_str):
     props_a = copy.deepcopy(base)
     props_b = copy.deepcopy(base)
 
-    a_headline, a_vo0 = _hook_a(ticker, worst, donut_pct, descriptor, dramatize_line)
+    a_headline, a_vo0 = _hook_a(
+        ticker, worst, donut_pct, descriptor, dramatize_line, shock)
     props_a["beats"][0]["headline"] = a_headline
     props_a["vo"][0] = a_vo0
     if is_flip:

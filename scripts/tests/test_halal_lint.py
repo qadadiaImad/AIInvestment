@@ -185,3 +185,33 @@ def test_editorial_passes_factual_extreme_wkey_line():
 def test_editorial_one_violation_per_line_even_with_two_banned_words():
     errs = lint_editorial(["This dangerous, risky bet."])
     assert len(errs) == 1
+
+
+# --- review fix: bounded inflection stems (soared/crashed/plummeted/dangerously) --
+
+def test_editorial_flags_soared_and_soaring():
+    assert lint_editorial(["Shares soared today."])
+    assert lint_editorial(["Shares are soaring this week."])
+
+
+def test_editorial_flags_crashed_and_crashing():
+    assert lint_editorial(["The stock crashed hard."])
+    assert lint_editorial(["The stock is crashing right now."])
+
+
+def test_editorial_flags_plummeted_and_plummeting():
+    assert lint_editorial(["Revenue plummeted last quarter."])
+    assert lint_editorial(["Revenue is plummeting."])
+
+
+def test_editorial_flags_dangerously():
+    errs = lint_editorial(["This trades dangerously close to the limit."])
+    assert errs and "danger" in errs[0].lower()
+
+
+def test_editorial_does_not_over_ban_risk_or_avoidance():
+    # 'risky' stays banned (exact); 'risk' itself is a legitimate finance word
+    # and must NOT be caught by stemming.
+    assert lint_editorial(["This carries risk."]) == []
+    assert lint_editorial(["Risk management is disciplined here."]) == []
+    assert lint_editorial(["Standard avoidance language applies."]) == []
