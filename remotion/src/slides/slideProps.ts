@@ -58,6 +58,10 @@ export const slideStoryPropsSchema = z.object({
   // remotion/public/daily/<folder>/ so `staticFile` resolves it). Optional —
   // absent for VO-less slide mode (bubbleClips-driven fixtures).
   voiceSrc: z.string().optional(),
+  // Photographic hero backdrop (Task 3 producer; staticFile-relative, e.g.
+  // "heroes/Q4-security.jpg"). Optional — absent renders the composition
+  // exactly as before (no HeroLayer mounted).
+  heroSrc: z.string().optional(),
 });
 export type SlideStoryProps = z.infer<typeof slideStoryPropsSchema>;
 

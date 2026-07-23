@@ -36,6 +36,7 @@ import {
   AbsoluteFill,
   Audio,
   Easing,
+  Img,
   Sequence,
   Series,
   interpolate,
@@ -455,18 +456,85 @@ const CaptionLayer: React.FC<{captions: SlideStoryProps['captions']}> = ({captio
   );
 };
 
+// Frames of crossfade centered on the hook-beat boundary — the hero eases
+// from full-bleed hook opacity/sharpness to the dimmed blurred backdrop
+// instead of hard-cutting on the beat transition.
+const HERO_TRANSITION_FRAMES = 20;
+const HERO_HOOK_OPACITY = 0.92;
+const HERO_BACKDROP_OPACITY = 0.14;
+const HERO_BACKDROP_BLUR = 6;
+const HERO_KEN_BURNS_END_SCALE = 1.06;
+
+/** Full-bleed photographic backdrop (Task 2), mounted BEHIND <Bg> and all
+ * beat content — lowest layer. Full-bleed + legible scrim under the hook
+ * beat; dimmed + blurred backdrop for every beat after (data stays
+ * readable). Slow deterministic Ken-Burns scale across the whole reel. */
+const HeroLayer: React.FC<{src: string; hookDurationInFrames: number; totalFrames: number}> = ({
+  src,
+  hookDurationInFrames,
+  totalFrames,
+}) => {
+  const frame = useCurrentFrame();
+  const scale = interpolate(frame, [0, totalFrames], [1, HERO_KEN_BURNS_END_SCALE], clamp);
+  const from = Math.max(0, hookDurationInFrames - HERO_TRANSITION_FRAMES);
+  const to = hookDurationInFrames + HERO_TRANSITION_FRAMES;
+  const opacity = interpolate(frame, [from, to], [HERO_HOOK_OPACITY, HERO_BACKDROP_OPACITY], clamp);
+  const blurPx = interpolate(frame, [from, to], [0, HERO_BACKDROP_BLUR], clamp);
+  // Scrim fades out in step with the hero's own hook -> backdrop transition
+  // (it only exists to keep the hook headline/sub legible over the photo).
+  const scrimOpacity = interpolate(frame, [from, to], [1, 0], clamp);
+  return (
+    <AbsoluteFill style={{overflow: 'hidden'}}>
+      <Img
+        src={staticFile(src)}
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          scale: String(scale),
+          opacity,
+          filter: `blur(${blurPx}px)`,
+        }}
+      />
+      <AbsoluteFill
+        style={{
+          opacity: scrimOpacity,
+          background: `linear-gradient(180deg, ${C.bg}00 0%, ${C.bg}CC 62%, ${C.bg} 100%)`,
+        }}
+      />
+    </AbsoluteFill>
+  );
+};
+
 export const SlideStoryReel: React.FC<SlideStoryProps> = (props) => {
   const totalFrames = props.beats.reduce((sum, b) => sum + b.durationInFrames, 0);
   const headerBadge = {text: props.badge, color: badgeColor(props.badge)};
 
   return (
-    <AbsoluteFill style={{fontFamily: FONT.body}}>
+    // background: C.bg lives on the root now (previously painted solely by
+    // <Bg>'s own opaque fill) so HeroLayer — mounted as a child below —
+    // still has a solid backdrop of its own without needing <Bg> to stay
+    // opaque over it. No visual change for the no-heroSrc case: <Bg> keeps
+    // painting the same solid C.bg on top by default (opaque=true below).
+    <AbsoluteFill style={{fontFamily: FONT.body, background: C.bg}}>
       {props.voiceSrc ? <Audio src={staticFile(props.voiceSrc)} /> : null}
+      {/* Photographic hero backdrop (Task 2) — lowest layer, mounted only
+          when the props carry one (Task 3 sets heroSrc); absent, renders
+          exactly as before. Sits BEHIND <Bg> and every beat. */}
+      {props.heroSrc ? (
+        <HeroLayer
+          src={props.heroSrc}
+          hookDurationInFrames={props.beats[0].durationInFrames}
+          totalFrames={totalFrames}
+        />
+      ) : null}
       {/* Ambient background tint is intentionally decoupled from the verdict
           color: C.redHot on a FAIL badge is ~33% dimmer than C.bg, which
           makes the radial gradient + drifting motes read as "no background".
-          The badge chip below still carries its own verdict color. */}
-      <Bg tint={C.amber} />
+          The badge chip below still carries its own verdict color.
+          opaque={!heroSrc}: with a hero mounted, Bg must let it show through
+          its own radial glow + motes instead of painting over it solid. */}
+      <Bg tint={C.amber} opaque={!props.heroSrc} />
       <AbsoluteFill style={{padding: PAD}}>
         <Head tk={props.ticker} sub={props.tickerSub} badge={headerBadge} />
       </AbsoluteFill>
