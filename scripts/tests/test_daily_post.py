@@ -220,6 +220,7 @@ def _fake_copy_result():
             "screen_body": "$57 of every $100 here sits in interest-bearing debt.",
             "screen_body2": "Three independent rulebooks each ran the same numbers.",
             "halal_script": "TeraWulf runs A-I datacenters now. Educational, not financial or religious advice.",
+            "company_def": "the company that runs bitcoin mines it's converting into AI datacenters",
         },
     }
 
@@ -230,6 +231,17 @@ def test_carousel_fields_carries_kit_fields_through():
     assert fields["screen_head"] == "WULF: the halal screen, plain-English."
     assert fields["halal_script"].startswith("TeraWulf")
     assert fields["head"] == "$57 of every $100 here is borrowed money."
+    assert fields["company_def"] == "the company that runs bitcoin mines it's converting into AI datacenters"
+
+
+def test_carousel_fields_company_def_defaults_to_empty_when_absent():
+    # older/fixture kit_fields shapes that predate task-3's company_def key must not
+    # KeyError -- carousel_fields degrades to "" (which run_carousel/_build_v4.py
+    # both already treat as "no define slide" / falsy).
+    kit_fields = {k: v for k, v in _fake_copy_result()["kit_fields"].items() if k != "company_def"}
+    fields = daily_post.carousel_fields(
+        "WULF", kit_fields, _fake_copy_result(), "reason text", "2026-07-22")
+    assert fields["company_def"] == ""
 
 
 def test_build_kit_md_round_trips_through_kit_md_parser():
@@ -246,6 +258,10 @@ def test_build_kit_md_round_trips_through_kit_md_parser():
     assert cfg["screen_body2"] == fields["screen_body2"]
     assert cfg["halal_script"] == fields["halal_script"]
     assert cfg["hook"]["head"] == fields["head"]
+    # task-4: company_def round-trips through build_kit_md -> parse_cfg unchanged,
+    # so higgs/_build_v4.py's define-slide gate (`c.get("company_def")`) sees it.
+    assert cfg["company_def"] == fields["company_def"]
+    assert cfg["company_def"] == "the company that runs bitcoin mines it's converting into AI datacenters"
 
 
 def test_build_kit_md_escapes_embedded_quotes():

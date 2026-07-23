@@ -68,6 +68,27 @@ def header(tk, ex, logo_b64=None, badge=None):
     <div><div class='tkr'>{tk}</div><div class='ex'>{ex}</div></div>{b}</div>"""
 
 
+def slide_define(hero, topbar, descriptor, teaser, foot=NOT_FATWA_FOOT):
+    """The carousel's dedicated company-definition slide (first slide when the
+    kit's CFG carries a non-empty `company_def`). Full-bleed hero + a dark
+    scrim (heavier than slide_hook's — this slide's text sits over the image
+    top-to-bottom, not just the lower half) so the descriptor stays legible
+    regardless of what's underneath. `teaser` is an optional one-line
+    leverage/context line (kit's `screen_head`, or ""); omitted when empty."""
+    scrim = "linear-gradient(180deg,rgba(10,13,18,.70) 0%,rgba(10,13,18,.32) 34%,rgba(10,13,18,.48) 60%,rgba(10,13,18,.93) 100%)"
+    teaser_html = (
+        f"<div style=\"font-size:29px;line-height:1.4;color:#7FE9C2;margin-top:22px;"
+        f"max-width:850px;text-shadow:0 2px 14px rgba(0,0,0,.75)\">{teaser}</div>"
+        if teaser else "")
+    return page(f"""<div class='hero' style="background-image:url('{hero}')"></div>
+    <div class='scrim' style="background:{scrim}"></div>
+    <div class='pad'>{topbar}
+      <div style='margin-top:28px' class='kick'>WHAT THEY DO</div>
+      <div class='head' style="margin-top:auto;font-size:64px">{descriptor}</div>
+      {teaser_html}
+      <div class='foot' style='margin-top:32px'>{foot}</div></div>""")
+
+
 def slide_hook(hero, kick, head, sub, foot="Educational · not financial advice   ·   swipe →", topbar=None, big_head=80):
     scrim = "linear-gradient(180deg,rgba(10,13,18,.74) 0%,rgba(10,13,18,.28) 36%,rgba(10,13,18,.45) 60%,rgba(10,13,18,.93) 100%)"
     bar = topbar if topbar else ""
@@ -255,6 +276,15 @@ def build_slides(md, site_stocks, quantum_stocks, hero_map, logo_map, date, hala
         rows = _rows_from_bundle(c["data"]["rows"], stocks, mode)
         tkl = tk.lower()
         hk = c["hook"]; dt = c["data"]; tkw = c["takeaway"]
+        # Company-definition slide: FIRST slide, gated on the kit carrying a
+        # non-empty company_def (task-4). The July-21 3-slide kits predate
+        # this field -- parse_cfg returns None for them -- so they render
+        # unchanged (backward compat). Numbered "_0_" so it sorts before the
+        # existing "_1_hook" filename without renumbering anything else (the
+        # Studio indexer globs `v4_<tk>_\d_<name>.png` and localeCompare-sorts).
+        if c.get("company_def"):
+            out[f"v4_{tkl}_0_define.png"] = slide_define(
+                hero, hdr, c["company_def"], c.get("screen_head") or "")
         out[f"v4_{tkl}_1_hook.png"] = slide_hook(
             hero, hk["kick"] or "", hk["head"] or "", hk["sub"] or "", topbar=hdr)
         if is_halal_post:
@@ -352,11 +382,15 @@ def pick_kit(higgs_dir, date=None, kit_path=None):
     return cands[-1] if cands else None
 
 
+_MIME_BY_SUFFIX = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"}
+
+
 def _b64(path):
     p = pathlib.Path(path)
     if not p.exists():
         return None
-    return "data:image/png;base64," + base64.b64encode(p.read_bytes()).decode()
+    mime = _MIME_BY_SUFFIX.get(p.suffix.lower(), "image/png")
+    return f"data:{mime};base64," + base64.b64encode(p.read_bytes()).decode()
 
 
 def main(argv=None):

@@ -21,7 +21,8 @@ Runs the full daily halal-screen content pipeline end to end:
                     (Remotion's `voiceSrc` needs them there; `run_render` only asserts
                     they landed).
   7. Render       — `npx remotion render SlideStoryReel ...` for both variants.
-  8. Carousel     — a minimal one-ticker kit md + `higgs/_build_v4.py` -> 3 PNGs.
+  8. Carousel     — a minimal one-ticker kit md (define/hook/data/takeaway -- 4 PNGs,
+                    the layer hero wired in as the ticker's hero art) + `higgs/_build_v4.py`.
                     Skipped (without failing the run) if `_build_v4.py` errors, or with
                     `--skip-carousel`.
   9. Finalize     — writes `manifest.json` into the temp folder, moves it to
@@ -81,7 +82,7 @@ TTS_SEED = 7
 if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
-from aiinvest import daily_pick, daily_copy  # noqa: E402
+from aiinvest import daily_pick, daily_copy, heroes  # noqa: E402
 from aiinvest.align_beats import apply_timing  # noqa: E402
 
 
@@ -218,6 +219,7 @@ def write_manifest(tmp_dir, manifest):
 _KIT_FIELD_ORDER = [
     "hero", "logo", "ex", "kick", "head", "sub",
     "data_kick", "data_title", "data_cap", "data_foot", "mode",
+    "company_def",
     "screen_head", "screen_body", "screen_body2",
     "tk_kick", "big", "unit", "tk_label", "tk_body",
     "src", "halal_script",
@@ -228,9 +230,12 @@ def carousel_fields(ticker, kit_fields, copy_result, reason, date_str):
     """The `_KIT_FIELD_ORDER` CFG fields for a minimal one-ticker carousel kit.
 
     Pulls the specific-number hook (headline + sub) from `props_a`'s beat 0 and the
-    screen-card copy from `daily_copy.build_daily`'s `kit_fields`. Hero/logo point at
-    filenames that likely don't exist for an ad-hoc daily ticker -- `_build_v4.py`
-    already degrades that to a solid-background fallback with a WARN, so this is
+    screen-card copy from `daily_copy.build_daily`'s `kit_fields`. `hero`/`logo` here
+    are placeholder filenames that don't exist on disk for an ad-hoc daily ticker --
+    `run_carousel` overwrites `hero` with a real filename when it successfully
+    resolves+copies the ticker's layer hero (see its docstring); `logo` stays a
+    placeholder either way. `_build_v4.py` degrades any still-missing art to a
+    solid-background fallback with a WARN, so a placeholder surviving through is
     intentional, not a bug.
     """
     hook = copy_result["props_a"]["beats"][0]
@@ -242,6 +247,10 @@ def carousel_fields(ticker, kit_fields, copy_result, reason, date_str):
         "head": hook.get("headline") or "",
         "sub": hook.get("sub") or "",
         "data_kick": "", "data_title": "", "data_cap": "", "data_foot": "", "mode": "disc",
+        # task-4: the plain-words company descriptor (task-3's kit_fields) drives
+        # the carousel's dedicated define slide. .get(...) tolerates older
+        # kit_fields shapes (pre-task-3 callers/fixtures) rather than KeyError-ing.
+        "company_def": kit_fields.get("company_def", ""),
         "screen_head": kit_fields["screen_head"],
         "screen_body": kit_fields["screen_body"],
         "screen_body2": kit_fields["screen_body2"],
@@ -464,23 +473,52 @@ def run_render(tmp_dir, folder, props_out):
     return outputs
 
 
-def run_carousel(tmp_dir, ticker, kit_fields, copy_result, reason, date_str, python_exe=None):
+def run_carousel(tmp_dir, ticker, kit_fields, copy_result, reason, date_str,
+                  verdict_layer=None, python_exe=None):
     """Emit a minimal one-ticker kit md and invoke `higgs/_build_v4.py` on it.
 
+    `verdict_layer` is the ticker's halal-verdict `layer` (e.g. "Q4-security") --
+    resolved to its brand hero via `heroes.hero_abs_path` and copied into
+    `higgs/` under the filename the kit's `hero` field points at, so
+    `_build_v4.py` (which reads hero art relative to `higgs/`) picks it up for
+    both the define slide and the rest of the carousel. `higgs/.gitignore`
+    ignores `hero_*`, and the copy is removed again after the build, so this
+    never lands in git status. If the resolved hero file doesn't exist on disk
+    (assets not pulled yet) the kit keeps its original placeholder filename --
+    `_build_v4.py` already degrades a missing hero to a solid-bg fallback + a
+    WARN, so this degrades gracefully rather than failing the run.
+
     Never raises: `_build_v4.py` failing (missing site/quantum bundles, Playwright
-    absent, etc.) or producing fewer than 3 PNGs degrades to a named note + whatever
-    was collected, so a carousel problem never fails the whole daily post.
+    absent, etc.) or producing fewer PNGs than expected degrades to a named note +
+    whatever was collected, so a carousel problem never fails the whole daily post.
     Returns (note_or_None, [Path, ...] of collected PNGs moved into tmp_dir).
     """
     python_exe = python_exe or sys.executable
     fields = carousel_fields(ticker, kit_fields, copy_result, reason, date_str)
+
+    hero_src = heroes.hero_abs_path(verdict_layer, REMOTION / "public")
+    hero_copied_name = None
+    if hero_src.exists():
+        hero_copied_name = f"hero_{ticker.lower()}_{date_str}{hero_src.suffix}"
+        try:
+            shutil.copy2(hero_src, HIGGS / hero_copied_name)
+            fields["hero"] = hero_copied_name
+        except OSError as e:
+            print(f"  WARN could not copy layer hero {hero_src} into higgs/: {e}")
+            hero_copied_name = None
+
     kit_md = build_kit_md(ticker, fields, date_str)
     kit_path = tmp_dir / f"daily_kit_{ticker.upper()}.md"
     kit_path.write_text(kit_md, encoding="utf-8")
 
-    cmd = [python_exe, str(HIGGS / "_build_v4.py"), "--kit", str(kit_path)]
-    env = dict(os.environ, PYTHONIOENCODING="utf-8")
-    proc = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True, env=env)
+    try:
+        cmd = [python_exe, str(HIGGS / "_build_v4.py"), "--kit", str(kit_path)]
+        env = dict(os.environ, PYTHONIOENCODING="utf-8")
+        proc = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True, env=env)
+    finally:
+        if hero_copied_name:
+            (HIGGS / hero_copied_name).unlink(missing_ok=True)
+
     if proc.returncode != 0:
         tail = (proc.stderr or proc.stdout or "").strip()[-500:]
         note = f"carousel skipped: _build_v4.py exited {proc.returncode}: {tail}"
@@ -489,6 +527,8 @@ def run_carousel(tmp_dir, ticker, kit_fields, copy_result, reason, date_str, pyt
 
     tkl = ticker.lower()
     names = [f"v4_{tkl}_1_hook.png", f"v4_{tkl}_2_data.png", f"v4_{tkl}_3_takeaway.png"]
+    if fields.get("company_def"):
+        names.insert(0, f"v4_{tkl}_0_define.png")
     collected = []
     for name in names:
         src = HIGGS / name
@@ -497,8 +537,8 @@ def run_carousel(tmp_dir, ticker, kit_fields, copy_result, reason, date_str, pyt
         dest = tmp_dir / name
         shutil.move(str(src), str(dest))
         collected.append(dest)
-    if len(collected) < 3:
-        note = f"carousel skipped: expected 3 PNGs, found {len(collected)}"
+    if len(collected) < len(names):
+        note = f"carousel skipped: expected {len(names)} PNGs, found {len(collected)}"
         print(f"  WARN {note}")
         return note, collected
     return None, collected
@@ -610,9 +650,11 @@ def run(args, now=None, input_func=input):
         if args.skip_carousel:
             print("[8/9] carousel: skipped (--skip-carousel)")
         else:
-            print("[8/9] carousel: building 3 PNGs via higgs/_build_v4.py ...")
+            print("[8/9] carousel: building PNGs via higgs/_build_v4.py ...")
+            verdict_layer = ((bundle.get("verdicts") or {}).get(ticker) or {}).get("layer")
             carousel_note, _pngs = run_carousel(
-                tmp_dir, ticker, copy_result["kit_fields"], copy_result, chosen["reason"], date_str)
+                tmp_dir, ticker, copy_result["kit_fields"], copy_result, chosen["reason"], date_str,
+                verdict_layer=verdict_layer)
 
         print("[9/9] finalize: writing manifest, moving folder, updating posted log ...")
         # caption.txt -- Task 3's lint-clean, SEO-hooked, send-CTA caption, written into
