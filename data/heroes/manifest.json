@@ -24,10 +24,11 @@
     "style": null
   },
   "Q1-hardware": {
-    "generated_at": null,
-    "prompt": null,
-    "source": "placeholder",
-    "style": null
+    "source": "higgsfield",
+    "model": "gpt_image_2",
+    "style": "dark-tech-noir",
+    "generated_at": "2026-07-23T10:02Z",
+    "prompt": "Cinematic dark tech-noir, quantum computing lab, suspended violet-glowing quantum processor chandelier in volumetric haze"
   },
   "Q3-software": {
     "generated_at": null,
@@ -36,10 +37,11 @@
     "style": null
   },
   "Q4-security": {
-    "generated_at": null,
-    "prompt": null,
-    "source": "placeholder",
-    "style": null
+    "source": "higgsfield",
+    "model": "gpt_image_2",
+    "style": "dark-tech-noir",
+    "generated_at": "2026-07-23T10:02Z",
+    "prompt": "Cinematic dark tech-noir, near-black secure data vault + server room, glowing red-orange holographic padlock and key in volumetric haze"
   },
   "Q5-applications": {
     "generated_at": null,
