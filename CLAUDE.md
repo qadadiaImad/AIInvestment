@@ -219,3 +219,37 @@ then `python pull_ai_stack.py [--layer L1-chips]`. Validated live 2026-05-30: 46
 Educational/research only — **not financial advice**. Scrape **politely**: honor
 reasonable rate limits, identify with a real User-Agent, don't hammer, don't redistribute
 gated data. The owner is responsible for compliance with each provider's ToS.
+
+---
+
+## 9. Character video layer (`video/`)
+
+A second, sibling Remotion project (alongside `remotion/` and `halal-reels/`) whose
+sole job is turning the existing AI-STACK character family into short vertical reels.
+Full detail in [`video/README.md`](video/README.md); summary here:
+
+- **Character canon lives in `remotion/src/characters/`** (`family.tsx` for the
+  roster/metadata, `{chip,watt,qubit,cap,nova,cloudy}Rig.tsx` for the rigs). `video/`
+  never redefines a name, palette, silhouette, or voice — it imports the rig
+  components directly via relative path (`video/src/characters/registry.ts` →
+  `../../../remotion/src/characters/*`), so there is exactly one place a character
+  is defined. Maya and Karim are out of scope for `video/` for now (Karim has no SVG
+  rig — he's a voice/portrait persona, defined separately under `course/persona/`).
+- **What `video/` adds is purely additive**, built against
+  `haidrrrry/claude-remotion-skill`'s motion-graphics rules (Phase 2/3 audit, not
+  vendored into `.claude/skills/` — read once via `raw.githubusercontent.com` and
+  hand-ported): a spring-first `Entrance` wrapper, `BgMesh`/`Grade` layers (stacked
+  with the existing `remotion/src/motion/Polish.tsx` `Grain`/`Vignette`, reused
+  as-is), a dev-only `SafeZoneGuide` for the 1080×1920 9:16 safe zone, and a
+  `Captions` component wired to the official `@remotion/captions` API.
+- **Font loading:** `video/` follows the project's own proven fix — bundled
+  `@fontsource` fonts (via the cross-project import chain into
+  `remotion/src/slides/theme.ts`), not `@remotion/google-fonts`. Both audited skills
+  default to Google Fonts; that default doesn't work in network-restricted renderers
+  (`fonts.gstatic.com` unreachable) and was deliberately overridden.
+- **Run it:** `npm run video:studio` / `npm run video:render` from the repo root
+  (thin wrappers around `npm --prefix video run studio|render`).
+- **Remotion License caveat:** Remotion is free to use for individuals, non-profits,
+  and for-profit orgs with ≤3 employees; a paid Company License is required at 4+
+  employees (aggregated across agency/client/contractor collaborations on the same
+  project). Confirm the org's headcount before any commercial use of rendered output.
