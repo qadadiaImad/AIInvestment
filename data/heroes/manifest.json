@@ -1,0 +1,56 @@
+{
+  "L0-energy": {
+    "generated_at": null,
+    "prompt": null,
+    "source": "placeholder",
+    "style": null
+  },
+  "L1-chips": {
+    "generated_at": null,
+    "prompt": null,
+    "source": "placeholder",
+    "style": null
+  },
+  "L2-infra": {
+    "generated_at": null,
+    "prompt": null,
+    "source": "placeholder",
+    "style": null
+  },
+  "L4-application": {
+    "generated_at": null,
+    "prompt": null,
+    "source": "placeholder",
+    "style": null
+  },
+  "Q1-hardware": {
+    "generated_at": null,
+    "prompt": null,
+    "source": "placeholder",
+    "style": null
+  },
+  "Q3-software": {
+    "generated_at": null,
+    "prompt": null,
+    "source": "placeholder",
+    "style": null
+  },
+  "Q4-security": {
+    "generated_at": null,
+    "prompt": null,
+    "source": "placeholder",
+    "style": null
+  },
+  "Q5-applications": {
+    "generated_at": null,
+    "prompt": null,
+    "source": "placeholder",
+    "style": null
+  },
+  "_default": {
+    "generated_at": null,
+    "prompt": null,
+    "source": "placeholder",
+    "style": null
+  }
+}

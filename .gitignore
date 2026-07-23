@@ -18,6 +18,14 @@ data/portfolio/*
 !data/portfolio/positions.example.json
 !data/portfolio/README.md
 
+# data/heroes/manifest.json — committed provenance for the hero-image
+# placeholders/brand assets (see scripts/aiinvest/heroes.py); same
+# re-include dance as data/portfolio/ above (bare "data/heroes/" would
+# not re-include files already excluded by the parent "data/*").
+!data/heroes/
+data/heroes/*
+!data/heroes/manifest.json
+
 # Playwright MCP scratch
 .playwright-mcp/
 
