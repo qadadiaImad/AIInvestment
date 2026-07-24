@@ -1,0 +1,10 @@
+{
+  "name": "aiinvestment",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Repo-root scripts. See CLAUDE.md for the full map.",
+  "scripts": {
+    "video:studio": "npm --prefix video run studio",
+    "video:render": "npm --prefix video run render"
+  }
+}

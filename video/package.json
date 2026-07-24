@@ -1,0 +1,30 @@
+{
+  "name": "video",
+  "version": "1.0.0",
+  "description": "Character-driven Remotion video layer for AIInvestment. Reuses the character canon from ../remotion/src/characters — never redefines it.",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@remotion/captions": "4.0.496",
+    "@remotion/zod-types": "4.0.496",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.496",
+    "simple-icons": "^16.27.0",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@remotion/cli": "4.0.496",
+    "@remotion/eslint-config-flat": "4.0.496",
+    "@types/react": "19.2.7",
+    "@types/web": "0.0.166",
+    "eslint": "9.19.0",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render",
+    "lint": "eslint src && tsc"
+  }
+}
