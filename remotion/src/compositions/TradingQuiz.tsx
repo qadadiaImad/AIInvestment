@@ -1,23 +1,30 @@
 // TradingQuiz.tsx — "guess the next move" candlestick quiz reel (9:16, silent).
 //
-// Format benchmarked from the trading-quiz reels that do numbers on IG: hook
-// card -> chart prints candle by candle -> the level and the pattern get
-// named -> BUY/SELL fork -> countdown -> reveal. The difference here is that
-// the answer is derived from an actual, nameable setup rather than a vibe:
+// The chart is presented as a live trading terminal on a physical screen —
+// bezel, glass reflection, scanlines, grid, a price tag that tracks the last
+// printed bar — rather than candles floating on a flat background. Nothing
+// about the pattern data changes; this is purely the presentation layer, and
+// it exists because a bare chart on black reads as a diagram, not as a feed
+// someone is watching in real time.
+//
+// Layer stack (playbook §5 / motion-graphics rule 5), bottom to top:
+//   bg mesh -> screen bezel -> plot (grid, level, candles, annotations)
+//   -> glass reflection + scanlines -> overlay UI -> grade -> grain + vignette
+//
+// The answer is derived from an actual, nameable setup rather than a vibe:
 // the fixture carries a real OHLC sequence, the level it tests, and the
 // pattern that resolves it, so the reveal is teachable instead of a coin flip.
 //
-// Data is SYNTHETIC and labeled as such on-screen (see `footer`) — this is a
-// pattern illustration, not a real market chart, and must never be presented
-// as one.
+// Data is SYNTHETIC and labeled as such on-screen (see `footer`) — a pattern
+// illustration, not a real market chart, and must never be presented as one.
 //
-// Engine, not a one-off: swap the fixture (candles + revealFrom + answer +
-// rule text) and the same composition renders a different pattern quiz.
+// Engine, not a one-off: swap the fixture and the same composition renders a
+// different pattern quiz. See scripts/ta_quiz/ and the ta-chart-quiz skill.
 import React from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 import {C, FONT} from '../slides/theme';
-import {EASE, SPRINGS, fadeOf} from '../motion/craft';
+import {EASE, SPRINGS, fadeOf, cameraPushIn} from '../motion/craft';
 import {Grain, Vignette} from '../motion/Polish';
 
 const candleSchema = z.object({
@@ -51,9 +58,11 @@ export const tradingQuizSchema = z.object({
 export type TradingQuizProps = z.infer<typeof tradingQuizSchema>;
 
 // ---------------------------------------------------------------- timing
-const DRAW_START = 36;
+const DRAW_START = 40;
 const DRAW_PER = 6; // frames per setup candle
 const CANDLE_FORM = 7; // frames a single candle takes to "print"
+const SCREEN_IN = 8;
+const GRID_IN = 26;
 const LEVEL_IN = 118;
 const PATTERN_IN = 158;
 const ARROWS_IN = 196;
@@ -70,10 +79,15 @@ const RULE_IN = REVEAL_START + 48;
 export const TRADING_QUIZ_MIN_FRAMES = RULE_IN + 88; // -> 546
 
 // ---------------------------------------------------------------- geometry
-const CHART = {x0: 62, x1: 822, y0: 470, y1: 1250};
-const PAD = {lo: 4, hi: 4}; // price padding around the data range
-/** Clear band below the candle field where the pattern name is parked. */
-const PATTERN_LABEL_Y = 1222;
+/** The physical screen the chart lives on. */
+const SCREEN = {x: 34, y: 384, w: 1012, h: 958};
+const CHROME_H = 56;
+/** Candle plot area, inset inside the screen. The right gutter is left free
+ * for the live price tag and, later, the BUY/SELL fork. */
+const CHART = {x0: 78, x1: 754, y0: 492, y1: 1198};
+const PAD = {lo: 4, hi: 4};
+/** Clear band inside the screen, below the plot, where the pattern name sits. */
+const PATTERN_LABEL_Y = 1278;
 
 export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const frame = useCurrentFrame();
@@ -93,11 +107,35 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const isDown = p.answer === 'SELL';
   const answerColor = isDown ? C.redHot : C.emerald;
 
+  // Slow push-in with an emphasis hit when the answer lands.
+  const zoom = cameraPushIn(frame, p.durationInFrames, {base: 0.035, hitFrame: ANSWER_IN, hitAmount: 0.02});
+
   // ------------------------------------------------------------ hook card
   const hookP = spring({frame, fps, config: SPRINGS.hero});
-  // The title shrinks up out of the way once the chart starts drawing.
-  const hookShift = interpolate(frame, [DRAW_START, DRAW_START + 18], [0, -26], {
+  const hookShift = interpolate(frame, [DRAW_START, DRAW_START + 18], [0, -22], {
     easing: EASE.cruise,
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
+  // ---------------------------------------------------------- the screen
+  const screenP = spring({frame: frame - SCREEN_IN, fps, config: SPRINGS.heavy});
+  // Panel boot: a couple of flickers before it settles, like a display waking.
+  const boot = frame < SCREEN_IN + 16 ? (frame % 3 === 0 ? 0.72 : 1) : 1;
+
+  // ------------------------------------------------------------ the grid
+  const gridP = interpolate(frame, [GRID_IN, GRID_IN + 26], [0, 1], {
+    easing: EASE.enter,
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  // ~5 horizontal rules at round prices — enough to read depth, not enough to
+  // compete with the candles.
+  const step = (hi - lo) / 5;
+  const gridLines = Array.from({length: 6}, (_, i) => lo + step * i);
+
+  // The price axis hands the right gutter over to the BUY/SELL fork.
+  const axisOut = interpolate(frame, [ARROWS_IN - 12, ARROWS_IN + 2], [1, 0.12], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -109,6 +147,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
     extrapolateRight: 'clamp',
   });
   const levelY = priceToY(p.levelPrice);
+  const levelPulse = 0.55 + Math.sin(Math.max(0, frame - LEVEL_IN) / 11) * 0.45;
 
   // -------------------------------------------------------- pattern frame
   const patP = spring({frame: frame - PATTERN_IN, fps, config: SPRINGS.pop});
@@ -116,7 +155,6 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
 
   // ------------------------------------------------------------- arrows
   const arrowsP = spring({frame: frame - ARROWS_IN, fps, config: SPRINGS.pop});
-  // After the answer lands, the losing arrow drops away and the winner holds.
   const arrowsOut = interpolate(frame, [ANSWER_IN, ANSWER_IN + 14], [1, 0], {
     easing: EASE.exit,
     extrapolateLeft: 'clamp',
@@ -134,12 +172,32 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const countDigit = COUNT_N - countIdx;
   const countLocal = (frame - COUNT_START) % COUNT_PER;
   const countP = spring({frame: countLocal, fps, config: SPRINGS.hero});
+  // Ring drains over the whole 5s window, not per digit — reads as one timer.
+  const countFrac = Math.min(1, Math.max(0, (frame - COUNT_START) / (COUNT_PER * COUNT_N)));
 
   // ------------------------------------------------------------- answer
   const answerP = spring({frame: frame - ANSWER_IN, fps, config: SPRINGS.hero});
-
-  // --------------------------------------------------------------- rule
   const ruleP = spring({frame: frame - RULE_IN, fps, config: SPRINGS.heavy});
+
+  // ------------------------------------------------- live price tag
+  // Tracks the last bar printed so far. Hands off to the BUY/SELL fork when
+  // the fork appears — they'd otherwise fight for the same gutter.
+  const drawnCount = Math.min(
+    setup.length,
+    Math.max(0, Math.floor((frame - DRAW_START) / DRAW_PER) + 1)
+  );
+  const revealedCount = Math.min(
+    reveal.length,
+    Math.max(0, Math.floor((frame - REVEAL_START) / REVEAL_PER) + 1)
+  );
+  const lastIdx = frame >= REVEAL_START && revealedCount > 0
+    ? p.revealFrom + revealedCount - 1
+    : Math.max(0, drawnCount - 1);
+  const lastK = p.candles[lastIdx];
+  const tagOpacity =
+    interpolate(frame, [DRAW_START + 6, DRAW_START + 20], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) *
+    interpolate(frame, [ARROWS_IN - 10, ARROWS_IN + 4], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) +
+    interpolate(frame, [REVEAL_START, REVEAL_START + 10], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
 
   const renderCandle = (k: z.infer<typeof candleSchema>, i: number, appearAt: number) => {
     const t = interpolate(frame, [appearAt, appearAt + CANDLE_FORM], [0, 1], {
@@ -158,16 +216,9 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
     const yTop = priceToY(Math.max(k.o, cNow));
     const yBot = priceToY(Math.min(k.o, cNow));
     return (
-      <g key={i} opacity={fadeOf(t)} style={{filter: `drop-shadow(0 0 7px ${col}88)`}}>
+      <g key={i} opacity={fadeOf(t)} style={{filter: `drop-shadow(0 0 8px ${col}99)`}}>
         <line x1={x} x2={x} y1={priceToY(hNow)} y2={priceToY(lNow)} stroke={col} strokeWidth={2.5} />
-        <rect
-          x={x - bodyW / 2}
-          y={yTop}
-          width={bodyW}
-          height={Math.max(2, yBot - yTop)}
-          rx={2}
-          fill={col}
-        />
+        <rect x={x - bodyW / 2} y={yTop} width={bodyW} height={Math.max(2, yBot - yTop)} rx={2} fill={col} />
       </g>
     );
   };
@@ -182,13 +233,9 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const patTop = priceToY(Math.max(...boxed.map((k) => k.h))) - 16;
   const patBot = priceToY(Math.min(...boxed.map((k) => k.l))) + 16;
 
-  // Arrow origin: just right of the last setup candle.
   const oX = cx(p.revealFrom - 1) + slot * 0.8;
   const oY = priceToY(p.candles[p.revealFrom - 1].c);
 
-  // Arrow geometry is deliberately short: the label sits to the right of the
-  // head, and at 1080 wide there is only ~1040px of usable width before the
-  // text clips off-frame.
   const Arrow: React.FC<{dir: 'up' | 'down'; label: string; color: string; op: number}> = ({
     dir,
     label,
@@ -199,7 +246,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
     const ex = oX + 132;
     const ey = oY + dy;
     return (
-      <g opacity={op} style={{filter: `drop-shadow(0 0 10px ${color}99)`}}>
+      <g opacity={op} style={{filter: `drop-shadow(0 0 12px ${color}aa)`}}>
         <line x1={oX} y1={oY} x2={ex} y2={ey} stroke={color} strokeWidth={9} strokeLinecap="round" />
         <polygon
           points={`${ex + 28},${ey + (dir === 'up' ? -12 : 12)} ${ex - 8},${ey - 19} ${ex - 8},${ey + 19}`}
@@ -222,258 +269,461 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
 
   return (
     <AbsoluteFill style={{background: C.bg, fontFamily: FONT.body}}>
-      {/* ambient wash so the frame is never flat black */}
-      <AbsoluteFill
-        style={{
-          background: `radial-gradient(circle at 50% 34%, ${answerColor}14, transparent 62%)`,
-        }}
-      />
-
-      {/* ---------------------------------------------------------- hook */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 150 + hookShift,
-          left: 0,
-          right: 0,
-          textAlign: 'center',
-          opacity: fadeOf(hookP),
-          transform: `scale(${interpolate(hookP, [0, 1], [0.86, 1])})`,
-        }}
-      >
-        <div style={{fontFamily: FONT.display, fontWeight: 700, fontSize: 76, color: C.ink, letterSpacing: -1}}>
-          {p.kick.split(' ')[0]}{' '}
-          <span style={{color: C.emerald}}>{p.kick.split(' ').slice(1).join(' ')}</span>
-        </div>
-      </div>
-
-      {/* ----------------------------------------------------- countdown */}
-      {countActive ? (
+      {/* ------------------------------------------------- 1. background */}
+      <AbsoluteFill>
         <div
           style={{
             position: 'absolute',
-            top: 268,
-            left: 0,
-            right: 0,
-            display: 'flex',
-            justifyContent: 'center',
-            gap: 14,
+            width: 1250,
+            height: 1250,
+            borderRadius: '50%',
+            top: -430 + Math.sin(frame / 90) * 34,
+            left: -280 + Math.cos(frame / 110) * 40,
+            filter: 'blur(70px)',
+            background: `radial-gradient(circle, ${answerColor}22, transparent 62%)`,
           }}
-        >
-          <div
-            style={{
-              fontFamily: FONT.mono,
-              fontWeight: 800,
-              fontSize: 92,
-              color: C.ink,
-              border: `4px solid ${C.line}`,
-              borderRadius: 18,
-              padding: '6px 34px',
-              background: 'rgba(255,255,255,.04)',
-              opacity: fadeOf(countP),
-              transform: `scale(${interpolate(countP, [0, 1], [1.5, 1])})`,
-              boxShadow: `0 0 40px ${answerColor}33`,
-            }}
-          >
-            {countDigit}
-          </div>
-        </div>
-      ) : null}
-
-      {/* -------------------------------------------------------- answer */}
-      {frame >= ANSWER_IN ? (
+        />
         <div
           style={{
             position: 'absolute',
-            top: 262,
+            width: 980,
+            height: 980,
+            borderRadius: '50%',
+            bottom: -400 - Math.cos(frame / 100) * 30,
+            right: -250 + Math.sin(frame / 120) * 34,
+            filter: 'blur(85px)',
+            background: `radial-gradient(circle, ${C.amber}1c, transparent 65%)`,
+          }}
+        />
+      </AbsoluteFill>
+
+      {/* everything below rides the camera push-in together */}
+      <AbsoluteFill style={{transform: `scale(${zoom})`}}>
+        {/* ---------------------------------------------------- 2. hook */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 138 + hookShift,
             left: 0,
             right: 0,
             textAlign: 'center',
-            opacity: fadeOf(answerP),
-            transform: `scale(${interpolate(answerP, [0, 1], [0.7, 1])})`,
+            opacity: fadeOf(hookP),
+            transform: `scale(${interpolate(hookP, [0, 1], [0.86, 1])})`,
           }}
         >
-          <div
-            style={{
-              display: 'inline-block',
-              fontFamily: FONT.display,
-              fontWeight: 700,
-              fontSize: 84,
-              color: C.bg,
-              background: answerColor,
-              padding: '10px 52px',
-              borderRadius: 999,
-              boxShadow: `0 0 60px ${answerColor}66`,
-            }}
-          >
-            {p.answer}
-          </div>
-          <div
-            style={{
-              fontFamily: FONT.body,
-              fontWeight: 500,
-              fontSize: 34,
-              color: C.inkSoft,
-              marginTop: 16,
-              padding: '0 90px',
-            }}
-          >
-            {p.answerLine}
+          <div style={{fontFamily: FONT.display, fontWeight: 700, fontSize: 76, color: C.ink, letterSpacing: -1}}>
+            {p.kick.split(' ')[0]}{' '}
+            <span style={{color: C.emerald}}>{p.kick.split(' ').slice(1).join(' ')}</span>
           </div>
         </div>
-      ) : null}
 
-      {/* --------------------------------------------------------- chart */}
-      <svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
-        {/* resistance / support level */}
-        {levelP > 0 ? (
-          <g opacity={fadeOf(levelP)}>
+        {/* ------------------------------------------------ 3. countdown */}
+        {countActive ? (
+          <div
+            style={{
+              position: 'absolute',
+              top: 250,
+              left: 0,
+              right: 0,
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <div style={{position: 'relative', width: 132, height: 132}}>
+              <svg width={132} height={132} style={{position: 'absolute', inset: 0, transform: 'rotate(-90deg)'}}>
+                <circle cx={66} cy={66} r={58} fill="none" stroke={C.line} strokeWidth={6} />
+                <circle
+                  cx={66}
+                  cy={66}
+                  r={58}
+                  fill="none"
+                  stroke={answerColor}
+                  strokeWidth={6}
+                  strokeLinecap="round"
+                  strokeDasharray={2 * Math.PI * 58}
+                  strokeDashoffset={2 * Math.PI * 58 * countFrac}
+                  style={{filter: `drop-shadow(0 0 10px ${answerColor}cc)`}}
+                />
+              </svg>
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontFamily: FONT.mono,
+                  fontWeight: 800,
+                  fontSize: 68,
+                  color: C.ink,
+                  opacity: fadeOf(countP),
+                  transform: `scale(${interpolate(countP, [0, 1], [1.45, 1])})`,
+                }}
+              >
+                {countDigit}
+              </div>
+            </div>
+          </div>
+        ) : null}
+
+        {/* --------------------------------------------------- 4. answer */}
+        {frame >= ANSWER_IN ? (
+          <div
+            style={{
+              position: 'absolute',
+              top: 246,
+              left: 0,
+              right: 0,
+              textAlign: 'center',
+              opacity: fadeOf(answerP),
+              transform: `scale(${interpolate(answerP, [0, 1], [0.7, 1])})`,
+            }}
+          >
+            <div
+              style={{
+                display: 'inline-block',
+                fontFamily: FONT.display,
+                fontWeight: 700,
+                fontSize: 84,
+                color: C.bg,
+                background: answerColor,
+                padding: '10px 52px',
+                borderRadius: 999,
+                boxShadow: `0 0 70px ${answerColor}88`,
+              }}
+            >
+              {p.answer}
+            </div>
+            <div
+              style={{
+                fontFamily: FONT.body,
+                fontWeight: 500,
+                fontSize: 34,
+                color: C.inkSoft,
+                marginTop: 16,
+                padding: '0 90px',
+              }}
+            >
+              {p.answerLine}
+            </div>
+          </div>
+        ) : null}
+
+        {/* --------------------------------------------- 5. the terminal */}
+        <div
+          style={{
+            position: 'absolute',
+            left: SCREEN.x,
+            top: SCREEN.y,
+            width: SCREEN.w,
+            height: SCREEN.h,
+            borderRadius: 30,
+            opacity: fadeOf(screenP) * boot,
+            transform: `translateY(${interpolate(screenP, [0, 1], [26, 0])}px)`,
+            background: 'linear-gradient(180deg, #0E141C 0%, #090D13 100%)',
+            border: `1px solid ${C.line}`,
+            boxShadow: `0 40px 100px -30px #000, inset 0 1px 0 rgba(255,255,255,.07), 0 0 70px ${answerColor}10`,
+            overflow: 'hidden',
+          }}
+        >
+          {/* chrome bar */}
+          <div
+            style={{
+              height: CHROME_H,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              padding: '0 22px',
+              borderBottom: `1px solid ${C.line}`,
+              background: 'rgba(255,255,255,.025)',
+            }}
+          >
+            {[C.redHot, C.amber, C.emerald].map((col) => (
+              <div key={col} style={{width: 11, height: 11, borderRadius: 999, background: col, opacity: 0.62}} />
+            ))}
+            <div
+              style={{
+                marginLeft: 12,
+                fontFamily: FONT.mono,
+                fontSize: 19,
+                letterSpacing: 2,
+                color: C.muted,
+              }}
+            >
+              PATTERN LAB — {p.patternName}
+            </div>
+            <div style={{marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8}}>
+              <div
+                style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: 999,
+                  background: C.emerald,
+                  opacity: 0.4 + Math.sin(frame / 8) * 0.35,
+                }}
+              />
+              <div style={{fontFamily: FONT.mono, fontSize: 17, letterSpacing: 2, color: C.muted}}>LIVE</div>
+            </div>
+          </div>
+
+          {/* scanlines — very low contrast, sells "display" without banding */}
+          <AbsoluteFill
+            style={{
+              pointerEvents: 'none',
+              background: 'repeating-linear-gradient(0deg, rgba(255,255,255,.020) 0px, rgba(255,255,255,.020) 1px, transparent 1px, transparent 4px)',
+            }}
+          />
+          {/* glass reflection sweeping slowly across the panel */}
+          <AbsoluteFill
+            style={{
+              pointerEvents: 'none',
+              background: `linear-gradient(115deg, transparent ${20 + Math.sin(frame / 150) * 12}%, rgba(255,255,255,.045) ${38 + Math.sin(frame / 150) * 12}%, transparent ${56 + Math.sin(frame / 150) * 12}%)`,
+            }}
+          />
+        </div>
+
+        {/* ------------------------------------- 6. plot (above the glass) */}
+        <svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
+          {/* grid */}
+          {gridP > 0
+            ? gridLines.map((v, i) => (
+                <g key={`g${i}`} opacity={gridP * 0.5}>
+                  <line
+                    x1={CHART.x0 - 6}
+                    x2={SCREEN.x + SCREEN.w - 26}
+                    y1={priceToY(v)}
+                    y2={priceToY(v)}
+                    stroke={C.line}
+                    strokeWidth={1}
+                  />
+                  <text
+                    x={SCREEN.x + SCREEN.w - 20}
+                    y={priceToY(v) - 6}
+                    fill={C.muted}
+                    fontFamily={FONT.mono}
+                    fontSize={16}
+                    textAnchor="end"
+                    opacity={0.75 * axisOut}
+                  >
+                    {v.toFixed(0)}
+                  </text>
+                </g>
+              ))
+            : null}
+
+          {/* level line */}
+          {levelP > 0 ? (
             <line
-              x1={CHART.x0}
-              x2={CHART.x0 + (CHART.x1 + 150 - CHART.x0) * levelP}
+              x1={CHART.x0 - 6}
+              x2={CHART.x0 - 6 + (SCREEN.x + SCREEN.w - 26 - (CHART.x0 - 6)) * levelP}
               y1={levelY}
               y2={levelY}
               stroke={C.amber}
               strokeWidth={3}
               strokeDasharray="14 10"
-              style={{filter: `drop-shadow(0 0 8px ${C.amber}aa)`}}
+              style={{filter: `drop-shadow(0 0 ${6 + levelPulse * 8}px ${C.amber}dd)`}}
             />
-          </g>
-        ) : null}
+          ) : null}
 
-        {/* setup candles */}
-        {setup.map((k, i) => renderCandle(k, i, DRAW_START + i * DRAW_PER))}
+          {setup.map((k, i) => renderCandle(k, i, DRAW_START + i * DRAW_PER))}
+          {reveal.map((k, i) => renderCandle(k, p.revealFrom + i, REVEAL_START + i * REVEAL_PER))}
 
-        {/* reveal candles */}
-        {reveal.map((k, i) => renderCandle(k, p.revealFrom + i, REVEAL_START + i * REVEAL_PER))}
+          {/* live price tag — pinned at the right of the candle field */}
+          {tagOpacity > 0.01 && lastK ? (
+            <g opacity={Math.min(1, tagOpacity)}>
+              <line
+                x1={cx(lastIdx)}
+                x2={CHART.x1 + 6}
+                y1={priceToY(lastK.c)}
+                y2={priceToY(lastK.c)}
+                stroke={lastK.c >= lastK.o ? C.emerald : C.redHot}
+                strokeWidth={1.5}
+                strokeDasharray="4 5"
+                opacity={0.7}
+              />
+              <rect
+                x={CHART.x1 + 8}
+                y={priceToY(lastK.c) - 19}
+                width={104}
+                height={38}
+                rx={8}
+                fill={lastK.c >= lastK.o ? C.emerald : C.redHot}
+                style={{filter: `drop-shadow(0 0 12px ${lastK.c >= lastK.o ? C.emerald : C.redHot}77)`}}
+              />
+              <text
+                x={CHART.x1 + 60}
+                y={priceToY(lastK.c) + 8}
+                fill={C.bg}
+                fontFamily={FONT.mono}
+                fontWeight={800}
+                fontSize={23}
+                textAnchor="middle"
+              >
+                {lastK.c.toFixed(1)}
+              </text>
+            </g>
+          ) : null}
 
-        {/* Level label sits ABOVE the candles: drawn with the level line it
-         * was getting painted over by any bar the line passed through. */}
-        {levelP > 0 ? (
-          <g opacity={fadeOf(levelP)}>
-            <rect
-              x={CHART.x0 - 4}
-              y={levelY - 44}
-              width={p.levelLabel.length * 15.5 + 16}
-              height={34}
-              rx={8}
-              fill={C.bg}
-              opacity={0.85}
-            />
-            <text
-              x={CHART.x0 + 4}
-              y={levelY - 18}
-              fill={C.amber}
-              fontFamily={FONT.mono}
-              fontWeight={700}
-              fontSize={25}
-              letterSpacing={2}
-            >
-              {p.levelLabel}
-            </text>
-          </g>
-        ) : null}
+          {/* level label, above the candles so bars can't paint over it */}
+          {levelP > 0 ? (
+            <g opacity={fadeOf(levelP)}>
+              <rect
+                x={CHART.x0 - 10}
+                y={levelY - 44}
+                width={p.levelLabel.length * 15.5 + 16}
+                height={34}
+                rx={8}
+                fill="#0B1119"
+                opacity={0.9}
+              />
+              <text
+                x={CHART.x0 - 2}
+                y={levelY - 18}
+                fill={C.amber}
+                fontFamily={FONT.mono}
+                fontWeight={700}
+                fontSize={25}
+                letterSpacing={2}
+              >
+                {p.levelLabel}
+              </text>
+            </g>
+          ) : null}
 
-        {/* pattern highlight */}
-        {patP > 0 ? (
-          <g opacity={fadeOf(patP) * 0.95}>
-            <rect
-              x={patX}
-              y={patTop}
-              width={patW}
-              height={(patBot - patTop) * patPulse}
-              rx={12}
-              fill="none"
-              stroke={C.amber}
-              strokeWidth={3.5}
-              style={{filter: `drop-shadow(0 0 12px ${C.amber}99)`}}
-            />
-            {/* The label is parked in the clear band under the candle field
-             * with a leader line back up to the box — anchoring it directly
-             * beneath the box put it on top of the reveal candles. */}
-            <line
-              x1={patX + patW / 2}
-              y1={patBot}
-              x2={patX + patW / 2}
-              y2={PATTERN_LABEL_Y - 30}
-              stroke={C.amber}
-              strokeWidth={2}
-              strokeDasharray="6 7"
-              opacity={0.6}
-            />
-            <text
-              x={patX + patW / 2}
-              y={PATTERN_LABEL_Y}
-              fill={C.amber}
-              fontFamily={FONT.mono}
-              fontWeight={800}
-              fontSize={27}
-              letterSpacing={2}
-              textAnchor="middle"
-            >
-              {p.patternName}
-            </text>
-          </g>
-        ) : null}
+          {/* pattern highlight */}
+          {patP > 0 ? (
+            <g opacity={fadeOf(patP) * 0.95}>
+              <rect
+                x={patX}
+                y={patTop}
+                width={patW}
+                height={(patBot - patTop) * patPulse}
+                rx={12}
+                fill={`${C.amber}0e`}
+                stroke={C.amber}
+                strokeWidth={3.5}
+                style={{filter: `drop-shadow(0 0 14px ${C.amber}aa)`}}
+              />
+              <line
+                x1={patX + patW / 2}
+                y1={patBot}
+                x2={patX + patW / 2}
+                y2={PATTERN_LABEL_Y - 30}
+                stroke={C.amber}
+                strokeWidth={2}
+                strokeDasharray="6 7"
+                opacity={0.6}
+              />
+              <text
+                x={patX + patW / 2}
+                y={PATTERN_LABEL_Y}
+                fill={C.amber}
+                fontFamily={FONT.mono}
+                fontWeight={800}
+                fontSize={27}
+                letterSpacing={2}
+                textAnchor="middle"
+              >
+                {p.patternName}
+              </text>
+            </g>
+          ) : null}
 
-        {/* BUY / SELL fork */}
-        {arrowsP > 0 ? (
-          <>
-            <Arrow
-              dir="up"
-              label="BUY"
-              color={C.emerald}
-              op={fadeOf(arrowsP) * (isDown ? arrowsOut : winnerOut)}
-            />
-            <Arrow
-              dir="down"
-              label="SELL"
-              color={C.redHot}
-              op={fadeOf(arrowsP) * (isDown ? winnerOut : arrowsOut)}
-            />
-          </>
-        ) : null}
-      </svg>
+          {/* BUY / SELL fork */}
+          {arrowsP > 0 ? (
+            <>
+              <Arrow dir="up" label="BUY" color={C.emerald} op={fadeOf(arrowsP) * (isDown ? arrowsOut : winnerOut)} />
+              <Arrow dir="down" label="SELL" color={C.redHot} op={fadeOf(arrowsP) * (isDown ? winnerOut : arrowsOut)} />
+            </>
+          ) : null}
+        </svg>
 
-      {/* ---------------------------------------------------------- rule */}
-      {ruleP > 0 ? (
-        <div
-          style={{
-            position: 'absolute',
-            top: 1350,
-            left: 62,
-            right: 62,
-            opacity: fadeOf(ruleP),
-            transform: `translateY(${interpolate(ruleP, [0, 1], [30, 0])}px)`,
-            background: C.panel,
-            border: `1px solid ${C.line}`,
-            borderRadius: 26,
-            padding: '30px 34px',
-          }}
-        >
+        {/* -------------------------------------- 7. the ask (pre-answer) */}
+        {/* Fills the band under the screen while the viewer is deciding —
+         * without it the lower third sits empty for most of the reel. Hands
+         * straight over to the rule card once the answer lands. */}
+        {frame >= ARROWS_IN && frame < ANSWER_IN + 10 ? (
           <div
             style={{
-              fontFamily: FONT.mono,
-              fontWeight: 700,
-              fontSize: 24,
-              letterSpacing: 3,
-              color: C.amber,
-              marginBottom: 12,
+              position: 'absolute',
+              top: 1420,
+              left: 0,
+              right: 0,
+              textAlign: 'center',
+              opacity:
+                fadeOf(spring({frame: frame - ARROWS_IN, fps, config: SPRINGS.pop})) *
+                interpolate(frame, [ANSWER_IN - 6, ANSWER_IN + 10], [1, 0], {
+                  extrapolateLeft: 'clamp',
+                  extrapolateRight: 'clamp',
+                }),
             }}
           >
-            {p.ruleTitle.toUpperCase()}
+            <div
+              style={{
+                fontFamily: FONT.display,
+                fontWeight: 700,
+                fontSize: 62,
+                color: C.ink,
+                letterSpacing: -0.5,
+              }}
+            >
+              What happens next?
+            </div>
+            <div
+              style={{
+                fontFamily: FONT.mono,
+                fontSize: 26,
+                letterSpacing: 3,
+                color: C.muted,
+                marginTop: 16,
+              }}
+            >
+              CALL IT BEFORE THE TIMER
+            </div>
           </div>
-          <div style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 35, lineHeight: 1.34, color: C.ink}}>
-            {p.ruleText}
-          </div>
-        </div>
-      ) : null}
+        ) : null}
 
-      {/* -------------------------------------------------------- footer */}
+        {/* ----------------------------------------------------- 7. rule */}
+        {ruleP > 0 ? (
+          <div
+            style={{
+              position: 'absolute',
+              top: 1392,
+              left: 46,
+              right: 46,
+              opacity: fadeOf(ruleP),
+              transform: `translateY(${interpolate(ruleP, [0, 1], [30, 0])}px)`,
+              background: 'rgba(255,255,255,.045)',
+              border: `1px solid ${C.line}`,
+              borderRadius: 26,
+              padding: '24px 30px',
+              backdropFilter: 'blur(6px)',
+            }}
+          >
+            <div
+              style={{
+                fontFamily: FONT.mono,
+                fontWeight: 700,
+                fontSize: 24,
+                letterSpacing: 3,
+                color: C.amber,
+                marginBottom: 12,
+              }}
+            >
+              {p.ruleTitle.toUpperCase()}
+            </div>
+            <div style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 33, lineHeight: 1.3, color: C.ink}}>
+              {p.ruleText}
+            </div>
+          </div>
+        ) : null}
+      </AbsoluteFill>
+
+      {/* --------------------------------------------------- 8. footer */}
       <div
         style={{
           position: 'absolute',
-          bottom: 78,
+          bottom: 74,
           left: 0,
           right: 0,
           textAlign: 'center',
@@ -486,6 +736,15 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
         {p.footer}
       </div>
 
+      {/* ------------------------------------------- 9. finish layers */}
+      <AbsoluteFill
+        style={{
+          pointerEvents: 'none',
+          backgroundColor: answerColor,
+          mixBlendMode: 'soft-light',
+          opacity: 0.1,
+        }}
+      />
       <Grain />
       <Vignette />
     </AbsoluteFill>
