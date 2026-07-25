@@ -32,6 +32,22 @@ def load():
     return lib["patterns"] if isinstance(lib, dict) else lib
 
 
+# How many bars the highlight box should enclose. Boxing two candles around a
+# single-candle pattern (a doji, a hammer) visually mislabels it. For multi-bar
+# chart formations the box marks the completion bars, not the whole shape —
+# outlining a 15-bar head-and-shoulders would swallow the chart.
+SPAN_BY_FAMILY = {
+    "single-candle": 1,
+    "two-candle": 2,
+    "three-candle": 3,
+    "reversal-chart": 3,
+    "continuation-chart": 3,
+    "gap-window": 2,
+    "structure-level": 3,
+    "volume-indicator": 2,
+}
+
+
 def to_fixture(p):
     return {
         "kick": "TRADING QUIZ",
@@ -44,6 +60,7 @@ def to_fixture(p):
         "ruleText": p["ruleText"],
         "footer": FOOTER,
         "revealFrom": p["revealFrom"],
+        "patternSpan": SPAN_BY_FAMILY.get(p.get("family"), 2),
         "durationInFrames": DURATION,
         "candles": p["candles"],
     }

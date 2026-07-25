@@ -1,0 +1,148 @@
+{
+  "kick": "TRADING QUIZ",
+  "patternName": "LONG-LEGGED DOJI",
+  "levelPrice": 110,
+  "levelLabel": "RESISTANCE · TESTED 2x",
+  "answer": "SELL",
+  "answerLine": "Wild swings both ways, sellers won the next bar.",
+  "ruleTitle": "The confirmation",
+  "ruleText": "The open and close land near the middle of an unusually wide range, with long wicks on both sides showing violent back-and-forth trading and no net winner. Confirmation is the next candle closing below this candle's low.",
+  "footer": "Illustrative example, not a real chart — educational only, not financial advice · DYOR",
+  "revealFrom": 19,
+  "patternSpan": 1,
+  "durationInFrames": 546,
+  "candles": [
+    {
+      "o": 95,
+      "h": 95.4,
+      "l": 94.6,
+      "c": 95.2
+    },
+    {
+      "o": 95.2,
+      "h": 96,
+      "l": 95,
+      "c": 95.8
+    },
+    {
+      "o": 95.8,
+      "h": 96.6,
+      "l": 95.6,
+      "c": 96.4
+    },
+    {
+      "o": 96.4,
+      "h": 97.2,
+      "l": 96.2,
+      "c": 97
+    },
+    {
+      "o": 97,
+      "h": 97.8,
+      "l": 96.8,
+      "c": 97.6
+    },
+    {
+      "o": 97.6,
+      "h": 98.4,
+      "l": 97.4,
+      "c": 98.2
+    },
+    {
+      "o": 98.2,
+      "h": 99,
+      "l": 98,
+      "c": 98.8
+    },
+    {
+      "o": 98.8,
+      "h": 99.6,
+      "l": 98.6,
+      "c": 99.4
+    },
+    {
+      "o": 99.4,
+      "h": 110.2,
+      "l": 99.2,
+      "c": 101
+    },
+    {
+      "o": 101,
+      "h": 101.8,
+      "l": 100.8,
+      "c": 101.6
+    },
+    {
+      "o": 101.6,
+      "h": 102.4,
+      "l": 101.4,
+      "c": 102.2
+    },
+    {
+      "o": 102.2,
+      "h": 103,
+      "l": 102,
+      "c": 102.8
+    },
+    {
+      "o": 102.8,
+      "h": 103.6,
+      "l": 102.6,
+      "c": 103.4
+    },
+    {
+      "o": 103.4,
+      "h": 110.1,
+      "l": 102.3,
+      "c": 102.6
+    },
+    {
+      "o": 102.6,
+      "h": 103.4,
+      "l": 102.4,
+      "c": 103.2
+    },
+    {
+      "o": 103.2,
+      "h": 104,
+      "l": 103,
+      "c": 103.8
+    },
+    {
+      "o": 103.8,
+      "h": 104.6,
+      "l": 103.6,
+      "c": 104.4
+    },
+    {
+      "o": 104.4,
+      "h": 105.6,
+      "l": 104.2,
+      "c": 105.4
+    },
+    {
+      "o": 105.4,
+      "h": 110,
+      "l": 100.85,
+      "c": 105.45
+    },
+    {
+      "o": 105.45,
+      "h": 105.6,
+      "l": 103,
+      "c": 103.4
+    },
+    {
+      "o": 103.4,
+      "h": 103.6,
+      "l": 101.5,
+      "c": 101.9
+    },
+    {
+      "o": 101.9,
+      "h": 102.1,
+      "l": 100,
+      "c": 100.4
+    }
+  ]
+}

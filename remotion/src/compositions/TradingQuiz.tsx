@@ -40,6 +40,11 @@ export const tradingQuizSchema = z.object({
   /** Index of the first candle that belongs to the REVEAL (everything before
    * it is the visible setup the viewer is quizzed on). */
   revealFrom: z.number(),
+  /** How many candles the highlight box encloses, counting back from the last
+   * setup candle. A doji is 1, an engulfing is 2, a morning star is 3 —
+   * boxing the wrong count visually mislabels the pattern. Multi-bar chart
+   * formations use this to mark the completion bars, not the whole shape. */
+  patternSpan: z.number().optional(),
   candles: z.array(candleSchema).min(6),
   durationInFrames: z.number(),
 });
@@ -167,13 +172,15 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
     );
   };
 
-  // The two candles that form the pattern (setup candle + the engulfing one).
-  const pA = p.revealFrom - 2;
+  // The candles that form the pattern, counting back from the last setup bar.
+  const span = Math.max(1, Math.min(p.patternSpan ?? 2, p.revealFrom));
+  const pA = p.revealFrom - span;
   const pB = p.revealFrom - 1;
   const patX = cx(pA) - slot * 0.58;
-  const patW = slot * 2.16;
-  const patTop = priceToY(Math.max(p.candles[pA].h, p.candles[pB].h)) - 16;
-  const patBot = priceToY(Math.min(p.candles[pA].l, p.candles[pB].l)) + 16;
+  const patW = slot * (span + 0.16);
+  const boxed = p.candles.slice(pA, pB + 1);
+  const patTop = priceToY(Math.max(...boxed.map((k) => k.h))) - 16;
+  const patBot = priceToY(Math.min(...boxed.map((k) => k.l))) + 16;
 
   // Arrow origin: just right of the last setup candle.
   const oX = cx(p.revealFrom - 1) + slot * 0.8;
