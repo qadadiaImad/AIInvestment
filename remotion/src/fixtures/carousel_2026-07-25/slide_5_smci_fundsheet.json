@@ -1,0 +1,22 @@
+{
+  "logoSrc": "logos/SMCI.svg",
+  "kind": "fundsheet",
+  "kick": "THE SHEET",
+  "title": "Fundamental value vs price.",
+  "fv": 88.20,
+  "price": 28.31,
+  "fvLabel": "MODEL VALUE",
+  "priceLabel": "PRICE",
+  "verdict": "UNDERVALUED",
+  "stats": [
+    { "label": "P/E (TTM)", "value": "14.9x", "tone": "emerald" },
+    { "label": "NET MARGIN", "value": "3.7%", "tone": "amber" },
+    { "label": "GROSS MARGIN", "value": "8.4%", "tone": "red" },
+    { "label": "REV GROWTH YoY", "value": "+56.6%", "tone": "emerald" },
+    { "label": "1-YEAR RETURN", "value": "-44.3%", "tone": "red" },
+    { "label": "DEBT / EQUITY", "value": "1.21", "tone": "amber" }
+  ],
+  "footnote": "Figures as of July 11, 2026",
+  "durationInFrames": 300,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}
