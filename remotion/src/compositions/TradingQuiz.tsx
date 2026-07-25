@@ -53,12 +53,16 @@ const LEVEL_IN = 118;
 const PATTERN_IN = 158;
 const ARROWS_IN = 196;
 const COUNT_START = 232;
-const COUNT_PER = 28;
-const COUNT_N = 3;
-const ANSWER_IN = COUNT_START + COUNT_PER * COUNT_N; // 316
-const REVEAL_START = 344;
+// 5-second answer window: 5 digits at 1s each. Everything after the countdown
+// is derived from it, so changing COUNT_N/COUNT_PER can't desync the reveal.
+const COUNT_PER = 30;
+const COUNT_N = 5;
+const ANSWER_IN = COUNT_START + COUNT_PER * COUNT_N; // 382
+const REVEAL_START = ANSWER_IN + 28;
 const REVEAL_PER = 11;
-const RULE_IN = 392;
+const RULE_IN = REVEAL_START + 48;
+/** Minimum duration the timeline needs; fixtures should meet or exceed it. */
+export const TRADING_QUIZ_MIN_FRAMES = RULE_IN + 88; // -> 546
 
 // ---------------------------------------------------------------- geometry
 const CHART = {x0: 62, x1: 822, y0: 470, y1: 1250};
