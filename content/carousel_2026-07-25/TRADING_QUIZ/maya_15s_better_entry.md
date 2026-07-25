@@ -18,17 +18,21 @@ entry is a free improvement on a decision you were already going to make.
 |---|---|
 | 0.0 – 2.6s | You dollar-cost average. Keep doing it. |
 | 2.6 – 7.4s | But every buy still has a price — and prices aren't random. They stall at the same levels, again and again. |
-| 7.4 – 11.6s | Candlesticks just name that repetition. Not *what* to own. *When* not to rush. |
-| 11.6 – 15.0s | Same shares. Better average. That's the edge. |
+| 7.4 – 11.2s | Candlesticks just name that repetition. Not *what* to own — *when* not to rush. |
+| 11.2 – 15.0s | The company doesn't change. Your average does. |
 
 **Plain text (for the generator):**
 
-> You dollar-cost average. Keep doing it. But every buy still has a price — and prices aren't random. They stall at the same levels, again and again. Candlesticks just name that repetition. Not what to own. When not to rush. Same shares. Better average. That's the edge.
+> You dollar-cost average. Keep doing it. But every buy still has a price — and prices aren't random. They stall at the same levels, again and again. Candlesticks just name that repetition. Not what to own — when not to rush. The company doesn't change. Your average does.
 
 **Delivery notes.** Line 1 is a concession — warm, quick, no lecture. Line 2 is
 the pivot; land on "aren't random". Line 3 carries the correction: stress *what*
-and *when*, they're the contrast the whole script turns on. Line 4 is three short
-beats, slowing down — full stop between each.
+and *when*, they're the contrast the whole script turns on.
+
+Line 4 gets **3.8 seconds for eight words** — it should feel unhurried, almost
+thrown away. The two clauses mirror each other, so it carries itself; don't
+punch it. Small pause after "change", let "Your average does" fall softly and
+stop. No emphasis on the last word.
 
 ---
 
@@ -39,13 +43,13 @@ beats, slowing down — full stop between each.
 | 0.0s | DCA is right. |
 | 2.6s | But price still compounds. |
 | 7.4s | Not *what* — *when*. |
-| 11.6s | Same shares. Better average. |
+| 11.2s | The company doesn't change. Your average does. |
 
 ---
 
 ## Grok prompt
 
-> Load the Maya car reel skill and make a new one with this script: "You dollar-cost average. Keep doing it. But every buy still has a price — and prices aren't random. They stall at the same levels, again and again. Candlesticks just name that repetition. Not what to own. When not to rush. Same shares. Better average. That's the edge."
+> Load the Maya car reel skill and make a new one with this script: "You dollar-cost average. Keep doing it. But every buy still has a price — and prices aren't random. They stall at the same levels, again and again. Candlesticks just name that repetition. Not what to own — when not to rush. The company doesn't change. Your average does."
 >
 > Vertical 9:16, ~15 seconds, talking head only, no on-screen text, no chart.
 > For audio, adapt to this voice: `/home/workdir/artifacts/maya_voice_fingerprint.wav`
@@ -60,7 +64,7 @@ beats, slowing down — full stop between each.
 >
 > Candlesticks don't tell you *what* to own. They tell you *when* not to rush. 🕯️
 >
-> Same conviction. Same shares. Better average.
+> The company doesn't change. Your average does.
 >
 > Educational only, not financial advice · DYOR ⚠️
 >
