@@ -28,7 +28,7 @@
 // Green/red now appear only where they carry meaning: candles, the price tag,
 // and the reveal badge.
 import React from 'react';
-import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, interpolate, random, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 import {C, FONT} from '../slides/theme';
 import {EASE, SPRINGS, fadeOf, cameraPushIn} from '../motion/craft';
@@ -84,7 +84,13 @@ const T = {
 // ---------------------------------------------------------------- timing
 const DRAW_START = 40;
 const DRAW_PER = 6; // frames per setup candle
-const CANDLE_FORM = 7; // frames a single candle takes to "print"
+// Kept <= DRAW_PER so exactly one bar is live at a time; a finished bar must
+// never still be moving after the next one opens.
+const CANDLE_FORM = 6; // frames a single candle takes to "print"
+/** Discrete price ticks a bar prints in. Deliberately few: real tape jumps, it
+ * doesn't ease. Three hard steps read as a bar trading; a smooth grow reads as
+ * an animation of a bar. */
+const CANDLE_TICKS = 3;
 const SCREEN_IN = 8;
 const GRID_IN = 26;
 const LEVEL_IN = 118;
@@ -218,29 +224,60 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
     ? p.revealFrom + revealedCount - 1
     : Math.max(0, drawnCount - 1);
   const lastK = p.candles[lastIdx];
+  // Same tick maths the bar itself uses, so the tag reads the live print rather
+  // than jumping straight to a close that hasn't happened yet.
+  const liveClose = (() => {
+    if (!lastK) return 0;
+    const appearAt =
+      lastIdx >= p.revealFrom
+        ? REVEAL_START + (lastIdx - p.revealFrom) * REVEAL_PER
+        : DRAW_START + lastIdx * DRAW_PER;
+    const raw = (frame - appearAt) / CANDLE_FORM;
+    const step = Math.min(CANDLE_TICKS, Math.ceil(Math.min(1, Math.max(0, raw)) * CANDLE_TICKS));
+    if (step >= CANDLE_TICKS) return lastK.c;
+    const f = step / CANDLE_TICKS;
+    const hN = lastK.o + (lastK.h - lastK.o) * Math.min(1, f * 1.22);
+    const lN = lastK.o + (lastK.l - lastK.o) * Math.min(1, f * 1.22);
+    const drift = (random(`k${lastIdx}t${step}`) - 0.5) * (lastK.h - lastK.l) * 0.7;
+    return Math.max(lN, Math.min(hN, lastK.o + (lastK.c - lastK.o) * f + drift));
+  })();
+  const liveUp = liveClose >= (lastK?.o ?? 0);
   const tagOpacity =
     interpolate(frame, [DRAW_START + 6, DRAW_START + 20], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) *
     interpolate(frame, [ARROWS_IN - 10, ARROWS_IN + 4], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) +
     interpolate(frame, [REVEAL_START, REVEAL_START + 10], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
 
+  // A bar prints the way a live one actually does, not the way an animation
+  // does: it opens, ticks in hard discrete jumps, wanders inside its own range,
+  // flips colour when the last trade crosses the open, and only snaps to the
+  // real close on the final tick. No easing, no fade-in — those are what made
+  // the old version read as a diagram assembling itself.
   const renderCandle = (k: z.infer<typeof candleSchema>, i: number, appearAt: number) => {
-    const t = interpolate(frame, [appearAt, appearAt + CANDLE_FORM], [0, 1], {
-      easing: EASE.enter,
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-    });
-    if (t <= 0) return null;
-    // The candle "prints" outward from its open price — reads as live tape.
-    const hNow = k.o + (k.h - k.o) * t;
-    const lNow = k.o + (k.l - k.o) * t;
-    const cNow = k.o + (k.c - k.o) * t;
-    const up = k.c >= k.o;
-    const col = up ? C.emerald : C.redHot;
+    const raw = (frame - appearAt) / CANDLE_FORM;
+    if (raw <= 0) return null;
+    const step = Math.min(CANDLE_TICKS, Math.ceil(Math.min(1, raw) * CANDLE_TICKS));
+    const settled = step >= CANDLE_TICKS;
+    const f = step / CANDLE_TICKS;
+
+    // Wicks only ever widen — a bar's high can't come back down once traded.
+    const hNow = k.o + (k.h - k.o) * Math.min(1, f * 1.22);
+    const lNow = k.o + (k.l - k.o) * Math.min(1, f * 1.22);
+
+    // Mid-bar the last trade wanders inside the range; the closing tick lands
+    // exactly on `c`. Seeded off (bar, tick) so every render is identical.
+    const drift = (random(`k${i}t${step}`) - 0.5) * (k.h - k.l) * 0.7;
+    const cNow = settled
+      ? k.c
+      : Math.max(lNow, Math.min(hNow, k.o + (k.c - k.o) * f + drift));
+
+    // Colour tracks the live print, so a bar can flip red/green while it trades
+    // and only commits on the close — which is what a real chart does.
+    const col = cNow >= k.o ? C.emerald : C.redHot;
     const x = cx(i);
     const yTop = priceToY(Math.max(k.o, cNow));
     const yBot = priceToY(Math.min(k.o, cNow));
     return (
-      <g key={i} opacity={fadeOf(t)} style={{filter: `drop-shadow(0 0 8px ${col}99)`}}>
+      <g key={i} style={{filter: `drop-shadow(0 0 ${settled ? 6 : 11}px ${col}${settled ? '77' : 'cc'})`}}>
         <line x1={x} x2={x} y1={priceToY(hNow)} y2={priceToY(lNow)} stroke={col} strokeWidth={2.5} />
         <rect x={x - bodyW / 2} y={yTop} width={bodyW} height={Math.max(2, yBot - yTop)} rx={2} fill={col} />
       </g>
@@ -376,7 +413,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
             }}
           >
             {p.indexLabel ? <span style={{color: T.steel}}>{p.indexLabel}</span> : null}
-            PATTERN LAB
+            MAYA LAB
           </div>
           <div style={{fontFamily: FONT.display, fontWeight: 700, fontSize: 76, color: C.ink, letterSpacing: -1}}>
             {p.kick.split(' ')[0]}{' '}
@@ -533,7 +570,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
                 color: T.steel,
               }}
             >
-              PATTERN LAB — {p.patternName}
+              MAYA LAB — {p.patternName}
             </div>
             <div style={{marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8}}>
               <div
@@ -617,32 +654,32 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               <line
                 x1={cx(lastIdx)}
                 x2={CHART.x1 + 6}
-                y1={priceToY(lastK.c)}
-                y2={priceToY(lastK.c)}
-                stroke={lastK.c >= lastK.o ? C.emerald : C.redHot}
+                y1={priceToY(liveClose)}
+                y2={priceToY(liveClose)}
+                stroke={liveUp ? C.emerald : C.redHot}
                 strokeWidth={1.5}
                 strokeDasharray="4 5"
                 opacity={0.7}
               />
               <rect
                 x={CHART.x1 + 8}
-                y={priceToY(lastK.c) - 19}
+                y={priceToY(liveClose) - 19}
                 width={104}
                 height={38}
                 rx={8}
-                fill={lastK.c >= lastK.o ? C.emerald : C.redHot}
-                style={{filter: `drop-shadow(0 0 12px ${lastK.c >= lastK.o ? C.emerald : C.redHot}77)`}}
+                fill={liveUp ? C.emerald : C.redHot}
+                style={{filter: `drop-shadow(0 0 12px ${liveUp ? C.emerald : C.redHot}77)`}}
               />
               <text
                 x={CHART.x1 + 60}
-                y={priceToY(lastK.c) + 8}
-                fill={C.bg}
+                y={priceToY(liveClose) + 8}
+                fill={T.bg}
                 fontFamily={FONT.mono}
                 fontWeight={800}
                 fontSize={23}
                 textAnchor="middle"
               >
-                {lastK.c.toFixed(1)}
+                {liveClose.toFixed(1)}
               </text>
             </g>
           ) : null}
