@@ -49,7 +49,7 @@ automatically "best stock" without a fundamentals check.
 
 | Slide | On-screen headline ("post") | Spoken (target ~6s / ~14-17 words) |
 |---|---|---|
-| 1 — Congress | "PELOSI FILING: UP TO $6M INTEL CALLS" | "Congress just filed it — Paul Pelosi bought up to six million dollars in Intel call options." |
+| 1 — Congress | "PELOSI FILING: $1M–$5M INTEL CALLS" | "Congress just filed it — Paul Pelosi bought one to five million dollars in Intel call options." |
 | 1b — Why Intel | "GOV STAKE. APPLE DEAL. AI + QUANTUM." | "Intel just landed a government stake, an Apple foundry deal, and record AI-chip demand." |
 | 2 — DUOL | "DUOLINGO: DOWN 68%. MARGINS: UP." | "Duolingo is down sixty-eight percent this year, but net margins sit at thirty-eight percent." |
 | 3 — INTU | "INTUIT: PRICED LIKE IT'S FAILING. IT'S NOT." | "Intuit's down sixty-four percent too — priced sixty-six percent below its modeled fair value." |
@@ -59,9 +59,31 @@ Full text also written to `voice/*.txt` (one file per beat, matching the
 InfraCountdown script convention) for whichever TTS/voice-clone pipeline
 picks this up.
 
+## Rendered carousel (4 slides, 1080×1350, PNG)
+
+Built on the `KurzSlide` engine (same one used for the AMD/INTC/QBTS
+carousels), `kind: "news"` for slides 1–2 and `kind: "fundsheet"` for slides
+3–4. Logos: `logos/INTC.svg` (existing), `logos/DUOL.svg` + `logos/INTU.svg`
+(new, generated from `simple-icons` v16.27.0 — same source/process as the
+existing logo set).
+
+| File | Fixture |
+|---|---|
+| `slide_1_congress_news.png` | `remotion/src/fixtures/carousel_2026-07-25/slide_1_congress_news.json` |
+| `slide_2_intel_bullcase_news.png` | `remotion/src/fixtures/carousel_2026-07-25/slide_2_intel_bullcase_news.json` |
+| `slide_3_duol_fundsheet.png` | `remotion/src/fixtures/carousel_2026-07-25/slide_3_duol_fundsheet.json` |
+| `slide_4_intu_fundsheet.png` | `remotion/src/fixtures/carousel_2026-07-25/slide_4_intu_fundsheet.json` |
+
+Render command (settled frame — a raw `still` at frame 0 catches the
+entrance springs mid-animation):
+```
+npx remotion still src/index.ts KurzSlide out.png --props=<fixture>.json \
+  --frame=150 --browser-executable=/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell
+```
+
 ## Master IG/TikTok caption
 
-Congress just filed it: Paul Pelosi (Nancy Pelosi's husband) disclosed Intel call options worth up to $6M — public record, dated, not a signal, just attention.
+Congress just filed it: Paul Pelosi (Nancy Pelosi's husband) disclosed Intel call options — 200 contracts, $50 strike, exp 3/19/2027, filed as a $1M–$5M position. Public record, dated, not a signal, just attention.
 
 It landed right as Intel stacked up real catalysts: a 9.9% US government equity stake (now worth ~$36B after the stock's run), a confirmed Apple foundry deal on the new 18A chip process, Panther Lake AI PCs shipping, an NVIDIA equity stake and co-design partnership, and a real quantum-computing research program running with national labs. Not sugar-coating it — 18A yields are still below profitable levels per reporting, this is a turnaround in progress, not a victory lap.
 

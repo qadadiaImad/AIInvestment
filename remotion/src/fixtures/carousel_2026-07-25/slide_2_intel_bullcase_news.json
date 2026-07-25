@@ -1,0 +1,49 @@
+{
+  "logoSrc": "logos/INTC.svg",
+  "kind": "news",
+  "kick": "WHY IT'S IN THE NEWS",
+  "title": "Real catalysts, not hype.",
+  "items": [
+    {
+      "date": "8/'25",
+      "tag": "FACT",
+      "text": [
+        { "t": "US converts CHIPS Act funds into a " },
+        { "t": "9.9% Intel equity stake", "b": true },
+        { "t": " — now worth " },
+        { "t": "~$36B", "tone": "emerald", "b": true },
+        { "t": "." }
+      ]
+    },
+    {
+      "date": "1/15",
+      "tag": "FACT",
+      "text": [
+        { "t": "Apple confirmed as an " },
+        { "t": "Intel 18A foundry customer", "b": true },
+        { "t": " at CES 2026." }
+      ]
+    },
+    {
+      "date": "12/'25",
+      "tag": "FACT",
+      "text": [
+        { "t": "NVIDIA takes an " },
+        { "t": "equity stake in Intel", "b": true },
+        { "t": " + signs a custom x86 co-design deal." }
+      ]
+    },
+    {
+      "date": "2026",
+      "tag": "REPORTED",
+      "text": [
+        { "t": "Quantum push underway: " },
+        { "t": "Tunnel Falls chip", "b": true },
+        { "t": " + national-lab partnerships." }
+      ]
+    }
+  ],
+  "durationInFrames": 300,
+  "footer": "Educational market commentary — not financial advice · DYOR",
+  "footnote": "Reported/filed as cited — not a recommendation. 18A yields still below profitable levels."
+}

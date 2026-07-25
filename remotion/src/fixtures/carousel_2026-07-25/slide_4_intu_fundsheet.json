@@ -1,0 +1,22 @@
+{
+  "logoSrc": "logos/INTU.svg",
+  "kind": "fundsheet",
+  "kick": "THE SHEET",
+  "title": "Fundamental value vs price.",
+  "fv": 814.91,
+  "price": 274.96,
+  "fvLabel": "MODEL VALUE",
+  "priceLabel": "PRICE",
+  "verdict": "UNDERVALUED",
+  "stats": [
+    { "label": "P/E (TTM)", "value": "16.6x", "tone": "emerald" },
+    { "label": "NET MARGIN", "value": "21.9%", "tone": "emerald" },
+    { "label": "GROSS MARGIN", "value": "77.6%", "tone": "emerald" },
+    { "label": "REV GROWTH YoY", "value": "+15.1%", "tone": "amber" },
+    { "label": "1-YEAR RETURN", "value": "-64.2%", "tone": "red" },
+    { "label": "DEBT / EQUITY", "value": "0.33", "tone": "muted" }
+  ],
+  "footnote": "Figures as of July 11, 2026",
+  "durationInFrames": 300,
+  "footer": "Educational market commentary — not financial advice · DYOR"
+}

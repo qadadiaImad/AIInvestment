@@ -1,0 +1,39 @@
+{
+  "logoSrc": "logos/INTC.svg",
+  "kind": "news",
+  "kick": "CONGRESS FILES",
+  "title": "Public record, dated.",
+  "items": [
+    {
+      "date": "5/29",
+      "tag": "FACT",
+      "text": [
+        { "t": "Pelosi-household PTR: " },
+        { "t": "200 Intel call options, $50 strike", "b": true },
+        { "t": ", expiring 3/19/2027." }
+      ]
+    },
+    {
+      "date": "6/23",
+      "tag": "FACT",
+      "text": [
+        { "t": "Filed as a " },
+        { "t": "$1M–$5M", "tone": "emerald", "b": true },
+        { "t": " position. " },
+        { "t": "Disclosure — not an accusation, not a signal.", "tone": "amber", "b": true }
+      ]
+    },
+    {
+      "date": "6/22",
+      "tag": "REPORTED",
+      "text": [
+        { "t": "Filed one day after Intel's " },
+        { "t": "government-stake and new-customer coverage", "b": true },
+        { "t": " broke." }
+      ]
+    }
+  ],
+  "durationInFrames": 270,
+  "footer": "Educational market commentary — not financial advice · DYOR",
+  "footnote": "Congress trades are public record — transparency, not a buy signal"
+}

@@ -14,10 +14,6 @@ late June 2026) fills in detail the local bundle doesn't have:
 
 - It's **call options**, not common stock: 200 contracts, $50 strike,
   expiring March 19, 2027 — the right to acquire 20,000 Intel shares.
-- Multiple outlets report the disclosed range as **up to $6.00M**
-  (Benzinga/Moneywise/TheStreet), not the $1–5M our local bundle shows —
-  congressional PTR ranges are reported in bands and can vary slightly by
-  source/aggregator; use "up to $6M" as the more current figure.
 - It's filed under Nancy Pelosi's name (standard for congressional
   disclosure), but multiple outlets specify the trade was **executed by her
   husband, Paul Pelosi** — same filing, same day, alongside an identical
@@ -30,8 +26,21 @@ late June 2026) fills in detail the local bundle doesn't have:
   wasn't a contrarian bet, it rode a stock already in the middle of a huge
   re-rating.
 
-**Corrected slide 1 script:** "Congress just filed it — Paul Pelosi bought up
-to six million dollars in Intel call options." (14 words, ~5.8s)
+**Dollar range, reconciled:** some outlets (Benzinga/Moneywise/TheStreet)
+report "up to $6.00M" — but while building the rendered carousel it turned
+out this exact filing was **already vetted in this repo**, in an untouched
+`carousel_2026-07-22/INTC` slide from a prior session
+(`remotion/src/fixtures/carousel_2026-07-22/intc_6_news.json`), which uses
+the PTR-filed **$1M–$5M** range (200 calls, $50 strike, exp 3/19/2027 — same
+details, independently arrived at). Going with **$1M–$5M** as the primary
+figure since it matches the actual disclosed PTR bucket and was already
+cross-confirmed once; the "$6M" figure some outlets cite most likely
+aggregates this Intel position with the identical-structure Uber options
+filed the same day. Noting the discrepancy here rather than silently picking
+one.
+
+**Corrected slide 1 script:** "Congress just filed it — Paul Pelosi bought
+one to five million dollars in Intel call options." (14 words, ~5.8s)
 
 Compliance note unchanged from `brief.md`: public record, dated, transparency
 framing only — this describes what was filed, not a recommendation to mirror
@@ -90,14 +99,13 @@ that way on-screen, don't flatten to "fact."
 7. **Altera (Intel's FPGA unit) returned to growth on AI/robotics demand** —
    already surfaced in this repo's own `news.json` bundle (2026-07-11 stamp).
 
-## Suggested 4th beat (extends the reel to ~4 slides + outro)
+## Built as slide 2 (rendered)
 
-| Slide | On-screen headline | Spoken (~6s) |
-|---|---|---|
-| 1b — Why Intel | "GOV STAKE. APPLE DEAL. AI + QUANTUM." | "Intel just landed a government stake, an Apple foundry deal, and record AI-chip demand." |
-
-If you'd rather keep it to 3 slides, this can fold into slide 1's on-screen
-subtext instead of getting its own beat — your call.
+This became its own carousel slide rather than folding into slide 1's
+subtext: `slide_2_intel_bullcase_news.png`, kick "WHY IT'S IN THE NEWS",
+4 news items (gov stake, Apple deal, NVIDIA, quantum), from
+`remotion/src/fixtures/carousel_2026-07-25/slide_2_intel_bullcase_news.json`
+via the `KurzSlide`/`kind: "news"` engine — same template as slide 1.
 
 ## Sources
 
