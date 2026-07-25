@@ -139,14 +139,19 @@ Educational only, not financial advice — DYOR.
 - Disclaimer present in caption; recommend a spoken/on-screen "not financial
   advice" tag on the outro slide too when this gets built into video.
 
-## Voiceover — not yet generated (same sandbox blocker as prior posts)
+## Voiceover — not yet generated
 
-Maya's voice isn't cloned anywhere in this repo yet (see `CHOKEPOINT_TSMC/brief.md`'s
-Voiceover section — no reference sample, and this session can't reach
-`huggingface.co`/Speechify/etc. regardless). Scripts below are ready to record
-whenever that's unblocked; each is deliberately self-contained (no "as you
-can see" visual-dependent phrasing) so they work read back-to-back without
-waiting on slide transitions, per your instruction.
+Maya has a voice fingerprint at
+`/home/workdir/artifacts/maya_voice_fingerprint.wav` (Grok's workspace, not this
+repo), so these scripts **can** be voiced via Grok — see
+[`higgs/maya-grok-conventions.md`](../../../higgs/maya-grok-conventions.md) for
+the required prompt format (skill invocation + voice line). What's still blocked
+is generating audio *locally from this sandbox*: `huggingface.co` and Speechify
+are both denied by the egress policy.
+
+Each script is deliberately self-contained (no "as you can see" visual-dependent
+phrasing) so they work read back-to-back without waiting on slide transitions,
+per your instruction.
 
 ## Next step (not done yet)
 

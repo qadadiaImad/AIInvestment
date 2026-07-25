@@ -80,13 +80,16 @@ surprising number per beat.
 Voice generation is **not available in this sandbox** — same blocker as the
 Karim InfraCountdown voiceover: Chatterbox-style zero-shot cloning needs
 `huggingface.co` for model weights, and this session's network policy blocks
-that host (confirmed via the proxy's relay-failure log). Unlike Karim, there
-is also no existing Maya reference voice sample in this repo yet (only a
-Higgsfield avatar reference, `higgs/_maya_avatar.json` — no audio). Leaving
-this for later per your instruction: the script below is ready to record
-(any TTS/voice-clone pipeline, run wherever you have model access), and once
-there's a reference clip for Maya's voice the same `scripts/voice/` pattern
-used for Karim can be adapted for her.
+that host (confirmed via the proxy's relay-failure log). The script below is
+ready to record on any pipeline with model access.
+
+**Update:** Maya now has a voice fingerprint at
+`/home/workdir/artifacts/maya_voice_fingerprint.wav` (Grok's workspace, not
+this repo) — so the **Grok route can generate her audio**, even though this
+sandbox's local TTS path is still blocked. See
+[`higgs/maya-grok-conventions.md`](../../../higgs/maya-grok-conventions.md)
+for the required prompt format. A local `scripts/voice/` pipeline mirroring
+Karim's would still need the fingerprint copied into the repo.
 
 Script: [`voice/maya_script.txt`](voice/maya_script.txt) — ~115 words, timed
 for a 35–45s Reel.
