@@ -47,6 +47,10 @@ export const tradingQuizSchema = z.object({
   levelPrice: z.number(),
   levelLabel: z.string(),
   answer: z.enum(['BUY', 'SELL']),
+  /** Overrides the badge text without changing the colour semantics. Real
+   * tickers use this ("IT FELL 21%") so a hindsight reel never puts a literal
+   * SELL call on a live name; synthetic patterns leave it unset. */
+  answerLabel: z.string().optional(),
   answerLine: z.string(),
   ruleTitle: z.string(),
   ruleText: z.string(),
@@ -61,6 +65,9 @@ export const tradingQuizSchema = z.object({
   patternSpan: z.number().optional(),
   /** Small index chip above the title, e.g. "#14" — the library id. */
   indexLabel: z.string().optional(),
+  /** Terminal chrome-bar label. Defaults to the pattern name; real-data reels
+   * put the instrument and timeframe here ("INTC · DAILY"). */
+  subject: z.string().optional(),
   candles: z.array(candleSchema).min(6),
   durationInFrames: z.number(),
 });
@@ -497,7 +504,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
                 boxShadow: `0 0 70px ${answerColor}88`,
               }}
             >
-              {p.answer}
+              {p.answerLabel ?? p.answer}
             </div>
           </div>
         ) : null}
@@ -570,7 +577,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
                 color: T.steel,
               }}
             >
-              MAYA LAB — {p.patternName}
+              MAYA LAB — {p.subject ?? p.patternName}
             </div>
             <div style={{marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8}}>
               <div

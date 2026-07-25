@@ -1,0 +1,163 @@
+{
+  "kick": "REAL CHART",
+  "indexLabel": "INTC",
+  "subject": "INTC · DAILY · JUN 2026",
+  "patternName": "FAILED BREAKOUT",
+  "levelPrice": 141.45,
+  "levelLabel": "RESISTANCE 141.45 · 3 TOUCHES",
+  "answer": "SELL",
+  "answerLabel": "IT FELL 21%",
+  "answerLine": "Higher high, lower close. It never closed above the level.",
+  "ruleTitle": "What the chart said",
+  "ruleText": "Three touches of 141.45, no close above it. The last one printed a higher high on a LOWER close than the first peak — a marginal break that failed. The rule is stateable before the fact: a breakout is not a breakout until price CLOSES above the level. It never did. The swing low at 118.50 broke a week later; INTC went on to 89.59.",
+  "footer": "INTC daily bars, IBKR, pulled 2026-07-25 · Educational only — not financial advice · Hindsight example — DYOR",
+  "revealFrom": 19,
+  "patternSpan": 3,
+  "durationInFrames": 546,
+  "candles": [
+    {
+      "o": 116.42,
+      "h": 118.29,
+      "l": 110.86,
+      "c": 112.71
+    },
+    {
+      "o": 108.4,
+      "h": 113.14,
+      "l": 107.48,
+      "c": 111.78
+    },
+    {
+      "o": 106.38,
+      "h": 106.48,
+      "l": 98.33,
+      "c": 99.17
+    },
+    {
+      "o": 111,
+      "h": 112.54,
+      "l": 106.66,
+      "c": 110.27
+    },
+    {
+      "o": 112.99,
+      "h": 114,
+      "l": 99.46,
+      "c": 107.92
+    },
+    {
+      "o": 106.02,
+      "h": 111.5,
+      "l": 104.92,
+      "c": 107.04
+    },
+    {
+      "o": 113.52,
+      "h": 119.44,
+      "l": 110.51,
+      "c": 116.96
+    },
+    {
+      "o": 117.44,
+      "h": 127.6,
+      "l": 115.33,
+      "c": 124.57
+    },
+    {
+      "o": 129.49,
+      "h": 132.61,
+      "l": 126.66,
+      "c": 127.86
+    },
+    {
+      "o": 125.11,
+      "h": 128.7,
+      "l": 116,
+      "c": 117.05
+    },
+    {
+      "o": 121.89,
+      "h": 125.2,
+      "l": 118.06,
+      "c": 121.1
+    },
+    {
+      "o": 131.67,
+      "h": 135.48,
+      "l": 127.9,
+      "c": 133.99
+    },
+    {
+      "o": 139.12,
+      "h": 141.45,
+      "l": 136.21,
+      "c": 140.94
+    },
+    {
+      "o": 129.71,
+      "h": 137.98,
+      "l": 128.3,
+      "c": 132.28
+    },
+    {
+      "o": 133.05,
+      "h": 136.08,
+      "l": 128,
+      "c": 131.65
+    },
+    {
+      "o": 139.72,
+      "h": 140.72,
+      "l": 125.41,
+      "c": 132.87
+    },
+    {
+      "o": 128.67,
+      "h": 131.23,
+      "l": 125.5,
+      "c": 128.32
+    },
+    {
+      "o": 126.99,
+      "h": 132.05,
+      "l": 118.5,
+      "c": 131.72
+    },
+    {
+      "o": 131.99,
+      "h": 142.35,
+      "l": 131.52,
+      "c": 139.63
+    },
+    {
+      "o": 135,
+      "h": 135.74,
+      "l": 126.68,
+      "c": 127.02
+    },
+    {
+      "o": 129,
+      "h": 130.74,
+      "l": 117.63,
+      "c": 120.35
+    },
+    {
+      "o": 122.57,
+      "h": 127.3,
+      "l": 121.52,
+      "c": 122.2
+    },
+    {
+      "o": 116.3,
+      "h": 116.47,
+      "l": 108.3,
+      "c": 110.39
+    },
+    {
+      "o": 108.5,
+      "h": 110.49,
+      "l": 104.41,
+      "c": 110.24
+    }
+  ]
+}
