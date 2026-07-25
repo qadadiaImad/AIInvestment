@@ -5,23 +5,25 @@ Link is the deployed AI STACK terminal (`RESUME.md`, last deployed 2026-06-20):
 **https://web-gules-three-67.vercel.app**
 
 Kept emoji-free / dry-analyst tone on purpose — matches the established
-persona ("not a hype creator... no emoji-spam").
+persona ("not a hype creator... no emoji-spam"). Locked wording: same
+day/night structural device as the classic "X by day, Y by night" bio, but
+concrete nouns (filings, commits) instead of job-title clichés.
 
 ## Instagram (bio field, ~150 char limit)
 
 ```
-Markets analyst. AI stack, chips, energy, quantum, congress trades — fundamentals over hype. Educational only, DYOR. Live terminal ↓
+Filings by day, commits by night. AI stack, chips, energy, quantum, congress trades. Educational only, DYOR. ↓
 ```
-(132 chars — fits with room to spare)
+(112 chars)
 
 Website field: `https://web-gules-three-67.vercel.app`
 
 ## TikTok (bio field, ~80 char limit)
 
 ```
-AI stack analyst. Fundamentals over hype. Not financial advice.
+Filings by day. Commits by night.
 ```
-(63 chars)
+(35 chars)
 
 Website field: `https://web-gules-three-67.vercel.app`
 
