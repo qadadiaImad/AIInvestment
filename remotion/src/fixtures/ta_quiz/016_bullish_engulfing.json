@@ -7,9 +7,10 @@
   "answerLine": "Second body swallows the first. Buyers took control.",
   "ruleTitle": "The setup",
   "ruleText": "A bearish candle at support is followed by a larger bullish candle that opens below the prior close and closes above the prior open, fully engulfing the previous body. Confirmation is the full engulf on a closing basis, not just a wick.",
-  "footer": "Illustrative example, not a real chart — educational only, not financial advice · DYOR",
+  "footer": "Synthetic chart, not real market data · Educational only — not financial advice · DYOR",
   "revealFrom": 18,
   "patternSpan": 2,
+  "indexLabel": "#16",
   "durationInFrames": 546,
   "candles": [
     {

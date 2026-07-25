@@ -7,9 +7,10 @@
   "answerLine": "Sellers pushed it down, buyers slammed it back up.",
   "ruleTitle": "The confirmation",
   "ruleText": "After a downtrend, price sells off intraday to test support, then closes back near the candle's high, leaving a lower wick at least twice the real body. Confirmation is the next candle closing above the hammer's high.",
-  "footer": "Illustrative example, not a real chart — educational only, not financial advice · DYOR",
+  "footer": "Synthetic chart, not real market data · Educational only — not financial advice · DYOR",
   "revealFrom": 19,
   "patternSpan": 1,
+  "indexLabel": "#7",
   "durationInFrames": 546,
   "candles": [
     {

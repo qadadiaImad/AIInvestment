@@ -20,6 +20,13 @@
 //
 // Engine, not a one-off: swap the fixture and the same composition renders a
 // different pattern quiz. See scripts/ta_quiz/ and the ta-chart-quiz skill.
+//
+// Palette note: the ambient colour is deliberately NEUTRAL (navy + a ruled
+// blue-grey grid, per the reference boards). Earlier versions tinted the whole
+// frame with `answerColor`, which read as generated-looking wash AND leaked the
+// answer — a green countdown ring told you "BUY" before the timer ran out.
+// Green/red now appear only where they carry meaning: candles, the price tag,
+// and the reveal badge.
 import React from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
@@ -52,10 +59,27 @@ export const tradingQuizSchema = z.object({
    * boxing the wrong count visually mislabels the pattern. Multi-bar chart
    * formations use this to mark the completion bars, not the whole shape. */
   patternSpan: z.number().optional(),
+  /** Small index chip above the title, e.g. "#14" — the library id. */
+  indexLabel: z.string().optional(),
   candles: z.array(candleSchema).min(6),
   durationInFrames: z.number(),
 });
 export type TradingQuizProps = z.infer<typeof tradingQuizSchema>;
+
+// ------------------------------------------------------------------ palette
+/** Board theme: deep navy, ruled grid, cool neutral accent. Kept local to this
+ * composition so the shared slide theme is untouched. */
+const T = {
+  bg: '#070A11',
+  grid: 'rgba(126,158,201,0.085)',
+  gridBold: 'rgba(126,158,201,0.17)',
+  /** Neutral accent — carries no bullish/bearish meaning. */
+  ice: '#8FB6E8',
+  steel: '#6F819A',
+  panelTop: '#0C1119',
+  panelBot: '#070A10',
+  edge: 'rgba(126,158,201,0.17)',
+};
 
 // ---------------------------------------------------------------- timing
 const DRAW_START = 40;
@@ -268,31 +292,54 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   };
 
   return (
-    <AbsoluteFill style={{background: C.bg, fontFamily: FONT.body}}>
-      {/* ------------------------------------------------- 1. background */}
+    <AbsoluteFill style={{background: T.bg, fontFamily: FONT.body}}>
+      {/* ------------------------------------------------- 1. background
+       * A ruled blue-grey grid on deep navy. Soft blurred colour blobs were
+       * what made the old frame read as machine-made filler; a drafting grid
+       * reads as something that was laid out on purpose. It drifts a few px so
+       * the plate isn't dead, and never carries the answer's colour. */}
       <AbsoluteFill>
-        <div
+        <svg
+          width={1080}
+          height={1920}
           style={{
             position: 'absolute',
-            width: 1250,
-            height: 1250,
-            borderRadius: '50%',
-            top: -430 + Math.sin(frame / 90) * 34,
-            left: -280 + Math.cos(frame / 110) * 40,
-            filter: 'blur(70px)',
-            background: `radial-gradient(circle, ${answerColor}22, transparent 62%)`,
+            inset: 0,
+            transform: `translate(${Math.sin(frame / 220) * 5}px, ${Math.cos(frame / 260) * 6}px)`,
           }}
-        />
+        >
+          {Array.from({length: 14}, (_, i) => i * 90).map((x, i) => (
+            <line
+              key={`v${x}`}
+              x1={x}
+              x2={x}
+              y1={-40}
+              y2={1960}
+              stroke={i % 3 === 0 ? T.gridBold : T.grid}
+              strokeWidth={1}
+            />
+          ))}
+          {Array.from({length: 23}, (_, i) => i * 90).map((y, i) => (
+            <line
+              key={`h${y}`}
+              x1={-40}
+              x2={1120}
+              y1={y}
+              y2={y}
+              stroke={i % 3 === 0 ? T.gridBold : T.grid}
+              strokeWidth={1}
+            />
+          ))}
+        </svg>
+        {/* single cool wash so the grid isn't uniformly flat — neutral, never
+         * keyed to BUY/SELL */}
         <div
           style={{
             position: 'absolute',
-            width: 980,
-            height: 980,
-            borderRadius: '50%',
-            bottom: -400 - Math.cos(frame / 100) * 30,
-            right: -250 + Math.sin(frame / 120) * 34,
-            filter: 'blur(85px)',
-            background: `radial-gradient(circle, ${C.amber}1c, transparent 65%)`,
+            inset: 0,
+            background:
+              'radial-gradient(120% 60% at 50% 8%, rgba(58,96,148,0.20), transparent 62%),' +
+              'radial-gradient(100% 50% at 50% 104%, rgba(28,44,72,0.35), transparent 60%)',
           }}
         />
       </AbsoluteFill>
@@ -303,7 +350,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
         <div
           style={{
             position: 'absolute',
-            top: 138 + hookShift,
+            top: 112 + hookShift,
             left: 0,
             right: 0,
             textAlign: 'center',
@@ -311,9 +358,29 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
             transform: `scale(${interpolate(hookP, [0, 1], [0.86, 1])})`,
           }}
         >
+          {/* index chip — the reference boards number every card */}
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 10,
+              fontFamily: FONT.mono,
+              fontWeight: 700,
+              fontSize: 21,
+              letterSpacing: 4,
+              color: T.ice,
+              border: `1px solid ${T.edge}`,
+              borderRadius: 999,
+              padding: '6px 18px',
+              marginBottom: 14,
+            }}
+          >
+            {p.indexLabel ? <span style={{color: T.steel}}>{p.indexLabel}</span> : null}
+            PATTERN LAB
+          </div>
           <div style={{fontFamily: FONT.display, fontWeight: 700, fontSize: 76, color: C.ink, letterSpacing: -1}}>
             {p.kick.split(' ')[0]}{' '}
-            <span style={{color: C.emerald}}>{p.kick.split(' ').slice(1).join(' ')}</span>
+            <span style={{color: T.ice}}>{p.kick.split(' ').slice(1).join(' ')}</span>
           </div>
         </div>
 
@@ -331,18 +398,19 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
           >
             <div style={{position: 'relative', width: 132, height: 132}}>
               <svg width={132} height={132} style={{position: 'absolute', inset: 0, transform: 'rotate(-90deg)'}}>
-                <circle cx={66} cy={66} r={58} fill="none" stroke={C.line} strokeWidth={6} />
+                <circle cx={66} cy={66} r={58} fill="none" stroke={T.edge} strokeWidth={6} />
+                {/* neutral on purpose: a green ring would announce "BUY" */}
                 <circle
                   cx={66}
                   cy={66}
                   r={58}
                   fill="none"
-                  stroke={answerColor}
+                  stroke={T.ice}
                   strokeWidth={6}
                   strokeLinecap="round"
                   strokeDasharray={2 * Math.PI * 58}
                   strokeDashoffset={2 * Math.PI * 58 * countFrac}
-                  style={{filter: `drop-shadow(0 0 10px ${answerColor}cc)`}}
+                  style={{filter: `drop-shadow(0 0 10px ${T.ice}cc)`}}
                 />
               </svg>
               <div
@@ -371,7 +439,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
           <div
             style={{
               position: 'absolute',
-              top: 246,
+              top: 262,
               left: 0,
               right: 0,
               textAlign: 'center',
@@ -384,26 +452,41 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
                 display: 'inline-block',
                 fontFamily: FONT.display,
                 fontWeight: 700,
-                fontSize: 84,
-                color: C.bg,
+                fontSize: 74,
+                color: T.bg,
                 background: answerColor,
-                padding: '10px 52px',
+                padding: '8px 48px',
                 borderRadius: 999,
                 boxShadow: `0 0 70px ${answerColor}88`,
               }}
             >
               {p.answer}
             </div>
-            <div
-              style={{
-                fontFamily: FONT.body,
-                fontWeight: 500,
-                fontSize: 34,
-                color: C.inkSoft,
-                marginTop: 16,
-                padding: '0 90px',
-              }}
-            >
+          </div>
+        ) : null}
+
+        {/* The one-liner that justifies the answer. It lives in the lower band,
+         * not under the badge — under the badge it sits at y≈376, exactly where
+         * the screen panel starts, and was painted over on every render. Here it
+         * also fills the gap between the answer landing and the rule card. */}
+        {frame >= ANSWER_IN ? (
+          <div
+            style={{
+              position: 'absolute',
+              top: 1418,
+              left: 70,
+              right: 70,
+              textAlign: 'center',
+              opacity:
+                fadeOf(answerP) *
+                interpolate(frame, [RULE_IN - 16, RULE_IN - 2], [1, 0], {
+                  extrapolateLeft: 'clamp',
+                  extrapolateRight: 'clamp',
+                }),
+              transform: `translateY(${interpolate(answerP, [0, 1], [22, 0])}px)`,
+            }}
+          >
+            <div style={{fontFamily: FONT.display, fontWeight: 700, fontSize: 46, lineHeight: 1.24, color: C.ink}}>
               {p.answerLine}
             </div>
           </div>
@@ -420,9 +503,9 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
             borderRadius: 30,
             opacity: fadeOf(screenP) * boot,
             transform: `translateY(${interpolate(screenP, [0, 1], [26, 0])}px)`,
-            background: 'linear-gradient(180deg, #0E141C 0%, #090D13 100%)',
-            border: `1px solid ${C.line}`,
-            boxShadow: `0 40px 100px -30px #000, inset 0 1px 0 rgba(255,255,255,.07), 0 0 70px ${answerColor}10`,
+            background: `linear-gradient(180deg, ${T.panelTop} 0%, ${T.panelBot} 100%)`,
+            border: `1px solid ${T.edge}`,
+            boxShadow: '0 40px 100px -30px #000, inset 0 1px 0 rgba(255,255,255,.06), 0 0 70px rgba(58,96,148,.13)',
             overflow: 'hidden',
           }}
         >
@@ -434,8 +517,8 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               alignItems: 'center',
               gap: 10,
               padding: '0 22px',
-              borderBottom: `1px solid ${C.line}`,
-              background: 'rgba(255,255,255,.025)',
+              borderBottom: `1px solid ${T.edge}`,
+              background: 'rgba(126,158,201,.045)',
             }}
           >
             {[C.redHot, C.amber, C.emerald].map((col) => (
@@ -447,7 +530,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
                 fontFamily: FONT.mono,
                 fontSize: 19,
                 letterSpacing: 2,
-                color: C.muted,
+                color: T.steel,
               }}
             >
               PATTERN LAB — {p.patternName}
@@ -462,7 +545,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
                   opacity: 0.4 + Math.sin(frame / 8) * 0.35,
                 }}
               />
-              <div style={{fontFamily: FONT.mono, fontSize: 17, letterSpacing: 2, color: C.muted}}>LIVE</div>
+              <div style={{fontFamily: FONT.mono, fontSize: 17, letterSpacing: 2, color: T.steel}}>LIVE</div>
             </div>
           </div>
 
@@ -493,13 +576,13 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
                     x2={SCREEN.x + SCREEN.w - 26}
                     y1={priceToY(v)}
                     y2={priceToY(v)}
-                    stroke={C.line}
+                    stroke={T.edge}
                     strokeWidth={1}
                   />
                   <text
                     x={SCREEN.x + SCREEN.w - 20}
                     y={priceToY(v) - 6}
-                    fill={C.muted}
+                    fill={T.steel}
                     fontFamily={FONT.mono}
                     fontSize={16}
                     textAnchor="end"
@@ -573,8 +656,8 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
                 width={p.levelLabel.length * 15.5 + 16}
                 height={34}
                 rx={8}
-                fill="#0B1119"
-                opacity={0.9}
+                fill={T.panelTop}
+                opacity={0.92}
               />
               <text
                 x={CHART.x0 - 2}
@@ -652,7 +735,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               textAlign: 'center',
               opacity:
                 fadeOf(spring({frame: frame - ARROWS_IN, fps, config: SPRINGS.pop})) *
-                interpolate(frame, [ANSWER_IN - 6, ANSWER_IN + 10], [1, 0], {
+                interpolate(frame, [ANSWER_IN - 12, ANSWER_IN + 2], [1, 0], {
                   extrapolateLeft: 'clamp',
                   extrapolateRight: 'clamp',
                 }),
@@ -667,14 +750,14 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
                 letterSpacing: -0.5,
               }}
             >
-              What happens next?
+              What happens <span style={{color: T.ice}}>next?</span>
             </div>
             <div
               style={{
                 fontFamily: FONT.mono,
                 fontSize: 26,
                 letterSpacing: 3,
-                color: C.muted,
+                color: T.steel,
                 marginTop: 16,
               }}
             >
@@ -693,8 +776,8 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               right: 46,
               opacity: fadeOf(ruleP),
               transform: `translateY(${interpolate(ruleP, [0, 1], [30, 0])}px)`,
-              background: 'rgba(255,255,255,.045)',
-              border: `1px solid ${C.line}`,
+              background: 'rgba(126,158,201,.075)',
+              border: `1px solid ${T.edge}`,
               borderRadius: 26,
               padding: '24px 30px',
               backdropFilter: 'blur(6px)',
@@ -719,32 +802,44 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
         ) : null}
       </AbsoluteFill>
 
-      {/* --------------------------------------------------- 8. footer */}
+      {/* --------------------------------------------------- 8. footer
+       * Split on the middle dot into a ruled row, like the reference boards'
+       * three-cell footer, instead of one long wrapped sentence. */}
       <div
         style={{
           position: 'absolute',
-          bottom: 74,
-          left: 0,
-          right: 0,
-          textAlign: 'center',
-          fontFamily: FONT.mono,
-          fontSize: 21,
-          color: C.muted,
-          padding: '0 70px',
+          bottom: 68,
+          left: 46,
+          right: 46,
+          display: 'flex',
+          alignItems: 'stretch',
+          justifyContent: 'center',
+          borderTop: `1px solid ${T.edge}`,
+          paddingTop: 18,
         }}
       >
-        {p.footer}
+        {p.footer.split('·').map((cell, i, all) => (
+          <div
+            key={cell}
+            style={{
+              flex: 1,
+              textAlign: 'center',
+              padding: '0 14px',
+              borderRight: i < all.length - 1 ? `1px solid ${T.edge}` : undefined,
+              fontFamily: FONT.mono,
+              fontSize: 19,
+              lineHeight: 1.35,
+              color: T.steel,
+            }}
+          >
+            {cell.trim()}
+          </div>
+        ))}
       </div>
 
-      {/* ------------------------------------------- 9. finish layers */}
-      <AbsoluteFill
-        style={{
-          pointerEvents: 'none',
-          backgroundColor: answerColor,
-          mixBlendMode: 'soft-light',
-          opacity: 0.1,
-        }}
-      />
+      {/* ------------------------------------------- 9. finish layers
+       * No colour grade: tinting the whole frame with the answer colour is
+       * what produced the green cast, and it leaked the answer besides. */}
       <Grain />
       <Vignette />
     </AbsoluteFill>

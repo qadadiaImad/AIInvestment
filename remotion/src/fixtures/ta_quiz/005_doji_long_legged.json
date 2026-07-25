@@ -7,9 +7,10 @@
   "answerLine": "Wild swings both ways, sellers won the next bar.",
   "ruleTitle": "The confirmation",
   "ruleText": "The open and close land near the middle of an unusually wide range, with long wicks on both sides showing violent back-and-forth trading and no net winner. Confirmation is the next candle closing below this candle's low.",
-  "footer": "Illustrative example, not a real chart — educational only, not financial advice · DYOR",
+  "footer": "Synthetic chart, not real market data · Educational only — not financial advice · DYOR",
   "revealFrom": 19,
   "patternSpan": 1,
+  "indexLabel": "#5",
   "durationInFrames": 546,
   "candles": [
     {

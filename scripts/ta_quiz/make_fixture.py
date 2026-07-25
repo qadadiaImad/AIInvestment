@@ -21,7 +21,8 @@ FIXTURE_DIR = os.path.join(REPO, "remotion", "src", "fixtures", "ta_quiz")
 
 # Must match TRADING_QUIZ_MIN_FRAMES in TradingQuiz.tsx (5s answer countdown).
 DURATION = 546
-FOOTER = "Illustrative example, not a real chart — educational only, not financial advice · DYOR"
+# Rendered as a ruled three-cell row, so the middle dots are the cell breaks.
+FOOTER = "Synthetic chart, not real market data · Educational only — not financial advice · DYOR"
 
 sys.path.insert(0, HERE)
 from validate import validate  # noqa: E402
@@ -61,6 +62,7 @@ def to_fixture(p):
         "footer": FOOTER,
         "revealFrom": p["revealFrom"],
         "patternSpan": SPAN_BY_FAMILY.get(p.get("family"), 2),
+        "indexLabel": f"#{p['id']}",
         "durationInFrames": DURATION,
         "candles": p["candles"],
     }

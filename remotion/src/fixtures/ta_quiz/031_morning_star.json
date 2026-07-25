@@ -7,9 +7,10 @@
   "answerLine": "Third candle closes deep into the first candle's body.",
   "ruleTitle": "The setup",
   "ruleText": "A long bearish candle is followed by a small-bodied candle that gaps below it, then a bullish candle that closes back above the midpoint of the first candle's body. That deep close is the confirmation, not the gap itself.",
-  "footer": "Illustrative example, not a real chart — educational only, not financial advice · DYOR",
+  "footer": "Synthetic chart, not real market data · Educational only — not financial advice · DYOR",
   "revealFrom": 19,
   "patternSpan": 3,
+  "indexLabel": "#31",
   "durationInFrames": 546,
   "candles": [
     {

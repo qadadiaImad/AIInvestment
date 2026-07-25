@@ -7,9 +7,10 @@
   "answerLine": "Neckline broke. Both shoulders failed to reclaim the head.",
   "ruleTitle": "The neckline break",
   "ruleText": "Two pullbacks between the shoulders and head form a neckline near the same price. The right shoulder fails to reach the head's high. Confirmation is a close below the neckline, which had held twice before.",
-  "footer": "Illustrative example, not a real chart — educational only, not financial advice · DYOR",
+  "footer": "Synthetic chart, not real market data · Educational only — not financial advice · DYOR",
   "revealFrom": 18,
   "patternSpan": 3,
+  "indexLabel": "#43",
   "durationInFrames": 546,
   "candles": [
     {

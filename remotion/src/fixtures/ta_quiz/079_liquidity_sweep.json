@@ -7,9 +7,10 @@
   "answerLine": "Stops swept below the low, then reclaimed fast.",
   "ruleTitle": "The sweep",
   "ruleText": "Price wicks sharply below a prior swing low, the level where resting stop-loss orders cluster, then closes back above that low within the same candle. The long lower wick and fast reclaim signal the move was a liquidity grab, not a real breakdown.",
-  "footer": "Illustrative example, not a real chart — educational only, not financial advice · DYOR",
+  "footer": "Synthetic chart, not real market data · Educational only — not financial advice · DYOR",
   "revealFrom": 19,
   "patternSpan": 3,
+  "indexLabel": "#79",
   "durationInFrames": 546,
   "candles": [
     {
