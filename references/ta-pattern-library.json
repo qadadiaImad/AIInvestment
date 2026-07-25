@@ -3,7 +3,7 @@
   "counts": {
     "patterns": 102,
     "quarantined": 12,
-    "repaired": 7,
+    "repaired": 32,
     "byFamily": {
       "single-candle": 13,
       "two-candle": 14,
@@ -300,7 +300,7 @@
       "ruleText": "Price opens at or near the session low with almost no lower wick, then rallies hard to close near the high with almost no upper wick, a full bullish body. Confirmation is the next candle closing above this candle's high.",
       "levelPrice": 75,
       "levelLabel": "SUPPORT · TESTED 2x",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "candles-only",
       "candles": [
         {
@@ -1371,7 +1371,7 @@
       "ruleText": "A small real body sits inside exceptionally long wicks on both sides, showing extreme back-and-forth trading beyond a normal spinning top. Near support after a downtrend, confirmation is the next candle closing above this candle's high.",
       "levelPrice": 55,
       "levelLabel": "SUPPORT · TESTED 2x",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "candles-only",
       "candles": [
         {
@@ -1524,7 +1524,7 @@
       "ruleText": "A full-bodied candle opens at its high and closes at its low with no wicks on either side, showing sellers controlled the entire session. Breaking below support this way is a strong signal; confirmation is the next candle holding below the breakdown.",
       "levelPrice": 60,
       "levelLabel": "SUPPORT · TESTED 2x",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "candles-only",
       "candles": [
         {
@@ -1677,7 +1677,7 @@
       "ruleText": "A full-bodied candle opens at its low and closes at its high with no wicks on either side, showing buyers controlled the entire session. Breaking above resistance this way is a strong signal; confirmation is the next candle holding above the breakout.",
       "levelPrice": 90,
       "levelLabel": "RESISTANCE · TESTED 2x",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "candles-only",
       "candles": [
         {
@@ -1983,7 +1983,7 @@
       "ruleText": "A small body sits between two wicks of similar, noticeably larger size on both ends, showing neither buyers nor sellers controlled the session. Near resistance after an uptrend, that stall matters; confirmation is the next candle closing lower.",
       "levelPrice": 105,
       "levelLabel": "RESISTANCE · TESTED 2x",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "candles-only",
       "candles": [
         {
@@ -4278,7 +4278,7 @@
       "ruleText": "A long bullish candle is followed by a true doji (open equals close) that gaps above it, then a bearish candle closing back below the midpoint of the first candle's body. The exact doji marks total indecision before sellers take over.",
       "levelPrice": 132,
       "levelLabel": "RESISTANCE · TESTED 2X",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "candles-only",
       "candles": [
         {
@@ -4425,7 +4425,7 @@
       "ruleText": "A long bullish candle is followed by a small-bodied candle that gaps above it, then a bearish candle that closes back below the midpoint of the first candle's body. That deep close is the confirmation, not the gap itself.",
       "levelPrice": 122,
       "levelLabel": "RESISTANCE · TESTED 3X",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "candles-only",
       "candles": [
         {
@@ -4572,7 +4572,7 @@
       "ruleText": "A long bearish candle is followed by a true doji (open equals close) that gaps below it, then a bullish candle closing back above the midpoint of the first candle's body. The exact doji marks total indecision before buyers take over.",
       "levelPrice": 83,
       "levelLabel": "SUPPORT · TESTED 2X",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "candles-only",
       "candles": [
         {
@@ -4719,7 +4719,7 @@
       "ruleText": "A long bearish candle is followed by a small-bodied candle that gaps below it, then a bullish candle that closes back above the midpoint of the first candle's body. That deep close is the confirmation, not the gap itself.",
       "levelPrice": 78,
       "levelLabel": "SUPPORT · TESTED 2X",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "candles-only",
       "candles": [
         {
@@ -8031,7 +8031,7 @@
       "ruleText": "A bearish pennant is a sharp decline (the pole) followed by a small, symmetrical consolidation whose highs and lows converge toward a point. Continuation is confirmed when a candle closes below the pennant's lower boundary and the pole's low.",
       "levelPrice": 83.5,
       "levelLabel": "PENNANT LOW · SUPPORT",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "needs-overlay",
       "candles": [
         {
@@ -8178,7 +8178,7 @@
       "ruleText": "A bull flag is a sharp rally (the pole) followed by a tight, downward-drifting consolidation (the flag) against the trend. Continuation is confirmed when a candle closes above the flag's upper boundary, resuming the prior uptrend.",
       "levelPrice": 88.4,
       "levelLabel": "FLAGPOLE HIGH · RESISTANCE",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "needs-overlay",
       "candles": [
         {
@@ -8325,7 +8325,7 @@
       "ruleText": "A bullish pennant is a sharp rally (the pole) followed by a small, symmetrical consolidation whose highs and lows converge toward a point. Continuation is confirmed when a candle closes above the pennant's upper boundary and the pole's high.",
       "levelPrice": 85.9,
       "levelLabel": "PENNANT HIGH · RESISTANCE",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "needs-overlay",
       "candles": [
         {
@@ -9078,7 +9078,7 @@
       "ruleText": "A falling wedge inside an uptrend is a corrective pullback where both boundary lines slope downward but the range narrows, resistance falling faster than support. Continuation of the uptrend is confirmed when a candle closes above the wedge's falling resistance line.",
       "levelPrice": 78.36,
       "levelLabel": "WEDGE RESISTANCE · FALLING TRENDLINE",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "needs-overlay",
       "candles": [
         {
@@ -9684,7 +9684,7 @@
       "ruleText": "A measured move is an impulsive leg, a corrective pullback, then a second impulsive leg that tends to travel a distance similar to the first, measured from the correction's low. Continuation is confirmed when price closes back above the first leg's high.",
       "levelPrice": 85.2,
       "levelLabel": "LEG A HIGH · BREAKOUT LEVEL",
-      "revealFrom": 19,
+      "revealFrom": 20,
       "renderable": "needs-overlay",
       "candles": [
         {
@@ -9984,7 +9984,7 @@
       "ruleText": "Price gaps up over the high of a short base and never looks back. Confirmation is each following bar closing in the upper part of its own range with no pullback into the gap, showing sustained buying pressure rather than a one-bar spike.",
       "levelPrice": 89.5,
       "levelLabel": "BASE HIGH · MOMENTUM BREAK",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "candles-only",
       "candles": [
         {
@@ -11601,7 +11601,7 @@
       "ruleText": "After price chops sideways between a well-tested support and resistance, a candle finally closes decisively beyond one edge of the range with real momentum, not just a wick. A close beyond the range, followed by continuation, confirms the sideways phase has resolved.",
       "levelPrice": 99.3,
       "levelLabel": "RANGE CEILING · TESTED 4x",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "candles-only",
       "candles": [
         {
@@ -11907,7 +11907,7 @@
       "ruleText": "Price wicks sharply below a prior swing low, the level where resting stop-loss orders cluster, then closes back above that low within the same candle. The long lower wick and fast reclaim signal the move was a liquidity grab, not a real breakdown.",
       "levelPrice": 104.2,
       "levelLabel": "SWING LOW · STOP CLUSTER",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "candles-only",
       "candles": [
         {
@@ -13131,7 +13131,7 @@
       "ruleText": "After a stretch of small, tight-range candles showing low volatility and indecision, one candle prints a much larger range than the recent average and closes near its extreme. That expansion signals compression has resolved, often starting a new directional move.",
       "levelPrice": 78.9,
       "levelLabel": "COMPRESSION RANGE · LOW VOLATILITY",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "candles-only",
       "candles": [
         {
@@ -13284,7 +13284,7 @@
       "ruleText": "A descending trendline connecting a series of lower highs is broken by a strong close above it. Price then pulls back to touch the same trendline from above; if it holds as new support and price closes higher, the downtrend's structure has broken.",
       "levelPrice": 106.7,
       "levelLabel": "DESCENDING TRENDLINE · 3 TOUCHES",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "needs-overlay",
       "candles": [
         {
@@ -13437,7 +13437,7 @@
       "ruleText": "Inside a Wyckoff trading range, price briefly wicks below the range's support floor, undercutting prior tests, then closes back inside the range above support. This spring shakes out late sellers before the range resolves higher, a hallmark of accumulation.",
       "levelPrice": 96.5,
       "levelLabel": "RANGE SUPPORT · TESTED 3x",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "candles-only",
       "candles": [
         {
@@ -13590,7 +13590,7 @@
       "ruleText": "Inside a Wyckoff trading range, price briefly wicks above the range's resistance ceiling, overshooting prior tests, then closes back inside the range below resistance. This upthrust traps late buyers before the range resolves lower, a hallmark of distribution.",
       "levelPrice": 116.8,
       "levelLabel": "RANGE RESISTANCE · TESTED 3x",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "candles-only",
       "candles": [
         {
@@ -13743,7 +13743,7 @@
       "ruleText": "In a steady uptrend, a pullback candle dips down to touch the rising moving average and closes back above it. Confirmation is the next candles resuming the prior trend's direction rather than closing through the average.",
       "levelPrice": 82.09,
       "levelLabel": "RISING MOVING AVERAGE",
-      "revealFrom": 18,
+      "revealFrom": 19,
       "renderable": "needs-overlay",
       "candles": [
         {
@@ -14166,7 +14166,7 @@
       "ruleText": "Trading range compresses into a series of small, overlapping candles as volatility contracts. A wide-range candle that closes above the range high, on the first burst of participation after the dry-up, signals the range is resolving higher.",
       "levelPrice": 76.17,
       "levelLabel": "RANGE HIGH · COMPRESSED",
-      "revealFrom": 15,
+      "revealFrom": 16,
       "renderable": "needs-overlay",
       "candles": [
         {
@@ -14301,7 +14301,7 @@
       "ruleText": "In a strong trend, consecutive closes sit at or beyond the upper Bollinger Band instead of reverting to the middle band. This band walk signals persistent momentum; it is not, by itself, an overbought sell signal.",
       "levelPrice": 99.2,
       "levelLabel": "BASE · LAUNCH POINT",
-      "revealFrom": 20,
+      "revealFrom": 21,
       "renderable": "needs-overlay",
       "candles": [
         {
@@ -14466,7 +14466,7 @@
       "ruleText": "Bollinger Band width contracts to its tightest reading of the sequence as price coils in a narrow range. Confirmation is a wide-range candle closing outside the upper band as the bands begin expanding again, not merely touching the band.",
       "levelPrice": 100.77,
       "levelLabel": "UPPER BAND · SQUEEZE HIGH",
-      "revealFrom": 20,
+      "revealFrom": 21,
       "renderable": "needs-overlay",
       "candles": [
         {

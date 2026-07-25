@@ -1,0 +1,148 @@
+{
+  "kick": "TRADING QUIZ",
+  "patternName": "LIQUIDITY SWEEP / STOP HUNT",
+  "levelPrice": 104.2,
+  "levelLabel": "SWING LOW · STOP CLUSTER",
+  "answer": "BUY",
+  "answerLine": "Stops swept below the low, then reclaimed fast.",
+  "ruleTitle": "The sweep",
+  "ruleText": "Price wicks sharply below a prior swing low, the level where resting stop-loss orders cluster, then closes back above that low within the same candle. The long lower wick and fast reclaim signal the move was a liquidity grab, not a real breakdown.",
+  "footer": "Illustrative example, not a real chart — educational only, not financial advice · DYOR",
+  "revealFrom": 19,
+  "patternSpan": 3,
+  "durationInFrames": 546,
+  "candles": [
+    {
+      "o": 112,
+      "h": 112.3,
+      "l": 109.9,
+      "c": 110.3
+    },
+    {
+      "o": 110.3,
+      "h": 110.6,
+      "l": 108.1,
+      "c": 108.5
+    },
+    {
+      "o": 108.5,
+      "h": 108.9,
+      "l": 106.3,
+      "c": 106.6
+    },
+    {
+      "o": 106.6,
+      "h": 107.7,
+      "l": 105.1,
+      "c": 105.4
+    },
+    {
+      "o": 105.4,
+      "h": 107.3,
+      "l": 105,
+      "c": 107
+    },
+    {
+      "o": 107,
+      "h": 107.3,
+      "l": 105.5,
+      "c": 105.9
+    },
+    {
+      "o": 105.9,
+      "h": 106.4,
+      "l": 104.3,
+      "c": 104.6
+    },
+    {
+      "o": 104.6,
+      "h": 106.6,
+      "l": 104.2,
+      "c": 106.3
+    },
+    {
+      "o": 106.3,
+      "h": 106.6,
+      "l": 104.7,
+      "c": 105.1
+    },
+    {
+      "o": 105.1,
+      "h": 107.8,
+      "l": 104.8,
+      "c": 107.4
+    },
+    {
+      "o": 107.4,
+      "h": 107.7,
+      "l": 105.7,
+      "c": 106.2
+    },
+    {
+      "o": 106.2,
+      "h": 109,
+      "l": 105.9,
+      "c": 108.6
+    },
+    {
+      "o": 108.6,
+      "h": 108.9,
+      "l": 107,
+      "c": 107.5
+    },
+    {
+      "o": 107.5,
+      "h": 110.1,
+      "l": 107.2,
+      "c": 109.7
+    },
+    {
+      "o": 109.7,
+      "h": 110,
+      "l": 108.3,
+      "c": 108.8
+    },
+    {
+      "o": 108.8,
+      "h": 111,
+      "l": 108.5,
+      "c": 110.6
+    },
+    {
+      "o": 110.6,
+      "h": 110.9,
+      "l": 109.1,
+      "c": 109.6
+    },
+    {
+      "o": 109.6,
+      "h": 111.5,
+      "l": 109.3,
+      "c": 111.1
+    },
+    {
+      "o": 111.1,
+      "h": 111.5,
+      "l": 101.9,
+      "c": 110.4
+    },
+    {
+      "o": 110.4,
+      "h": 113,
+      "l": 110.1,
+      "c": 112.6
+    },
+    {
+      "o": 112.6,
+      "h": 115.3,
+      "l": 112.3,
+      "c": 114.9
+    },
+    {
+      "o": 114.9,
+      "h": 117.4,
+      "l": 114.6,
+      "c": 117
+    }
+  ]
+}

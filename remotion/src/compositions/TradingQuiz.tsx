@@ -338,6 +338,28 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               strokeDasharray="14 10"
               style={{filter: `drop-shadow(0 0 8px ${C.amber}aa)`}}
             />
+          </g>
+        ) : null}
+
+        {/* setup candles */}
+        {setup.map((k, i) => renderCandle(k, i, DRAW_START + i * DRAW_PER))}
+
+        {/* reveal candles */}
+        {reveal.map((k, i) => renderCandle(k, p.revealFrom + i, REVEAL_START + i * REVEAL_PER))}
+
+        {/* Level label sits ABOVE the candles: drawn with the level line it
+         * was getting painted over by any bar the line passed through. */}
+        {levelP > 0 ? (
+          <g opacity={fadeOf(levelP)}>
+            <rect
+              x={CHART.x0 - 4}
+              y={levelY - 44}
+              width={p.levelLabel.length * 15.5 + 16}
+              height={34}
+              rx={8}
+              fill={C.bg}
+              opacity={0.85}
+            />
             <text
               x={CHART.x0 + 4}
               y={levelY - 18}
@@ -351,12 +373,6 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
             </text>
           </g>
         ) : null}
-
-        {/* setup candles */}
-        {setup.map((k, i) => renderCandle(k, i, DRAW_START + i * DRAW_PER))}
-
-        {/* reveal candles */}
-        {reveal.map((k, i) => renderCandle(k, p.revealFrom + i, REVEAL_START + i * REVEAL_PER))}
 
         {/* pattern highlight */}
         {patP > 0 ? (

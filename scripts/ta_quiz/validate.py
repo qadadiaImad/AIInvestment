@@ -172,7 +172,79 @@ def check_three_soldiers_crows(p):
     return []
 
 
+
+def check_star(p):
+    """morning/evening star: long body, small-bodied middle, then a close back
+    beyond the midpoint of the first body."""
+    rf = p["revealFrom"]
+    if rf < 3:
+        return ["needs 3 setup candles"]
+    a, b, c = p["candles"][rf - 3], p["candles"][rf - 2], p["candles"][rf - 1]
+    bull = "morning" in p["slug"]
+    if is_up(a) == bull:
+        return [f"first candle should oppose the reversal (expected {'down' if bull else 'up'})"]
+    if body(b) > body(a) * 0.5:
+        return [f"middle body {body(b):.2f} is not small vs first body {body(a):.2f}"]
+    if is_up(c) != bull:
+        return [f"third candle should be {'bullish' if bull else 'bearish'}"]
+    mid = (a["o"] + a["c"]) / 2
+    if bull and c["c"] <= mid:
+        return [f"third close {c['c']} does not clear the first body midpoint {mid:.2f}"]
+    if not bull and c["c"] >= mid:
+        return [f"third close {c['c']} does not clear below the first body midpoint {mid:.2f}"]
+    return []
+
+
+def check_piercing_darkcloud(p):
+    rf = p["revealFrom"]
+    a, b = p["candles"][rf - 2], p["candles"][rf - 1]
+    bull = "piercing" in p["slug"]
+    if is_up(a) == bull:
+        return ["first candle should oppose the reversal"]
+    if is_up(b) != bull:
+        return ["second candle is the wrong direction"]
+    mid = (a["o"] + a["c"]) / 2
+    if bull and not (b["o"] < a["l"] or b["o"] < a["c"]):
+        return ["second candle should open below the prior close/low"]
+    if bull and b["c"] <= mid:
+        return [f"close {b['c']} does not pierce past the midpoint {mid:.2f}"]
+    if not bull and b["c"] >= mid:
+        return [f"close {b['c']} does not cut below the midpoint {mid:.2f}"]
+    return []
+
+
+def check_tweezer(p):
+    rf = p["revealFrom"]
+    a, b = p["candles"][rf - 2], p["candles"][rf - 1]
+    top = "top" in p["slug"]
+    span = max(k["h"] for k in p["candles"]) - min(k["l"] for k in p["candles"])
+    tol = span * 0.01
+    if top and abs(a["h"] - b["h"]) > tol:
+        return [f"highs {a['h']} and {b['h']} are not matched"]
+    if not top and abs(a["l"] - b["l"]) > tol:
+        return [f"lows {a['l']} and {b['l']} are not matched"]
+    return []
+
+
+def check_marubozu(p):
+    k = p["candles"][p["revealFrom"] - 1]
+    rng = k["h"] - k["l"] or 1e-9
+    if (upper_wick(k) + lower_wick(k)) / rng > 0.06:
+        return [f"wicks are {(upper_wick(k) + lower_wick(k)) / rng:.0%} of range; a marubozu has almost none"]
+    if ("bullish" in p["slug"]) != is_up(k):
+        return ["candle direction does not match the name"]
+    return []
+
+
 SPECIFIC = [
+    ("morning-star", check_star),
+    ("evening-star", check_star),
+    ("morning-doji-star", check_star),
+    ("evening-doji-star", check_star),
+    ("piercing-line", check_piercing_darkcloud),
+    ("dark-cloud-cover", check_piercing_darkcloud),
+    ("tweezer", check_tweezer),
+    ("marubozu", check_marubozu),
     ("engulfing", check_engulfing),
     ("harami", check_harami),
     ("hammer", check_hammer_like),
@@ -202,6 +274,29 @@ def validate(p):
                 errs.append(f"{key} check crashed: {e}")
             break
     return errs
+
+
+def suspect_trigger_displacement(p):
+    """Heuristic for the off-by-one bug class the generator kept producing: the
+    pattern's decisive bar (the engulfing candle, the sweep wick, the star's
+    third candle) ends up at index `revealFrom` — inside the reveal window —
+    instead of being the last setup bar. The viewer is then quizzed on a chart
+    that doesn't contain the pattern, and the answer is given away.
+
+    Signature: the first reveal candle dwarfs the last setup candle. Returns a
+    bool, not an error — it only ever triggers an attempted repair, and the
+    repair is kept solely if the shifted version still validates.
+    """
+    rf = p.get("revealFrom")
+    ks = p.get("candles") or []
+    if not isinstance(rf, int) or rf < 1 or rf >= len(ks):
+        return False
+    rng = lambda k: k["h"] - k["l"]  # noqa: E731
+    last_setup, first_reveal = rng(ks[rf - 1]), rng(ks[rf])
+    med = sorted(rng(k) for k in ks)[len(ks) // 2]
+    if last_setup <= 0 or med <= 0:
+        return False
+    return first_reveal > last_setup * 2 and first_reveal > med * 1.5
 
 
 def main():

@@ -1,0 +1,148 @@
+{
+  "kick": "TRADING QUIZ",
+  "patternName": "HAMMER",
+  "levelPrice": 80,
+  "levelLabel": "SUPPORT · TESTED 2x",
+  "answer": "BUY",
+  "answerLine": "Sellers pushed it down, buyers slammed it back up.",
+  "ruleTitle": "The confirmation",
+  "ruleText": "After a downtrend, price sells off intraday to test support, then closes back near the candle's high, leaving a lower wick at least twice the real body. Confirmation is the next candle closing above the hammer's high.",
+  "footer": "Illustrative example, not a real chart — educational only, not financial advice · DYOR",
+  "revealFrom": 19,
+  "patternSpan": 1,
+  "durationInFrames": 546,
+  "candles": [
+    {
+      "o": 95,
+      "h": 95.5,
+      "l": 94,
+      "c": 94.2
+    },
+    {
+      "o": 94.2,
+      "h": 94.5,
+      "l": 93,
+      "c": 93.3
+    },
+    {
+      "o": 93.3,
+      "h": 93.6,
+      "l": 92,
+      "c": 92.2
+    },
+    {
+      "o": 92.2,
+      "h": 92.5,
+      "l": 91,
+      "c": 91.2
+    },
+    {
+      "o": 91.2,
+      "h": 91.5,
+      "l": 90,
+      "c": 90.3
+    },
+    {
+      "o": 90.3,
+      "h": 90.6,
+      "l": 89,
+      "c": 89.2
+    },
+    {
+      "o": 89.2,
+      "h": 89.5,
+      "l": 88,
+      "c": 88.3
+    },
+    {
+      "o": 88.3,
+      "h": 88.6,
+      "l": 87,
+      "c": 87.2
+    },
+    {
+      "o": 87.2,
+      "h": 87.5,
+      "l": 80.2,
+      "c": 86
+    },
+    {
+      "o": 86,
+      "h": 86.8,
+      "l": 85,
+      "c": 85.8
+    },
+    {
+      "o": 85.8,
+      "h": 86,
+      "l": 84,
+      "c": 84.3
+    },
+    {
+      "o": 84.3,
+      "h": 84.6,
+      "l": 83,
+      "c": 83.2
+    },
+    {
+      "o": 83.2,
+      "h": 83.5,
+      "l": 82,
+      "c": 82.3
+    },
+    {
+      "o": 82.3,
+      "h": 83.6,
+      "l": 80.1,
+      "c": 83.4
+    },
+    {
+      "o": 83.4,
+      "h": 83.7,
+      "l": 82.5,
+      "c": 82.8
+    },
+    {
+      "o": 82.8,
+      "h": 83,
+      "l": 81.5,
+      "c": 81.8
+    },
+    {
+      "o": 81.8,
+      "h": 82,
+      "l": 80.8,
+      "c": 81
+    },
+    {
+      "o": 81,
+      "h": 81.2,
+      "l": 80.5,
+      "c": 80.7
+    },
+    {
+      "o": 80.6,
+      "h": 81.05,
+      "l": 79.75,
+      "c": 80.95
+    },
+    {
+      "o": 81,
+      "h": 82.2,
+      "l": 80.9,
+      "c": 82
+    },
+    {
+      "o": 82,
+      "h": 83.2,
+      "l": 81.8,
+      "c": 83
+    },
+    {
+      "o": 83,
+      "h": 84.1,
+      "l": 82.9,
+      "c": 83.9
+    }
+  ]
+}

@@ -24,7 +24,7 @@ REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
 OUT = os.path.join(REPO, "references", "ta-pattern-library.json")
 
 sys.path.insert(0, HERE)
-from validate import validate  # noqa: E402
+from validate import validate, suspect_trigger_displacement  # noqa: E402
 
 FAMILY_ORDER = [
     "single-candle",
@@ -41,6 +41,13 @@ FAMILY_ORDER = [
 def try_repair(p):
     """Return (patched_or_None, note)."""
     if not validate(p):
+        # Validates as-is, but the decisive bar may still be sitting in the
+        # reveal window where no specific check would catch it.
+        if suspect_trigger_displacement(p):
+            q = dict(p)
+            q["revealFrom"] = p["revealFrom"] + 1
+            if q["revealFrom"] <= len(p["candles"]) - 2 and not validate(q):
+                return q, f"revealFrom {p['revealFrom']} -> {q['revealFrom']} (trigger bar was in the reveal)"
         return None, ""
     for delta in (1, -1):
         q = dict(p)
@@ -61,12 +68,13 @@ def main():
     for p in raw:
         p = {k: v for k, v in p.items() if k != "audit"}
         errs = validate(p)
-        if errs:
-            fixed, note = try_repair(p)
-            if fixed:
-                p = fixed
-                repaired.append((p["slug"], note))
-                errs = []
+        # Always attempt repair, not just on failure: the trigger-displacement
+        # cases validate cleanly and would otherwise ship silently wrong.
+        fixed, note = try_repair(p)
+        if fixed:
+            p = fixed
+            repaired.append((p["slug"], note))
+            errs = validate(p)
         if errs:
             quarantined.append({"slug": p.get("slug"), "name": p.get("name"),
                                 "family": p.get("family"), "errors": errs})
