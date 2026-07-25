@@ -21,6 +21,8 @@ import { ExplainerSceneV2 } from "./compositions/ExplainerSceneV2";
 import { FaceoffOverlay, faceoffOverlaySchema } from "./compositions/FaceoffOverlay";
 import { InfraCountdown, infraCountdownSchema } from "./compositions/InfraCountdown";
 import infraCountdownFixture from "./fixtures/infra_countdown_2026-07-22.json";
+import { TradingQuiz, tradingQuizSchema } from "./compositions/TradingQuiz";
+import tradingQuizFixture from "./fixtures/trading_quiz_engulfing_2026-07-25.json";
 import { reelPropsSchema } from "./props";
 import { slideStoryPropsSchema } from "./slides/slideProps";
 import { tutorialPropsSchema } from "./slides/tutorialProps";
@@ -183,6 +185,19 @@ export const RemotionRoot: React.FC = () => {
         height={1920}
         schema={infraCountdownSchema}
         defaultProps={infraCountdownSchema.parse(infraCountdownFixture)}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: props.durationInFrames,
+        })}
+      />
+      <Composition
+        id="TradingQuiz"
+        component={TradingQuiz}
+        durationInFrames={tradingQuizFixture.durationInFrames}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={tradingQuizSchema}
+        defaultProps={tradingQuizSchema.parse(tradingQuizFixture)}
         calculateMetadata={({ props }) => ({
           durationInFrames: props.durationInFrames,
         })}
