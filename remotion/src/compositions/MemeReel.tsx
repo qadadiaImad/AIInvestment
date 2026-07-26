@@ -210,7 +210,7 @@ export const MemeReel: React.FC<MemeReelProps> = (p) => {
   // already recoiled upright, so his head is travelling away from the monitor
   // and cannot clip back into the tail of the close-up.
   const charOpacity =
-    interpolate(frame, [212, 220], [1, 0], {easing: EASE.exit, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) +
+    interpolate(frame, [204, 212], [1, 0], {easing: EASE.exit, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) +
     interpolate(frame, [238, 248], [0, 1], {easing: EASE.enter, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
 
   return (

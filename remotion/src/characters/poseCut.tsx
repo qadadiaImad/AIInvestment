@@ -74,24 +74,24 @@ export type Cut = {
 };
 
 export const POSE_CUTS: Cut[] = [
-  // 13 drawings over 510 frames. The BREAKDOWNS (turning, bending, crouch,
-  // stagger) are the smoothness: they sit between two strong poses so a big
-  // action is not a single hard jump. crouch is the anticipation before the
-  // take, stagger is the settle after it — the two drawings that make a
-  // reaction read as a reaction rather than as a pose change.
+  // STAGED BACK FROM THE SCREEN. He used to bend over the desk with his head
+  // beside the monitor, which buried the chart — the one thing the reel exists
+  // to show. The bending/reaching poses are mostly out; he now works from a
+  // distance and INDICATES the screen with `point` instead of crowding it.
+  // His frustration is carried by the take, the stagger, the facepalm and the
+  // shrug, none of which need him close to anything.
   //
-  // dx is NEGATIVE toward the monitor: he is mirrored to face left, and the
-  // screen is on his left, so drifting at it means drifting -x in frame space.
+  // Drifts are small for the same reason: a big -x drift walks him back onto
+  // the monitor over the course of a hold.
   {at: 0, pose: 'idle', drift: {dy: -2}},
-  {at: 58, pose: 'turning', drift: {dx: -8}}, // BREAKDOWN — head starts round
-  {at: 80, pose: 'notices', drift: {dx: -22, tilt: -1.5}},
-  {at: 128, pose: 'bending', drift: {dx: -18}}, // BREAKDOWN — starts to fold
-  {at: 150, pose: 'leans_a', drift: {dx: -26, dScale: 1.02, tilt: -1.5}},
-  {at: 178, pose: 'point', drift: {dx: -10}}, // points AT the level on screen
-  {at: 204, pose: 'reach', drift: {dx: -14, dScale: 1.03}}, // hand out to the desk
+  {at: 58, pose: 'turning', drift: {dx: -6}}, // BREAKDOWN — head starts round
+  {at: 80, pose: 'notices', drift: {dx: -8, tilt: -1}},
+  {at: 122, pose: 'point', drift: {dx: -5}}, // indicates the level, from across the room
+  {at: 176, pose: 'bending', drift: {dx: -10, dScale: 1.02}}, // one brief lean in
+  {at: 204, pose: 'point', drift: {dx: -5}}, // points again as the story bar prints
   {at: 246, pose: 'crouch', drift: {dy: 6}}, // BREAKDOWN — loads down before the take
-  {at: 258, pose: 'shock', drift: {dx: 46, dScale: 0.99, tilt: 3}},
-  {at: 288, pose: 'stagger', drift: {dx: 18, tilt: 2}}, // BREAKDOWN — the settle
+  {at: 258, pose: 'shock', drift: {dx: 40, dScale: 0.99, tilt: 3}},
+  {at: 288, pose: 'stagger', drift: {dx: 16, tilt: 2}}, // BREAKDOWN — the settle
   {at: 316, pose: 'facepalm', drift: {dy: 14, dScale: 0.985, tilt: 1.5}},
   {at: 396, pose: 'shrug', drift: {dy: -4, tilt: -1}},
 ];

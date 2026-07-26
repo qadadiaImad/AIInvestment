@@ -55,6 +55,25 @@ text-to-audio model rather than a strict TTS engine — it will not honour a
 target duration exactly, so **measure what comes back** and adjust before
 placing it. Do not assume a 30-word segment lands at 12 seconds.
 
+> ### ⚠️ DO NOT put voice direction in the prompt — it gets SPOKEN
+>
+> The `"Calm professional narrator... Says: \"...\""` pattern shown above is
+> **wrong**, and every voiceover produced with it carries several seconds of the
+> model reading the stage directions aloud.
+>
+> Measured 2026-07-26, same line, same voice, same model:
+>
+> | prompt | duration |
+> |---|---|
+> | `Calm professional female analyst, measured and even... Says: "<19 words>"` | **13.28 s** |
+> | `<the same 19 words, nothing else>` | **9.04 s** |
+>
+> The 4.2 s difference is the direction being narrated.
+>
+> **Put ONLY the words to be spoken in `prompt`.** Shape the delivery with the
+> parameters the model actually exposes — `voice_id` (see `list_voices`),
+> `speech_rate`, `pitch_rate`, `loudness_rate` — not with prose.
+
 Download each result to `content/trading_styles/audio/seg_NN.wav`.
 
 ## 3. The beat map — Find Your Trading Style
