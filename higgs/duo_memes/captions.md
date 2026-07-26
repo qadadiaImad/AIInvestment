@@ -4,6 +4,39 @@ Series: same two frames, eight investor archetypes. Green on top, red on the bot
 Rails: no first person, no source named, no returns claims, educational framing only.
 The **hook** line doubles as the Reels/Stories on-screen caption.
 
+**Posting all eight as one carousel → use [THE CAPTION](#the-caption--all-eight-as-one-carousel).**
+The per-post captions below are alternates for drip-posting them one at a time.
+
+---
+
+## THE CAPTION — all eight as one carousel
+
+> Eight investor personalities. Two hoodies.
+
+Bull or bear. Momentum or rotation. Bitcoin or dollars. Hype or news. Charts or
+filings. Volatility or chop. Earnings day or Fed day. AI or defensives.
+
+Nobody is only one of these. The same portfolio holds a momentum position, a
+defensive position, and one thing bought purely on the story — and every one of
+them needs a different market to show up that morning.
+
+Notice that the person doesn't change between the two frames. Only the tape does.
+That's the entire joke, and it's also why a green year proves so much less about
+a process than it feels like it does.
+
+So the useful question was never which frame is right. It's which one still gets
+defended when the tape disagrees.
+
+Swipe through and find the one that's a little too accurate 👇
+
+*Educational only — not investment advice.*
+
+`#stockmarket #investing #trading #finance #investor #marketpsychology #stocks #equities #portfolio #wallstreet #aistocks #bitcoin #volatility #earningsseason #financememes #investingcommunity`
+
+---
+
+# Alternates — drip-posting them one at a time
+
 ---
 
 ## 1 — `bull-vs-bear`  ·  BULL MARKETS / BEAR MARKETS
@@ -150,18 +183,16 @@ Growth story or boring cash flow? 👇
 
 ---
 
-## Carousel caption — posting all eight as one set
+## Short variant — if the carousel caption above runs long
 
 **Hook:** Eight investor personalities, two hoodies.
 
-Nobody is only one of these. The same portfolio holds a momentum position, a
-defensive position, and one thing bought purely on hype — and every one of them
-wants a different market to show up.
+Bull or bear. Momentum or rotation. Bitcoin or dollars. Hype or news. Charts or
+filings. Volatility or chop. Earnings or Fed. AI or defensives.
 
-The useful question isn't which frame is right. It's which one gets defended when
-the tape disagrees.
+The person never changes between the two frames. Only the tape does.
 
-Swipe through and find the one that's a little too accurate 👇
+Which one is a little too accurate? 👇
 
 *Educational only — not investment advice.*
 
