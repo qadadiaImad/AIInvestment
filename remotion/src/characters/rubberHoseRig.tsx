@@ -38,15 +38,21 @@ import {EASE, wiggle} from '../motion/craft';
 import {armIK, blendDeg} from './armIK';
 
 // ------------------------------------------------------------------ palette
-const INK = '#17130F'; // one outline weight/colour system for the whole figure
+const INK = '#17130F'; // ONE ink colour for every outline in the figure
 const BODY = '#F3EEE4'; // off-white, never pure #FFF — it has to hold a silhouette
 const GLOVE = '#FCF9F2';
 const SHOE = '#1D1815';
 const SHOE_SOLE = '#4A423A';
 const SHORTS = '#1D1815';
 
+// Two deliberate named weights, not one: limbs read heavier than the body
+// outline, which is what makes a noodle limb look like a hose rather than a
+// drawn edge. Detail strokes (knuckle darts, glove seams) are lighter still and
+// are local to their shape. NECK is called out because it is the one place the
+// two systems meet and needed its own value.
 const STROKE = 14; // constant limb width — never tapers with rotation
 const OUTLINE = 7; // body/head outline weight
+const NECK_STROKE = 17; // limb weight plus a hair, so the join reads solid
 
 // --------------------------------------------------------------- skeleton
 // Bottom-up, from GROUND. These are the spec's lengths, laid out once so the
@@ -194,7 +200,12 @@ export const computeRubberHosePose = (frame: number): Pose => {
     {f: 336, v: 14, ease: EASE.enter}, // facepalm droop
     {f: 372, v: 16, ease: EASE.cruise}, // FOLLOW: keeps sinking after contact
     {f: 390, v: 16},
+    {f: 398, v: 19, ease: EASE.exit}, // ANTIC: sinks deeper before rising
     {f: 430, v: -6, ease: EASE.settleBack}, // straightens into the shrug
+    // Second beat. Without it every channel here sat on one value for the last
+    // ~2.5s and the ending went dead while the caption was still reading.
+    {f: 470, v: 1, ease: EASE.cruise},
+    {f: 500, v: -4, ease: EASE.settleBack},
     {f: 510, v: -4},
   ]);
 
@@ -212,7 +223,9 @@ export const computeRubberHosePose = (frame: number): Pose => {
     {f: 336, v: -22, ease: EASE.enter}, // chin drops into the hand
     {f: 390, v: -20},
     {f: 430, v: 4, ease: EASE.settleBack}, // quizzical tilt to camera
-    {f: 510, v: 4},
+    {f: 466, v: -5, ease: EASE.cruise}, // the head keeps asking the question
+    {f: 498, v: 6, ease: EASE.settleBack},
+    {f: 510, v: 6},
   ]);
 
   const eyeBulge = track(frame, [
@@ -226,7 +239,9 @@ export const computeRubberHosePose = (frame: number): Pose => {
     {f: 300, v: 1.28},
     {f: 336, v: 1, ease: EASE.enter}, // hidden behind the glove anyway
     {f: 430, v: 1.12, ease: EASE.settleBack},
-    {f: 510, v: 1.12},
+    {f: 468, v: 1.2, ease: EASE.settleBack}, // eyes widen again on the re-ask
+    {f: 500, v: 1.13, ease: EASE.settleBack},
+    {f: 510, v: 1.13},
   ]);
 
   // Blink runs on its own cycle, suppressed through the two takes — you do not
@@ -248,6 +263,8 @@ export const computeRubberHosePose = (frame: number): Pose => {
     {f: 372, v: 1.08, ease: EASE.cruise}, // sag keeps deepening after the hand lands
     {f: 390, v: 1.08},
     {f: 430, v: 1.02, ease: EASE.settleBack},
+    {f: 472, v: 0.99, ease: EASE.cruise},
+    {f: 502, v: 1.02, ease: EASE.settleBack},
     {f: 510, v: 1.02},
   ]);
 
@@ -289,12 +306,13 @@ export const computeRubberHosePose = (frame: number): Pose => {
     {f: 70, v: 0},
     {f: 100, v: 10, ease: EASE.settleBack}, // half-lifts on the notice
     {f: 130, v: 8},
+    {f: 140, v: 20, ease: EASE.exit}, // ANTIC: small lift before reaching down
     {f: 205, v: -70, ease: EASE.enter}, // reaches down to plant on the desk
     {f: 230, v: -70},
     {f: 236, v: -52, ease: EASE.exit}, // ANTIC: loads down before flying up
     {f: 250, v: -138, ease: EASE.exit}, // thrown up, past the -130 target
     {f: 268, v: -126, ease: EASE.settleBack},
-    {f: 304, v: -170, ease: EASE.enter}, // ANTIC: lifts up/back before the drag
+    {f: 304, v: -170, ease: EASE.exit}, // ANTIC: lifts up/back before the drag
     {f: 340, v: -160, ease: EASE.enter}, // glove lands on the face
     {f: 390, v: -158},
     // The shrug is palms OUT at waist height with the shoulders up, not hands
@@ -304,7 +322,9 @@ export const computeRubberHosePose = (frame: number): Pose => {
     {f: 394, v: -8, ease: EASE.exit}, // ANTIC: arm drops all the way down first
     {f: 424, v: -34, ease: EASE.exit}, // pops out past the -24 target
     {f: 438, v: -24, ease: EASE.settleBack},
-    {f: 510, v: -24},
+    {f: 474, v: -32, ease: EASE.settleBack}, // a second, smaller shrug
+    {f: 504, v: -25, ease: EASE.settleBack},
+    {f: 510, v: -25},
   ]);
 
   const elbowR = track(frame, [
@@ -383,7 +403,9 @@ export const computeRubberHosePose = (frame: number): Pose => {
     // arms do not pop in robotic unison.
     {f: 427, v: 34, ease: EASE.exit},
     {f: 441, v: 24, ease: EASE.settleBack},
-    {f: 510, v: 24},
+    {f: 477, v: 32, ease: EASE.settleBack}, // 3f behind the near arm, as before
+    {f: 507, v: 25, ease: EASE.settleBack},
+    {f: 510, v: 25},
   ]);
 
   const elbowL = track(frame, [
@@ -739,7 +761,7 @@ export const RubberHoseRig: React.FC<RubberHoseRigProps> = ({
                 x2={CX}
                 y2={HEAD_PIVOT.y - 6}
                 stroke={INK}
-                strokeWidth={STROKE + 3}
+                strokeWidth={NECK_STROKE}
                 strokeLinecap="round"
               />
             </g>
