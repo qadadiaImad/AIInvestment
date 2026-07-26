@@ -92,7 +92,16 @@ that moment — his reaction has to be motivated by it.
 
 ## 5. Character design
 
-`content/meme_reel/CHARACTER_SHEET.png` — the approved design to rig.
+Full kit in **[`character/CHARACTER_KIT.md`](character/CHARACTER_KIT.md)** — rig
+hierarchy, pivot placement, joint limits, swap sets, and a beat→swap map.
+
+| sheet | what |
+|---|---|
+| `CHARACTER_SHEET.png` | turnaround — the design truth |
+| `character/PARTS.png` | the puppet source, separated body parts |
+| `character/HANDS.png` | 6 hand poses (swap set) |
+| `character/EXPRESSIONS.png` | 6 heads (swap set) |
+| `character/KEY_POSES.png` | the 6 story beats as finished poses — animate to these |
 
 Chunky and bouncy, ~4.5 heads tall, thick sturdy limbs with volume, big rounded
 hands and shoes. Teal short-sleeved shirt, grey trousers, dark shoes. Bold
