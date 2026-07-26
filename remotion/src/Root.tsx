@@ -27,6 +27,9 @@ import tradingStylesFixture from "./fixtures/trading_styles/trading_styles.json"
 import tradingQuizFixture from "./fixtures/trading_quiz_engulfing_2026-07-25.json";
 import { QuizWithHost, quizWithHostSchema } from "./compositions/QuizWithHost";
 import quizWithHostFixture from "./fixtures/quiz_with_host_2026-07-25.json";
+import { MemeReel, memeReelSchema } from "./compositions/MemeReel";
+import { RigCheck, rigCheckSchema } from "./compositions/RigCheck";
+import memeReelFixture from "./fixtures/meme_reel/intc_failed_breakout.json";
 import { reelPropsSchema } from "./props";
 import { slideStoryPropsSchema } from "./slides/slideProps";
 import { tutorialPropsSchema } from "./slides/tutorialProps";
@@ -277,6 +280,33 @@ export const RemotionRoot: React.FC = () => {
         calculateMetadata={({ props }) => ({
           durationInFrames: props.durationInFrames,
         })}
+      />
+      <Composition
+        id="MemeReel"
+        component={MemeReel}
+        durationInFrames={510}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={memeReelSchema}
+        defaultProps={memeReelSchema.parse(memeReelFixture)}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: props.durationInFrames,
+        })}
+      />
+      {/* Rig contact sheet — not a deliverable, a check. It exists so the two
+          failure modes that typecheck cleanly (limbs detaching at the joints,
+          a pose that reads wrong) are inspectable as stills instead of being
+          hunted for inside a 510-frame render. */}
+      <Composition
+        id="RigCheck"
+        component={RigCheck}
+        durationInFrames={510}
+        fps={30}
+        width={1080}
+        height={1350}
+        schema={rigCheckSchema}
+        defaultProps={{ mode: "sheet" as const }}
       />
       <Composition
         id="ChipShowcase"
