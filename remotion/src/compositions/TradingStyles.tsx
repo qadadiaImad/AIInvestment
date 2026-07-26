@@ -5,19 +5,25 @@
 // than another, the right one depends on the viewer's available time,
 // temperament and goals. Nothing here ranks them.
 //
-// Every chart is a SIMULATION generated in scripts/trading_styles/
-// generate_regimes.py — deterministic, seeded, and asserted against the claim
-// its scene makes. A range regime that doesn't touch both boundaries, or a
-// "breakout" that never closes beyond its box, fails the generator rather than
-// rendering something the narration contradicts.
+// Every chart is REAL. scripts/trading_styles/find_real_windows.py scans actual
+// IBKR bars and keeps only windows that already pass the structural test for
+// their regime — a range that genuinely tests both boundaries, a breakout that
+// genuinely closes beyond its box, an event bar that genuinely gaps. A regime
+// with no qualifying real window is reported UNMATCHED rather than fabricated.
+// Each scene names its instrument, timeframe and date range on screen.
 //
 // One renderer, ten data payloads. The scene component below draws any regime
 // from its bars plus optional overlays (levels, moving average, an event flag,
 // signal ticks, an allocation ring), so adding a style is a data change.
 //
-// Visual language is the MAYA LAB board theme shared with TradingQuiz: deep
-// navy, ruled blue-grey grid, cool neutral accent, green/red reserved for
-// things that carry meaning.
+// Visual language: green trading-terminal on near-black — ruled grid, a dotted
+// world map behind everything, glowing candles, boxed SUPPORT/RESISTANCE tags,
+// a moving average, and an activity histogram under the plot.
+//
+// The histogram is TRUE RANGE, not volume, and is labelled as such. Volume was
+// not transcribed with these bars, and drawing an invented volume series under
+// a chart of real prices would be the one dishonest pixel in the whole piece.
+// True range is derived from the same real OHLC.
 import React from 'react';
 import {AbsoluteFill, interpolate, random, Sequence, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
@@ -27,21 +33,26 @@ import {Grain, Vignette} from '../motion/Polish';
 
 // ------------------------------------------------------------------ palette
 const T = {
-  bg: '#070A11',
-  grid: 'rgba(126,158,201,0.085)',
-  gridBold: 'rgba(126,158,201,0.17)',
-  ice: '#8FB6E8',
-  steel: '#6F819A',
-  panelTop: '#0C1119',
-  panelBot: '#070A10',
-  edge: 'rgba(126,158,201,0.17)',
+  bg: '#02070A',
+  grid: 'rgba(0,224,130,0.055)',
+  gridBold: 'rgba(0,224,130,0.115)',
+  ice: '#22E07E',
+  steel: '#4E7A64',
+  panelTop: '#04100C',
+  panelBot: '#020806',
+  edge: 'rgba(0,224,130,0.20)',
+  up: '#00E676',
+  down: '#FF3B30',
+  hist: 'rgba(0,224,130,0.30)',
 };
 
 // Per-style accent. Carries identity, not sentiment — these are chapter
 // colours, never a judgement about the style.
+// One green family, not ten hues. The reference board is monochrome green and
+// a rainbow would also read as ranking the styles.
 const ACCENTS = [
-  '#5FD3A0', '#4FB6E8', '#E0A23B', '#A78BFA', '#5FD3A0',
-  '#F08A4B', '#F06A9B', '#4F8FE8', '#3FCFC4', '#E0B03B',
+  '#00E676', '#2BE59A', '#00D9A3', '#4CE68A', '#00E676',
+  '#7BEF7B', '#00E0B0', '#3DDC84', '#5CE68F', '#00E676',
 ];
 
 const barSchema = z.object({o: z.number(), h: z.number(), l: z.number(), c: z.number()});
@@ -74,6 +85,12 @@ const regimeSchema = z.object({
   sessionSplit: z.array(z.number()).optional(),
   allocation: z.array(z.object({label: z.string(), pct: z.number()})).optional(),
   note: z.string().optional(),
+  symbol: z.string().optional(),
+  interval: z.string().optional(),
+  from: z.string().optional(),
+  to: z.string().optional(),
+  retrieved_at: z.string().optional(),
+  source: z.string().optional(),
 });
 
 export const tradingStylesSchema = z.object({
@@ -111,39 +128,96 @@ const S = {
 };
 
 // ---------------------------------------------------------------- geometry
-const PLOT = {x0: 92, x1: 988, y0: 566, y1: 1180};
+const PLOT = {x0: 92, x1: 988, y0: 560, y1: 1090};
+const HIST = {y: 1118, h: 86};
 const PANEL = {x: 46, y: 462, w: 988, h: 762};
 
 // ------------------------------------------------------------ shared chrome
-const BoardGrid: React.FC<{frame: number}> = ({frame}) => (
-  <AbsoluteFill>
-    <svg
-      width={1080}
-      height={1920}
-      style={{
-        position: 'absolute',
-        inset: 0,
-        transform: `translate(${Math.sin(frame / 220) * 5}px, ${Math.cos(frame / 260) * 6}px)`,
-      }}
-    >
-      {Array.from({length: 14}, (_, i) => i * 90).map((x, i) => (
-        <line key={`v${x}`} x1={x} x2={x} y1={-40} y2={1960} stroke={i % 3 === 0 ? T.gridBold : T.grid} strokeWidth={1} />
-      ))}
-      {Array.from({length: 23}, (_, i) => i * 90).map((y, i) => (
-        <line key={`h${y}`} x1={-40} x2={1120} y1={y} y2={y} stroke={i % 3 === 0 ? T.gridBold : T.grid} strokeWidth={1} />
-      ))}
-    </svg>
-    <div
-      style={{
-        position: 'absolute',
-        inset: 0,
-        background:
-          'radial-gradient(120% 60% at 50% 8%, rgba(58,96,148,0.20), transparent 62%),' +
-          'radial-gradient(100% 50% at 50% 104%, rgba(28,44,72,0.35), transparent 60%)',
-      }}
-    />
-  </AbsoluteFill>
-);
+// Coarse equirectangular landmass mask, 64 columns x 26 rows, drawn as a dot
+// matrix behind the whole piece. It is deliberately crude — at ~6% opacity it
+// is texture that reads as "global markets", not a map anyone should navigate by.
+const WORLD = [
+  '................................................................',
+  '.......########....................#####........................',
+  '....###############..........################################...',
+  '...###############.........###############################......',
+  '....#############........###############################.......',
+  '.....###########........##############################.........',
+  '......########..........############################...........',
+  '.......######............#########.####..#########.............',
+  '........####..............#######...##....######...............',
+  '.........###...............#####...........####................',
+  '.........####...............####............###................',
+  '..........####...............###.............##................',
+  '..........####................##..............#................',
+  '...........###.................#..............................',
+  '...........###.................##.............................',
+  '...........###.................###...........#####.............',
+  '...........##..................####.........########...........',
+  '...........##..................####........##########..........',
+  '............#..................###.........#########...........',
+  '............#..................###..........#######............',
+  '............#..................##............#####.............',
+  '...............................##.............###.............',
+  '................................#..............#..............',
+  '................................................................',
+  '....................######################......................',
+  '................................................................',
+];
+
+const BoardGrid: React.FC<{frame: number}> = ({frame}) => {
+  const dots: {x: number; y: number}[] = [];
+  const cw = 1080 / WORLD[0].length;
+  const ch = 1120 / WORLD.length;
+  WORLD.forEach((row, r) =>
+    row.split('').forEach((ch2, c) => {
+      if (ch2 === '#') dots.push({x: c * cw + cw / 2, y: 300 + r * ch + ch / 2});
+    })
+  );
+  return (
+    <AbsoluteFill>
+      {/* dotted world behind everything */}
+      <svg width={1080} height={1920} style={{position: 'absolute', inset: 0, opacity: 0.9}}>
+        {dots.map((d, i) => (
+          <circle
+            key={i}
+            cx={d.x}
+            cy={d.y}
+            r={2.1}
+            fill={T.up}
+            opacity={0.055 + Math.sin(frame / 40 + i * 0.35) * 0.02}
+          />
+        ))}
+      </svg>
+      <svg
+        width={1080}
+        height={1920}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          transform: `translate(${Math.sin(frame / 220) * 5}px, ${Math.cos(frame / 260) * 6}px)`,
+        }}
+      >
+        {Array.from({length: 14}, (_, i) => i * 90).map((x, i) => (
+          <line key={`v${x}`} x1={x} x2={x} y1={-40} y2={1960} stroke={i % 3 === 0 ? T.gridBold : T.grid} strokeWidth={1} />
+        ))}
+        {Array.from({length: 23}, (_, i) => i * 90).map((y, i) => (
+          <line key={`h${y}`} x1={-40} x2={1120} y1={y} y2={y} stroke={i % 3 === 0 ? T.gridBold : T.grid} strokeWidth={1} />
+        ))}
+      </svg>
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background:
+            'radial-gradient(120% 55% at 50% 6%, rgba(0,224,130,0.10), transparent 60%),' +
+            'radial-gradient(110% 50% at 20% 100%, rgba(0,224,130,0.09), transparent 62%),' +
+            'radial-gradient(110% 50% at 85% 100%, rgba(255,59,48,0.06), transparent 62%)',
+        }}
+      />
+    </AbsoluteFill>
+  );
+};
 
 const Footer: React.FC<{text: string}> = ({text}) => (
   <div
@@ -220,12 +294,12 @@ const StyleScene: React.FC<{
     const lN = b.o + (b.l - b.o) * Math.min(1, f * 1.22);
     const drift = (random(`${s.n}b${i}t${step}`) - 0.5) * (b.h - b.l) * 0.7;
     const cN = settled ? b.c : Math.max(lN, Math.min(hN, b.o + (b.c - b.o) * f + drift));
-    const col = cN >= b.o ? C.emerald : C.redHot;
+    const col = cN >= b.o ? T.up : T.down;
     const x = cx(i);
     const yT = toY(Math.max(b.o, cN));
     const yB = toY(Math.min(b.o, cN));
     return (
-      <g key={i} style={{filter: `drop-shadow(0 0 ${settled ? 4 : 9}px ${col}66)`}}>
+      <g key={i} style={{filter: `drop-shadow(0 0 ${settled ? 6 : 12}px ${col}${settled ? 'aa' : 'ee'})`}}>
         <line x1={x} x2={x} y1={toY(hN)} y2={toY(lN)} stroke={col} strokeWidth={1.8} />
         <rect x={x - bodyW / 2} y={yT} width={bodyW} height={Math.max(2, yB - yT)} rx={1.5} fill={col} />
       </g>
@@ -354,11 +428,11 @@ const StyleScene: React.FC<{
             background: 'rgba(126,158,201,.045)',
           }}
         >
-          {[C.redHot, C.amber, C.emerald].map((c) => (
+          {[T.down, '#E0A23B', T.up].map((c) => (
             <div key={c} style={{width: 10, height: 10, borderRadius: 999, background: c, opacity: 0.55}} />
           ))}
           <div style={{marginLeft: 10, fontFamily: FONT.mono, fontSize: 17, letterSpacing: 2, color: T.steel}}>
-            SIMULATION — {s.regime.toUpperCase()}
+            {r.symbol ?? 'SPY'} · {(r.interval ?? '1d').toUpperCase()} · {r.from} → {r.to}
           </div>
           {/* Every regime is normalised to fill the plot, or a scalping chart
            * would be a flat line and unreadable for twelve seconds. That makes
@@ -375,7 +449,7 @@ const StyleScene: React.FC<{
               opacity: 0.85,
             }}
           >
-            {bars.length} bars · span {(hi - lo).toFixed(1)} pts
+            {bars.length} bars · span ${(hi - lo).toFixed(2)}
           </div>
           <div style={{marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 7}}>
             <div
@@ -418,38 +492,89 @@ const StyleScene: React.FC<{
             ))
           : null}
 
-        {/* structural levels */}
-        {r.levels && levelP > 0
-          ? r.levels.map((v, i) => (
-              <g key={`lv${i}`} opacity={levelP}>
-                <line
-                  x1={PLOT.x0 - 8}
-                  x2={PLOT.x0 - 8 + (PLOT.x1 + 8 - (PLOT.x0 - 8)) * levelP}
-                  y1={toY(v)}
-                  y2={toY(v)}
-                  stroke={C.amber}
-                  strokeWidth={2.5}
-                  strokeDasharray="12 9"
-                  style={{filter: `drop-shadow(0 0 7px ${C.amber}cc)`}}
+        {/* activity histogram — TRUE RANGE of each real bar, not volume */}
+        {chartP > 0
+          ? bars.slice(0, drawn).map((b, i) => {
+              const maxTr = Math.max(...bars.map((x) => x.h - x.l)) || 1;
+              const hgt = ((b.h - b.l) / maxTr) * (HIST.h - 4);
+              return (
+                <rect
+                  key={`tr${i}`}
+                  x={cx(i) - bodyW / 2}
+                  y={HIST.y + HIST.h - hgt}
+                  width={bodyW}
+                  height={Math.max(1, hgt)}
+                  fill={T.hist}
                 />
-                <text
-                  x={PLOT.x1 + 4}
-                  y={toY(v) - 9}
-                  fill={C.amber}
-                  fontFamily={FONT.mono}
-                  fontWeight={700}
-                  fontSize={19}
-                  textAnchor="end"
-                >
-                  {v.toFixed(1)}
-                </text>
-              </g>
-            ))
+              );
+            })
+          : null}
+        {chartP > 0 ? (
+          <text x={PLOT.x0 - 6} y={HIST.y - 6} fill={T.steel} fontFamily={FONT.mono} fontSize={15} letterSpacing={2}>
+            TRUE RANGE
+          </text>
+        ) : null}
+
+        {/* structural levels, tagged the way the reference board does it */}
+        {r.levels && levelP > 0
+          ? r.levels.map((v, i) => {
+              const top = i === 0;
+              const tag = r.levels && r.levels.length > 1 ? (top ? 'RESISTANCE' : 'SUPPORT') : 'LEVEL';
+              const w = tag.length * 12 + 26;
+              return (
+                <g key={`lv${i}`} opacity={levelP}>
+                  <line
+                    x1={PLOT.x0 - 8}
+                    x2={PLOT.x0 - 8 + (PLOT.x1 + 8 - (PLOT.x0 - 8)) * levelP}
+                    y1={toY(v)}
+                    y2={toY(v)}
+                    stroke={T.up}
+                    strokeWidth={2}
+                    strokeDasharray="12 9"
+                    style={{filter: `drop-shadow(0 0 8px ${T.up}cc)`}}
+                  />
+                  <rect
+                    x={PLOT.x1 - w}
+                    y={toY(v) + (top ? -40 : 10)}
+                    width={w}
+                    height={30}
+                    rx={7}
+                    fill="rgba(2,10,7,.85)"
+                    stroke={T.up}
+                    strokeWidth={1.4}
+                  />
+                  <text
+                    x={PLOT.x1 - w / 2}
+                    y={toY(v) + (top ? -19 : 31)}
+                    fill={T.up}
+                    fontFamily={FONT.mono}
+                    fontWeight={700}
+                    fontSize={17}
+                    letterSpacing={1.5}
+                    textAnchor="middle"
+                  >
+                    {tag}
+                  </text>
+                  <text
+                    x={PLOT.x0 - 10}
+                    y={toY(v) - 8}
+                    fill={T.up}
+                    fontFamily={FONT.mono}
+                    fontWeight={700}
+                    fontSize={17}
+                    textAnchor="start"
+                    opacity={0.8}
+                  >
+                    {v.toFixed(1)}
+                  </text>
+                </g>
+              );
+            })
           : null}
 
         {/* moving average */}
         {maPath ? (
-          <path d={maPath} fill="none" stroke={T.ice} strokeWidth={2.5} opacity={0.85} strokeLinecap="round" />
+          <path d={maPath} fill="none" stroke={T.ice} strokeWidth={2.5} opacity={0.9} strokeLinecap="round" style={{filter: `drop-shadow(0 0 8px ${T.ice}aa)`}} />
         ) : null}
 
         {bars.map(renderBar)}
@@ -460,7 +585,7 @@ const StyleScene: React.FC<{
               .filter((i) => i < drawn)
               .map((i) => (
                 <g key={`sg${i}`} opacity={fadeOf(markP)}>
-                  <circle cx={cx(i)} cy={toY(bars[i].c)} r={7} fill="none" stroke={T.ice} strokeWidth={2.5} />
+                  <circle cx={cx(i)} cy={toY(bars[i].c)} r={7} fill="none" stroke={T.ice} strokeWidth={2.5} style={{filter: `drop-shadow(0 0 7px ${T.ice}cc)`}} />
                   <circle cx={cx(i)} cy={toY(bars[i].c)} r={2.5} fill={T.ice} />
                 </g>
               ))
@@ -474,12 +599,12 @@ const StyleScene: React.FC<{
               x2={cx(r.eventAt)}
               y1={PLOT.y0 - 12}
               y2={PLOT.y1 + 8}
-              stroke={C.amber}
+              stroke={T.ice}
               strokeWidth={2}
               strokeDasharray="6 6"
               opacity={0.8}
             />
-            <rect x={cx(r.eventAt) - 52} y={PLOT.y0 - 44} width={104} height={30} rx={7} fill={C.amber} />
+            <rect x={cx(r.eventAt) - 52} y={PLOT.y0 - 44} width={104} height={30} rx={7} fill={T.ice} />
             <text
               x={cx(r.eventAt)}
               y={PLOT.y0 - 23}
@@ -504,7 +629,7 @@ const StyleScene: React.FC<{
                 const bi = Math.max(0, Math.min(bars.length - 1, Math.round(m.bar)));
                 if (bi >= drawn) return null;
                 const isEntry = m.kind === 'entry';
-                const col = isEntry ? C.emerald : C.redHot;
+                const col = isEntry ? T.up : T.down;
                 const y = toY(isEntry ? bars[bi].l : bars[bi].h);
                 const dy = isEntry ? 30 : -30;
                 const p = spring({frame: frame - S.markersIn - i * 4, fps, config: SPRINGS.pop});

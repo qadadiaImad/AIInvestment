@@ -44,7 +44,7 @@ STYLES = [
 
 LIMITS = {"oneLiner": 52, "bullets": 44, "demands": 60}
 
-FOOTER = ("Simulated charts, not real market data · Educational only — not financial advice · DYOR")
+FOOTER = ("Real SPY bars via Interactive Brokers · Snapshot 2026-07-26 17:41 UTC · Educational only, not advice")
 
 
 def main():
@@ -92,8 +92,8 @@ def main():
 
     fixture = {
         "title": "Find Your Trading Style",
-        "subtitle": "Ten ways to trade the same chart. The right one depends on your time, "
-                    "temperament and goals — not on which looks cleverest.",
+        "subtitle": "Ten ways to trade the same market. Every chart here is real SPY price data. "
+                    "The right style depends on your time, temperament and goals.",
         "outroTitle": "There is no best style.",
         "outroLine": "There is only the one you can run for years without burning out. "
                      "Pick for your life, not for the chart.",
