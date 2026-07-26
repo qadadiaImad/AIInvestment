@@ -19,7 +19,7 @@
 // pulled from IBKR (see the fixture's `footer` for the stamp), the same window
 // the ta_quiz case study uses. Nothing here authors OHLC.
 import React from 'react';
-import {AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Img, OffthreadVideo, interpolate, staticFile, useCurrentFrame} from 'remotion';
 import {z} from 'zod';
 import {C, FONT} from '../slides/theme';
 import {EASE, fadeOf, wiggle} from '../motion/craft';
@@ -52,6 +52,18 @@ export const memeReelSchema = z.object({
   storyBar: z.number(),
   captions: z.array(z.object({from: z.number(), to: z.number(), text: z.string()})),
   footer: z.string(),
+  /** Path under public/ to a TRANSPARENT character performance video, animated
+   * externally (Cartoon Animator / Character Animator / Moho / AE) and exported
+   * as VP8/VP9 + yuva420p WebM, or ProRes 4444.
+   *
+   * It must be authored on a STATIC 1080x1920 canvas in the same world space as
+   * the room plate — character only, NO camera move baked in. This composition
+   * applies the camera to the room and the character together, so a baked-in
+   * push would double up. See content/meme_reel/ANIMATION_BRIEF.md.
+   *
+   * When absent, the built-in ToonRig is used instead, so the reel still
+   * renders and still previews the timing. */
+  characterSrc: z.string().optional(),
   /** Character staging, in composition space. Tuned against the plate's floor. */
   charCenterX: z.number(),
   charFeetY: z.number(),
@@ -261,17 +273,37 @@ export const MemeReel: React.FC<MemeReelProps> = (p) => {
           />
         </svg>
 
-        {/* ------------------------------------------------- the character */}
-        <div
-          style={{
-            position: 'absolute',
-            left: p.charCenterX - (p.charHeight * 1700) / 2900 / 2,
-            top: p.charFeetY - charGroundOffset,
-            opacity: Math.min(1, charOpacity),
-          }}
-        >
-          <ToonRig height={p.charHeight} facing="left" />
-        </div>
+        {/* ------------------------------------------------- the character.
+            Either an externally-animated transparent performance, or the
+            built-in rig. Both sit INSIDE the camera transform, so the character
+            is pushed and panned along with the room exactly as if he were in
+            it — which is why the delivered video must not contain a camera
+            move of its own. */}
+        {p.characterSrc ? (
+          <OffthreadVideo
+            src={staticFile(p.characterSrc)}
+            transparent
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              width: 1080,
+              height: 1920,
+              opacity: Math.min(1, charOpacity),
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              position: 'absolute',
+              left: p.charCenterX - (p.charHeight * 1700) / 2900 / 2,
+              top: p.charFeetY - charGroundOffset,
+              opacity: Math.min(1, charOpacity),
+            }}
+          >
+            <ToonRig height={p.charHeight} facing="left" />
+          </div>
+        )}
       </AbsoluteFill>
 
       {/* ------------------------------------------------------- captions.
