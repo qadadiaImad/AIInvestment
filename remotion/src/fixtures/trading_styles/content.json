@@ -1,0 +1,362 @@
+[
+ {
+  "n": 1,
+  "name": "SCALPING",
+  "oneLiner": "High-frequency trades capturing small price moves.",
+  "bullets": [
+   "Dozens of trades executed per session",
+   "Tight stop-losses, small profit targets"
+  ],
+  "demands": "Constant screen focus, low-latency tools, fees erode gains",
+  "chartNote": "Show tight, choppy sideways bars confined to a narrow range, with several rapid entry-exit pairs only a few bars apart to convey repeated, fast in-and-out trades.",
+  "markers": [
+   {
+    "kind": "level",
+    "bar": 0.05,
+    "label": "Range High"
+   },
+   {
+    "kind": "entry",
+    "bar": 0.3,
+    "label": "Entry"
+   },
+   {
+    "kind": "exit",
+    "bar": 0.34,
+    "label": "Exit"
+   },
+   {
+    "kind": "entry",
+    "bar": 0.55,
+    "label": "Entry"
+   },
+   {
+    "kind": "exit",
+    "bar": 0.58,
+    "label": "Exit"
+   }
+  ],
+  "vo": "Scalping captures tiny price moves within seconds to minutes, repeated many times each session. It demands constant screen time, low-latency execution, and strict risk control, since trading costs add up fast."
+ },
+ {
+  "n": 2,
+  "name": "DAY TRADING",
+  "oneLiner": "Positions opened and closed within a single session.",
+  "bullets": [
+   "Trades held minutes to hours, not overnight",
+   "Entries based on intraday chart patterns"
+  ],
+  "demands": "Full trading-day attention; US PDT rule needs $25k equity",
+  "chartNote": "Show a full intraday session with a clear directional move, entry taken early in the session and exit later the same day, with visibly more room between markers than the scalping chart but no bars extending past the session close.",
+  "markers": [
+   {
+    "kind": "event",
+    "bar": 0.35,
+    "label": "News"
+   },
+   {
+    "kind": "entry",
+    "bar": 0.4,
+    "label": "Entry"
+   },
+   {
+    "kind": "exit",
+    "bar": 0.85,
+    "label": "Exit"
+   }
+  ],
+  "vo": "Day trading opens and closes positions within one session, avoiding overnight exposure entirely. It still demands hours of focused attention, and in the US, meeting the pattern day trader rule's equity requirement."
+ },
+ {
+  "n": 3,
+  "name": "SWING TRADING",
+  "oneLiner": "Trades multi-day price swings, not single ticks.",
+  "bullets": [
+   "Trades held for days across swing legs",
+   "Position sized to absorb overnight gaps"
+  ],
+  "demands": "Requires patience through pullbacks; moderate screen time",
+  "chartNote": "The chart should show a multi-day directional leg with the entry placed near the start of the move and the exit placed after several bars of follow-through, including one shallow pullback that does not trigger a stop.",
+  "markers": [
+   {
+    "kind": "entry",
+    "bar": 0.15,
+    "label": "Entry"
+   },
+   {
+    "kind": "event",
+    "bar": 0.4,
+    "label": "Pullback"
+   },
+   {
+    "kind": "exit",
+    "bar": 0.75,
+    "label": "Exit"
+   }
+  ],
+  "vo": "Swing trading holds positions for several days to a few weeks, aiming to capture one directional leg within a larger trend. It requires patience to sit through pullbacks without exiting early."
+ },
+ {
+  "n": 4,
+  "name": "POSITION TRADING",
+  "oneLiner": "Holds trades for weeks to months, riding trends.",
+  "bullets": [
+   "Entries based on daily to monthly charts",
+   "Few trades taken across a full year"
+  ],
+  "demands": "Ties up capital for months; needs strong conviction",
+  "chartNote": "The chart should depict a single sustained trend spanning nearly the whole series, with the entry placed early and the exit placed very late, so day-to-day noise looks small next to the overall move.",
+  "markers": [
+   {
+    "kind": "entry",
+    "bar": 0.08,
+    "label": "Entry"
+   },
+   {
+    "kind": "level",
+    "bar": 0.45,
+    "label": "Trend base"
+   },
+   {
+    "kind": "exit",
+    "bar": 0.92,
+    "label": "Exit"
+   }
+  ],
+  "vo": "Position trading holds a trade for weeks or months, following a broader trend rather than daily noise. It ties up capital for long stretches and requires conviction through normal volatility."
+ },
+ {
+  "n": 5,
+  "name": "TREND TRADING",
+  "oneLiner": "Stay in a trend until price structure breaks down",
+  "bullets": [
+   "Enter with the trend, add on pullbacks",
+   "Trail stops instead of fixing a target"
+  ],
+  "demands": "Requires patience through drawdowns and choppy pullbacks",
+  "chartNote": "The chart should show a steady one-directional drift with one shallow pullback the position survives, held from an early entry until the trend structure finally breaks near the exit.",
+  "markers": [
+   {
+    "kind": "entry",
+    "bar": 0.1,
+    "label": "Entry"
+   },
+   {
+    "kind": "event",
+    "bar": 0.45,
+    "label": "Pullback"
+   },
+   {
+    "kind": "level",
+    "bar": 0.6,
+    "label": "Trend Line"
+   },
+   {
+    "kind": "exit",
+    "bar": 0.9,
+    "label": "Exit"
+   }
+  ],
+  "vo": "Trend trading stays with a market as long as it makes higher highs and higher lows. The trade can run weeks or months, and the key skill is holding through pullbacks."
+ },
+ {
+  "n": 6,
+  "name": "BREAKOUT TRADING",
+  "oneLiner": "Enter when price breaks out of a tight range",
+  "bullets": [
+   "Trades a range breakout, not a trend",
+   "Exit fast if price re-enters the range"
+  ],
+  "demands": "Needs fast execution and strict stops to avoid false breaks",
+  "chartNote": "The chart should show price coiling inside a tight horizontal range and then thrusting sharply through resistance on rising volume, with the exit taken shortly after confirmation.",
+  "markers": [
+   {
+    "kind": "level",
+    "bar": 0.15,
+    "label": "Range Low"
+   },
+   {
+    "kind": "level",
+    "bar": 0.35,
+    "label": "Range High"
+   },
+   {
+    "kind": "entry",
+    "bar": 0.5,
+    "label": "Breakout"
+   },
+   {
+    "kind": "event",
+    "bar": 0.53,
+    "label": "Volume Spike"
+   },
+   {
+    "kind": "exit",
+    "bar": 0.72,
+    "label": "Exit"
+   }
+  ],
+  "vo": "Breakout trading waits for price to compress into a tight range, then enters once that range breaks. Because many breakouts fail, the style depends on fast decisions and a predefined stop-loss."
+ },
+ {
+  "n": 7,
+  "name": "RANGE TRADING",
+  "oneLiner": "Buying support, selling resistance in a range",
+  "bullets": [
+   "Enters near support, exits near resistance",
+   "Fails when price breaks the range"
+  ],
+  "demands": "Demands frequent monitoring and discipline near range edges",
+  "chartNote": "Price oscillates between two flat horizontal levels, touching support and resistance repeatedly before eventually breaking out of the range.",
+  "markers": [
+   {
+    "kind": "level",
+    "bar": 0.02,
+    "label": "Support"
+   },
+   {
+    "kind": "level",
+    "bar": 0.97,
+    "label": "Resistance"
+   },
+   {
+    "kind": "entry",
+    "bar": 0.15,
+    "label": "Buy"
+   },
+   {
+    "kind": "exit",
+    "bar": 0.35,
+    "label": "Sell"
+   },
+   {
+    "kind": "entry",
+    "bar": 0.55,
+    "label": "Buy"
+   },
+   {
+    "kind": "exit",
+    "bar": 0.75,
+    "label": "Sell"
+   }
+  ],
+  "vo": "Range trading buys near support and sells near resistance, betting the price stays boxed between two levels. It requires close monitoring, since a breakout ends the range and can trigger losses fast."
+ },
+ {
+  "n": 8,
+  "name": "NEWS TRADING",
+  "oneLiner": "Trading the price reaction to a scheduled news event",
+  "bullets": [
+   "Positions taken just before the release",
+   "Exits within minutes as volatility fades"
+  ],
+  "demands": "Needs fast feeds, low latency, and tolerance for slippage",
+  "chartNote": "The chart shows a quiet, tight price zone that suddenly gaps at the news flag, followed by a fast spike the trade enters and exits within minutes.",
+  "markers": [
+   {
+    "kind": "level",
+    "bar": 0.15,
+    "label": "Quiet zone"
+   },
+   {
+    "kind": "event",
+    "bar": 0.5,
+    "label": "News"
+   },
+   {
+    "kind": "entry",
+    "bar": 0.52,
+    "label": "Entry"
+   },
+   {
+    "kind": "exit",
+    "bar": 0.58,
+    "label": "Exit"
+   }
+  ],
+  "vo": "News trading positions a trade around a scheduled release, aiming to catch the sudden price reaction it triggers. The window is short, spreads widen fast, and execution speed matters more than analysis."
+ },
+ {
+  "n": 9,
+  "name": "ALGORITHMIC",
+  "oneLiner": "A coded rule set trades the market without hands.",
+  "bullets": [
+   "Code defines entries, exits, position size",
+   "Runs on backtested, unattended logic"
+  ],
+  "demands": "Requires coding skill, infrastructure, constant oversight",
+  "chartNote": "The chart should show a rapid series of evenly-spaced, rule-triggered entries and exits firing at consistent technical levels, with no visible hesitation or deviation between signals.",
+  "markers": [
+   {
+    "kind": "entry",
+    "bar": 0.12,
+    "label": "Signal 1"
+   },
+   {
+    "kind": "exit",
+    "bar": 0.22,
+    "label": "Exit 1"
+   },
+   {
+    "kind": "entry",
+    "bar": 0.45,
+    "label": "Signal 2"
+   },
+   {
+    "kind": "exit",
+    "bar": 0.55,
+    "label": "Exit 2"
+   },
+   {
+    "kind": "entry",
+    "bar": 0.78,
+    "label": "Signal 3"
+   },
+   {
+    "kind": "exit",
+    "bar": 0.88,
+    "label": "Exit 3"
+   }
+  ],
+  "vo": "An algorithmic system trades on pre-defined code rather than discretion, executing entries and exits the instant its conditions are met. Building and maintaining one demands programming skill and constant technical oversight."
+ },
+ {
+  "n": 10,
+  "name": "PORTFOLIO / SIZING",
+  "oneLiner": "Capital allocation and sizing across holdings.",
+  "bullets": [
+   "Weights and rebalances across positions",
+   "Shifts exposure between sectors over time"
+  ],
+  "demands": "Needs discipline, diversification, patience over months",
+  "chartNote": "The chart should show a slow-moving, multi-week price series with widely spaced entry and exit markers, illustrating position size gradually shifting rather than a single sharp trade.",
+  "markers": [
+   {
+    "kind": "entry",
+    "bar": 0.08,
+    "label": "Add"
+   },
+   {
+    "kind": "level",
+    "bar": 0.3,
+    "label": "Target Wt"
+   },
+   {
+    "kind": "event",
+    "bar": 0.5,
+    "label": "Rebalance"
+   },
+   {
+    "kind": "level",
+    "bar": 0.7,
+    "label": "Trim Lvl"
+   },
+   {
+    "kind": "exit",
+    "bar": 0.92,
+    "label": "Reduce"
+   }
+  ],
+  "vo": "Portfolio and sizing decisions determine how capital is spread across positions and adjusted as market conditions change. This work unfolds over weeks or months, rewarding patience rather than quick reaction."
+ }
+]

@@ -1,0 +1,32 @@
+[
+ {
+  "n": 7,
+  "field": "markers",
+  "problem": "The two 'level' markers (Resistance at bar 0.05, Support at bar 0.06) are only 0.01 apart on the timeline — effectively stacked on top of each other. Every other item in this batch spaces its level markers well apart (e.g. item 6's Range Low/Range High are 0.2 apart) specifically so labels don't collide. As written, 'Resistance' and 'Support' labels will overlap/render illegibly, and since Resistance is placed before Support even though the first Buy (support touch) happens at bar 0.15, the ordering doesn't cleanly set up the range before the first entry.",
+  "replacement": "[{\"kind\":\"level\",\"bar\":0.02,\"label\":\"Support\"},{\"kind\":\"level\",\"bar\":0.97,\"label\":\"Resistance\"},{\"kind\":\"entry\",\"bar\":0.15,\"label\":\"Buy\"},{\"kind\":\"exit\",\"bar\":0.35,\"label\":\"Sell\"},{\"kind\":\"entry\",\"bar\":0.55,\"label\":\"Buy\"},{\"kind\":\"exit\",\"bar\":0.75,\"label\":\"Sell\"}]"
+ },
+ {
+  "n": 8,
+  "field": "demands",
+  "problem": "62 characters — exceeds the 60-character limit ('Needs fast data feeds, low latency, and tolerance for slippage').",
+  "replacement": "Needs fast feeds, low latency, and tolerance for slippage"
+ },
+ {
+  "n": 5,
+  "field": "vo",
+  "problem": "Technically wrong trend definition: 'making higher highs OR higher lows' is not sufficient to define an uptrend (e.g. higher highs with lower lows is just an expanding range, not a trend) — it needs to be 'and', not 'or'. Also, fixing the duration at 'can last weeks' undercuts the trailing-stop/no-fixed-target premise in bullet 2 ('Trail stops instead of fixing a target') and duplicates Swing Trading's 'several days to a few weeks' duration claim almost verbatim, blurring the two styles.",
+  "replacement": "Trend trading stays with a market as long as it makes higher highs and higher lows. The trade can run weeks or months, and the key skill is holding through pullbacks."
+ },
+ {
+  "n": 2,
+  "field": "vo",
+  "problem": "'the pattern day trader capital rule' is not a real regulatory name — the actual rule is the 'Pattern Day Trader (PDT) rule,' and it has a capital/equity requirement, it isn't itself called a 'capital rule.' This invents/garbles terminology in what's meant to be a factual regulatory reference (the demands field for the same style correctly says 'US PDT rule needs $25k equity').",
+  "replacement": "Day trading opens and closes positions within one session, avoiding overnight exposure entirely. It still demands hours of focused attention, and in the US, meeting the pattern day trader rule's equity requirement."
+ },
+ {
+  "n": 5,
+  "field": "chartNote",
+  "problem": "chartNote asks for 'shallow pullbacks' (plural) but the markers array only supplies one 'event/Pullback' marker (bar 0.45) — note and markers disagree on how many pullbacks to render, unlike Swing Trading (#3) where the chartNote says 'one shallow pullback' and exactly one Pullback marker is given. An animator following this note literally would draw pullbacks the marker data doesn't support.",
+  "replacement": "The chart should show a steady one-directional drift with one shallow pullback the position survives, held from an early entry until the trend structure finally breaks near the exit."
+ }
+]
