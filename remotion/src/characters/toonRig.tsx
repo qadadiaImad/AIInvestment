@@ -30,6 +30,7 @@
 import React from 'react';
 import {staticFile, useCurrentFrame} from 'remotion';
 import {computeRubberHosePose, type Pose} from './rubberHoseRig';
+import {clampJoint} from './joints';
 
 // ---------------------------------------------------------------- the parts
 // Intrinsic pixel size of each extracted PNG, and where its joint sits inside
@@ -191,9 +192,11 @@ export const ToonRig: React.FC<ToonRigProps> = ({
   const arm = (side: 1 | -1) => {
     const isR = side === 1;
     const sx = CX + SHOULDER_DX * side;
-    const shoulderA = isR ? REST.shoulderR + p.shoulderR : REST.shoulderL + p.shoulderL;
-    const elbowA = isR ? REST.elbowR + p.elbowR : REST.elbowL + p.elbowL;
-    const handA = isR ? REST.handR + p.handR : REST.handL + p.handL;
+    // Every joint is clamped to what a body can actually do. Without this the
+    // elbow crosses zero and inverts — see joints.ts.
+    const shoulderA = clampJoint(isR ? 'shoulderR' : 'shoulderL', isR ? REST.shoulderR + p.shoulderR : REST.shoulderL + p.shoulderL);
+    const elbowA = clampJoint(isR ? 'elbowR' : 'elbowL', isR ? REST.elbowR + p.elbowR : REST.elbowL + p.elbowL);
+    const handA = clampJoint(isR ? 'handR' : 'handL', isR ? REST.handR + p.handR : REST.handL + p.handL);
     const elbowY = SHOULDER_Y + boneLen(P.upperArm);
     const wristY = elbowY + boneLen(P.forearm);
     // The far side is TINTED darker, not made transparent. Using opacity here
@@ -213,8 +216,8 @@ export const ToonRig: React.FC<ToonRigProps> = ({
   const leg = (side: 1 | -1) => {
     const isR = side === 1;
     const hx = CX + HIP_DX * side;
-    const hipA = isR ? REST.hipR + p.hipR : REST.hipL + p.hipL;
-    const kneeA = isR ? REST.kneeR + p.kneeR : REST.kneeL + p.kneeL;
+    const hipA = clampJoint(isR ? 'hipR' : 'hipL', isR ? REST.hipR + p.hipR : REST.hipL + p.hipL);
+    const kneeA = clampJoint(isR ? 'kneeR' : 'kneeL', isR ? REST.kneeR + p.kneeR : REST.kneeL + p.kneeL);
     const kneeY = HIP_Y + boneLen(P.thigh);
     const ankleY = kneeY + boneLen(P.shin);
     return (
@@ -248,12 +251,12 @@ export const ToonRig: React.FC<ToonRigProps> = ({
           {leg(-1)}
           {leg(1)}
 
-          <g transform={`rotate(${p.leanChest} ${CX} ${HIP_Y}) translate(0 ${spineDrop})`}>
+          <g transform={`rotate(${clampJoint('leanChest', p.leanChest)} ${CX} ${HIP_Y}) translate(0 ${spineDrop})`}>
             {arm(-1)}
 
             <Piece part={P.torso} jx={CX} jy={HIP_Y} angle={0} />
 
-            <Piece part={{...P.head, file: `head_${expression}.png`}} jx={CX} jy={NECK_Y} angle={p.leanHead} />
+            <Piece part={{...P.head, file: `head_${expression}.png`}} jx={CX} jy={NECK_Y} angle={clampJoint('leanHead', p.leanHead)} />
 
             {arm(1)}
           </g>
