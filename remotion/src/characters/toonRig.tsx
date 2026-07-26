@@ -58,12 +58,32 @@ type Part = {
  * generation jumps on the cut, which is the whole reason they were not just
  * generated one at a time. Their pivot is the NECK STUB, not the top of the
  * ink: a head hangs up from its neck. */
-const HEADS = ['neutral', 'curious', 'shock', 'weary'] as const;
+const HEADS = ['neutral', 'curious', 'shock', 'weary', 'wince', 'blink'] as const;
 export type Expression = (typeof HEADS)[number];
 
 /** Which face is on at a given frame. The reference reel gets most of its read
  * from the FACE, not the body — a shocked take with a neutral face is just a
  * man waving. */
+/** Hand swap set. Each pose is a different drawing with its OWN wrist position,
+ * so the pivot has to travel with the file — a shared pivot would leave the
+ * pointing hand hanging off the end of the arm. */
+export type HandPose = 'relaxed' | 'flat' | 'splay' | 'palmup';
+export const HAND_POSES: Record<HandPose, {file: string; w: number; h: number; px: number; py: number; s?: number}> = {
+  relaxed: {file: 'hand_relaxed.png', w: 413, h: 619, px: 0.50, py: 0.04, s: 0.62},
+  flat: {file: 'hand_flat.png', w: 573, h: 533, px: 0.80, py: 0.10, s: 0.62},
+  splay: {file: 'hand_splay.png', w: 635, h: 538, px: 0.68, py: 0.90, s: 0.62},
+  palmup: {file: 'hand_palmup.png', w: 659, h: 434, px: 0.12, py: 0.35, s: 0.62},
+};
+
+/** Which hand is on at a given frame — keyed to the same beats as the face. */
+export const handPoseAt = (frame: number): HandPose => {
+  if (frame < 200) return 'relaxed';
+  if (frame < 232) return 'flat';   // planted on the desk
+  if (frame < 302) return 'splay';  // the recoil
+  if (frame < 396) return 'relaxed';
+  return 'palmup';                  // the shrug
+};
+
 export const expressionAt = (frame: number): Expression => {
   if (frame < 76) return 'neutral';
   if (frame < 232) return 'curious';
@@ -72,17 +92,21 @@ export const expressionAt = (frame: number): Expression => {
 };
 
 const P: Record<string, Part> = {
-  head: {file: 'head_neutral.png', w: 302, h: 390, px: 0.446, py: 0.945, s: 1.50},
-  torso: {file: 'torso.png', w: 401, h: 621, px: 0.5, py: 0.97, childY: 0.04, s: 0.95},
-  upperArm: {file: 'upper_arm.png', w: 166, h: 604, px: 0.5, py: 0.05, childY: 0.95, s: 0.85},
-  forearm: {file: 'forearm.png', w: 146, h: 500, px: 0.5, py: 0.05, childY: 0.96, s: 0.85},
-  hand: {file: 'hand.png', w: 332, h: 543, px: 0.5, py: 0.06, s: 0.62},
-  thigh: {file: 'thigh.png', w: 211, h: 676, px: 0.5, py: 0.05, childY: 0.95},
-  shin: {file: 'shin.png', w: 141, h: 559, px: 0.5, py: 0.05, childY: 0.96},
-  foot: {file: 'foot.png', w: 468, h: 357, px: 0.22, py: 0.10, s: 0.82},
+  // Dimensions and pivots are the measured output of extract_limbs.py on
+  // content/meme_reel/character/*.png — see manifest_*.json in char2/.
+  // Only the two that hang UPWARD from their joint are hand-corrected: the head
+  // pivots on its neck stub and the torso on its belt, both at the BOTTOM.
+  head: {file: 'head_neutral.png', w: 530, h: 631, px: 0.598, py: 0.955},
+  torso: {file: 'torso.png', w: 665, h: 608, px: 0.5, py: 0.90, childY: 0.03},
+  upperArm: {file: 'upper_arm.png', w: 245, h: 595, px: 0.5, py: 0.04, childY: 0.95},
+  forearm: {file: 'forearm.png', w: 225, h: 369, px: 0.5, py: 0.05, childY: 0.95},
+  hand: {file: 'hand_relaxed.png', w: 413, h: 619, px: 0.5, py: 0.04, s: 0.62},
+  thigh: {file: 'thigh.png', w: 415, h: 623, px: 0.5, py: 0.04, childY: 0.95},
+  shin: {file: 'shin.png', w: 351, h: 598, px: 0.5, py: 0.04, childY: 0.95},
+  foot: {file: 'shoe.png', w: 357, h: 232, px: 0.30, py: 0.12},
 };
 
-const src = (p: Part) => staticFile(`meme_reel/char/${p.file}`);
+const src = (p: Part) => staticFile(`meme_reel/char2/${p.file}`);
 
 /** Ink length from a part's own joint to where its child attaches.
  * Absolute, because the torso is the one part whose bone runs UPWARD from its
@@ -103,11 +127,11 @@ const ANKLE_Y = GROUND - (1 - P.foot.py) * P.foot.h;
 const KNEE_Y = ANKLE_Y - boneLen(P.shin);
 const HIP_Y = KNEE_Y - boneLen(P.thigh);
 const TORSO_TOP_Y = HIP_Y - boneLen(P.torso);
-const NECK_Y = TORSO_TOP_Y + 96;
+const NECK_Y = TORSO_TOP_Y + 104;
 
-const HIP_DX = 128;
-const SHOULDER_DX = 168;
-const SHOULDER_Y = TORSO_TOP_Y + 58;
+const HIP_DX = 200;
+const SHOULDER_DX = 205;
+const SHOULDER_Y = TORSO_TOP_Y + 96;
 
 /** The rig's full ink height, so a caller can size it in real frame pixels. */
 export const TOON_INK_TOP = NECK_Y - P.head.py * P.head.h;
@@ -186,6 +210,7 @@ export const ToonRig: React.FC<ToonRigProps> = ({
   const frame = frameOverride ?? current;
   const p = {...computeRubberHosePose(frame), ...poseOverride};
   const expression = expressionOverride ?? expressionAt(frame);
+  const handPose = handPoseAt(frame);
 
   const width = (height * VB_W) / VB_H;
 
@@ -206,7 +231,7 @@ export const ToonRig: React.FC<ToonRigProps> = ({
       <g style={isR ? undefined : {filter: 'brightness(0.86)'}}>
         <Piece part={P.upperArm} jx={sx} jy={SHOULDER_Y} angle={shoulderA}>
           <Piece part={P.forearm} jx={sx} jy={elbowY} angle={elbowA}>
-            <Piece part={P.hand} jx={sx} jy={wristY} angle={handA} />
+            <Piece part={{...P.hand, ...HAND_POSES[handPose]}} jx={sx} jy={wristY} angle={handA} />
           </Piece>
         </Piece>
       </g>

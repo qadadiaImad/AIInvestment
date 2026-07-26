@@ -1,0 +1,71 @@
+{
+  "source": "HANDS.png",
+  "parts": [
+    {
+      "name": "hand_relaxed",
+      "file": "hand_relaxed.png",
+      "w": 413,
+      "h": 619,
+      "pivot": [
+        0.5,
+        0.0097
+      ],
+      "area": 164246
+    },
+    {
+      "name": "hand_flat",
+      "file": "hand_flat.png",
+      "w": 573,
+      "h": 533,
+      "pivot": [
+        0.5,
+        0.0113
+      ],
+      "area": 175551
+    },
+    {
+      "name": "hand_point",
+      "file": "hand_point.png",
+      "w": 657,
+      "h": 388,
+      "pivot": [
+        0.5,
+        0.0155
+      ],
+      "area": 157312
+    },
+    {
+      "name": "hand_splay",
+      "file": "hand_splay.png",
+      "w": 635,
+      "h": 538,
+      "pivot": [
+        0.5,
+        0.0112
+      ],
+      "area": 149640
+    },
+    {
+      "name": "hand_palmup",
+      "file": "hand_palmup.png",
+      "w": 659,
+      "h": 434,
+      "pivot": [
+        0.5,
+        0.0138
+      ],
+      "area": 166752
+    },
+    {
+      "name": "hand_fist",
+      "file": "hand_fist.png",
+      "w": 530,
+      "h": 405,
+      "pivot": [
+        0.5,
+        0.0148
+      ],
+      "area": 157346
+    }
+  ]
+}

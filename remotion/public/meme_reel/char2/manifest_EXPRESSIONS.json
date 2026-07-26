@@ -1,0 +1,71 @@
+{
+  "source": "EXPRESSIONS.png",
+  "parts": [
+    {
+      "name": "head_neutral",
+      "file": "head_neutral.png",
+      "w": 530,
+      "h": 631,
+      "pivot": [
+        0.5981,
+        0.9705
+      ],
+      "area": 245961
+    },
+    {
+      "name": "head_curious",
+      "file": "head_curious.png",
+      "w": 530,
+      "h": 631,
+      "pivot": [
+        0.5972,
+        0.9705
+      ],
+      "area": 245832
+    },
+    {
+      "name": "head_shock",
+      "file": "head_shock.png",
+      "w": 530,
+      "h": 631,
+      "pivot": [
+        0.5972,
+        0.9705
+      ],
+      "area": 245931
+    },
+    {
+      "name": "head_weary",
+      "file": "head_weary.png",
+      "w": 537,
+      "h": 650,
+      "pivot": [
+        0.622,
+        0.9708
+      ],
+      "area": 257196
+    },
+    {
+      "name": "head_wince",
+      "file": "head_wince.png",
+      "w": 537,
+      "h": 650,
+      "pivot": [
+        0.6229,
+        0.9708
+      ],
+      "area": 257428
+    },
+    {
+      "name": "head_blink",
+      "file": "head_blink.png",
+      "w": 538,
+      "h": 650,
+      "pivot": [
+        0.6236,
+        0.9708
+      ],
+      "area": 257527
+    }
+  ]
+}

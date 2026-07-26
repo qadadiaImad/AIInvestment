@@ -1,0 +1,104 @@
+{
+  "source": "PARTS.png",
+  "parts": [
+    {
+      "name": "head",
+      "file": "head.png",
+      "w": 376,
+      "h": 502,
+      "pivot": [
+        0.5,
+        0.012
+      ],
+      "area": 133564
+    },
+    {
+      "name": "torso",
+      "file": "torso.png",
+      "w": 665,
+      "h": 608,
+      "pivot": [
+        0.5,
+        0.0099
+      ],
+      "area": 289985
+    },
+    {
+      "name": "upper_arm",
+      "file": "upper_arm.png",
+      "w": 245,
+      "h": 595,
+      "pivot": [
+        0.5,
+        0.0101
+      ],
+      "area": 95999
+    },
+    {
+      "name": "forearm",
+      "file": "forearm.png",
+      "w": 225,
+      "h": 369,
+      "pivot": [
+        0.5,
+        0.0163
+      ],
+      "area": 50513
+    },
+    {
+      "name": "hand",
+      "file": "hand.png",
+      "w": 225,
+      "h": 362,
+      "pivot": [
+        0.5,
+        0.0166
+      ],
+      "area": 50336
+    },
+    {
+      "name": "thigh",
+      "file": "thigh.png",
+      "w": 415,
+      "h": 623,
+      "pivot": [
+        0.5,
+        0.0096
+      ],
+      "area": 183823
+    },
+    {
+      "name": "thigh_b",
+      "file": "thigh_b.png",
+      "w": 323,
+      "h": 597,
+      "pivot": [
+        0.5,
+        0.0101
+      ],
+      "area": 137987
+    },
+    {
+      "name": "shin",
+      "file": "shin.png",
+      "w": 351,
+      "h": 598,
+      "pivot": [
+        0.5,
+        0.01
+      ],
+      "area": 149027
+    },
+    {
+      "name": "shoe",
+      "file": "shoe.png",
+      "w": 357,
+      "h": 232,
+      "pivot": [
+        0.5,
+        0.0259
+      ],
+      "area": 57875
+    }
+  ]
+}

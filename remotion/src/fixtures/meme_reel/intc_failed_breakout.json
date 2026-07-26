@@ -208,8 +208,8 @@
     }
   ],
   "footer": "INTC daily bars · IBKR 2026-07-25 · Hindsight example · Educational only, not advice",
-  "charCenterX": 760,
+  "charCenterX": 740,
   "charFeetY": 1665,
-  "charHeight": 1060,
+  "charHeight": 1240,
   "durationInFrames": 510
 }
