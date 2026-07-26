@@ -256,3 +256,129 @@ Full detail in [`video/README.md`](video/README.md); summary here:
   and for-profit orgs with ≤3 employees; a paid Company License is required at 4+
   employees (aggregated across agency/client/contractor collaborations on the same
   project). Confirm the org's headcount before any commercial use of rendered output.
+
+---
+
+## 10. The reel-production setup (converged 2026-07-26 — treat as house style)
+
+Everything below was arrived at by getting it wrong first. Don't re-derive it.
+
+### 10.1 Numbers are never model-authored
+
+**Models write prose. Python owns the numbers. The spec owns the facts.**
+
+Every attempt at model-authored OHLC in this repo produced geometry that looked
+right and was wrong — see `scripts/ta_quiz/validate.py` and the
+trigger-displacement repair. The same failure recurred with *marker positions*:
+an agent that had never seen the series placed a "Buy" tag at the top of a range.
+
+So: charts come from **real IBKR bars**, and the scanners **find** windows that
+already satisfy a definition rather than constructing one:
+
+| Script | Finds |
+|---|---|
+| `scripts/trading_styles/find_real_windows.py` | one real window per trading-style regime |
+| `scripts/ta_quiz/find_real_pattern.py` | a real occurrence of a TA pattern |
+
+A regime or pattern with no qualifying real window is reported **UNMATCHED**.
+Never nudge data to fit. Prefer these over the synthetic
+`references/ta-pattern-library.json`, whose candles read as what they are: too
+few bars, too clean a trend, not enough noise.
+
+**Pulling bars:** the brokerage MCP (`get_price_history`) — the egress policy
+403s Yahoo and stooq. Stamp every pull with `source`, the exact endpoint
+parameters, `source_class` and `retrieved_at`, and force-add it past the `data/`
+ignore when it is evidence behind an on-screen claim.
+
+**Data integrity:** IBKR "Last"-sourced daily bars sometimes close a cent or two
+outside the session high/low. Normalise those by extending the wick. Anything
+deviating more than ~15c is **quarantined**, and any window containing one is
+rejected outright rather than quietly patched.
+
+### 10.2 Visual house style
+
+Green trading-terminal on near-black, shared by `TradingQuiz` and
+`TradingStyles`: `bg #02070A`, up `#00E676`, down `#FF3B30`, accent `#22E07E`,
+dotted world-map backdrop, ruled grid, glowing candles, boxed
+SUPPORT/RESISTANCE tags, ruled three-cell footer.
+
+- **Candles print like tape, not like an animation.** Discrete hard ticks
+  (`CANDLE_TICKS`), no opacity fade, wicks widen monotonically, the live print
+  wanders inside the bar's range and only snaps to the close on the final tick,
+  and colour tracks the live print so a bar can flip mid-trade.
+- **Everything scales off the bar count** — frames-per-candle, form time, reveal
+  rate, body width, wick weight — so a 24-bar illustration and a 74-bar real
+  window both finish printing on the same beat.
+- **Never rank with colour.** One green family, not ten hues.
+
+### 10.3 Two ways the reel can leak its own answer
+
+Both shipped once before being caught. Check for them in anything new:
+
+1. **Colour.** A countdown ring tinted with `answerColor` announces BUY before
+   the timer ends.
+2. **Scale.** A y-axis spanning the reveal leaves empty headroom on whichever
+   side price is about to travel. Frame the setup with *symmetric* padding and
+   ease out to the full range only as the reveal prints.
+
+### 10.4 Sound
+
+Synthesised in Python by `scripts/audio/make_tick.py` — Remotion's bundled
+ffmpeg is a minimal build with no highpass/lowpass, and an unfiltered tick is a
+beep or a hiss.
+
+| Sound | When |
+|---|---|
+| `tick`/`tock` | one per countdown second, alternating |
+| `candle_up`/`candle_down` | one per **reveal** candle, pitched by direction |
+| `coin` | when a reveal bar reaches the target |
+
+Reveal candles only — 60+ setup bars in four seconds is seventeen hits a second.
+
+### 10.5 The trade frame
+
+`entry` / `stop` / `target` / `rrLabel` — **all four or none.** A target with no
+stop shows the upside and hides what being wrong cost. `tpBar` is derived in the
+composition from the price data, so a payoff cannot fire on a trade that never
+reached the target.
+
+**Stop placement is an editorial decision, not a detail** — on the SPY
+breakout-retest it decided 2.61R versus 1.72R. Choose it from the setup logic
+*before* looking at the outcome, and print both outcomes so the choice stays
+visible.
+
+### 10.6 Compliance rails
+
+Educational, never advice. No returns claims, no profit figures presented as
+achievable, no implied P&L on a live ticker — use `answerLabel` ("IT FELL 21%")
+rather than putting a literal SELL badge on a real company. Keep the footer on
+every frame; it says whether the data is real or synthetic, and names the source
+and snapshot time when real.
+
+### 10.7 Verify, don't assert
+
+Two defects here typecheck cleanly and only show up if you look:
+
+```bash
+# frames — labels clipping, annotations over candles, screen insert off-quad
+FF=video/node_modules/@remotion/compositor-linux-x64-gnu/ffmpeg
+for t in 5 10 15 19; do $FF -v error -ss $t -i out.mp4 -frames:v 1 /tmp/f_$t.png -y; done
+
+# audio — a missing <Audio> still produces a valid file, so bucket the RMS
+$FF -v error -i out.mp4 -vn -ac 1 -ar 8000 /tmp/a.wav -y
+```
+
+### 10.8 Rendering
+
+`--browser-executable=/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell`
+in the sandbox; **drop it on a laptop**. Long pieces exceed the sandbox's
+10-minute shell timeout — render `--frames=a-b` in chunks and concatenate with
+`ffmpeg -f concat -c copy`. Chat uploads cap at 30 MB, so commit a CRF-27
+preview alongside a CRF-18/19 master.
+
+### 10.9 Delivery
+
+Branch `claude/refresh-data-import-stock-story-svya0l`, commit and push each
+deliverable, and **show every rendered media file in the chat**. Higgsfield and
+anything needing interactive auth is a laptop task; write a paste-ready prompt
+into `references/` instead of attempting it in the container.
