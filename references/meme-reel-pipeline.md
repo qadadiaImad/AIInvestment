@@ -3,6 +3,19 @@
 Build brief for a reel format: a rubber-hose cartoon character animated over an
 illustrated room, reacting to a real chart playing inside a monitor on the desk.
 
+> **BUILT — 2026-07-26.** First cut shipped:
+> `content/meme_reel/intc_failed_breakout.mp4` (17.05s, 510f, 1080×1920).
+> See [`content/meme_reel/README.md`](../content/meme_reel/README.md) for what
+> actually got made and how to re-render it.
+>
+> **One deliberate deviation from §3/§4 below:** the character is a **pure SVG
+> pivot rig**, not generated PNG limb layers. Rubber-hose is the one style where
+> that trade inverts — thick constant-width outlines and flat fills *are* vector
+> primitives, so drawing it directly *removes* the two failure modes §3 warns
+> about (limbs detaching, style drift between separately generated layers)
+> instead of managing them. Generated art still does the static room plate.
+> Everything else below was followed as written.
+
 **There is a ready-to-paste prompt at the bottom.** Pull this repo on your
 laptop, open Claude Code in the repo root, and paste the block under
 [§7 The prompt](#7-the-prompt). Everything above it is context for a human.

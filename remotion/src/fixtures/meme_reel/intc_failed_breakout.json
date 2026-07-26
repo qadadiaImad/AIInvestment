@@ -173,16 +173,21 @@
   "captions": [
     {
       "from": 40,
-      "to": 126,
-      "text": "One level. Three touches. No close above it."
+      "to": 120,
+      "text": "INTC, daily. One level: 141.45."
     },
     {
-      "from": 134,
+      "from": 130,
       "to": 202,
-      "text": "Fourth test, setting up."
+      "text": "Twice price stalled there. No close above it."
     },
     {
-      "from": 216,
+      "from": 214,
+      "to": 236,
+      "text": "Third test."
+    },
+    {
+      "from": 238,
       "to": 262,
       "text": "Higher high…"
     },
@@ -194,12 +199,12 @@
     {
       "from": 312,
       "to": 388,
-      "text": "A breakout is not a breakout until price CLOSES above the level."
+      "text": "The close-based rule: no close above the level, no breakout."
     },
     {
       "from": 398,
       "to": 508,
-      "text": "It never did. The level held."
+      "text": "It never closed above. The level held."
     }
   ],
   "footer": "INTC daily bars · IBKR 2026-07-25 · Hindsight example · Educational only, not advice",
