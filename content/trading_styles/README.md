@@ -1,6 +1,7 @@
 # Find Your Trading Style — long-form explainer
 
-**Deliverable:** `find_your_trading_style.mp4` — 1080×1920, 30fps, **2:20** (4200 frames), silent.
+**Deliverable:** `find_your_trading_style.mp4` — 1080×1920, 30fps, **2:20** (4200 frames), silent, CRF 19 master (31 MB).
+**Preview:** `find_your_trading_style_preview.mp4` — same cut at CRF 27 (8 MB), for review and sharing.
 **Voiceover script:** [`voiceover_script.md`](voiceover_script.md) — 361 words, timed to the beat map, ready for Higgsfield.
 
 Ten trading styles, twelve seconds each, every one with its own animated chart —
@@ -147,6 +148,12 @@ The script is written for a separate voiceover pass in Higgsfield. It is timed a
 roughly 150–160 wpm, deliberately under the per-segment budget — undershooting a
 12-second slot reads better than compressing it. Delivery notes, pause positions
 and per-segment emphasis are in the script document.
+
+**To actually record and mux it, see
+[`references/higgsfield-audio-workflow.md`](../../references/higgsfield-audio-workflow.md)** —
+setup, the offset table, the ffmpeg assembly recipe, and a paste-ready prompt.
+It is a laptop task: `higgsfield auth login` is interactive and cannot complete
+in a remote container.
 
 ---
 
