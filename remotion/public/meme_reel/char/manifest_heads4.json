@@ -1,0 +1,49 @@
+{
+  "source": "heads4.png",
+  "parts": [
+    {
+      "name": "head_neutral",
+      "file": "head_neutral.png",
+      "w": 302,
+      "h": 390,
+      "pivot": [
+        0.447,
+        0.9646
+      ],
+      "area": 79101
+    },
+    {
+      "name": "head_curious",
+      "file": "head_curious.png",
+      "w": 301,
+      "h": 390,
+      "pivot": [
+        0.4452,
+        0.9646
+      ],
+      "area": 79100
+    },
+    {
+      "name": "head_shock",
+      "file": "head_shock.png",
+      "w": 302,
+      "h": 390,
+      "pivot": [
+        0.4487,
+        0.9646
+      ],
+      "area": 80326
+    },
+    {
+      "name": "head_weary",
+      "file": "head_weary.png",
+      "w": 302,
+      "h": 390,
+      "pivot": [
+        0.4454,
+        0.9646
+      ],
+      "area": 79162
+    }
+  ]
+}

@@ -306,7 +306,7 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1350}
         schema={rigCheckSchema}
-        defaultProps={{ mode: "sheet" as const }}
+        defaultProps={{ mode: "sheet" as const, rig: "toon" as const }}
       />
       <Composition
         id="ChipShowcase"

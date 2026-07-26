@@ -16,9 +16,14 @@ import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {z} from 'zod';
 import {FONT} from '../slides/theme';
 import {RUBBER_HOSE_BEATS, RubberHoseRig} from '../characters/rubberHoseRig';
+import {ToonRig} from '../characters/toonRig';
 
 export const rigCheckSchema = z.object({
   mode: z.enum(['sheet', 'live']),
+  /** Which rig to inspect: the hand-authored vector one, or the cutout rig
+   * driven by the generated art. Both run the SAME pose engine, so putting
+   * them side by side is a fair comparison of the ART, not of the animation. */
+  rig: z.enum(['vector', 'toon']).default('toon'),
 });
 export type RigCheckProps = z.infer<typeof rigCheckSchema>;
 
@@ -34,13 +39,21 @@ const KEY_FRAMES: {label: string; frame: number}[] = [
   {label: 'shrug', frame: 432},
 ];
 
-export const RigCheck: React.FC<RigCheckProps> = ({mode}) => {
+export const RigCheck: React.FC<RigCheckProps> = ({mode, rig = 'toon'}) => {
   const frame = useCurrentFrame();
+
+  /** One figure at a given beat frame, on whichever rig is being inspected. */
+  const Figure: React.FC<{size: number; f?: number; shadow?: boolean}> = ({size, f, shadow = true}) =>
+    rig === 'toon' ? (
+      <ToonRig height={size * 1.35} facing="left" frameOverride={f} shadow={shadow} />
+    ) : (
+      <RubberHoseRig size={size} facing="left" frameOverride={f} shadow={shadow} />
+    );
 
   if (mode === 'live') {
     return (
       <AbsoluteFill style={{backgroundColor: '#E9DEC7', alignItems: 'center', justifyContent: 'flex-end'}}>
-        <RubberHoseRig size={760} facing="left" />
+        <Figure size={620} />
         <div
           style={{
             position: 'absolute',
@@ -74,7 +87,7 @@ export const RigCheck: React.FC<RigCheckProps> = ({mode}) => {
           color: '#4A4239',
         }}
       >
-        RUBBER-HOSE RIG · BEAT CONTACT SHEET
+        {`${rig === 'toon' ? 'TOON CUTOUT' : 'VECTOR'} RIG · BEAT CONTACT SHEET`}
       </div>
       <div
         style={{
@@ -101,7 +114,7 @@ export const RigCheck: React.FC<RigCheckProps> = ({mode}) => {
               borderTop: '1px dashed rgba(0,0,0,0.14)',
             }}
           >
-            <RubberHoseRig size={300} facing="left" frameOverride={k.frame} shadow={false} />
+            <Figure size={250} f={k.frame} shadow={false} />
             <div style={{fontFamily: FONT.mono, fontSize: 22, color: '#4A4239', marginTop: 6}}>
               {k.label} · f{k.frame}
             </div>

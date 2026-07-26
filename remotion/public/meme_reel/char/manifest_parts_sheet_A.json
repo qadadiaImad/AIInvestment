@@ -1,0 +1,93 @@
+{
+  "source": "parts_sheet_A.png",
+  "parts": [
+    {
+      "name": "head",
+      "file": "head.png",
+      "w": 455,
+      "h": 587,
+      "pivot": [
+        0.5,
+        0.0102
+      ],
+      "area": 183921
+    },
+    {
+      "name": "torso",
+      "file": "torso.png",
+      "w": 401,
+      "h": 621,
+      "pivot": [
+        0.5,
+        0.0097
+      ],
+      "area": 169976
+    },
+    {
+      "name": "upper_arm",
+      "file": "upper_arm.png",
+      "w": 166,
+      "h": 604,
+      "pivot": [
+        0.5,
+        0.0099
+      ],
+      "area": 58973
+    },
+    {
+      "name": "forearm",
+      "file": "forearm.png",
+      "w": 146,
+      "h": 500,
+      "pivot": [
+        0.5,
+        0.012
+      ],
+      "area": 36202
+    },
+    {
+      "name": "hand",
+      "file": "hand.png",
+      "w": 332,
+      "h": 543,
+      "pivot": [
+        0.5,
+        0.011
+      ],
+      "area": 89667
+    },
+    {
+      "name": "thigh",
+      "file": "thigh.png",
+      "w": 211,
+      "h": 676,
+      "pivot": [
+        0.5,
+        0.0089
+      ],
+      "area": 82496
+    },
+    {
+      "name": "shin",
+      "file": "shin.png",
+      "w": 141,
+      "h": 559,
+      "pivot": [
+        0.5,
+        0.0107
+      ],
+      "area": 45401
+    },
+    {
+      "name": "foot",
+      "file": "foot.png",
+      "w": 468,
+      "h": 357,
+      "pivot": [
+        0.5,
+        0.0168
+      ],
+      "area": 104499
+    }
+  ]
+}
