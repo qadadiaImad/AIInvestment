@@ -116,11 +116,11 @@ export const MemeReel: React.FC<MemeReelProps> = (p) => {
     {f: 70, v: 1.0},
     {f: 130, v: 1.1}, // creeps in as he notices
     {f: 196, v: 1.14},
-    {f: 214, v: 2.05, ease: EASE.enter}, // cut-in to the monitor for the story bar
-    {f: 250, v: 2.12},
-    {f: 258, v: 2.24, ease: EASE.exit}, // emphasis hit as the close lands
-    {f: 276, v: 2.05, ease: EASE.settleBack},
-    {f: 296, v: 1.16, ease: EASE.enter}, // back out to his reaction
+    {f: 218, v: 2.05, ease: EASE.enter}, // cut-in to the monitor for the story bar
+    {f: 236, v: 2.14},
+    {f: 244, v: 2.26, ease: EASE.exit}, // emphasis hit as the close lands
+    {f: 252, v: 1.9, ease: EASE.settleBack},
+    {f: 272, v: 1.14, ease: EASE.enter}, // back out for the take, which is now ON SCREEN
     {f: 330, v: 1.12},
     {f: 392, v: 1.06},
     {f: 452, v: 1.0, ease: EASE.cruise}, // wide for the shrug
@@ -130,9 +130,9 @@ export const MemeReel: React.FC<MemeReelProps> = (p) => {
   const camX = track(frame, [
     {f: 0, v: WIDE.x},
     {f: 196, v: WIDE.x - 40},
-    {f: 214, v: screenCx, ease: EASE.enter},
-    {f: 276, v: screenCx},
-    {f: 296, v: WIDE.x - 30, ease: EASE.enter},
+    {f: 218, v: screenCx, ease: EASE.enter},
+    {f: 248, v: screenCx},
+    {f: 272, v: WIDE.x - 30, ease: EASE.enter},
     {f: 452, v: WIDE.x, ease: EASE.cruise},
     {f: 510, v: WIDE.x},
   ]);
@@ -140,9 +140,9 @@ export const MemeReel: React.FC<MemeReelProps> = (p) => {
   const camY = track(frame, [
     {f: 0, v: WIDE.y},
     {f: 196, v: WIDE.y - 30},
-    {f: 214, v: screenCy, ease: EASE.enter},
-    {f: 276, v: screenCy},
-    {f: 296, v: WIDE.y - 20, ease: EASE.enter},
+    {f: 218, v: screenCy, ease: EASE.enter},
+    {f: 248, v: screenCy},
+    {f: 272, v: WIDE.y - 20, ease: EASE.enter},
     {f: 452, v: WIDE.y, ease: EASE.cruise},
     {f: 510, v: WIDE.y},
   ]);
@@ -210,8 +210,8 @@ export const MemeReel: React.FC<MemeReelProps> = (p) => {
   // already recoiled upright, so his head is travelling away from the monitor
   // and cannot clip back into the tail of the close-up.
   const charOpacity =
-    interpolate(frame, [206, 216], [1, 0], {easing: EASE.exit, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) +
-    interpolate(frame, [276, 290], [0, 1], {easing: EASE.enter, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+    interpolate(frame, [212, 220], [1, 0], {easing: EASE.exit, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) +
+    interpolate(frame, [238, 248], [0, 1], {easing: EASE.enter, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
 
   return (
     <AbsoluteFill style={{backgroundColor: '#E9DEC7'}}>

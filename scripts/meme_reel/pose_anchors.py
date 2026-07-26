@@ -82,11 +82,24 @@ def main():
     ref = float(np.median(list(body.values())))
     print(f"\n  reference ink height (median of the poses): {ref:.0f}px")
     print("  per-pose scale correction so he never changes size on a cut:\n")
+    # A correction has to distinguish two very different things:
+    #   * the drawing was rendered at a different RESOLUTION (a hero figure
+    #     drawn twice as large) — that must be corrected in full;
+    #   * the POSE is genuinely lower than standing (a crouch, a deep bend) —
+    #     that must NOT be corrected, because scaling a crouch up to standing
+    #     height is exactly undoing the pose.
+    # Anything within +-40% is treated as pose variation and only lightly
+    # trimmed; a gross outlier is treated as a resolution difference.
     for n in sorted(body):
-        s = ref / heights[n]
+        raw = ref / heights[n]
+        if raw < 0.7 or raw > 1.4:
+            s = raw                      # resolution difference — correct fully
+            note = "  <-- resolution"
+        else:
+            s = max(0.95, min(1.05, raw))  # pose difference — barely touch it
+            note = "  (pose, clamped)" if abs(raw - s) > 1e-6 else ""
         out[n]["scale"] = round(s, 5)
-        flag = "  <-- large" if abs(s - 1) > 0.06 else ""
-        print(f"    {n:<10} x{s:.3f}{flag}")
+        print(f"    {n:<10} x{s:.3f}   raw {raw:.3f}{note}")
     if "hero" in out:
         out["hero"]["scale"] = round(ref / heights["hero"], 5)
 

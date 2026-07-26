@@ -45,7 +45,9 @@ const A = anchors as unknown as Record<string, Anchor>;
 /** Reference body height the per-pose scale corrections normalise to. */
 const REF_INK = 686;
 
-export type PoseName = 'idle' | 'notices' | 'leans_a' | 'leans_b' | 'shock' | 'facepalm' | 'shrug';
+export type PoseName =
+  | 'idle' | 'turning' | 'notices' | 'bending' | 'leans_a' | 'point' | 'reach'
+  | 'leans_b' | 'crouch' | 'shock' | 'stagger' | 'facepalm' | 'shrug';
 
 /** The cut sheet. Each entry is the frame the drawing CUTS IN on; it holds
  * until the next one. Keyed to the same beats as the chart. */
@@ -54,20 +56,52 @@ export type PoseName = 'idle' | 'notices' | 'leans_a' | 'leans_b' | 'shock' | 'f
 // beside two rows of smaller ones — so the sort mislabelled six of the seven,
 // and the first render cut to a shock take during the idle beat. Verified
 // against a labelled contact sheet, not against the sort order.
-export const POSE_CUTS: {at: number; pose: PoseName}[] = [
-  {at: 0, pose: 'idle'},
-  {at: 78, pose: 'notices'}, // head up, hand half-raised
-  {at: 150, pose: 'leans_a'}, // bends toward the screen
-  {at: 206, pose: 'leans_b'}, // in closer, reaching
-  {at: 236, pose: 'shock'}, // the level fails
-  {at: 304, pose: 'facepalm'},
-  {at: 396, pose: 'shrug'},
+export type Cut = {
+  at: number;
+  pose: PoseName;
+  /** WHOLE-DRAWING MOTION while this pose is held.
+   *
+   * This is the second source of smoothness, and the safe one. Moving, scaling
+   * or tilting the ENTIRE drawing never articulates it — the figure stays
+   * internally coherent, which is exactly what rotating its parts destroyed.
+   * Real limited animation leans on this hard: a held pose drifts toward what
+   * it is reacting to, settles back after a hit, sinks through a slump.
+   *
+   * dx/dy are travel in frame px from the cut to the end of the hold, dScale a
+   * multiplier, tilt a whole-body lean in degrees about the feet.
+   */
+  drift?: {dx?: number; dy?: number; dScale?: number; tilt?: number};
+};
+
+export const POSE_CUTS: Cut[] = [
+  // 13 drawings over 510 frames. The BREAKDOWNS (turning, bending, crouch,
+  // stagger) are the smoothness: they sit between two strong poses so a big
+  // action is not a single hard jump. crouch is the anticipation before the
+  // take, stagger is the settle after it — the two drawings that make a
+  // reaction read as a reaction rather than as a pose change.
+  //
+  // dx is NEGATIVE toward the monitor: he is mirrored to face left, and the
+  // screen is on his left, so drifting at it means drifting -x in frame space.
+  {at: 0, pose: 'idle', drift: {dy: -2}},
+  {at: 58, pose: 'turning', drift: {dx: -8}}, // BREAKDOWN — head starts round
+  {at: 80, pose: 'notices', drift: {dx: -22, tilt: -1.5}},
+  {at: 128, pose: 'bending', drift: {dx: -18}}, // BREAKDOWN — starts to fold
+  {at: 150, pose: 'leans_a', drift: {dx: -26, dScale: 1.02, tilt: -1.5}},
+  {at: 178, pose: 'point', drift: {dx: -10}}, // points AT the level on screen
+  {at: 204, pose: 'reach', drift: {dx: -14, dScale: 1.03}}, // hand out to the desk
+  {at: 246, pose: 'crouch', drift: {dy: 6}}, // BREAKDOWN — loads down before the take
+  {at: 258, pose: 'shock', drift: {dx: 46, dScale: 0.99, tilt: 3}},
+  {at: 288, pose: 'stagger', drift: {dx: 18, tilt: 2}}, // BREAKDOWN — the settle
+  {at: 316, pose: 'facepalm', drift: {dy: 14, dScale: 0.985, tilt: 1.5}},
+  {at: 396, pose: 'shrug', drift: {dy: -4, tilt: -1}},
 ];
 
-export const poseAt = (frame: number): {pose: PoseName; since: number} => {
-  let cur = POSE_CUTS[0];
-  for (const c of POSE_CUTS) if (frame >= c.at) cur = c;
-  return {pose: cur.pose, since: frame - cur.at};
+export const poseAt = (frame: number): {cut: Cut; since: number; hold: number} => {
+  let idx = 0;
+  for (let i = 0; i < POSE_CUTS.length; i++) if (frame >= POSE_CUTS[i].at) idx = i;
+  const cur = POSE_CUTS[idx];
+  const next = POSE_CUTS[idx + 1];
+  return {cut: cur, since: frame - cur.at, hold: (next ? next.at : 510) - cur.at};
 };
 
 export type PoseCutProps = {
@@ -94,8 +128,8 @@ export const PoseCut: React.FC<PoseCutProps> = ({
 }) => {
   const current = useCurrentFrame();
   const frame = frameOverride ?? current;
-  const {pose, since} = poseAt(frame);
-  const name = poseOverride ?? pose;
+  const {cut, since, hold} = poseAt(frame);
+  const name = poseOverride ?? cut.pose;
   const a = A[name];
   if (!a) return null;
 
@@ -118,12 +152,25 @@ export const PoseCut: React.FC<PoseCutProps> = ({
   // frozen still. Seeded off the pose so two poses do not breathe in lockstep.
   const breath = poseOverride ? 0 : wiggle(frame, name.length, 0.006, 0.5);
 
-  const s = scale * snap * (1 + breath);
+  // THE DRIFT. Eased across the whole hold, so the pose is never static and is
+  // always travelling toward or away from the thing it is reacting to.
+  const d = poseOverride ? 0 : interpolate(since, [0, Math.max(1, hold)], [0, 1], {
+    easing: EASE.cruise,
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const dr = cut.drift ?? {};
+  const dx = (dr.dx ?? 0) * d;
+  const dy = (dr.dy ?? 0) * d;
+  const tilt = (dr.tilt ?? 0) * d;
+  const driftScale = 1 + ((dr.dScale ?? 1) - 1) * d;
+
+  const s = scale * snap * driftScale * (1 + breath);
   const w = a.w * s;
   const h = a.h * s;
   // Place the drawing so its GROUND CONTACT lands exactly on (footX, footY).
-  const left = footX - a.anchor[0] * w;
-  const top = footY - a.anchor[1] * h;
+  const left = footX + dx - a.anchor[0] * w;
+  const top = footY + dy - a.anchor[1] * h;
 
   return (
     <>
@@ -131,8 +178,8 @@ export const PoseCut: React.FC<PoseCutProps> = ({
         <div
           style={{
             position: 'absolute',
-            left: footX - height * 0.19,
-            top: footY - height * 0.022,
+            left: footX + dx - height * 0.19,
+            top: footY + dy - height * 0.022,
             width: height * 0.38,
             height: height * 0.045,
             borderRadius: '50%',
@@ -149,7 +196,9 @@ export const PoseCut: React.FC<PoseCutProps> = ({
           top,
           width: w,
           height: h,
-          transform: facing === 'left' ? 'scaleX(-1)' : undefined,
+          // The tilt pivots about the FEET, so a lean never lifts him off the
+          // floor — same reason the rig's squash pivoted about the pelvis.
+          transform: `${facing === 'left' ? 'scaleX(-1) ' : ''}rotate(${facing === 'left' ? -tilt : tilt}deg)`,
           transformOrigin: `${a.anchor[0] * 100}% ${a.anchor[1] * 100}%`,
         }}
       />
