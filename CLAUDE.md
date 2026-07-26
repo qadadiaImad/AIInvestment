@@ -203,6 +203,8 @@ references/
   playwright-mcp-protocol.md           ← exact MCP tool sequences for Mode A & Mode B
   anti-gating-cookbook.md              ← stealth, state-wipe, rotation, detection recipes
   data-schema.md                       ← canonical output schema + validation rules
+  ta-pattern-library.json              ← 102 validated TA patterns (see .claude/skills/ta-chart-quiz)
+  meme-reel-pipeline.md                ← build brief + paste-ready prompt for the cartoon-character reel
 providers/
   README.md                            ← per-provider gating classification + playbooks
 scripts/                               ← REST helpers (TDD, pytest)
