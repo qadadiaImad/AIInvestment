@@ -14,8 +14,12 @@ export const inOut = Easing.bezier(0.45, 0, 0.55, 1);
 
 export const clamp = { extrapolateLeft: "clamp" as const, extrapolateRight: "clamp" as const };
 
-/** Ambient dark background: radial glow + slow-drifting emerald motes. */
-export const Bg: React.FC<{ tint?: string }> = ({ tint = C.emerald }) => {
+/** Ambient dark background: radial glow + slow-drifting emerald motes.
+ * `opaque` (default true, unchanged for every existing caller) paints the
+ * solid C.bg fill this component has always had. Pass `opaque={false}` to
+ * skip that fill and let a layer mounted behind Bg (e.g. SlideStoryReel's
+ * HeroLayer) show through the radial glow + motes instead. */
+export const Bg: React.FC<{ tint?: string; opaque?: boolean }> = ({ tint = C.emerald, opaque = true }) => {
   const frame = useCurrentFrame();
   const motes = new Array(14).fill(0).map((_, i) => {
     const x = random(`mx${i}`) * 1080;
@@ -38,7 +42,7 @@ export const Bg: React.FC<{ tint?: string }> = ({ tint = C.emerald }) => {
     );
   });
   return (
-    <AbsoluteFill style={{ background: C.bg }}>
+    <AbsoluteFill style={{ background: opaque ? C.bg : undefined }}>
       <AbsoluteFill
         style={{
           background: `radial-gradient(ellipse 90% 55% at 50% 8%, ${tint}14, transparent 60%), radial-gradient(ellipse 80% 50% at 50% 100%, #00000088, transparent)`,

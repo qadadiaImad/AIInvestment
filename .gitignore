@@ -18,12 +18,30 @@ data/portfolio/*
 !data/portfolio/positions.example.json
 !data/portfolio/README.md
 
+# data/heroes/manifest.json — committed provenance for the hero-image
+# placeholders/brand assets (see scripts/aiinvest/heroes.py); same
+# re-include dance as data/portfolio/ above (bare "data/heroes/" would
+# not re-include files already excluded by the parent "data/*").
+!data/heroes/
+data/heroes/*
+!data/heroes/manifest.json
+
 # Playwright MCP scratch
 .playwright-mcp/
 
 # Generated capital-web artifacts (regenerate: python scripts/build_capital_web.py)
 capital_web.html
 capital_web_render.png
+
+# The Daily Screen — daily_post.py's finished-folder output + verdict-snapshot/
+# posted-log history (data/halal_history/ is also covered by "data/*" above;
+# listed explicitly for clarity alongside higgs/daily/). remotion/public/daily/
+# holds the WAV copies daily_post.py's align step writes for Remotion's
+# `voiceSrc` -- they legitimately stay after a successful run (re-renders reuse
+# them), so this is a blanket ignore rather than a per-post cleanup.
+higgs/daily/
+data/halal_history/
+remotion/public/daily/
 
 # Generated analyst/dashboard artifacts + scratch
 *_dashboard.html

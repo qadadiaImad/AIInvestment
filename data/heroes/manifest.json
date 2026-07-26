@@ -1,0 +1,62 @@
+{
+  "L0-energy": {
+    "source": "higgsfield",
+    "model": "gpt_image_2",
+    "style": "dark-tech-noir",
+    "generated_at": "2026-07-23T13:23Z",
+    "prompt": "dark tech-noir, high-voltage substation and transmission towers, amber energy arcs, volumetric haze"
+  },
+  "L1-chips": {
+    "source": "higgsfield",
+    "model": "gpt_image_2",
+    "style": "dark-tech-noir",
+    "generated_at": "2026-07-23T13:23Z",
+    "prompt": "dark tech-noir, semiconductor fab, glowing cyan silicon wafer under inspection tool, volumetric haze"
+  },
+  "L2-infra": {
+    "source": "higgsfield",
+    "model": "gpt_image_2",
+    "style": "dark-tech-noir",
+    "generated_at": "2026-07-23T13:23Z",
+    "prompt": "dark tech-noir, vast datacenter hall receding into darkness, cool-blue server-rack glow, volumetric haze"
+  },
+  "L4-application": {
+    "generated_at": null,
+    "prompt": null,
+    "source": "placeholder",
+    "style": null
+  },
+  "Q1-hardware": {
+    "source": "higgsfield",
+    "model": "gpt_image_2",
+    "style": "dark-tech-noir",
+    "generated_at": "2026-07-23T10:02Z",
+    "prompt": "Cinematic dark tech-noir, quantum computing lab, suspended violet-glowing quantum processor chandelier in volumetric haze"
+  },
+  "Q3-software": {
+    "source": "higgsfield",
+    "model": "gpt_image_2",
+    "style": "dark-tech-noir",
+    "generated_at": "2026-07-23T13:23Z",
+    "prompt": "dark tech-noir, abstract quantum computation space, glowing violet qubit lattice and entanglement lines"
+  },
+  "Q4-security": {
+    "source": "higgsfield",
+    "model": "gpt_image_2",
+    "style": "dark-tech-noir",
+    "generated_at": "2026-07-23T10:02Z",
+    "prompt": "Cinematic dark tech-noir, near-black secure data vault + server room, glowing red-orange holographic padlock and key in volumetric haze"
+  },
+  "Q5-applications": {
+    "generated_at": null,
+    "prompt": null,
+    "source": "placeholder",
+    "style": null
+  },
+  "_default": {
+    "generated_at": null,
+    "prompt": null,
+    "source": "placeholder",
+    "style": null
+  }
+}

@@ -52,6 +52,30 @@ def test_parse_cfg_absent_ticker_is_none():
     assert kit_md.parse_cfg(KIT, "CONGRESS") is None
 
 
+# --- task-3: company_def field (mirrors screen_head) ------------------------
+
+def test_parse_cfg_company_def_absent_is_none():
+    # the real fixture predates task-3 — no CFG block has a company_def field yet.
+    c = kit_md.parse_cfg(KIT, "TEAM")
+    assert c["company_def"] is None
+
+
+def test_parse_cfg_company_def_round_trips():
+    md = (
+        '## REEL 1 — WKEY\n'
+        '```json\n'
+        ' "WKEY":{"hero":"h.png","logo":"l.png","ex":"QUANTUM SECURITY · NASDAQ",\n'
+        '   "company_def":"the company that makes digital-security chips and keys",\n'
+        '   "screen_head":"WKEY: the halal screen, plain-English.",\n'
+        '   "src":"quantum"},\n'
+        '```\n'
+    )
+    c = kit_md.parse_cfg(md, "WKEY")
+    assert c is not None
+    assert c["company_def"] == "the company that makes digital-security chips and keys"
+    assert c["screen_head"] == "WKEY: the halal screen, plain-English."
+
+
 def test_parse_congress_card():
     card = kit_md.parse_congress_card(KIT)
     assert card is not None

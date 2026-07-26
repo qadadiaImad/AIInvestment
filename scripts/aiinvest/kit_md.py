@@ -80,6 +80,7 @@ def parse_cfg(md, ticker):
         "ex": _field(block, "ex"),
         "src": _field(block, "src"),
         "halal_script": _field(block, "halal_script"),
+        "company_def": _field(block, "company_def"),
         "screen_head": _field(block, "screen_head"),
         "screen_body": _field(block, "screen_body"),
         "screen_body2": _field(block, "screen_body2"),

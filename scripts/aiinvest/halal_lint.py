@@ -89,6 +89,64 @@ def lint_halal_script(script, card):
     return errs
 
 
+_PCT_RE = re.compile(r"\d+(?:\.\d+)?\s*(?:%|percent|per\s?cent)", re.IGNORECASE)
+_ANCHOR_RE = re.compile(
+    r"\$|\bcents\b|\bof every\b|\bfor every\b|\blimit(?:s)?\b|\bcap(?:s)?\b"
+    r"|\bthreshold(?:s)?\b|\ballowed\b", re.IGNORECASE)
+
+
+def lint_visceral(lines):
+    """Rails for spoken ratios: every percentage needs a plain-money analogy
+    ("$X of every $100") or an explicit limit comparison (cap/threshold/allowed),
+    never a bare percent left to float unanchored."""
+    errs = []
+    for line in lines:
+        if _PCT_RE.search(line) and not _ANCHOR_RE.search(line):
+            errs.append(f"bare ratio with no money analogy or limit comparison: {line!r}")
+    return errs
+
+
+# Fixed exact-match words (no stemming — stemming these would over-ban
+# legitimate finance vocabulary, e.g. "risk"/"avoidance" must stay clean).
+_EDITORIAL_WORDS = (
+    "trap", "too much", "overvalued", "avoid", "risky", "terrible",
+    "guaranteed",
+)
+# Bounded inflection stems for words whose common tenses/forms were slipping
+# past the exact-match list (soared/soaring, crashed/crashing, plummeted/
+# plummeting, dangerous/dangerously) — reviewed defect. Each stem is still
+# word-bounded on both ends via the shared \b(?:...)\b wrapper below, so
+# "risk" (not stemmed here) and "avoidance" (not stemmed here) stay clean.
+_EDITORIAL_STEMS = (
+    r"danger(?:ous|ously)?",
+    r"plummet(?:s|ed|ing)?",
+    r"soar(?:s|ed|ing)?",
+    r"crash(?:es|ed|ing)?",
+)
+_EDITORIAL_RE = re.compile(
+    r"\b(?:"
+    + "|".join(w.replace(" ", r"\s+") for w in _EDITORIAL_WORDS)
+    + "|" + "|".join(_EDITORIAL_STEMS)
+    + r")\b",
+    re.IGNORECASE)
+
+
+def lint_editorial(lines):
+    """Rails for factual-extreme copy (the Daily Screen v2 dramatize/hook lines):
+    bans buy/sell-adjacent judgment words so a shocking-but-factual number never
+    drifts into advice. Word-bounded, case-insensitive; one violation per line
+    that contains any banned word (a line with two banned words still only
+    reports once)."""
+    errs = []
+    for line in lines:
+        m = _EDITORIAL_RE.search(str(line))
+        if m:
+            errs.append(
+                f"banned editorial/judgment word {m.group(0)!r} — factual-extreme "
+                f"tone only, no buy/sell framing: {line!r}")
+    return errs
+
+
 def lint_concept_script(script):
     """Rails for ticker-less concept/explainer scripts: verdict-claim phrasing +
     spoken disclaimer only (no per-ticker number anchor to check)."""

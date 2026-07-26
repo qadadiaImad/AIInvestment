@@ -100,6 +100,38 @@ def test_missing_hero_does_not_crash_uses_fallback():
     assert "v4_team_1_hook.png" in sl  # built despite no hero art
 
 
+# --- task-4: company-definition slide, gated on company_def -------------------
+
+def test_company_def_absent_no_define_slide():
+    # the real 2026-06-27 kit predates task-3/4 -- no CFG block has a company_def
+    # field -- so no ticker gets a define slide. Backward compat for old kits.
+    sl = _slides()
+    assert "v4_team_0_define.png" not in sl
+    assert "v4_qbts_0_define.png" not in sl
+    assert "v4_team_1_hook.png" in sl and "v4_team_2_data.png" in sl and "v4_team_3_takeaway.png" in sl
+
+
+def test_company_def_present_adds_define_slide_as_first():
+    # Inject a company_def field into TEAM's CFG block to exercise the gate --
+    # mirrors what daily_post.build_kit_md now emits for a real daily-post kit.
+    md = KIT.replace(
+        '"hero":"hero_software_2026-06-27.png","logo":"logo_TEAM.png"',
+        '"hero":"hero_software_2026-06-27.png","logo":"logo_TEAM.png",'
+        '"company_def":"the company that builds Jira and Confluence",',
+        1)
+    assert md != KIT, "fixture anchor not found in KIT -- update the anchor string"
+    sl = bv.build_slides(md, SITE, QUANT, hero_map={}, logo_map={}, date="2026-06-27")
+
+    assert "v4_team_0_define.png" in sl
+    html = sl["v4_team_0_define.png"]
+    assert "TEAM" in html
+    assert "the company that builds Jira and Confluence" in html
+    # the other 3 slides are unaffected -> 4 total for this ticker
+    assert "v4_team_1_hook.png" in sl and "v4_team_2_data.png" in sl and "v4_team_3_takeaway.png" in sl
+    # QBTS (no company_def injected) still gets no define slide in the same build
+    assert "v4_qbts_0_define.png" not in sl
+
+
 def test_pick_kit_selects_newest(tmp_path):
     (tmp_path / "reels_2026-06-22_kit.md").write_text("old", encoding="utf-8")
     (tmp_path / "reels_2026-06-27_kit.md").write_text("new", encoding="utf-8")

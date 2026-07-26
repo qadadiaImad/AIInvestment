@@ -1,0 +1,620 @@
+# scripts/tests/test_daily_post.py — pure-helper tests for the daily_post.py
+# orchestrator (The Daily Screen, task 6). No GPU, no subprocess, no network:
+# only the pure assembly/formatting helpers are exercised here. The
+# subprocess-driving steps (voice/align/render/carousel) are isolated in
+# their own small functions in daily_post.py precisely so they stay OUT of
+# this file's import/collection path.
+import datetime as dt
+import json
+import os
+import sys
+
+import pytest
+
+import daily_post
+
+
+# --- folder_name -------------------------------------------------------------
+
+def test_folder_name_uppercases_ticker():
+    assert daily_post.folder_name("2026-07-22", "wulf") == "2026-07-22_WULF"
+
+
+def test_folder_name_already_upper():
+    assert daily_post.folder_name("2026-07-22", "GEV") == "2026-07-22_GEV"
+
+
+# --- format_candidates ---------------------------------------------------------
+
+def _candidates():
+    return [
+        {"symbol": "WULF", "score": 12.5, "reason": "verdict flipped questionable -> not_halal"},
+        {"symbol": "GEV", "score": 3.0, "reason": "GEV selected for today's screen."},
+        {"symbol": "ETN", "score": 1.0, "reason": "ETN selected to keep rotation fresh."},
+    ]
+
+
+def test_format_candidates_three_lines():
+    out = daily_post.format_candidates(_candidates())
+    lines = out.splitlines()
+    assert len(lines) == 3
+
+
+def test_format_candidates_numbered_and_carries_symbol_and_reason():
+    lines = daily_post.format_candidates(_candidates()).splitlines()
+    assert lines[0].startswith("1.") and "WULF" in lines[0] and "flipped" in lines[0]
+    assert lines[1].startswith("2.") and "GEV" in lines[1]
+    assert lines[2].startswith("3.") and "ETN" in lines[2]
+
+
+def test_format_candidates_handles_missing_score():
+    out = daily_post.format_candidates([{"symbol": "AAA", "score": None, "reason": "r"}])
+    assert "AAA" in out and "n/a" in out
+
+
+# --- build_manifest ------------------------------------------------------------
+
+def _bundle():
+    return {
+        "generated_at": "2026-07-22T09:48:24Z",
+        "verdicts": {"WULF": {"inputs_asof": "2026-07-21T13:07:37Z"}},
+    }
+
+
+def test_build_manifest_field_presence():
+    m = daily_post.build_manifest(
+        ticker="WULF", reason="verdict flipped", score=12.5, story={"kind": "flip"},
+        bundle=_bundle(), date_str="2026-07-22", seeds={"tts_seed": 7},
+        files=["daily_A.mp4", "daily_B.mp4", "manifest.json"],
+    )
+    for key in ("ticker", "date", "reason", "score", "story", "generated_at",
+                "inputs_asof", "lint_ok", "seeds", "files", "posting_instructions"):
+        assert key in m, f"manifest missing {key!r}"
+
+
+def test_build_manifest_pulls_generated_at_and_inputs_asof_from_bundle():
+    m = daily_post.build_manifest(
+        ticker="WULF", reason="r", score=1.0, story=None, bundle=_bundle(),
+        date_str="2026-07-22", seeds={}, files=[],
+    )
+    assert m["generated_at"] == "2026-07-22T09:48:24Z"
+    assert m["inputs_asof"] == "2026-07-21T13:07:37Z"
+    assert m["ticker"] == "WULF" and m["date"] == "2026-07-22"
+    assert m["lint_ok"] is True
+
+
+def test_build_manifest_posting_instructions_name_b_first_a_main():
+    m = daily_post.build_manifest(
+        ticker="WULF", reason="r", score=1.0, story=None, bundle=_bundle(),
+        date_str="2026-07-22", seeds={}, files=[],
+    )
+    instr = m["posting_instructions"]
+    assert "B" in instr and "Trial Reel" in instr
+    assert "A" in instr and "main slot" in instr
+
+
+def test_build_manifest_missing_verdict_degrades_to_none_inputs_asof():
+    m = daily_post.build_manifest(
+        ticker="ZZZZ", reason="r", score=1.0, story=None, bundle=_bundle(),
+        date_str="2026-07-22", seeds={}, files=[],
+    )
+    assert m["inputs_asof"] is None
+
+
+# --- is_stale / read_generated_at ----------------------------------------------
+
+def test_is_stale_missing_generated_at():
+    assert daily_post.is_stale(None, dt.datetime(2026, 7, 22, tzinfo=dt.timezone.utc)) is True
+
+
+def test_is_stale_fresh_within_24h():
+    now = dt.datetime(2026, 7, 22, 12, 0, tzinfo=dt.timezone.utc)
+    assert daily_post.is_stale("2026-07-22T09:00:00Z", now) is False
+
+
+def test_is_stale_older_than_24h():
+    now = dt.datetime(2026, 7, 23, 12, 0, tzinfo=dt.timezone.utc)
+    assert daily_post.is_stale("2026-07-22T09:00:00Z", now) is True
+
+
+def test_is_stale_unparsable_value_is_stale():
+    now = dt.datetime(2026, 7, 22, 12, 0, tzinfo=dt.timezone.utc)
+    assert daily_post.is_stale("not-a-date", now) is True
+
+
+def test_read_generated_at_missing_file(tmp_path):
+    assert daily_post.read_generated_at(tmp_path / "nope.json") is None
+
+
+def test_read_generated_at_reads_field(tmp_path):
+    p = tmp_path / "halal.json"
+    p.write_text('{"generated_at": "2026-07-22T09:48:24Z"}', encoding="utf-8")
+    assert daily_post.read_generated_at(p) == "2026-07-22T09:48:24Z"
+
+
+# --- choose_candidate -----------------------------------------------------------
+
+def _plain_candidates():
+    return [
+        {"symbol": "A", "score": 2, "reason": "x", "story": None},
+        {"symbol": "B", "score": 1, "reason": "y", "story": None},
+        {"symbol": "C", "score": 0, "reason": "z", "story": None},
+    ]
+
+
+def test_choose_candidate_auto_picks_first():
+    picked = daily_post.choose_candidate(_plain_candidates(), ticker=None, auto=True)
+    assert picked["symbol"] == "A"
+
+
+def test_choose_candidate_ticker_override_matches_existing_candidate():
+    picked = daily_post.choose_candidate(_plain_candidates(), ticker="b", auto=False)
+    assert picked["symbol"] == "B" and picked["reason"] == "y"
+
+
+def test_choose_candidate_ticker_override_not_in_list_synthesizes_entry():
+    picked = daily_post.choose_candidate(_plain_candidates(), ticker="ZZZZ", auto=False)
+    assert picked["symbol"] == "ZZZZ"
+    assert picked["score"] is None
+    assert picked["story"] is None
+
+
+def test_choose_candidate_interactive_enter_defaults_to_first():
+    picked = daily_post.choose_candidate(
+        _plain_candidates(), ticker=None, auto=False, input_func=lambda prompt="": "")
+    assert picked["symbol"] == "A"
+
+
+def test_choose_candidate_interactive_explicit_pick():
+    picked = daily_post.choose_candidate(
+        _plain_candidates(), ticker=None, auto=False, input_func=lambda prompt="": "2")
+    assert picked["symbol"] == "B"
+
+
+def test_choose_candidate_interactive_out_of_range_clamps():
+    picked = daily_post.choose_candidate(
+        _plain_candidates(), ticker=None, auto=False, input_func=lambda prompt="": "99")
+    assert picked["symbol"] == "C"
+
+
+def test_choose_candidate_eof_on_closed_stdin_aborts_via_daily_post_error():
+    def _closed_stdin(prompt=""):
+        raise EOFError()
+
+    with pytest.raises(daily_post.DailyPostError) as exc:
+        daily_post.choose_candidate(
+            _plain_candidates(), ticker=None, auto=False, input_func=_closed_stdin)
+    msg = str(exc.value)
+    assert "--auto" in msg and "--ticker" in msg
+
+
+def test_choose_candidate_keyboard_interrupt_aborts_via_daily_post_error():
+    def _ctrl_c(prompt=""):
+        raise KeyboardInterrupt()
+
+    with pytest.raises(daily_post.DailyPostError):
+        daily_post.choose_candidate(
+            _plain_candidates(), ticker=None, auto=False, input_func=_ctrl_c)
+
+
+def test_choose_candidate_auto_never_touches_input_func():
+    def _boom(prompt=""):
+        raise EOFError()
+
+    # --auto short-circuits before input_func is ever called, so a closed stdin
+    # must not matter in that path.
+    picked = daily_post.choose_candidate(_plain_candidates(), ticker=None, auto=True, input_func=_boom)
+    assert picked["symbol"] == "A"
+
+
+# --- carousel_fields / build_kit_md --------------------------------------------
+
+def _fake_copy_result():
+    return {
+        "props_a": {"beats": [
+            {"kind": "hook", "headline": "$57 of every $100 here is borrowed money.",
+             "sub": "Muslim investors run a halal screen — watch it work."},
+        ]},
+        "kit_fields": {
+            "screen_head": "WULF: the halal screen, plain-English.",
+            "screen_body": "$57 of every $100 here sits in interest-bearing debt.",
+            "screen_body2": "Three independent rulebooks each ran the same numbers.",
+            "halal_script": "TeraWulf runs A-I datacenters now. Educational, not financial or religious advice.",
+            "company_def": "the company that runs bitcoin mines it's converting into AI datacenters",
+        },
+    }
+
+
+def test_carousel_fields_carries_kit_fields_through():
+    fields = daily_post.carousel_fields(
+        "WULF", _fake_copy_result()["kit_fields"], _fake_copy_result(), "reason text", "2026-07-22")
+    assert fields["screen_head"] == "WULF: the halal screen, plain-English."
+    assert fields["halal_script"].startswith("TeraWulf")
+    assert fields["head"] == "$57 of every $100 here is borrowed money."
+    assert fields["company_def"] == "the company that runs bitcoin mines it's converting into AI datacenters"
+
+
+def test_carousel_fields_company_def_defaults_to_empty_when_absent():
+    # older/fixture kit_fields shapes that predate task-3's company_def key must not
+    # KeyError -- carousel_fields degrades to "" (which run_carousel/_build_v4.py
+    # both already treat as "no define slide" / falsy).
+    kit_fields = {k: v for k, v in _fake_copy_result()["kit_fields"].items() if k != "company_def"}
+    fields = daily_post.carousel_fields(
+        "WULF", kit_fields, _fake_copy_result(), "reason text", "2026-07-22")
+    assert fields["company_def"] == ""
+
+
+def test_build_kit_md_round_trips_through_kit_md_parser():
+    from aiinvest.kit_md import parse_cfg
+
+    copy_result = _fake_copy_result()
+    fields = daily_post.carousel_fields(
+        "WULF", copy_result["kit_fields"], copy_result, "some reason", "2026-07-22")
+    md = daily_post.build_kit_md("WULF", fields, "2026-07-22")
+
+    cfg = parse_cfg(md, "WULF")
+    assert cfg is not None
+    assert cfg["screen_head"] == fields["screen_head"]
+    assert cfg["screen_body2"] == fields["screen_body2"]
+    assert cfg["halal_script"] == fields["halal_script"]
+    assert cfg["hook"]["head"] == fields["head"]
+    # task-4: company_def round-trips through build_kit_md -> parse_cfg unchanged,
+    # so higgs/_build_v4.py's define-slide gate (`c.get("company_def")`) sees it.
+    assert cfg["company_def"] == fields["company_def"]
+    assert cfg["company_def"] == "the company that runs bitcoin mines it's converting into AI datacenters"
+
+
+def test_build_kit_md_escapes_embedded_quotes():
+    from aiinvest.kit_md import parse_cfg
+
+    copy_result = _fake_copy_result()
+    fields = daily_post.carousel_fields(
+        "WULF", copy_result["kit_fields"], copy_result, 'a "quoted" reason', "2026-07-22")
+    fields["tk_body"] = 'contains a "quote" mid-sentence'
+    md = daily_post.build_kit_md("WULF", fields, "2026-07-22")
+
+    cfg = parse_cfg(md, "WULF")
+    assert cfg is not None
+    assert cfg["takeaway"]["body"] == 'contains a "quote" mid-sentence'
+
+
+# --- write_manifest / finalize: manifest lands before the move -----------------
+
+def test_write_manifest_writes_into_tmp_dir(tmp_path):
+    tmp_dir = tmp_path / "work"
+    tmp_dir.mkdir()
+    (tmp_dir / "daily_A.mp4").write_bytes(b"x")
+
+    manifest = daily_post.build_manifest(
+        ticker="WULF", reason="r", score=1.0, story=None, bundle={},
+        date_str="2026-07-22", seeds={"tts_seed": 7}, files=["daily_A.mp4", "manifest.json"])
+    path = daily_post.write_manifest(tmp_dir, manifest)
+
+    assert path == tmp_dir / "manifest.json"
+    assert path.exists()
+    written = json.loads(path.read_text(encoding="utf-8"))
+    assert written["ticker"] == "WULF"
+    assert written["files"] == ["daily_A.mp4", "manifest.json"]
+
+
+def test_write_manifest_happens_before_finalize_moves_the_folder(tmp_path):
+    """The pipeline's real contract: write_manifest(tmp_dir, ...) then finalize(tmp_dir,
+    dest) -- manifest.json must already be inside tmp_dir when the move (finalize)
+    happens, so a finalize failure can never strand a manifest-less folder and a
+    finalize success always yields a folder with the manifest already in it."""
+    tmp_dir = tmp_path / "work"
+    tmp_dir.mkdir()
+    (tmp_dir / "daily_A.mp4").write_bytes(b"x")
+    (tmp_dir / "daily_B.mp4").write_bytes(b"x")
+
+    manifest = daily_post.build_manifest(
+        ticker="WULF", reason="r", score=1.0, story=None, bundle={},
+        date_str="2026-07-22", seeds={"tts_seed": 7},
+        files=["daily_A.mp4", "daily_B.mp4", "manifest.json"])
+    daily_post.write_manifest(tmp_dir, manifest)
+
+    # manifest.json is inside tmp_dir *before* finalize ever runs.
+    assert (tmp_dir / "manifest.json").exists()
+
+    dest = tmp_path / "dest" / "2026-07-22_WULF"
+    files = daily_post.finalize(tmp_dir, dest)
+
+    assert not tmp_dir.exists()  # move consumed the temp dir
+    assert (dest / "manifest.json").exists()
+    assert "manifest.json" in files
+    assert "daily_A.mp4" in files and "daily_B.mp4" in files
+
+
+def test_finalize_raising_leaves_manifest_intact_in_still_present_tmp_dir(tmp_path):
+    """If finalize can't move (dest already exists), tmp_dir -- manifest included --
+    is untouched, so the caller's cleanup (rmtree of tmp_dir) never has to worry
+    about a half-written manifest; it just discards the whole (still-valid) temp dir."""
+    tmp_dir = tmp_path / "work"
+    tmp_dir.mkdir()
+    daily_post.write_manifest(tmp_dir, {"ticker": "WULF"})
+
+    dest = tmp_path / "dest" / "2026-07-22_WULF"
+    dest.mkdir(parents=True)  # pre-existing -- forces finalize to raise
+
+    with pytest.raises(daily_post.DailyPostError):
+        daily_post.finalize(tmp_dir, dest)
+
+    assert tmp_dir.exists()
+    assert (tmp_dir / "manifest.json").exists()
+
+
+# --- cleanup_dirs (pure) ---------------------------------------------------------
+
+def test_cleanup_dirs_removes_tmp_dir_and_all_side_effect_dirs(tmp_path):
+    tmp_dir = tmp_path / "work"
+    tmp_dir.mkdir()
+    (tmp_dir / "f.txt").write_text("x", encoding="utf-8")
+    side1 = tmp_path / "side1"
+    side1.mkdir()
+    (side1 / "voice_A.wav").write_bytes(b"x")
+    side2 = tmp_path / "side2"
+    side2.mkdir()
+
+    daily_post.cleanup_dirs(tmp_dir, [side1, side2])
+
+    assert not tmp_dir.exists()
+    assert not side1.exists()
+    assert not side2.exists()
+
+
+def test_cleanup_dirs_ignores_already_missing_dirs(tmp_path):
+    tmp_dir = tmp_path / "never_created"
+    side = tmp_path / "also_never_created"
+
+    daily_post.cleanup_dirs(tmp_dir, [side])  # must not raise
+
+
+def test_cleanup_dirs_handles_empty_side_effect_list(tmp_path):
+    tmp_dir = tmp_path / "work"
+    tmp_dir.mkdir()
+
+    daily_post.cleanup_dirs(tmp_dir, [])
+
+    assert not tmp_dir.exists()
+
+
+# --- run(): BaseException (KeyboardInterrupt) during the wet steps still cleans up ---
+
+def _run_args(**overrides):
+    ns = daily_post.parse_args(["--auto", "--skip-refresh", "--skip-carousel"])
+    for k, v in overrides.items():
+        setattr(ns, k, v)
+    return ns
+
+
+def test_run_keyboard_interrupt_during_wet_steps_cleans_up_both_dirs_and_propagates(
+        tmp_path, monkeypatch):
+    """A Ctrl-C mid render (or TTS/whisper) must still remove tmp_dir AND the
+    remotion/public/daily/<folder>/ WAV-copy dir run_align already created --
+    per the review finding, a leftover WAV dir there would silently satisfy
+    run_render's existence assert on a same-day retry. Every subprocess-driving
+    step is stubbed (per the finding's instruction) so this exercises only the
+    orchestration/cleanup path in run(), not real TTS/whisper/remotion."""
+    now = dt.datetime(2026, 7, 22, 12, 0, tzinfo=dt.timezone.utc)
+    date_str = "2026-07-22"
+    ticker = "WULF"
+    folder = daily_post.folder_name(date_str, ticker)
+
+    web_data = tmp_path / "web"
+    web_data.mkdir()
+    (web_data / "halal.json").write_text(
+        json.dumps({"generated_at": "2026-07-22T09:00:00Z", "verdicts": {}}), encoding="utf-8")
+    halal_history = tmp_path / "halal_history"
+    higgs = tmp_path / "higgs"
+    remotion = tmp_path / "remotion"
+    work_tmp = tmp_path / "work_tmp"
+
+    monkeypatch.setattr(daily_post, "WEB_DATA", web_data)
+    monkeypatch.setattr(daily_post, "HALAL_HISTORY", halal_history)
+    monkeypatch.setattr(daily_post, "POSTED_LOG", halal_history / "posted_log.json")
+    monkeypatch.setattr(daily_post, "HIGGS", higgs)
+    monkeypatch.setattr(daily_post, "REMOTION", remotion)
+
+    monkeypatch.setattr(
+        daily_post.daily_pick, "rank_candidates",
+        lambda bundle, prev_map, news_bundle, posted_log, now: [
+            {"symbol": ticker, "score": 1.0, "reason": "test candidate", "story": None}])
+
+    copy_result = {
+        "props_a": {"beats": [{"kind": "hook", "headline": "h", "sub": "s"}], "vo": ["line a"]},
+        "props_b": {"beats": [{"kind": "hook", "headline": "h", "sub": "s"}], "vo": ["line b"]},
+        "caption": "cap",
+        "kit_fields": {"screen_head": "", "screen_body": "", "screen_body2": "", "halal_script": ""},
+    }
+    monkeypatch.setattr(daily_post.daily_copy, "build_daily", lambda *a, **k: copy_result)
+
+    def _fake_mkdtemp(prefix="daily_post_"):
+        work_tmp.mkdir(parents=True, exist_ok=True)
+        return str(work_tmp)
+
+    monkeypatch.setattr(daily_post.tempfile, "mkdtemp", _fake_mkdtemp)
+
+    def _fake_run_tts(tmp_dir, cr, python_exe=daily_post.CHATTERBOX_PYTHON):
+        return {"daily_a": tmp_dir / "voice_daily_a.wav", "daily_b": tmp_dir / "voice_daily_b.wav"}
+
+    def _fake_run_align(tmp_dir, folder_, cr, wavs, python_exe=daily_post.CHATTERBOX_PYTHON,
+                         side_effect_dirs=None):
+        # Mirrors the real run_align's side effect: create + register the WAV-copy
+        # dir under remotion/public/daily/<folder>/ BEFORE the interrupt below hits.
+        dest = daily_post.REMOTION / "public" / "daily" / folder_
+        dest.mkdir(parents=True, exist_ok=True)
+        (dest / "voice_A.wav").write_bytes(b"x")
+        (dest / "voice_B.wav").write_bytes(b"x")
+        if side_effect_dirs is not None:
+            side_effect_dirs.append(dest)
+        return {"A": {}, "B": {}}
+
+    def _fake_run_render(tmp_dir, folder_, props_out):
+        raise KeyboardInterrupt()
+
+    monkeypatch.setattr(daily_post, "run_tts", _fake_run_tts)
+    monkeypatch.setattr(daily_post, "run_align", _fake_run_align)
+    monkeypatch.setattr(daily_post, "run_render", _fake_run_render)
+
+    dest_voice_dir = remotion / "public" / "daily" / folder
+    args = _run_args()
+
+    with pytest.raises(KeyboardInterrupt):
+        daily_post.run(args, now=now, input_func=lambda prompt="": "")
+
+    assert not work_tmp.exists(), "tmp_dir must be removed even on KeyboardInterrupt"
+    assert not dest_voice_dir.exists(), (
+        "remotion/public/daily/<folder>/ WAV-copy dir must be removed on KeyboardInterrupt "
+        "-- a leftover copy would silently satisfy run_render's existence assert on retry")
+
+
+# --- run(): full success -- caption.txt lands in the folder (C1) --------------------
+
+def test_run_full_success_writes_caption_txt_into_dest_folder(tmp_path, monkeypatch):
+    """End-to-end (all subprocess-driving steps stubbed) success run: caption.txt
+    must exist in the finalized dest folder, be listed in `files`, and be listed
+    in manifest.json's own `files` array -- the C1 regression this pins."""
+    now = dt.datetime(2026, 7, 22, 12, 0, tzinfo=dt.timezone.utc)
+    date_str = "2026-07-22"
+    ticker = "WULF"
+    folder = daily_post.folder_name(date_str, ticker)
+
+    web_data = tmp_path / "web"
+    web_data.mkdir()
+    (web_data / "halal.json").write_text(
+        json.dumps({"generated_at": "2026-07-22T09:00:00Z", "verdicts": {}}), encoding="utf-8")
+    halal_history = tmp_path / "halal_history"
+    higgs = tmp_path / "higgs"
+    remotion = tmp_path / "remotion"
+    work_tmp = tmp_path / "work_tmp"
+
+    monkeypatch.setattr(daily_post, "WEB_DATA", web_data)
+    monkeypatch.setattr(daily_post, "HALAL_HISTORY", halal_history)
+    monkeypatch.setattr(daily_post, "POSTED_LOG", halal_history / "posted_log.json")
+    monkeypatch.setattr(daily_post, "HIGGS", higgs)
+    monkeypatch.setattr(daily_post, "REMOTION", remotion)
+
+    monkeypatch.setattr(
+        daily_post.daily_pick, "rank_candidates",
+        lambda bundle, prev_map, news_bundle, posted_log, now: [
+            {"symbol": ticker, "score": 1.0, "reason": "test candidate", "story": None}])
+
+    copy_result = {
+        "props_a": {"beats": [{"kind": "hook", "headline": "h", "sub": "s"}], "vo": ["line a"]},
+        "props_b": {"beats": [{"kind": "hook", "headline": "h", "sub": "s"}], "vo": ["line b"]},
+        "caption": "WULF, halal or not? We ran the 2026-07-22 screen.\n#halal #stocks",
+        "kit_fields": {"screen_head": "", "screen_body": "", "screen_body2": "", "halal_script": ""},
+    }
+    monkeypatch.setattr(daily_post.daily_copy, "build_daily", lambda *a, **k: copy_result)
+
+    def _fake_mkdtemp(prefix="daily_post_"):
+        work_tmp.mkdir(parents=True, exist_ok=True)
+        return str(work_tmp)
+
+    monkeypatch.setattr(daily_post.tempfile, "mkdtemp", _fake_mkdtemp)
+
+    def _fake_run_tts(tmp_dir, cr, python_exe=daily_post.CHATTERBOX_PYTHON):
+        (tmp_dir / "voice_daily_a.wav").write_bytes(b"x")
+        (tmp_dir / "voice_daily_b.wav").write_bytes(b"x")
+        return {"daily_a": tmp_dir / "voice_daily_a.wav", "daily_b": tmp_dir / "voice_daily_b.wav"}
+
+    def _fake_run_align(tmp_dir, folder_, cr, wavs, python_exe=daily_post.CHATTERBOX_PYTHON,
+                         side_effect_dirs=None):
+        dest = daily_post.REMOTION / "public" / "daily" / folder_
+        dest.mkdir(parents=True, exist_ok=True)
+        (dest / "voice_A.wav").write_bytes(b"x")
+        (dest / "voice_B.wav").write_bytes(b"x")
+        if side_effect_dirs is not None:
+            side_effect_dirs.append(dest)
+        return {"A": {}, "B": {}}
+
+    def _fake_run_render(tmp_dir, folder_, props_out):
+        (tmp_dir / "daily_A.mp4").write_bytes(b"x")
+        (tmp_dir / "daily_B.mp4").write_bytes(b"x")
+        return {"A": tmp_dir / "daily_A.mp4", "B": tmp_dir / "daily_B.mp4"}
+
+    monkeypatch.setattr(daily_post, "run_tts", _fake_run_tts)
+    monkeypatch.setattr(daily_post, "run_align", _fake_run_align)
+    monkeypatch.setattr(daily_post, "run_render", _fake_run_render)
+
+    args = _run_args()  # --auto --skip-refresh --skip-carousel
+    rc = daily_post.run(args, now=now, input_func=lambda prompt="": "")
+    assert rc == 0
+
+    dest = higgs / "daily" / folder
+    caption_path = dest / "caption.txt"
+    assert caption_path.exists(), "caption.txt must be written into the finalized folder"
+    assert caption_path.read_text(encoding="utf-8") == copy_result["caption"]
+
+    manifest = json.loads((dest / "manifest.json").read_text(encoding="utf-8"))
+    assert "caption.txt" in manifest["files"]
+
+
+# --- main(): DailyPostError exits 2 (spec literal), not 1 ---------------------------
+
+def test_main_daily_post_error_exits_2(monkeypatch, capsys):
+    def _boom(args):
+        raise daily_post.DailyPostError("no candidates ranked -- nothing to post today")
+
+    monkeypatch.setattr(daily_post, "run", _boom)
+    rc = daily_post.main(["--auto"])
+    assert rc == 2
+    assert "ABORT" in capsys.readouterr().out
+
+
+# --- _run_and_echo: live tee ------------------------------------------------------
+
+def test_run_and_echo_tees_stdout_and_stderr_live_and_returns_completed_process(capsys):
+    cmd = [sys.executable, "-c",
+           "import sys; print('out-line-1'); print('err-line-1', file=sys.stderr); "
+           "print('out-line-2')"]
+    proc = daily_post._run_and_echo(cmd, cwd=".", env=os.environ.copy())
+
+    captured = capsys.readouterr()
+    assert "out-line-1" in captured.out and "out-line-2" in captured.out
+    assert "err-line-1" in captured.err
+
+    assert proc.returncode == 0
+    assert "out-line-1" in proc.stdout and "out-line-2" in proc.stdout
+    assert "err-line-1" in proc.stderr
+    assert daily_post._stderr_tail(proc) == "err-line-1"
+
+
+def test_run_and_echo_captures_nonzero_returncode():
+    cmd = [sys.executable, "-c", "import sys; sys.stderr.write('boom'); sys.exit(3)"]
+    proc = daily_post._run_and_echo(cmd, cwd=".", env=os.environ.copy())
+
+    assert proc.returncode == 3
+    assert "boom" in proc.stderr
+
+
+def test_run_and_echo_decodes_utf8_multibyte_progress_bytes_without_mojibake(capsys):
+    """Regression for the TTS pipe deadlock: tqdm-style progress bars (e.g. from
+    Chatterbox TTS) write multi-byte UTF-8 (box-drawing/block characters) to
+    stdout/stderr. `Popen(..., text=True)` without an explicit `encoding=` decodes
+    using the platform default -- cp1252 on Windows -- which raises on these
+    bytes, killing the `_tee_pipe` reader thread uncaught. A dead reader never
+    drains its pipe again, so the OS pipe buffer fills and the child (the real
+    GPU-bound TTS process) deadlocks writing to it. This spawns a child that
+    prints a UTF-8 multi-byte sequence to BOTH stdout and stderr (with
+    PYTHONIOENCODING=utf-8 so the child itself emits real UTF-8 bytes) and
+    asserts `_run_and_echo` returns it intact: no crash, no mojibake, no
+    U+FFFD replacement characters -- proving the parent decoded as UTF-8
+    rather than falling back to cp1252 (which would either raise or replace)."""
+    payload = "▌█ 50%█"  # "▌█ 50%█" -- box-drawing/block chars, invalid cp1252
+    env = dict(os.environ, PYTHONIOENCODING="utf-8")
+    cmd = [
+        sys.executable, "-c",
+        "import sys; "
+        f"sys.stdout.write({payload!r} + chr(10)); "
+        f"sys.stderr.write({payload!r} + chr(10))",
+    ]
+    proc = daily_post._run_and_echo(cmd, cwd=".", env=env)
+
+    captured = capsys.readouterr()
+    assert proc.returncode == 0
+    assert payload in proc.stdout
+    assert payload in proc.stderr
+    assert payload in captured.out
+    assert payload in captured.err
+    assert "�" not in proc.stdout and "�" not in proc.stderr

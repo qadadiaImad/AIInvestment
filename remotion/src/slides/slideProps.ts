@@ -54,6 +54,14 @@ export const slideStoryPropsSchema = z.object({
   bubbleClips: z.array(bubbleClipSchema).default([]),   // empty = friend's VO-less slide mode
   captions: z.array(z.object({text: z.string(), fromMs: z.number(), toMs: z.number()})).default([]),
   disclaimer: z.string(),
+  // Whisper-timed VO track (Task 3/4 producer; Task 6 copies the WAV under
+  // remotion/public/daily/<folder>/ so `staticFile` resolves it). Optional —
+  // absent for VO-less slide mode (bubbleClips-driven fixtures).
+  voiceSrc: z.string().optional(),
+  // Photographic hero backdrop (Task 3 producer; staticFile-relative, e.g.
+  // "heroes/Q4-security.jpg"). Optional — absent renders the composition
+  // exactly as before (no HeroLayer mounted).
+  heroSrc: z.string().optional(),
 });
 export type SlideStoryProps = z.infer<typeof slideStoryPropsSchema>;
 
