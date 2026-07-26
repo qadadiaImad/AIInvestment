@@ -27,7 +27,8 @@ import {Grain, Vignette} from '../motion/Polish';
 import {ScreenInsert} from '../components/ScreenInsert';
 import type {Quad} from '../components/screenMath';
 import {TapeChart} from '../components/TapeChart';
-import {TOON_GROUND_FRAC, ToonRig} from '../characters/toonRig';
+import {ToonRig} from '../characters/toonRig';
+import {GROUND as TOON_GROUND, VB_H as TOON_VB_H} from '../characters/toonSkeleton';
 
 const candleSchema = z.object({o: z.number(), h: z.number(), l: z.number(), c: z.number()});
 const ptSchema = z.object({x: z.number(), y: z.number()});
@@ -199,7 +200,7 @@ export const MemeReel: React.FC<MemeReelProps> = (p) => {
 
   // charHeight is the rig's whole viewBox height in frame px; the toon rig's
   // feet sit at TOON_GROUND_FRAC of it.
-  const charGroundOffset = p.charHeight * TOON_GROUND_FRAC;
+  const charGroundOffset = (p.charHeight * TOON_GROUND) / TOON_VB_H;
 
   // The monitor close-up is a CUTAWAY: for those frames we are looking at the
   // screen, and he is not in the shot. Without this his leaning head clips into
