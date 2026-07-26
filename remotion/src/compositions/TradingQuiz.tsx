@@ -21,14 +21,19 @@
 // Engine, not a one-off: swap the fixture and the same composition renders a
 // different pattern quiz. See scripts/ta_quiz/ and the ta-chart-quiz skill.
 //
-// Palette note: the ambient colour is deliberately NEUTRAL (navy + a ruled
-// blue-grey grid, per the reference boards). Earlier versions tinted the whole
+// Palette: green trading-terminal on near-black, matching TradingStyles — ruled
+// grid, dotted world map, glowing candles. Earlier versions tinted the whole
 // frame with `answerColor`, which read as generated-looking wash AND leaked the
-// answer — a green countdown ring told you "BUY" before the timer ran out.
-// Green/red now appear only where they carry meaning: candles, the price tag,
-// and the reveal badge.
+// answer: a green countdown ring told you "BUY" before the timer ran out. The
+// terminal green here is the house colour and carries no direction; only the
+// candles, the price tag and the reveal badge mean bullish or bearish.
+//
+// The countdown ticks. Five escapement sounds, one per second, alternating
+// tick/tock — see scripts/audio/make_tick.py. It is the only audio in the reel,
+// and it is doing real work: on a silent feed the timer is easy to miss, and a
+// clock is the one sound that says "you have until this stops" without a word.
 import React from 'react';
-import {AbsoluteFill, interpolate, random, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, interpolate, random, Sequence, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {z} from 'zod';
 import {C, FONT} from '../slides/theme';
 import {EASE, SPRINGS, fadeOf, cameraPushIn} from '../motion/craft';
@@ -77,16 +82,58 @@ export type TradingQuizProps = z.infer<typeof tradingQuizSchema>;
 /** Board theme: deep navy, ruled grid, cool neutral accent. Kept local to this
  * composition so the shared slide theme is untouched. */
 const T = {
-  bg: '#070A11',
-  grid: 'rgba(126,158,201,0.085)',
-  gridBold: 'rgba(126,158,201,0.17)',
-  /** Neutral accent — carries no bullish/bearish meaning. */
-  ice: '#8FB6E8',
-  steel: '#6F819A',
-  panelTop: '#0C1119',
-  panelBot: '#070A10',
-  edge: 'rgba(126,158,201,0.17)',
+  bg: '#02070A',
+  grid: 'rgba(0,224,130,0.055)',
+  gridBold: 'rgba(0,224,130,0.115)',
+  /** Neutral accent — carries no bullish/bearish meaning. Green here is the
+   * house terminal colour, not a bullish signal; the answer badge is the only
+   * thing that means direction. */
+  ice: '#22E07E',
+  steel: '#4E7A64',
+  panelTop: '#04100C',
+  panelBot: '#020806',
+  edge: 'rgba(0,224,130,0.20)',
+  up: '#00E676',
+  down: '#FF3B30',
 };
+
+// Coarse landmass mask, drawn as a dot matrix behind the frame. Deliberately
+// crude — at ~5% opacity it is texture, not a map to navigate by.
+const WORLD = [
+  '................................................................',
+  '.......########....................#####........................',
+  '....###############..........################################...',
+  '...###############.........###############################......',
+  '....#############........###############################.......',
+  '.....###########........##############################.........',
+  '......########..........############################...........',
+  '.......######............#########.####..#########.............',
+  '........####..............#######...##....######...............',
+  '.........###...............#####...........####................',
+  '.........####...............####............###................',
+  '..........####...............###.............##................',
+  '..........####................##..............#................',
+  '...........###.................#..............................',
+  '...........###.................##.............................',
+  '...........###.................###...........#####.............',
+  '...........##..................####.........########...........',
+  '...........##..................####........##########..........',
+  '............#..................###.........#########...........',
+  '............#..................###..........#######............',
+  '............#..................##............#####.............',
+  '...............................##.............###.............',
+  '................................#..............#..............',
+  '................................................................',
+  '....................######################......................',
+  '................................................................',
+];
+const WORLD_DOTS = WORLD.flatMap((row, r) =>
+  row.split('').flatMap((ch, c) =>
+    ch === '#'
+      ? [{x: (c + 0.5) * (1080 / WORLD[0].length), y: 300 + (r + 0.5) * (1120 / WORLD.length)}]
+      : []
+  )
+);
 
 // ---------------------------------------------------------------- timing
 const DRAW_START = 40;
@@ -142,7 +189,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const cx = (i: number) => CHART.x0 + slot * i + slot / 2;
 
   const isDown = p.answer === 'SELL';
-  const answerColor = isDown ? C.redHot : C.emerald;
+  const answerColor = isDown ? T.down : T.up;
 
   // Slow push-in with an emphasis hit when the answer lands.
   const zoom = cameraPushIn(frame, p.durationInFrames, {base: 0.035, hitFrame: ANSWER_IN, hitAmount: 0.02});
@@ -338,11 +385,23 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   return (
     <AbsoluteFill style={{background: T.bg, fontFamily: FONT.body}}>
       {/* ------------------------------------------------- 1. background
-       * A ruled blue-grey grid on deep navy. Soft blurred colour blobs were
-       * what made the old frame read as machine-made filler; a drafting grid
-       * reads as something that was laid out on purpose. It drifts a few px so
-       * the plate isn't dead, and never carries the answer's colour. */}
+       * Dotted world map + ruled grid on near-black. Soft blurred colour blobs
+       * were what made the old frame read as machine-made filler; a drafting
+       * grid reads as something laid out on purpose. It drifts a few px so the
+       * plate isn't dead, and never carries the answer's colour. */}
       <AbsoluteFill>
+        <svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
+          {WORLD_DOTS.map((d, i) => (
+            <circle
+              key={i}
+              cx={d.x}
+              cy={d.y}
+              r={2.1}
+              fill={T.up}
+              opacity={0.05 + Math.sin(frame / 40 + i * 0.35) * 0.018}
+            />
+          ))}
+        </svg>
         <svg
           width={1080}
           height={1920}
@@ -382,8 +441,9 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
             position: 'absolute',
             inset: 0,
             background:
-              'radial-gradient(120% 60% at 50% 8%, rgba(58,96,148,0.20), transparent 62%),' +
-              'radial-gradient(100% 50% at 50% 104%, rgba(28,44,72,0.35), transparent 60%)',
+              'radial-gradient(120% 55% at 50% 6%, rgba(0,224,130,0.11), transparent 60%),' +
+              'radial-gradient(110% 50% at 20% 104%, rgba(0,224,130,0.09), transparent 62%),' +
+              'radial-gradient(110% 50% at 85% 104%, rgba(255,59,48,0.06), transparent 62%)',
           }}
         />
       </AbsoluteFill>
@@ -549,7 +609,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
             transform: `translateY(${interpolate(screenP, [0, 1], [26, 0])}px)`,
             background: `linear-gradient(180deg, ${T.panelTop} 0%, ${T.panelBot} 100%)`,
             border: `1px solid ${T.edge}`,
-            boxShadow: '0 40px 100px -30px #000, inset 0 1px 0 rgba(255,255,255,.06), 0 0 70px rgba(58,96,148,.13)',
+            boxShadow: `0 40px 100px -30px #000, inset 0 1px 0 rgba(255,255,255,.05), 0 0 70px ${T.up}18`,
             overflow: 'hidden',
           }}
         >
@@ -562,10 +622,10 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               gap: 10,
               padding: '0 22px',
               borderBottom: `1px solid ${T.edge}`,
-              background: 'rgba(126,158,201,.045)',
+              background: 'rgba(0,224,130,.045)',
             }}
           >
-            {[C.redHot, C.amber, C.emerald].map((col) => (
+            {[T.down, '#E0A23B', T.up].map((col) => (
               <div key={col} style={{width: 11, height: 11, borderRadius: 999, background: col, opacity: 0.62}} />
             ))}
             <div
@@ -585,7 +645,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
                   width: 8,
                   height: 8,
                   borderRadius: 999,
-                  background: C.emerald,
+                  background: T.up,
                   opacity: 0.4 + Math.sin(frame / 8) * 0.35,
                 }}
               />
@@ -645,10 +705,10 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               x2={CHART.x0 - 6 + (SCREEN.x + SCREEN.w - 26 - (CHART.x0 - 6)) * levelP}
               y1={levelY}
               y2={levelY}
-              stroke={C.amber}
+              stroke={T.ice}
               strokeWidth={3}
               strokeDasharray="14 10"
-              style={{filter: `drop-shadow(0 0 ${6 + levelPulse * 8}px ${C.amber}dd)`}}
+              style={{filter: `drop-shadow(0 0 ${6 + levelPulse * 8}px ${T.ice}dd)`}}
             />
           ) : null}
 
@@ -706,7 +766,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               <text
                 x={CHART.x0 - 2}
                 y={levelY - 18}
-                fill={C.amber}
+                fill={T.ice}
                 fontFamily={FONT.mono}
                 fontWeight={700}
                 fontSize={25}
@@ -726,17 +786,17 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
                 width={patW}
                 height={(patBot - patTop) * patPulse}
                 rx={12}
-                fill={`${C.amber}0e`}
-                stroke={C.amber}
+                fill={`${T.ice}12`}
+                stroke={T.ice}
                 strokeWidth={3.5}
-                style={{filter: `drop-shadow(0 0 14px ${C.amber}aa)`}}
+                style={{filter: `drop-shadow(0 0 14px ${T.ice}aa)`}}
               />
               <line
                 x1={patX + patW / 2}
                 y1={patBot}
                 x2={patX + patW / 2}
                 y2={PATTERN_LABEL_Y - 30}
-                stroke={C.amber}
+                stroke={T.ice}
                 strokeWidth={2}
                 strokeDasharray="6 7"
                 opacity={0.6}
@@ -744,7 +804,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               <text
                 x={patX + patW / 2}
                 y={PATTERN_LABEL_Y}
-                fill={C.amber}
+                fill={T.ice}
                 fontFamily={FONT.mono}
                 fontWeight={800}
                 fontSize={27}
@@ -759,8 +819,8 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
           {/* BUY / SELL fork */}
           {arrowsP > 0 ? (
             <>
-              <Arrow dir="up" label="BUY" color={C.emerald} op={fadeOf(arrowsP) * (isDown ? arrowsOut : winnerOut)} />
-              <Arrow dir="down" label="SELL" color={C.redHot} op={fadeOf(arrowsP) * (isDown ? winnerOut : arrowsOut)} />
+              <Arrow dir="up" label="BUY" color={T.up} op={fadeOf(arrowsP) * (isDown ? arrowsOut : winnerOut)} />
+              <Arrow dir="down" label="SELL" color={T.down} op={fadeOf(arrowsP) * (isDown ? winnerOut : arrowsOut)} />
             </>
           ) : null}
         </svg>
@@ -820,7 +880,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               right: 46,
               opacity: fadeOf(ruleP),
               transform: `translateY(${interpolate(ruleP, [0, 1], [30, 0])}px)`,
-              background: 'rgba(126,158,201,.075)',
+              background: 'rgba(0,224,130,.07)',
               border: `1px solid ${T.edge}`,
               borderRadius: 26,
               padding: '24px 30px',
@@ -833,7 +893,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
                 fontWeight: 700,
                 fontSize: 24,
                 letterSpacing: 3,
-                color: C.amber,
+                color: T.ice,
                 marginBottom: 12,
               }}
             >
@@ -884,6 +944,17 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
       {/* ------------------------------------------- 9. finish layers
        * No colour grade: tinting the whole frame with the answer colour is
        * what produced the green cast, and it leaked the answer besides. */}
+      {/* ------------------------------------------- 10. the ticking clock
+       * One escapement per countdown second, alternating tick/tock so five in a
+       * row read as a clock rather than a metronome. Placed on the same
+       * COUNT_START/COUNT_PER constants the digits use, so the sound cannot
+       * drift from the number on screen. */}
+      {Array.from({length: COUNT_N}, (_, i) => (
+        <Sequence key={i} from={COUNT_START + i * COUNT_PER} durationInFrames={COUNT_PER}>
+          <Audio src={staticFile(i % 2 === 0 ? 'audio/tick.wav' : 'audio/tock.wav')} volume={0.55} />
+        </Sequence>
+      ))}
+
       <Grain />
       <Vignette />
     </AbsoluteFill>

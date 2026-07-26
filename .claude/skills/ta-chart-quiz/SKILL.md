@@ -84,6 +84,28 @@ python scripts/ta_quiz/validate.py                # report
 python scripts/ta_quiz/validate.py --write-clean  # emit the passing subset
 ```
 
+## Sound
+
+The reel is otherwise silent, but the countdown **ticks** — five escapement
+sounds, one per second, alternating `tick.wav`/`tock.wav` from
+`remotion/public/audio/`. They are placed off the same `COUNT_START`/`COUNT_PER`
+constants the digits use, so the sound cannot drift from the number on screen.
+
+The assets are synthesised by `scripts/audio/make_tick.py` rather than shipped as
+a download — Remotion's bundled ffmpeg is a minimal build with no highpass or
+lowpass filter, and a tick without filtering is a beep or a hiss. Regenerate with
+`python scripts/audio/make_tick.py` if they go missing.
+
+Verify placement after rendering — the sound is worth checking numerically
+because a missing `<Audio>` still produces a valid file:
+
+```bash
+ffmpeg -i out.mp4 -vn -ac 1 -ar 8000 /tmp/a.wav -y   # then bucket the RMS
+```
+
+Five loud buckets one second apart inside the countdown window, silence
+elsewhere.
+
 ## Timing
 
 `TradingQuiz.tsx` holds the beat constants; everything after the countdown is

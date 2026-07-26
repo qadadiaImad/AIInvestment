@@ -1,0 +1,149 @@
+{
+  "kick": "TRADING QUIZ",
+  "patternName": "DOJI",
+  "levelPrice": 100,
+  "levelLabel": "RESISTANCE · TESTED 2x",
+  "answer": "SELL",
+  "answerLine": "Open and close matched, then sellers took control.",
+  "ruleTitle": "The confirmation",
+  "ruleText": "A doji forms when the open and close are virtually equal, showing buyers and sellers reached a standstill. At resistance after an uptrend, that hesitation matters; confirmation is the next candle closing below the doji's low.",
+  "footer": "Synthetic chart, not real market data · Educational only — not financial advice · DYOR",
+  "revealFrom": 19,
+  "patternSpan": 1,
+  "indexLabel": "#6",
+  "durationInFrames": 546,
+  "candles": [
+    {
+      "o": 88,
+      "h": 88.4,
+      "l": 87.5,
+      "c": 88.2
+    },
+    {
+      "o": 88.2,
+      "h": 89,
+      "l": 88,
+      "c": 88.8
+    },
+    {
+      "o": 88.8,
+      "h": 89.6,
+      "l": 88.6,
+      "c": 89.4
+    },
+    {
+      "o": 89.4,
+      "h": 90.2,
+      "l": 89.2,
+      "c": 90
+    },
+    {
+      "o": 90,
+      "h": 90.8,
+      "l": 89.8,
+      "c": 90.6
+    },
+    {
+      "o": 90.6,
+      "h": 91.4,
+      "l": 90.4,
+      "c": 91.2
+    },
+    {
+      "o": 91.2,
+      "h": 92,
+      "l": 91,
+      "c": 91.8
+    },
+    {
+      "o": 91.8,
+      "h": 92.6,
+      "l": 91.6,
+      "c": 92.4
+    },
+    {
+      "o": 92.4,
+      "h": 100.2,
+      "l": 92.2,
+      "c": 93.6
+    },
+    {
+      "o": 93.6,
+      "h": 94.2,
+      "l": 93.4,
+      "c": 94
+    },
+    {
+      "o": 94,
+      "h": 94.8,
+      "l": 93.8,
+      "c": 94.6
+    },
+    {
+      "o": 94.6,
+      "h": 95.4,
+      "l": 94.4,
+      "c": 95.2
+    },
+    {
+      "o": 95.2,
+      "h": 96,
+      "l": 95,
+      "c": 95.8
+    },
+    {
+      "o": 95.8,
+      "h": 100.1,
+      "l": 94.5,
+      "c": 94.8
+    },
+    {
+      "o": 94.8,
+      "h": 95.6,
+      "l": 94.6,
+      "c": 95.4
+    },
+    {
+      "o": 95.4,
+      "h": 96.2,
+      "l": 95.2,
+      "c": 96
+    },
+    {
+      "o": 96,
+      "h": 96.8,
+      "l": 95.8,
+      "c": 96.6
+    },
+    {
+      "o": 96.6,
+      "h": 97.6,
+      "l": 96.4,
+      "c": 97.4
+    },
+    {
+      "o": 97.4,
+      "h": 100,
+      "l": 96.5,
+      "c": 97.42
+    },
+    {
+      "o": 97.42,
+      "h": 97.6,
+      "l": 96,
+      "c": 96.2
+    },
+    {
+      "o": 96.2,
+      "h": 96.4,
+      "l": 95,
+      "c": 95.3
+    },
+    {
+      "o": 95.3,
+      "h": 95.5,
+      "l": 94,
+      "c": 94.3
+    }
+  ]
+}
