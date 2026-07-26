@@ -73,6 +73,14 @@ export const tradingQuizSchema = z.object({
   /** Terminal chrome-bar label. Defaults to the pattern name; real-data reels
    * put the instrument and timeframe here ("INTC · DAILY"). */
   subject: z.string().optional(),
+  /** The trade frame, drawn after the reveal. All four must be present together
+   * or the risk/reward act is skipped entirely — half a trade frame (a target
+   * with no stop) is worse than none, because it shows the upside and hides
+   * what it cost to be wrong. */
+  entry: z.number().optional(),
+  stop: z.number().optional(),
+  target: z.number().optional(),
+  rrLabel: z.string().optional(),
   candles: z.array(candleSchema).min(6),
   durationInFrames: z.number(),
 });
@@ -161,9 +169,17 @@ const COUNT_PER = 30;
 const COUNT_N = 5;
 const ANSWER_IN = COUNT_START + COUNT_PER * COUNT_N; // 382
 const REVEAL_START = ANSWER_IN + 28;
-const RULE_IN = REVEAL_START + 48;
+/** The reveal is slower than it used to be, because it now carries sound: one
+ * tone per candle. Twelve bars crammed into 38 frames was ten hits a second,
+ * which is a machine gun rather than a tape. */
+const REVEAL_SPAN = 84;
+const REVEAL_END = REVEAL_START + REVEAL_SPAN;      // 494
+/** Risk/reward act: stop and target draw, then the outcome resolves. */
+const RR_IN = REVEAL_END + 8;                       // 502
+const RR_ZONES_IN = RR_IN + 18;                     // 520
+const RULE_IN = RR_IN + 92;                         // 594
 /** Minimum duration the timeline needs; fixtures should meet or exceed it. */
-export const TRADING_QUIZ_MIN_FRAMES = RULE_IN + 88; // -> 546
+export const TRADING_QUIZ_MIN_FRAMES = RULE_IN + 88; // -> 682
 
 // ---------------------------------------------------------------- geometry
 /** The physical screen the chart lives on. */
@@ -208,7 +224,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   // real window both finish printing on the same beat.
   const DRAW_PER = Math.max(1, (DRAW_END - DRAW_START) / Math.max(1, setup.length));
   const CANDLE_FORM = Math.max(CANDLE_FORM_MIN, Math.round(DRAW_PER));
-  const REVEAL_PER = Math.max(1, (RULE_IN - 10 - REVEAL_START) / Math.max(1, reveal.length));
+  const REVEAL_PER = Math.max(1, REVEAL_SPAN / Math.max(1, reveal.length));
 
   const slot = (CHART.x1 - CHART.x0) / p.candles.length;
   const bodyW = Math.min(24, Math.max(2.5, slot * 0.62));
@@ -259,6 +275,12 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
     extrapolateRight: 'clamp',
   });
   const levelY = priceToY(p.levelPrice);
+  // Once the trade frame draws, the resistance line has done its job and its
+  // label sits right on top of the STOP tag. Fade it out rather than stack them.
+  const levelOut = interpolate(frame, [RR_IN - 4, RR_IN + 16], [1, 0.18], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
   const levelPulse = 0.55 + Math.sin(Math.max(0, frame - LEVEL_IN) / 11) * 0.45;
 
   // -------------------------------------------------------- pattern frame
@@ -376,6 +398,26 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const boxed = p.candles.slice(pA, pB + 1);
   const patTop = priceToY(Math.max(...boxed.map((k) => k.h))) - 16;
   const patBot = priceToY(Math.min(...boxed.map((k) => k.l))) + 16;
+
+  // ------------------------------------------------- the trade frame
+  // Present only if all four fields are set. `tpBar` is the first REVEAL bar
+  // whose high actually reaches the target — derived from the data, not stated
+  // in the fixture, so the coins cannot fire on a bar that never got there.
+  const hasRR =
+    p.entry !== undefined && p.stop !== undefined && p.target !== undefined &&
+    p.entry > p.stop && p.target > p.entry;
+  const tpBar = hasRR
+    ? reveal.findIndex((k) => k.h >= (p.target as number))
+    : -1;
+  const rrP = spring({frame: frame - RR_IN, fps, config: SPRINGS.heavy});
+  const zonesP = interpolate(frame, [RR_ZONES_IN, RR_ZONES_IN + 22], [0, 1], {
+    easing: EASE.enter,
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  // The payoff lands when the zone fill sweeps past the winning bar.
+  const payoutAt = RR_ZONES_IN + 26;
+  const coinT = frame - payoutAt;
 
   const oX = cx(p.revealFrom - 1) + slot * 0.8;
   const oY = priceToY(p.candles[p.revealFrom - 1].c);
@@ -730,6 +772,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
           {/* level line */}
           {levelP > 0 ? (
             <line
+              opacity={levelOut}
               x1={CHART.x0 - 6}
               x2={CHART.x0 - 6 + (SCREEN.x + SCREEN.w - 26 - (CHART.x0 - 6)) * levelP}
               y1={levelY}
@@ -782,7 +825,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
 
           {/* level label, above the candles so bars can't paint over it */}
           {levelP > 0 ? (
-            <g opacity={fadeOf(levelP)}>
+            <g opacity={fadeOf(levelP) * levelOut}>
               <rect
                 x={CHART.x0 - 10}
                 y={levelY - 44}
@@ -845,6 +888,69 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
             </g>
           ) : null}
 
+          {/* ------------------------------------- risk / reward frame */}
+          {hasRR && rrP > 0.01 ? (
+            <g opacity={fadeOf(rrP)}>
+              {/* risk band: entry down to the stop */}
+              <rect
+                x={CHART.x0 - 6}
+                y={priceToY(p.entry as number)}
+                width={(CHART.x1 + 100 - CHART.x0) * zonesP}
+                height={Math.max(1, priceToY(p.stop as number) - priceToY(p.entry as number))}
+                fill={`${T.down}1c`}
+              />
+              {/* reward band: entry up to the target */}
+              <rect
+                x={CHART.x0 - 6}
+                y={priceToY(p.target as number)}
+                width={(CHART.x1 + 100 - CHART.x0) * zonesP}
+                height={Math.max(1, priceToY(p.entry as number) - priceToY(p.target as number))}
+                fill={`${T.up}1c`}
+              />
+              {[
+                {v: p.target as number, col: T.up, tag: `TARGET  ${p.rrLabel ?? '2R'}`},
+                {v: p.entry as number, col: '#D8E6DE', tag: 'ENTRY'},
+                {v: p.stop as number, col: T.down, tag: 'STOP'},
+              ].map((row) => (
+                <g key={row.tag}>
+                  <line
+                    x1={CHART.x0 - 6}
+                    x2={CHART.x0 - 6 + (CHART.x1 + 100 - (CHART.x0 - 6)) * Math.min(1, rrP * 1.2)}
+                    y1={priceToY(row.v)}
+                    y2={priceToY(row.v)}
+                    stroke={row.col}
+                    strokeWidth={2.5}
+                    strokeDasharray={row.tag === 'ENTRY' ? '2 6' : '14 8'}
+                    style={{filter: `drop-shadow(0 0 7px ${row.col}bb)`}}
+                  />
+                  <rect
+                    x={CHART.x0 - 4}
+                    y={priceToY(row.v) - 30}
+                    width={row.tag.length * 12 + 22}
+                    height={26}
+                    rx={6}
+                    fill="rgba(2,10,7,.88)"
+                    stroke={row.col}
+                    strokeWidth={1.2}
+                    opacity={zonesP}
+                  />
+                  <text
+                    x={CHART.x0 + 7}
+                    y={priceToY(row.v) - 11}
+                    fill={row.col}
+                    fontFamily={FONT.mono}
+                    fontWeight={700}
+                    fontSize={17}
+                    letterSpacing={1.4}
+                    opacity={zonesP}
+                  >
+                    {row.tag}
+                  </text>
+                </g>
+              ))}
+            </g>
+          ) : null}
+
           {/* BUY / SELL fork */}
           {arrowsP > 0 ? (
             <>
@@ -854,7 +960,52 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
           ) : null}
         </svg>
 
-        {/* -------------------------------------- 7. the ask (pre-answer) */}
+        {/* ------------------------------------------- 6b. the payoff
+       * Coins pour out of the candle that actually reached the target. The bar
+       * index is derived from the price data, so if no reveal bar ever gets
+       * there nothing fires — the celebration cannot run on a trade that did
+       * not pay. */}
+      {hasRR && tpBar >= 0 && coinT > 0 ? (
+        <AbsoluteFill style={{pointerEvents: 'none'}}>
+          {Array.from({length: 22}, (_, i) => {
+            const born = i * 2.2;
+            const age = coinT - born;
+            if (age < 0) return null;
+            // A fountain out of the winning bar, not a hover: they burst up,
+            // spread, then fall past it. Gravity is scaled per coin so the
+            // cluster breaks up instead of moving as one sheet.
+            const spreadX = (random(`cx${i}`) - 0.5) * 460;
+            const vy = 2.6 + random(`cv${i}`) * 2.4;
+            const x = cx(p.revealFrom + tpBar) + spreadX * Math.min(1, age / 30);
+            const y =
+              priceToY(reveal[tpBar].h) - 14 - age * 4.0 + 0.085 * age * age * vy * 0.32;
+            const spin = age * (5 + random(`cs${i}`) * 7);
+            const life = interpolate(age, [0, 7, 74, 96], [0, 1, 1, 0], {
+              extrapolateLeft: 'clamp',
+              extrapolateRight: 'clamp',
+            });
+            if (life <= 0) return null;
+            return (
+              <div
+                key={i}
+                style={{
+                  position: 'absolute',
+                  left: x,
+                  top: y,
+                  fontSize: 26 + random(`cz${i}`) * 18,
+                  opacity: life,
+                  transform: `translate(-50%,-50%) rotate(${spin}deg)`,
+                  filter: 'drop-shadow(0 0 10px rgba(255,196,60,.7))',
+                }}
+              >
+                {i % 3 === 0 ? '\uD83D\uDCB0' : i % 3 === 1 ? '\uD83E\uDE99' : '\uD83D\uDCB5'}
+              </div>
+            );
+          })}
+        </AbsoluteFill>
+      ) : null}
+
+      {/* -------------------------------------- 7. the ask (pre-answer) */}
         {/* Fills the band under the screen while the viewer is deciding —
          * without it the lower third sits empty for most of the reel. Hands
          * straight over to the rule card once the answer lands. */}
@@ -983,6 +1134,30 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
           <Audio src={staticFile(i % 2 === 0 ? 'audio/tick.wav' : 'audio/tock.wav')} volume={0.55} />
         </Sequence>
       ))}
+
+      {/* One tone per REVEAL candle, pitched by direction — up-bars glide up,
+       * down-bars glide down. Only the reveal is scored: the setup prints 62
+       * bars in under four seconds, and a hit per bar there is seventeen a
+       * second, which is noise rather than information. */}
+      {reveal.map((k, i) => (
+        <Sequence
+          key={`rs${i}`}
+          from={Math.round(REVEAL_START + i * REVEAL_PER)}
+          durationInFrames={Math.max(3, Math.round(REVEAL_PER))}
+        >
+          <Audio
+            src={staticFile(k.c >= k.o ? 'audio/candle_up.wav' : 'audio/candle_down.wav')}
+            volume={0.42}
+          />
+        </Sequence>
+      ))}
+
+      {/* The coin chime, on the frame the coins start pouring. */}
+      {hasRR && tpBar >= 0 ? (
+        <Sequence from={RR_ZONES_IN + 26} durationInFrames={40}>
+          <Audio src={staticFile('audio/coin.wav')} volume={0.75} />
+        </Sequence>
+      ) : null}
 
       <Grain />
       <Vignette />

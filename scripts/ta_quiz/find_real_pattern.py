@@ -195,6 +195,18 @@ def main():
           f"retest at {extras['retestAt']} ({w[extras['retestAt']]['date']})")
     print(f"  reveal: {w[-1]['c']} -> {rev[-1]['c']} = {move:+.1f}%")
 
+    entry = w[-1]["c"]
+    stop = round(min(k["l"] for k in w[-4:]) - 0.01, 2)
+    risk = entry - stop
+    target = round(entry + 2 * risk, 2)
+    tp_hit = next((i for i, k in enumerate(rev) if k["h"] >= target), None)
+    sl_hit = next((i for i, k in enumerate(rev) if k["l"] <= stop), None)
+    print(f"  entry {entry}  stop {stop}  risk {risk:.2f}  target(2R) {target}")
+    print(f"  target hit: {'reveal bar ' + str(tp_hit) if tp_hit is not None else 'NO'}"
+          f"   stop hit: {'reveal bar ' + str(sl_hit) if sl_hit is not None else 'no'}")
+    if sl_hit is not None and (tp_hit is None or sl_hit < tp_hit):
+        print("  NOTE: the stop was hit first - this window would show a loss.")
+
     fixture = {
         "kick": "REAL CHART",
         "indexLabel": "#82",
@@ -209,6 +221,15 @@ def main():
         "ruleText": copy["ruleText"],
         "footer": (f"{src['symbol']} daily bars, IBKR, pulled {src['retrieved_at'][:10]} · "
                    f"Educational only — not financial advice · Historical example — DYOR"),
+        # The trade frame. Stop goes under the retest swing low - if that low
+        # breaks the setup is invalidated, so it is the level the idea actually
+        # depends on. Target is 2R from entry. Both are DERIVED; the composition
+        # then finds for itself which reveal bar (if any) reaches the target, so
+        # a payoff can never be shown on a trade that did not get there.
+        "entry": entry,
+        "stop": stop,
+        "target": target,
+        "rrLabel": "2R",
         "revealFrom": len(w),
         "patternSpan": max(2, len(w) - extras["retestAt"]),   # break -> retest -> now
         "durationInFrames": DURATION,

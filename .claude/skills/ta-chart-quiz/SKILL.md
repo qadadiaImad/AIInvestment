@@ -86,7 +86,19 @@ python scripts/ta_quiz/validate.py --write-clean  # emit the passing subset
 
 ## Sound
 
-The reel is otherwise silent, but the countdown **ticks** — five escapement
+Three sound layers, all synthesised by `scripts/audio/make_tick.py`:
+
+| Sound | When |
+|---|---|
+| `tick` / `tock` | one per countdown second, alternating |
+| `candle_up` / `candle_down` | one per **reveal** candle, pitched by direction |
+| `coin` | when a reveal bar reaches the target |
+
+Reveal candles only — the setup prints 60+ bars in under four seconds, and a hit
+per bar there is seventeen a second, which is noise rather than information.
+`REVEAL_SPAN` is what keeps the reveal slow enough to score.
+
+The countdown **ticks** — five escapement
 sounds, one per second, alternating `tick.wav`/`tock.wav` from
 `remotion/public/audio/`. They are placed off the same `COUNT_START`/`COUNT_PER`
 constants the digits use, so the sound cannot drift from the number on screen.
@@ -105,6 +117,40 @@ ffmpeg -i out.mp4 -vn -ac 1 -ar 8000 /tmp/a.wav -y   # then bucket the RMS
 
 Five loud buckets one second apart inside the countdown window, silence
 elsewhere.
+
+## Real data instead of the library
+
+`scripts/ta_quiz/find_real_pattern.py` scans actual IBKR bars in `data/prices/`
+for a genuine occurrence of a pattern and emits a fixture from it. Prefer this
+over the synthetic library where a detector exists — the library candles read as
+what they are: too few bars, too clean a trend, not enough of the noise a real
+tape carries.
+
+```bash
+python scripts/ta_quiz/find_real_pattern.py --list
+python scripts/ta_quiz/find_real_pattern.py breakout-retest
+```
+
+It reports "no real occurrence found" rather than nudging data to fit. The
+composition scales frames-per-candle, form time, body width and wick weight off
+the bar count, so a 24-bar library fixture and a 74-bar real window both work.
+
+## The trade frame (optional)
+
+Set `entry`, `stop`, `target` and `rrLabel` together and the reel adds a
+risk/reward act after the reveal: risk band, reward band, three labelled lines,
+and — if a reveal bar actually reaches the target — coins pouring out of that
+bar with a chime.
+
+**All four fields or none.** A target with no stop shows the upside and hides
+what being wrong cost. And `tpBar` is derived in the composition from the price
+data, never stated in the fixture, so the payoff cannot fire on a trade that
+never got there. If no bar reaches the target, no coins.
+
+Stop placement decides whether 2R is reached, so it is a real editorial choice,
+not a detail — on the SPY breakout-retest, a stop under the retest low reaches
+2.61R while a stop under the level tops out at 1.72R. Pick it before you look at
+the outcome.
 
 ## Timing
 
