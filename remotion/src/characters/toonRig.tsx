@@ -75,11 +75,17 @@ export const expressionAt = (frame: number): Expression => {
  * its OWN wrist pivot because the drawings sit in different orientations — a
  * shared pivot leaves the pointing hand hanging off the end of the arm. */
 export type HandPose = 'relaxed' | 'flat' | 'splay' | 'palmup';
+// PENDING REGENERATION. The swap sheet was drawn at a different scale from the
+// body (its hands are ~2x too big) and its wrist pivots were GUESSED, not
+// measured — which is exactly why hands read as detached blobs floating beside
+// the arm. Until that sheet is redrawn to match this body with the wrist at a
+// known point, every pose uses the one hand that came from the VALIDATED parts
+// sheet. A correct single hand beats four wrong ones.
 export const HAND_POSES: Record<HandPose, Part> = {
-  relaxed: {file: 'hand_relaxed.png', w: 413, h: 619, px: 0.5, py: 0.04, s: 0.62},
-  flat: {file: 'hand_flat.png', w: 573, h: 533, px: 0.8, py: 0.1, s: 0.62},
-  splay: {file: 'hand_splay.png', w: 635, h: 538, px: 0.68, py: 0.9, s: 0.62},
-  palmup: {file: 'hand_palmup.png', w: 659, h: 434, px: 0.12, py: 0.35, s: 0.62},
+  relaxed: {file: 'hand.png', w: 195, h: 280, px: 0.5, py: 0.06},
+  flat: {file: 'hand.png', w: 195, h: 280, px: 0.5, py: 0.06},
+  splay: {file: 'hand.png', w: 195, h: 280, px: 0.5, py: 0.06},
+  palmup: {file: 'hand.png', w: 195, h: 280, px: 0.5, py: 0.06},
 };
 
 export const handPoseAt = (frame: number): HandPose => {
@@ -174,7 +180,7 @@ export const ToonRig: React.FC<ToonRigProps> = ({
     const anklePt = {x: hip.x, y: hip.y + THIGH_BONE + SHIN_BONE};
 
     return (
-      <g style={isNear ? undefined : {filter: 'brightness(0.84)'}}>
+      <g style={isNear ? undefined : {filter: 'brightness(0.93)'}}>
         <Piece part={P.thigh} jx={hip.x} jy={hip.y} angle={hipA}>
           <Piece part={P.shin} jx={kneePt.x} jy={kneePt.y} angle={kneeA}>
             {/* Counter-rotated by the accumulated leg angle so the sole stays
@@ -210,7 +216,7 @@ export const ToonRig: React.FC<ToonRigProps> = ({
     const wristY = elbowY + boneLen(P.forearm);
 
     return (
-      <g style={isNear ? undefined : {filter: 'brightness(0.84)'}}>
+      <g style={isNear ? undefined : {filter: 'brightness(0.93)'}}>
         <Piece part={P.upperArm} jx={sx} jy={sy} angle={shoulderA}>
           <Piece part={P.forearm} jx={sx} jy={elbowY} angle={elbowA}>
             <Piece part={HAND_POSES[handPose]} jx={sx} jy={wristY} angle={handA} />

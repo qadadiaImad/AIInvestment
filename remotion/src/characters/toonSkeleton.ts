@@ -23,16 +23,24 @@ export type Part = {
 };
 
 export const P: Record<string, Part> = {
-  // The two parts that hang UPWARD from their joint pivot at the BOTTOM: the
-  // head on its neck stub, the torso on its belt.
-  head: {file: 'head_neutral.png', w: 530, h: 631, px: 0.598, py: 0.955},
-  torso: {file: 'torso.png', w: 665, h: 608, px: 0.5, py: 0.90, childY: 0.03},
-  upperArm: {file: 'upper_arm.png', w: 245, h: 595, px: 0.5, py: 0.04, childY: 0.95},
-  forearm: {file: 'forearm.png', w: 225, h: 369, px: 0.5, py: 0.05, childY: 0.95},
-  hand: {file: 'hand_relaxed.png', w: 413, h: 619, px: 0.5, py: 0.04, s: 0.62},
-  thigh: {file: 'thigh.png', w: 415, h: 623, px: 0.5, py: 0.04, childY: 0.95},
-  shin: {file: 'shin.png', w: 351, h: 598, px: 0.5, py: 0.04, childY: 0.95},
-  foot: {file: 'shoe.png', w: 357, h: 232, px: 0.30, py: 0.12},
+  // Measured by extract_limbs.py and GATED by validate_parts.py — the previous
+  // sheet failed three proportion checks (hand 98% of the forearm, thigh 62% as
+  // wide as the torso) and could not assemble into a body no matter how it was
+  // rigged. This one passes all six.
+  //
+  // The two parts that hang UPWARD from a pivot at their BOTTOM: the head on
+  // its neck stub, the torso on its belt.
+  //
+  // The head comes from the EXPRESSION sheet, not this parts sheet, so it is
+  // scaled to match this body's head size (556/631).
+  head: {file: 'head_neutral.png', w: 530, h: 631, px: 0.598, py: 0.955, s: 0.88},
+  torso: {file: 'torso.png', w: 579, h: 617, px: 0.5, py: 0.90, childY: 0.03},
+  upperArm: {file: 'upper_arm.png', w: 215, h: 659, px: 0.5, py: 0.04, childY: 0.95},
+  forearm: {file: 'forearm.png', w: 199, h: 538, px: 0.5, py: 0.05, childY: 0.95},
+  hand: {file: 'hand.png', w: 195, h: 280, px: 0.5, py: 0.06},
+  thigh: {file: 'thigh.png', w: 247, h: 609, px: 0.5, py: 0.04, childY: 0.95},
+  shin: {file: 'shin.png', w: 191, h: 536, px: 0.5, py: 0.04, childY: 0.95},
+  foot: {file: 'foot.png', w: 281, h: 208, px: 0.38, py: 0.14},
 };
 
 /** Ink length from a part's own joint to where its child attaches.
@@ -60,8 +68,8 @@ export const TORSO_TOP_Y = HIP_Y - boneLen(P.torso);
 export const NECK_Y = TORSO_TOP_Y + 104;
 export const SHOULDER_Y = TORSO_TOP_Y + 96;
 
-export const HIP_DX = 200;
-export const SHOULDER_DX = 205;
+export const HIP_DX = 118;
+export const SHOULDER_DX = 176;
 
 /**
  * WHERE THE FEET ARE NAILED TO THE FLOOR.
@@ -76,8 +84,8 @@ export const SHOULDER_DX = 205;
  * stands; feet directly under the hip joints reads as a mannequin.
  */
 export const STANCE: Record<'near' | 'far', {x: number; y: number}> = {
-  near: {x: CX + 168, y: ANKLE_Y},
-  far: {x: CX - 148, y: ANKLE_Y},
+  near: {x: CX + 104, y: ANKLE_Y},
+  far: {x: CX - 92, y: ANKLE_Y},
 };
 
 /** Top of the character's ink, so a caller can size him in real frame pixels. */
