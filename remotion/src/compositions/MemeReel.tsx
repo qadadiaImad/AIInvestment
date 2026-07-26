@@ -27,8 +27,7 @@ import {Grain, Vignette} from '../motion/Polish';
 import {ScreenInsert} from '../components/ScreenInsert';
 import type {Quad} from '../components/screenMath';
 import {TapeChart} from '../components/TapeChart';
-import {ToonRig} from '../characters/toonRig';
-import {GROUND as TOON_GROUND, VB_H as TOON_VB_H} from '../characters/toonSkeleton';
+import {PoseCut} from '../characters/poseCut';
 
 const candleSchema = z.object({o: z.number(), h: z.number(), l: z.number(), c: z.number()});
 const ptSchema = z.object({x: z.number(), y: z.number()});
@@ -198,9 +197,8 @@ export const MemeReel: React.FC<MemeReelProps> = (p) => {
       })
     : 0;
 
-  // charHeight is the rig's whole viewBox height in frame px; the toon rig's
-  // feet sit at TOON_GROUND_FRAC of it.
-  const charGroundOffset = (p.charHeight * TOON_GROUND) / TOON_VB_H;
+  // charHeight is now the character's INK height in frame px directly — the
+  // pose drawings are placed by their ground contact, not by a viewBox.
 
   // The monitor close-up is a CUTAWAY: for those frames we are looking at the
   // screen, and he is not in the shot. Without this his leaning head clips into
@@ -294,15 +292,8 @@ export const MemeReel: React.FC<MemeReelProps> = (p) => {
             }}
           />
         ) : (
-          <div
-            style={{
-              position: 'absolute',
-              left: p.charCenterX - (p.charHeight * 1700) / 2900 / 2,
-              top: p.charFeetY - charGroundOffset,
-              opacity: Math.min(1, charOpacity),
-            }}
-          >
-            <ToonRig height={p.charHeight} facing="left" />
+          <div style={{opacity: Math.min(1, charOpacity)}}>
+            <PoseCut height={p.charHeight} footX={p.charCenterX} footY={p.charFeetY} facing="left" />
           </div>
         )}
       </AbsoluteFill>
