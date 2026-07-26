@@ -137,10 +137,14 @@ const WORLD_DOTS = WORLD.flatMap((row, r) =>
 
 // ---------------------------------------------------------------- timing
 const DRAW_START = 40;
-const DRAW_PER = 6; // frames per setup candle
+/** The setup always finishes printing here, whatever the bar count. Real charts
+ * carry 60-80 bars of context; a fixed frames-per-bar would run a 62-bar window
+ * past the countdown. Frames-per-bar is derived instead. */
+const DRAW_END = 152;
 // Kept <= DRAW_PER so exactly one bar is live at a time; a finished bar must
 // never still be moving after the next one opens.
-const CANDLE_FORM = 6; // frames a single candle takes to "print"
+// Derived per fixture below; kept as the floor so a bar never prints instantly.
+const CANDLE_FORM_MIN = 2;
 /** Discrete price ticks a bar prints in. Deliberately few: real tape jumps, it
  * doesn't ease. Three hard steps read as a bar trading; a smooth grow reads as
  * an animation of a bar. */
@@ -157,7 +161,6 @@ const COUNT_PER = 30;
 const COUNT_N = 5;
 const ANSWER_IN = COUNT_START + COUNT_PER * COUNT_N; // 382
 const REVEAL_START = ANSWER_IN + 28;
-const REVEAL_PER = 11;
 const RULE_IN = REVEAL_START + 48;
 /** Minimum duration the timeline needs; fixtures should meet or exceed it. */
 export const TRADING_QUIZ_MIN_FRAMES = RULE_IN + 88; // -> 546
@@ -180,12 +183,37 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const setup = p.candles.slice(0, p.revealFrom);
   const reveal = p.candles.slice(p.revealFrom);
 
-  const lo = Math.min(...p.candles.map((k) => k.l)) - PAD.lo;
-  const hi = Math.max(...p.candles.map((k) => k.h)) + PAD.hi;
+  // The y-scale must NOT span the reveal while the viewer is still guessing.
+  // Scaling to every candle up front leaves empty headroom on whichever side
+  // price is about to travel, and that empty space telegraphs the answer just
+  // as surely as a coloured countdown ring did. So: frame the setup with
+  // SYMMETRIC padding until the reveal starts, then ease out to the full range
+  // as the new bars print — which is what a real chart does when price leaves
+  // the visible window anyway.
+  const sLo = Math.min(...setup.map((k) => k.l));
+  const sHi = Math.max(...setup.map((k) => k.h));
+  const sPad = (sHi - sLo) * 0.16;
+  const fLo = Math.min(...p.candles.map((k) => k.l)) - PAD.lo;
+  const fHi = Math.max(...p.candles.map((k) => k.h)) + PAD.hi;
+  const zoomOut = interpolate(frame, [REVEAL_START - 4, REVEAL_START + 24], [0, 1], {
+    easing: EASE.cruise,
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const lo = (sLo - sPad) + (fLo - (sLo - sPad)) * zoomOut;
+  const hi = (sHi + sPad) + (fHi - (sHi + sPad)) * zoomOut;
   const priceToY = (v: number) => CHART.y1 - ((v - lo) / (hi - lo)) * (CHART.y1 - CHART.y0);
 
+  // Draw rates scale to the bar count so a 24-bar illustration and a 74-bar
+  // real window both finish printing on the same beat.
+  const DRAW_PER = Math.max(1, (DRAW_END - DRAW_START) / Math.max(1, setup.length));
+  const CANDLE_FORM = Math.max(CANDLE_FORM_MIN, Math.round(DRAW_PER));
+  const REVEAL_PER = Math.max(1, (RULE_IN - 10 - REVEAL_START) / Math.max(1, reveal.length));
+
   const slot = (CHART.x1 - CHART.x0) / p.candles.length;
-  const bodyW = Math.min(24, slot * 0.62);
+  const bodyW = Math.min(24, Math.max(2.5, slot * 0.62));
+  // Wick weight tracks body width — a 2.5px wick on a 5px body reads as a blob.
+  const wickW = Math.min(2.5, Math.max(1.1, bodyW * 0.3));
   const cx = (i: number) => CHART.x0 + slot * i + slot / 2;
 
   const isDown = p.answer === 'SELL';
@@ -332,7 +360,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
     const yBot = priceToY(Math.min(k.o, cNow));
     return (
       <g key={i} style={{filter: `drop-shadow(0 0 ${settled ? 6 : 11}px ${col}${settled ? '77' : 'cc'})`}}>
-        <line x1={x} x2={x} y1={priceToY(hNow)} y2={priceToY(lNow)} stroke={col} strokeWidth={2.5} />
+        <line x1={x} x2={x} y1={priceToY(hNow)} y2={priceToY(lNow)} stroke={col} strokeWidth={wickW} />
         <rect x={x - bodyW / 2} y={yTop} width={bodyW} height={Math.max(2, yBot - yTop)} rx={2} fill={col} />
       </g>
     );
@@ -342,8 +370,9 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const span = Math.max(1, Math.min(p.patternSpan ?? 2, p.revealFrom));
   const pA = p.revealFrom - span;
   const pB = p.revealFrom - 1;
-  const patX = cx(pA) - slot * 0.58;
-  const patW = slot * (span + 0.16);
+  const patWRaw = slot * (span + 0.16);
+  const patW = Math.max(patWRaw, 34);           // stays visible on thin slots
+  const patX = cx(pA) - slot * 0.58 - (patW - patWRaw) / 2;
   const boxed = p.candles.slice(pA, pB + 1);
   const patTop = priceToY(Math.max(...boxed.map((k) => k.h))) - 16;
   const patBot = priceToY(Math.min(...boxed.map((k) => k.l))) + 16;
