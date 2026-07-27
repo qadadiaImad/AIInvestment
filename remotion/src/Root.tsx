@@ -23,6 +23,7 @@ import { InfraCountdown, infraCountdownSchema } from "./compositions/InfraCountd
 import infraCountdownFixture from "./fixtures/infra_countdown_2026-07-22.json";
 import { TradingQuiz, tradingQuizSchema } from "./compositions/TradingQuiz";
 import { TradingStyles, tradingStylesSchema } from "./compositions/TradingStyles";
+import { GroundingCheck, groundingCheckSchema } from "./compositions/GroundingCheck";
 import tradingStylesFixture from "./fixtures/trading_styles/trading_styles.json";
 import tradingQuizFixture from "./fixtures/trading_quiz_engulfing_2026-07-25.json";
 import { QuizWithHost, quizWithHostSchema } from "./compositions/QuizWithHost";
@@ -208,6 +209,16 @@ export const RemotionRoot: React.FC = () => {
         calculateMetadata={({ props }) => ({
           durationInFrames: props.durationInFrames,
         })}
+      />
+      <Composition
+        id="GroundingCheck"
+        component={GroundingCheck}
+        durationInFrames={60}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={groundingCheckSchema}
+        defaultProps={{ scale: 1, x: 760, guides: true, label: "measured", poseFrame: 0 }}
       />
       <Composition
         id="TradingStyles"
