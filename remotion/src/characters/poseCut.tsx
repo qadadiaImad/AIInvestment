@@ -96,12 +96,16 @@ export const POSE_CUTS: Cut[] = [
   {at: 396, pose: 'shrug', drift: {dy: -4, tilt: -1}},
 ];
 
-export const poseAt = (frame: number): {cut: Cut; since: number; hold: number} => {
+export const poseAt = (
+  frame: number,
+  cuts: Cut[] = POSE_CUTS,
+  end = 510
+): {cut: Cut; since: number; hold: number} => {
   let idx = 0;
-  for (let i = 0; i < POSE_CUTS.length; i++) if (frame >= POSE_CUTS[i].at) idx = i;
-  const cur = POSE_CUTS[idx];
-  const next = POSE_CUTS[idx + 1];
-  return {cut: cur, since: frame - cur.at, hold: (next ? next.at : 510) - cur.at};
+  for (let i = 0; i < cuts.length; i++) if (frame >= cuts[i].at) idx = i;
+  const cur = cuts[idx];
+  const next = cuts[idx + 1];
+  return {cut: cur, since: frame - cur.at, hold: (next ? next.at : end) - cur.at};
 };
 
 export type PoseCutProps = {
@@ -115,6 +119,13 @@ export type PoseCutProps = {
   frameOverride?: number;
   poseOverride?: PoseName;
   shadow?: boolean;
+  /** This reel's own cut sheet. POSE_CUTS is keyed to MemeReel's 510-frame
+   * beats, so a second reel with different beats has to bring its own or the
+   * character performs the wrong story. Additive: omitting it is unchanged. */
+  cuts?: Cut[];
+  /** Frame the last pose is held until — only used to size that final hold's
+   * drift. Defaults to MemeReel's length. */
+  end?: number;
 };
 
 export const PoseCut: React.FC<PoseCutProps> = ({
@@ -125,10 +136,12 @@ export const PoseCut: React.FC<PoseCutProps> = ({
   frameOverride,
   poseOverride,
   shadow = true,
+  cuts,
+  end,
 }) => {
   const current = useCurrentFrame();
   const frame = frameOverride ?? current;
-  const {cut, since, hold} = poseAt(frame);
+  const {cut, since, hold} = poseAt(frame, cuts ?? POSE_CUTS, end ?? 510);
   const name = poseOverride ?? cut.pose;
   const a = A[name];
   if (!a) return null;
