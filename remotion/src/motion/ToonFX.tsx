@@ -123,6 +123,109 @@ export const SweatBeads: React.FC<{
   );
 };
 
+/** ONE sweat drop, gliding slowly down the head, on a loop.
+ *
+ * The owner's note on the bead version: exaggerated. Three drops popping off
+ * the skull is a gag; one drop crawling down the temple is DREAD, and dread is
+ * the emotion this beat actually carries. So: it beads up near the temple,
+ * slides down slowly — gathering a little size as it goes, the way a real drop
+ * collects — flattens out at the jaw, and after a beat another one forms.
+ * Nothing flies anywhere.
+ *
+ * `x`/`y` are the head centre and `w` its width, both from the measured
+ * per-pose head anchor, so the drop stays on the skull through every cut. */
+export const SweatSlide: React.FC<{
+  x: number;
+  y: number;
+  w: number;
+  since: number;
+}> = ({x, y, w, since}) => {
+  if (since < 0) return null;
+  const CYCLE = 132; // ~4.4s — slow is the point
+  const t = (since % CYCLE) / CYCLE;
+
+  // phases: bead up 0-.09 · glide .09-.72 · flatten+fade .72-.85 · rest
+  if (t > 0.85) return null;
+  const beadIn = interpolate(t, [0, 0.09], [0, 1], {
+    easing: EASE.settleBack,
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const glide = interpolate(t, [0.09, 0.72], [0, 1], {
+    // starts hesitant, gains a little speed — a drop breaking surface tension
+    easing: EASE.cruise,
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const fade = interpolate(t, [0.72, 0.85], [1, 0], {
+    easing: EASE.exit,
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
+  // Path: down the temple, bowing slightly outward over the cheekbone and
+  // back in toward the jaw. Quadratic in glide, in units of head width.
+  const px = x + w * 0.28 + w * (0.10 * Math.sin(glide * Math.PI)) * 0.6;
+  const py = y - w * 0.18 + w * 0.62 * glide;
+  const size = w * 0.085 * (0.8 + 0.25 * glide) * beadIn; // gathers as it slides
+  const squish = 1 + 0.35 * (1 - fade); // flattens as it dies at the jaw
+
+  return (
+    <svg width={1080} height={1920} style={{position: 'absolute', left: 0, top: 0, pointerEvents: 'none'}}>
+      <g opacity={Math.min(beadIn, fade)} transform={`translate(${px} ${py}) scale(${size / 20})`}>
+        <path
+          d={`M0 -22 C 8.5 -7, 13.5 1, 13.5 ${8 * squish} A 13.5 ${13.5 * squish} 0 1 1 -13.5 ${8 * squish} C -13.5 1, -8.5 -7, 0 -22 Z`}
+          fill="#8FD3F4"
+          stroke="#12262E"
+          strokeWidth={3}
+        />
+        <ellipse cx={-4} cy={5} rx={3.2} ry={5} fill="#EAF7FF" opacity={0.9} />
+      </g>
+    </svg>
+  );
+};
+
+/** Three short surprise flicks beside the head — the manga "!!" without the
+ * glyph. Small on purpose: in the corner-cam format there is no room for a
+ * full radial burst that stays off the chart, and three flicks read the same
+ * beat at a tenth the ink. */
+export const ShockFlicks: React.FC<{
+  x: number;
+  y: number;
+  since: number;
+  size?: number;
+  color?: string;
+}> = ({x, y, since, size = 60, color = '#EAFFF4'}) => {
+  const DUR = 13;
+  if (since < 0 || since > DUR) return null;
+  const t = since / DUR;
+  const grow = interpolate(t, [0, 0.45], [0, 1], {easing: EASE.settleBack, extrapolateRight: 'clamp'});
+  const op = interpolate(t, [0, 0.15, 0.75, 1], [0, 1, 1, 0]);
+  const angles = [-0.35, -0.95, -1.55]; // up-and-outward fan
+  return (
+    <svg width={1080} height={1920} style={{position: 'absolute', left: 0, top: 0, pointerEvents: 'none'}}>
+      {angles.map((a, i) => {
+        const l = size * (i === 1 ? 1 : 0.72);
+        const r0 = size * 0.55 + grow * size * 0.3;
+        return (
+          <line
+            key={i}
+            x1={x + Math.cos(a) * r0}
+            y1={y + Math.sin(a) * r0}
+            x2={x + Math.cos(a) * (r0 + l * grow)}
+            y2={y + Math.sin(a) * (r0 + l * grow)}
+            stroke={color}
+            strokeWidth={7 - i}
+            strokeLinecap="round"
+            opacity={op}
+            style={{filter: `drop-shadow(0 0 6px ${color})`}}
+          />
+        );
+      })}
+    </svg>
+  );
+};
+
 /** Dust puff at the feet — the stagger. Two expanding, fading rings of blobs. */
 export const DustPuff: React.FC<{x: number; y: number; since: number; dur?: number}> = ({
   x,

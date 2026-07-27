@@ -30,6 +30,7 @@ import { QuizWithHost, quizWithHostSchema } from "./compositions/QuizWithHost";
 import quizWithHostFixture from "./fixtures/quiz_with_host_2026-07-25.json";
 import { MemeReel, memeReelSchema } from "./compositions/MemeReel";
 import { TradeFailReel, tradeFailReelSchema } from "./compositions/TradeFailReel";
+import { TradeFailCam, tradeFailCamSchema } from "./compositions/TradeFailCam";
 import { RigCheck, rigCheckSchema } from "./compositions/RigCheck";
 import memeReelFixture from "./fixtures/meme_reel/intc_failed_breakout.json";
 import tradeFailFixture from "./fixtures/btc_reel/trade_fail_reel.json";
@@ -303,6 +304,19 @@ export const RemotionRoot: React.FC = () => {
         height={1920}
         schema={memeReelSchema}
         defaultProps={memeReelSchema.parse(memeReelFixture)}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: props.durationInFrames,
+        })}
+      />
+      <Composition
+        id="TradeFailCam"
+        component={TradeFailCam}
+        durationInFrames={1200}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={tradeFailCamSchema}
+        defaultProps={tradeFailCamSchema.parse(tradeFailFixture)}
         calculateMetadata={({ props }) => ({
           durationInFrames: props.durationInFrames,
         })}

@@ -1,7 +1,37 @@
 # The Setup That Failed — IBIT 40s reel
 
-`ibit_setup_that_failed.mp4` · 1080×1920 · 30fps · 1200 frames · 40.06s · CRF 18
-`ibit_setup_that_failed_preview.mp4` · CRF 28, for chat/phone (the master is >30 MB)
+Two formats, same real trade, same fixture:
+
+| file | format |
+|---|---|
+| `ibit_fail_cam.mp4` (+`_preview`) | **CAM — the current one.** Full-frame trading terminal (prod-reel green look, timer), character as an upper-body corner cam bottom-right. `TradeFailCam.tsx` |
+| `ibit_setup_that_failed.mp4` (+`_preview`) | ROOM — v2. Illustrated room, chart perspective-mapped onto a monitor, camera cuts. `TradeFailReel.tsx` |
+
+All masters 1080×1920 · 30fps · 1200 frames · 40.06s · CRF 18; previews CRF 27.
+
+## The cam format (v3)
+
+Owner's spec: single screen with the trading window open, timer like the prod
+reels, character upper body bottom-right — smaller, but he is big. One sweat
+drop, gliding slowly, looping — not the three-bead gag.
+
+With no room and no camera, motion comes from three places: the chart (pen
+heads on the drawing lines, the three-view y-axis, a terminal ALARM — red wash
++ pulsing stop line + STOP FILLED — when the stop fires), the character (the
+full toon grammar plus a vertical channel: he pops up to open, sinks with
+dread through the wait, shoots up on the break, slumps into the facepalm —
+the bottom edge crops him, so height IS emotion), and one single frame punch +
+impact kick on the break.
+
+A 3-agent adversarial review (craft / mobile legibility / compliance) ran on
+the first full render and caught five real defects, all fixed and re-verified
+in pixels: unclipped candle wicks punching through the chrome once the axis
+narrows; the live price tag truncating ENTRY/SUP/STOP labels (now right-aligned
+inside the plot + labels dim while the tag passes); STOP FILLED stacking on the
+STOP label at the climax (now below the line); the "Four bars" caption
+appearing while the counter said 1 BAR; and the live tag reading red through
+the countdown (now neutral slate for exactly the quiz window — the tick colour
+is data, but a red pill held through the ask reads as a lean).
 
 A character reads a textbook bullish setup on a real chart, takes it, is asked to
 call it, and is wrong. Silent apart from SFX — scored with trending music at post.

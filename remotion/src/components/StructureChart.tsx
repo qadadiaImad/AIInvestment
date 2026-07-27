@@ -1,7 +1,9 @@
-// StructureChart.tsx — the chart that plays inside the monitor on the 40s
-// trade-fail reel. TapeChart's cousin, one level up: it draws market STRUCTURE
-// (support/resistance zones, a validated trendline, the pattern tag) and then a
-// bounded trade on top of it, rather than a single horizontal level.
+// StructureChart.tsx — the structure-drawing chart used by the 40s trade-fail
+// reels: TradeFailReel plays it inside a monitor in a room; TradeFailCam plays
+// it full-frame as the screen itself. TapeChart's cousin, one level up: it
+// draws market STRUCTURE (support/resistance zones, a validated trendline, the
+// pattern tag) and then a bounded trade on top of it, rather than a single
+// horizontal level.
 //
 // Everything it draws is computed in Python by scripts/btc_reel/find_failed_setup.py
 // and arrives as a fixture. This component decides WHEN each element appears
@@ -10,9 +12,12 @@
 // authored here and cannot be — there is no arithmetic in this file that could
 // move a level.
 //
-// It renders at its own native 1324x800 and is perspective-mapped onto the
-// monitor quad by ScreenInsert. Rendering large and mapping down is what keeps
-// the type legible after the homography squashes it.
+// `ui` scales the CHROME — fonts, label boxes, tag rects — without touching
+// the price geometry. It exists because the same component now renders at two
+// very different final sizes: mapped down onto a 417px-wide monitor (ui=1) and
+// full-bleed on a 1080px phone screen (ui≈1.3). Type sized for the first is
+// squint-material at the second, and scaling the whole SVG would fatten the
+// candles too.
 //
 // ------------------------------------------------------------------------
 // THE Y-AXIS IS THE ANSWER LEAK, AND IT IS THE WHOLE REASON THIS FILE IS LONG.
@@ -94,10 +99,24 @@ export type StructureChartProps = {
   decisionIn: number;
   outcomeIn: number;
 
+  /** Frame the stop FIRES, visually: a short terminal-style alarm — red wash
+   * over the plot, the stop line pulsing. This is the one moment the panel is
+   * allowed to editorialise, because it is not editorial: a stop order
+   * triggering IS an alarm, and the wash marks the event the data itself
+   * produced. Omit for no alarm. */
+  alarmAt?: number;
+
   subject: string;
   stamp: string;
   width?: number;
   height?: number;
+  /** Chrome scale — see the header. 1 for the monitor insert, ~1.3 full-frame. */
+  ui?: number;
+  /** Frames [from, to) during which the live price tag drops its tick colour
+   * for a neutral slate. The colour is tick direction — data — but a red pill
+   * held through an entire countdown reads as a lean toward one answer, and
+   * the candles still carry the direction. Same rule as the neutral ring. */
+  neutralTagDuring?: [number, number];
 };
 
 export const StructureChart: React.FC<StructureChartProps> = ({
@@ -120,15 +139,19 @@ export const StructureChart: React.FC<StructureChartProps> = ({
   tradeIn,
   decisionIn,
   outcomeIn,
+  alarmAt,
   subject,
   stamp,
   width = 1324,
   height = 800,
+  ui = 1,
+  neutralTagDuring,
 }) => {
   const frame = useCurrentFrame();
+  const U = (n: number) => n * ui;
 
-  const CHROME_H = 52;
-  const PLOT = {x0: 66, x1: width - 168, y0: CHROME_H + 40, y1: height - 78};
+  const CHROME_H = U(52);
+  const PLOT = {x0: 66, x1: width - U(168), y0: CHROME_H + U(40), y1: height - U(78)};
 
   // ------------------------------------------------------------- the axis
   const setup = bars.slice(0, setupBars);
@@ -194,6 +217,9 @@ export const StructureChart: React.FC<StructureChartProps> = ({
   const live = lastIdx >= 0 ? livePrint(lastIdx) : null;
   const liveClose = live?.close ?? bars[0].o;
   const liveUp = lastIdx >= 0 ? liveClose >= bars[lastIdx].o : true;
+  const tagNeutral =
+    neutralTagDuring !== undefined && frame >= neutralTagDuring[0] && frame < neutralTagDuring[1];
+  const tagFill = tagNeutral ? '#9FB4A9' : liveUp ? T.up : T.down;
 
   // ------------------------------------------------------------ draw-in ps
   const p = (at: number, dur = 22) =>
@@ -208,7 +234,31 @@ export const StructureChart: React.FC<StructureChartProps> = ({
   const patP = p(patternIn, 16);
   const tradeP = p(tradeIn, 26);
 
+  // The pattern tag POPS — anticipatePop-style overshoot about its own centre
+  // — rather than fading in. A label that fades reads as UI; a label that pops
+  // reads as a call.
+  const patS = interpolate(frame, [patternIn, patternIn + 13], [1.28, 1], {
+    easing: EASE.settleBack,
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
   const gridStep = (yHi - yLo) / 5;
+
+  /** The PEN. While a line is drawing, a bright head rides its leading edge —
+   * the difference between a line that is being DRAWN and a line that is
+   * merely appearing. Gone the moment the draw completes. */
+  const pen = (x: number, y: number, colour: string, prog: number) =>
+    prog > 0.02 && prog < 0.985 ? (
+      <circle
+        cx={x}
+        cy={y}
+        r={U(5)}
+        fill="#EAFFF4"
+        style={{filter: `drop-shadow(0 0 ${U(9)}px ${colour})`}}
+        opacity={0.95}
+      />
+    ) : null;
 
   /** A zone is a BAND, not a line — that is the whole reason the scanner
    * clusters pivots instead of picking one. Drawing it as a hairline would
@@ -216,6 +266,11 @@ export const StructureChart: React.FC<StructureChartProps> = ({
   const band = (price: number, colour: string, prog: number, label: string, side: 'up' | 'down') => {
     const halfPx = Math.max(5, Math.abs(priceToY(price * 0.994) - priceToY(price * 1.006)) / 2);
     const y = priceToY(price);
+    // The live price tag rides the same right-hand rail. While it is passing
+    // through this label's slot, the label steps back — two boxes stacked at
+    // the same y are neither readable.
+    const tagNear = lastIdx >= 0 && Math.abs(priceToY(liveClose) - y) < U(38);
+    const labelOp = tagNear ? 0.22 : 1;
     return (
       <g opacity={prog}>
         <rect
@@ -235,14 +290,24 @@ export const StructureChart: React.FC<StructureChartProps> = ({
           strokeWidth={2.2}
           strokeDasharray="11 8"
         />
-        <rect x={PLOT.x1 + 6} y={y - 15} width={152} height={30} rx={4} fill={colour} opacity={0.18} />
+        {pen(PLOT.x0 + (PLOT.x1 - PLOT.x0) * prog, y, colour, prog)}
+        <rect
+          x={PLOT.x1 + U(6)}
+          y={y - U(15)}
+          width={U(152)}
+          height={U(30)}
+          rx={4}
+          fill={colour}
+          opacity={0.18 * labelOp}
+        />
         <text
-          x={PLOT.x1 + 14}
-          y={y + 6}
+          x={PLOT.x1 + U(14)}
+          y={y + U(6)}
           fontFamily={FONT.mono}
-          fontSize={17}
+          fontSize={U(17)}
           fill={colour}
           letterSpacing={1}
+          opacity={labelOp}
         >
           {label}
         </text>
@@ -250,7 +315,7 @@ export const StructureChart: React.FC<StructureChartProps> = ({
         <g opacity={prog}>
           {(side === 'up' ? resistance?.bars ?? [] : support.bars).map((bi) =>
             frame >= appearFrames[bi] ? (
-              <circle key={bi} cx={cx(bi)} cy={y} r={4.5} fill="none" stroke={colour} strokeWidth={2} />
+              <circle key={bi} cx={cx(bi)} cy={y} r={U(4.5)} fill="none" stroke={colour} strokeWidth={2} />
             ) : null
           )}
         </g>
@@ -276,6 +341,15 @@ export const StructureChart: React.FC<StructureChartProps> = ({
 
   const tlY = (i: number) => (trendline ? trendline.m * i + trendline.c : 0);
 
+  // Pattern-tag geometry, shared by the box and its pop transform.
+  const tagRectX = Math.min(cx(triggerBar) - U(132), PLOT.x1 - U(268));
+  const tagTextX = Math.min(cx(triggerBar), PLOT.x1 - U(136));
+  const tagY = frame >= appearFrames[triggerBar] ? priceToY(bars[triggerBar].l) : 0;
+
+  // The alarm — see the prop doc. 18 frames, decaying.
+  const alarmT =
+    alarmAt !== undefined && frame >= alarmAt && frame < alarmAt + 18 ? (frame - alarmAt) / 18 : null;
+
   return (
     <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} style={{display: 'block'}}>
       <rect x={0} y={0} width={width} height={height} fill={T.bg} />
@@ -283,15 +357,15 @@ export const StructureChart: React.FC<StructureChartProps> = ({
       {/* -------------------------------------------------------- chrome */}
       <rect x={0} y={0} width={width} height={CHROME_H} fill={T.chrome} />
       <line x1={0} x2={width} y1={CHROME_H} y2={CHROME_H} stroke={T.gridBold} strokeWidth={1.5} />
-      <circle cx={26} cy={CHROME_H / 2} r={6} fill={T.up} opacity={0.55 + Math.sin(frame / 9) * 0.35} />
-      <text x={46} y={CHROME_H / 2 + 7} fontFamily={FONT.mono} fontSize={20} fill="#BFE9D2" letterSpacing={2}>
+      <circle cx={U(26)} cy={CHROME_H / 2} r={U(6)} fill={T.up} opacity={0.55 + Math.sin(frame / 9) * 0.35} />
+      <text x={U(46)} y={CHROME_H / 2 + U(7)} fontFamily={FONT.mono} fontSize={U(20)} fill="#BFE9D2" letterSpacing={2}>
         {subject}
       </text>
       <text
-        x={width - 22}
-        y={CHROME_H / 2 + 7}
+        x={width - U(22)}
+        y={CHROME_H / 2 + U(7)}
         fontFamily={FONT.mono}
-        fontSize={15}
+        fontSize={U(15)}
         fill={T.axis}
         textAnchor="end"
         letterSpacing={1.2}
@@ -305,7 +379,14 @@ export const StructureChart: React.FC<StructureChartProps> = ({
         return (
           <g key={`g${i}`}>
             <line x1={PLOT.x0} x2={PLOT.x1} y1={y} y2={y} stroke={T.grid} strokeWidth={1.1} />
-            <text x={PLOT.x1 + 122} y={y + 6} fontFamily={FONT.mono} fontSize={17} fill={T.axis} textAnchor="end">
+            <text
+              x={PLOT.x1 + U(122)}
+              y={y + U(6)}
+              fontFamily={FONT.mono}
+              fontSize={U(17)}
+              fill={T.axis}
+              textAnchor="end"
+            >
               {v.toFixed(1)}
             </text>
           </g>
@@ -334,11 +415,17 @@ export const StructureChart: React.FC<StructureChartProps> = ({
             stroke={T.trend}
             strokeWidth={2.4}
           />
+          {pen(
+            cx(trendline.from) + (cx(setupBars - 1) - cx(trendline.from)) * trendP,
+            priceToY(tlY(trendline.from) + (tlY(setupBars - 1) - tlY(trendline.from)) * trendP),
+            T.trend,
+            trendP
+          )}
           <text
-            x={cx(trendline.from) + 10}
-            y={priceToY(tlY(trendline.from)) + 26}
+            x={cx(trendline.from) + U(10)}
+            y={priceToY(tlY(trendline.from)) + U(26)}
             fontFamily={FONT.mono}
-            fontSize={16}
+            fontSize={U(16)}
             fill={T.trend}
             letterSpacing={1}
           >
@@ -383,14 +470,20 @@ export const StructureChart: React.FC<StructureChartProps> = ({
                 stroke={l.c}
                 strokeWidth={2}
               />
+              {pen(cx(setupBars - 1) + (PLOT.x1 - cx(setupBars - 1)) * tradeP, priceToY(l.v), l.c, tradeP)}
+              {/* At full-frame scale the label would run under the live price
+                  tag (the tag sits just outside the plot's right edge), so it
+                  right-aligns INSIDE the plot instead — the terminal idiom for
+                  an order label. At monitor scale the original fits. */}
               <text
-                x={cx(setupBars - 1) + 10}
-                y={priceToY(l.v) - 7}
+                x={ui > 1.15 ? PLOT.x1 - U(6) : cx(setupBars - 1) + U(10)}
+                y={priceToY(l.v) - U(7)}
                 fontFamily={FONT.mono}
-                fontSize={17}
+                fontSize={U(17)}
                 fontWeight={700}
                 fill={l.c}
                 letterSpacing={1}
+                textAnchor={ui > 1.15 ? 'end' : 'start'}
               >
                 {l.t}
               </text>
@@ -399,37 +492,81 @@ export const StructureChart: React.FC<StructureChartProps> = ({
         </g>
       ) : null}
 
-      {/* -------------------------------------------------------- candles */}
-      {bars.map((_, i) => renderCandle(i))}
+      {/* -------------------------------------------------------- candles.
+          Clipped to the plot: once the axis narrows to the DECISION view, the
+          early bars' prices map far above y0, and unclipped wicks punch
+          through the chrome bar. Only the candles need the clip — every drawn
+          level is near price by construction. */}
+      <clipPath id="sc-plot-clip">
+        <rect x={PLOT.x0 - 20} y={PLOT.y0} width={PLOT.x1 - PLOT.x0 + 40} height={PLOT.y1 - PLOT.y0} />
+      </clipPath>
+      <g clipPath="url(#sc-plot-clip)">{bars.map((_, i) => renderCandle(i))}</g>
+
+      {/* --------------------------------------------------- the alarm.
+          The stop fired. Red wash + the stop line pulsing, 18 frames. */}
+      {alarmT !== null ? (
+        <g>
+          <rect
+            x={PLOT.x0}
+            y={PLOT.y0}
+            width={PLOT.x1 - PLOT.x0}
+            height={PLOT.y1 - PLOT.y0}
+            fill={T.down}
+            opacity={0.13 * (1 - alarmT)}
+          />
+          <line
+            x1={cx(setupBars - 1)}
+            x2={PLOT.x1}
+            y1={priceToY(stop)}
+            y2={priceToY(stop)}
+            stroke={T.down}
+            strokeWidth={2 + 3.5 * (1 - alarmT)}
+            style={{filter: `drop-shadow(0 0 ${U(10)}px ${T.down})`}}
+          />
+          {/* BELOW the line — "STOP 49.15" is right-aligned just above it,
+              and stacking the two at the same y mushed the climax frame. */}
+          <text
+            x={PLOT.x1 - U(8)}
+            y={priceToY(stop) + U(28)}
+            fontFamily={FONT.mono}
+            fontSize={U(19)}
+            fontWeight={700}
+            fill={T.down}
+            textAnchor="end"
+            letterSpacing={1.4}
+            opacity={1 - alarmT * 0.6}
+          >
+            STOP FILLED
+          </text>
+        </g>
+      ) : null}
 
       {/* ------------------------------------------------- the pattern tag.
           Boxed, pointing at the actual bar. The label is the scanner's own
           verdict string — this component does not classify candles. */}
       {patP > 0 && frame >= appearFrames[triggerBar] ? (
-        <g opacity={patP}>
-          <line
-            x1={cx(triggerBar)}
-            y1={priceToY(bars[triggerBar].l) + 12}
-            x2={cx(triggerBar)}
-            y2={priceToY(bars[triggerBar].l) + 44}
-            stroke={T.ice}
-            strokeWidth={2}
-          />
+        <g
+          opacity={patP}
+          transform={`translate(${tagTextX} ${tagY + U(61)}) scale(${patS}) translate(${-tagTextX} ${-(
+            tagY + U(61)
+          )})`}
+        >
+          <line x1={cx(triggerBar)} y1={tagY + U(12)} x2={cx(triggerBar)} y2={tagY + U(44)} stroke={T.ice} strokeWidth={2} />
           <rect
-            x={Math.min(cx(triggerBar) - 132, PLOT.x1 - 268)}
-            y={priceToY(bars[triggerBar].l) + 44}
-            width={264}
-            height={34}
+            x={tagRectX}
+            y={tagY + U(44)}
+            width={U(264)}
+            height={U(34)}
             rx={5}
             fill="#04140D"
             stroke={T.ice}
             strokeWidth={1.6}
           />
           <text
-            x={Math.min(cx(triggerBar), PLOT.x1 - 136)}
-            y={priceToY(bars[triggerBar].l) + 67}
+            x={tagTextX}
+            y={tagY + U(67)}
             fontFamily={FONT.mono}
-            fontSize={17}
+            fontSize={U(17)}
             fontWeight={700}
             fill={T.ice}
             textAnchor="middle"
@@ -449,24 +586,24 @@ export const StructureChart: React.FC<StructureChartProps> = ({
             x2={PLOT.x1 + 4}
             y1={priceToY(liveClose)}
             y2={priceToY(liveClose)}
-            stroke={liveUp ? T.up : T.down}
+            stroke={tagFill}
             strokeWidth={1.1}
             strokeDasharray="4 6"
             opacity={0.4}
           />
           <rect
-            x={PLOT.x1 + 6}
-            y={priceToY(liveClose) - 18}
-            width={112}
-            height={36}
-            rx={5}
-            fill={liveUp ? T.up : T.down}
+            x={PLOT.x1 + U(6)}
+            y={priceToY(liveClose) - U(18)}
+            width={U(112)}
+            height={U(36)}
+            rx={U(5)}
+            fill={tagFill}
           />
           <text
-            x={PLOT.x1 + 62}
-            y={priceToY(liveClose) + 8}
+            x={PLOT.x1 + U(62)}
+            y={priceToY(liveClose) + U(8)}
             fontFamily={FONT.mono}
-            fontSize={22}
+            fontSize={U(22)}
             fontWeight={700}
             fill="#03130B"
             textAnchor="middle"
@@ -476,14 +613,16 @@ export const StructureChart: React.FC<StructureChartProps> = ({
         </g>
       ) : null}
 
-      <text x={PLOT.x0} y={height - 34} fontFamily={FONT.mono} fontSize={16} fill={T.axis} letterSpacing={1.3}>
-        DAILY BARS · IBKR · STRUCTURE FOUND, NOT DRAWN
+      {/* At full-frame scale the two strips would collide mid-panel, so the
+          left one shortens — the full provenance line is in the footer. */}
+      <text x={PLOT.x0} y={height - U(34)} fontFamily={FONT.mono} fontSize={U(16)} fill={T.axis} letterSpacing={1.3}>
+        {ui > 1.15 ? 'DAILY BARS · IBKR · NOT DRAWN' : 'DAILY BARS · IBKR · STRUCTURE FOUND, NOT DRAWN'}
       </text>
       <text
         x={PLOT.x1}
-        y={height - 34}
+        y={height - U(34)}
         fontFamily={FONT.mono}
-        fontSize={16}
+        fontSize={U(16)}
         fill={T.axis}
         textAnchor="end"
         letterSpacing={1.3}
