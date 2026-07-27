@@ -99,7 +99,9 @@ export const smear = (
   return {
     sx: 1 + k * 0.42,
     sy: 1 - k * 0.16,
-    blur: k * 7,
+    // Blur is the smear component that reads as "soft render" when overdone —
+    // the stretch carries the motion; the blur only has to break the edge.
+    blur: k * 5,
     // Never fully transparent: a smear is a fast drawing, not a ghost.
     opacity: 1 - k * 0.28,
   };

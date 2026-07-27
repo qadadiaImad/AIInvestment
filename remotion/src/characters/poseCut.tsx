@@ -77,6 +77,12 @@ export type Cut = {
    * multiplier, tilt a whole-body lean in degrees about the feet.
    */
   drift?: {dx?: number; dy?: number; dScale?: number; tilt?: number};
+  /** Per-cut multiplier on the derived smear/squash energy. The geometry-only
+   * derivation treats every large silhouette change as a large EVENT — but a
+   * quiet "he points at the level" swaps in the widest drawing of the sheet
+   * and is not a take. Grade the cut editorially: ~0.6 for quiet swaps that
+   * happen to move a lot of ink, >1 only for genuine hits. */
+  energy?: number;
 };
 
 export const POSE_CUTS: Cut[] = [
@@ -219,7 +225,7 @@ export const poseLayout = ({
   const prevA = prev ? A[prev.pose] : undefined;
   const widthDelta = prevA ? Math.abs(a.w * a.scale - prevA.w * prevA.scale) * (height / REF_INK) : 0;
   const driftDelta = Math.abs(dr.dx ?? 0) + Math.abs(dr.dy ?? 0) + Math.abs(dr.tilt ?? 0) * 12;
-  const nrg = toon ? cutEnergy(widthDelta + driftDelta * 2.2) * energy : 0;
+  const nrg = toon ? cutEnergy(widthDelta + driftDelta * 2.2) * energy * (cut.energy ?? 1) : 0;
 
   const sm = toon ? smear(since, nrg, 2) : {sx: 1, sy: 1, blur: 0, opacity: 1};
 
