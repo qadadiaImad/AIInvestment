@@ -16,7 +16,7 @@
 import React from 'react';
 import {AbsoluteFill, Img, staticFile} from 'remotion';
 import {z} from 'zod';
-import {RubberHoseRig} from '../characters/rubberHoseRig';
+import {PoseCut} from '../characters/poseCut';
 import {FONT} from '../slides/theme';
 
 export const groundingCheckSchema = z.object({
@@ -28,6 +28,9 @@ export const groundingCheckSchema = z.object({
   guides: z.boolean(),
   label: z.string(),
   poseFrame: z.number(),
+  /** Which drawing to stand him in. The widest silhouettes (shock, point) are
+   * the ones that decide whether a scale clips, so they get checked too. */
+  pose: z.enum(['idle', 'notices', 'point', 'shock', 'facepalm', 'shrug', 'reach']).optional(),
 });
 export type GroundingCheckProps = z.infer<typeof groundingCheckSchema>;
 
@@ -40,30 +43,19 @@ export const ROOM = {
   deskHeightPx: 515.7,
   /** (deskHeightPx / 75cm) * 175cm */
   characterHeightPx: 1203.3,
-  /** The rig's viewBox is 420x440, but the FIGURE does not fill it. Derived
-   * from the rig source: soles land at y=410 (PELVIS 236 + THIGH 84 + SHIN 80,
-   * plus 10 for the shoe sole) and the ink starts at y~18 (skull ellipse top
-   * 28 less the outline, and the hair curl above it). Scaling by the viewBox
-   * instead of the figure is what left him floating 86px above the floor on
-   * the first check. */
-  rigVbW: 420,
-  rigVbH: 440,
-  rigSoleY: 410,
-  rigInkTop: 18,
+  /** The generated character is a set of held DRAWINGS (poses/*.png), placed
+   * by their ground-contact anchor via PoseCut — not the SVG rig. PoseCut's
+   * `height` is already the character's ink height in frame px and its
+   * anchors.json equalises the drawings to each other, so the floating-figure
+   * problem the SVG rig had does not arise here. */
   screenQuad: {x0: 85, y0: 722, x1: 502, y1: 974},
 };
 
 export const GroundingCheck: React.FC<GroundingCheckProps> = (p) => {
-  // targetH is the height of the FIGURE, not of the rig's viewBox.
   const targetH = ROOM.characterHeightPx * p.scale;
-  const figureUnits = ROOM.rigSoleY - ROOM.rigInkTop;              // 392
-  const rigSize = (targetH * ROOM.rigVbW) / figureUnits;           // width prop
-  // Where the soles land inside the rendered element, measured from its top.
-  const soleOffset = (rigSize * ROOM.rigSoleY) / ROOM.rigVbW;
   // Feet land on the desk's foot line — the one depth in the plate whose floor
   // position is actually known.
   const feetY = ROOM.deskFootY;
-  const topY = feetY - soleOffset;
 
   return (
     <AbsoluteFill style={{background: '#000'}}>
@@ -72,15 +64,16 @@ export const GroundingCheck: React.FC<GroundingCheckProps> = (p) => {
         style={{position: 'absolute', inset: 0, width: 1080, height: 1920, objectFit: 'cover'}}
       />
 
-      {/* the figure, facing LEFT because the monitor is on his left */}
-      <div style={{position: 'absolute', left: p.x, top: topY, transform: 'translateX(-50%)'}}>
-        <RubberHoseRig
-          size={rigSize}
-          facing="left"
-          frameOverride={p.poseFrame}
-          shadow={false}
-        />
-      </div>
+      {/* the generated character, facing LEFT because the monitor is on his left */}
+      <PoseCut
+        height={targetH}
+        footX={p.x}
+        footY={feetY}
+        facing="left"
+        frameOverride={p.poseFrame}
+        poseOverride={p.pose ?? 'idle'}
+        shadow={false}
+      />
 
       {/* Contact shadow, drawn separately so it sits on the plate's own floor
        * rather than inside the rig's bounding box. Without it he floats, which
