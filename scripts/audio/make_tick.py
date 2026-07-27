@@ -142,11 +142,49 @@ def coin(seed):
     return [v / peak * 0.8 for v in out]
 
 
+def impact(seed):
+    """The take. A cartoon hit is three things landing on the same frame:
+
+      body   a low sine swept DOWN in pitch - the thump you feel rather than
+             hear. Sweeping down is what separates an impact from a drum note.
+      crack  a short noise burst, band-limited by the one-pole pair, for the
+             leading edge. Without it the hit is soft and lands late.
+      ring   a brief mid tone so it reads as cartoon rather than as a gunshot.
+
+    Kept to ~0.35s: an impact that outlasts the drawing it punctuates stops
+    reading as a hit and starts reading as music.
+    """
+    rng = random.Random(seed)
+    dur = 0.36
+    n = int(RATE * dur)
+    out = [0.0] * n
+    phase = 0.0
+    for i in range(n):
+        t = i / n
+        f = 150.0 * math.exp(-t * 2.4) + 42.0      # 192Hz -> 46Hz
+        phase += 2 * math.pi * f / RATE
+        out[i] += math.sin(phase) * math.exp(-i / (RATE * 0.12)) * 1.0
+
+    crack = [rng.uniform(-1, 1) * math.exp(-i / (RATE * 0.020)) for i in range(n)]
+    crack = one_pole_lp(one_pole_hp(crack, 700.0), 5200.0)
+    for i in range(n):
+        out[i] += crack[i] * 0.85
+
+    for i in range(n):
+        out[i] += math.sin(2 * math.pi * 320 * i / RATE) * math.exp(-i / (RATE * 0.045)) * 0.35
+
+    for i in range(int(RATE * 0.0015)):            # kill the click on frame 0
+        out[i] *= i / (RATE * 0.0015)
+    peak = max(abs(v) for v in out) or 1.0
+    return [v / peak * 0.92 for v in out]
+
+
 def extras():
     write(os.path.join(OUT, "candle_up.wav"), blip(11, 520, 900, bright=1.0))
     write(os.path.join(OUT, "candle_down.wav"), blip(12, 470, 250, bright=0.5))
     write(os.path.join(OUT, "coin.wav"), coin(33))
-    for f in ("candle_up.wav", "candle_down.wav", "coin.wav"):
+    write(os.path.join(OUT, "impact.wav"), impact(77))
+    for f in ("candle_up.wav", "candle_down.wav", "coin.wav", "impact.wav"):
         print(f"{f} -> {os.path.relpath(os.path.join(OUT, f), REPO)}")
 
 

@@ -58,6 +58,37 @@ The trade frame lands at 516 — **before** the quiz, never after. A viewer aske
 to call a trade without seeing what being wrong costs is guessing, and the loss
 then reads as bad luck instead of as a bounded bet that lost.
 
+## The animation layer
+
+The first cut of this held each drawing ~60 frames and hard-cut to the next.
+That is limited animation on paper and a slideshow on screen. What was missing
+is not more drawings — it is everything that happens around one:
+
+| | where |
+|---|---|
+| Anticipation, squash/stretch, smear, three-beat holds, boil | `remotion/src/motion/toon.ts` |
+| Impact lines, shock ring, sweat, dust, flash, speed lines | `remotion/src/motion/ToonFX.tsx` |
+| Measured per-pose head position | `scripts/meme_reel/head_anchors.py` |
+
+Three things are worth stating because they are what separate this from an
+effects preset:
+
+1. **The smear is derived, not decorated.** Its strength comes from how much
+   the silhouette and the drift actually change across that cut, so 30 of the
+   32 cuts smear and the shock take (0.78) smears four times as hard as a
+   weight shift (0.19). A constant smear is the giveaway that one was bolted
+   on afterwards.
+2. **The take is one event.** Drawing, smear, flash, impact burst, camera kick
+   and sound all key off a single frame number (`SHOCK_AT`). Nothing can drift
+   apart later.
+3. **Character-anchored effects use a measured head.** The head runs from
+   x=0.29 of the drawing box in `stagger` to x=0.78 in `leans_a`, and most of
+   the body's height between `idle` and `crouch`. The first version anchored
+   sweat to one standing position and it hung in empty wall the moment he bent.
+
+Cut density went from 20 to 33 — roughly one per second, tightest through the
+reaction (four drawings in 70 frames; a take that holds is not a take).
+
 ## Two things that only show up if you look
 
 Both shipped in an intermediate cut here and were caught in stills, not in code:
@@ -82,9 +113,11 @@ outright as the widest drawing in the set.
 ## Sound
 
 Four countdown ticks (22–25s) and one blip per **reveal** candle (26s onward).
-There is deliberately **no coin** — the coin is the target-hit sound, and this
-trade never reached its target. Verified by RMS bucketing, because a missing
-`<Audio>` still produces a valid file.
+One impact on the take (33.8s) — a swept-down sine for the body, a
+band-limited noise crack for the leading edge, a short mid ring so it reads
+cartoon rather than as a gunshot. There is deliberately **no coin**: the coin
+is the target-hit sound and this trade never reached its target. All verified
+by RMS bucketing, because a missing `<Audio>` still produces a valid file.
 
 ## Rebuild
 

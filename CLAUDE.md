@@ -332,6 +332,10 @@ beep or a hiss.
 | `tick`/`tock` | one per countdown second, alternating |
 | `candle_up`/`candle_down` | one per **reveal** candle, pitched by direction |
 | `coin` | when a reveal bar reaches the target |
+| `impact` | on a character's take — swept-down sine + band-limited noise crack |
+
+A take's sound lands on the **same frame** as its drawing, its smear, its
+flash and its camera kick. Two frames late and it reads as dubbed.
 
 Reveal candles only — 60+ setup bars in four seconds is seventeen hits a second.
 
@@ -368,7 +372,36 @@ for t in 5 10 15 19; do $FF -v error -ss $t -i out.mp4 -frames:v 1 /tmp/f_$t.png
 $FF -v error -i out.mp4 -vn -ac 1 -ar 8000 /tmp/a.wav -y
 ```
 
-### 10.8 Rendering
+### 10.8 The character has to be animated, not just cut
+
+Holding a drawing and cutting to the next one is limited animation on paper and
+a **slideshow** on screen. What was missing the first time is everything around
+the drawing, and it all lives in `remotion/src/motion/toon.ts`:
+
+| | |
+|---|---|
+| **Anticipation** | every cut winds up ~4 frames the *opposite* way first. This is the part that is always skipped and the one that most reads as animation. |
+| **Squash/stretch** | volume-preserving (`sx = 1/sy`). Scaling both axes together is a picture being resized; the inverse is a body absorbing a force. |
+| **Smear** | 2 frames of horizontal stretch + blur on the cut, **sized by how big the change is** — a constant smear is the giveaway that one was bolted on. |
+| **Three-beat holds** | arrive fast, small secondary move, settle. A 60-frame linear drift is a slow zoom on a still. |
+| **Boil** | 2-frame drawing vibration. Quantised to 2s: continuous jitter reads as a rendering fault. |
+
+Cut **density** matters as much as the curves: ~1 cut/second, tightest through
+a reaction (four drawings in 70 frames — a take that holds is not a take).
+
+Effects (`motion/ToonFX.tsx`) are anchored to beats that already exist, never
+to fill a gap: impact lines + ring behind the take, sweat on the wait, dust on
+a stagger, a 2-frame flash on the cut, speed lines driven by the camera's *own*
+velocity. Three rails: nothing runs past ~20 frames, everything is seeded, and
+**nothing is ever drawn over the price panel** — an impact line across a candle
+asserts something about the data.
+
+Anything anchored to the character anchors to a **measured** head
+(`scripts/meme_reel/head_anchors.py`), not a fixed offset: the head travels
+from x=0.29 to x=0.78 of the box across this pose sheet, so one standing anchor
+leaves the sweat hanging in empty wall the moment he bends.
+
+### 10.9 Rendering
 
 `--browser-executable=/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell`
 in the sandbox; **drop it on a laptop**. Long pieces exceed the sandbox's
@@ -376,7 +409,7 @@ in the sandbox; **drop it on a laptop**. Long pieces exceed the sandbox's
 `ffmpeg -f concat -c copy`. Chat uploads cap at 30 MB, so commit a CRF-27
 preview alongside a CRF-18/19 master.
 
-### 10.9 Delivery
+### 10.10 Delivery
 
 Branch `claude/refresh-data-import-stock-story-svya0l`, commit and push each
 deliverable, and **show every rendered media file in the chat**. Higgsfield and

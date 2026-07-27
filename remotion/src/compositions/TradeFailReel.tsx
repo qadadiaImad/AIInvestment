@@ -36,7 +36,18 @@ import {Grain, Vignette} from '../motion/Polish';
 import {ScreenInsert} from '../components/ScreenInsert';
 import type {Quad} from '../components/screenMath';
 import {StructureChart} from '../components/StructureChart';
-import {PoseCut, type Cut} from '../characters/poseCut';
+import {PoseCut, poseHead, type Cut} from '../characters/poseCut';
+import {whip} from '../motion/toon';
+import {
+  DustPuff,
+  FlashCut,
+  ImpactLines,
+  ScreenPulse,
+  ShockRing,
+  SpeedLines,
+  SweatBeads,
+  kick,
+} from '../motion/ToonFX';
 
 const barSchema = z.object({
   d: z.string().optional(),
@@ -108,6 +119,11 @@ const B = {
   end: 1200,
 };
 
+/** The frame the take lands on — every part of the hit keys off this one
+ * number so the drawing, the lines, the flash, the camera and the sound cannot
+ * drift apart. */
+const SHOCK_AT = 1014;
+
 const COUNT_PER = 30;
 const COUNT_N = 4;
 
@@ -152,30 +168,57 @@ const track = (frame: number, keys: Key[]): number => {
 // intervals, which is what reads as nerves rather than as a loop — a two-pose
 // alternation reads as a metronome.
 const CUTS: Cut[] = [
-  {at: 0, pose: 'idle', drift: {dy: -2}},
-  {at: 44, pose: 'turning', drift: {dx: -5}},
-  {at: 90, pose: 'idle', drift: {dy: -2}},
+  // Density is the point. The first cut of this held each drawing for ~60
+  // frames — twenty cuts across forty seconds — and that is what read as a
+  // slideshow rather than as animation. Real limited animation cuts two to
+  // four times as often and puts a wind-up, a smear and a settle on every one
+  // of them (motion/toon.ts). Roughly one cut per second here, tightest
+  // through the reaction, loosest through the quiet holds.
+  {at: 0, pose: 'idle', drift: {dy: -3}},
+  {at: 26, pose: 'turning', drift: {dx: -6, tilt: -0.8}},
+  {at: 52, pose: 'idle', drift: {dy: -2}},
+  {at: 70, pose: 'leans_a', drift: {dx: -9, tilt: -1.2}},
+  // 96-252 out of shot (the structure drawing)
   {at: 252, pose: 'leans_a', drift: {dx: -7, tilt: -1}},
-  {at: 310, pose: 'point', drift: {dx: -4}},
-  {at: 430, pose: 'notices', drift: {dx: -9, tilt: -1.5}}, // the take, on the cut wide
-  {at: 476, pose: 'point', drift: {dx: -5}},
-  {at: 572, pose: 'leans_a', drift: {dx: -8, dScale: 1.02}}, // commits, on the cut wide
-  {at: 620, pose: 'idle', drift: {dy: -1}}, // his stillest moment, against what follows
-  {at: 662, pose: 'crouch', drift: {dy: 5}},
-  {at: 706, pose: 'leans_b', drift: {dx: 4, tilt: 1}},
-  {at: 744, pose: 'crouch', drift: {dy: 6}},
-  {at: 786, pose: 'bending', drift: {dx: -6, dScale: 1.015}},
-  {at: 838, pose: 'leans_b', drift: {dx: 5, tilt: 1.5}},
-  {at: 884, pose: 'crouch', drift: {dy: 7}},
-  {at: 926, pose: 'bending', drift: {dx: -5}},
-  {at: 1014, pose: 'shock', drift: {dx: 34, dScale: 0.99, tilt: 3}}, // hard cut wide
-  {at: 1048, pose: 'stagger', drift: {dx: 14, tilt: 2}},
-  {at: 1086, pose: 'facepalm', drift: {dy: 13, dScale: 0.985, tilt: 1.4}},
-  // NOT `shrug`. It is the widest drawing in the sheet (883px) and overflows
-  // the frame by ~130px at this staging — and a shrug is the wrong read here
-  // anyway: it says "who knows", when the beat is him recalibrating. He turns
-  // back to the screen instead.
-  {at: 1148, pose: 'turning', drift: {dx: -5, tilt: -0.8}},
+  {at: 286, pose: 'notices', drift: {dx: -10, tilt: -1.4}},
+  {at: 318, pose: 'point', drift: {dx: -5}},
+  {at: 344, pose: 'leans_b', drift: {dx: -7, tilt: -1.1}},
+  // 372-430 out of shot (the hammer)
+  {at: 430, pose: 'notices', drift: {dx: -11, tilt: -1.6}}, // the take, on the cut wide
+  {at: 452, pose: 'crouch', drift: {dy: 6}}, // loads down — the beat before he commits
+  {at: 470, pose: 'point', drift: {dx: -6}},
+  {at: 492, pose: 'leans_b', drift: {dx: -6, tilt: -1}},
+  // 512-570 out of shot (entry/stop/target draw)
+  {at: 570, pose: 'leans_a', drift: {dx: -9, dScale: 1.02}}, // commits, on the cut wide
+  {at: 596, pose: 'point', drift: {dx: -5}},
+  {at: 620, pose: 'idle', drift: {dy: -1}}, // his stillest stretch, against what follows
+  {at: 648, pose: 'turning', drift: {dx: 3}},
+  // --- the quiz. His nerves start on the SAME frame the viewer's timer does.
+  {at: 662, pose: 'crouch', drift: {dy: 6}},
+  {at: 690, pose: 'leans_b', drift: {dx: 5, tilt: 1.2}},
+  {at: 714, pose: 'bending', drift: {dx: -6, dScale: 1.015}},
+  {at: 740, pose: 'crouch', drift: {dy: 7}},
+  {at: 762, pose: 'leans_b', drift: {dx: 4, tilt: 1}},
+  // --- the wait. Same vocabulary, slower rhythm, bigger amplitude: the same
+  // anxiety wearing on, not a new one.
+  {at: 786, pose: 'bending', drift: {dx: -7, dScale: 1.02}},
+  {at: 816, pose: 'crouch', drift: {dy: 8}},
+  {at: 842, pose: 'leans_b', drift: {dx: 6, tilt: 1.6}},
+  // 870-908 out of shot (the bars going nowhere)
+  {at: 908, pose: 'crouch', drift: {dy: 8}},
+  {at: 930, pose: 'bending', drift: {dx: -6}},
+  {at: 948, pose: 'leans_b', drift: {dx: 5, tilt: 1.4}},
+  // 966-1014 out of shot (the break)
+  // --- the reaction. Tightest cutting in the reel: four drawings in 70
+  // frames. A take that holds is not a take.
+  {at: 1014, pose: 'shock', drift: {dx: 30, dScale: 0.99, tilt: 3}}, // hard cut wide
+  {at: 1038, pose: 'stagger', drift: {dx: 16, tilt: 2.4}},
+  {at: 1062, pose: 'crouch', drift: {dy: 10}},
+  {at: 1082, pose: 'facepalm', drift: {dy: 13, dScale: 0.985, tilt: 1.4}},
+  // --- recalibrating. Small and linear: overshoot is surprise, and the
+  // surprise is over.
+  {at: 1136, pose: 'leans_a', drift: {dx: -5, tilt: -0.8}},
+  {at: 1166, pose: 'turning', drift: {dx: -4}},
 ];
 
 /** Frames the camera is inside the monitor and he is out of shot.
@@ -257,7 +300,7 @@ export const TradeFailReel: React.FC<TradeFailReelProps> = (p) => {
   }, [p.bars.length, ns, p.trigger.bar, p.slAt]);
 
   // ---------------------------------------------------------------- camera
-  const camScale = track(frame, [
+  const camScaleKeys: Key[] = [
     {f: 0, v: 1.02},
     {f: 70, v: 1.05},
     {f: 95, v: 1.07}, // hold to the frame before the cut — see the note on CUTAWAYS
@@ -283,9 +326,10 @@ export const TradeFailReel: React.FC<TradeFailReelProps> = (p) => {
     {f: 1013, v: 2.28},
     {f: 1014, v: 1.03, ease: EASE.exit}, // hard cut wide on the shock
     {f: 1200, v: 1.08},
-  ]);
+  ];
+  const camScale = track(frame, camScaleKeys);
 
-  const camX = track(frame, [
+  const camXKeys: Key[] = [
     {f: 0, v: WIDE.x},
     {f: 95, v: WIDE.x}, // HOLD. Without this the first segment eases from
     {f: 96, v: screenCx, ease: EASE.enter}, // frame 0 and the hook shot drifts.
@@ -311,9 +355,10 @@ export const TradeFailReel: React.FC<TradeFailReelProps> = (p) => {
     {f: 1013, v: screenCx},
     {f: 1014, v: WIDE.x, ease: EASE.exit},
     {f: 1200, v: WIDE.x},
-  ]);
+  ];
+  const camX = track(frame, camXKeys);
 
-  const camY = track(frame, [
+  const camYKeys: Key[] = [
     {f: 0, v: WIDE.y},
     {f: 95, v: WIDE.y},
     {f: 96, v: screenCy, ease: EASE.enter},
@@ -336,15 +381,39 @@ export const TradeFailReel: React.FC<TradeFailReelProps> = (p) => {
     {f: 1013, v: screenCy},
     {f: 1014, v: WIDE.y, ease: EASE.exit},
     {f: 1200, v: WIDE.y},
-  ]);
+  ];
+  const camY = track(frame, camYKeys);
+
+  // WHIP. Camera velocity in composition px/frame. Every camera change here is
+  // a one-frame cut, so this spikes hard on exactly those frames — which is
+  // what the speed lines and the frame's own motion blur key off. Decayed over
+  // three frames so the streak reads as travel rather than as a single odd
+  // frame.
+  const camAt = (f: number) => ({
+    x: track(f, camXKeys) * track(f, camScaleKeys),
+    y: track(f, camYKeys) * track(f, camScaleKeys),
+  });
+  const vNow = camAt(frame);
+  const vPrev = camAt(frame - 1);
+  const rawWhip = whip(Math.hypot(vNow.x - vPrev.x, vNow.y - vPrev.y));
+  const whipK = Math.max(
+    rawWhip,
+    (() => {
+      const a = camAt(frame - 1);
+      const b = camAt(frame - 2);
+      return whip(Math.hypot(a.x - b.x, a.y - b.y)) * 0.55;
+    })()
+  );
 
   const tx = 540 - camX * camScale;
   const ty = 960 - camY * camScale;
-  // A hand-held breath, plus a single hit on the break so the frame itself
-  // recoils rather than only the character.
-  const shake = frame >= 990 && frame < 1030 ? (1030 - frame) / 40 : 0;
-  const camDriftX = wiggle(frame, 7, 3.0, 0.35) + wiggle(frame, 21, 16 * shake, 4);
-  const camDriftY = wiggle(frame, 8, 2.2, 0.3) + wiggle(frame, 22, 12 * shake, 4.4);
+  // A hand-held breath, plus a real IMPACT on the shock cut — a decaying
+  // oscillation whose frequency drops as it dies, which is what a hit does and
+  // what a plain sine-times-decay does not. The frame recoils on the same
+  // frames the drawn impact lines fire, so it reads as one event.
+  const kk = kick(frame - SHOCK_AT, 30, 20);
+  const camDriftX = wiggle(frame, 7, 3.0, 0.35) + kk.x;
+  const camDriftY = wiggle(frame, 8, 2.2, 0.3) + kk.y;
 
   const glow = frame < 8 ? 0 : frame < 24 ? (frame % 3 === 0 ? 0.74 : 1) : 1;
 
@@ -412,6 +481,23 @@ export const TradeFailReel: React.FC<TradeFailReelProps> = (p) => {
   // runs while the trade is unresolved.
   const barsIn = Math.min(p.slAt, Math.max(0, Math.floor((frame - 800) / 40) + 1));
 
+  // Where his head actually is on THIS frame — measured per drawing and run
+  // through the same placement maths the drawing uses, so an effect anchored
+  // to it inherits the drift, the boil and the squash. A fixed anchor derived
+  // from the standing figure puts the sweat in empty wall the moment he bends,
+  // and the head travels most of the body's height between `idle` and
+  // `crouch`.
+  const head = poseHead({
+    frame,
+    height: p.charHeight,
+    footX: p.charCenterX,
+    footY: p.charFeetY,
+    cuts: CUTS,
+    end: B.end,
+    motion: 'toon',
+    facing: 'left',
+  }) ?? {x: p.charCenterX, y: p.charFeetY - p.charHeight * 0.84, w: p.charHeight * 0.3};
+
   const R = 92;
   const CIRC = 2 * Math.PI * R;
 
@@ -477,6 +563,26 @@ export const TradeFailReel: React.FC<TradeFailReelProps> = (p) => {
           />
         </svg>
 
+        {/* The panel throwing red light into the room as the bar breaks.
+            Inside the camera transform and clipped to the monitor quad, so it
+            is the screen emitting rather than a colour wash over the frame. */}
+        <ScreenPulse quad={p.quad} since={frame - (BREAK_IN + BREAK_FORM - 24)} dur={30} />
+
+        {/* The burst, BEHIND him. It opens upward and to the right — away
+            from the monitor — rather than being masked off it, because a
+            starburst with a hole cut in it reads as a mistake. */}
+        <ImpactLines
+          x={head.x}
+          y={head.y}
+          since={frame - SHOCK_AT}
+          dur={15}
+          count={11}
+          r0={head.w * 0.72}
+          len={head.w * 0.85}
+          arc={[-Math.PI * 0.92, Math.PI * 0.18]}
+        />
+        <ShockRing x={head.x} y={head.y} since={frame - SHOCK_AT} dur={17} />
+
         <div style={{opacity: charVisible ? 1 : 0}}>
           <PoseCut
             height={p.charHeight}
@@ -485,9 +591,43 @@ export const TradeFailReel: React.FC<TradeFailReelProps> = (p) => {
             facing="left"
             cuts={CUTS}
             end={B.end}
+            motion="toon"
           />
+          {/* Dust off the floor as he staggers back. Inside the world layer so
+              it is pushed and panned with the room he is standing in. */}
+          <DustPuff x={p.charCenterX + 30} y={p.charFeetY} since={frame - 1040} dur={22} />
         </div>
       </AbsoluteFill>
+
+      {/* --------------------------------------------------------- the FX.
+          Frame-space, above the room and below the type. Each one is anchored
+          to a beat that already exists in the story — none is here to fill a
+          gap. Nothing is ever drawn over the price panel: an impact line
+          across a candle would be asserting something about the data.
+
+          `charVisible` gates every character-anchored effect, or sweat beads
+          hang in mid-air through the chart close-ups. */}
+      {charVisible && frame >= B.quiz && frame < 1000 ? (
+        <SweatBeads
+          x={head.x}
+          y={head.y}
+          since={frame - B.quiz}
+          count={frame >= B.wait ? 3 : 2}
+          scale={(head.w / 300) * 0.9}
+        />
+      ) : null}
+
+      {/* THE TAKE. The flash fires on SHOCK_AT, the same frame the drawing cuts
+          and the camera kicks — one event, not three. The lines are drawn back
+          in the world layer, BEHIND him: the first version put them on top and
+          the burst cut across his face, which reads as a bug rather than as an
+          impact. */}
+      <FlashCut since={frame - SHOCK_AT} frames={2} color="#FFF3E0" max={0.55} />
+
+      {/* Speed lines over the whips, driven by the camera's own velocity — so
+          they appear on exactly the frames it moves and never as decoration on
+          a static shot. */}
+      <SpeedLines k={whipK} seed={Math.floor(frame / 3)} />
 
       {/* ---------------------------------------------------------- hook */}
       {frame < 96 ? (
@@ -815,12 +955,21 @@ export const TradeFailReel: React.FC<TradeFailReelProps> = (p) => {
           One tick per countdown second, and one blip per REVEAL candle only:
           70 setup bars in eight seconds would be nine hits a second.
           There is NO coin here, and that is not an omission — the coin is the
-          target-hit sound and this trade never reached its target. */}
+          target-hit sound and this trade never reached its target. What there
+          IS is an impact on the take: a swept-down sine for the body, a
+          band-limited noise crack for the leading edge, and a short mid ring
+          so it reads cartoon rather than as a gunshot. */}
       {Array.from({length: COUNT_N}, (_, i) => (
         <Sequence key={`tick${i}`} from={B.quiz + i * COUNT_PER} durationInFrames={COUNT_PER}>
           <Audio src={staticFile(i % 2 === 0 ? 'audio/tick.wav' : 'audio/tock.wav')} volume={0.6} />
         </Sequence>
       ))}
+      {/* THE HIT. On SHOCK_AT with everything else — the drawing, the smear,
+          the flash, the burst, the camera kick. A take whose sound lands even
+          two frames late reads as dubbed. */}
+      <Sequence from={SHOCK_AT} durationInFrames={20}>
+        <Audio src={staticFile('audio/impact.wav')} volume={0.85} />
+      </Sequence>
       {Array.from({length: revealCount}, (_, r) => (
         <Sequence key={`cndl${r}`} from={appearFrames[ns + r]} durationInFrames={14}>
           <Audio
