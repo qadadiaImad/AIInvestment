@@ -39,6 +39,7 @@ import {StructureChart} from '../components/StructureChart';
 import {PoseCut, poseHead, type Cut} from '../characters/poseCut';
 import {FlashCut, ShockFlicks, SweatSlide, kick} from '../motion/ToonFX';
 import {tradeFailReelSchema} from './TradeFailReel';
+import staging from '../fixtures/btc_reel/cam_staging.json';
 
 /** Same data contract as TradeFailReel minus the room staging — the cam
  * format stages the character itself. Zod strips the extra fields, so the
@@ -79,70 +80,35 @@ const BREAK_FORM = 46;
  * sound ALL key off this one number so nothing can drift apart. */
 const SHOCK_AT = 1000;
 
-// ------------------------------------------------------------------ layout
-// Panel full-width under a slim top band; everything interactive lives in the
-// lower band beside the character.
-const PANEL = {x: 24, y: 196, w: 1032, h: 1130};
-const PANEL_UI = 1.32;
+// ------------------------------------------------------------------ staging
+// EVERYTHING spatial comes from cam_staging.json — the same file
+// scripts/btc_reel/check_overlaps.py verifies against the pose drawings' real
+// ink profiles. That is what makes "the character never overlaps any text or
+// display object" a checked property instead of a hope: staging changes land
+// in the JSON, the checker runs, THEN the render happens. Do not hand-edit
+// coordinates here.
+const PANEL = staging.panel;
+const PANEL_UI = staging.ui;
+const CAM = staging.cam;
+const LANES = staging.lanes;
 
-// ---------------------------------------------------------------- the cam
-// Upper body only: ink height 880px with the feet anchored 370px BELOW the
-// bottom edge, so the frame crops him at roughly the waist. ~620px of him is
-// visible — a third of the frame, "smaller but he is big". footX=840 puts the
-// torso in the right corner; wide reaction arms are allowed to clip the right
-// edge (energy), the reaching poses stay inside.
-const CAM = {footX: 840, ink: 880, footY: 2290};
+const EASE_BY_NAME: Record<string, (t: number) => number> = {
+  settleBack: EASE.settleBack,
+  exit: EASE.exit,
+  cruise: EASE.cruise,
+  enter: EASE.enter,
+};
 
-// The cut sheet. Denser than the room version in the same places (~1/s,
-// tightest through the reaction) but with no cutaways — he is always on
-// screen, so the quiet stretches carry watching poses instead of absences.
-const CUTS: Cut[] = [
-  {at: 0, pose: 'idle', drift: {dy: -3}},
-  {at: 26, pose: 'turning', drift: {dx: -6, tilt: -0.8}},
-  {at: 52, pose: 'idle', drift: {dy: -2}},
-  {at: 96, pose: 'leans_a', drift: {dx: -8, tilt: -1}},
-  {at: 152, pose: 'point', drift: {dx: -6}}, // support draws — he calls it
-  {at: 200, pose: 'leans_b', drift: {dx: -6, tilt: -1}},
-  {at: 246, pose: 'point', drift: {dx: -5}}, // the trendline
-  {at: 300, pose: 'idle', drift: {dy: -2}},
-  {at: 340, pose: 'leans_a', drift: {dx: -7, tilt: -1}},
-  {at: 366, pose: 'notices', drift: {dx: -9, tilt: -1.4}}, // the hammer prints
-  {at: 404, pose: 'bending', drift: {dx: -7, dScale: 1.015}},
-  {at: 434, pose: 'point', drift: {dx: -6}},
-  {at: 464, pose: 'crouch', drift: {dy: 5}}, // loads down before committing
-  {at: 492, pose: 'leans_b', drift: {dx: -5, tilt: -0.8}},
-  // NOT `reach` — its low forward hand lands on the footer text at this
-  // staging, and he must never stand on the disclaimer. `point` makes the
-  // same call at arm height.
-  {at: 516, pose: 'point', drift: {dx: -6, tilt: -1}}, // calls the trade frame as it draws
-  {at: 552, pose: 'leans_a', drift: {dx: -7, dScale: 1.02}}, // commits
-  {at: 592, pose: 'idle', drift: {dy: -1}}, // stillest stretch, against what follows
-  {at: 632, pose: 'turning', drift: {dx: 3}},
-  // --- quiz: his nerves start on the same frame the viewer's timer does
-  {at: 662, pose: 'crouch', drift: {dy: 5}},
-  {at: 690, pose: 'leans_b', drift: {dx: 5, tilt: 1.2}},
-  {at: 716, pose: 'bending', drift: {dx: -5, dScale: 1.015}},
-  {at: 742, pose: 'crouch', drift: {dy: 6}},
-  {at: 764, pose: 'leans_b', drift: {dx: 4, tilt: 1}},
-  // --- wait: same vocabulary, slower rhythm, bigger amplitude — and he SINKS
-  // (the vertical track below), which the room version could not do
-  {at: 786, pose: 'bending', drift: {dx: -6, dScale: 1.02}},
-  {at: 818, pose: 'crouch', drift: {dy: 7}},
-  {at: 846, pose: 'leans_b', drift: {dx: 5, tilt: 1.5}},
-  {at: 878, pose: 'crouch', drift: {dy: 7}},
-  {at: 906, pose: 'bending', drift: {dx: -5}},
-  {at: 934, pose: 'crouch', drift: {dy: 8}},
-  {at: 962, pose: 'leans_b', drift: {dx: 4, tilt: 1.2}},
-  // --- the reaction: four drawings in 76 frames
-  {at: SHOCK_AT, pose: 'shock', drift: {dx: 26, dScale: 0.99, tilt: 3}},
-  {at: 1026, pose: 'stagger', drift: {dx: 14, tilt: 2.2}},
-  {at: 1052, pose: 'crouch', drift: {dy: 9}},
-  {at: 1076, pose: 'facepalm', drift: {dy: 12, dScale: 0.985, tilt: 1.3}},
-  // --- recalibrating: small and linear, the surprise is over
-  {at: 1136, pose: 'leans_a', drift: {dx: -5, tilt: -0.8}},
-  {at: 1168, pose: 'turning', drift: {dx: -4}},
-];
+// The cut sheet, from staging. Deliberately CALMER than the last iteration —
+// 25 cuts, not 36. The owner's note: too many actions reads as hyperactivity.
+// The long holds are where the sweat drop, the sink and the small gaze tilts
+// do the emotional work; the tight cutting is reserved for the one place a
+// take earns it (four drawings across the reaction). The negative tilts on
+// the watching poses lean him back so his face rises toward the panel — he is
+// LOOKING AT THE SCREEN, which is the whole premise of a corner cam.
+const CUTS: Cut[] = staging.cuts as Cut[];
 
+const CAM_DY_KEYS = staging.camDy as [number, number, string | null][];
 type Key = {f: number; v: number; ease?: (t: number) => number};
 const track = (frame: number, keys: Key[]): number => {
   if (frame <= keys[0].f) return keys[0].v;
@@ -163,25 +129,12 @@ const track = (frame: number, keys: Key[]): number => {
 // The vertical channel — the format's own expressive axis. Because the bottom
 // edge crops him, moving his anchor down IS the emotion: he pops up to open,
 // sinks through the wait, SHOOTS up on the break, slumps into the facepalm.
-const CAM_DY: Key[] = [
-  {f: 0, v: 430}, // below the frame
-  {f: 8, v: 430},
-  {f: 24, v: 0, ease: EASE.settleBack}, // pops up, overshoots, settles
-  {f: 656, v: 0},
-  {f: 662, v: -16, ease: EASE.exit}, // a hop as the timer lands
-  {f: 674, v: 0, ease: EASE.settleBack},
-  {f: 780, v: 0},
-  {f: 958, v: 86, ease: EASE.cruise}, // the slow sink of dread
-  {f: 996, v: 86},
-  {f: 1002, v: -46, ease: EASE.exit}, // shoots up on the break
-  {f: 1020, v: -14, ease: EASE.settleBack},
-  {f: 1052, v: 8},
-  {f: 1076, v: 12},
-  {f: 1108, v: 48, ease: EASE.cruise}, // slumps through the facepalm
-  {f: 1136, v: 48},
-  {f: 1172, v: 8, ease: EASE.cruise}, // straightens for the lesson
-  {f: 1200, v: 8},
-];
+// Values live in staging so the overlap checker sees the same envelope.
+const CAM_DY: Key[] = CAM_DY_KEYS.map(([f, v, e]) => ({
+  f,
+  v,
+  ease: e ? EASE_BY_NAME[e] : undefined,
+}));
 
 type Caption = {from: number; to: number; text: string};
 
@@ -291,17 +244,24 @@ export const TradeFailCam: React.FC<TradeFailCamProps> = (p) => {
 
   const barsIn = Math.min(p.slAt, Math.max(0, Math.floor((frame - 800) / 40) + 1));
 
-  const captions: Caption[] = [
-    {from: 16, to: 88, text: `${p.symbol}, daily. Everything here is real.`},
-    {from: 258, to: 350, text: `Support ${p.support.price.toFixed(2)}, held ${p.support.touches}×. Trendline rising into it.`},
-    {from: 436, to: 508, text: `Then this: ${p.trigger.name.toLowerCase()}.`},
-    {from: 524, to: 648, text: `Long ${p.entry.toFixed(2)}. Stop under the wick. Target 2R.`},
-    // The counter reaches 4 BARS at frame 920 — the caption must never say
-    // "four bars" while the HUD above it says one.
-    {from: 806, to: 902, text: 'It stalls at the entry.'},
-    {from: 924, to: 994, text: 'Four bars. It goes nowhere.'},
-    {from: 1026, to: 1090, text: `Stopped. It kept going — ${Math.abs(p.drop).toFixed(0)}% lower.`},
+  // Caption WINDOWS live in staging (the overlap checker guards the caption
+  // lane during exactly these frames); the texts live here. The counter
+  // reaches 4 BARS at frame 920 — the caption must never say "four bars"
+  // while the HUD above it says one.
+  const captionTexts = [
+    `${p.symbol}, daily. Everything here is real.`,
+    `Support ${p.support.price.toFixed(2)}, held ${p.support.touches}×. Trendline rising into it.`,
+    `Then this: ${p.trigger.name.toLowerCase()}.`,
+    `Long ${p.entry.toFixed(2)}. Stop under the wick. Target 2R.`,
+    'It stalls at the entry.',
+    'Four bars. It goes nowhere.',
+    `Stopped. It kept going — ${Math.abs(p.drop).toFixed(0)}% lower.`,
   ];
+  const captions: Caption[] = (staging.captionWindows as [number, number][]).map(([from, to], i) => ({
+    from,
+    to,
+    text: captionTexts[i] ?? '',
+  }));
   const caption = captions.find((c) => frame >= c.from && frame < c.to);
   const capP = caption
     ? interpolate(frame, [caption.from, caption.from + 9], [0, 1], {
@@ -582,11 +542,11 @@ export const TradeFailCam: React.FC<TradeFailCamProps> = (p) => {
           band LEFT — beside the cam, not over the chart. */}
       {quizP > 0 ? (
         <div style={{position: 'absolute', inset: 0, opacity: quizP}}>
-          <svg width={520} height={300} style={{position: 'absolute', top: 1400, left: 0}}>
-            <circle cx={250} cy={150} r={R} fill="rgba(4,16,12,.8)" stroke="rgba(255,255,255,.16)" strokeWidth={3} />
+          <svg width={520} height={300} style={{position: 'absolute', top: LANES.ring.y0, left: 0}}>
+            <circle cx={250} cy={130} r={R} fill="rgba(4,16,12,.8)" stroke="rgba(255,255,255,.16)" strokeWidth={3} />
             <circle
               cx={250}
-              cy={150}
+              cy={130}
               r={R}
               fill="none"
               stroke="#E8EDF2"
@@ -594,22 +554,22 @@ export const TradeFailCam: React.FC<TradeFailCamProps> = (p) => {
               strokeLinecap="round"
               strokeDasharray={CIRC}
               strokeDashoffset={CIRC * ringP}
-              transform="rotate(-90 250 150)"
+              transform="rotate(-90 250 130)"
             />
             <text
               x={250}
-              y={176}
+              y={156}
               fontFamily={FONT.mono}
               fontSize={78}
               fontWeight={700}
               fill="#E8EDF2"
               textAnchor="middle"
-              transform={`translate(${250 * (1 - digitPop)} ${150 * (1 - digitPop)}) scale(${digitPop})`}
+              transform={`translate(${250 * (1 - digitPop)} ${130 * (1 - digitPop)}) scale(${digitPop})`}
             >
               {secsLeft}
             </text>
           </svg>
-          <div style={{position: 'absolute', top: 1712, left: 30, display: 'flex', gap: 18}}>
+          <div style={{position: 'absolute', top: LANES.chips.y0 + 6, left: LANES.chips.x0, display: 'flex', gap: 18}}>
             {['BOUNCE', 'BREAKDOWN'].map((t, i) => (
               <div
                 key={t}
@@ -647,9 +607,9 @@ export const TradeFailCam: React.FC<TradeFailCamProps> = (p) => {
         <div
           style={{
             position: 'absolute',
-            top: 1400,
-            left: 30,
-            width: 600,
+            top: LANES.lesson.y0,
+            left: LANES.lesson.x0,
+            width: LANES.lesson.x1 - LANES.lesson.x0,
             opacity: interpolate(frame, [1104, 1126], [0, 1], {
               easing: EASE.enter,
               extrapolateLeft: 'clamp',
@@ -670,14 +630,14 @@ export const TradeFailCam: React.FC<TradeFailCamProps> = (p) => {
               border: '2px solid rgba(34,224,126,.55)',
               fontFamily: FONT.body,
               fontWeight: 800,
-              fontSize: 40,
+              fontSize: 35,
               lineHeight: 1.18,
               color: '#E8EDF2',
               letterSpacing: -0.5,
             }}
           >
             A GOOD SETUP IS NOT A PREDICTION.
-            <div style={{fontSize: 27, fontWeight: 600, color: '#9FD9BC', marginTop: 10, letterSpacing: 0}}>
+            <div style={{fontSize: 24, fontWeight: 600, color: '#9FD9BC', marginTop: 10, letterSpacing: 0}}>
               It is a bet with a known cost. He was wrong and still only lost 1R.
             </div>
           </div>
@@ -689,9 +649,9 @@ export const TradeFailCam: React.FC<TradeFailCamProps> = (p) => {
         <div
           style={{
             position: 'absolute',
-            left: 30,
-            width: 590,
-            bottom: 168,
+            left: LANES.caption.x0,
+            width: LANES.caption.x1 - LANES.caption.x0,
+            bottom: 1920 - LANES.caption.y1,
             opacity: fadeOf(capP),
             transform: `translateY(${(1 - capP) * 14}px)`,
           }}
@@ -705,7 +665,7 @@ export const TradeFailCam: React.FC<TradeFailCamProps> = (p) => {
               border: '1px solid rgba(255,255,255,.12)',
               fontFamily: FONT.body,
               fontWeight: 700,
-              fontSize: 35,
+              fontSize: 32,
               lineHeight: 1.24,
               color: '#E8EDF2',
               letterSpacing: -0.4,
@@ -724,11 +684,11 @@ export const TradeFailCam: React.FC<TradeFailCamProps> = (p) => {
       <div
         style={{
           position: 'absolute',
-          left: 30,
-          bottom: 22,
-          width: 565,
+          left: LANES.footer.x0,
+          bottom: 1920 - LANES.footer.y1 + 8,
+          width: LANES.footer.x1 - LANES.footer.x0,
           fontFamily: FONT.mono,
-          fontSize: 16.5,
+          fontSize: 15.5,
           color: '#7FA290',
           letterSpacing: 0.4,
           lineHeight: 1.42,

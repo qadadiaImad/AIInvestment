@@ -23,8 +23,23 @@ dread through the wait, shoots up on the break, slumps into the facepalm —
 the bottom edge crops him, so height IS emotion), and one single frame punch +
 impact kick on the break.
 
+**The no-overlap guarantee.** Staging lives in ONE file —
+`remotion/src/fixtures/btc_reel/cam_staging.json` — which the composition
+imports and `scripts/btc_reel/check_overlaps.py` verifies against the pose
+drawings' real per-row ink profiles, conservatively (full drift + overshoot,
+camDy segment endpoints, +8% scale envelope). "The character never overlaps
+any text or display object" is a checked property of every one of the 1200
+frames, not a hope. Staging changes go: JSON → checker → render.
+
+**Pacing.** 25 cuts, not 36 — the denser sheet read as hyperactivity. Long
+holds carry the emotion through the sweat drop, the sink and small gaze tilts
+(negative tilts on watching poses lean his face up toward the panel); tight
+cutting is reserved for the reaction. True facial granularity needs a
+generated expression sheet — see `references/expression-sheet-brief.md`, a
+Higgsfield/laptop task.
+
 A 3-agent adversarial review (craft / mobile legibility / compliance) ran on
-the first full render and caught five real defects, all fixed and re-verified
+an earlier full render and caught five real defects, all fixed and re-verified
 in pixels: unclipped candle wicks punching through the chrome once the axis
 narrows; the live price tag truncating ENTRY/SUP/STOP labels (now right-aligned
 inside the plot + labels dim while the tag passes); STOP FILLED stacking on the

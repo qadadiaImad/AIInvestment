@@ -1,0 +1,388 @@
+{
+ "_": "SINGLE SOURCE OF TRUTH for TradeFailCam staging. The composition imports this AND scripts/btc_reel/check_overlaps.py verifies against it, so 'the character never overlaps any text or display object' is a checked constraint, not a hope. Change staging here, run the checker, then render.",
+ "panel": {
+  "x": 24,
+  "y": 176,
+  "w": 1032,
+  "h": 1006
+ },
+ "ui": 1.32,
+ "cam": {
+  "footX": 870,
+  "footY": 2144,
+  "ink": 840
+ },
+ "camDy": [
+  [
+   0,
+   430,
+   null
+  ],
+  [
+   8,
+   430,
+   null
+  ],
+  [
+   24,
+   0,
+   "settleBack"
+  ],
+  [
+   656,
+   0,
+   null
+  ],
+  [
+   662,
+   -14,
+   "exit"
+  ],
+  [
+   674,
+   0,
+   "settleBack"
+  ],
+  [
+   780,
+   0,
+   null
+  ],
+  [
+   958,
+   80,
+   "cruise"
+  ],
+  [
+   996,
+   80,
+   null
+  ],
+  [
+   1002,
+   -38,
+   "exit"
+  ],
+  [
+   1020,
+   -12,
+   "settleBack"
+  ],
+  [
+   1052,
+   6,
+   null
+  ],
+  [
+   1076,
+   10,
+   null
+  ],
+  [
+   1108,
+   42,
+   "cruise"
+  ],
+  [
+   1136,
+   42,
+   null
+  ],
+  [
+   1172,
+   6,
+   "cruise"
+  ],
+  [
+   1200,
+   6,
+   null
+  ]
+ ],
+ "cuts": [
+  {
+   "at": 0,
+   "pose": "idle",
+   "drift": {
+    "dy": -3
+   }
+  },
+  {
+   "at": 40,
+   "pose": "turning",
+   "drift": {
+    "dx": -4,
+    "tilt": -1.5
+   }
+  },
+  {
+   "at": 96,
+   "pose": "leans_a",
+   "drift": {
+    "dx": -5,
+    "tilt": -1.8
+   }
+  },
+  {
+   "at": 156,
+   "pose": "point",
+   "drift": {
+    "dx": -4,
+    "tilt": -1
+   }
+  },
+  {
+   "at": 214,
+   "pose": "leans_b",
+   "drift": {
+    "dx": -4,
+    "tilt": -1.2
+   }
+  },
+  {
+   "at": 300,
+   "pose": "idle",
+   "drift": {
+    "dy": -2,
+    "tilt": -0.5
+   }
+  },
+  {
+   "at": 366,
+   "pose": "notices",
+   "drift": {
+    "dx": -6,
+    "tilt": -2
+   }
+  },
+  {
+   "at": 420,
+   "pose": "leans_a",
+   "drift": {
+    "dx": -5,
+    "tilt": -1.5
+   }
+  },
+  {
+   "at": 464,
+   "pose": "crouch",
+   "drift": {
+    "dy": 4
+   }
+  },
+  {
+   "at": 516,
+   "pose": "point",
+   "drift": {
+    "dx": -4,
+    "tilt": -1.2
+   }
+  },
+  {
+   "at": 560,
+   "pose": "leans_a",
+   "drift": {
+    "dx": -5,
+    "dScale": 1.015,
+    "tilt": -1
+   }
+  },
+  {
+   "at": 616,
+   "pose": "idle",
+   "drift": {
+    "dy": -1,
+    "tilt": -0.5
+   }
+  },
+  {
+   "at": 662,
+   "pose": "crouch",
+   "drift": {
+    "dy": 5
+   }
+  },
+  {
+   "at": 706,
+   "pose": "leans_b",
+   "drift": {
+    "dx": 3,
+    "tilt": 1
+   }
+  },
+  {
+   "at": 752,
+   "pose": "crouch",
+   "drift": {
+    "dy": 5
+   }
+  },
+  {
+   "at": 800,
+   "pose": "bending",
+   "drift": {
+    "dx": -4,
+    "dScale": 1.015
+   }
+  },
+  {
+   "at": 852,
+   "pose": "crouch",
+   "drift": {
+    "dy": 6
+   }
+  },
+  {
+   "at": 906,
+   "pose": "leans_b",
+   "drift": {
+    "dx": 3,
+    "tilt": 1.2
+   }
+  },
+  {
+   "at": 956,
+   "pose": "crouch",
+   "drift": {
+    "dy": 6
+   }
+  },
+  {
+   "at": 1000,
+   "pose": "shock",
+   "drift": {
+    "dx": 20,
+    "dScale": 0.99,
+    "tilt": 2.5
+   }
+  },
+  {
+   "at": 1026,
+   "pose": "stagger",
+   "drift": {
+    "dx": 12,
+    "tilt": 2
+   }
+  },
+  {
+   "at": 1052,
+   "pose": "crouch",
+   "drift": {
+    "dy": 8
+   }
+  },
+  {
+   "at": 1076,
+   "pose": "facepalm",
+   "drift": {
+    "dy": 10,
+    "tilt": 1.2
+   }
+  },
+  {
+   "at": 1140,
+   "pose": "idle",
+   "drift": {
+    "dy": -2,
+    "tilt": -0.5
+   }
+  },
+  {
+   "at": 1174,
+   "pose": "turning",
+   "drift": {
+    "dx": -3,
+    "tilt": -1
+   }
+  }
+ ],
+ "lanes": {
+  "panel": {
+   "x0": 24,
+   "x1": 1056,
+   "y0": 176,
+   "y1": 1182,
+   "frames": [
+    0,
+    1200
+   ]
+  },
+  "caption": {
+   "x0": 30,
+   "x1": 516,
+   "y0": 1648,
+   "y1": 1795,
+   "frames": "captionWindows"
+  },
+  "ring": {
+   "x0": 140,
+   "x1": 360,
+   "y0": 1420,
+   "y1": 1660,
+   "frames": [
+    660,
+    780
+   ]
+  },
+  "chips": {
+   "x0": 30,
+   "x1": 480,
+   "y0": 1700,
+   "y1": 1782,
+   "frames": [
+    664,
+    780
+   ]
+  },
+  "lesson": {
+   "x0": 30,
+   "x1": 510,
+   "y0": 1400,
+   "y1": 1700,
+   "frames": [
+    1104,
+    1200
+   ]
+  },
+  "footer": {
+   "x0": 30,
+   "x1": 545,
+   "y0": 1832,
+   "y1": 1916,
+   "frames": [
+    0,
+    1200
+   ]
+  }
+ },
+ "captionWindows": [
+  [
+   16,
+   88
+  ],
+  [
+   258,
+   350
+  ],
+  [
+   436,
+   508
+  ],
+  [
+   524,
+   648
+  ],
+  [
+   806,
+   902
+  ],
+  [
+   924,
+   994
+  ],
+  [
+   1026,
+   1090
+  ]
+ ]
+}
