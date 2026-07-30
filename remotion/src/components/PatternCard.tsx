@@ -28,6 +28,9 @@ export type PTrend = {
 export type PatternData = {
   id: number;
   name: string;
+  ticker?: string;
+  from?: string;
+  to?: string;
   bias: string;
   answer: string;
   answerLine: string;
@@ -36,6 +39,10 @@ export type PatternData = {
   levelLabel: string;
   revealFrom: number;
   trend: PTrend | null;
+  /** Defining pivots, marked like a textbook diagram: the two tops of a
+   * double top, S/H/S of a head-and-shoulders. Computed by the scanner from
+   * the ACTUAL pivots it detected — never placed by eye. */
+  marks?: {i: number; label: string; side: 'above' | 'below'}[];
   candles: PCandle[];
 };
 
@@ -164,6 +171,17 @@ export const PatternCard: React.FC<PatternCardProps> = ({data, width, height, va
 
   const strokeMain = hero ? 3 : 2;
 
+  // The verdict stamp takes whichever top corner the chart leaves emptier —
+  // fixed top-left sat exactly on the double top's first peak mark. Emptiness
+  // is measured from the data: the corner above the third with the lower
+  // highs has more room.
+  const third = Math.max(1, Math.floor(n / 3));
+  const leftHi = Math.max(...d.candles.slice(0, third).map((k) => k.h));
+  const rightHi = Math.max(...d.candles.slice(n - third).map((k) => k.h));
+  const stampLeft = leftHi <= rightHi;
+  const stX = stampLeft ? PLOT.x0 + 12 : PLOT.x1 - 180;
+  const stCx = stX + 84;
+
   return (
     <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} style={{display: 'block'}}>
       <defs>
@@ -181,11 +199,11 @@ export const PatternCard: React.FC<PatternCardProps> = ({data, width, height, va
           <circle cx={56} cy={CHROME / 2} r={7} fill="#FEBC2E" />
           <circle cx={82} cy={CHROME / 2} r={7} fill="#28C840" />
           <text x={108} y={CHROME / 2 + 7} fontFamily={FONT.mono} fontSize={22} fill="#BFE9D2" letterSpacing={2.4}>
-            MAYA LAB — {d.name.toUpperCase()}
+            {(d.ticker ?? 'MAYA LAB').toUpperCase()} — {d.name.toUpperCase()}
           </text>
-          <circle cx={width - 96} cy={CHROME / 2} r={5} fill={PT.ice} opacity={0.6 + Math.sin(frame / 8) * 0.4} />
-          <text x={width - 82} y={CHROME / 2 + 6} fontFamily={FONT.mono} fontSize={17} fill={PT.steel} letterSpacing={2}>
-            LIVE
+          {/* real data gets its real date range where a live badge would lie */}
+          <text x={width - 24} y={CHROME / 2 + 6} fontFamily={FONT.mono} fontSize={16.5} fill={PT.steel} textAnchor="end" letterSpacing={1}>
+            {d.from && d.to ? `${d.from} → ${d.to} · 1D` : ''}
           </text>
           <line x1={0} x2={width} y1={CHROME} y2={CHROME} stroke={PT.gridBold} strokeWidth={1.5} />
           {Array.from({length: 5}, (_, i) => {
@@ -291,15 +309,51 @@ export const PatternCard: React.FC<PatternCardProps> = ({data, width, height, va
         ) : null}
       </g>
 
+      {/* ----------------------------------------------------------- marks.
+          Each appears as its own candle finishes printing — the diagram
+          annotates the tape, it does not precede it. */}
+      {(d.marks ?? []).map((mk, ix) => {
+        const k = d.candles[mk.i];
+        if (!k) return null;
+        const on = hero ? frame >= appearAt(mk.i) + formOf(mk.i) + 2 : true;
+        if (!on) return null;
+        const above = mk.side === 'above';
+        const my = above ? pY(k.h) - (hero ? 20 : 9) : pY(k.l) + (hero ? 20 : 9);
+        const mp = hero
+          ? interpolate(frame, [appearAt(mk.i) + formOf(mk.i) + 2, appearAt(mk.i) + formOf(mk.i) + 10], [0, 1], {
+              easing: EASE.settleBack,
+              extrapolateLeft: 'clamp',
+              extrapolateRight: 'clamp',
+            })
+          : 1;
+        const rr = (hero ? 15 : 7) * mp;
+        return (
+          <g key={`mk${ix}`} opacity={Math.min(1, mp * 1.3)}>
+            <circle cx={cx(mk.i)} cy={my} r={rr} fill="#04140D" stroke={PT.ice} strokeWidth={hero ? 2 : 1.2} />
+            <text
+              x={cx(mk.i)}
+              y={my + (hero ? 6 : 3.2)}
+              fontFamily={FONT.mono}
+              fontSize={(hero ? 17 : 8.5) * Math.max(0.6, mp)}
+              fontWeight={700}
+              fill={PT.ice}
+              textAnchor="middle"
+            >
+              {mk.label}
+            </text>
+          </g>
+        );
+      })}
+
       {/* ---------------------------------------------------------- stamp */}
       {hero && stampP > 0 ? (
         <g
           opacity={stampP}
-          transform={`translate(${PLOT.x0 + 96} ${PLOT.y0 + 44}) scale(${stampScale}) translate(${-(PLOT.x0 + 96)} ${-(PLOT.y0 + 44)})`}
+          transform={`translate(${stCx} ${PLOT.y0 + 44}) scale(${stampScale}) translate(${-stCx} ${-(PLOT.y0 + 44)})`}
         >
-          <rect x={PLOT.x0 + 12} y={PLOT.y0 + 14} width={168} height={58} rx={10} fill={dirCol} />
+          <rect x={stX} y={PLOT.y0 + 14} width={168} height={58} rx={10} fill={dirCol} />
           <text
-            x={PLOT.x0 + 96}
+            x={stCx}
             y={PLOT.y0 + 53}
             fontFamily={FONT.mono}
             fontSize={32}

@@ -149,12 +149,12 @@ export const PatternGallery: React.FC<PatternGalleryProps> = (p) => {
       {frame < INTRO ? (
         <div style={{position: 'absolute', top: 720, left: 0, right: 0, textAlign: 'center', opacity: introP}}>
           <div style={{fontFamily: FONT.display, fontSize: 58, fontWeight: 700, color: PT.ink, lineHeight: 1.15}}>
-            12 formations.
+            12 real formations.
             <br />
-            <span style={{color: '#9FC2E8'}}>Watch them build.</span>
+            <span style={{color: '#9FC2E8'}}>Found in the S&amp;P.</span>
           </div>
           <div style={{fontFamily: FONT.mono, fontSize: 24, color: PT.steel, marginTop: 26, letterSpacing: 1.5}}>
-            save the poster at the end
+            real SPY bars · real dates · save the poster
           </div>
         </div>
       ) : null}
