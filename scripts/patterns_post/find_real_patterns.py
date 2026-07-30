@@ -428,12 +428,42 @@ def d_cup(bars, hi, lo):
 
 # ------------------------------------------------------------------ assembly
 
-def finish(bars, bad, inst, max_n=44):
-    """Trim to an eye-friendly window and convert to card geometry."""
+def finish(bars, bad, inst, max_n=44, rr=2.0):
+    """Trim to an eye-friendly window, attach the trade, keep only winners.
+
+    entry  = the breakout bar's real close
+    stop   = the extreme of the five bars into the breakout, 0.2% buffered -
+             behind the structure that fired the signal
+    target = entry +/- rr * risk
+
+    The instance survives ONLY if the target was hit within 12 sessions and
+    hit BEFORE the stop - the sheet displays winning strategies, and a target
+    that never filled is not a win.
+    """
     pre = 3
-    post = 5
+    r = inst["reveal"]
+    bull = inst["bias"] == "bullish"
+    entry = bars[r]["c"]
+    struct5 = bars[max(0, r - 4):r + 1]
+    stop = min(b["l"] for b in struct5) * 0.998 if bull else max(b["h"] for b in struct5) * 1.002
+    risk = (entry - stop) if bull else (stop - entry)
+    if risk < entry * 0.003:
+        return None
+    target = entry + rr * risk if bull else entry - rr * risk
+    tp_at = sl_at = None
+    for k in range(r + 1, min(r + 13, len(bars))):
+        if tp_at is None and ((bull and bars[k]["h"] >= target) or (not bull and bars[k]["l"] <= target)):
+            tp_at = k - r
+        if sl_at is None and ((bull and bars[k]["l"] <= stop) or (not bull and bars[k]["h"] >= stop)):
+            sl_at = k - r
+        if tp_at is not None or sl_at is not None:
+            break
+    if tp_at is None or (sl_at is not None and sl_at < tp_at):
+        return None
+
+    post = max(5, tp_at + 2)
     s = max(0, inst["start"] - pre)
-    e = min(len(bars) - 1, inst["reveal"] + post)
+    e = min(len(bars) - 1, r + post)
     # proportion floor: a 20-bar box among 36-bar boxes reads wrong. Pad the
     # run-in (honest context) until the window reaches 24 bars.
     while e - s + 1 < 24 and s > 0:
@@ -442,15 +472,17 @@ def finish(bars, bad, inst, max_n=44):
         s = e - max_n + 1
     # The trim must NEVER cut a defining pivot out of the window — losing the
     # first top of a double top deletes the pattern's own evidence. Marks win
-    # over the size cap: pull s back to keep them, trim aftermath instead,
-    # and accept up to 50 bars before giving up on the instance.
+    # over the size cap: pull s back to keep them, trim aftermath instead
+    # (never past the target hit), and accept up to 50 bars before giving up.
     first_mark = min((mi for mi, _, _ in inst.get("marks", [])), default=None)
     if first_mark is not None and s > first_mark - 2:
         s = max(0, first_mark - 2)
-        while e - s + 1 > max_n and e > inst["reveal"] + 2:
+        while e - s + 1 > max_n and e > r + tp_at + 1:
             e -= 1
         if e - s + 1 > 50:
             return None
+    if e < r + tp_at:
+        return None
     if any(i in bad for i in range(s, e + 1)):
         return None
     w = bars[s:e + 1]
@@ -475,24 +507,13 @@ def finish(bars, bad, inst, max_n=44):
                 "hi": {"m": round(fh[0], 5), "c": round(fh[1], 4)},
                 "lo": {"m": round(fh[0], 5), "c": round(fh[1], 4)},
             }
-    # What actually happened, for the factLine. Measured from the BREAKOUT
-    # BAR'S REAL CLOSE, never from a fitted line's value: an extrapolated
-    # neckline can sit far from where price actually trades, and dividing by
-    # it produced -19% five-session SPY moves that never happened. The level
-    # must also BE near the breakout close, or the instance's geometry is a
-    # degenerate fit and the whole card is rejected.
-    after = w[reveal_local:]
+    # The level must be near the breakout close, or the instance's geometry is
+    # a degenerate fit and the whole card is rejected.
     close_r = w[reveal_local]["c"]
     lvl = inst["level"]
     if abs(lvl / close_r - 1) > 0.025:
         return None
-    if inst["bias"] == "bearish":
-        ext = min(b["l"] for b in after)
-    else:
-        ext = max(b["h"] for b in after)
-    chg = (ext / close_r - 1) * 100
-    days = len(after) - 1
-    fact = f"Real break — {chg:+.1f}% in {days} sessions."
+    fact = f"1:{rr:g} target hit in {tp_at} sessions."
     marks = [
         {"i": mi - s, "label": lab, "side": side}
         for mi, lab, side in inst.get("marks", [])
@@ -500,7 +521,9 @@ def finish(bars, bad, inst, max_n=44):
     ]
     return {
         "window": w, "revealFrom": reveal_local, "trend": trend,
-        "factLine": fact, "chg": round(chg, 1), "marks": marks,
+        "factLine": fact, "marks": marks,
+        "entry": round(entry, 2), "stop": round(stop, 2), "target": round(target, 2),
+        "rr": rr, "tpAt": tp_at,
     }
 
 
@@ -543,16 +566,21 @@ def main():
         insts = det()
         insts.sort(key=lambda x: -x["score"])
         pick = None
-        for inst in insts:
-            # Distinct windows: the August-2022 rollover IS both a double top
-            # and a head-and-shoulders, but showing the same six weeks twice
-            # makes the reel read as one example wearing two hats.
-            if overlaps(inst["start"], inst["reveal"] + 5):
-                continue
-            fin = finish(bars, bad, inst, max_n=48 if name == "Cup and Handle" else 44)
-            if fin:
-                pick = (inst, fin)
-                taken.append((inst["start"], inst["reveal"] + 5))
+        # Winners only, best R first: try 1:2, then 1:1.5, then 1:1.2 - the
+        # R that survives is printed on the card, never silently downgraded.
+        for rr in (2.0, 1.5, 1.2):
+            for inst in insts:
+                # Distinct windows: the August-2022 rollover IS both a double
+                # top and a head-and-shoulders, but showing the same six weeks
+                # twice reads as one example wearing two hats.
+                if overlaps(inst["start"], inst["reveal"] + 5):
+                    continue
+                fin = finish(bars, bad, inst, max_n=48 if name == "Cup and Handle" else 44, rr=rr)
+                if fin:
+                    pick = (inst, fin)
+                    taken.append((inst["start"], inst["reveal"] + 5))
+                    break
+            if pick:
                 break
         if pick:
             inst, fin = pick
@@ -570,9 +598,11 @@ def main():
                 "revealFrom": fin["revealFrom"],
                 "trend": fin["trend"],
                 "marks": fin["marks"],
+                "entry": fin["entry"], "stop": fin["stop"], "target": fin["target"],
+                "rr": fin["rr"], "tpAt": fin["tpAt"],
                 "candles": [{"o": b["o"], "h": b["h"], "l": b["l"], "c": b["c"]} for b in w],
             }
-            print(f"  FOUND {name:28} {w[0]['date']} -> {w[-1]['date']}  n={len(w)}  {inst['answer']}  {fin['factLine']}")
+            print(f"  FOUND {name:28} {w[0]['date']} -> {w[-1]['date']}  n={len(w)}  {inst['answer']}  entry {fin['entry']} stop {fin['stop']} tp {fin['target']}  {fin['factLine']}")
         else:
             print(f"  UNMATCHED {name}")
 

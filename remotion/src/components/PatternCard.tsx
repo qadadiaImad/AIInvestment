@@ -43,6 +43,14 @@ export type PatternData = {
    * double top, S/H/S of a head-and-shoulders. Computed by the scanner from
    * the ACTUAL pivots it detected — never placed by eye. */
   marks?: {i: number; label: string; side: 'above' | 'below'}[];
+  /** The winning trade the scanner verified: entry at the breakout close,
+   * stop behind the structure, target actually HIT before the stop. All four
+   * or none — a target with no stop shows upside and hides cost. */
+  entry?: number;
+  stop?: number;
+  target?: number;
+  rr?: number;
+  tpAt?: number | null;
   candles: PCandle[];
 };
 

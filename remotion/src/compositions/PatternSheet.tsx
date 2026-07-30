@@ -22,7 +22,8 @@ import {FONT} from '../slides/theme';
 import {EASE} from '../motion/craft';
 import {Grain, Vignette} from '../motion/Polish';
 import {PT, type PatternData} from '../components/PatternCard';
-import {PatternCell} from '../components/PatternCell';
+import {PatternCell, cellTpFrame} from '../components/PatternCell';
+import {impact} from '../motion/toon';
 
 export const patternSheetSchema = z.object({
   chapters: z.array(
@@ -41,13 +42,17 @@ export const PATTERN_SHEET_FRAMES = 900;
 
 // The ten, in reading order (left-right, top-bottom): reversals first, then
 // continuation, then the wedges — the same taxonomy the classic sheets use.
+// Bear Flag is honestly UNMATCHED under the winners-only rule — no SPY bear
+// flag in five years whose breakdown ran to target before the stop — so Cup
+// and Handle pairs with Bull Flag instead. Thresholds do not get loosened to
+// fake a loser into a winner.
 const PICK = [
   'Double Top',
   'Double Bottom',
   'Head and Shoulders',
   'Inverse Head and Shoulders',
   'Bull Flag',
-  'Bear Flag',
+  'Cup and Handle',
   'Ascending Triangle',
   'Symmetrical Triangle',
   'Rising Wedge',
@@ -60,7 +65,9 @@ const GAP = 14;
 const CELL_W = (1080 - GAP * (COLS + 1)) / COLS; // 519
 const CELL_H = 300;
 const GRID_TOP = 196;
-const STAGGER = 16; // frames between box starts — a ripple, not a queue
+const STAGGER = 18; // frames between box landings — a drum pattern, not a queue
+/** Frames after a box's Sequence start at which it LANDS (the smash). */
+const LAND = 7;
 
 export const PatternSheet: React.FC<PatternSheetProps> = (p) => {
   const frame = useCurrentFrame();
@@ -69,8 +76,19 @@ export const PatternSheet: React.FC<PatternSheetProps> = (p) => {
   for (const ch of p.chapters) for (const c of ch.cards as PatternData[]) byName[c.name] = c;
   const cells = PICK.map((n) => byName[n]).filter(Boolean);
 
+  // every landing kicks the whole sheet — the surface being smashed is the
+  // frame itself, and a surface that does not move absorbed nothing
+  let kx = 0;
+  let ky = 0;
+  for (let i = 0; i < cells.length; i++) {
+    const land = 10 + i * STAGGER + LAND;
+    kx += impact(frame - land, 12) * 7 * (i % 2 === 0 ? 1 : -1);
+    ky += impact(frame - land - 1, 12) * 5;
+  }
+
   return (
     <AbsoluteFill style={{backgroundColor: PT.bg}}>
+      <AbsoluteFill style={{transform: `translate(${kx}px, ${ky}px)`}}>
       {/* faint ruled grid behind everything */}
       <svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
         {Array.from({length: 11}, (_, i) => (
@@ -101,12 +119,24 @@ export const PatternSheet: React.FC<PatternSheetProps> = (p) => {
         const x = GAP + col * (CELL_W + GAP);
         const y = GRID_TOP + row * (CELL_H + GAP);
         const at = 10 + i * STAGGER;
-        // the box itself lands first — a quick pop, then its chart draws
-        const inP = interpolate(frame, [at - 8, at + 2], [0, 1], {
+        const land = at + LAND;
+        // THE SMASH. The box falls INTO the sheet from above the screen plane:
+        // it starts big and translucent (near the lens), slams to size on the
+        // landing frame, and the settle overshoots — a body hitting a surface,
+        // not a fade-in. The impact ring below and the frame kick sell the
+        // weight; the chart only starts drawing after the box has landed.
+        const drop = interpolate(frame, [at, land], [0, 1], {
+          easing: EASE.exit, // accelerating — falling
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+        });
+        const settle = interpolate(frame, [land, land + 9], [1.045, 1], {
           easing: EASE.settleBack,
           extrapolateLeft: 'clamp',
           extrapolateRight: 'clamp',
         });
+        const scale = frame < land ? 1.75 - 0.75 * drop : settle;
+        const opacity = frame < at ? 0 : frame < land ? 0.25 + 0.75 * drop : 1;
         return (
           <div
             key={card.id}
@@ -116,17 +146,62 @@ export const PatternSheet: React.FC<PatternSheetProps> = (p) => {
               top: y,
               width: CELL_W,
               height: CELL_H,
-              opacity: Math.min(1, inP * 1.4),
-              transform: `scale(${0.92 + 0.08 * inP})`,
+              opacity,
+              transform: `scale(${scale})`,
               transformOrigin: '50% 50%',
+              filter: frame >= at && frame < land ? 'blur(2px)' : undefined,
             }}
           >
-            <Sequence from={at} layout="none">
+            <Sequence from={land} layout="none">
               <PatternCell data={card} width={CELL_W} height={CELL_H} />
             </Sequence>
+            {/* pre-landing face: the falling slab shows only its shell */}
+            {frame >= at && frame < land ? (
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: 12,
+                  border: `1.4px solid ${PT.edge}`,
+                  background: 'linear-gradient(#04100C, #020806)',
+                }}
+              />
+            ) : null}
           </div>
         );
       })}
+
+      {/* impact rings on each landing — the sheet surface reacting */}
+      <svg width={1080} height={1920} style={{position: 'absolute', inset: 0, pointerEvents: 'none'}}>
+        {cells.map((card, i) => {
+          const col = i % COLS;
+          const row = Math.floor(i / COLS);
+          const cxp = GAP + col * (CELL_W + GAP) + CELL_W / 2;
+          const cyp = GRID_TOP + row * (CELL_H + GAP) + CELL_H / 2;
+          const land = 10 + i * STAGGER + LAND;
+          const t = (frame - land) / 14;
+          if (t < 0 || t > 1) return null;
+          const r = interpolate(t, [0, 1], [60, 330], {easing: EASE.exit});
+          const op = interpolate(t, [0, 0.15, 1], [0, 0.55, 0]);
+          return (
+            <g key={card.id} opacity={op}>
+              <rect
+                x={cxp - CELL_W / 2 - 20 * t}
+                y={cyp - CELL_H / 2 - 20 * t}
+                width={CELL_W + 40 * t}
+                height={CELL_H + 40 * t}
+                rx={14}
+                fill="none"
+                stroke={PT.ice}
+                strokeWidth={2.5 * (1 - t)}
+              />
+              <circle cx={cxp} cy={cyp} r={r} fill="none" stroke="rgba(0,224,130,0.5)" strokeWidth={3 * (1 - t)} />
+            </g>
+          );
+        })}
+      </svg>
+
+      </AbsoluteFill>
 
       <Vignette strength={0.24} />
       <Grain opacity={0.038} />
@@ -149,14 +224,29 @@ export const PatternSheet: React.FC<PatternSheetProps> = (p) => {
         {p.footer}
       </div>
 
-      {/* one blip per box as its breakout prints — sparse under any track */}
+      {/* sound: an impact on every landing (ten hits eighteen frames apart —
+          a drum pattern), a blip as each breakout prints, and a COIN on each
+          real target fill. Winners only, so every box earns its coin. */}
       {cells.map((card, i) => {
-        const at = 10 + i * STAGGER + 178; // cell-local setupEnd+8 ≈ first reveal bar
+        const start = 10 + i * STAGGER;
+        const land = start + LAND;
+        const breakAt = land + 178;
+        const tpLocal = cellTpFrame(card);
         const up = card.bias === 'bullish';
         return (
-          <Sequence key={`au${card.id}`} from={at} durationInFrames={12}>
-            <Audio src={staticFile(up ? 'audio/candle_up.wav' : 'audio/candle_down.wav')} volume={0.3} />
-          </Sequence>
+          <React.Fragment key={`au${card.id}`}>
+            <Sequence from={land} durationInFrames={14}>
+              <Audio src={staticFile('audio/impact.wav')} volume={0.4} />
+            </Sequence>
+            <Sequence from={breakAt} durationInFrames={12}>
+              <Audio src={staticFile(up ? 'audio/candle_up.wav' : 'audio/candle_down.wav')} volume={0.3} />
+            </Sequence>
+            {tpLocal !== null ? (
+              <Sequence from={land + tpLocal} durationInFrames={26}>
+                <Audio src={staticFile('audio/coin.wav')} volume={0.32} />
+              </Sequence>
+            ) : null}
+          </React.Fragment>
         );
       })}
     </AbsoluteFill>

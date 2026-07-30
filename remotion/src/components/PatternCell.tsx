@@ -31,6 +31,15 @@ const T = {
 };
 const CANDLE_TICKS = 3;
 
+/** When this cell's target-hit bar finishes printing, in CELL-LOCAL frames —
+ * the composition schedules the coin on exactly this frame so sound and pixel
+ * cannot drift apart. Null when the fixture carries no trade. */
+export const cellTpFrame = (d: PatternData): number | null => {
+  if (d.tpAt === undefined || d.tpAt === null) return null;
+  const i = d.revealFrom + d.tpAt;
+  return T.setupEnd + 8 + (i - d.revealFrom) * T.revealPer + T.revealPer + 4;
+};
+
 export type PatternCellProps = {
   data: PatternData;
   width: number;
@@ -104,6 +113,20 @@ export const PatternCell: React.FC<PatternCellProps> = ({data, width, height}) =
   const arrowLen = (PLOT.y1 - PLOT.y0) * 0.3;
   const ay1 = bull ? levelY - arrowLen : levelY + arrowLen;
 
+  // The winning trade. All four or none: entry, stop, target, R — a target
+  // with no stop shows the upside and hides what being wrong would have cost.
+  const hasTrade =
+    d.entry !== undefined && d.stop !== undefined && d.target !== undefined && d.rr !== undefined;
+  const tradeIn = arrowIn + 8;
+  const tradeP = hasTrade ? prog(tradeIn, 14) : 0;
+  const tpF = cellTpFrame(d);
+  const tpP = tpF !== null ? prog(tpF, 8) : 0;
+  const tpPulse =
+    tpF !== null && frame >= tpF && frame < tpF + 16
+      ? Math.sin(((frame - tpF) / 16) * Math.PI)
+      : 0;
+  const tx0 = cx(d.revealFrom);
+
   const shortName = d.name
     .replace('Inverse Head and Shoulders', 'Inv. Head & Shoulders')
     .replace('Head and Shoulders', 'Head & Shoulders')
@@ -118,6 +141,11 @@ export const PatternCell: React.FC<PatternCellProps> = ({data, width, height}) =
         </linearGradient>
       </defs>
       <rect x={0} y={0} width={width} height={height} rx={12} fill={`url(#cell${d.id})`} stroke={PT.edge} strokeWidth={1.4} />
+      {/* everything price-anchored clips to the plot — a trendline fitted to
+          steep pivots otherwise runs through the box title */}
+      <clipPath id={`cellclip${d.id}`}>
+        <rect x={1} y={HEAD + 1} width={width - 2} height={height - HEAD - DATE_H - 2} />
+      </clipPath>
 
       {/* --------------------------------------------------------- header */}
       <text x={14} y={24} fontFamily={FONT.mono} fontSize={17} fontWeight={700} fill="#BFE9D2" letterSpacing={0.8}>
@@ -137,7 +165,7 @@ export const PatternCell: React.FC<PatternCellProps> = ({data, width, height}) =
 
       {/* ------------------------------------------------------ trendlines */}
       {tl ? (
-        <g opacity={trendP}>
+        <g opacity={trendP} clipPath={`url(#cellclip${d.id})`}>
           {(['hi', 'lo'] as const).map((side) => {
             const L = tl[side];
             const x0 = cx(tl.from);
@@ -210,6 +238,68 @@ export const PatternCell: React.FC<PatternCellProps> = ({data, width, height}) =
           </g>
         );
       })}
+
+      {/* ------------------------------------------------- the trade frame.
+          Entry, stop, target — drawn the moment the break prints, resolved
+          when the target bar lands. Winners only made this sheet, and the R
+          on the chip is the R that really paid. */}
+      {hasTrade && tradeP > 0 ? (
+        <g opacity={tradeP} clipPath={`url(#cellclip${d.id})`}>
+          <rect
+            x={tx0}
+            y={bull ? pY(d.target!) : pY(d.entry!)}
+            width={(PLOT.x1 - tx0) * tradeP}
+            height={Math.max(1, Math.abs(pY(d.entry!) - pY(d.target!)))}
+            fill={PT.up}
+            opacity={0.10 + tpPulse * 0.12}
+          />
+          <rect
+            x={tx0}
+            y={bull ? pY(d.entry!) : pY(d.stop!)}
+            width={(PLOT.x1 - tx0) * tradeP}
+            height={Math.max(1, Math.abs(pY(d.stop!) - pY(d.entry!)))}
+            fill={PT.down}
+            opacity={0.12}
+          />
+          {[
+            {v: d.target!, c: PT.up},
+            {v: d.entry!, c: '#E8EDF2'},
+            {v: d.stop!, c: PT.down},
+          ].map((l, ix) => (
+            <line
+              key={ix}
+              x1={tx0}
+              x2={tx0 + (PLOT.x1 - tx0) * tradeP}
+              y1={pY(l.v)}
+              y2={pY(l.v)}
+              stroke={l.c}
+              strokeWidth={ix === 0 && tpPulse > 0 ? 1.6 + tpPulse * 1.6 : 1.3}
+              style={ix === 0 && tpPulse > 0 ? {filter: `drop-shadow(0 0 ${4 + tpPulse * 6}px ${PT.up})`} : undefined}
+            />
+          ))}
+          {/* the payoff, on the frame its bar prints */}
+          {tpP > 0 ? (
+            <g
+              opacity={tpP}
+              transform={`translate(${PLOT.x1 - 38} ${pY(d.target!) - 14}) scale(${interpolate(tpP, [0, 1], [1.6, 1])}) translate(${-(PLOT.x1 - 38)} ${-(pY(d.target!) - 14)})`}
+            >
+              <rect x={PLOT.x1 - 76} y={pY(d.target!) - 25} width={76} height={22} rx={6} fill={PT.up} />
+              <text
+                x={PLOT.x1 - 38}
+                y={pY(d.target!) - 9}
+                fontFamily={FONT.mono}
+                fontSize={13}
+                fontWeight={700}
+                fill="#04120B"
+                textAnchor="middle"
+                letterSpacing={0.6}
+              >
+                TP ✓ {d.rr!.toFixed(1).replace('.0', '')}R
+              </text>
+            </g>
+          ) : null}
+        </g>
+      ) : null}
 
       {/* ----------------------------------------------------------- arrow */}
       <g opacity={arrowP}>
