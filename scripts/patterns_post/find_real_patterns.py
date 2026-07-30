@@ -513,7 +513,11 @@ def finish(bars, bad, inst, max_n=44, rr=2.0):
     lvl = inst["level"]
     if abs(lvl / close_r - 1) > 0.025:
         return None
-    fact = f"1:{rr:g} target hit in {tp_at} sessions."
+    # The gain the strategy actually banked: entry to target, which this
+    # instance verifiably reached. Hindsight fact, not a promise - the footer
+    # says so on every frame.
+    gain_pct = abs(target - entry) / entry * 100
+    fact = f"+{gain_pct:.1f}% banked in {tp_at} sessions (1:{rr:g})."
     marks = [
         {"i": mi - s, "label": lab, "side": side}
         for mi, lab, side in inst.get("marks", [])
@@ -523,7 +527,7 @@ def finish(bars, bad, inst, max_n=44, rr=2.0):
         "window": w, "revealFrom": reveal_local, "trend": trend,
         "factLine": fact, "marks": marks,
         "entry": round(entry, 2), "stop": round(stop, 2), "target": round(target, 2),
-        "rr": rr, "tpAt": tp_at,
+        "rr": rr, "tpAt": tp_at, "gainPct": round(gain_pct, 1),
     }
 
 
@@ -599,7 +603,7 @@ def main():
                 "trend": fin["trend"],
                 "marks": fin["marks"],
                 "entry": fin["entry"], "stop": fin["stop"], "target": fin["target"],
-                "rr": fin["rr"], "tpAt": fin["tpAt"],
+                "rr": fin["rr"], "tpAt": fin["tpAt"], "gainPct": fin["gainPct"],
                 "candles": [{"o": b["o"], "h": b["h"], "l": b["l"], "c": b["c"]} for b in w],
             }
             print(f"  FOUND {name:28} {w[0]['date']} -> {w[-1]['date']}  n={len(w)}  {inst['answer']}  entry {fin['entry']} stop {fin['stop']} tp {fin['target']}  {fin['factLine']}")

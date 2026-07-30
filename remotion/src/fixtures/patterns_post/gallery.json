@@ -14,7 +14,7 @@
      "to": "2022-01-26",
      "bias": "bearish",
      "answer": "SELL",
-     "answerLine": "1:2 target hit in 4 sessions.",
+     "answerLine": "+7.7% banked in 4 sessions (1:2).",
      "context": "",
      "levelPrice": 456.59,
      "levelLabel": "NECKLINE",
@@ -37,6 +37,7 @@
      "target": 421.18,
      "rr": 2.0,
      "tpAt": 4,
+     "gainPct": 7.7,
      "candles": [
       {
        "o": 462.79,
@@ -192,7 +193,7 @@
      "to": "2023-06-20",
      "bias": "bullish",
      "answer": "BUY",
-     "answerLine": "1:2 target hit in 10 sessions.",
+     "answerLine": "+4.9% banked in 10 sessions (1:2).",
      "context": "",
      "levelPrice": 420.72,
      "levelLabel": "NECKLINE",
@@ -215,6 +216,7 @@
      "target": 442.29,
      "rr": 2.0,
      "tpAt": 10,
+     "gainPct": 4.9,
      "candles": [
       {
        "o": 408.91,
@@ -412,7 +414,7 @@
      "to": "2024-08-07",
      "bias": "bearish",
      "answer": "SELL",
-     "answerLine": "1:1.5 target hit in 8 sessions.",
+     "answerLine": "+5.4% banked in 8 sessions (1:1.5).",
      "context": "",
      "levelPrice": 549.15,
      "levelLabel": "NECKLINE",
@@ -440,6 +442,7 @@
      "target": 512.12,
      "rr": 1.5,
      "tpAt": 8,
+     "gainPct": 5.4,
      "candles": [
       {
        "o": 543.99,
@@ -637,7 +640,7 @@
      "to": "2025-08-28",
      "bias": "bullish",
      "answer": "BUY",
-     "answerLine": "1:2 target hit in 1 sessions.",
+     "answerLine": "+1.2% banked in 1 sessions (1:2).",
      "context": "",
      "levelPrice": 626.36,
      "levelLabel": "NECKLINE",
@@ -665,6 +668,7 @@
      "target": 643.28,
      "rr": 2.0,
      "tpAt": 1,
+     "gainPct": 1.2,
      "candles": [
       {
        "o": 624.43,
@@ -868,7 +872,7 @@
      "to": "2026-05-13",
      "bias": "bullish",
      "answer": "BUY",
-     "answerLine": "1:2 target hit in 11 sessions.",
+     "answerLine": "+3.7% banked in 11 sessions (1:2).",
      "context": "",
      "levelPrice": 712.36,
      "levelLabel": "FLAG EDGE",
@@ -891,6 +895,7 @@
      "target": 740.07,
      "rr": 2.0,
      "tpAt": 11,
+     "gainPct": 3.7,
      "candles": [
       {
        "o": 640.12,
@@ -1094,7 +1099,7 @@
      "to": "2026-05-13",
      "bias": "bullish",
      "answer": "BUY",
-     "answerLine": "1:2 target hit in 5 sessions.",
+     "answerLine": "+3.1% banked in 5 sessions (1:2).",
      "context": "",
      "levelPrice": 714.01,
      "levelLabel": "RESISTANCE \u00b7 2 TOUCHES",
@@ -1117,6 +1122,7 @@
      "target": 740.12,
      "rr": 2.0,
      "tpAt": 5,
+     "gainPct": 3.1,
      "candles": [
       {
        "o": 668.33,
@@ -1368,7 +1374,7 @@
      "to": "2023-12-01",
      "bias": "bullish",
      "answer": "BUY",
-     "answerLine": "1:2 target hit in 12 sessions.",
+     "answerLine": "+3.7% banked in 12 sessions (1:2).",
      "context": "",
      "levelPrice": 437.34,
      "levelLabel": "RIM",
@@ -1380,6 +1386,7 @@
      "target": 456.76,
      "rr": 2.0,
      "tpAt": 12,
+     "gainPct": 3.7,
      "candles": [
       {
        "o": 427.58,
@@ -1631,7 +1638,7 @@
      "to": "2023-01-05",
      "bias": "bullish",
      "answer": "BUY",
-     "answerLine": "1:2 target hit in 1 sessions.",
+     "answerLine": "+1.4% banked in 1 sessions (1:2).",
      "context": "",
      "levelPrice": 372.02,
      "levelLabel": "BREAK LINE",
@@ -1654,6 +1661,7 @@
      "target": 381.94,
      "rr": 2.0,
      "tpAt": 1,
+     "gainPct": 1.4,
      "candles": [
       {
        "o": 408.8,
@@ -1809,7 +1817,7 @@
      "to": "2022-12-27",
      "bias": "bearish",
      "answer": "SELL",
-     "answerLine": "1:2 target hit in 6 sessions.",
+     "answerLine": "+6.0% banked in 6 sessions (1:2).",
      "context": "",
      "levelPrice": 403.32,
      "levelLabel": "BREAK LINE",
@@ -1832,6 +1840,7 @@
      "target": 375.58,
      "rr": 2.0,
      "tpAt": 6,
+     "gainPct": 6.0,
      "candles": [
       {
        "o": 381.61,
@@ -2101,7 +2110,7 @@
      "to": "2022-10-26",
      "bias": "bullish",
      "answer": "BUY",
-     "answerLine": "1:2 target hit in 6 sessions.",
+     "answerLine": "+5.7% banked in 6 sessions (1:2).",
      "context": "",
      "levelPrice": 356.72,
      "levelLabel": "BREAK LINE",
@@ -2124,6 +2133,7 @@
      "target": 378.06,
      "rr": 2.0,
      "tpAt": 6,
+     "gainPct": 5.7,
      "candles": [
       {
        "o": 399.93,
@@ -2375,7 +2385,7 @@
      "to": "2021-11-09",
      "bias": "bullish",
      "answer": "BUY",
-     "answerLine": "1:1.5 target hit in 6 sessions.",
+     "answerLine": "+2.7% banked in 6 sessions (1:1.5).",
      "context": "",
      "levelPrice": 457.11,
      "levelLabel": "BREAK LINE",
@@ -2398,6 +2408,7 @@
      "target": 470.58,
      "rr": 1.5,
      "tpAt": 6,
+     "gainPct": 2.7,
      "candles": [
       {
        "o": 450.7,

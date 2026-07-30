@@ -277,24 +277,25 @@ export const PatternCell: React.FC<PatternCellProps> = ({data, width, height}) =
               style={ix === 0 && tpPulse > 0 ? {filter: `drop-shadow(0 0 ${4 + tpPulse * 6}px ${PT.up})`} : undefined}
             />
           ))}
-          {/* the payoff, on the frame its bar prints */}
+          {/* the payoff, on the frame its bar prints — the REAL gain the
+              trade banked, with the R beside it. Numbers are the point. */}
           {tpP > 0 ? (
             <g
               opacity={tpP}
-              transform={`translate(${PLOT.x1 - 38} ${pY(d.target!) - 14}) scale(${interpolate(tpP, [0, 1], [1.6, 1])}) translate(${-(PLOT.x1 - 38)} ${-(pY(d.target!) - 14)})`}
+              transform={`translate(${PLOT.x1 - 62} ${pY(d.target!) - 14}) scale(${interpolate(tpP, [0, 1], [1.6, 1])}) translate(${-(PLOT.x1 - 62)} ${-(pY(d.target!) - 14)})`}
             >
-              <rect x={PLOT.x1 - 76} y={pY(d.target!) - 25} width={76} height={22} rx={6} fill={PT.up} />
+              <rect x={PLOT.x1 - 124} y={pY(d.target!) - 26} width={124} height={24} rx={6} fill={PT.up} />
               <text
-                x={PLOT.x1 - 38}
+                x={PLOT.x1 - 62}
                 y={pY(d.target!) - 9}
                 fontFamily={FONT.mono}
-                fontSize={13}
+                fontSize={13.5}
                 fontWeight={700}
                 fill="#04120B"
                 textAnchor="middle"
-                letterSpacing={0.6}
+                letterSpacing={0.4}
               >
-                TP ✓ {d.rr!.toFixed(1).replace('.0', '')}R
+                ✓ +{(d.gainPct ?? 0).toFixed(1)}% · {d.rr!.toFixed(1).replace('.0', '')}R
               </text>
             </g>
           ) : null}

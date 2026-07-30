@@ -108,7 +108,7 @@ export const PatternSheet: React.FC<PatternSheetProps> = (p) => {
           CHART <span style={{color: '#9FC2E8'}}>PATTERNS</span>
         </div>
         <div style={{fontFamily: FONT.mono, fontSize: 19, color: PT.steel, marginTop: 8, letterSpacing: 1.6}}>
-          10 real formations · found in SPY · real dates
+          10 real SPY formations · every target hit · real dates
         </div>
       </div>
 

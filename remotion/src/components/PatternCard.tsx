@@ -51,6 +51,8 @@ export type PatternData = {
   target?: number;
   rr?: number;
   tpAt?: number | null;
+  /** Real percent from entry to the target that was actually hit. */
+  gainPct?: number;
   candles: PCandle[];
 };
 
