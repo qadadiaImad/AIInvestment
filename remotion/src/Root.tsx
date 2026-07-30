@@ -32,6 +32,7 @@ import { MemeReel, memeReelSchema } from "./compositions/MemeReel";
 import { TradeFailReel, tradeFailReelSchema } from "./compositions/TradeFailReel";
 import { TradeFailCam, tradeFailCamSchema } from "./compositions/TradeFailCam";
 import { PatternGallery, patternGallerySchema, PATTERN_GALLERY_FRAMES } from "./compositions/PatternGallery";
+import { PatternSheet, patternSheetSchema, PATTERN_SHEET_FRAMES } from "./compositions/PatternSheet";
 import patternGalleryFixture from "./fixtures/patterns_post/gallery.json";
 import { RigCheck, rigCheckSchema } from "./compositions/RigCheck";
 import memeReelFixture from "./fixtures/meme_reel/intc_failed_breakout.json";
@@ -306,6 +307,24 @@ export const RemotionRoot: React.FC = () => {
         height={1920}
         schema={memeReelSchema}
         defaultProps={memeReelSchema.parse(memeReelFixture)}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: props.durationInFrames,
+        })}
+      />
+      <Composition
+        id="PatternSheet"
+        component={PatternSheet}
+        durationInFrames={PATTERN_SHEET_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={patternSheetSchema}
+        defaultProps={patternSheetSchema.parse({
+          chapters: patternGalleryFixture.chapters,
+          footer:
+            "Real SPY daily bars · Interactive Brokers · retrieved 2026-07-30 · hindsight examples · educational only, not financial advice · DYOR",
+          durationInFrames: PATTERN_SHEET_FRAMES,
+        })}
         calculateMetadata={({ props }) => ({
           durationInFrames: props.durationInFrames,
         })}
