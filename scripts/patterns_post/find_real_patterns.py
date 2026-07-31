@@ -428,6 +428,76 @@ def d_cup(bars, hi, lo):
 
 # ------------------------------------------------------------------ assembly
 
+def resolve_trade(bars, r, bull, rr=2.0, horizon=12):
+    """Resolve the trade the breakout on bar `r` fires, as daily bars allow.
+
+    entry  = the breakout bar's real close
+    stop   = the extreme of the five bars into the breakout, 0.2% buffered
+    target = entry +/- rr * risk
+
+    Returns None when the structure leaves no tradeable risk distance - that is
+    not a losing trade, it is not a trade, and it must not sit in a sample.
+    Otherwise the outcome is one of:
+
+      win   target printed first, within `horizon` sessions
+      loss  the stop printed first, OR one bar's range held both levels - a
+            daily bar cannot order two touches inside its own session, so the
+            ambiguous case counts against the pattern rather than for it
+      open  neither level printed inside the horizon
+    """
+    entry = bars[r]["c"]
+    struct5 = bars[max(0, r - 4):r + 1]
+    stop = min(b["l"] for b in struct5) * 0.998 if bull else max(b["h"] for b in struct5) * 1.002
+    risk = (entry - stop) if bull else (stop - entry)
+    if risk < entry * 0.003:
+        return None
+    target = entry + rr * risk if bull else entry - rr * risk
+    outcome, tp_at = "open", None
+    for k in range(r + 1, min(r + 1 + horizon, len(bars))):
+        hit_sl = (bars[k]["l"] <= stop) if bull else (bars[k]["h"] >= stop)
+        hit_tp = (bars[k]["h"] >= target) if bull else (bars[k]["l"] <= target)
+        if hit_sl:
+            outcome = "loss"
+            break
+        if hit_tp:
+            outcome, tp_at = "win", k - r
+            break
+    return {"entry": entry, "stop": stop, "target": target, "risk": risk,
+            "outcome": outcome, "tpAt": tp_at}
+
+
+def hit_rate(bars, insts, rr=2.0, horizon=12):
+    """How often this formation actually paid, over EVERY detection of it.
+
+    This is the number the sheet prints instead of a wall of wins. The sample
+    is taken here, upstream of `finish`, on purpose: finish rejects instances
+    for being ugly (window too long, a quarantined bar, a degenerate level),
+    and rejecting the ugly ones is a display decision. Filtering the statistic
+    through it would smuggle the selection bias straight back into the number
+    whose whole job is to remove it.
+
+    One trade per breakout bar - two detectors firing on the same bar are the
+    same trade seen twice. `pct` is None when nothing was tradeable, which the
+    renderer must show as "no sample" rather than as a zero.
+    """
+    seen = set()
+    tally = {"win": 0, "loss": 0, "open": 0}
+    for inst in insts:
+        r = inst["reveal"]
+        if r in seen:
+            continue
+        seen.add(r)
+        res = resolve_trade(bars, r, inst["bias"] == "bullish", rr, horizon)
+        if res is not None:
+            tally[res["outcome"]] += 1
+    n = sum(tally.values())
+    return {
+        "n": n,
+        "wins": tally["win"], "losses": tally["loss"], "open": tally["open"],
+        "pct": round(tally["win"] / n * 100) if n else None,
+    }
+
+
 def finish(bars, bad, inst, max_n=44, rr=2.0):
     """Trim to an eye-friendly window, attach the trade, keep only winners.
 
@@ -436,30 +506,18 @@ def finish(bars, bad, inst, max_n=44, rr=2.0):
              behind the structure that fired the signal
     target = entry +/- rr * risk
 
-    The instance survives ONLY if the target was hit within 12 sessions and
-    hit BEFORE the stop - the sheet displays winning strategies, and a target
-    that never filled is not a win.
+    The ILLUSTRATION survives only if the trade won, because a card is a worked
+    example and a target that never filled does not illustrate the resolution.
+    That selection is exactly why the card must also carry `hit_rate`, measured
+    over every detection rather than over the one drawn here.
     """
     pre = 3
     r = inst["reveal"]
     bull = inst["bias"] == "bullish"
-    entry = bars[r]["c"]
-    struct5 = bars[max(0, r - 4):r + 1]
-    stop = min(b["l"] for b in struct5) * 0.998 if bull else max(b["h"] for b in struct5) * 1.002
-    risk = (entry - stop) if bull else (stop - entry)
-    if risk < entry * 0.003:
+    res = resolve_trade(bars, r, bull, rr)
+    if res is None or res["outcome"] != "win":
         return None
-    target = entry + rr * risk if bull else entry - rr * risk
-    tp_at = sl_at = None
-    for k in range(r + 1, min(r + 13, len(bars))):
-        if tp_at is None and ((bull and bars[k]["h"] >= target) or (not bull and bars[k]["l"] <= target)):
-            tp_at = k - r
-        if sl_at is None and ((bull and bars[k]["l"] <= stop) or (not bull and bars[k]["h"] >= stop)):
-            sl_at = k - r
-        if tp_at is not None or sl_at is not None:
-            break
-    if tp_at is None or (sl_at is not None and sl_at < tp_at):
-        return None
+    entry, stop, target, tp_at = res["entry"], res["stop"], res["target"], res["tpAt"]
 
     post = max(5, tp_at + 2)
     s = max(0, inst["start"] - pre)
@@ -589,6 +647,11 @@ def main():
         if pick:
             inst, fin = pick
             w = fin["window"]
+            # The honest denominator: every detection of this formation in the
+            # series, resolved at the SAME R the card prints. Measured over
+            # `insts`, not over the survivors, so the drawn card is one sample
+            # out of this many rather than the whole story.
+            stats = hit_rate(bars, insts, rr=fin["rr"])
             found[name] = {
                 "id": len(found) + 1,
                 "name": name,
@@ -604,9 +667,12 @@ def main():
                 "marks": fin["marks"],
                 "entry": fin["entry"], "stop": fin["stop"], "target": fin["target"],
                 "rr": fin["rr"], "tpAt": fin["tpAt"], "gainPct": fin["gainPct"],
+                "hitRate": stats["pct"], "sampleN": stats["n"],
+                "sampleWins": stats["wins"], "sampleOpen": stats["open"],
                 "candles": [{"o": b["o"], "h": b["h"], "l": b["l"], "c": b["c"]} for b in w],
             }
-            print(f"  FOUND {name:28} {w[0]['date']} -> {w[-1]['date']}  n={len(w)}  {inst['answer']}  entry {fin['entry']} stop {fin['stop']} tp {fin['target']}  {fin['factLine']}")
+            print(f"  FOUND {name:28} {w[0]['date']} -> {w[-1]['date']}  n={len(w)}  {inst['answer']}  entry {fin['entry']} stop {fin['stop']} tp {fin['target']}  {fin['factLine']}"
+                  f"  hit {stats['wins']}/{stats['n']} = {stats['pct']}%")
         else:
             print(f"  UNMATCHED {name}")
 

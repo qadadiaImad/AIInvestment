@@ -53,6 +53,15 @@ export type PatternData = {
   tpAt?: number | null;
   /** Real percent from entry to the target that was actually hit. */
   gainPct?: number;
+  /** What the formation did across EVERY detection of it in the series, not
+   * just the one drawn above — the card's own antidote to itself. The drawn
+   * instance is a winner by construction (the scanner keeps winners so the
+   * card can illustrate a resolution), so without these the sheet reads as a
+   * 100% strike rate. `hitRate` is null when nothing was tradeable. */
+  hitRate?: number | null;
+  sampleN?: number;
+  sampleWins?: number;
+  sampleOpen?: number;
   candles: PCandle[];
 };
 

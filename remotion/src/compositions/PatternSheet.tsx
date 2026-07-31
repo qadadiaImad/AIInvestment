@@ -76,6 +76,12 @@ export const PatternSheet: React.FC<PatternSheetProps> = (p) => {
   for (const ch of p.chapters) for (const c of ch.cards as PatternData[]) byName[c.name] = c;
   const cells = PICK.map((n) => byName[n]).filter(Boolean);
 
+  // The headline number, summed from the cells rather than written by hand, so
+  // it cannot drift from the boxes underneath it. Each box draws a winner —
+  // that is what a worked example is — and this says how rare that winner was.
+  const wins = cells.reduce((s, c) => s + (c.sampleWins ?? 0), 0);
+  const tries = cells.reduce((s, c) => s + (c.sampleN ?? 0), 0);
+
   // every landing kicks the whole sheet — the surface being smashed is the
   // frame itself, and a surface that does not move absorbed nothing
   let kx = 0;
@@ -108,7 +114,7 @@ export const PatternSheet: React.FC<PatternSheetProps> = (p) => {
           CHART <span style={{color: '#9FC2E8'}}>PATTERNS</span>
         </div>
         <div style={{fontFamily: FONT.mono, fontSize: 19, color: PT.steel, marginTop: 8, letterSpacing: 1.6}}>
-          10 real SPY formations · every target hit · real dates
+          {cells.length} real SPY formations · {tries > 0 ? `${wins} of ${tries} reached target · ` : ''}real dates
         </div>
       </div>
 

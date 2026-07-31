@@ -38,6 +38,10 @@
      "rr": 2.0,
      "tpAt": 4,
      "gainPct": 7.7,
+     "hitRate": 10,
+     "sampleN": 10,
+     "sampleWins": 1,
+     "sampleOpen": 7,
      "candles": [
       {
        "o": 462.79,
@@ -217,6 +221,10 @@
      "rr": 2.0,
      "tpAt": 10,
      "gainPct": 4.9,
+     "hitRate": 6,
+     "sampleN": 17,
+     "sampleWins": 1,
+     "sampleOpen": 12,
      "candles": [
       {
        "o": 408.91,
@@ -443,6 +451,10 @@
      "rr": 1.5,
      "tpAt": 8,
      "gainPct": 5.4,
+     "hitRate": 50,
+     "sampleN": 2,
+     "sampleWins": 1,
+     "sampleOpen": 1,
      "candles": [
       {
        "o": 543.99,
@@ -669,6 +681,10 @@
      "rr": 2.0,
      "tpAt": 1,
      "gainPct": 1.2,
+     "hitRate": 50,
+     "sampleN": 8,
+     "sampleWins": 4,
+     "sampleOpen": 1,
      "candles": [
       {
        "o": 624.43,
@@ -896,6 +912,10 @@
      "rr": 2.0,
      "tpAt": 11,
      "gainPct": 3.7,
+     "hitRate": 17,
+     "sampleN": 6,
+     "sampleWins": 1,
+     "sampleOpen": 4,
      "candles": [
       {
        "o": 640.12,
@@ -1123,6 +1143,10 @@
      "rr": 2.0,
      "tpAt": 5,
      "gainPct": 3.1,
+     "hitRate": 9,
+     "sampleN": 79,
+     "sampleWins": 7,
+     "sampleOpen": 61,
      "candles": [
       {
        "o": 668.33,
@@ -1387,6 +1411,10 @@
      "rr": 2.0,
      "tpAt": 12,
      "gainPct": 3.7,
+     "hitRate": 17,
+     "sampleN": 6,
+     "sampleWins": 1,
+     "sampleOpen": 3,
      "candles": [
       {
        "o": 427.58,
@@ -1662,6 +1690,10 @@
      "rr": 2.0,
      "tpAt": 1,
      "gainPct": 1.4,
+     "hitRate": 14,
+     "sampleN": 114,
+     "sampleWins": 16,
+     "sampleOpen": 77,
      "candles": [
       {
        "o": 408.8,
@@ -1841,6 +1873,10 @@
      "rr": 2.0,
      "tpAt": 6,
      "gainPct": 6.0,
+     "hitRate": 37,
+     "sampleN": 183,
+     "sampleWins": 67,
+     "sampleOpen": 63,
      "candles": [
       {
        "o": 381.61,
@@ -2134,6 +2170,10 @@
      "rr": 2.0,
      "tpAt": 6,
      "gainPct": 5.7,
+     "hitRate": 10,
+     "sampleN": 71,
+     "sampleWins": 7,
+     "sampleOpen": 42,
      "candles": [
       {
        "o": 399.93,
@@ -2409,6 +2449,10 @@
      "rr": 1.5,
      "tpAt": 6,
      "gainPct": 2.7,
+     "hitRate": 13,
+     "sampleN": 15,
+     "sampleWins": 2,
+     "sampleOpen": 8,
      "candles": [
       {
        "o": 450.7,

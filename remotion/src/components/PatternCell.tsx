@@ -337,6 +337,9 @@ export const PatternCell: React.FC<PatternCellProps> = ({data, width, height}) =
         letterSpacing={0.6}
       >
         {d.ticker ?? 'SPY'} · {d.from} → {d.to} · 1D
+        {typeof d.sampleN === 'number' && d.sampleN > 0
+          ? ` · HIT ${d.sampleWins ?? 0}/${d.sampleN}`
+          : ''}
       </text>
     </svg>
   );
