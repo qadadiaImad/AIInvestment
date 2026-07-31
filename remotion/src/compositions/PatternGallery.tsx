@@ -14,11 +14,15 @@
 // Theme: the channel's prod quiz look — near-black green terminal, serif
 // display title, MAYA LAB window chrome, glowing candles.
 //
-// Data: the validated synthetic pattern library, prepared by
-// scripts/patterns_post/build_fixture.py (which computes all overlay
-// geometry). These are idealized illustrations BY DESIGN — like every cheat
-// sheet's diagrams — and the footer says so on every frame. No prices are
-// authored here.
+// Data: REAL SPY daily bars, detected by scripts/patterns_post/
+// find_real_patterns.py — real candles, real dates, levels and trendlines from
+// the detected pivots. (This said "synthetic library / build_fixture.py" until
+// the fixture moved to real detections; nothing here authors a price.)
+//
+// Each card draws an instance whose target filled, because a worked example
+// needs a resolution to show. That makes the drawn card unrepresentative by
+// construction, so it carries the formation's real hit rate underneath and the
+// footer says what the count means.
 import React from 'react';
 import {AbsoluteFill, Audio, Sequence, interpolate, staticFile, useCurrentFrame} from 'remotion';
 import {z} from 'zod';
@@ -356,6 +360,14 @@ const HeroSlot: React.FC<{card: PatternData}> = ({card}) => {
         <div style={{fontFamily: FONT.mono, fontSize: 21, color: PT.steel, marginTop: 14, letterSpacing: 1}}>
           {card.levelLabel}
         </div>
+        {/* the line above is a winner by construction — the scanner keeps
+            winners so a card can illustrate a resolution. Without this one it
+            reads as what the formation does, rather than as one instance. */}
+        {typeof card.sampleN === 'number' && card.sampleN > 0 ? (
+          <div style={{fontFamily: FONT.mono, fontSize: 21, color: PT.steel, marginTop: 10, letterSpacing: 1}}>
+            {card.sampleWins ?? 0} OF {card.sampleN} DETECTIONS REACHED TARGET
+          </div>
+        ) : null}
       </div>
     </div>
   );

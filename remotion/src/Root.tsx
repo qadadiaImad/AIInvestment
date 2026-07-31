@@ -361,7 +361,7 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={patternGallerySchema.parse({
           chapters: patternGalleryFixture.chapters,
           footer:
-            "Real SPY daily bars · Interactive Brokers · retrieved 2026-07-30 · hindsight examples · educational only, not financial advice · DYOR",
+            "Real SPY daily bars · Interactive Brokers · retrieved 2026-07-30 · each card draws one winning example; the count beside it is how often that formation reached target before stop within 12 sessions · educational only, not financial advice · DYOR",
           durationInFrames: PATTERN_GALLERY_FRAMES,
         })}
         calculateMetadata={({ props }) => ({
