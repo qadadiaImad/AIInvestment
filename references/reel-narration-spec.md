@@ -1,0 +1,267 @@
+# Reel narration & sound spec — synthesized from 5-agent study (2026-08-02)
+
+> Sources: parallel research agents on hooks/retention, narration craft, voice direction,
+> music/sound design, platform format. Raw findings: `content/probe/vo/research.json`.
+> Applied first to the Hormuz oil reel; treat as house rules for narrated chart reels.
+
+## The five load-bearing rules
+
+1. **One breath, not ten clips.** Never render narration as isolated one-liners — prosody
+   resets at every TTS call and the result reads as robotic. Group beats into 4-7 continuous
+   takes; weld internal beats with em dashes and commas, not periods.
+2. **Never true silence between lines.** A music bed (ducked -12..-18dB under VO, restored in
+   gaps) is what turns clips into narration. Exception: 0.5-1.0s of TOTAL silence immediately
+   before the two hardest hits — the drop lands harder after real nothing.
+3. **Cold-open on the number.** First spoken syllable + first frame commit to the hook
+   simultaneously; scroll-stop window is 1.5-2s. Frame 0 must work as a static share-image
+   (chart + hook text + date chip composited, no fade-in).
+4. **Turn words at every beat.** "But / Then / So / Until" at each narrative turn; alternate
+   3-6 word punch sentences with 12-18 word explainers; documentary present tense; end on the
+   coldest specific fact with nothing after it.
+5. **Numbers phonetic, max 2 per breath group.** Spell numbers out for the engine; put the
+   number to punch at clause-end right before the pause; captions carry exact prices, the voice
+   carries the concept.
+
+## Engine + direction
+
+- ElevenLabs variant (text2speech_v2) > Minimax > seed_audio. On seed_audio every mid-take
+  period costs ~1.5s of dead pause (measured) — commas/dashes only, period at take end.
+- One ellipsis per 46s piece, max. No ALL-CAPS emphasis (engines mispronounce).
+- Final base-rate take: flat, plain delivery; a genuine full stop. Last spoken thing stays the
+  honest base rate; callback-rhyme the opening stat (1-in-5 oil vs 1-in-4 hit rate).
+
+## Music bed (synthesized, rights-clean)
+
+- 93.75 BPM constant grid (0.64s beat, measured off the reference reel). Tension = density and
+  register on top of the grid, never tempo changes.
+- Arc: intrigue drone -> riser -> TRUE SILENCE 0.6s -> shock sub-hit + minor-third drop ->
+  false-calm trap -> coil build + 8th-note density -> riser -> silence -> payoff hit ->
+  thin immediately (no "win" pad, compliance) -> percussion out at unwind -> thinnest texture
+  under the honest end card.
+- Sub-bass hits (45Hz sine, <10ms attack, ~500ms decay) frame-exact on: shock, gap-up, trigger.
+- Mix hierarchy at every timestamp: VO > SFX stingers > bed. Verify ducking with RMS buckets
+  (house rule 10.7), never by assumption.
+
+## Platform format
+
+- Keep top-anchored captions (bottom 384-484px is platform UI). Keep the terminal aesthetic;
+  add keyword pop: numerals/keywords larger + accent green, connective words dimmer.
+- Keys SFX only under number-dense captions, fired per phrase not per character.
+- Date/ticker chip visible from frame 0. Compliance footer burned in for the full runtime.
+- No "POV:"/"wait for it"/CTA bait — the number IS the hook. Loop-close by rhyming the final
+  frame/line with the opening stat.
+
+## Full per-dimension findings
+
+### hooks-retention
+
+Winning finance-short hooks in 2025-2026 cold-open on the number itself, not on setup or location — the real-world validation is ABC World News' TikTok (@abcworldnews) on this exact story, which opens with "20% of the world's oil prevented from passing the Strait of Hormuz" before any anchor framing, confirming our own top stat works as a spoken hook rather than backstory. The dominant retention architecture is a Zeigarnik-effect open loop (state a surprising number/tension in frame one, withhold the payoff), pattern interrupts roughly every 5-7 seconds, and a front-loaded payoff so the "why this matters" lands inside 10-15s. Cut/beat cadence for finance explainers clusters around a new story-or-visual beat every 5-7s with visual changes every 1.5-4s; our current script has 10 beats over 46s (~1/4.6s), which is in-range, so the owner's "not smooth, not like narration" critique is a delivery defect, not a pacing defect — nothing in the winning examples uses dead-air gaps between clipped lines, they use continuous narration with rhythm variation (short punch phrases against one longer explanatory line) instead of isolated statements separated by silence. Endings that drive loop/rewatch either loop-match the final frame or restate/echo the opening stat as a callback; our honest-base-rate close (17 setups, 24% hit rate) already fits the "front-load payoff, close on a reframed number" pattern and should stay last, but should verbally echo the "1 in 5" framing to close the loop rather than ending as an unrelated statistic.
+
+Rules:
+- Cold-open on the number itself, no throat-clearing: ABC World News' Hormuz TikTok (@abcworldnews, live coverage of this exact story) opens with "20% of the world's oil" as its literal first words, not "here's what's happening" — do the same, start VO on "Twenty point nine million barrels..." with zero lead-in.
+- Scroll-stop decision window is 1.5-2 seconds per multiple 2025-2026 retention-playbook sources, tighter than the old "3 second rule" — the first 2 spoken syllables plus the first visual frame must both commit to the hook simultaneously (voice and chart-motion synced, not voice-then-visual).
+- Zeigarnik open loop: state the surprising fact in frame one, explicitly withhold the resolution — our structure already does this (Hormuz stat -> calm Friday -> Saturday crisis) but the VO must sound like ONE continuous held breath into the loop, not three separate flat statements.
+- New story/visual beat every 5-7 seconds is the finance-explainer norm (visual micro-changes every 1.5-4s within that) — audit the 46s script's beat map (8/12/15.5/20/26.5/30/37/38.5/41.5/46) against this: several gaps (12-15.5=3.5s, 30-37=7s) sit right at the edge, so those spans need a mid-beat visual/audio pattern-interrupt (camera move, tick sound accent) even though the VO line doesn't change.
+- Front-load the payoff: viewers must know 'why this matters' (this is a crisis-driven price shock with a tradeable structure) within 10-15s — currently the setup/trigger doesn't arrive until 30s, so seed a one-line forward-reference inside the 0-8s hook (e.g., naming 'the setup' concept early) without spoiling the base-rate ending.
+- Dead air between clipped VO lines reads as robotic, not cinematic — none of the researched viral examples use silence gaps between narration beats; replace isolated-sentence delivery with continuous narration where pauses are filled by breath/room tone or a sustained SFX bed (tick, whoosh tail) so the line-to-line transition never goes to true silence.
+- Vary sentence length/rhythm deliberately: short punch phrases (3-5 words) for shock beats (Saturday crisis, the trap) against one longer connective sentence for context beats (Hormuz stat, premium unwind) — flat uniform-length isolated lines is what reads as 'not like narration.'
+- Loop/rewatch-optimized endings either visually loop-match the final frame to the opening frame or verbally callback the opening stat as a reframed number — end the VO by echoing the '1 in 5 / one-fifth of world oil' framing against the '24%, 1 in 4' base-rate stat so the last spoken number rhymes structurally with the first spoken number.
+- Pattern interrupts should be informational as often as visual — a hard turn word ('But,' 'Then,' 'So') at each of the 6 major turns (calm->crisis, gap->trap, trap->coil, coil->trigger, target->unwind, unwind->base-rate) gives the VO the narrative-turn signposting that separates 'story' from 'data recitation.'
+- Do not add generic engagement bait (no 'wait for it,' no 'like if,' no CTA) — compliance rails already ban advice framing; the hook must earn retention from the stat/tension itself, matching how the ABC News clip hooks on the fact, not on meta video-craft language.
+- Density check: the middle third (15.5s-30s, the gap+trap+coil beats) is the highest-information stretch (4 distinct facts in 14.5s) — this is correctly the densest section per the '5-7s per beat' norm and should carry the tightest cut pacing (1.5-2.5s visual changes) in the edit, matching where finance-explainer retention data says viewers are most at risk of dropping.
+
+Deliverable:
+```
+FIVE CANDIDATE OPENING LINES (spoken, each ≤3.5s, cold-open pattern, no lead-in words):\n\n1. \"Twenty point nine million barrels. One-fifth of the world's oil. One strait.\"\n2. \"One-fifth of the world's oil crosses this strait every single day.\"\n3. \"Twenty point nine million barrels a day — a fifth of everything the world burns.\"\n4. \"Every day, one strait moves a fifth of the planet's oil. Twenty point nine million barrels.\"\n5. \"A fifth of the world's oil. Twenty point nine million barrels a day. Through one chokepoint.\"\n\nAll five keep the verified numbers (20.9M barrels/day, ~1/5 of world oil) intact and unchanged, lead with the number before any location/context framing (matching the ABC World News @abcworldnews Hormuz TikTok's literal cold-open structure), and are short-punch phrases suited to sync against the first frame of chart/map motion rather than a static title card.
+```
+
+### narration-craft
+
+Verified via search: Johnny Harris's process (his own "How I Write" video, transcribed across secondary sources) is visual-first — he storyboards the visual sequence before scripting, uses an "anchor-bridge" pattern (concrete visual anchor, then a short contextual bridge), and trims ruthlessly because "people care, but less than you think — two sentences is usually enough." Cleo Abram's Huge If True workflow is also visual-first: a three-column script (visual / spoken words / sources) where the visual column drives what she's allowed to say, forcing short, screen-matched sentences rather than paragraphs. The dominant causal-structure technique across finance/explainer scriptwriting (traced to Matt Stone & Trey Parker's South Park writers' room, widely cited by science/finance YouTube scriptwriters) is the "But/Therefore rule": ban "and then," connect every beat with "therefore" (logical consequence) or "but" (reversal/complication) to generate forward pull instead of a flat list. Finance narrators (How Money Works, Coldfusion-style) additionally lean on short declarative sentences carrying the number, historical present tense for "live" market beats, and a clipped-punch fragment as its own sentence for a shock beat ("Markets are closed."). I rewrote the 10 isolated VO lines into one continuous ~121-word narration using these three techniques together, preserving every number, ending on the honest base rate.
+
+Rules:
+- Sentence-length rhythm: alternate one short (3-6 word) punch sentence with one longer (12-18 word) explainer sentence — never two long sentences back to back. Johnny Harris's own rule of thumb: 'two sentences is usually enough' per beat before cutting to the next visual anchor.
+- Ban 'and then' between beats (South Park writers'-room rule, Stone & Parker). Replace every beat transition with 'therefore' (this beat is the logical consequence of the last) or 'but' (this beat is a reversal/complication). Our script uses: 'but closes four dollars under' (reversal), 'Therefore the trigger is simple' (consequence), 'But the premium unwinds' (reversal) — three uses in 46 seconds keeps forward pull without becoming a tic.
+- Use present tense for beats that are 'happening' on screen (the market/chart beats: 'settles,' 'happens,' 'spikes,' 'sits,' 'fires') even though the events are historical — this is the standard documentary-present used to make archival/chart footage feel live, not retold.
+- Isolate the shock beat as its own fragment sentence with a hard stop, not folded into a longer sentence: 'Markets are closed.' A 3-word sentence after a longer setup sentence functions as a visual/audio cut point — it should land exactly on the crisis-mark bass sting, not before or after.
+- Specificity over abstraction, every time: '$4.52, +6.2%,' '$85.41 / $80.14 / $95.95' beat 'a lot' or 'a big gap' — but do NOT stack more than 2 raw numbers in one breath group without a connective word, or the ear can't parse it (see chunk 5 rewrite, which paces entry/stop/target across three short clauses, not one run-on).
+- Visual-first scripting (Cleo Abram's three-column method, Johnny Harris's anchor-bridge): every line must correspond to a specific frame that's already on screen at that timestamp — write the caption/VO AFTER looking at what the camera is doing at that second, never write prose first and force visuals to match. Confirm each of the 6 chunk boundaries lands on an existing camera-move or caption change, not mid-move.
+- 'You' is reserved for direct address to the viewer's own reasoning/behavior, not for narrating the market. Our rewrite has zero 'you' — correct for this piece since the honest-base-rate ending is explicitly de-hyping, not motivating action; adding 'you' this close to a trade setup would tip toward advice framing, which is a hard constraint violation.
+- Land the ending on the coldest, most specific fact in the whole piece, no summary sentence after it. Johnny Harris and Cleo Abram both end videos on a single concrete image/number, not a recap — our final line stays 'It reached target four [times]' with nothing softening or explaining it afterward.
+- Keep transitions terse ('But', 'Therefore') rather than the content-marketing-flavored 'but here's the thing' / 'and that's when it gets interesting' — those phrases read as filler in a 46-second piece with this much number-density; every word has to carry story or number, per Johnny Harris's 'people care, but less than you think' principle.
+- Callback structure: the piece opens on a hard chokepoint number (20.9M barrels) and closes on a hard base-rate number (17 times / 4 hit) — same 'specific count, no adjectives' register bookending the piece, which is the documentary-ending technique of returning to the register you opened in rather than shifting to a warmer/softer voice for the outro.
+
+### voice-direction
+
+Research across 2026 sources shows the reel's flatness is structural, not a talent problem. ElevenLabs (v3 or Multilingual v2/Turbo v2.5, stability ~0.5-0.7, style ~0.15-0.3) remains the documentary-narration standard for prosody continuity and audio-tag pacing control; Minimax Speech is a cheaper close second on emotion/naturalness; ByteDance Seed Audio trails both on English documentary tone and — per our own measurement — taxes every sentence-ending period with ~1.5s of dead air while commas stay cheap, which would directly explain choppiness if it's anywhere in this pipeline. The bigger lever than engine choice is chunking: prosody resets at every isolated generation, so rendering 10 separate one-line clips with silence gaps between them (the current approach) is the single biggest cause of "not smooth" — each clip restarts pitch and energy from a cold sentence-initial state instead of carrying momentum across beats. 2026 consensus (Deepgram chunking docs, ElevenLabs best-practices, multiple TTS guides) is fewer, longer takes split at natural clause boundaries (roughly 15-25 words per breath group), punctuation used as an explicit pacing script (em dash = breath-length pause, ellipsis = dramatic beat, comma = micro-pause, hard period reserved for true full stops), numbers always spelled out phonetically, and emphasis handled via audio tags or clause position rather than capitalization, which is unreliable across engines and can trigger literal spelled-out reads.
+
+Rules:
+- Engine order of preference for this 46s male documentary read: 1) ElevenLabs (v3, or Multilingual v2/Turbo v2.5 if v3 latency/cost is a problem) — best-in-class prosody continuity and audio-tag pacing for narrative/documentary work; 2) Minimax Speech — cheaper, competitive emotion control, acceptable fallback; 3) ByteDance Seed Audio — last resort for this piece given weaker English documentary tone and the measured period-pause defect below.
+- Bytedance seed_audio measured defect (ours): every sentence-ending period costs ~1.5s of dead pause; commas are cheap. If Seed Audio is used anywhere in this pipeline, do not end an internal clause with a period — use commas, semicolons, or em dashes inside a take and reserve the period strictly for the last word of a take.
+- Chunk count: cut the VO from 10 isolated one-line clips down to 4 continuous takes, each covering a cluster of adjacent beats (chokepoint+Friday close; Saturday break+Monday gap; intraday trap+inside bar; trigger/target through the honest base rate). Isolated one-liners with silence gaps between them is the primary cause of the 'robotic/not smooth' complaint — each restarts pitch and energy from a cold sentence-initial state.
+- Never generate a beat-cluster as separate TTS calls that get concatenated with silence; render each cluster as one continuous generation so the engine carries pitch declination, breath, and momentum across the internal beats, then place/trim the single resulting clip against the picture cuts in the edit (video cuts do not need to equal audio-generation cuts).
+- ElevenLabs voice settings for this read: stability 0.55-0.65 (lower = more animated/expressive, needed for a crisis/trap arc; too low reintroduces instability/artifacts), similarity 0.7-0.75 (keep at/below ~0.8, higher introduces artifacts), style 0.2-0.3 for the tense-market sections, dropping toward 0.1-0.15 for the flat, procedural entry/stop/target line and the closing base-rate line so the delivery goes matter-of-fact exactly where the compliance rails require it.
+- Punctuation-as-pacing script: comma = micro-pause/breath; em dash (spaced, ' — ') = a stronger breath-length pause without a full stop, use it to connect two beats that must feel like one continuous thought (e.g. crisis-breaks-into-gap-opens); ellipsis ('…') = a dramatic suspense beat, cap at 1-2 uses in the whole 46s or the pacing reads as artificially slow; hard period = reserved for genuine full stops only, primarily the very end of a take (and, per the Seed defect above, never used mid-take on that engine).
+- Long, compound single-breath sentences produce uneven prosody because the engine has to guess where to emphasize; keep each spoken clause to roughly 15-25 words and let internal commas/dashes do the phrasing rather than writing one 40-word run-on sentence per take.
+- Spell every number out phonetically in the script text fed to the engine, never leave numerals/currency symbols for the model to interpret: '20.9 million' -> 'twenty-point-nine million', '$72' -> 'seventy-two dollars', '+$4.52' -> 'four dollars fifty-two', '+6.2%' -> 'six-point-two percent', '$82' -> 'eighty-two dollars', '$85.41' -> 'eighty-five forty-one', '$80.14' -> 'eighty dollars and fourteen cents', '$95.95' -> 'ninety-five ninety-five', '2R' -> 'two R' (spoken as the letter), '$126' -> 'one twenty-six', '$70' -> 'seventy dollars', '17 times'/'4 times'/'24%' -> 'seventeen times' / 'four' / 'twenty-four percent'.
+- Do not rely on capitalization for emphasis — behavior is inconsistent across ElevenLabs/Minimax/Seed and weaker engines will occasionally spell a capitalized word out letter-by-letter instead of stressing it. Get stress from clause position instead (put the number/fact you want punched at the end of the clause, right before the pause) or, on ElevenLabs v3 specifically, use bracketed audio-direction tags (e.g. [tense], [flat, matter-of-fact]) rather than caps.
+- Keep the take-level stability/style setting constant within a single continuous generation (don't change engine parameters mid-take) — parameter changes only happen at take boundaries, which is another reason to group beats that share an emotional register (tense-and-rising vs. flat-and-procedural) into the same take.
+- The closing base-rate line should be its own final take, rendered flat/plain (low style value) and allowed a genuine hard-period full stop at the very end — this is the one place a clean, unhurried stop reads as credibility rather than choppiness, and it must remain the last spoken thing per the compliance rail already in place.
+
+Deliverable:
+```
+VOICE DIRECTION SPEC — 46s male documentary read, "What moves the price of oil"
+
+ENGINE PREFERENCE ORDER
+1. ElevenLabs v3 (or Multilingual v2 / Turbo v2.5 if v3 cost/latency is prohibitive) — primary choice. Best prosody continuity across a continuous take, native audio-direction tags, most mature English documentary register.
+2. Minimax Speech — fallback if ElevenLabs is unavailable/over-budget. Competitive emotion control at lower cost; fewer language/tag features than ElevenLabs but acceptable for a single male English voice.
+3. ByteDance Seed Audio — last resort for this piece. Weaker English documentary tone AND the measured defect that every sentence-ending period costs ~1.5s of dead pause (commas cheap) — usable only if every internal sentence boundary is rewritten to commas/em dashes/semicolons first.
+
+CHUNK COUNT: 4 continuous takes (down from the current 10 isolated one-liners). One take per beat-cluster that shares an emotional register — grouping is the single highest-leverage fix, because prosody (pitch, breath, energy) resets at every separate generation; concatenating 10 short clips with silence between them cannot carry momentum the way one continuous generation can.
+
+PUNCTUATION STRATEGY
+- Comma: micro-pause, use liberally inside a clause for a natural breath without breaking momentum.
+- Em dash (spaced " — "): breath-length pause, used to weld two beats into one continuous thought (e.g., stat -> context, crisis -> consequence).
+- Ellipsis ("…"): a real suspense beat — budget exactly ONE across the whole 46s (used at the intraday-trap turn) or the read starts to feel artificially slow.
+- Hard period: reserved for genuine full stops — the end of a take, or a deliberate beat inside Take 4 ("It hit in two sessions."). Never used to separate what should be one continuous breath group. Never used mid-take if rendering on Seed Audio.
+- Numbers: always spelled out phonetically in the text sent to the engine (see rules list for the full mapping) — never raw numerals or currency symbols.
+- Emphasis: no reliance on ALL CAPS (inconsistent across engines, risks literal letter-spelling on weaker ones). Get stress from clause-final position (put the number you want punched right before the pause) or, on ElevenLabs v3, bracketed direction tags like [tense] / [flat, matter-of-fact].
+
+PARAMETER SETTINGS (ElevenLabs)
+- Takes 1-3 (rising tension: chokepoint through the intraday trap): stability 0.55-0.65, similarity 0.7-0.75, style 0.2-0.3.
+- Take 4 (procedural trigger/entry/stop/target through the honest base-rate close): stability unchanged, style dropped to 0.1-0.15 for a flatter, more credible/matter-of-fact register — this is also where the compliance rail (no advice framing, honest base rate as the last spoken thing) lives, so a plainer delivery reinforces rather than undercuts it.
+
+THREE EXAMPLE LINES REWRITTEN WITH DIRECTION-PUNCTUATION APPLIED
+
+1. Original: "Twenty point nine million barrels cross a single strait every day. About a fifth of the oil the world burns."
+   Rewritten: "Twenty-point-nine million barrels cross a single strait every day — nearly a fifth of the oil the world burns."
+   (single continuous clause via em dash instead of two isolated sentences/takes; no prosody reset between the stat and its context)
+
+2. Original: "Then it happens on a Saturday. Markets are closed." / "Monday opens four fifty-two higher."
+   Rewritten: "Then it happens on a Saturday — markets closed. Monday opens the gap: four dollars fifty-two higher, six-point-two percent, straight out of the gate."
+   (collapses three separately-rendered clips into one take; colon+comma phrasing keeps the Monday numbers in the same breath instead of a clipped, separately-generated fragment)
+
+3. Original: "It runs to eighty-two, then closes four under. Whoever chased bought the high."
+   Rewritten: "It spikes to eighty-two dollars… then closes four dollars under — whoever chased it bought the high."
+   (the one budgeted ellipsis marks the trap's turn; em dash keeps the punchline in the same breath group as the spike, so the "gotcha" lands with continuous energy instead of a flat restart)
+```
+
+### sound-music
+
+Viral finance/documentary shorts (trailer-house channels, dark-cinematic tension packs, and the 93.75-BPM competitor reel the owner cited) converge on a three-act loudness contour: sparse atmospheric intro (drone + slow pulse, music sitting well under narration per standard VO-ducking practice), a hard drop or hard SILENCE (0.5-1s of true zero, not just low volume) at the reveal beat, a driving pulse/riser through the build, a payoff hit synced to the win, and a stripped-back outro under the honest-disclosure line so it reads sober rather than hyped. 93.75 BPM (0.64s/kick) is slow enough to read as cinematic dread rather than hype-trap — same family as trailer-hybrid scores, not phonk (130-160 BPM, wrong register for this piece). None of this needs samples: a one-pole-lowpassed sawtooth/noise drone, a sine sub-kick, white-noise-through-rising-bandpass for risers, and enveloped noise/sine bursts for tick/heartbeat cover every element found. Ducking is the load-bearing rule: music drops ~12-18 dB (not to zero) under every VO line and restores only in gaps between lines — the owner's "not smooth, not cool" complaint is very likely explained by there being NO bed at all: isolated VO lines over dead air with only SFX stingers reads as choppy, disconnected narration rather than a scored piece.
+
+Rules:
+- Base tempo 93.75 BPM (0.64s/beat) throughout, matching the owner's reference reel — this is cinematic-tension register, not phonk/trap (130-160 BPM); never speed up the underlying pulse for the trap/coil beats, only add density/register on top of the constant beat grid.
+- Duck music -12 to -18 dB under every spoken VO line (broadcast convention: dialogue ~-12 to -6 dB, music ~-18 to -25 dB when narration is present); apply the duck as a 0.5-1s ramp, not an instant cut, so it doesn't read as a mute glitch.
+- Restore music to full bed level only in the silences BETWEEN VO lines — this is the fix for 'choppy VO over dead air': the bed is what makes isolated lines feel like one continuous scored piece instead of stitched clips.
+- Use TRUE silence (all layers to -inf, not just low volume) for 0.5-1.0s immediately before the two hardest hits: the Saturday-crisis mark (12.2s) and the trigger/entry moment (34-34.7s) — per trailer-sound-design convention (A Quiet Place / Alien technique), the drop lands harder after real nothing than after quiet music.
+- Sub-bass hit (40-60Hz sine, fast attack <10ms, ~400-600ms decay) fires exactly on: the crisis-breaks cut (12.2s), the Monday gap-up (15.5s), and the entry-trigger cut (34.7s) — synced frame-exact with the existing bass-sting SFX already in the reel, layered underneath it not replacing it.
+- Riser = white noise through a bandpass filter whose center frequency sweeps upward (e.g. 200Hz→4kHz) over 1.5-3s, paired with a rising pitched drone (sawtooth gliding up a 4th-6th); place risers in the 2-3s BEFORE each reveal cut (10.2-12.2s into the crisis break, 32-34.7s into the trigger), never starting later than the cut itself or the payoff feels stepped-on.
+- Tension motif = metronomic tick/heartbeat (two enveloped sine/noise bursts per beat, low-thump then higher-tick, like a pulse) introduced at the calm-Friday beat (8s) and continued at low volume through the trap section (20-26.5s) to keep dread present during the 'calm-looking' price action — silence it during the actual crisis/trigger hits so the sub-bass isn't fighting it.
+- Drone character: one-pole lowpassed sawtooth or filtered brown noise, root pitch shifts down a minor third at the crisis mark (12.2s) and back up (implying resolution) at the unwind/base-rate section (38.5s+) — pitch is the emotional signal, not volume, since volume is already claimed by ducking.
+- Outro (41.5-46s, honest base-rate end card) drops to the thinnest texture in the piece — drone only, tick motif optional at half volume, no percussion, no riser — a sparse, sober bed signals 'this is the honest disclosure' rather than a triumphant coda; do not let the payoff's energy carry into this segment.
+- No sample libraries, no licensed loops — every element must trace to a synthesizable primitive (sine, saw, filtered noise, one-pole LP/HP/BP, ADSR envelope) per the repo's Python/ffmpeg-only sound pipeline (references pattern in scripts/audio/make_tick.py).
+- Keep the payoff hit (target reached, 34.7-37s) as a single clean coin/chime-style sine cluster over the sub-bass hit, then immediately thin the texture rather than sustaining a 'win' pad — the reel's compliance rule (10.6) forbids anything that reads as a returns/profit celebration, so the music must not editorialize the win as bigger than the base-rate honesty at the end undercuts.
+- Total mix hierarchy at every timestamp: VO (loudest, -12 to -6dB) > SFX stingers (whoosh/click/coin/impact, mixed to sit just under VO, roughly -9 to -14dB) > music bed (-18 to -25dB while VO is active, up to ~-12dB in VO gaps) — never let the bed compete with the already-existing keyboard-click/whoosh SFX layer.
+
+Deliverable:
+```
+TIMED MUSIC SPEC — 46.06s reel, tempo 93.75 BPM (beat = 0.64s), all elements synthesized from sine/noise/one-pole filters, no samples.
+
+SEGMENT 1 — INTRIGUE (0.00s–12.20s)
+- Drone: filtered brown/pink noise through one-pole lowpass (cutoff ~300Hz), root implied pitch ~55Hz (A1), volume ramps 0 → -24dB over first 3s, holds at -22 to -20dB (ducked, VO is speaking most of this window).
+- Pulse: none until 8s. From 8.0s, introduce tick/heartbeat motif: two enveloped bursts per 0.64s beat — burst A = 60Hz sine, 8ms attack/120ms decay, -20dB; burst B (the "tick") = high-passed noise burst >2kHz, 3ms attack/40ms decay, -26dB, placed ~180ms after burst A (lub-dub pattern). Runs at half-density (skip alternate beats) to stay subliminal.
+- Riser: from 10.20s–12.20s (2.0s), fade in noise-through-bandpass with center sweeping 200Hz→3.5kHz linearly, plus a sawtooth gliding from 220Hz→330Hz (up a perfect fifth), both ramping from -26dB to -10dB.
+- Silence gap: 11.9s–12.0s hard true-silence chop of the riser's tail (a 100ms notch) then resume riser to 12.15s, then FULL true silence 12.15s–12.20s (all layers -inf) — the "nothing before the bomb."
+
+SEGMENT 2 — SHOCK + DROP (12.20s–15.50s)
+- On 12.20s: sub-bass hit, 45Hz sine, <10ms attack, 550ms exponential decay, -6dB, layered under existing bass-sting SFX (do not replace it).
+- Drone: root drops a minor third (55Hz→~46Hz/F#1), lowpass cutoff opens slightly to ~450Hz for a "grittier" texture, volume -18dB (ducked under the "Then it happens on a Saturday" line).
+- Pulse: percussion enters properly now — single low sine thump (70Hz, 15ms attack/90ms decay, -14dB) on every beat (93.75 BPM), tick-noise on the off-beat, both ducked to -20dB under VO, restored to -13dB in the VO gap right before 15.5s.
+- 15.50s (Monday gap-up): second sub-bass hit (same 45Hz sine spec) layered with the existing whoosh SFX; drone unchanged; pulse continues uninterrupted (no new riser — this is a continuation beat, not a fresh reveal).
+
+SEGMENT 3 — TRAP (20.00s–26.50s)
+- Drone: holds steady at F#1, -20dB, no pitch movement (the trap's "false calm").
+- Pulse: full density now, thump+tick every beat, -16dB ducked / -12dB in gaps.
+- Tick/heartbeat motif from Segment 1 reintroduced on top at low volume (-24dB) to keep dread present under the deceptively normal price action.
+- No riser, no drop in this segment — deliberately flat, because the trap's narrative point is a false sense of stability before the reversal.
+
+SEGMENT 4 — COIL + BUILD (26.70s–34.00s)
+- Drone: begin slow volume creep from -20dB to -14dB across the full segment (still ducked under VO by the standard offset).
+- Pulse: density increases — add a third layer, an 8th-note noise-tick (double-time relative to the beat) fading in from 30s, signaling the coil tightening.
+- Riser: 32.00s–34.70s (2.7s), same bandpass-noise + gliding-saw riser as Segment 1 but wider sweep (150Hz→4.5kHz) and louder ceiling (-8dB), because this is the piece's real climax approach.
+- Silence gap: 34.10s–34.70s (0.6s) true silence, all layers to -inf, immediately before the trigger hit — mirrors the Segment 1/2 technique at the piece's biggest moment.
+
+SEGMENT 5 — PAYOFF (34.70s–37.00s)
+- 34.70s: sub-bass hit (45Hz sine, same envelope) + a payoff cluster — three short sine tones (e.g. 880/1108/1318Hz, a major triad, 5ms attack/200ms decay each, staggered 40ms apart) layered with the existing coin-chime SFX, total -8dB, the loudest musical moment in the reel.
+- Drone: cuts out entirely for 300ms at the hit (let the chime ring clean), then re-enters at -18dB.
+- Pulse: continues at reduced density (thump only, no tick) at -18dB, beginning to thin.
+- By 36.5s begin fading percussion out entirely — no sustained "win" pad, per compliance rule against implying profit as achievable/celebratory.
+
+SEGMENT 6 — UNWIND (38.50s–41.50s)
+- Drone: pitch resolves upward back toward A1/55Hz (undoing the Segment 2 minor-third drop) over the full 3s, signaling release/normalization.
+- Pulse: none — percussion fully dropped.
+- Tick motif: optional, very soft (-28dB), single burst per beat, half-density.
+- Overall bed volume: -22dB, fully ducked under the "unwinds... seventy dollars by July" line.
+
+SEGMENT 7 — END CARD / HONEST BASE RATE (41.50s–46.06s)
+- Drone only — thinnest texture in the entire piece. Lowpass cutoff narrows back to ~250Hz, volume -24dB, no pitch movement, no percussion, no riser, no sub-bass.
+- Tick motif optional at -30dB (near-inaudible) or cut entirely — the point is to sound deliberately sober, not hyped, under the base-rate disclosure (17 fired, 4 reached target, 24%). Fade to silence over the final 500ms as the last VO word lands.
+
+Global mix rule for every segment: VO -12 to -6dB > existing SFX stingers -9 to -14dB > music bed -18 to -25dB while VO speaks, rising to -12 to -8dB only in the silent gaps between VO lines. Verify with the section 10.7 RMS-bucket method (ffmpeg mono 8kHz extract, compare RMS during VO-active vs VO-gap windows) before calling the mix done.
+```
+
+### platform-format
+
+2026 short-form caption data favors word-by-word/short-phrase reveal with a single highlighted keyword per line (Hormozi-bold style, commonly yellow #F7C204 or a bright accent) over full-clause typewriter reveal — creators report 15-40% retention lift from this switch (OpusClip, Blitzcut). Our top-anchored y=196 placement is correct and should not move: 2026 TikTok/Reels safe-zone guidance keeps the bottom ~20-25% of the 1920px frame (caption bar, CTA, description panel) clear of critical text, so top-positioning already dodges the UI overlap most creators fight. The gap is reveal mechanics and hierarchy: our ~50px headline currently carries a full clause rather than a 1-3 word burst, so it reads more like a subtitle than a Hormozi-style hook card, and our numbers (the actual selling point of a data-driven reel) aren't visually distinguished from the surrounding words. Length (46s) sits above the 2026 educational-reel sweet spot (15-30s, with 21-34s as a workable "hook + value + CTA" business-reel zone) — defensible for a narrative case study only if the first 2-3 seconds are unmistakably strong and the mid-piece keeps cutting on beat. FTC 2025-2026 guidance requires the "not advice" disclosure live inside the video, not just in caption text — our footer already satisfies this per house style but should stay visible the full runtime. Date/ticker-stamping ("BRENT CRUDE · FEB-JUL 2026") is the dominant 2026 finance-creator convention for "this is a real market event," and should appear in frame 0 itself, not only the footer, since the first frame is what gets screenshotted/re-shared as the de facto thumbnail.
+
+Rules:
+- Word-by-word or 2-4 word phrase reveal with ONE highlighted keyword per line beats full-clause/typewriter reveal for retention — 15-40% retention lift reported after switching to animated word-by-word captions (OpusClip, Blitzcut, 2026 caption-style roundups).
+- High-contrast keyword highlighting norm: white base text + one word per line popped in yellow (#F7C204) or a bright accent, black outline/stroke for legibility over busy backgrounds — our green-on-black terminal palette can keep its own accent color (#22E07E) for this role instead of yellow, but must add a stroke/shadow behind the ~27px subline where it crosses the candlestick chart.
+- Caption vertical position: keep top-anchored (y=196). 2026 safe-zone specs keep the bottom 384-484px of a 1920px-tall frame reserved for the platform's caption bar/CTA/description UI — top placement is the correct, non-default choice and should not be moved down to 'traditional subtitle' position.
+- Font-size hierarchy: 2026 Hormozi-style hooks run headline text at 60-90px in short (1-3 word) bursts, not full clauses at 50px — a full sentence at 50px reads as a subtitle, not a hook card. Reserve the larger size for numerals/keywords, drop connective words to a smaller/dimmer tier.
+- First-frame (thumbnail) convention: the exact frame at t=0.00s (or the final frame) must independently work as a static share-image — pattern-interrupt number + chart + hook text all already composited, not faded in over the first several seconds.
+- Optimal reel length for 2026 finance/educational content is 15-30s, with 21-34s the practical 'hook + one value point + CTA' zone for business reels; cold-audience growth clips trend even shorter (7-15s). Our 46s runtime exceeds this band — acceptable for a narrative case study only if frame 0-3s is an unmistakable hook and cuts keep landing every 4-8s (camera choreography already provides this cadence).
+- Loopability convention: 'resolve fast, let the ending naturally restart' — a hard-stop static end card breaks the loop; the last visual beat should rhyme with the first (same chart framing, same chokepoint-stat motif) so replays read as intentional, not truncated.
+- Date/ticker-stamping ('BRENT CRUDE · FEB-JUL 2026' or similar) is the standard 2026 finance-creator device signaling 'this happened, this isn't hypothetical' — should be visible from frame 0, not only in the outro/footer, since frame 0 is what gets screenshotted.
+- FTC 2025-2026 guidance for short-form video requires the non-advice disclosure to live IN the video (burned-in), not only in the caption/description text — our footer already does this per house style; keep it rendered for the full runtime rather than only bookending the piece.
+- 'POV:' / 'This is why...' meme-prefix hooks skew toward entertainment/lifestyle virality mechanics, not the data-forward credibility angle that makes a market case study land — do not bolt one onto this reel; a real number in frame 0 outperforms a generic meme-format prefix for this content type.
+- Never use color to rank/signal buy-sell within the caption system (house rule, reinforced by research: color-pop is for emphasis of the number that matters this beat, not a directional cue) — the accent highlight goes on the number/keyword, never tinted toward the eventual BUY/SELL outcome, which is also the leak class named in CLAUDE.md 10.3.
+- Caption cadence should sync 1:1 with VO word timing (not a decorative typewriter tick) — mismatched caption/VO timing is one of the more commonly cited causes of a captioned reel reading as 'stiff' rather than narrated, which is the owner's actual complaint here (adjacent to the voice-narration dimension but caption sync compounds it).
+
+Deliverable:
+```
+CAPTION + FIRST-FRAME SPEC
+
+Reveal mechanic (replace current):
+- Unit of reveal = 2-4 word phrase synced to VO word timing (not per-character typewriter tick). Keep the terminal "typed" SFX but fire it once per phrase-chunk.
+- Two-tier type scale: numerals/keywords at ~64-70px in bright accent green (#22E07E), connective words at ~48-50px in the current dimmer terminal green. Exactly one highlighted element per line — never highlight two numbers on the same line, it dilutes which one matters this beat.
+- Add a 2-3px black/near-black stroke or soft drop-shadow behind subline text so it survives crossing the live candle chart.
+- Keep the blinking cursor, but only at the end of the currently-completing phrase, not trailing every completed line.
+
+Position: keep headline+subline top-anchored at y=196 — do not move it down. This already clears the platform's bottom 20-25% UI band (caption bar, CTA stack, description), which is where most non-finance creators lose real estate. Add a small persistent date/ticker chip ("BRENT CRUDE · FEB–JUL 2026") near the top-left, present from frame 0, separate from the larger compliance footer at the bottom.
+
+First-frame (t=0.00s) requirements — must work as a standalone shareable still:
+1. Candlestick chart already visible and framed (no fade-in ramp before it appears).
+2. Headline hook text and date/ticker chip already fully composited, not building in.
+3. A real number visible in-frame (20.9M or the % figure) so the still itself carries informational weight, not just mood.
+4. No mid-transition camera blur on this exact frame — if the push-in animation starts at frame 0, hold frame 0-3 static first, then start the move.
+
+Loop-closing: end the piece on a frame that visually rhymes with frame 0 (same chart crop/camera framing, or a re-statement of the chokepoint stat as a small corner card) so a loop restart feels like a deliberate button, not a cutoff.
+
+Three candidate on-screen hook texts, frames 0-60 (0.0-2.0s):
+
+1. Headline: "20.9M BARRELS/DAY THROUGH ONE STRAIT"
+   Subline: "~1/5 of the world's oil — one closure moves everything"
+   (Leads with the verified number; no name of the strait needed since VO will land it — keeps the hook data-forward per 2026 finance-creator convention rather than meme-prefix.)
+
+2. Headline: "BRENT CRUDE · FEB–JUL 2026"
+   Subline: "ONE CHOKEPOINT. ONE GAP. ONE SETUP THAT FIRED 17 TIMES."
+   (Date-stamps the event up front — the dominant 2026 "this is real, not hypothetical" convention — and previews the case-study structure without spoiling the outcome or naming a source.)
+
+3. Headline: "20% OF WORLD OIL. ONE STRAIT."
+   Subline: "What happened next, priced in real time"
+   (Shortest, most Hormozi-scaled option — best fit for the 60-90px keyword-burst convention if the team wants to push headline size up rather than keep the current full-clause treatment.)
+
+Recommendation: candidate 2 — it is the only one of the three that also does the date-stamping job (rule 8) inside the hook itself, saving a separate beat, and it sets up the base-rate honesty payoff (17 times, 24%) as a promise the reel keeps rather than a surprise, which fits the compliance-friendly, non-hype register this piece already uses.
+```

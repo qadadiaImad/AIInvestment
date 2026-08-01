@@ -34,6 +34,8 @@ import { TradeFailCam, tradeFailCamSchema } from "./compositions/TradeFailCam";
 import { PatternGallery, patternGallerySchema, PATTERN_GALLERY_FRAMES } from "./compositions/PatternGallery";
 import { PatternSheet, patternSheetSchema, PATTERN_SHEET_FRAMES } from "./compositions/PatternSheet";
 import { PatternEndCard, patternEndCardSchema } from "./compositions/PatternEndCard";
+import { CameraProbe, cameraProbeSchema, CAMERA_PROBE_FRAMES } from "./compositions/CameraProbe";
+import { HormuzReel, hormuzSchema, HORMUZ_FRAMES } from "./compositions/HormuzReel";
 import patternGalleryFixture from "./fixtures/patterns_post/gallery.json";
 import { RigCheck, rigCheckSchema } from "./compositions/RigCheck";
 import memeReelFixture from "./fixtures/meme_reel/intc_failed_breakout.json";
@@ -298,6 +300,30 @@ export const RemotionRoot: React.FC = () => {
         calculateMetadata={({ props }) => ({
           durationInFrames: props.durationInFrames,
         })}
+      />
+      {/* SPIKE — camera-feel test for the Hormuz oil reel. Delete once that
+          reel has its own composition. */}
+      <Composition
+        id="CameraProbe"
+        component={CameraProbe}
+        durationInFrames={CAMERA_PROBE_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={cameraProbeSchema}
+        defaultProps={{durationInFrames: CAMERA_PROBE_FRAMES}}
+      />
+      {/* "What moves the price of oil" — one real Brent chart, a camera, and
+          the base rate at the end. Numbers built by scripts/oil_reel/. */}
+      <Composition
+        id="HormuzReel"
+        component={HormuzReel}
+        durationInFrames={HORMUZ_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={hormuzSchema}
+        defaultProps={{}}
       />
       <Composition
         id="MemeReel"

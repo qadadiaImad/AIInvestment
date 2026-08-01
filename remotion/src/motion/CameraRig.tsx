@@ -9,7 +9,6 @@
 // scales the type — the reference reel keeps its text pin-sharp while the
 // chart moves underneath, and scaled text is the fastest way to look cheap.
 import React from 'react';
-import {interpolate} from 'remotion';
 import {EASE} from './craft';
 
 export type Shot = {
@@ -20,8 +19,9 @@ export type Shot = {
   /** Point of the child to centre, in 0..1 of its own width/height. */
   x: number;
   y: number;
-  /** Easing into this shot. Defaults to a settle, which is what a hand-held
-   * push looks like: quick then damped, never linear. */
+  /** Easing into this shot. Defaults to EASE.cruise, which craft.ts documents
+   * as the curve for long drifts and camera moves — quick out, damped in,
+   * never linear. A linear push reads as a slideshow zoom, not a camera. */
   ease?: (t: number) => number;
 };
 
@@ -44,7 +44,7 @@ export const cameraAt = (frame: number, shots: Shot[]): CameraState => {
   const b = sorted[i + 1];
   const span = Math.max(1, b.at - a.at);
   const t = (frame - a.at) / span;
-  const e = (b.ease ?? EASE.settle)(Math.min(1, Math.max(0, t)));
+  const e = (b.ease ?? EASE.cruise)(Math.min(1, Math.max(0, t)));
   const mix = (u: number, v: number) => u + (v - u) * e;
   return {zoom: mix(a.zoom, b.zoom), x: mix(a.x, b.x), y: mix(a.y, b.y)};
 };

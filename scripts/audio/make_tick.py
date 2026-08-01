@@ -179,6 +179,127 @@ def impact(seed):
     return [v / peak * 0.92 for v in out]
 
 
+# ------------------------------------------------------- cinematic reel set
+# Sounds the Hormuz reel needs that the quiz didn't: a keyboard for the typed
+# captions, air for the camera moves, and a sting for the crisis mark.
+
+def key_click(seed, pitch=1.0):
+    """One mechanical keyswitch.
+
+    A keyboard is NOT a click — it is a click and then a *bottom-out*, two
+    events ~9ms apart, and the second one is the louder. Rendering only the
+    first is what makes UI 'typing' sound like a Geiger counter. The stem
+    resonance sits high (3-5kHz) because the sound is plastic hitting plastic
+    in a tiny cavity, not wood.
+
+    Kept under 55ms: at 22 chars/sec the tails would otherwise overlap into a
+    single rattle.
+    """
+    rng = random.Random(seed)
+    n = int(RATE * 0.055)
+    out = [0.0] * n
+
+    # the downstroke: bright, very short
+    top = [rng.uniform(-1, 1) for _ in range(n)]
+    top = one_pole_lp(one_pole_hp(top, 1800.0), 9000.0 * pitch)
+    for i in range(n):
+        out[i] += top[i] * math.exp(-i / (RATE * 0.0035)) * 0.55
+
+    # the bottom-out ~9ms later: lower, fuller, this is the one you hear
+    gap = int(RATE * 0.009)
+    bot = [rng.uniform(-1, 1) for _ in range(n)]
+    bot = one_pole_lp(one_pole_hp(bot, 700.0), 5200.0 * pitch)
+    for i in range(n - gap):
+        out[i + gap] += bot[i] * math.exp(-i / (RATE * 0.0075))
+
+    # case resonance so it sits in a body rather than in free air
+    for i in range(n - gap):
+        out[i + gap] += (
+            math.sin(2 * math.pi * 3400 * pitch * i / RATE)
+            * math.exp(-i / (RATE * 0.004))
+            * 0.22
+        )
+
+    for i in range(int(RATE * 0.0008)):
+        out[i] *= i / (RATE * 0.0008)
+    peak = max(abs(v) for v in out) or 1.0
+    return [v / peak * 0.55 for v in out]
+
+
+def whoosh(seed, dur=0.55, rising=True):
+    """Air for a camera move.
+
+    Filtered noise whose passband SWEEPS — that sweep is the whole effect. A
+    static noise burst with a volume envelope is wind; a moving band is
+    something travelling past the microphone. Rising = push in, falling =
+    pull out, so the ear knows which way the camera went even off-screen.
+
+    The amplitude envelope peaks ~60% through rather than at the start: a
+    whoosh that is loudest on frame 0 reads as an impact instead.
+    """
+    rng = random.Random(seed)
+    n = int(RATE * dur)
+    noise = [rng.uniform(-1, 1) for _ in range(n)]
+
+    # sweep by crossfading three fixed bands — cheaper than a time-varying
+    # filter and indistinguishable once the envelope is on it
+    bands = [
+        one_pole_lp(one_pole_hp(noise, 180.0), 900.0),
+        one_pole_lp(one_pole_hp(noise, 700.0), 2600.0),
+        one_pole_lp(one_pole_hp(noise, 2200.0), 7000.0),
+    ]
+    out = []
+    for i in range(n):
+        t = i / n
+        pos = (t if rising else 1.0 - t) * 2.0        # 0..2 across three bands
+        k = int(pos)
+        frac = pos - k
+        if k >= 2:
+            k, frac = 1, 1.0
+        v = bands[k][i] * (1 - frac) + bands[k + 1][i] * frac
+        env = math.sin(math.pi * (t ** 0.72)) ** 1.4   # late peak, soft tails
+        out.append(v * env)
+
+    peak = max(abs(v) for v in out) or 1.0
+    return [v / peak * 0.42 for v in out]
+
+
+def crisis_sting(seed):
+    """The mark landing on the chart when the shock hits.
+
+    Three layers on one frame: a sub that drops an octave (the floor giving
+    way), a dissonant fifth-plus-tritone pad that holds under it (unease
+    without a horror-film cliche), and a short noise crack for the edge.
+    1.6s, because it has to still be ringing while the gap candle prints.
+    """
+    rng = random.Random(seed)
+    dur = 1.6
+    n = int(RATE * dur)
+    out = [0.0] * n
+
+    phase = 0.0
+    for i in range(n):
+        t = i / n
+        f = 88.0 * math.exp(-t * 1.6) + 33.0           # 121Hz -> 34Hz
+        phase += 2 * math.pi * f / RATE
+        out[i] += math.sin(phase) * math.exp(-i / (RATE * 0.55)) * 1.1
+
+    for f, amp, dec in ((110.0, 0.30, 0.75), (165.0, 0.22, 0.70), (155.6, 0.16, 0.60)):
+        for i in range(n):
+            att = min(1.0, i / (RATE * 0.05))
+            out[i] += math.sin(2 * math.pi * f * i / RATE) * amp * att * math.exp(-i / (RATE * dec))
+
+    crack = [rng.uniform(-1, 1) * math.exp(-i / (RATE * 0.035)) for i in range(n)]
+    crack = one_pole_lp(one_pole_hp(crack, 500.0), 4200.0)
+    for i in range(n):
+        out[i] += crack[i] * 0.55
+
+    for i in range(int(RATE * 0.002)):
+        out[i] *= i / (RATE * 0.002)
+    peak = max(abs(v) for v in out) or 1.0
+    return [v / peak * 0.90 for v in out]
+
+
 def extras():
     write(os.path.join(OUT, "candle_up.wav"), blip(11, 520, 900, bright=1.0))
     write(os.path.join(OUT, "candle_down.wav"), blip(12, 470, 250, bright=0.5))
@@ -188,6 +309,22 @@ def extras():
         print(f"{f} -> {os.path.relpath(os.path.join(OUT, f), REPO)}")
 
 
+def reel_extras():
+    """Three variants of the keyswitch so a typed line isn't a machine gun."""
+    for i, (name, seed, pitch) in enumerate(
+        [("key_click.wav", 101, 1.0), ("key_click2.wav", 102, 1.07), ("key_click3.wav", 103, 0.93)]
+    ):
+        write(os.path.join(OUT, name), key_click(seed, pitch))
+    write(os.path.join(OUT, "whoosh_in.wav"), whoosh(201, 0.55, rising=True))
+    write(os.path.join(OUT, "whoosh_out.wav"), whoosh(202, 0.70, rising=False))
+    write(os.path.join(OUT, "crisis.wav"), crisis_sting(303))
+    for f in ("key_click.wav", "key_click2.wav", "key_click3.wav",
+              "whoosh_in.wav", "whoosh_out.wav", "crisis.wav"):
+        p = os.path.join(OUT, f)
+        print(f"{f} -> {os.path.relpath(p, REPO)}")
+
+
 if __name__ == "__main__":
     main()
     extras()
+    reel_extras()

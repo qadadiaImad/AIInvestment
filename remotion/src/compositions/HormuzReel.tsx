@@ -1,0 +1,611 @@
+// HormuzReel.tsx — "What moves the price of oil", told on one chart.
+//
+// The whole reel is a single 125-bar Brent chart that never moves. What moves
+// is the camera, and what changes is how much of the tape has printed. That is
+// the entire trick: a cut here is a camera arriving somewhere, not a new slide.
+//
+// Every number on screen comes from scripts/oil_reel/ — the composition does no
+// arithmetic on prices, so the caption and the candle cannot disagree
+// (CLAUDE.md 10.1). The trade shows entry, stop, target and R together or not
+// at all (10.5), and it ends on the base rate rather than on the winner (10.6).
+import React from 'react';
+import {AbsoluteFill, Audio, Sequence, interpolate, random, staticFile, useCurrentFrame} from 'remotion';
+import {z} from 'zod';
+import {FONT} from '../slides/theme';
+import {EASE} from '../motion/craft';
+import {Grain, Vignette} from '../motion/Polish';
+import {PT} from '../components/PatternCard';
+import {OilChart, oilScales, type OBar} from '../components/OilChart';
+import {CameraRig, cameraAt, type Shot} from '../motion/CameraRig';
+import fx from '../fixtures/oil_reel/hormuz.json';
+
+export const hormuzSchema = z.object({});
+export type HormuzProps = z.infer<typeof hormuzSchema>;
+
+export const HORMUZ_FRAMES = 1380; // 46s at 30fps
+
+const W = 1080;
+const H = 1920;
+const CHART_W = 2100;
+// Tall on purpose. The price axis spans $65-$126 over six months; at a square
+// aspect, quiet February is a 6-dollar smear four pixels high and the opening
+// seven seconds have nothing to look at. Stretching the axis gives the calm
+// somewhere to live without touching the geometry the camera flies over.
+const CHART_H = 2000;
+
+const BARS = fx.bars as OBar[];
+const S = oilScales(BARS, CHART_W, CHART_H);
+const GAP = fx.shock.firstSessionIndex;
+const P = fx.pattern;
+const T = fx.trade;
+const BR = fx.baseRate;
+const AF = fx.aftermath;
+
+/** A camera target expressed the way the story thinks: "bar 22, at $85". */
+const at = (i: number, price: number) => ({x: S.x(i) / CHART_W, y: S.y(price) / CHART_H});
+
+// ------------------------------------------------------------------ beats
+// Six acts. The camera arrives somewhere slightly BEFORE the bar it is there
+// to watch prints — anticipation is what separates a camera operator who knows
+// what is coming from a zoom that reacts late.
+const SHOTS: Shot[] = [
+  {at: 0, zoom: 4.65, ...at(3.5, 68.6)}, // start CLOSER — the 7s drift to the next mark is visible motion from frame 1
+  {at: 210, zoom: 3.8, ...at(GAP - 1, 71.5), ease: EASE.cruise}, // drift right over quiet Feb
+  {at: 246, zoom: 3.8, ...at(GAP - 1, 71.5)}, // settle on the last calm bar
+  // Wide enough to hold BOTH Friday's bar and Monday's. A gap is the empty
+  // space between two bars; framed on the second bar alone there is no gap on
+  // screen at all, just a big green candle while the caption claims a gap.
+  {at: 330, zoom: 2.2, ...at(GAP - 0.4, 75.5), ease: EASE.cruise},
+  {at: 580, zoom: 2.2, ...at(GAP - 0.4, 75.5)}, // HOLD: mark, gap, and caption all live here
+  {at: 640, zoom: 4.0, ...at(GAP, 80.3), ease: EASE.cruise}, // now into the upper wick — the trap
+  {at: 700, zoom: 4.0, ...at(GAP, 80.3)},
+  {at: 760, zoom: 3.9, ...at(P.mother + 0.5, 81.5), ease: EASE.cruise},
+  {at: 840, zoom: 4.9, ...at(P.inside, 82.4), ease: EASE.cruise}, // tight on the coil
+  {at: 900, zoom: 4.9, ...at(P.inside, 82.4)},
+  {at: 960, zoom: 3.5, ...at(P.trigger, 86.5), ease: EASE.cruise}, // out far enough for the frame
+  {at: 1040, zoom: 3.5, ...at(P.trigger, 88)}, // HOLD on the plan, before the outcome
+  {at: 1100, zoom: 2.0, ...at(P.trigger + 2, 98), ease: EASE.cruise}, // pull-out REVEALS the target
+  {at: 1150, zoom: 2.0, ...at(P.trigger + 2, 98)},
+  // the camera opens as the tape races — the six-month round trip lands in one move
+  {at: 1250, zoom: 0.515, x: 0.5, y: 0.5, ease: EASE.cruise},
+  {at: 1379, zoom: 0.535, x: 0.5, y: 0.5},
+];
+
+/** How much tape exists, per frame. Same keyframe shape as the camera. */
+const PRINT: {at: number; i: number}[] = [
+  {at: 0, i: 9}, // frame 0 is the thumbnail: it needs a chart, not an empty panel
+  {at: 210, i: GAP - 1}, // February prints out slowly under the opening lines
+  {at: 365, i: GAP - 1},
+  {at: 415, i: GAP}, // the gap bar
+  {at: 670, i: GAP},
+  {at: 710, i: P.mother},
+  {at: 770, i: P.inside},
+  {at: 860, i: P.trigger},
+  // HOLD the tape here. The plan has to exist on screen BEFORE the outcome
+  // does, or the reel is just showing a chart that already went up.
+  {at: 995, i: P.trigger},
+  {at: 1085, i: T.tpBar as number}, // two sessions to the target
+  // HOLD again. "Target in two sessions" has to be TRUE on screen while it is
+  // being claimed — fifteen extra bars already printed makes it a lie.
+  {at: 1158, i: T.tpBar as number},
+  {at: 1244, i: BARS.length - 1}, // then the rest of the year, in a rush
+];
+
+const printedAt = (f: number) => {
+  if (f <= PRINT[0].at) return PRINT[0].i;
+  const last = PRINT[PRINT.length - 1];
+  if (f >= last.at) return last.i;
+  let k = 0;
+  for (let n = 0; n < PRINT.length - 1; n++) if (f >= PRINT[n].at) k = n;
+  const a = PRINT[k];
+  const b = PRINT[k + 1];
+  return a.i + (b.i - a.i) * ((f - a.at) / Math.max(1, b.at - a.at));
+};
+
+// ---------------------------------------------------------------- captions
+type Cap = {
+  from: number;
+  to: number;
+  text: string;
+  sub?: string;
+  big?: boolean;
+  /** Fully composited from its first frame — no typewriter. The opening
+   * caption must survive as a static share-image (frame 0 IS the thumbnail),
+   * so it cannot spend its first second half-typed. */
+  instant?: boolean;
+  /** Keyboard SFX under this caption. Only the number-dense lines get keys —
+   * research: clicks under every line fight the narration's own rhythm. */
+  keys?: boolean;
+};
+
+/** Numbers and day-words pop in accent green, connective words stay ink.
+ * One emphasis system, applied by pattern — never by eye, so a new caption
+ * can't forget it. */
+const RICH = /(\$?\d[\d,.]*%?|SATURDAY|MONDAY|FRIDAY)/g;
+// split() uses the global regex; the membership test uses an ANCHORED copy —
+// testing with a /g/ regex is stateful (lastIndex advances) and alternates
+// true/false on identical inputs.
+const RICH_TEST = /^(\$?\d[\d,.]*%?|SATURDAY|MONDAY|FRIDAY)$/;
+const renderRich = (s: string, base: string): React.ReactNode[] =>
+  s.split(RICH).map((part, i) =>
+    RICH_TEST.test(part) ? (
+      <span key={i} style={{color: PT.ice}}>
+        {part}
+      </span>
+    ) : (
+      <span key={i} style={{color: base}}>
+        {part}
+      </span>
+    )
+  );
+
+const CAPS: Cap[] = [
+  // instant: frame 0 is the thumbnail — hook fully composited, no ramp
+  {from: 0, to: 130, text: '20.9 MILLION BARRELS A DAY', big: true, instant: true},
+  {from: 142, to: 232, text: 'A FIFTH OF THE WORLD’S OIL', sub: 'THROUGH ONE STRAIT', keys: true},
+  {from: 246, to: 350, text: 'FRIDAY 27 FEB', sub: `BRENT CLOSED $${fx.shock.prevClose}`, keys: true},
+  {from: 362, to: 452, text: 'SATURDAY. MARKETS SHUT.'},
+  {
+    from: 464,
+    to: 586,
+    text: `MONDAY GAPPED $${Math.abs(fx.shock.gapPts)}`,
+    sub: `+${fx.shock.gapPct}% BEFORE A SINGLE TRADE`,
+    keys: true,
+  },
+  {
+    from: 598,
+    to: 690,
+    text: `IT SPIKED TO $${fx.shock.spikeHigh}`,
+    sub: `THEN CLOSED $${fx.shock.spikeGiveback} LOWER`,
+    keys: true,
+  },
+  {from: 702, to: 790, text: 'SO YOU WAIT.', sub: 'FOR THE RANGE TO STOP WIDENING'},
+  {from: 802, to: 896, text: 'INSIDE BAR', sub: 'THE WHOLE DAY FITS INSIDE THE ONE BEFORE'},
+  {
+    from: 908,
+    to: 1016,
+    text: 'A CLOSE ABOVE THE RANGE',
+    sub: `ENTRY $${T.entry} · STOP $${T.stop} · TARGET $${T.target}`,
+    keys: true,
+  },
+  {from: 1040, to: 1142, text: 'TARGET IN TWO SESSIONS', sub: `2R · ${T.tpDate}`},
+  {
+    from: 1154,
+    to: 1240,
+    text: `$${AF.peakHigh} IN APRIL. $${AF.troughLow} BY JULY.`,
+    sub: 'THE WAR PREMIUM DID NOT LAST',
+    keys: true,
+  },
+  {
+    from: 1252,
+    to: 1379,
+    text: `THAT SETUP FIRED ${BR.n} TIMES`,
+    sub: `IT REACHED TARGET ${BR.wins} TIMES`,
+    big: true,
+    keys: true,
+  },
+];
+
+/** One typed line. The cursor blink is quantised to 8-frame steps — a smoothly
+ * fading cursor is the tell that nobody looked at a real terminal. */
+const Caption: React.FC<{cap: Cap; frame: number}> = ({cap, frame}) => {
+  if (frame < cap.from || frame > cap.to) return null;
+  // 42cps: a caption that takes 1.5s to finish typing is stealing attention
+  // from the voice that is already past it. instant-mode captions skip the
+  // typewriter entirely (the hook must be complete on frame 0).
+  const cps = 42;
+  const shown = cap.instant
+    ? cap.text.length
+    : Math.min(cap.text.length, Math.floor(((frame - cap.from) / 30) * cps));
+  const typing = shown < cap.text.length || (cap.instant === true && frame < cap.from + 60);
+  const cursorOn = Math.floor((frame - cap.from) / 8) % 2 === 0;
+  const doneAt = cap.instant ? cap.from : cap.from + (cap.text.length / cps) * 30;
+  const subIn = interpolate(frame, [doneAt + 4, doneAt + 16], [0, 1], {
+    easing: EASE.enter,
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const out = interpolate(frame, [cap.to - 9, cap.to], [1, 0], {
+    easing: EASE.exit,
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const rise = cap.instant
+    ? 0
+    : interpolate(frame, [cap.from, cap.from + 10], [14, 0], {
+        easing: EASE.enter,
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp',
+      });
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: 196,
+        left: 56,
+        right: 56,
+        textAlign: 'center',
+        opacity: out,
+        transform: `translateY(${rise}px)`,
+      }}
+    >
+      <div
+        style={{
+          fontFamily: FONT.mono,
+          fontSize: cap.big ? 62 : 50,
+          fontWeight: 800,
+          color: '#EAFFF4',
+          lineHeight: 1.12,
+          letterSpacing: -0.5,
+          textShadow: '0 3px 26px rgba(0,0,0,0.92)',
+        }}
+      >
+        {renderRich(cap.text.slice(0, shown), '#EAFFF4')}
+        {/* zero-width so the cursor can never change the line-wrap — it cost
+         * frame 0 a widowed word once */}
+        {typing && cursorOn ? (
+          <span style={{display: 'inline-block', width: 0, overflow: 'visible', color: PT.up}}>
+            &#9612;
+          </span>
+        ) : null}
+      </div>
+      {cap.sub ? (
+        <div
+          style={{
+            marginTop: 14,
+            opacity: subIn,
+            transform: `translateY(${(1 - subIn) * 8}px)`,
+            fontFamily: FONT.mono,
+            fontSize: 27,
+            fontWeight: 700,
+            color: PT.ice,
+            letterSpacing: 1.4,
+            textShadow: '0 2px 18px rgba(0,0,0,0.9)',
+          }}
+        >
+          {cap.sub}
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+// ------------------------------------------------------------------ sound
+/** Keyswitches — only under the number-dense captions (keys: true), a short
+ * burst per phrase rather than a click per character. Clicks under every line
+ * fight the narration's own rhythm; under the number lines they read as data
+ * being entered, which is the point of the terminal aesthetic. */
+const keystrokes = () => {
+  const out: {f: number; src: string}[] = [];
+  const files = ['key_click.wav', 'key_click2.wav', 'key_click3.wav'];
+  CAPS.forEach((cap, ci) => {
+    if (!cap.keys) return;
+    const n = Math.min(5, Math.ceil(cap.text.length / 6));
+    for (let i = 0; i < n; i++) {
+      const f = Math.round(cap.from + i * 4);
+      if (f < HORMUZ_FRAMES) out.push({f, src: files[(ci + i) % 3]});
+    }
+  });
+  return out;
+};
+const KEYS = keystrokes();
+
+/** Camera moves that deserve air, taken from the shot list rather than typed
+ * out again — a whoosh that drifts off its move is worse than no whoosh. */
+const AIR = SHOTS.slice(1)
+  .map((s, i) => ({s, prev: SHOTS[i]}))
+  .filter(({s, prev}) => Math.abs(s.zoom - prev.zoom) > 0.35)
+  .map(({s, prev}) => ({
+    f: Math.max(0, prev.at - 4),
+    src: s.zoom > prev.zoom ? 'whoosh_in.wav' : 'whoosh_out.wav',
+  }));
+
+const CANDLE_HITS = [
+  {f: 415, up: true}, // the gap bar
+  {f: 710, up: true}, // mother
+  {f: 770, up: false}, // the coil
+  {f: 860, up: true}, // trigger
+];
+
+const SHOCK_F = 366; // the mark lands, the desk kicks, the sting hits — one frame
+const COIN_F = 1085; // the bar that reaches the target
+
+export const HormuzReel: React.FC<HormuzProps> = () => {
+  const frame = useCurrentFrame();
+  const cam = cameraAt(frame, SHOTS);
+  const printed = printedAt(frame);
+
+  // The shock knocks the whole frame, captions included — a camera bolted to a
+  // desk when something lands on it. Decays inside 18 frames; a shake that
+  // outlives its cause reads as a rendering fault.
+  const shakeT = (frame - SHOCK_F) / 18;
+  const shake =
+    frame >= SHOCK_F && shakeT < 1
+      ? (() => {
+          const amp = (1 - shakeT) ** 2 * 17;
+          return {
+            x: (random(`sx${frame}`) - 0.5) * 2 * amp,
+            y: (random(`sy${frame}`) - 0.5) * 2 * amp,
+          };
+        })()
+      : {x: 0, y: 0};
+
+  const markIn = interpolate(frame, [SHOCK_F, SHOCK_F + 10], [0, 1], {
+    easing: EASE.enter,
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const motherIn = interpolate(frame, [720, 736], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const insideIn = interpolate(frame, [782, 798], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const levelIn = interpolate(frame, [830, 850], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  // All four legs of the trade land together — a target with no stop shows the
+  // upside and hides what being wrong cost (CLAUDE.md 10.5). The target line is
+  // off the top of frame at this zoom; the pull-out at 1030 is what reveals it.
+  const tradeIn = interpolate(frame, [920, 944], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+
+  // Annotations are scaffolding for the beat that needs them. Left up, the
+  // shock mark and the pattern boxes clutter the final wide shot with a
+  // diagram of something the reel finished explaining twenty seconds ago.
+  const annoOut = interpolate(frame, [1180, 1246], [1, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  // The 28 FEB rule has done its work once the pattern is being drawn. Left at
+  // full strength it runs a dashed red line straight through the caption.
+  const markFade = interpolate(frame, [680, 740], [1, 0.28], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
+  const levels = [
+    {
+      price: P.motherHigh,
+      label: `$${P.motherHigh}`,
+      color: PT.level,
+      opacity: levelIn * (1 - tradeIn) * annoOut,
+    },
+    ...(tradeIn > 0
+      ? [
+          {price: T.entry, label: 'ENTRY', color: PT.ink, opacity: tradeIn, dash: '0'},
+          {price: T.stop, label: 'STOP', color: PT.down, opacity: tradeIn},
+          {price: T.target, label: 'TARGET', color: PT.up, opacity: tradeIn},
+        ]
+      : []),
+  ];
+
+  // The bands stop where the trade stopped. Running them to the right edge
+  // paints a hundred bars the trade was never in as if it held them.
+  const bandEnd = Math.min(BARS.length - 1, (T.tpBar as number) + 2);
+  const bands =
+    tradeIn > 0
+      ? [
+          {from: T.entry, to: T.stop, i0: P.trigger, i1: bandEnd, color: PT.down, opacity: 0.17 * tradeIn},
+          {from: T.entry, to: T.target, i0: P.trigger, i1: bandEnd, color: PT.up, opacity: 0.14 * tradeIn},
+        ]
+      : [];
+
+  /** Project a price onto the screen through the same camera the chart uses,
+   * so a label pinned here sits exactly on its dashed line at any zoom. */
+  const screenY = (price: number) =>
+    H / 2 - cam.y * CHART_H * cam.zoom + S.y(price) * cam.zoom;
+
+  return (
+    <AbsoluteFill style={{backgroundColor: PT.bg}}>
+      <div style={{position: 'absolute', inset: 0, transform: `translate(${shake.x}px, ${shake.y}px)`}}>
+        <CameraRig
+          frame={frame}
+          shots={SHOTS}
+          childWidth={CHART_W}
+          childHeight={CHART_H}
+          viewportWidth={W}
+          viewportHeight={H}
+        >
+          <OilChart
+            bars={BARS}
+            width={CHART_W}
+            height={CHART_H}
+            printedThrough={printed}
+            zoom={cam.zoom}
+            levels={levels}
+            marks={
+              markIn * annoOut * markFade > 0
+                ? [{i: GAP, label: '28 FEB', color: PT.down, opacity: markIn * annoOut * markFade}]
+                : []
+            }
+            boxes={[
+              ...(motherIn * annoOut > 0
+                ? [{i: P.mother, span: 2, color: PT.trendline, label: 'RANGE', opacity: motherIn * annoOut}]
+                : []),
+              ...(insideIn * annoOut > 0
+                ? [{i: P.inside, color: PT.level, label: 'INSIDE', opacity: insideIn * annoOut}]
+                : []),
+            ]}
+            bands={bands}
+          />
+        </CameraRig>
+
+        {/* Level labels, pinned to the right edge of the SCREEN rather than to
+         * the chart. They ride the camera vertically and never scale, so at a
+         * 3x push they are the same size they are at the wide. */}
+        {levels
+          .map((lv) => ({lv, y: screenY(lv.price)}))
+          .filter(({lv, y}) => (lv.opacity ?? 1) > 0.02 && y > 250 && y < 1720)
+          .map(({lv, y}, i) => (
+            <div
+              key={`ll${i}`}
+              style={{
+                position: 'absolute',
+                right: 22,
+                top: y - 17,
+                height: 34,
+                padding: '0 13px',
+                display: 'flex',
+                alignItems: 'center',
+                borderRadius: 5,
+                background: PT.bg,
+                border: `1.6px solid ${lv.color}`,
+                opacity: lv.opacity ?? 1,
+                fontFamily: FONT.mono,
+                fontSize: 21,
+                fontWeight: 800,
+                color: lv.color,
+                letterSpacing: 1,
+                boxShadow: '0 2px 16px rgba(0,0,0,0.8)',
+              }}
+            >
+              {lv.label}
+            </div>
+          ))}
+
+        {/* captions ride above the rig, so a 3x push never scales the type */}
+        {CAPS.map((c, i) => (
+          <Caption key={i} cap={c} frame={frame} />
+        ))}
+
+        {/* The punchline, held while the camera sits wide on the round trip.
+         * The reel ends on the base rate, not on the winner — one trade that
+         * worked is an anecdote, seventeen is a number (CLAUDE.md 10.6). */}
+        {frame >= 1300 ? (
+          <div
+            style={{
+              position: 'absolute',
+              top: 1272,
+              left: 0,
+              right: 0,
+              paddingTop: 26,
+              paddingBottom: 30,
+              textAlign: 'center',
+              // the number sits over live candles; without a scrim it competes
+              // with whatever bar happens to be behind it
+              background:
+                'linear-gradient(180deg, rgba(2,7,10,0) 0%, rgba(2,7,10,0.93) 22%, rgba(2,7,10,0.93) 78%, rgba(2,7,10,0) 100%)',
+              opacity: interpolate(frame, [1300, 1318], [0, 1], {
+                easing: EASE.enter,
+                extrapolateLeft: 'clamp',
+                extrapolateRight: 'clamp',
+              }),
+              transform: `scale(${interpolate(frame, [1300, 1326], [0.9, 1], {
+                easing: EASE.settleBack,
+                extrapolateLeft: 'clamp',
+                extrapolateRight: 'clamp',
+              })})`,
+            }}
+          >
+            <div
+              style={{
+                fontFamily: FONT.mono,
+                fontSize: 168,
+                fontWeight: 900,
+                color: PT.level,
+                letterSpacing: -6,
+                lineHeight: 1,
+                textShadow: '0 6px 46px rgba(0,0,0,0.96)',
+              }}
+            >
+              {BR.pct}%
+            </div>
+            <div
+              style={{
+                marginTop: 8,
+                fontFamily: FONT.mono,
+                fontSize: 25,
+                fontWeight: 700,
+                color: PT.steel,
+                letterSpacing: 2.2,
+              }}
+            >
+              HIT RATE &middot; 2Y BRENT &middot; {BR.losses} LOST &middot; {BR.open} STILL OPEN
+            </div>
+          </div>
+        ) : null}
+      </div>
+
+      <Vignette />
+      <Grain opacity={0.045} />
+
+      {/* header — always on, so a still frame still says what it is */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 62,
+          left: 56,
+          right: 56,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'baseline',
+          fontFamily: FONT.mono,
+        }}
+      >
+        <div style={{fontSize: 30, fontWeight: 900, color: PT.ink, letterSpacing: 1.2}}>
+          BRENT CRUDE
+        </div>
+        <div style={{fontSize: 22, fontWeight: 700, color: PT.steel, letterSpacing: 1.6}}>
+          {BARS[0].d} &rarr; {BARS[BARS.length - 1].d}
+        </div>
+      </div>
+
+      {/* footer — real data, named source, snapshot time (CLAUDE.md 10.6) */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 42,
+          left: 56,
+          right: 56,
+          textAlign: 'center',
+          fontFamily: FONT.mono,
+          fontSize: 15,
+          lineHeight: 1.55,
+          color: PT.steel,
+          letterSpacing: 0.4,
+        }}
+      >
+        REAL DAILY BARS &middot; BRENT FRONT-MONTH (BZ=F) &middot; YAHOO FINANCE &middot; SNAPSHOT{' '}
+        {String(fx.provenance.bars_retrieved_at).slice(0, 10)}
+        <br />
+        TRANSIT VOLUME: U.S. EIA WORLD OIL TRANSIT CHOKEPOINTS &middot; NOT INVESTMENT ADVICE
+      </div>
+
+      {/* ---------------------------------------------------------- audio
+       * Every cue is derived from the same constant the picture uses — the
+       * caption list, the shot list, the print keyframes — so a retimed beat
+       * moves its sound with it. A cue typed out by hand drifts the first
+       * time a number changes, and two frames of drift reads as dubbed. */}
+
+      {/* keyswitches under the typed lines */}
+      {KEYS.map((k, i) => (
+        <Sequence key={`k${i}`} from={k.f} durationInFrames={4}>
+          <Audio src={staticFile(`audio/${k.src}`)} volume={0.3} />
+        </Sequence>
+      ))}
+
+      {/* air on every camera move that actually changes distance */}
+      {AIR.map((a, i) => (
+        <Sequence key={`a${i}`} from={a.f} durationInFrames={26}>
+          <Audio src={staticFile(`audio/${a.src}`)} volume={0.3} />
+        </Sequence>
+      ))}
+
+      {/* the shock: sting on the same frame the mark lands and the desk kicks */}
+      <Sequence from={SHOCK_F} durationInFrames={54}>
+        <Audio src={staticFile('audio/crisis.wav')} volume={0.8} />
+      </Sequence>
+      <Sequence from={SHOCK_F} durationInFrames={14}>
+        <Audio src={staticFile('audio/impact.wav')} volume={0.72} />
+      </Sequence>
+
+      {/* one blip per story candle — not per bar. The last 100 bars print in
+       * four seconds at the end; scoring those is twenty-five hits a second. */}
+      {CANDLE_HITS.map((c, i) => (
+        <Sequence key={`c${i}`} from={c.f} durationInFrames={8}>
+          <Audio src={staticFile(c.up ? 'audio/candle_up.wav' : 'audio/candle_down.wav')} volume={0.5} />
+        </Sequence>
+      ))}
+
+      {/* the target printing */}
+      <Sequence from={COIN_F} durationInFrames={40}>
+        <Audio src={staticFile('audio/coin.wav')} volume={0.62} />
+      </Sequence>
+    </AbsoluteFill>
+  );
+};
