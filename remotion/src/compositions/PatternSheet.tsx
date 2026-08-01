@@ -113,8 +113,15 @@ export const PatternSheet: React.FC<PatternSheetProps> = (p) => {
         <div style={{fontFamily: FONT.display, fontWeight: 700, fontSize: 66, color: PT.ink, letterSpacing: -1, lineHeight: 1.02}}>
           CHART <span style={{color: '#9FC2E8'}}>PATTERNS</span>
         </div>
-        <div style={{fontFamily: FONT.mono, fontSize: 19, color: PT.steel, marginTop: 8, letterSpacing: 1.6}}>
-          {cells.length} real SPY formations · {tries > 0 ? `${wins} of ${tries} reached target · ` : ''}real dates
+        {/* Amber, bold, and stating the miss as well as the hit. In grey 19px
+            beside ten glowing green payoff badges this read as boilerplate —
+            the honest number has to carry the same weight as the flattering
+            one or the sheet still sells a clean sweep. One line only: the
+            masthead ends near 159 and GRID_TOP is 196. */}
+        <div style={{fontFamily: FONT.mono, fontSize: 25, fontWeight: 700, color: PT.level, marginTop: 8, letterSpacing: 1.2}}>
+          {tries > 0
+            ? `${cells.length} REAL SPY FORMATIONS · ${wins} HIT TARGET, ${tries - wins} DIDN'T`
+            : `${cells.length} REAL SPY FORMATIONS · REAL DATES`}
         </div>
       </div>
 

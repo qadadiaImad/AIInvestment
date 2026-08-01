@@ -153,6 +153,40 @@ export const PatternCell: React.FC<PatternCellProps> = ({data, width, height}) =
       </text>
       <line x1={0} x2={width} y1={HEAD} y2={HEAD} stroke={PT.gridBold} strokeWidth={1.2} />
 
+      {/* THE COUNTERWEIGHT. It sits on the verdict's eye-line, not in the date
+          strip, because the green payoff badge is the loudest thing in the cell
+          and a base rate murmured in 13.5px grey underneath it does not argue
+          with a glowing "+7.7%". Outlined rather than filled so it reads as
+          context and not as a second verdict. */}
+      {typeof d.sampleN === 'number' && d.sampleN > 0
+        ? (() => {
+            // Width tracks the label: "HIT 1/10" and "HIT 67/183" are two
+            // characters apart and a fixed box spills the long ones. Right
+            // edge parks 8px left of the verdict chip, which starts at
+            // width-68, so the pair reads as one line: "HIT 1/10  SELL".
+            const label = `HIT ${d.sampleWins ?? 0}/${d.sampleN}`;
+            const w = 16 + label.length * 7.6;
+            const x0 = width - 76 - w;
+            return (
+              <g opacity={levelP}>
+                <rect x={x0} y={8} width={w} height={20} rx={5} fill="none" stroke={PT.level} strokeWidth={1.1} opacity={0.9} />
+                <text
+                  x={x0 + w / 2}
+                  y={22}
+                  fontFamily={FONT.mono}
+                  fontSize={12.5}
+                  fontWeight={700}
+                  fill={PT.level}
+                  textAnchor="middle"
+                  letterSpacing={0.5}
+                >
+                  {label}
+                </text>
+              </g>
+            );
+          })()
+        : null}
+
       {/* verdict chip pops into the header once the break has printed */}
       {chipP > 0 ? (
         <g opacity={chipP} transform={`translate(${width - 40} 18) scale(${chipScale}) translate(${-(width - 40)} -18)`}>
@@ -337,9 +371,6 @@ export const PatternCell: React.FC<PatternCellProps> = ({data, width, height}) =
         letterSpacing={0.6}
       >
         {d.ticker ?? 'SPY'} · {d.from} → {d.to} · 1D
-        {typeof d.sampleN === 'number' && d.sampleN > 0
-          ? ` · HIT ${d.sampleWins ?? 0}/${d.sampleN}`
-          : ''}
       </text>
     </svg>
   );
