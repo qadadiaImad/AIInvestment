@@ -19,6 +19,9 @@ import {Grain, Vignette} from '../motion/Polish';
 export const scienceReelSchema = z.object({
   cutStarts: z.array(z.number()).optional(),
   totalFrames: z.number().optional(),
+  // WhatsApp-style video-call PiP: Maya at her mic, chained clips. When set,
+  // the word overlays move to the top band so the box doesn't cover them.
+  pipClips: z.array(z.string()).optional(),
 });
 
 const UNIT = 51; // 1.7s at 30fps = 3 beats at ~106 BPM
@@ -79,7 +82,7 @@ const KenBurns: React.FC<{src: string; index: number; frames: number}> = ({src, 
   );
 };
 
-const Word: React.FC<{word: string; accuse?: boolean}> = ({word, accuse}) => {
+const Word: React.FC<{word: string; accuse?: boolean; top?: boolean}> = ({word, accuse, top}) => {
   const frame = useCurrentFrame();
   const inp = interpolate(frame, [3, 12], [0, 1], {
     easing: EASE.enter,
@@ -91,7 +94,7 @@ const Word: React.FC<{word: string; accuse?: boolean}> = ({word, accuse}) => {
     <div
       style={{
         position: 'absolute',
-        bottom: 340,
+        ...(top ? {top: 240} : {bottom: 340}),
         left: 50,
         right: 50,
         textAlign: 'center',
@@ -144,7 +147,51 @@ const Flash: React.FC = () => {
   return <AbsoluteFill style={{backgroundColor: '#fff', opacity: o, pointerEvents: 'none'}} />;
 };
 
-export const ScienceReel: React.FC<z.infer<typeof scienceReelSchema>> = ({cutStarts, totalFrames}) => {
+
+/** Maya's video-call box: rounded rectangle, bottom-right quarter of the
+ * frame, chained 6s clips (each loops into the next on a hard cut — normal
+ * for a call window). Border + shadow sell the WhatsApp-PiP read. */
+const PIP_W = 486;
+const PIP_H = 864;
+const PipCall: React.FC<{clips: string[]; total: number}> = ({clips, total}) => {
+  const CLIP_FRAMES = 181; // 6.04s sources at 30fps
+  const seqs: {file: string; from: number; dur: number}[] = [];
+  let at = 0;
+  let k = 0;
+  while (at < total) {
+    const dur = Math.min(CLIP_FRAMES, total - at);
+    seqs.push({file: clips[k % clips.length], from: at, dur});
+    at += dur;
+    k += 1;
+  }
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        right: 24,
+        bottom: 96,
+        width: PIP_W,
+        height: PIP_H,
+        borderRadius: 26,
+        overflow: 'hidden',
+        border: '3px solid rgba(255,255,255,0.85)',
+        boxShadow: '0 18px 60px rgba(0,0,0,0.65)',
+      }}
+    >
+      {seqs.map((q, i) => (
+        <Sequence key={i} from={q.from} durationInFrames={q.dur}>
+          <OffthreadVideo
+            src={staticFile(q.file)}
+            muted
+            style={{width: '100%', height: '100%', objectFit: 'cover'}}
+          />
+        </Sequence>
+      ))}
+    </div>
+  );
+};
+
+export const ScienceReel: React.FC<z.infer<typeof scienceReelSchema>> = ({cutStarts, totalFrames, pipClips}) => {
   const defaults: number[] = [];
   let acc = 0;
   for (const s of SHOTS) {
@@ -171,11 +218,12 @@ export const ScienceReel: React.FC<z.infer<typeof scienceReelSchema>> = ({cutSta
                 <KenBurns src={s.file} index={i} frames={dur} />
               )}
               {s.flash ? <Flash /> : <CutDip />}
-              {s.word ? <Word word={s.word} accuse={s.accuse} /> : null}
+              {s.word ? <Word word={s.word} accuse={s.accuse} top={!!pipClips?.length} /> : null}
             </AbsoluteFill>
           </Sequence>
         );
       })}
+      {pipClips?.length ? <PipCall clips={pipClips} total={total} /> : null}
       <Vignette />
       <Grain opacity={0.06} />
     </AbsoluteFill>
