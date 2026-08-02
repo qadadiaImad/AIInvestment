@@ -21,14 +21,19 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
 WHY = os.path.join(REPO, "remotion", "public", "why")
 
-# screen quads on the 720x1280 base, clockwise from top-left
-QUAD_LEFT = [(14, 492), (280, 492), (280, 697), (14, 690)]
+# screen quads on the 720x1280 base, clockwise from top-left (measured on a
+# gridded 3x crop; the left monitor's top edge rises slightly to the right)
+QUAD_LEFT = [(10, 490), (284, 486), (285, 701), (10, 688)]
 QUAD_RIGHT = [(288, 490), (558, 487), (561, 701), (288, 700)]
 
-# Maya's head/shoulder silhouette where it overlaps the screens (feathered)
-OCCLUDER = [
-    (128, 710), (140, 600), (163, 535), (196, 500), (238, 490),
-    (276, 515), (300, 565), (318, 640), (330, 710),
+# generous corridor around Maya's head/shoulders — the REAL occlusion mask is
+# colorimetric (warm hair vs neutral-dark off-screen) and only applies inside
+# this corridor. A hand-drawn polygon alone shipped ~30px wide of the hair
+# and restored a band of blank screen next to it — the chart cut to black
+# before the hair started, which read as a broken display.
+CORRIDOR = [
+    (100, 720), (120, 590), (150, 520), (185, 488), (250, 480),
+    (295, 505), (320, 560), (340, 650), (350, 720),
 ]
 
 
@@ -85,11 +90,30 @@ def main():
         ImageDraw.Draw(scr_mask).polygon(quad, fill=255)
     base = Image.composite(Image.alpha_composite(base, sheen), base, scr_mask)
 
-    # restore Maya over the screens: feathered silhouette from the original
-    occ = Image.new("L", base.size, 0)
-    ImageDraw.Draw(occ).polygon(OCCLUDER, fill=255)
-    occ = occ.filter(ImageFilter.GaussianBlur(4))
-    base.paste(keep, (0, 0), occ)
+    # restore Maya over the screens: colorimetric hair mask inside the
+    # corridor. Off screens are neutral/cool dark (R<=B-ish); hair is warm
+    # (R-B high) with bright rim light — segment on that, close small gaps,
+    # feather the edge.
+    arr = np.asarray(keep.convert("RGB")).astype(np.int16)
+    warm = ((arr[:, :, 0] - arr[:, :, 2] >= 7) & (arr[:, :, 0] >= 18)) | (
+        arr.mean(axis=2) > 85
+    )
+    hair = Image.fromarray((warm * 255).astype(np.uint8), "L")
+    corridor = Image.new("L", base.size, 0)
+    ImageDraw.Draw(corridor).polygon(CORRIDOR, fill=255)
+    hair = Image.composite(hair, Image.new("L", base.size, 0), corridor)
+    # close strand gaps hard — the darkest crown pixels fail the warm test and
+    # left candle fragments printed across her head on the first pass
+    hair = hair.filter(ImageFilter.MaxFilter(11)).filter(ImageFilter.MinFilter(5))
+    core = Image.new("L", base.size, 0)  # center of head/neck is always hers
+    ImageDraw.Draw(core).polygon(
+        [(180, 540), (192, 505), (215, 494), (248, 494), (272, 514),
+         (287, 545), (292, 605), (287, 665), (277, 720), (188, 720), (178, 620)],
+        fill=255,
+    )
+    hair = Image.fromarray(np.maximum(np.asarray(hair), np.asarray(core)))
+    hair = hair.filter(ImageFilter.GaussianBlur(2.5))
+    base.paste(keep, (0, 0), hair)
 
     out = os.path.join(WHY, "anchor_final.png")
     base.convert("RGB").save(out)
