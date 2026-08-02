@@ -2,8 +2,11 @@ import React from "react";
 import {
   AbsoluteFill,
   Easing,
+  Img,
+  OffthreadVideo,
   interpolate,
   random,
+  staticFile,
   useCurrentFrame,
 } from "remotion";
 import { C, FONT, NOT_FATWA } from "./theme";
@@ -11,15 +14,24 @@ import { C, FONT, NOT_FATWA } from "./theme";
 export const easeOut = Easing.bezier(0.16, 1, 0.3, 1);
 export const pop = Easing.bezier(0.34, 1.56, 0.64, 1);
 export const inOut = Easing.bezier(0.45, 0, 0.55, 1);
+/** True easeInOutCubic (cubic power curve, eased both ends) -- used for the
+ * correlation demo's r-sweep + balance-marker morph so both glide smoothly
+ * between holds instead of a linear/near-linear ramp. */
+export const easeInOutCubic = Easing.inOut(Easing.cubic);
 
 export const clamp = { extrapolateLeft: "clamp" as const, extrapolateRight: "clamp" as const };
 
-/** Ambient dark background: radial glow + slow-drifting emerald motes. */
-export const Bg: React.FC<{ tint?: string }> = ({ tint = C.emerald }) => {
+/** Ambient dark background: radial glow + slow-drifting emerald motes.
+ * `driftSpeed` (default 1 = original behavior, unchanged for every existing
+ * caller) scales both the vertical drift speed and adds a horizontal sway --
+ * pass a higher value (e.g. CorrelationReel's synced-demo beat) to make the
+ * motes read as more noticeably alive without touching any other reel. */
+export const Bg: React.FC<{ tint?: string; driftSpeed?: number }> = ({ tint = C.emerald, driftSpeed = 1 }) => {
   const frame = useCurrentFrame();
   const motes = new Array(14).fill(0).map((_, i) => {
-    const x = random(`mx${i}`) * 1080;
-    const y = ((random(`my${i}`) * 2200 + frame * (0.3 + random(`ms${i}`))) % 2100) - 100;
+    const sway = (driftSpeed - 1) * 14 * Math.sin(frame * 0.008 * driftSpeed + i);
+    const x = random(`mx${i}`) * 1080 + sway;
+    const y = ((random(`my${i}`) * 2200 + frame * (0.3 + random(`ms${i}`)) * driftSpeed) % 2100) - 100;
     const s = 3 + random(`msz${i}`) * 7;
     return (
       <div
@@ -499,6 +511,77 @@ export const EndCard: React.FC<{
       <div style={{ position: "absolute", bottom: 70, left: 90, right: 90, textAlign: "center" }}>
         <Foot />
       </div>
+    </AbsoluteFill>
+  );
+};
+
+// ---- SemisReel presentational units ----------------------------------------
+
+/** Pinned white "sticker" hook caption (studied from the source reel): bold
+ * near-black text with one gold keyword; pops in, then holds on screen. */
+export const StickerHook: React.FC<{ pre: string; keyword: string; post?: string; from?: number }> = ({
+  pre, keyword, post = "", from = 0,
+}) => {
+  const frame = useCurrentFrame();
+  const s = interpolate(frame, [from, from + 12], [0.7, 1], { ...clamp, easing: pop });
+  const o = interpolate(frame, [from, from + 10], [0, 1], clamp);
+  return (
+    <div style={{
+      position: "absolute", top: 150, left: 0, right: 0, display: "flex", justifyContent: "center",
+      opacity: o, transform: `scale(${s})`, zIndex: 6,
+    }}>
+      <div style={{
+        maxWidth: 820, background: "#F4F6F8", borderRadius: 26, padding: "22px 34px",
+        boxShadow: "0 18px 50px rgba(0,0,0,.55)", fontFamily: FONT.body, fontWeight: 800,
+        fontSize: 62, lineHeight: 1.08, color: "#111418", textAlign: "center",
+      }}>
+        {pre} <span style={{ color: C.amber }}>{keyword}</span>{post}
+      </div>
+    </div>
+  );
+};
+
+/** Burned rolling subtitle that advances per beat; optional "as reported" tag. */
+export const RollingCaption: React.FC<{ text: string; from: number; asReported?: boolean }> = ({
+  text, from, asReported = false,
+}) => {
+  const frame = useCurrentFrame();
+  const o = interpolate(frame, [from, from + 12], [0, 1], clamp);
+  const y = interpolate(frame, [from, from + 12], [22, 0], { ...clamp, easing: easeOut });
+  return (
+    <div style={{
+      position: "absolute", bottom: 360, left: 60, right: 60, textAlign: "center",
+      opacity: o, transform: `translateY(${y}px)`, zIndex: 6,
+    }}>
+      <div style={{
+        fontFamily: FONT.display, fontWeight: 700, fontSize: 52, lineHeight: 1.2,
+        color: C.ink, textShadow: "0 3px 22px rgba(0,0,0,.85)",
+      }}>{text}</div>
+      {asReported && (
+        <div style={{
+          marginTop: 14, fontFamily: FONT.mono, fontWeight: 700, fontSize: 20, letterSpacing: 1.5,
+          color: C.muted, textShadow: "0 2px 10px rgba(0,0,0,.9)",
+        }}>AS REPORTED · NOT INDEPENDENTLY VERIFIED</div>
+      )}
+    </div>
+  );
+};
+
+/** Full-bleed Grok background (video or still) with a dark scrim + optional
+ * slow Ken-Burns for stills. Charts/text sit above it. */
+export const GrokClip: React.FC<{ src: string; kind: "video" | "image"; scrim?: string; kenBurns?: boolean }> = ({
+  src, kind, scrim = "linear-gradient(180deg, rgba(10,13,18,.45) 0%, rgba(10,13,18,.35) 40%, rgba(10,13,18,.85) 100%)", kenBurns = true,
+}) => {
+  const frame = useCurrentFrame();
+  const k = kenBurns && kind === "image" ? interpolate(frame, [0, 300], [1.06, 1.16], clamp) : 1;
+  return (
+    <AbsoluteFill>
+      {kind === "video" ? (
+        <OffthreadVideo src={staticFile(src)} muted style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+      ) : (
+        <Img src={staticFile(src)} style={{ width: "100%", height: "100%", objectFit: "cover", transform: `scale(${k})` }} />
+      )}
+      <AbsoluteFill style={{ background: scrim }} />
     </AbsoluteFill>
   );
 };
