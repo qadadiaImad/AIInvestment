@@ -33,24 +33,26 @@ OUT = os.path.join(REPO, "content", "probe", "vo", "bed_music.wav")
 
 RATE = 48000
 FPS = 30
-TOTAL_S = 68.56
+TOTAL_S = 71.56
 N = int(RATE * TOTAL_S)
 
 BPM = 93.75
 BEAT = 60.0 / BPM  # 0.64s exactly
 
-# Story anchors, in seconds (from HormuzReel.tsx frame constants / 30fps)
-T_SHOCK = 366 / FPS      # 12.2  the sting + the mark
+# Story anchors, in seconds. OFF is the 3s cold-open b-roll: every body
+# frame constant shifts by 90 frames.
+OFF = 90
+T_SHOCK = (366 + OFF) / FPS   # 15.2  the sting + the mark
 T_REENTER = T_SHOCK + 0.85
-T_TRAP = 640 / FPS       # 21.3  push into the upper wick
-T_COIL = 1122 / FPS      # 37.4  inside-bar caption
-T_TRIGGER = 1228 / FPS   # 40.9  the trade frame lands
-T_PAYOFF = 1355 / FPS    # 45.2  "And it hits" -> coin at 46.5
-T_UNWIND = 1474 / FPS    # 49.1  premium unwinds
-T_END = 1560 / FPS       # 52.0  the unwind card ends, chrome leaves
-T_JULY = 1580 / FPS      # 52.7  the confirmation act: fly back to July
-T_SPLIT = 1850 / FPS     # 61.7  the honest split, sober close
-T_FADE = 67.7            # everything gone before the last frame
+T_TRAP = (640 + OFF) / FPS    # 24.3  push into the upper wick
+T_COIL = (1122 + OFF) / FPS   # 40.4  inside-bar caption
+T_TRIGGER = (1228 + OFF) / FPS  # 43.9  the trade frame lands
+T_PAYOFF = (1355 + OFF) / FPS   # 48.2  "And it hits"
+T_UNWIND = (1474 + OFF) / FPS   # 52.1  premium unwinds
+T_END = (1560 + OFF) / FPS      # 55.0  the unwind card ends, chrome leaves
+T_JULY = (1580 + OFF) / FPS     # 55.7  the confirmation act: fly back to July
+T_SPLIT = (1850 + OFF) / FPS    # 64.7  the honest split, sober close
+T_FADE = 70.7            # everything gone before the last frame
 
 # A natural minor. Root chosen low enough to be felt on phone speakers' second
 # harmonic rather than heard directly.
@@ -202,7 +204,7 @@ def main():
     sh = sub_hit()
     add(bed, 0.10, sh, 0.65)   # cold open — the first frame is an event
     add(bed, T_SHOCK, sh, 1.0)
-    add(bed, 415 / FPS, sh, 0.7)   # the gap bar printing (Monday opens)
+    add(bed, (415 + OFF) / FPS, sh, 0.7)   # the gap bar printing (Monday opens)
     add(bed, T_PAYOFF, sh, 0.9)
     add(bed, T_JULY + 1.0, sh, 0.8)   # the 13 JUL mark lands
 

@@ -9,7 +9,7 @@
 // (CLAUDE.md 10.1). The trade shows entry, stop, target and R together or not
 // at all (10.5), and it ends on the base rate rather than on the winner (10.6).
 import React from 'react';
-import {AbsoluteFill, Audio, Sequence, interpolate, random, staticFile, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Audio, OffthreadVideo, Sequence, interpolate, random, staticFile, useCurrentFrame} from 'remotion';
 import {z} from 'zod';
 import {FONT} from '../slides/theme';
 import {EASE} from '../motion/craft';
@@ -22,7 +22,9 @@ import fx from '../fixtures/oil_reel/hormuz.json';
 export const hormuzSchema = z.object({});
 export type HormuzProps = z.infer<typeof hormuzSchema>;
 
-export const HORMUZ_FRAMES = 2055; // 68.5s at 30fps
+// 3s AI b-roll cold open (image-to-video from the cover frame) + 68.5s body.
+const INTRO_F = 90;
+export const HORMUZ_FRAMES = 2145; // 71.5s at 30fps
 
 const W = 1080;
 const H = 1920;
@@ -353,7 +355,7 @@ const SHOCK_F = 366; // the mark lands, the desk kicks, the sting hits — one f
 const COIN_F = 1395; // the bar that reaches the target
 const JULY_COIN_F = 1815; // 'target again' — the July confirmation pays
 
-export const HormuzReel: React.FC<HormuzProps> = () => {
+const HormuzBody: React.FC = () => {
   const frame = useCurrentFrame();
   const cam = cameraAt(frame, SHOTS);
   const printed = printedAt(frame);
@@ -645,6 +647,88 @@ export const HormuzReel: React.FC<HormuzProps> = () => {
       {/* ...and the July confirmation reaching ITS target */}
       <Sequence from={JULY_COIN_F} durationInFrames={40}>
         <Audio src={staticFile('audio/coin.wav')} volume={0.5} />
+      </Sequence>
+    </AbsoluteFill>
+  );
+};
+
+
+/** The cold open: AI b-roll pushed toward the tanker, generated image-to-video
+ * FROM the cover's own background frame — so the cover and the reel's first
+ * seconds are literally the same shot. The clip is atmosphere only (text and
+ * charts banned in the prompt); the hook headline rendered on top is ours, and
+ * it sits at EXACTLY the body caption's position so the crossfade is seamless.
+ * The clip's own AI audio is muted — the synthesized bed owns the soundtrack. */
+const ColdOpen: React.FC = () => {
+  const frame = useCurrentFrame();
+  const push = 1.06 + 0.08 * (frame / (INTRO_F + 16));
+  const out = interpolate(frame, [INTRO_F, INTRO_F + 16], [1, 0], {
+    easing: EASE.exit,
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  return (
+    <AbsoluteFill style={{opacity: out, backgroundColor: PT.bg}}>
+      <div style={{position: 'absolute', inset: 0, transform: `scale(${push})`}}>
+        <OffthreadVideo
+          src={staticFile('covers/hormuz_broll.mp4')}
+          muted
+          style={{width: '100%', height: '100%', objectFit: 'cover'}}
+        />
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background:
+            'linear-gradient(180deg, rgba(2,7,10,0.78) 0%, rgba(2,7,10,0.18) 30%, rgba(2,7,10,0) 55%, rgba(2,7,10,0.5) 100%)',
+        }}
+      />
+      <div style={{position: 'absolute', top: 150, left: 56, right: 56, textAlign: 'center'}}>
+        <div
+          style={{
+            fontFamily: FONT.mono,
+            fontSize: 22,
+            fontWeight: 700,
+            color: PT.ice,
+            letterSpacing: 5,
+            marginBottom: 14,
+          }}
+        >
+          STRAIT OF HORMUZ
+        </div>
+        <div
+          style={{
+            fontFamily: FONT.mono,
+            fontSize: 62,
+            fontWeight: 800,
+            lineHeight: 1.12,
+            letterSpacing: -0.5,
+            textShadow: '0 3px 26px rgba(0,0,0,0.92)',
+          }}
+        >
+          {renderRich('20.9 MILLION BARRELS A DAY', '#EAFFF4')}
+        </div>
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+export const HormuzReel: React.FC<HormuzProps> = () => {
+  return (
+    <AbsoluteFill style={{backgroundColor: PT.bg}}>
+      {/* body mounts at INTRO_F; every internal frame constant is relative to
+       * its Sequence, so the whole 68.5s cut shifts as one piece */}
+      <Sequence from={INTRO_F}>
+        <HormuzBody />
+      </Sequence>
+      {/* cold open on top, fading out over the arriving chart */}
+      <Sequence from={0} durationInFrames={INTRO_F + 16}>
+        <ColdOpen />
+      </Sequence>
+      {/* air on the handoff */}
+      <Sequence from={INTRO_F - 8} durationInFrames={26}>
+        <Audio src={staticFile('audio/whoosh_in.wav')} volume={0.3} />
       </Sequence>
     </AbsoluteFill>
   );

@@ -39,7 +39,7 @@ FFMPEG = os.path.join(
 
 FPS = 30
 RATE = 48000
-TOTAL_FRAMES = 2055
+TOTAL_FRAMES = 2145
 
 # How loud the voice sits, and how far the rest of the mix drops under it.
 # Hierarchy at every timestamp (research: broadcast convention): VOICE on top,
