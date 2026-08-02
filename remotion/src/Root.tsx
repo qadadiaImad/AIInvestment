@@ -36,6 +36,7 @@ import { PatternSheet, patternSheetSchema, PATTERN_SHEET_FRAMES } from "./compos
 import { PatternEndCard, patternEndCardSchema } from "./compositions/PatternEndCard";
 import { CameraProbe, cameraProbeSchema, CAMERA_PROBE_FRAMES } from "./compositions/CameraProbe";
 import { HormuzReel, hormuzSchema, HORMUZ_FRAMES } from "./compositions/HormuzReel";
+import { HormuzCover, hormuzCoverSchema } from "./compositions/HormuzCover";
 import patternGalleryFixture from "./fixtures/patterns_post/gallery.json";
 import { RigCheck, rigCheckSchema } from "./compositions/RigCheck";
 import memeReelFixture from "./fixtures/meme_reel/intc_failed_breakout.json";
@@ -323,6 +324,15 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
         schema={hormuzSchema}
+        defaultProps={{}}
+      />
+      {/* Cover still for the Hormuz reel: AI atmosphere + real-data chart. */}
+      <Still
+        id="HormuzCover"
+        component={HormuzCover}
+        width={1080}
+        height={1920}
+        schema={hormuzCoverSchema}
         defaultProps={{}}
       />
       <Composition
