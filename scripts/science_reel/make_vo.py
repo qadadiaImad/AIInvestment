@@ -14,6 +14,7 @@ narration needs room. Emits cutStarts/totalFrames for the composition
 Copy rules: accusations attributed ("they say / they call"), no first
 person, no income claims.
 """
+import argparse
 import json
 import os
 import subprocess
@@ -56,7 +57,7 @@ SHOT_LINES = [
 ]
 
 
-def tts(text, dest):
+def tts_grok(text, dest):
     p = subprocess.run(
         [CLI, "tts", "--voice-id", VOICE, "--output-format", "wav",
          "--sample-rate", str(RATE), "--output", dest, "--text", text],
@@ -64,6 +65,31 @@ def tts(text, dest):
     )
     if p.returncode != 0 or not os.path.exists(dest):
         raise RuntimeError(f"tts failed: {p.stderr[-300:]} {p.stdout[-300:]}")
+
+
+_CHATTERBOX = None
+
+
+def tts_maya(text, dest):
+    """Local zero-shot clone of Maya's voice (Chatterbox, MIT weights) from
+    the 15s sample extracted from her UGC reel. Runs on the RTX 4070 via the
+    dedicated venv: C:/Users/imadq/tools/chatterbox-venv (NOT the main env —
+    chatterbox pins torch 2.6 and would have replaced the CUDA build)."""
+    global _CHATTERBOX
+    import torchaudio
+    from chatterbox.tts import ChatterboxTTS
+    if _CHATTERBOX is None:
+        _CHATTERBOX = ChatterboxTTS.from_pretrained(device="cuda")
+    wav = _CHATTERBOX.generate(
+        text,
+        audio_prompt_path=os.path.join(REPO, "higgs", "persona_lifestyle",
+                                       "maya_voice_sample.wav"),
+        exaggeration=0.55,
+        cfg_weight=0.5,
+    )
+    # PCM_S/16: load_trim reads with the stdlib wave module as int16 — the
+    # torchaudio default (float32) would parse as garbage there
+    torchaudio.save(dest, wav, _CHATTERBOX.sr, encoding="PCM_S", bits_per_sample=16)
 
 
 def load_trim(path):
@@ -84,12 +110,21 @@ def load_trim(path):
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--engine", choices=["grok", "maya"], default="grok")
+    args = ap.parse_args()
+    global OUT_DIR, OUT, OUT_PROPS
+    if args.engine == "maya":
+        OUT_DIR = os.path.join(REPO, "content", "probe", "science_vo_maya")
+        OUT = os.path.join(REPO, "content", "probe", "science_vo_maya.wav")
+        OUT_PROPS = os.path.join(REPO, "content", "probe", "science_vo_maya_props.json")
+    synth = tts_maya if args.engine == "maya" else tts_grok
     os.makedirs(OUT_DIR, exist_ok=True)
     clips, durs = [], []
     for k, (text, _, _) in enumerate(SHOT_LINES):
         dest = os.path.join(OUT_DIR, f"s{k:02d}.wav")
         if not os.path.exists(dest):
-            tts(text, dest)
+            synth(text, dest)
         x = load_trim(dest)
         clips.append(x)
         durs.append(len(x) / RATE)
