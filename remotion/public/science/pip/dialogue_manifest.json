@@ -31,17 +31,17 @@
   {
    "k": 4,
    "dialogue": "Computer science. Algorithms. Game theory. Machine learning.",
-   "transcript": "Computer Science, Algorithms, Game Theory, Machine Learning.",
+   "transcript": "Computer science, algorithms, game theory, machine learning.",
    "similarity": 1.0,
    "source": "grok-cli imagine video 6s native dialogue, 3 identity refs"
   },
   {
    "k": 5,
    "dialogue": "And the science of human behavior. It isn't luck. It's mathematics. Study the science.",
-   "transcript": "In the science of human behavior, it isn't luck, it's mathematics. Study the science.",
-   "similarity": 0.938,
+   "transcript": "And the science of human behavior, it isn't luck, it's mathematics. Study the science.",
+   "similarity": 1.0,
    "source": "grok-cli imagine video 6s native dialogue, 3 identity refs"
   }
  ],
- "retrieved_at": "2026-08-02T18:24:38Z"
+ "retrieved_at": "2026-08-02T19:00:59Z"
 }

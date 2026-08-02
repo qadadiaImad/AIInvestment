@@ -36,11 +36,12 @@ CLI = os.path.expanduser("~/tools/grok-cli/grok-cli.exe")
 PIP_DIR = os.path.join(REPO, "remotion", "public", "science", "pip")
 PROBE = os.path.join(REPO, "content", "probe")
 MAYA_REF = os.path.join(REPO, "higgs", "persona_lifestyle", "maya_voice_sample.wav")
-REFS = [
-    os.path.join(REPO, "higgs", "persona_lifestyle", "field_hoodie_selfie.jpeg"),
-    os.path.join(REPO, "higgs", "persona_lifestyle", "city_night_selfie.png"),
-    os.path.join(REPO, "higgs", "persona_lifestyle", "park_bench.jpeg"),
-]
+# START-FRAME anchor (v2): one canonical still of Maya at the podcast desk.
+# Text+refs alone let Grok re-imagine the studio per window (park backdrops,
+# identity drift — owner rejected). --image pins identity/framing/setting at
+# t=0; the model only animates the speech.
+ANCHOR = os.path.join(REPO, "remotion", "public", "science", "pip",
+                      "maya_podcast_anchor.png")
 
 FPS = 30
 WINDOW_FRAMES = 181           # 6.04s grok clips
@@ -49,16 +50,15 @@ MIN_SHOT_FRAMES = 24
 SRC_FRAMES = {0: 181, 8: 181, 14: 91, 15: 91}  # bg video sources (loop past end)
 
 SETTING = (
-    "The same young woman as in the reference images, shoulder-length dark "
-    "wavy hair, sitting at a desk in a dim room at night with a large podcast "
-    "microphone on a boom arm, soft cool LED glow behind her, casual vertical "
-    "video call framing, facing the camera. She speaks calmly and naturally "
-    "into the microphone, saying exactly: "
+    "The woman from the input image stays seated at the same podcast desk in "
+    "the same dark studio, same framing, static camera, same lighting. She "
+    "speaks calmly and naturally into the microphone, saying exactly: "
 )
 STYLE = (
-    " Relaxed natural mouth movements, subtle facial expressions, slight "
-    "natural head motion, unhurried delivery. Photorealistic, cinematic soft "
-    "light, vertical 9:16. NO readable text, NO logos, NO watermarks."
+    " Relaxed natural mouth movements, subtle facial expressions, minimal "
+    "head motion, unhurried delivery, she remains in the same position "
+    "throughout. Photorealistic, vertical 9:16. NO readable text, NO logos, "
+    "NO watermarks."
 )
 
 # windows of consecutive shots; each shot has exactly one line
@@ -107,9 +107,8 @@ def gen_window(k, dialogue, attempts=3):
     for att in range(attempts):
         args = [CLI, "video", "--json", "--aspect-ratio", "9:16",
                 "--duration", "6", "--timeout", "480",
+                "--image", ANCHOR,
                 "--prompt", SETTING + f'"{dialogue}"' + STYLE]
-        for r in REFS:
-            args += ["--reference-image", r]
         rc, out, err = run(args)
         if rc != 0:
             print(f"  [w{k} att{att}] gen failed rc={rc}", flush=True)
@@ -223,6 +222,16 @@ def main():
         for (shot, _), s in zip(window, starts):
             cut_starts[shot] = int(round((w_start + max(0.0, s - LEAD_S)) * FPS))
         wav = vc.generate(audio=wav16, target_voice_path=MAYA_REF)
+        # zero-drift guarantee: resample VC output to EXACTLY the source
+        # duration so native lip timing survives (any VC warp = desync)
+        import torch
+        with wave.open(wav16, "rb") as w_in:
+            src_s = w_in.getnframes() / w_in.getframerate()
+        want = int(round(src_s * vc.sr))
+        x = wav.squeeze(0).cpu().numpy()
+        if abs(len(x) - want) > vc.sr * 0.01:
+            x = np.interp(np.linspace(0, len(x) - 1, want), np.arange(len(x)), x)
+        wav = torch.from_numpy(np.asarray(x, dtype=np.float32)).unsqueeze(0)
         out = os.path.join(PIP_DIR, f"dlg{k}_vc.wav")
         torchaudio.save(out, wav, vc.sr, encoding="PCM_S", bits_per_sample=16)
         vo_parts.append(out)
