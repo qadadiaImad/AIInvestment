@@ -67,3 +67,28 @@ Kept here only as reference; re-import on request:
 - Wide set 16:9: https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_112843_422702b9-240b-4c72-8007-a87020253737.png
 - Pilot talking-head v1 (video): https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_113114_280362ce-8a94-41ee-8fd0-dc58a8938bfb.mp4
 - Pilot B-roll push-in (video): https://d8j0ntlcm91z4.cloudfront.net/user_3FXz04MMplOmuawbrfazqvamFAr/hf_20260721_113810_f5573f33-c912-42c6-9c94-45629a898532.mp4
+
+## Lifestyle set (v2.1, 2026-08-02 — owner-supplied)
+
+Local copies in `higgs/persona_lifestyle/`. Face refs for multi-image
+character generation (Higgsfield medias inputs AND grok-cli
+`--reference-image`, which is repeatable as of CLI 0.1.6).
+
+| Asset | media_id | Type |
+|---|---|---|
+| Field hoodie selfie (front face, daylight) | `8f0495ca-d843-44a9-8a77-da6aa40b7371` | image |
+| City night selfie (3/4 face, night) | `8a3ee4c0-62ca-478e-8fcf-276b187e8544` | image |
+| Park bench (full body, golden hour) | `036f2ac8-f22c-46d9-abdc-5c0fb8265da8` | image |
+
+Bedroom selfie kept local-only (off-brand for trading content).
+
+## Maya voice (staged — clone blocked on credits)
+
+- Source: `higgs/persona_lifestyle/ugc_intc_talking.mp4` (15s UGC INTC reel,
+  clean AAC voice at -11.6 dBFS RMS); extracted mono sample
+  `maya_voice_sample.wav`.
+- Confirmed audio media_id: `149833fc-b960-438b-a589-cab10fabab18` — ready
+  for `create_voice_from_confirmed_audio(name="Maya")` the moment the
+  workspace has credits (attempted 2026-08-02: "Out of credits", balance
+  5.07 on starter). Once status=completed, use voice_type='element' with
+  the returned voice_id in generate_audio.
