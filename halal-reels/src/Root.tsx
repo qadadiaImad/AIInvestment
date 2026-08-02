@@ -7,6 +7,9 @@ import { IntroVideo } from "./IntroScenes";
 import { ToolboxVideo } from "./ToolboxScenes";
 import { TOOLBOX_BEATS } from "./ToolboxScenes";
 import { INTRO_BEATS } from "./IntroScenes";
+import { ValueQuizReel, QUIZ_BEATS } from "./ValueQuizReel";
+import { CorrelationReel, CORRELATION_BEATS, CORRELATION_MINI_TOTAL } from "./CorrelationReel";
+import { SemisReel, SEMIS_BEATS, SEMIS_MINI_TOTAL } from "./SemisReel";
 
 const FPS = 30;
 const W = 1080;
@@ -22,6 +25,49 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="ToolboxReel" component={ToolboxVideo} durationInFrames={TOOLBOX_BEATS.total} fps={FPS} width={W} height={H} defaultProps={{ wide: false }} />
       <Composition id="ToolboxWide" component={ToolboxVideo} durationInFrames={TOOLBOX_BEATS.total} fps={FPS} width={1920} height={1080} defaultProps={{ wide: true }} />
       <Composition id="GevReel" component={GevReel} durationInFrames={900} fps={FPS} width={W} height={H} />
+      <Composition
+        id="ValueQuizReel"
+        component={ValueQuizReel}
+        durationInFrames={QUIZ_BEATS.total}
+        fps={FPS}
+        width={W}
+        height={H}
+      />
+      <Composition
+        id="CorrelationReel"
+        component={CorrelationReel}
+        durationInFrames={CORRELATION_BEATS.total}
+        fps={FPS}
+        width={W}
+        height={H}
+      />
+      <Composition
+        id="CorrelationReelMini"
+        component={CorrelationReel}
+        durationInFrames={CORRELATION_MINI_TOTAL}
+        fps={FPS}
+        width={W}
+        height={H}
+        defaultProps={{ mini: true }}
+      />
+      <Composition
+        id="SemisReel"
+        component={SemisReel}
+        durationInFrames={SEMIS_BEATS.total}
+        fps={FPS}
+        width={W}
+        height={H}
+        defaultProps={{ mini: false }}
+      />
+      <Composition
+        id="SemisReelMini"
+        component={SemisReel}
+        durationInFrames={SEMIS_MINI_TOTAL}
+        fps={FPS}
+        width={W}
+        height={H}
+        defaultProps={{ mini: true }}
+      />
     </>
   );
 };
