@@ -95,6 +95,34 @@ def resolve_trade(bars, mother, inside, trigger, rr=2.0, horizon=12):
     }
 
 
+def crisis_split(bars, rr=2.0, horizon=12, shock=0.06, within=10):
+    """Split every fire into crisis-conditioned vs quiet-market buckets.
+
+    A fire is 'crisis-conditioned' when its trigger bar lands strictly AFTER,
+    and within `within` sessions of, a day whose close moved >= `shock` from
+    the previous close. This is the computation behind the claim that the
+    crisis, not the pattern, is the edge — asserted from a tally, never from
+    the one example that happened to be filmed.
+    """
+    shock_idx = [
+        i for i in range(1, len(bars))
+        if abs(bars[i]["c"] / bars[i - 1]["c"] - 1) >= shock
+    ]
+    out = {}
+    for name in ("crisis", "quiet"):
+        out[name] = {"n": 0, "wins": 0, "losses": 0, "open": 0}
+    for seq in iter_inside_bar_breakouts(bars):
+        t = resolve_trade(bars, seq["mother"], seq["inside"], seq["trigger"], rr, horizon)
+        if t is None:
+            continue
+        trig = seq["trigger"]
+        conditioned = any(0 < trig - k <= within for k in shock_idx)
+        b = out["crisis" if conditioned else "quiet"]
+        b["n"] += 1
+        b["wins" if t["outcome"] == "win" else "losses" if t["outcome"] == "loss" else "open"] += 1
+    return {"shockDays": [bars[i]["d"] for i in shock_idx], **out}
+
+
 def base_rate(bars, rr=2.0, horizon=12):
     """How often this pattern actually paid, on this series.
 

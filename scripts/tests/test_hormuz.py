@@ -9,6 +9,7 @@ both read from.
 import pytest
 
 from oil_reel.hormuz import (
+    crisis_split,
     find_inside_bar_breakout,
     resolve_trade,
     base_rate,
@@ -145,3 +146,49 @@ class TestBaseRate:
     def test_empty_sample_reports_no_percentage_rather_than_zero(self):
         r = base_rate([bar("2026-01-05", 100, 101, 99, 100)], rr=2.0)
         assert r["n"] == 0 and r["pct"] is None
+
+
+class TestCrisisSplit:
+    """The claim 'the crisis is what makes it work' must be a computation,
+    not an assertion: fires within `within` sessions AFTER a >=shock-size
+    daily move go in one bucket, everything else in the other."""
+
+    def _series(self):
+        bars = [
+            bar("2026-01-02", 100, 101, 99, 100),
+            bar("2026-01-05", 106, 108, 105, 107),   # 1: SHOCK day (+7%)
+            bar("2026-01-06", 107, 116, 104, 110),   # 2: mother
+            bar("2026-01-07", 111, 114, 107, 109),   # 3: inside
+            bar("2026-01-08", 109, 119, 108, 118),   # 4: trigger (crisis-conditioned)
+            bar("2026-01-09", 117, 118, 95, 100),    # 5: stopped -> loss
+        ]
+        # filler that can never form an inside bar: highs and lows both rise
+        p = 100.0
+        for k in range(16):
+            bars.append(bar(f"2026-02-{k+1:02d}", p, p + 3, p - 1, p + 2))
+            p += 1.0
+        # a QUIET fire, far outside the shock window
+        q = p
+        bars += [
+            bar("2026-03-02", q, q + 12, q - 2, q + 4),          # mother
+            bar("2026-03-03", q + 5, q + 9, q + 1, q + 3),       # inside
+            bar("2026-03-04", q + 3, q + 14, q + 2, q + 13),     # trigger
+            bar("2026-03-05", q + 13, q + 60, q + 12, q + 50),   # runs -> win
+        ]
+        return bars
+
+    def test_buckets_split_on_shock_proximity(self):
+        s = crisis_split(self._series(), rr=2.0, horizon=12, shock=0.06, within=10)
+        assert s["crisis"]["n"] == 1 and s["crisis"]["losses"] == 1
+        assert s["quiet"]["n"] == 1 and s["quiet"]["wins"] == 1
+
+    def test_shock_days_are_reported_with_dates(self):
+        s = crisis_split(self._series(), rr=2.0, horizon=12, shock=0.06, within=10)
+        assert "2026-01-05" in s["shockDays"]
+
+    def test_a_fire_on_the_shock_day_itself_is_not_conditioned(self):
+        # 'after the shock' means strictly after — the shock bar can't be its
+        # own confirmation
+        bars = self._series()
+        s = crisis_split(bars, rr=2.0, horizon=12, shock=0.06, within=0)
+        assert s["crisis"]["n"] == 0

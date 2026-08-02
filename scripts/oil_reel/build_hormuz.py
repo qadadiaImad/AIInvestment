@@ -19,7 +19,9 @@ sys.path.insert(0, os.path.dirname(HERE))
 
 from oil_reel.hormuz import (  # noqa: E402
     base_rate,
+    crisis_split,
     find_inside_bar_breakout,
+    iter_inside_bar_breakouts,
     resolve_trade,
 )
 
@@ -79,6 +81,41 @@ def main():
     # not just the window the story happens to be about.
     rate = base_rate(all_bars, rr=2.0, horizon=12)
 
+    # The claim that the crisis is the edge, computed rather than asserted:
+    # fires within 10 sessions of a >=6% day vs everything else.
+    split = crisis_split(all_bars, rr=2.0, horizon=12, shock=0.06, within=10)
+
+    # The CONFIRMING fire: the pattern after a DIFFERENT crisis episode, found
+    # by the scanner, never picked by eye. "Different episode" = its shock day
+    # sits >=30 sessions past the original gap, so the March aftershocks don't
+    # count as confirmation of March. Resolved either way — if the second
+    # crisis fire had lost, the reel would show the loss.
+    win_shock_idx = [
+        i for i in range(1, len(win))
+        if abs(win[i]["c"] / win[i - 1]["c"] - 1) >= 0.06
+    ]
+    july = None
+    for s2 in iter_inside_bar_breakouts(win):
+        near = [k for k in win_shock_idx if 0 < s2["trigger"] - k <= 10 and k >= gap_i + 30]
+        if not near:
+            continue
+        t2 = resolve_trade(win, s2["mother"], s2["inside"], s2["trigger"], rr=2.0, horizon=12)
+        if t2 is None or t2["outcome"] == "open":
+            continue
+        shock_i = max(near)
+        july = {
+            **{k: s2[k] for k in ("mother", "inside", "trigger")},
+            "triggerDate": win[s2["trigger"]]["d"],
+            "shockIdx": shock_i,
+            "shockDate": win[shock_i]["d"],
+            "shockPct": round((win[shock_i]["c"] / win[shock_i - 1]["c"] - 1) * 100, 1),
+            "sessionsAfter": s2["trigger"] - shock_i,
+            **{k: t2[k] for k in ("entry", "stop", "target", "outcome", "tpAt")},
+            "tpBar": s2["trigger"] + t2["tpAt"] if t2["tpAt"] else None,
+            "tpDate": win[s2["trigger"] + t2["tpAt"]]["d"] if t2["tpAt"] else None,
+        }
+        break
+
     # What the shock actually did to the tape, measured not asserted.
     prev = win[gap_i - 1]
     gap_bar = win[gap_i]
@@ -118,6 +155,8 @@ def main():
         },
         "trade": {**trade, "tpBar": tp_bar, "tpDate": win[tp_bar]["d"] if tp_bar else None},
         "baseRate": rate,
+        "split": split,
+        "july": july,
         "aftermath": {
             "peakDate": peak["d"],
             "peakHigh": peak["h"],
@@ -148,6 +187,15 @@ def main():
     print(f"trade    entry {t['entry']}  stop {t['stop']}  target {t['target']}  "
           f"-> {t['outcome'].upper()}" + (f" on {t['tpDate']}" if t["tpDate"] else ""))
     print(f"base     {rate['wins']}/{rate['n']} = {rate['pct']}% over the full 2y series")
+    print(f"split    quiet {split['quiet']['wins']}/{split['quiet']['n']}  "
+          f"crisis {split['crisis']['wins']}/{split['crisis']['n']}")
+    if july:
+        print(f"july     shock {july['shockDate']} ({july['shockPct']:+.1f}%) -> "
+              f"trigger {july['triggerDate']} (+{july['sessionsAfter']} sessions) "
+              f"-> {july['outcome'].upper()}"
+              + (f" on {july['tpDate']}" if july["tpDate"] else ""))
+    else:
+        print("july     NO confirming conditioned fire in the window")
     print(f"after    peak {fixture['aftermath']['peakHigh']} on {fixture['aftermath']['peakDate']}"
           f" -> {fixture['aftermath']['troughLow']} on {fixture['aftermath']['troughDate']}")
     print(f"-> {os.path.relpath(OUT, REPO)}")

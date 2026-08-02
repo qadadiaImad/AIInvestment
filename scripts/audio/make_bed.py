@@ -33,7 +33,7 @@ OUT = os.path.join(REPO, "content", "probe", "vo", "bed_music.wav")
 
 RATE = 48000
 FPS = 30
-TOTAL_S = 46.06
+TOTAL_S = 74.06
 N = int(RATE * TOTAL_S)
 
 BPM = 93.75
@@ -43,12 +43,14 @@ BEAT = 60.0 / BPM  # 0.64s exactly
 T_SHOCK = 366 / FPS      # 12.2  the sting + the mark
 T_REENTER = T_SHOCK + 0.85
 T_TRAP = 640 / FPS       # 21.3  push into the upper wick
-T_COIL = 802 / FPS       # 26.7  inside-bar caption
-T_TRIGGER = 908 / FPS    # 30.3  the trade frame lands
-T_PAYOFF = 1040 / FPS    # 34.7  "Target: twice the risk" -> coin at 36.5
-T_UNWIND = 1154 / FPS    # 38.5  premium unwinds
-T_END = 1244 / FPS       # 41.5  the 24% card
-T_FADE = 45.3            # everything gone before the last frame
+T_COIL = 1122 / FPS      # 37.4  inside-bar caption
+T_TRIGGER = 1228 / FPS   # 40.9  the trade frame lands
+T_PAYOFF = 1355 / FPS    # 45.2  "And it hits" -> coin at 46.5
+T_UNWIND = 1474 / FPS    # 49.1  premium unwinds
+T_END = 1572 / FPS       # 52.4  17 fires / the 24% card
+T_JULY = 1750 / FPS      # 58.3  the confirmation act: fly back to July
+T_SPLIT = 2015 / FPS     # 67.2  the honest split, sober close
+T_FADE = 73.4            # everything gone before the last frame
 
 # A natural minor. Root chosen low enough to be felt on phone speakers' second
 # harmonic rather than heard directly.
@@ -156,8 +158,12 @@ def main():
     drone_into(bed, E2, T_TRIGGER, T_PAYOFF, 0.10, lfo_hz=0.17, seed=6)   # tension stacks a fifth
     drone_into(bed, A2, T_PAYOFF, T_UNWIND, 0.11, lfo_hz=0.2, seed=7)     # payoff lifts an octave
     drone_into(bed, A1, T_PAYOFF, T_UNWIND, 0.16, seed=8)
-    drone_into(bed, A1, T_UNWIND, T_FADE, 0.14, lfo_hz=0.07, seed=9)      # unwind: thin back out
-    drone_into(bed, E2, T_END, T_FADE, 0.07, lfo_hz=0.05, seed=10)
+    drone_into(bed, A1, T_UNWIND, T_JULY, 0.14, lfo_hz=0.07, seed=9)      # unwind: thin back out
+    drone_into(bed, E2, T_END, T_JULY, 0.07, lfo_hz=0.05, seed=10)
+    drone_into(bed, A1, T_JULY, T_SPLIT, 0.19, seed=11)                   # July: tension returns
+    drone_into(bed, C2, T_JULY, T_SPLIT, 0.11, lfo_hz=0.15, seed=12)
+    drone_into(bed, A1, T_SPLIT, T_FADE, 0.13, lfo_hz=0.06, seed=13)      # the split: sober
+    drone_into(bed, E2, T_SPLIT, T_FADE, 0.07, lfo_hz=0.05, seed=14)
 
     # ---- the pulse ---------------------------------------------------------
     # Heartbeat until the shock (half-time), full-time after it, an extra
@@ -167,7 +173,7 @@ def main():
     k_full = kick(punch=0.95)
     b = 0.0
     beat_i = 0
-    while b < T_UNWIND:  # percussion ends AT the unwind — the sober coda is drone-only
+    while b < T_SPLIT:  # percussion ends at the split — the honest close is drone-only
         on_shock_gap = T_SHOCK - 0.05 <= b < T_REENTER
         on_payoff_gap = T_PAYOFF - 0.62 <= b < T_PAYOFF
         if not (on_shock_gap or on_payoff_gap):
@@ -182,8 +188,13 @@ def main():
                 if T_TRIGGER < b:                           # 8ths under the trigger hold
                     add(bed, b + BEAT / 2, k_soft, 0.4)
                 add(bed, b + BEAT / 2, hat(rng), 0.5)       # offbeat hat from the coil
-            else:
+            elif b < T_UNWIND:
                 add(bed, b, k_full, 0.8 if beat_i % 2 == 0 else 0.5)  # payoff rides out
+            elif b < T_JULY:
+                pass                                        # sober gap: 17 fires / 24%
+            else:
+                add(bed, b, k_full, 0.85 if beat_i % 2 == 0 else 0.55)  # July: evidence has momentum
+                add(bed, b + BEAT / 2, hat(rng), 0.45)
         b += BEAT
         beat_i += 1
 
@@ -193,10 +204,12 @@ def main():
     add(bed, T_SHOCK, sh, 1.0)
     add(bed, 415 / FPS, sh, 0.7)   # the gap bar printing (Monday opens)
     add(bed, T_PAYOFF, sh, 0.9)
+    add(bed, T_JULY + 1.0, sh, 0.8)   # the 13 JUL mark lands
 
     # ---- risers into the two biggest hits ---------------------------------
     riser_into(bed, T_SHOCK - 2.1, T_SHOCK - 0.05, 0.30, seed=11)      # into the shock
     riser_into(bed, T_PAYOFF - 2.4, T_PAYOFF - 0.62, 0.24, seed=12)    # into the payoff
+    riser_into(bed, T_JULY - 1.7, T_JULY, 0.20, seed=15)               # into the July reveal
 
     # ---- TRUE silence before the two biggest hits (trailer rule: the drop
     # lands harder after real nothing) ---------------------------------------

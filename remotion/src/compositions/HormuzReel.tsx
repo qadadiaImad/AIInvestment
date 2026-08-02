@@ -22,7 +22,7 @@ import fx from '../fixtures/oil_reel/hormuz.json';
 export const hormuzSchema = z.object({});
 export type HormuzProps = z.infer<typeof hormuzSchema>;
 
-export const HORMUZ_FRAMES = 1380; // 46s at 30fps
+export const HORMUZ_FRAMES = 2220; // 74s at 30fps
 
 const W = 1080;
 const H = 1920;
@@ -40,6 +40,10 @@ const P = fx.pattern;
 const T = fx.trade;
 const BR = fx.baseRate;
 const AF = fx.aftermath;
+// The confirmation act: the same pattern after a DIFFERENT crisis (July), and
+// the quiet-vs-crisis split. Both computed by scripts/oil_reel/, never here.
+const J = fx.july as NonNullable<typeof fx.july>;
+const SP = fx.split;
 
 /** A camera target expressed the way the story thinks: "bar 22, at $85". */
 const at = (i: number, price: number) => ({x: S.x(i) / CHART_W, y: S.y(price) / CHART_H});
@@ -59,16 +63,27 @@ const SHOTS: Shot[] = [
   {at: 580, zoom: 2.2, ...at(GAP - 0.4, 75.5)}, // HOLD: mark, gap, and caption all live here
   {at: 640, zoom: 4.0, ...at(GAP, 80.3), ease: EASE.cruise}, // now into the upper wick — the trap
   {at: 700, zoom: 4.0, ...at(GAP, 80.3)},
-  {at: 760, zoom: 3.9, ...at(P.mother + 0.5, 81.5), ease: EASE.cruise},
-  {at: 840, zoom: 4.9, ...at(P.inside, 82.4), ease: EASE.cruise}, // tight on the coil
-  {at: 900, zoom: 4.9, ...at(P.inside, 82.4)},
-  {at: 960, zoom: 3.5, ...at(P.trigger, 86.5), ease: EASE.cruise}, // out far enough for the frame
-  {at: 1040, zoom: 3.5, ...at(P.trigger, 88)}, // HOLD on the plan, before the outcome
-  {at: 1100, zoom: 2.0, ...at(P.trigger + 2, 98), ease: EASE.cruise}, // pull-out REVEALS the target
-  {at: 1150, zoom: 2.0, ...at(P.trigger + 2, 98)},
+  // THE LOGIC ACT: step back from the trap and think. The camera easing out
+  // to a mid-wide while the voice explains is the visual grammar of
+  // reflection — a lecture beat needs a contemplative frame, not a push.
+  {at: 790, zoom: 2.7, ...at(GAP + 1, 78.5), ease: EASE.cruise},
+  {at: 1010, zoom: 2.7, ...at(GAP + 1, 78.5)}, // hold through 'crisis picks direction'
+  {at: 1020, zoom: 3.9, ...at(P.mother + 0.5, 81.5), ease: EASE.cruise},
+  {at: 1100, zoom: 4.9, ...at(P.inside, 82.4), ease: EASE.cruise}, // tight on the coil
+  {at: 1160, zoom: 4.9, ...at(P.inside, 82.4)},
+  {at: 1220, zoom: 3.5, ...at(P.trigger, 86.5), ease: EASE.cruise}, // out far enough for the frame
+  {at: 1300, zoom: 3.5, ...at(P.trigger, 88)}, // HOLD on the plan, before the outcome
+  {at: 1360, zoom: 2.0, ...at(P.trigger + 2, 98), ease: EASE.cruise}, // pull-out REVEALS the target
+  {at: 1410, zoom: 2.0, ...at(P.trigger + 2, 98)},
   // the camera opens as the tape races — the six-month round trip lands in one move
-  {at: 1250, zoom: 0.515, x: 0.5, y: 0.5, ease: EASE.cruise},
-  {at: 1379, zoom: 0.535, x: 0.5, y: 0.5},
+  {at: 1510, zoom: 0.515, x: 0.5, y: 0.5, ease: EASE.cruise},
+  {at: 1735, zoom: 0.515, x: 0.5, y: 0.5}, // hold wide: 17 fires, 24%
+  // THE CONFIRMATION ACT: fly BACK across the chart to July — same pattern,
+  // different crisis. The return journey itself is the argument.
+  {at: 1810, zoom: 2.4, ...at(J.trigger, 90), ease: EASE.cruise},
+  {at: 1960, zoom: 2.4, ...at(J.trigger, 90)},
+  {at: 2030, zoom: 0.515, x: 0.5, y: 0.5, ease: EASE.cruise}, // wide for the honest split
+  {at: 2219, zoom: 0.535, x: 0.5, y: 0.5},
 ];
 
 /** How much tape exists, per frame. Same keyframe shape as the camera. */
@@ -78,17 +93,20 @@ const PRINT: {at: number; i: number}[] = [
   {at: 365, i: GAP - 1},
   {at: 415, i: GAP}, // the gap bar
   {at: 670, i: GAP},
-  {at: 710, i: P.mother},
-  {at: 770, i: P.inside},
-  {at: 860, i: P.trigger},
+  // the tape WAITS through the logic act — nothing new prints while the
+  // method is being explained, so the explanation can't peek at the future
+  {at: 1020, i: GAP},
+  {at: 1030, i: P.mother},
+  {at: 1090, i: P.inside},
+  {at: 1170, i: P.trigger},
   // HOLD the tape here. The plan has to exist on screen BEFORE the outcome
   // does, or the reel is just showing a chart that already went up.
-  {at: 995, i: P.trigger},
-  {at: 1085, i: T.tpBar as number}, // two sessions to the target
+  {at: 1305, i: P.trigger},
+  {at: 1395, i: T.tpBar as number}, // two sessions to the target
   // HOLD again. "Target in two sessions" has to be TRUE on screen while it is
   // being claimed — fifteen extra bars already printed makes it a lie.
-  {at: 1158, i: T.tpBar as number},
-  {at: 1244, i: BARS.length - 1}, // then the rest of the year, in a rush
+  {at: 1468, i: T.tpBar as number},
+  {at: 1554, i: BARS.length - 1}, // then the rest of the year, in a rush
 ];
 
 const printedAt = (f: number) => {
@@ -159,28 +177,58 @@ const CAPS: Cap[] = [
     sub: `THEN CLOSED $${fx.shock.spikeGiveback} LOWER`,
     keys: true,
   },
-  {from: 702, to: 790, text: 'SO YOU WAIT.', sub: 'FOR THE RANGE TO STOP WIDENING'},
-  {from: 802, to: 896, text: 'INSIDE BAR', sub: 'THE WHOLE DAY FITS INSIDE THE ONE BEFORE'},
+  // ---- the logic act: WHY wait — the method in two sentences ----------
+  {from: 775, to: 852, text: 'NO CHASING. NO PREDICTING.'},
   {
-    from: 908,
-    to: 1016,
+    from: 864,
+    to: 948,
+    text: 'THE CRISIS PICKS THE DIRECTION',
+    sub: 'A FIFTH OF WORLD SUPPLY HAS A REASON TO MOVE',
+  },
+  {
+    from: 956,
+    to: 1100,
+    text: 'THE PATTERN PICKS THE MOMENT',
+    sub: 'AND THE PRICE WHERE YOU’RE WRONG',
+  },
+  {from: 1122, to: 1216, text: 'INSIDE BAR', sub: 'THE WHOLE DAY FITS INSIDE THE ONE BEFORE'},
+  {
+    from: 1228,
+    to: 1336,
     text: 'A CLOSE ABOVE THE RANGE',
     sub: `ENTRY $${T.entry} · STOP $${T.stop} · TARGET $${T.target}`,
     keys: true,
   },
-  {from: 1040, to: 1142, text: 'TARGET IN TWO SESSIONS', sub: `2R · ${T.tpDate}`},
+  {from: 1360, to: 1462, text: 'TARGET IN TWO SESSIONS', sub: `2R · ${T.tpDate}`},
   {
-    from: 1154,
-    to: 1240,
+    from: 1474,
+    to: 1560,
     text: `$${AF.peakHigh} IN APRIL. $${AF.troughLow} BY JULY.`,
     sub: 'THE WAR PREMIUM DID NOT LAST',
     keys: true,
   },
   {
-    from: 1252,
-    to: 1379,
+    from: 1572,
+    to: 1740,
     text: `THAT SETUP FIRED ${BR.n} TIMES`,
     sub: `IT REACHED TARGET ${BR.wins} TIMES`,
+    big: true,
+    keys: true,
+  },
+  // ---- the confirmation act: the OTHER crisis, same pattern -------------
+  {
+    from: 1755,
+    to: 1995,
+    text: 'IT HAPPENED AGAIN',
+    sub: `${J.shockDate.slice(5)}: +${J.shockPct}% SHOCK · SAME PATTERN · TARGET ${J.tpDate}`,
+    keys: true,
+  },
+  // ---- the honest split: computed, small sample labelled ----------------
+  {
+    from: 2010,
+    to: 2219,
+    text: `QUIET MARKETS: ${SP.quiet.wins} OF ${SP.quiet.n}`,
+    sub: `AFTER A SHOCK: ${SP.crisis.wins} OF ${SP.crisis.n} · SMALL SAMPLE`,
     big: true,
     keys: true,
   },
@@ -303,13 +351,14 @@ const AIR = SHOTS.slice(1)
 
 const CANDLE_HITS = [
   {f: 415, up: true}, // the gap bar
-  {f: 710, up: true}, // mother
-  {f: 770, up: false}, // the coil
-  {f: 860, up: true}, // trigger
+  {f: 1030, up: true}, // mother
+  {f: 1090, up: false}, // the coil
+  {f: 1170, up: true}, // trigger
 ];
 
 const SHOCK_F = 366; // the mark lands, the desk kicks, the sting hits — one frame
-const COIN_F = 1085; // the bar that reaches the target
+const COIN_F = 1395; // the bar that reaches the target
+const JULY_COIN_F = 1965; // 'target again' — the July confirmation pays
 
 export const HormuzReel: React.FC<HormuzProps> = () => {
   const frame = useCurrentFrame();
@@ -336,27 +385,38 @@ export const HormuzReel: React.FC<HormuzProps> = () => {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const motherIn = interpolate(frame, [720, 736], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const insideIn = interpolate(frame, [782, 798], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const levelIn = interpolate(frame, [830, 850], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const motherIn = interpolate(frame, [1040, 1056], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const insideIn = interpolate(frame, [1102, 1118], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const levelIn = interpolate(frame, [1150, 1170], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   // All four legs of the trade land together — a target with no stop shows the
   // upside and hides what being wrong cost (CLAUDE.md 10.5). The target line is
   // off the top of frame at this zoom; the pull-out at 1030 is what reveals it.
-  const tradeIn = interpolate(frame, [920, 944], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const tradeIn = interpolate(frame, [1240, 1264], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
 
   // Annotations are scaffolding for the beat that needs them. Left up, the
   // shock mark and the pattern boxes clutter the final wide shot with a
   // diagram of something the reel finished explaining twenty seconds ago.
-  const annoOut = interpolate(frame, [1180, 1246], [1, 0], {
+  const annoOut = interpolate(frame, [1450, 1516], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
   // The 28 FEB rule has done its work once the pattern is being drawn. Left at
   // full strength it runs a dashed red line straight through the caption.
-  const markFade = interpolate(frame, [680, 740], [1, 0.28], {
+  const markFade = interpolate(frame, [1000, 1060], [1, 0.28], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
+
+  // The March trade frame leaves before July's arrives — two overlapping
+  // trade frames at once asserts nothing except clutter.
+  const marchOut = interpolate(frame, [1720, 1760], [1, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const marchOp = tradeIn * marchOut;
+  const julyOp =
+    interpolate(frame, [1760, 1790], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) *
+    interpolate(frame, [1990, 2030], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
 
   const levels = [
     {
@@ -365,11 +425,18 @@ export const HormuzReel: React.FC<HormuzProps> = () => {
       color: PT.level,
       opacity: levelIn * (1 - tradeIn) * annoOut,
     },
-    ...(tradeIn > 0
+    ...(marchOp > 0
       ? [
-          {price: T.entry, label: 'ENTRY', color: PT.ink, opacity: tradeIn, dash: '0'},
-          {price: T.stop, label: 'STOP', color: PT.down, opacity: tradeIn},
-          {price: T.target, label: 'TARGET', color: PT.up, opacity: tradeIn},
+          {price: T.entry, label: 'ENTRY', color: PT.ink, opacity: marchOp, dash: '0'},
+          {price: T.stop, label: 'STOP', color: PT.down, opacity: marchOp},
+          {price: T.target, label: 'TARGET', color: PT.up, opacity: marchOp},
+        ]
+      : []),
+    ...(julyOp > 0
+      ? [
+          {price: J.entry, label: 'ENTRY', color: PT.ink, opacity: julyOp, dash: '0'},
+          {price: J.stop, label: 'STOP', color: PT.down, opacity: julyOp},
+          {price: J.target, label: 'TARGET', color: PT.up, opacity: julyOp},
         ]
       : []),
   ];
@@ -377,13 +444,21 @@ export const HormuzReel: React.FC<HormuzProps> = () => {
   // The bands stop where the trade stopped. Running them to the right edge
   // paints a hundred bars the trade was never in as if it held them.
   const bandEnd = Math.min(BARS.length - 1, (T.tpBar as number) + 2);
-  const bands =
-    tradeIn > 0
+  const jBandEnd = Math.min(BARS.length - 1, (J.tpBar as number) + 1);
+  const bands = [
+    ...(marchOp > 0
       ? [
-          {from: T.entry, to: T.stop, i0: P.trigger, i1: bandEnd, color: PT.down, opacity: 0.17 * tradeIn},
-          {from: T.entry, to: T.target, i0: P.trigger, i1: bandEnd, color: PT.up, opacity: 0.14 * tradeIn},
+          {from: T.entry, to: T.stop, i0: P.trigger, i1: bandEnd, color: PT.down, opacity: 0.17 * marchOp},
+          {from: T.entry, to: T.target, i0: P.trigger, i1: bandEnd, color: PT.up, opacity: 0.14 * marchOp},
         ]
-      : [];
+      : []),
+    ...(julyOp > 0
+      ? [
+          {from: J.entry, to: J.stop, i0: J.trigger, i1: jBandEnd, color: PT.down, opacity: 0.17 * julyOp},
+          {from: J.entry, to: J.target, i0: J.trigger, i1: jBandEnd, color: PT.up, opacity: 0.14 * julyOp},
+        ]
+      : []),
+  ];
 
   /** Project a price onto the screen through the same camera the chart uses,
    * so a label pinned here sits exactly on its dashed line at any zoom. */
@@ -408,17 +483,27 @@ export const HormuzReel: React.FC<HormuzProps> = () => {
             printedThrough={printed}
             zoom={cam.zoom}
             levels={levels}
-            marks={
-              markIn * annoOut * markFade > 0
+            marks={[
+              ...(markIn * annoOut * markFade > 0
                 ? [{i: GAP, label: '28 FEB', color: PT.down, opacity: markIn * annoOut * markFade}]
-                : []
-            }
+                : []),
+              ...(julyOp > 0
+                ? [{i: J.shockIdx, label: '13 JUL', color: PT.down, opacity: julyOp}]
+                : []),
+            ]}
             boxes={[
               ...(motherIn * annoOut > 0
                 ? [{i: P.mother, span: 2, color: PT.trendline, label: 'RANGE', opacity: motherIn * annoOut}]
                 : []),
               ...(insideIn * annoOut > 0
                 ? [{i: P.inside, color: PT.level, label: 'INSIDE', opacity: insideIn * annoOut}]
+                : []),
+              // July draws the SAME diagram — the visual rhyme is the proof
+              ...(julyOp > 0
+                ? [
+                    {i: J.mother, span: 2, color: PT.trendline, label: 'RANGE', opacity: julyOp},
+                    {i: J.inside, color: PT.level, label: 'INSIDE', opacity: julyOp},
+                  ]
                 : []),
             ]}
             bands={bands}
@@ -466,7 +551,7 @@ export const HormuzReel: React.FC<HormuzProps> = () => {
         {/* The punchline, held while the camera sits wide on the round trip.
          * The reel ends on the base rate, not on the winner — one trade that
          * worked is an anecdote, seventeen is a number (CLAUDE.md 10.6). */}
-        {frame >= 1300 ? (
+        {frame >= 1690 ? (
           <div
             style={{
               position: 'absolute',
@@ -480,12 +565,25 @@ export const HormuzReel: React.FC<HormuzProps> = () => {
               // with whatever bar happens to be behind it
               background:
                 'linear-gradient(180deg, rgba(2,7,10,0) 0%, rgba(2,7,10,0.93) 22%, rgba(2,7,10,0.93) 78%, rgba(2,7,10,0) 100%)',
-              opacity: interpolate(frame, [1300, 1318], [0, 1], {
-                easing: EASE.enter,
-                extrapolateLeft: 'clamp',
-                extrapolateRight: 'clamp',
-              }),
-              transform: `scale(${interpolate(frame, [1300, 1326], [0.9, 1], {
+              // lands with the base-rate line, steps aside for the July
+              // confirmation, returns under the final split
+              opacity:
+                frame < 1900
+                  ? interpolate(frame, [1690, 1708], [0, 1], {
+                      easing: EASE.enter,
+                      extrapolateLeft: 'clamp',
+                      extrapolateRight: 'clamp',
+                    }) *
+                    interpolate(frame, [1745, 1778], [1, 0], {
+                      extrapolateLeft: 'clamp',
+                      extrapolateRight: 'clamp',
+                    })
+                  : interpolate(frame, [2040, 2060], [0, 1], {
+                      easing: EASE.enter,
+                      extrapolateLeft: 'clamp',
+                      extrapolateRight: 'clamp',
+                    }),
+              transform: `scale(${interpolate(frame, [1690, 1716], [0.9, 1], {
                 easing: EASE.settleBack,
                 extrapolateLeft: 'clamp',
                 extrapolateRight: 'clamp',
@@ -605,6 +703,11 @@ export const HormuzReel: React.FC<HormuzProps> = () => {
       {/* the target printing */}
       <Sequence from={COIN_F} durationInFrames={40}>
         <Audio src={staticFile('audio/coin.wav')} volume={0.62} />
+      </Sequence>
+
+      {/* ...and the July confirmation reaching ITS target */}
+      <Sequence from={JULY_COIN_F} durationInFrames={40}>
+        <Audio src={staticFile('audio/coin.wav')} volume={0.5} />
       </Sequence>
     </AbsoluteFill>
   );
