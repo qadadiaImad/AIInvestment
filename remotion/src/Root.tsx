@@ -39,6 +39,7 @@ import { HormuzReel, hormuzSchema, HORMUZ_FRAMES } from "./compositions/HormuzRe
 import { HormuzCover, hormuzCoverSchema } from "./compositions/HormuzCover";
 import { GrindReel, grindReelSchema, GRIND_FRAMES } from "./compositions/GrindReel";
 import { HabitsReel, habitsReelSchema, HABITS_FRAMES } from "./compositions/HabitsReel";
+import { WhyReel, whyReelSchema, WHY_DEFAULTS } from "./compositions/WhyReel";
 import patternGalleryFixture from "./fixtures/patterns_post/gallery.json";
 import { RigCheck, rigCheckSchema } from "./compositions/RigCheck";
 import memeReelFixture from "./fixtures/meme_reel/intc_failed_breakout.json";
@@ -361,6 +362,21 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{}}
         calculateMetadata={({props}) => ({
           durationInFrames: props.totalFrames ?? HABITS_FRAMES,
+        })}
+      />
+      {/* Why reel: anchor clip + gold serif question, 12 typographic word
+       * cards on the beat, loop ender — the clubbillionaire recipe. */}
+      <Composition
+        id="WhyReel"
+        component={WhyReel}
+        durationInFrames={WHY_DEFAULTS.totalFrames}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={whyReelSchema}
+        defaultProps={{}}
+        calculateMetadata={({props}) => ({
+          durationInFrames: props.totalFrames ?? WHY_DEFAULTS.totalFrames,
         })}
       />
       <Composition
