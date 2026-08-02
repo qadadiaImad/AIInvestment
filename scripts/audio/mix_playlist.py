@@ -94,11 +94,10 @@ def kick_grid(mono):
     return period, best[1]
 
 
-def main():
-    src = sys.argv[1]
-    x = load_wav(src)
-    mono = x.mean(axis=1)
-
+def analyze_track(mono):
+    """Measured kick grid + musically-sane unit + drop kick, shared by the
+    single-track and two-track mixers. Returns (beat, beat_times, kpu,
+    drop_beat)."""
     beat, phase = kick_grid(mono)
     n_beats = int((len(mono) / RATE - phase) / beat) - 1
     beat_times = phase + beat * np.arange(n_beats)
@@ -111,21 +110,29 @@ def main():
             break
     else:
         kpu = min((2, 3, 4, 6, 8), key=lambda k_: abs(k_ * beat - 1.7))
-    unit_s = kpu * beat
 
     # drop = FIRST kick that is itself loud (>=60% of max low-band) AND whose
-    # next 4 units sustain >=85% of the loudest rolling level — the full slam,
-    # not the half-weight bass entry this track opens with
+    # next 2 units sustain >=85% of the loudest rolling level — the full slam,
+    # not the half-weight bass entry (a 4-unit window picked 1 bar early once)
     b, a = butter(2, 150 / (RATE / 2), btype="low")
     low = lfilter(b, a, mono) ** 2
     per_beat = np.array([
         low[int(t0 * RATE):int((t0 + beat) * RATE)].mean() for t0 in beat_times
     ])
-    w = 2 * kpu  # 2 units: long enough to prove sustain, short enough not to
-    # smear the half-weight bass entry into the slam (picked 1 bar early once)
+    w = 2 * kpu
     roll = np.array([per_beat[i:i + w].mean() for i in range(len(per_beat) - w)])
     ok = (roll >= 0.85 * roll.max()) & (per_beat[: len(roll)] >= 0.6 * per_beat.max())
     drop_beat = int(np.argmax(ok))
+    return beat, beat_times, kpu, drop_beat
+
+
+def main():
+    src = sys.argv[1]
+    x = load_wav(src)
+    mono = x.mean(axis=1)
+    beat, beat_times, kpu, drop_beat = analyze_track(mono)
+    n_beats = len(beat_times)
+    unit_s = kpu * beat
 
     total_beats = sum(UNITS) * kpu
     start_beat = drop_beat - DROP_UNIT * kpu  # 2 units of build before the drop

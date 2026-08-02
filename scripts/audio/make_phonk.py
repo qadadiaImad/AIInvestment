@@ -21,6 +21,7 @@ Usage:
 Writes content/probe/phonk_bed.wav (48 kHz stereo 16-bit) and prints
 peak/RMS so the result is verifiable without ears.
 """
+import argparse
 import os
 import struct
 import wave
@@ -33,6 +34,8 @@ REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
 OUT = os.path.join(REPO, "content", "probe", "phonk_bed.wav")
 
 RATE = 48000
+# Defaults = the standalone 18-bar bed. --bar/--bars/--mode dark retarget it,
+# e.g. as the first half of a two-track mix at another song's measured tempo.
 BAR = 1.7                 # seconds — one cut unit of the reel
 BARS = 18
 S16 = BAR / 16            # one sixteenth note
@@ -152,25 +155,41 @@ def add(buf, start_s, x, gain=1.0):
 
 
 def main():
+    global BAR, BARS, S16, TOTAL
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--bar", type=float, default=BAR, help="seconds per 4/4 bar")
+    ap.add_argument("--bars", type=int, default=BARS)
+    ap.add_argument("--mode", choices=["full", "dark"], default="full",
+                    help="dark: doubt/habits half of a two-track mix — no "
+                         "payoff drop, darker filter, ends open for a handoff")
+    ap.add_argument("--out", default=OUT)
+    args = ap.parse_args()
+    BAR, BARS = args.bar, args.bars
+    S16 = BAR / 16
+    TOTAL = int(round(BARS * BAR * RATE))
+    dark_mode = args.mode == "dark"
+
     rng = np.random.default_rng(42)
     mel = np.zeros(TOTAL)   # cowbell + pads (gets low-passed per section)
     drums = np.zeros(TOTAL)
     bass = np.zeros(TOTAL)
 
-    full_bars = set(range(2, 10)) | set(range(12, 17))
+    full_bars = set(range(2, 10)) if dark_mode else set(range(2, 10)) | set(range(12, 17))
+    payoff_bars = set() if dark_mode else set(range(12, 17))
+    half_bar = 17 if (not dark_mode and BARS > 17) else None
     for bar in range(BARS):
         t0 = bar * BAR
         riff = RIFF_A if bar % 2 == 0 else RIFF_B
 
         dark = bar in (0, 1, 10, 11)
-        half_time = bar == 17
+        half_time = bar == half_bar
         if not (bar in (10, 11) and False):
             for idx, name in riff:
                 if dark and idx % 2 == 1:
                     continue  # thin the riff in dark sections
                 note = cowbell(hz(name), bright=0.5 if dark else 1.0)
                 add(mel, t0 + idx * S16, note, 0.8 if not dark else 0.55)
-                if bar in range(12, 17):  # payoff: quiet octave-up layer
+                if bar in payoff_bars:  # payoff: quiet octave-up layer
                     add(mel, t0 + idx * S16 + 0.008, cowbell(hz(name, 1), dur=0.15), 0.25)
 
         if bar in full_bars or half_time:
@@ -187,7 +206,7 @@ def main():
             if not half_time:
                 for h in range(16):
                     add(drums, t0 + h * S16, hat(rng), 1.0 if h % 4 == 0 else 0.6)
-                if bar in range(12, 17):
+                if bar in payoff_bars:
                     for h in (2, 6, 10, 14):
                         add(drums, t0 + h * S16, hat(rng, open_=True))
                 if bar % 4 == 3:  # 32nd hat roll into the next bar
@@ -201,22 +220,25 @@ def main():
     add(drums, 1 * BAR + 8 * S16, riser(8 * S16))
     for k in range(8):  # snare roll, rising
         add(drums, 1 * BAR + 8 * S16 + k * S16, snare(rng), 0.25 + 0.09 * k)
-    add(drums, 11 * BAR + 8 * S16, riser(8 * S16))
+    if BARS > 11:
+        add(drums, 11 * BAR + 8 * S16, riser(8 * S16))
     add(drums, 2 * BAR, impact(rng))
-    add(drums, 12 * BAR, impact(rng))
+    if not dark_mode:
+        add(drums, 12 * BAR, impact(rng))
 
     # section low-pass rides on the melodic layer: dark intro/breakdown, open drops
     out_mel = np.zeros(TOTAL)
     for bar in range(BARS):
         a, b_ = int(bar * BAR * RATE), min(int((bar + 1) * BAR * RATE), TOTAL)
-        cut = 1400 if bar in (0, 1, 10, 11) else (9000 if bar != 17 else 3000)
+        groove_cut = 2600 if dark_mode else 9000
+        cut = 1400 if bar in (0, 1, 10, 11) else (groove_cut if bar != half_bar else 3000)
         out_mel[a:b_] = lp(mel[a:b_], cut)[: b_ - a]
 
     # sidechain pump: everything but drums ducks ~120 ms after each kick
     duck = np.ones(TOTAL)
     for bar in range(BARS):
-        if bar in full_bars or bar == 17:
-            for k in ([0, 8] if bar == 17 else KICKS):
+        if bar in full_bars or bar == half_bar:
+            for k in ([0, 8] if bar == half_bar else KICKS):
                 i = int((bar * BAR + k * S16) * RATE)
                 n = int(0.12 * RATE)
                 j = min(i + n, TOTAL)
@@ -236,7 +258,7 @@ def main():
 
     peak_db = 20 * np.log10(np.max(np.abs(mix)))
     rms_db = 20 * np.log10(np.sqrt(np.mean(mix ** 2)))
-    assert len(mix) == TOTAL == 1_468_800, len(mix)
+    assert len(mix) == TOTAL, (len(mix), TOTAL)
     assert -2.0 < peak_db < -1.0, peak_db
     # phonk masters run hot: ~8 dB crest is genre-correct, so gate at -8
     assert -18 < rms_db < -8, rms_db
@@ -244,12 +266,12 @@ def main():
     inter = np.empty(TOTAL * 2, dtype=np.int16)
     inter[0::2] = (mix * 32767).astype(np.int16)
     inter[1::2] = (right * 32767).astype(np.int16)
-    with wave.open(OUT, "wb") as w:
+    with wave.open(args.out, "wb") as w:
         w.setnchannels(2)
         w.setsampwidth(2)
         w.setframerate(RATE)
         w.writeframes(inter.tobytes())
-    print(f"OK {OUT}  {TOTAL / RATE:.3f}s  peak {peak_db:.1f} dBFS  rms {rms_db:.1f} dBFS")
+    print(f"OK {args.out}  {TOTAL / RATE:.3f}s  peak {peak_db:.1f} dBFS  rms {rms_db:.1f} dBFS")
 
 
 if __name__ == "__main__":
