@@ -19,7 +19,12 @@ import {EASE} from '../motion/craft';
 import {Grain, Vignette} from '../motion/Polish';
 import {PT} from '../components/PatternCard';
 
-export const habitsReelSchema = z.object({});
+// cutStarts/totalFrames re-time the cuts to a real track's measured kick grid
+// (scripts/audio/mix_playlist.py emits them); omitted -> the built-in 1.7s grid.
+export const habitsReelSchema = z.object({
+  cutStarts: z.array(z.number()).optional(),
+  totalFrames: z.number().optional(),
+});
 
 const UNIT = 51; // 1.7s at 30fps = 3 beats at ~106 BPM
 
@@ -137,14 +142,20 @@ const CutDip: React.FC = () => {
   return <AbsoluteFill style={{backgroundColor: '#000', opacity: o, pointerEvents: 'none'}} />;
 };
 
-export const HabitsReel: React.FC = () => {
-  let from = 0;
+export const HabitsReel: React.FC<z.infer<typeof habitsReelSchema>> = ({cutStarts, totalFrames}) => {
+  const defaults: number[] = [];
+  let acc = 0;
+  for (const s of SHOTS) {
+    defaults.push(acc);
+    acc += s.units * UNIT;
+  }
+  const starts = cutStarts && cutStarts.length === SHOTS.length ? cutStarts : defaults;
+  const total = totalFrames ?? HABITS_FRAMES;
   return (
     <AbsoluteFill style={{backgroundColor: '#000'}}>
       {SHOTS.map((s, i) => {
-        const dur = s.units * UNIT;
-        const start = from;
-        from += dur;
+        const start = starts[i];
+        const dur = (i + 1 < starts.length ? starts[i + 1] : total) - start;
         return (
           <Sequence key={s.file} from={start} durationInFrames={dur}>
             <AbsoluteFill>

@@ -359,6 +359,9 @@ export const RemotionRoot: React.FC = () => {
         height={1920}
         schema={habitsReelSchema}
         defaultProps={{}}
+        calculateMetadata={({props}) => ({
+          durationInFrames: props.totalFrames ?? HABITS_FRAMES,
+        })}
       />
       <Composition
         id="MemeReel"
