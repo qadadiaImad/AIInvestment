@@ -70,8 +70,10 @@ const GapLine: React.FC<{
   width: number;
   height: number;
   title?: string;
+  sub?: string;
+  dropPct?: number;
   markMaxLong?: boolean;
-}> = ({ data, reveal, width, height, title, markMaxLong }) => {
+}> = ({ data, reveal, width, height, title, sub, dropPct, markMaxLong }) => {
   const n = data.length;
   const shown = Math.max(2, Math.floor(reveal * n));
   const pts = data
@@ -93,6 +95,16 @@ const GapLine: React.FC<{
       {title && (
         <text x={0} y={-22} fontFamily={FONT.mono} fontWeight={800} fontSize={34} letterSpacing={3} fill={C.inkSoft}>
           {title}
+        </text>
+      )}
+      {sub && (
+        <text x={0} y={20} fontFamily={FONT.mono} fontWeight={700} fontSize={22} letterSpacing={2} fill={C.muted}>
+          {sub}
+        </text>
+      )}
+      {dropPct !== undefined && (
+        <text x={width} y={20} textAnchor="end" fontFamily={FONT.mono} fontWeight={800} fontSize={64} fill={C.redHot}>
+          {dropPct.toFixed(1)}%
         </text>
       )}
       <polyline
@@ -235,10 +247,20 @@ const UsScene: React.FC = () => {
       <GrokClip src="semis/us_exchange.mp4" kind="video" />
       <ChartSlot top={560}>
         <ChartPanel>
-          <GapLine data={gapCloses(60)} reveal={reveal} width={900} height={560} title="US INDEX" markMaxLong />
+          {/* -5.2% = real equal-weight 5-day move of our AI-chip basket
+              (MU/AMD/ASML/NVDA/AVGO/MRVL) from web/public/data/prices, to 2026-07-31. */}
+          <GapLine
+            data={gapCloses(60)}
+            reveal={reveal}
+            width={900}
+            height={560}
+            title="US AI-CHIPS"
+            sub="EQUAL-WEIGHT BASKET · 5-DAY TO JUL 31"
+            dropPct={-5.2}
+          />
         </ChartPanel>
       </ChartSlot>
-      <RollingCaption text="Today the same gap-down pattern hit the U.S. too." from={10} asReported />
+      <RollingCaption text="Our AI-chip basket fell 5.2% on the week — it's a U.S. problem too." from={10} />
     </>
   );
 };
