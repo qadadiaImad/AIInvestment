@@ -19,8 +19,16 @@ export const strategyWalkthroughSchema = z.object({
   barStart: z.array(z.number()),
   level: z.number(), entry: z.number(), stop: z.number(), target: z.number(), rr: z.number(),
   idx: z.object({touch1: z.number(), touch2: z.number(), breakout: z.number(),
-                 retest: z.number(), resolve: z.number()}),
-  resistDrawAt: z.number(), breakoutTagAt: z.number(), retestTagAt: z.number(),
+                 retest: z.number(), resolve: z.number()}).nullable().optional(),
+  resistDrawAt: z.number().nullable().optional(),
+  breakoutTagAt: z.number().nullable().optional(),
+  retestTagAt: z.number().nullable().optional(),
+  // generic pattern annotations: tag at bar i / price, appearing at a frame
+  annos: z.array(z.object({i: z.number(), price: z.number(), label: z.string(),
+                           color: z.string(), at: z.number(), dy: z.number()})).nullable().optional(),
+  neck: z.object({price: z.number(), label: z.string(), at: z.number()}).nullable().optional(),
+  flashes: z.array(z.number()).nullable().optional(),
+  resolveI: z.number().nullable().optional(),
   tradeFrameAt: z.number(), tpAt: z.number(), totalFrames: z.number(),
   header: z.string(), subheader: z.string(),
   eventDates: z.record(z.string(), z.string()),
@@ -30,20 +38,22 @@ export const strategyWalkthroughSchema = z.object({
 });
 type P = z.infer<typeof strategyWalkthroughSchema>;
 
-const BG = '#02070A';
+const BG = '#050E1C';  // dark blue — owner's call, matches the quiz screen family
 const UP = '#00E676';
 const DOWN = '#FF3B30';
 const ACCENT = '#22E07E';
-const GRID = 'rgba(34,224,126,0.10)';
+const GRID = 'rgba(90,140,220,0.12)';
 const INK = '#A0B9B2';
 
 const CHART = {x0: 70, x1: 1010, y0: 470, y1: 1420};
 
+const hiSpanPad = (p: P) => Math.max(0.6, (Math.max(...p.bars.map((b) => b.h)) - Math.min(...p.bars.map((b) => b.l))) * 0.04);
+
 export const StrategyWalkthrough: React.FC<P> = (p) => {
   const frame = useCurrentFrame();
   const n = p.bars.length;
-  const lo = Math.min(...p.bars.map((b) => b.l), p.stop) - 0.6;
-  const hi = Math.max(...p.bars.map((b) => b.h), p.target) + 0.6;
+  const lo = Math.min(...p.bars.map((b) => b.l), p.stop) - (hiSpanPad(p));
+  const hi = Math.max(...p.bars.map((b) => b.h), p.target) + (hiSpanPad(p));
   const y = (price: number) =>
     CHART.y1 - ((price - lo) / (hi - lo)) * (CHART.y1 - CHART.y0);
   const xw = (CHART.x1 - CHART.x0) / n;
@@ -141,21 +151,32 @@ export const StrategyWalkthrough: React.FC<P> = (p) => {
         );
       })}
 
-      {/* resistance line — drawn only once touch 2 exists */}
-      {priceLine(p.level, ACCENT, p.resistDrawAt, 'solid', 'RESISTANCE', -38, CHART.x1 - 330)}
-      {tag(x(p.idx.touch1) - 60, y(p.level) - 120,
-           `TOUCH 1 · ${p.eventDates.touch1}`, ACCENT, p.resistDrawAt + 6)}
-      {tag(x(p.idx.touch2) - 60, y(p.level) - 190,
-           `TOUCH 2 · ${p.eventDates.touch2}`, ACCENT, p.resistDrawAt + 14)}
+      {/* legacy breakout-retest annotations */}
+      {p.idx && p.resistDrawAt != null && (
+        <>
+          {priceLine(p.level, ACCENT, p.resistDrawAt, 'solid', 'RESISTANCE', -38, CHART.x1 - 330)}
+          {tag(x(p.idx.touch1) - 60, y(p.level) - 120,
+               `TOUCH 1 · ${p.eventDates.touch1}`, ACCENT, p.resistDrawAt + 6)}
+          {tag(x(p.idx.touch2) - 60, y(p.level) - 190,
+               `TOUCH 2 · ${p.eventDates.touch2}`, ACCENT, p.resistDrawAt + 14)}
+          {p.breakoutTagAt != null && flashAt(p.breakoutTagAt)}
+          {p.breakoutTagAt != null && tag(x(p.idx.breakout) - 320,
+               y(p.bars[p.idx.breakout].h) - 200,
+               `BREAKOUT · ${p.eventDates.breakout}`, '#F2F7F4', p.breakoutTagAt)}
+          {p.retestTagAt != null && tag(x(p.idx.retest) - 140, y(p.level) + 70,
+               `RETEST · ${p.eventDates.retest}`, '#FFD166', p.retestTagAt)}
+        </>
+      )}
 
-      {/* breakout */}
-      {flashAt(p.breakoutTagAt)}
-      {tag(x(p.idx.breakout) - 320, y(p.bars[p.idx.breakout].h) - 200,
-           `BREAKOUT · ${p.eventDates.breakout}`, '#F2F7F4', p.breakoutTagAt)}
-
-      {/* retest */}
-      {tag(x(p.idx.retest) - 140, y(p.level) + 70,
-           `RETEST · ${p.eventDates.retest}`, '#FFD166', p.retestTagAt)}
+      {/* generic pattern annotations (episode 2+) */}
+      {p.neck && priceLine(p.neck.price, ACCENT, p.neck.at, 'solid',
+                           p.neck.label, -38, CHART.x1 - 380)}
+      {p.annos?.map((a, k) =>
+        <React.Fragment key={k}>
+          {tag(x(a.i) - 120, y(a.price) + a.dy, a.label, a.color, a.at)}
+        </React.Fragment>
+      )}
+      {p.flashes?.map((f, k) => <React.Fragment key={`f${k}`}>{flashAt(f)}</React.Fragment>)}
 
       {/* trade frame — all four or none (rule 10.5). Entry == the level
        * line already on screen, so it gets a label, not a second line. */}
@@ -170,7 +191,7 @@ export const StrategyWalkthrough: React.FC<P> = (p) => {
       {priceLine(p.stop, DOWN, p.tradeFrameAt + 10, 'dashed', 'STOP', 10)}
       {priceLine(p.target, UP, p.tradeFrameAt + 20, 'dashed', 'TARGET', -38)}
       {seen(p.tradeFrameAt + 26) > 0 && (
-        <div style={{position: 'absolute', left: CHART.x0 + 8, top: CHART.y1 - 90,
+        <div style={{position: 'absolute', left: CHART.x1 - 240, top: CHART.y1 - 90,
                      opacity: seen(p.tradeFrameAt + 26),
                      color: '#F2F7F4', background: 'rgba(34,224,126,0.16)',
                      border: `2px solid ${ACCENT}`, fontSize: 30, fontWeight: 900,
@@ -179,17 +200,33 @@ export const StrategyWalkthrough: React.FC<P> = (p) => {
         </div>
       )}
 
-      {/* take profit */}
-      {flashAt(p.tpAt)}
+      {/* take profit — two dollar emojis, nothing more (owner's call: no
+       * graphic spawn at TP). Coin sound stays; outcome is carried by the
+       * target line + R:R box already on screen. */}
       <Sequence from={p.tpAt} durationInFrames={p.totalFrames - p.tpAt}>
         <Audio src={staticFile('audio/coin.wav')} volume={0.75} />
       </Sequence>
-      {tag(x(p.idx.resolve) - 260, y(p.target) - 120,
-           `TARGET HIT · ${p.eventDates.resolve} · +${p.rr.toFixed(1)}R`, UP, p.tpAt)}
+      {frame >= p.tpAt && (() => {
+        const ri = p.idx ? p.idx.resolve : (p.resolveI ?? p.bars.length - 1);
+        const o = interpolate(frame, [p.tpAt, p.tpAt + 8, p.tpAt + 70, p.tpAt + 90],
+                              [0, 1, 1, 0], {extrapolateRight: 'clamp'});
+        const rise = interpolate(frame, [p.tpAt, p.tpAt + 90], [0, -60],
+                                 {extrapolateRight: 'clamp'});
+        return (
+          <div style={{position: 'absolute', left: Math.min(x(ri) - 70, 880),
+                       top: y(p.target) - 130 + rise, opacity: o, textAlign: 'center'}}>
+            <div style={{fontSize: 64, letterSpacing: 6}}>💵💵</div>
+            <div style={{color: INK, fontSize: 22, letterSpacing: 2, marginTop: 4}}>
+              TARGET HIT
+            </div>
+          </div>
+        );
+      })()}
 
       {/* reveal-side candle tones, breakout onward only (rule 10.4) */}
       {p.bars.map((b, i) =>
-        i >= p.idx.breakout && p.barStart[i] < p.totalFrames - 4 ? (
+        i >= (p.idx ? p.idx.breakout : (p.annos?.length ? Math.max(0, p.bars.length - 20) : 0)) &&
+        p.barStart[i] < p.totalFrames - 4 ? (
           <Sequence key={`s${i}`} from={p.barStart[i]} durationInFrames={20}>
             <Audio src={staticFile(b.c >= b.o ? 'audio/candle_up.wav' : 'audio/candle_down.wav')}
                    volume={0.3} />

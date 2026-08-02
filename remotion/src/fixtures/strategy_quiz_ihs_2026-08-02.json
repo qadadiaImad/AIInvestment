@@ -1,0 +1,144 @@
+{
+ "kick": "STRATEGY QUIZ 2",
+ "patternName": "INVERSE HEAD & SHOULDERS",
+ "levelPrice": 100.0,
+ "levelLabel": "NECKLINE",
+ "answer": "BUY",
+ "answerLine": "Neckline broke. Measured move in play.",
+ "ruleTitle": "The setup",
+ "ruleText": "Three lows: shoulder, deeper head, shoulder. The line across the highs between them is the neckline. A close above it is the signal; target = neckline + the depth of the head. Stop below the right shoulder.",
+ "footer": "SYNTHETIC example \u2014 illustrative, not a real chart \u2014 educational only, not financial advice",
+ "revealFrom": 16,
+ "entry": 100.0,
+ "stop": 97.6,
+ "target": 103.5,
+ "durationInFrames": 720,
+ "candles": [
+  {
+   "o": 99.0,
+   "h": 100.2,
+   "l": 98.4,
+   "c": 99.6
+  },
+  {
+   "o": 99.6,
+   "h": 100.1,
+   "l": 98.9,
+   "c": 99.2
+  },
+  {
+   "o": 99.2,
+   "h": 99.5,
+   "l": 97.9,
+   "c": 98.2
+  },
+  {
+   "o": 98.2,
+   "h": 98.6,
+   "l": 97.4,
+   "c": 97.8
+  },
+  {
+   "o": 97.8,
+   "h": 99.3,
+   "l": 97.5,
+   "c": 99.0
+  },
+  {
+   "o": 99.0,
+   "h": 100.1,
+   "l": 98.7,
+   "c": 99.8
+  },
+  {
+   "o": 99.8,
+   "h": 99.9,
+   "l": 98.3,
+   "c": 98.6
+  },
+  {
+   "o": 98.6,
+   "h": 98.8,
+   "l": 96.6,
+   "c": 96.9
+  },
+  {
+   "o": 96.9,
+   "h": 97.2,
+   "l": 96.3,
+   "c": 96.6
+  },
+  {
+   "o": 96.6,
+   "h": 98.0,
+   "l": 96.4,
+   "c": 97.7
+  },
+  {
+   "o": 97.7,
+   "h": 99.4,
+   "l": 97.5,
+   "c": 99.1
+  },
+  {
+   "o": 99.1,
+   "h": 100.0,
+   "l": 98.8,
+   "c": 99.7
+  },
+  {
+   "o": 99.7,
+   "h": 99.8,
+   "l": 98.2,
+   "c": 98.5
+  },
+  {
+   "o": 98.5,
+   "h": 98.7,
+   "l": 97.5,
+   "c": 97.8
+  },
+  {
+   "o": 97.8,
+   "h": 98.9,
+   "l": 97.6,
+   "c": 98.6
+  },
+  {
+   "o": 98.6,
+   "h": 99.8,
+   "l": 98.4,
+   "c": 99.5
+  },
+  {
+   "o": 99.5,
+   "h": 100.9,
+   "l": 99.3,
+   "c": 100.7
+  },
+  {
+   "o": 100.7,
+   "h": 101.8,
+   "l": 100.4,
+   "c": 101.5
+  },
+  {
+   "o": 101.5,
+   "h": 102.6,
+   "l": 101.2,
+   "c": 102.3
+  },
+  {
+   "o": 102.3,
+   "h": 103.7,
+   "l": 102.0,
+   "c": 103.4
+  },
+  {
+   "o": 103.4,
+   "h": 103.9,
+   "l": 102.9,
+   "c": 103.6
+  }
+ ]
+}
