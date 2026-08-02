@@ -10,7 +10,7 @@
 // Assets + prompts: scripts/science_reel/gen_assets.py (source of truth).
 // Spec: docs/superpowers/specs/2026-08-02-science-reel-design.md
 import React from 'react';
-import {AbsoluteFill, Img, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Img, Loop, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame} from 'remotion';
 import {z} from 'zod';
 import {FONT} from '../slides/theme';
 import {EASE} from '../motion/craft';
@@ -35,10 +35,11 @@ type Shot = {
   word: string | null;
   accuse?: boolean; // part-1 red treatment
   flash?: boolean;  // 2-frame white flash on this shot's cut
+  srcFrames?: number; // video source length; shots loop if a derived cut grid outruns it
 };
 
 const SHOTS: Shot[] = [
-  {file: 'science/shot00.mp4', kind: 'vid', units: 2, word: "“TRADING ISN'T A REAL SCIENCE”", accuse: true},
+  {file: 'science/shot00.mp4', kind: 'vid', units: 2, word: "“TRADING ISN'T A REAL SCIENCE”", accuse: true, srcFrames: 181},
   {file: 'science/shot01.png', kind: 'img', units: 1, word: '“IT’S JUST GAMBLING”', accuse: true},
   {file: 'science/shot02.png', kind: 'img', units: 1, word: '“IT’S PURE LUCK”', accuse: true},
   {file: 'science/shot03.png', kind: 'img', units: 1, word: '“IT’S UNETHICAL”', accuse: true},
@@ -46,14 +47,14 @@ const SHOTS: Shot[] = [
   {file: 'science/shot05.png', kind: 'img', units: 1, word: 'PROBABILITY'},
   {file: 'science/shot06.png', kind: 'img', units: 1, word: 'STATISTICS'},
   {file: 'science/shot07.png', kind: 'img', units: 1, word: 'STOCHASTIC CALCULUS'},
-  {file: 'science/shot08.mp4', kind: 'vid', units: 2, word: 'RANDOM WALKS'},
+  {file: 'science/shot08.mp4', kind: 'vid', units: 2, word: 'RANDOM WALKS', srcFrames: 181},
   {file: 'science/shot09.png', kind: 'img', units: 1, word: 'COMPUTER SCIENCE'},
   {file: 'science/shot10.png', kind: 'img', units: 1, word: 'ALGORITHMS'},
   {file: 'science/shot11.png', kind: 'img', units: 1, word: 'GAME THEORY'},
   {file: 'science/shot12.png', kind: 'img', units: 1, word: 'MACHINE LEARNING'},
   {file: 'science/shot13.png', kind: 'img', units: 1, word: 'BEHAVIORAL SCIENCE'},
-  {file: 'science/shot14.mp4', kind: 'vid', units: 1, word: "IT'S NOT LUCK. IT'S MATH.", flash: true},
-  {file: 'science/shot15.mp4', kind: 'vid', units: 1, word: 'STUDY THE SCIENCE.'},
+  {file: 'science/shot14.mp4', kind: 'vid', units: 1, word: "IT'S NOT LUCK. IT'S MATH.", flash: true, srcFrames: 91},
+  {file: 'science/shot15.mp4', kind: 'vid', units: 1, word: 'STUDY THE SCIENCE.', srcFrames: 91},
 ];
 
 export const SCIENCE_FRAMES = SHOTS.reduce((n, s) => n + s.units * UNIT, 0); // 918 = 30.6s
@@ -209,11 +210,13 @@ export const ScienceReel: React.FC<z.infer<typeof scienceReelSchema>> = ({cutSta
           <Sequence key={s.file} from={start} durationInFrames={dur}>
             <AbsoluteFill>
               {s.kind === 'vid' ? (
-                <OffthreadVideo
-                  src={staticFile(s.file)}
-                  muted
-                  style={{width: '100%', height: '100%', objectFit: 'cover'}}
-                />
+                <Loop durationInFrames={s.srcFrames ?? 181}>
+                  <OffthreadVideo
+                    src={staticFile(s.file)}
+                    muted
+                    style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                  />
+                </Loop>
               ) : (
                 <KenBurns src={s.file} index={i} frames={dur} />
               )}

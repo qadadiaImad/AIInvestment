@@ -1,0 +1,47 @@
+{
+ "windows": [
+  {
+   "k": 0,
+   "dialogue": "They say trading isn't a real science. They call it gambling.",
+   "transcript": "They say trading isn't a real science, they call it gambling.",
+   "similarity": 1.0,
+   "source": "grok-cli imagine video 6s native dialogue, 3 identity refs"
+  },
+  {
+   "k": 1,
+   "dialogue": "Pure luck. Some even call it unethical. But here's what it actually runs on.",
+   "transcript": "Pure luck, some even call it unethical, but here's what it actually runs on.",
+   "similarity": 1.0,
+   "source": "grok-cli imagine video 6s native dialogue, 3 identity refs"
+  },
+  {
+   "k": 2,
+   "dialogue": "Probability. Statistics. Stochastic calculus.",
+   "transcript": "Probability, statistics, stochastic calculus.",
+   "similarity": 1.0,
+   "source": "grok-cli imagine video 6s native dialogue, 3 identity refs"
+  },
+  {
+   "k": 3,
+   "dialogue": "The same random walks that move particles, move prices.",
+   "transcript": "The same random walks that move particles move prices.",
+   "similarity": 1.0,
+   "source": "grok-cli imagine video 6s native dialogue, 3 identity refs"
+  },
+  {
+   "k": 4,
+   "dialogue": "Computer science. Algorithms. Game theory. Machine learning.",
+   "transcript": "Computer Science, Algorithms, Game Theory, Machine Learning.",
+   "similarity": 1.0,
+   "source": "grok-cli imagine video 6s native dialogue, 3 identity refs"
+  },
+  {
+   "k": 5,
+   "dialogue": "And the science of human behavior. It isn't luck. It's mathematics. Study the science.",
+   "transcript": "In the science of human behavior, it isn't luck, it's mathematics. Study the science.",
+   "similarity": 0.938,
+   "source": "grok-cli imagine video 6s native dialogue, 3 identity refs"
+  }
+ ],
+ "retrieved_at": "2026-08-02T18:24:38Z"
+}
