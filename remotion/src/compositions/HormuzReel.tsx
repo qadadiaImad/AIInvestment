@@ -223,12 +223,14 @@ const CAPS: Cap[] = [
     sub: `${J.shockDate.slice(5)}: +${J.shockPct}% SHOCK · SAME PATTERN · TARGET ${J.tpDate}`,
     keys: true,
   },
-  // ---- the honest split: computed, small sample labelled ----------------
+  // ---- the close: crisis-conditioned record + the WHY. Owner's call:
+  // the final section is chart-and-voice only, so this caption carries the
+  // numbers (still fixture-owned) and the mechanism in one card.
   {
     from: 2010,
     to: 2219,
-    text: `QUIET MARKETS: ${SP.quiet.wins} OF ${SP.quiet.n}`,
-    sub: `AFTER A SHOCK: ${SP.crisis.wins} OF ${SP.crisis.n} · SMALL SAMPLE`,
+    text: `AFTER A SHOCK: ${SP.crisis.wins} OF ${SP.crisis.n}`,
+    sub: 'A CRISIS LEAVES ONE SIDE IN CONTROL · SMALL SAMPLE',
     big: true,
     keys: true,
   },
@@ -460,6 +462,13 @@ export const HormuzReel: React.FC<HormuzProps> = () => {
       : []),
   ];
 
+  // Chrome (header + footer) leaves for the close — the last card is chart,
+  // caption and voice, nothing else.
+  const chromeOut = interpolate(frame, [1992, 2024], [1, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
   /** Project a price onto the screen through the same camera the chart uses,
    * so a label pinned here sits exactly on its dashed line at any zoom. */
   const screenY = (price: number) =>
@@ -578,11 +587,7 @@ export const HormuzReel: React.FC<HormuzProps> = () => {
                       extrapolateLeft: 'clamp',
                       extrapolateRight: 'clamp',
                     })
-                  : interpolate(frame, [2040, 2060], [0, 1], {
-                      easing: EASE.enter,
-                      extrapolateLeft: 'clamp',
-                      extrapolateRight: 'clamp',
-                    }),
+                  : 0, // it had its moment at 56s — the close is chart and voice only
               transform: `scale(${interpolate(frame, [1690, 1716], [0.9, 1], {
                 easing: EASE.settleBack,
                 extrapolateLeft: 'clamp',
@@ -622,9 +627,10 @@ export const HormuzReel: React.FC<HormuzProps> = () => {
       <Vignette />
       <Grain opacity={0.045} />
 
-      {/* header — always on, so a still frame still says what it is */}
+      {/* header — on for the whole story, steps off for the close */}
       <div
         style={{
+          opacity: chromeOut,
           position: 'absolute',
           top: 62,
           left: 56,
@@ -643,9 +649,11 @@ export const HormuzReel: React.FC<HormuzProps> = () => {
         </div>
       </div>
 
-      {/* footer — real data, named source, snapshot time (CLAUDE.md 10.6) */}
+      {/* footer — real data, named source, snapshot time (CLAUDE.md 10.6);
+          burned in for 67 of 74 seconds, fades for the clean close */}
       <div
         style={{
+          opacity: chromeOut,
           position: 'absolute',
           bottom: 42,
           left: 56,
