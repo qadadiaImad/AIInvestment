@@ -67,13 +67,21 @@ export const crashCandles = (
   });
 };
 
-/** Korea "gap down" series: flat holds punctuated by sharp downward gaps. */
-export const gapCloses = (n: number): number[] => {
-  const steps = 5;
-  return Array.from({ length: n }, (_, i) => {
-    const seg = Math.floor((i / n) * steps);
-    const level = 0.9 - seg * 0.16;
-    const wiggle = 0.015 * Math.sin(i * 1.3);
+/** Korea "max long, then gap down" series: a run-up to a peak (the crowded
+ * all-in-long trade "working"), then a staircase of sharp downward gaps once
+ * it breaks. Deterministic. The peak index is exposed via KOREA_PEAK_T for the
+ * "MAX LONG" marker. */
+export const KOREA_PEAK_T = 0.4;
+export const gapCloses = (n: number): number[] =>
+  Array.from({ length: n }, (_, i) => {
+    const t = i / (n - 1);
+    let level: number;
+    if (t < KOREA_PEAK_T) {
+      level = 0.5 + (t / KOREA_PEAK_T) * 0.4; // 0.5 -> 0.9 run-up ("it worked")
+    } else {
+      const seg = Math.min(3, Math.floor(((t - KOREA_PEAK_T) / (1 - KOREA_PEAK_T)) * 4));
+      level = 0.9 - (seg + 1) * 0.18; // 0.72, 0.54, 0.36, 0.18 downward gaps
+    }
+    const wiggle = 0.012 * Math.sin(i * 1.3);
     return clamp01(level + wiggle);
   });
-};

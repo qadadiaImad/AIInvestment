@@ -60,14 +60,18 @@ const ChartSlot: React.FC<{ children: React.ReactNode; top?: number }> = ({ chil
   </div>
 );
 
-/** Simple falling line for the Korea "gap down" beat -- amber (data-toned,
- * not decorative red; red is reserved for CrashChart's down-candles). */
-const GapLine: React.FC<{ data: number[]; reveal: number; width: number; height: number }> = ({
-  data,
-  reveal,
-  width,
-  height,
-}) => {
+/** Titled index line for the Korea / US "run-up then gap-down" beats. Amber
+ * line (data-toned). Optional "MAX LONG" marker at the series peak (the crowded
+ * all-in-long trade before it broke); the falling endpoint dot is redHot (that
+ * is down-price DATA, not decorative text). */
+const GapLine: React.FC<{
+  data: number[];
+  reveal: number;
+  width: number;
+  height: number;
+  title?: string;
+  markMaxLong?: boolean;
+}> = ({ data, reveal, width, height, title, markMaxLong }) => {
   const n = data.length;
   const shown = Math.max(2, Math.floor(reveal * n));
   const pts = data
@@ -77,13 +81,58 @@ const GapLine: React.FC<{ data: number[]; reveal: number; width: number; height:
   const lastIdx = shown - 1;
   const lx = (lastIdx / (n - 1)) * width;
   const ly = height - data[lastIdx] * height;
+  let peakIdx = 0;
+  data.forEach((v, i) => {
+    if (v > data[peakIdx]) peakIdx = i;
+  });
+  const px = (peakIdx / (n - 1)) * width;
+  const py = height - data[peakIdx] * height;
+  const showPeak = markMaxLong && shown > peakIdx + 1;
   return (
     <svg width={width} height={height} style={{ overflow: "visible" }}>
-      <polyline points={pts} fill="none" stroke={C.amber} strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx={lx} cy={ly} r={10} fill={C.mint} />
+      {title && (
+        <text x={0} y={-22} fontFamily={FONT.mono} fontWeight={800} fontSize={34} letterSpacing={3} fill={C.inkSoft}>
+          {title}
+        </text>
+      )}
+      <polyline
+        points={pts}
+        fill="none"
+        stroke={C.amber}
+        strokeWidth={9}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{ filter: `drop-shadow(0 0 14px ${C.amber}66)` }}
+      />
+      {showPeak && (
+        <>
+          <circle cx={px} cy={py} r={10} fill={C.amber} />
+          <text x={px} y={py - 26} textAnchor="middle" fontFamily={FONT.mono} fontWeight={800} fontSize={32} fill={C.amber}>
+            ▲ MAX LONG
+          </text>
+        </>
+      )}
+      <circle cx={lx} cy={ly} r={13} fill={C.redHot} style={{ filter: `drop-shadow(0 0 12px ${C.redHot})` }} />
     </svg>
   );
 };
+
+/** Highlight panel behind a chart so it dominates the frame (owner note: make
+ * charts bigger + more highlighted). Translucent dark card + amber glow. */
+const ChartPanel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div
+    style={{
+      position: "relative",
+      padding: "44px 46px",
+      borderRadius: 26,
+      background: "rgba(10,13,18,.55)",
+      border: `1px solid ${C.line}`,
+      boxShadow: "0 26px 90px rgba(0,0,0,.62), 0 0 70px rgba(224,162,59,.14)",
+    }}
+  >
+    {children}
+  </div>
+);
 
 // ---------------------------------------------------------------------------
 // Music bed: low-volume across the whole reel, ducked briefly under each
@@ -126,8 +175,10 @@ const CrashScene: React.FC = () => {
   return (
     <>
       <GrokClip src="semis/panic_floor.mp4" kind="video" />
-      <ChartSlot>
-        <CrashChart candles={crashCandles(60)} reveal={reveal} dropPct={SNDK_DROP_PCT} width={900} height={520} />
+      <ChartSlot top={540}>
+        <ChartPanel>
+          <CrashChart candles={crashCandles(60)} reveal={reveal} dropPct={SNDK_DROP_PCT} width={900} height={560} />
+        </ChartPanel>
       </ChartSlot>
       <StickerHook pre="Semis are running out of" keyword="buyers" from={0} />
       <RollingCaption text="SanDisk crashed 14.1% today — semis are running out of buyers." from={20} asReported />
@@ -159,10 +210,12 @@ const KoreaScene: React.FC = () => {
   return (
     <>
       <GrokClip src="semis/seoul.mp4" kind="video" />
-      <ChartSlot>
-        <GapLine data={gapCloses(60)} reveal={reveal} width={900} height={420} />
+      <ChartSlot top={540}>
+        <ChartPanel>
+          <GapLine data={gapCloses(60)} reveal={reveal} width={900} height={560} title="KOREA · RETAIL POSITIONING" markMaxLong />
+        </ChartPanel>
       </ChartSlot>
-      <RollingCaption text="It worked in Korea — until the market kept gapping lower." from={10} asReported />
+      <RollingCaption text="Korea was maxed out long — it worked, until the market kept gapping lower." from={10} asReported />
     </>
   );
 };
@@ -180,10 +233,12 @@ const UsScene: React.FC = () => {
   return (
     <>
       <GrokClip src="semis/us_exchange.mp4" kind="video" />
-      <ChartSlot top={700}>
-        <CrashChart candles={crashCandles(40)} reveal={reveal} dropPct={SNDK_DROP_PCT} width={640} height={340} />
+      <ChartSlot top={560}>
+        <ChartPanel>
+          <GapLine data={gapCloses(60)} reveal={reveal} width={900} height={560} title="US INDEX" markMaxLong />
+        </ChartPanel>
       </ChartSlot>
-      <RollingCaption text="Today showed it's a U.S. problem too." from={10} />
+      <RollingCaption text="Today the same gap-down pattern hit the U.S. too." from={10} asReported />
     </>
   );
 };
@@ -194,8 +249,10 @@ const RotationScene: React.FC = () => {
   return (
     <>
       <GrokClip src="semis/rotation_bg.jpg" kind="image" />
-      <ChartSlot>
-        <RotationFlow t={t} width={900} height={520} />
+      <ChartSlot top={540}>
+        <ChartPanel>
+          <RotationFlow t={t} width={900} height={560} />
+        </ChartPanel>
       </ChartSlot>
       <RollingCaption
         text="Bizarrely, healthcare just had its best week since 2022 — defensive rotation."
