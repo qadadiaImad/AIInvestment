@@ -24,6 +24,8 @@ REPO = os.path.abspath(os.path.join(HERE, "..", ".."))
 OUT = os.path.join(REPO, "remotion", "public", "habits")
 CLI = os.path.expanduser("~/tools/grok-cli/grok-cli.exe")
 MANIFEST = os.path.join(OUT, "manifest.json")
+# Maya identity anchor from the grind reel — referenced ONLY by shot 0.
+ANCHOR = os.path.join(REPO, "remotion", "public", "grind", "maya_anchor.png")
 
 BASE = (
     " Photorealistic candid photography, shot on 35mm film, natural light, "
@@ -33,7 +35,16 @@ BASE = (
 )
 
 # (idx, kind img|vid, video seconds (vids only), word or None, prompt)
+# Shot 0 is the cold open: the one Maya cameo (from behind, identity held by
+# the grind anchor still), warm sunset replacing the retired neon look.
 SHOTS = [
+    (0, "vid", 6, "THEY SAY YOU DON'T HAVE THE TALENT FOR TRADING",
+     "A young woman seen strictly from behind, back to camera, dark hair, "
+     "sitting at a modern real-world trading desk with two ordinary monitors "
+     "showing soft blurred unreadable market charts, golden sunset light "
+     "glowing through the window and washing the room in warm amber, she "
+     "studies the screens and takes a handwritten note, slow cinematic "
+     "push-in." + BASE),
     (1, "vid", 6, "TALENT LOSES TO ROUTINE",
      "A dark home office before dawn, a wooden desk with a closed notebook, a "
      "dormant computer monitor and a cup of coffee, faint blue pre-dawn light "
@@ -108,11 +119,14 @@ def gen_img(prompt, dest):
     return None
 
 
-def gen_vid(prompt, duration, dest):
+def gen_vid(prompt, duration, dest, ref=None):
     def attempt(dur):
-        rc, out, err = run([CLI, "video", "--json", "--aspect-ratio", "9:16",
-                            "--duration", str(dur), "--timeout", "480",
-                            "--prompt", prompt])
+        args = [CLI, "video", "--json", "--aspect-ratio", "9:16",
+                "--duration", str(dur), "--timeout", "480",
+                "--prompt", prompt]
+        if ref:
+            args += ["--reference-image", ref]
+        rc, out, err = run(args)
         if rc != 0:
             return None, f"rc={rc} {err[-300:]} {out[-300:]}"
         try:
@@ -149,7 +163,8 @@ def main():
                 })
                 json.dump(manifest, open(MANIFEST, "w"), indent=1)
             continue
-        err = gen_img(prompt, dest) if kind == "img" else gen_vid(prompt, dur, dest)
+        ref = ANCHOR if i == 0 else None
+        err = gen_img(prompt, dest) if kind == "img" else gen_vid(prompt, dur, dest, ref)
         manifest["shots"] = [s for s in manifest["shots"] if s.get("i") != i]
         entry = {
             "i": i, "kind": kind, "word": word, "file_ok": err is None,

@@ -111,6 +111,14 @@
    "file_ok": true,
    "source": "grok-cli imagine img",
    "retrieved_at": "2026-08-02T10:12:05Z"
+  },
+  {
+   "i": 0,
+   "kind": "vid",
+   "word": "THEY SAY YOU DON'T HAVE THE TALENT FOR TRADING",
+   "file_ok": true,
+   "source": "grok-cli imagine vid",
+   "retrieved_at": "2026-08-02T10:24:57Z"
   }
  ]
 }

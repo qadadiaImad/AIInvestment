@@ -27,10 +27,15 @@ edits.
 - **Loop closure:** final shot visually matches the hook shot so replays feel
   seamless.
 
-## Shot list — 16 units = 27.2s = 816 frames
+## Shot list — 18 units = 30.6s = 918 frames
+
+(Rev 2026-08-02: owner added shot 0 — one Maya cameo as the cold open, the
+doubt the reel answers; persona rule relaxed to exactly this one shot. Shots
+4/5/9 regenerated with trading objects + modern pens, same owner session.)
 
 | # | Units | Type | Text | Shot |
 |---|---|---|---|---|
+| 0 | 2 | video | THEY SAY YOU DON'T HAVE THE TALENT FOR TRADING | Maya from behind, sunset trading desk, blurred chart monitors |
 | 1 | 2 | video | TALENT LOSES TO ROUTINE | pre-dawn dark desk, slow push-in |
 | 2 | 1 | still | WAKE EARLY | dark bedroom dawn window, coffee steam |
 | 3 | 1 | still | TRAIN | running shoes on wet pavement, dawn |

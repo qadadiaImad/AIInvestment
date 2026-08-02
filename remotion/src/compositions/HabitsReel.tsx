@@ -32,6 +32,8 @@ type Shot = {
 };
 
 const SHOTS: Shot[] = [
+  // Cold open: the one Maya cameo — the doubt the whole reel answers.
+  {file: 'habits/shot00.mp4', kind: 'vid', units: 2, word: "THEY SAY YOU DON'T HAVE THE TALENT FOR TRADING", centered: true},
   {file: 'habits/shot01.mp4', kind: 'vid', units: 2, word: 'TALENT LOSES TO ROUTINE', centered: true},
   {file: 'habits/shot02.png', kind: 'img', units: 1, word: 'WAKE EARLY'},
   {file: 'habits/shot03.png', kind: 'img', units: 1, word: 'TRAIN'},
@@ -101,11 +103,11 @@ const Word: React.FC<{word: string; centered?: boolean}> = ({word, centered}) =>
       <div
         style={{
           fontFamily: FONT.mono,
-          fontSize: centered ? 84 : long ? 62 : 78,
+          fontSize: centered ? (long ? 58 : 84) : long ? 62 : 78,
           fontWeight: 900,
-          lineHeight: 1.2,
+          lineHeight: 1.25,
           color: '#F2F7F4',
-          letterSpacing: long ? 5 : 9,
+          letterSpacing: long ? 4 : 9,
           textShadow: '0 4px 34px rgba(0,0,0,0.95), 0 0 60px rgba(34,224,126,0.18)',
         }}
       >
