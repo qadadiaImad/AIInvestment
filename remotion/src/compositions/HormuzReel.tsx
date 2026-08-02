@@ -22,7 +22,7 @@ import fx from '../fixtures/oil_reel/hormuz.json';
 export const hormuzSchema = z.object({});
 export type HormuzProps = z.infer<typeof hormuzSchema>;
 
-export const HORMUZ_FRAMES = 2220; // 74s at 30fps
+export const HORMUZ_FRAMES = 2055; // 68.5s at 30fps
 
 const W = 1080;
 const H = 1920;
@@ -38,7 +38,6 @@ const S = oilScales(BARS, CHART_W, CHART_H);
 const GAP = fx.shock.firstSessionIndex;
 const P = fx.pattern;
 const T = fx.trade;
-const BR = fx.baseRate;
 const AF = fx.aftermath;
 // The confirmation act: the same pattern after a DIFFERENT crisis (July), and
 // the quiet-vs-crisis split. Both computed by scripts/oil_reel/, never here.
@@ -77,13 +76,13 @@ const SHOTS: Shot[] = [
   {at: 1410, zoom: 2.0, ...at(P.trigger + 2, 98)},
   // the camera opens as the tape races — the six-month round trip lands in one move
   {at: 1510, zoom: 0.515, x: 0.5, y: 0.5, ease: EASE.cruise},
-  {at: 1735, zoom: 0.515, x: 0.5, y: 0.5}, // hold wide: 17 fires, 24%
+  {at: 1580, zoom: 0.515, x: 0.5, y: 0.5}, // one wide breath on the round trip
   // THE CONFIRMATION ACT: fly BACK across the chart to July — same pattern,
   // different crisis. The return journey itself is the argument.
-  {at: 1810, zoom: 2.4, ...at(J.trigger, 90), ease: EASE.cruise},
-  {at: 1960, zoom: 2.4, ...at(J.trigger, 90)},
-  {at: 2030, zoom: 0.515, x: 0.5, y: 0.5, ease: EASE.cruise}, // wide for the honest split
-  {at: 2219, zoom: 0.535, x: 0.5, y: 0.5},
+  {at: 1655, zoom: 2.4, ...at(J.trigger, 90), ease: EASE.cruise},
+  {at: 1805, zoom: 2.4, ...at(J.trigger, 90)},
+  {at: 1875, zoom: 0.515, x: 0.5, y: 0.5, ease: EASE.cruise}, // wide for the honest split
+  {at: 2054, zoom: 0.535, x: 0.5, y: 0.5},
 ];
 
 /** How much tape exists, per frame. Same keyframe shape as the camera. */
@@ -207,18 +206,10 @@ const CAPS: Cap[] = [
     sub: 'THE WAR PREMIUM DID NOT LAST',
     keys: true,
   },
-  {
-    from: 1572,
-    to: 1740,
-    text: `THAT SETUP FIRED ${BR.n} TIMES`,
-    sub: `IT REACHED TARGET ${BR.wins} TIMES`,
-    big: true,
-    keys: true,
-  },
   // ---- the confirmation act: the OTHER crisis, same pattern -------------
   {
-    from: 1755,
-    to: 1995,
+    from: 1595,
+    to: 1835,
     text: 'IT HAPPENED AGAIN',
     sub: `${J.shockDate.slice(5)}: +${J.shockPct}% SHOCK · SAME PATTERN · TARGET ${J.tpDate}`,
     keys: true,
@@ -227,8 +218,8 @@ const CAPS: Cap[] = [
   // the final section is chart-and-voice only, so this caption carries the
   // numbers (still fixture-owned) and the mechanism in one card.
   {
-    from: 2010,
-    to: 2219,
+    from: 1845,
+    to: 2054,
     text: `AFTER A SHOCK: ${SP.crisis.wins} OF ${SP.crisis.n}`,
     sub: 'THE MARKET LEANS ONE WAY · SMALL SAMPLE',
     big: true,
@@ -360,7 +351,7 @@ const CANDLE_HITS = [
 
 const SHOCK_F = 366; // the mark lands, the desk kicks, the sting hits — one frame
 const COIN_F = 1395; // the bar that reaches the target
-const JULY_COIN_F = 1965; // 'target again' — the July confirmation pays
+const JULY_COIN_F = 1815; // 'target again' — the July confirmation pays
 
 export const HormuzReel: React.FC<HormuzProps> = () => {
   const frame = useCurrentFrame();
@@ -411,14 +402,14 @@ export const HormuzReel: React.FC<HormuzProps> = () => {
 
   // The March trade frame leaves before July's arrives — two overlapping
   // trade frames at once asserts nothing except clutter.
-  const marchOut = interpolate(frame, [1720, 1760], [1, 0], {
+  const marchOut = interpolate(frame, [1565, 1605], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
   const marchOp = tradeIn * marchOut;
   const julyOp =
-    interpolate(frame, [1760, 1790], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) *
-    interpolate(frame, [1990, 2030], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+    interpolate(frame, [1605, 1635], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) *
+    interpolate(frame, [1835, 1875], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
 
   const levels = [
     {
@@ -464,7 +455,7 @@ export const HormuzReel: React.FC<HormuzProps> = () => {
 
   // Chrome (header + footer) leaves for the close — the last card is chart,
   // caption and voice, nothing else.
-  const chromeOut = interpolate(frame, [1712, 1748], [1, 0], {
+  const chromeOut = interpolate(frame, [1557, 1593], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });

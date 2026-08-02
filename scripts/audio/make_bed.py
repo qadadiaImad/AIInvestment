@@ -33,7 +33,7 @@ OUT = os.path.join(REPO, "content", "probe", "vo", "bed_music.wav")
 
 RATE = 48000
 FPS = 30
-TOTAL_S = 74.06
+TOTAL_S = 68.56
 N = int(RATE * TOTAL_S)
 
 BPM = 93.75
@@ -47,10 +47,10 @@ T_COIL = 1122 / FPS      # 37.4  inside-bar caption
 T_TRIGGER = 1228 / FPS   # 40.9  the trade frame lands
 T_PAYOFF = 1355 / FPS    # 45.2  "And it hits" -> coin at 46.5
 T_UNWIND = 1474 / FPS    # 49.1  premium unwinds
-T_END = 1572 / FPS       # 52.4  17 fires / the 24% card
-T_JULY = 1750 / FPS      # 58.3  the confirmation act: fly back to July
-T_SPLIT = 2015 / FPS     # 67.2  the honest split, sober close
-T_FADE = 73.4            # everything gone before the last frame
+T_END = 1560 / FPS       # 52.0  the unwind card ends, chrome leaves
+T_JULY = 1580 / FPS      # 52.7  the confirmation act: fly back to July
+T_SPLIT = 1850 / FPS     # 61.7  the honest split, sober close
+T_FADE = 67.7            # everything gone before the last frame
 
 # A natural minor. Root chosen low enough to be felt on phone speakers' second
 # harmonic rather than heard directly.
