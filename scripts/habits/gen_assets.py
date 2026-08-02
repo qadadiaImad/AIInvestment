@@ -45,12 +45,17 @@ SHOTS = [
      "Running shoes on wet pavement at dawn, low angle, soft morning mist, "
      "empty city street out of focus behind." + BASE),
     (4, "img", 0, "STUDY",
-     "An open paper journal with a pen resting on it, handwriting rendered as "
-     "soft unreadable strokes, warm morning window light across a wooden "
-     "desk." + BASE),
+     "An open trading journal on a modern desk in warm morning window light, "
+     "pages filled with hand-sketched candlestick patterns, support and "
+     "resistance trendlines and soft unreadable formula notation, a sleek "
+     "matte-black rollerball pen resting on the page, the edge of a "
+     "mechanical keyboard and a folded financial newspaper with blurred "
+     "columns beside it." + BASE),
     (5, "img", 0, "PLAN",
-     "A small handwritten checklist card propped against a plain coffee mug "
-     "on a tidy desk, the writing soft unreadable strokes, morning light." + BASE),
+     "A modern trading desk in morning light: a notepad with hand-drawn "
+     "chart pattern sketches and an unreadable checklist, small sticky notes "
+     "with soft unreadable strokes on the lower edge of a monitor, a sleek "
+     "metal pen, a plain coffee mug." + BASE),
     (6, "img", 0, "EXECUTE",
      "Close-up of hands resting on a keyboard in a dim room, soft "
      "out-of-focus glow from a monitor beyond, cinematic." + BASE),
@@ -61,8 +66,11 @@ SHOTS = [
      "Heavy rain streaking down a window pane at night, blurred warm city "
      "lights beyond the glass, slow gentle drift, meditative." + BASE),
     (9, "img", 0, "JOURNAL EVERYTHING",
-     "A desk at night lit by a single warm lamp, pages of handwritten notes "
-     "spread out, a pen resting on top, the strokes soft and unreadable." + BASE),
+     "A desk at night lit by a single warm lamp, an open trading journal "
+     "with hand-sketched candlestick charts, trendlines and soft unreadable "
+     "annotations, printed chart pages with blurred lines spread around it, "
+     "a modern matte-black pen resting on top, faint monitor glow in the "
+     "background." + BASE),
     (10, "img", 0, "PATIENCE",
      "An analog wristwatch with a plain numeral-free face lying on a wooden "
      "desk, warm evening light, macro shot, shallow focus." + BASE),
