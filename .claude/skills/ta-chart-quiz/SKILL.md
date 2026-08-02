@@ -59,11 +59,21 @@ for t in 2 8 12 14 17; do $FF -v error -ss $t -i out.mp4 -frames:v 1 /tmp/f_$t.p
 | `ruleText` | the teachable rule shown on the closing card |
 | `renderable` | `candles-only` or `needs-overlay` |
 
-**`renderable` matters.** The engine draws candles plus one horizontal level.
-Anything tagged `needs-overlay` (trendlines, channels, volume bars, moving
+**`renderable` matters.** The engine draws candles plus one horizontal level —
+or two: optional `level2Price`/`level2Label` add a second line (built for the
+previous-day-high/low strategy), and when present the y-frame goes symmetric
+about the setup midpoint and static so the extra room can't leak the answer.
+Anything else tagged `needs-overlay` (trendlines, channels, volume bars, moving
 averages, indicator panes) will not read correctly as-is — `make_fixture.py`
 warns, and the honest options are to pick a different pattern or extend the
 composition first.
+
+**Camera.** Optional `fluidCamera: true` swaps the flat push-in for a
+focus-tracking move: glide into the decision zone for the countdown, release
+wide when the answer lands. The HUD (hook, countdown ring, badge, rule card)
+stays unscaled, and the ring relocates onto the chart's empty lower band. The
+focus constants in `TradingQuiz.tsx` are collision-checked against this layout
+— re-verify frames if you move them.
 
 ## Correctness is the whole point
 
@@ -129,6 +139,10 @@ tape carries.
 ```bash
 python scripts/ta_quiz/find_real_pattern.py --list
 python scripts/ta_quiz/find_real_pattern.py breakout-retest
+
+# previous-day high/low strategy: failed break above yesterday's high, from a
+# cached intraday 1-minute session (resampled 5-min) + the daily file's levels
+python scripts/ta_quiz/find_real_pdhl.py
 ```
 
 It reports "no real occurrence found" rather than nudging data to fit. The
@@ -156,9 +170,10 @@ the outcome.
 
 `TradingQuiz.tsx` holds the beat constants; everything after the countdown is
 derived from it, so changing the answer window can't desync the reveal.
-Currently a **5-second answer countdown** (5 digits × 30 frames), total 546
-frames / 18.2s at 30fps. Fixtures must carry `durationInFrames: 546` — that's
-`TRADING_QUIZ_MIN_FRAMES`, exported from the composition.
+Currently a **5-second answer countdown** (5 digits × 30 frames), total 682
+frames / 22.7s at 30fps. Fixtures must carry `durationInFrames: 682` — that's
+`TRADING_QUIZ_MIN_FRAMES`, exported from the composition (the risk/reward act
+extended it; older docs saying 546 are stale).
 
 ## Adding a host (Maya)
 

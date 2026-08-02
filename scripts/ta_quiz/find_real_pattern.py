@@ -237,7 +237,9 @@ def main():
     }
     out = os.path.join(FIXDIR, f"real_{key.replace('-', '_')}.json")
     os.makedirs(FIXDIR, exist_ok=True)
-    json.dump(fixture, open(out, "w"), indent=2, ensure_ascii=False)
+    # utf-8 explicitly: Windows' locale default (cp1252) writes '·' and '—' as
+    # single bytes that the UTF-8 bundler then renders as replacement chars.
+    json.dump(fixture, open(out, "w", encoding="utf-8"), indent=2, ensure_ascii=False)
     print(f"\n{len(allbars)} candles -> {os.path.relpath(out, REPO)}")
     return 0
 

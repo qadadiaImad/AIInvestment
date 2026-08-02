@@ -51,6 +51,12 @@ export const tradingQuizSchema = z.object({
   patternName: z.string(),
   levelPrice: z.number(),
   levelLabel: z.string(),
+  /** Optional second reference line (e.g. previous-day LOW under a previous-day
+   * HIGH). When present the y-frame is computed symmetrically around the setup
+   * midpoint so BOTH lines are on screen from the start — and held static for
+   * the whole reel, so the extra room cannot telegraph the answer's direction. */
+  level2Price: z.number().optional(),
+  level2Label: z.string().optional(),
   answer: z.enum(['BUY', 'SELL']),
   /** Overrides the badge text without changing the colour semantics. Real
    * tickers use this ("IT FELL 21%") so a hindsight reel never puts a literal
@@ -81,6 +87,12 @@ export const tradingQuizSchema = z.object({
   stop: z.number().optional(),
   target: z.number().optional(),
   rrLabel: z.string().optional(),
+  /** Fluid focus-tracking camera: the terminal glides in on the decision zone
+   * for the countdown and releases wide when the answer lands, while the HUD
+   * (hook, countdown ring, badge, rule card) stays unscaled. The countdown
+   * ring relocates onto the chart's empty lower band so the tight framing has
+   * somewhere to breathe. Off = the original flat slow push-in. */
+  fluidCamera: z.boolean().optional(),
   candles: z.array(candleSchema).min(6),
   durationInFrames: z.number(),
 });
@@ -216,8 +228,25 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const lo = (sLo - sPad) + (fLo - (sLo - sPad)) * zoomOut;
-  const hi = (sHi + sPad) + (fHi - (sHi + sPad)) * zoomOut;
+  const lo1 = (sLo - sPad) + (fLo - (sLo - sPad)) * zoomOut;
+  const hi1 = (sHi + sPad) + (fHi - (sHi + sPad)) * zoomOut;
+  // With a second line the frame is "yesterday's range plus today's action":
+  // symmetric about the setup midpoint, wide enough for both lines and every
+  // bar, and STATIC for the whole reel. Symmetry is what keeps the extra room
+  // from telegraphing which way the reveal travels — reveal extents enter the
+  // max() too, but they widen BOTH sides equally.
+  const mid = (sLo + sHi) / 2;
+  const half =
+    Math.max(
+      sHi - mid,
+      mid - sLo,
+      Math.abs(p.levelPrice - mid),
+      Math.abs((p.level2Price ?? p.levelPrice) - mid),
+      fHi - PAD.hi - mid,
+      mid - (fLo + PAD.lo),
+    ) * 1.1;
+  const lo = p.level2Price !== undefined ? mid - half : lo1;
+  const hi = p.level2Price !== undefined ? mid + half : hi1;
   const priceToY = (v: number) => CHART.y1 - ((v - lo) / (hi - lo)) * (CHART.y1 - CHART.y0);
 
   // Draw rates scale to the bar count so a 24-bar illustration and a 74-bar
@@ -235,8 +264,43 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const isDown = p.answer === 'SELL';
   const answerColor = isDown ? T.down : T.up;
 
-  // Slow push-in with an emphasis hit when the answer lands.
-  const zoom = cameraPushIn(frame, p.durationInFrames, {base: 0.035, hitFrame: ANSWER_IN, hitAmount: 0.02});
+  // Camera. Legacy: one slow push-in with an emphasis hit when the answer
+  // lands. Fluid: a keyframed focus-tracking move — settle in while the tape
+  // prints, glide INTO the decision zone as the fork appears, hold tight
+  // through the countdown, release wide the moment the answer lands, then
+  // breathe through the reveal and the rule card. Zooming about a focus point
+  // f is translate((1-s)(f-center)) scale(s), which keeps every frame edge
+  // covered for any s >= 1. The focus constants are tuned against this layout
+  // so the level labels, fork arrows and lower-band text all survive the tight
+  // phase — move them and re-check those collisions frame by frame.
+  const legacyZoom = cameraPushIn(frame, p.durationInFrames, {base: 0.035, hitFrame: ANSWER_IN, hitAmount: 0.02});
+  const fluid = p.fluidCamera === true;
+  const camS = fluid
+    ? interpolate(
+        frame,
+        [0, DRAW_END, PATTERN_IN, ARROWS_IN + 16, ANSWER_IN, ANSWER_IN + 44, REVEAL_END + 6, RULE_IN, p.durationInFrames],
+        [1.0, 1.045, 1.045, 1.18, 1.19, 1.02, 1.06, 1.03, 1.045],
+        {easing: EASE.cruise, extrapolateRight: 'clamp'}
+      )
+    : 1;
+  const camFx = fluid
+    ? interpolate(frame, [PATTERN_IN, ARROWS_IN + 16, ANSWER_IN, ANSWER_IN + 44], [540, 220, 220, 540], {
+        easing: EASE.cruise,
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp',
+      })
+    : 540;
+  const camFy = fluid
+    ? interpolate(frame, [PATTERN_IN, ARROWS_IN + 16, ANSWER_IN, ANSWER_IN + 44], [960, 1010, 1010, 960], {
+        easing: EASE.cruise,
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp',
+      })
+    : 960;
+  const chartT = fluid
+    ? `translate(${(1 - camS) * (camFx - 540)}px, ${(1 - camS) * (camFy - 960)}px) scale(${camS})`
+    : `scale(${legacyZoom})`;
+  const uiT = fluid ? undefined : `scale(${legacyZoom})`;
 
   // ------------------------------------------------------------ hook card
   const hookP = spring({frame, fps, config: SPRINGS.hero});
@@ -268,20 +332,26 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
     extrapolateRight: 'clamp',
   });
 
-  // ------------------------------------------------------------ the level
-  const levelP = interpolate(frame, [LEVEL_IN, LEVEL_IN + 22], [0, 1], {
-    easing: EASE.enter,
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  const levelY = priceToY(p.levelPrice);
-  // Once the trade frame draws, the resistance line has done its job and its
-  // label sits right on top of the STOP tag. Fade it out rather than stack them.
-  const levelOut = interpolate(frame, [RR_IN - 4, RR_IN + 16], [1, 0.18], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  const levelPulse = 0.55 + Math.sin(Math.max(0, frame - LEVEL_IN) / 11) * 0.45;
+  // ----------------------------------------------------------- the level(s)
+  // One reference line, or the previous-day pair. The second line draws a beat
+  // after the first so they read as two decisions, not one stamp.
+  const levels = [
+    {price: p.levelPrice, label: p.levelLabel, at: LEVEL_IN},
+    ...(p.level2Price !== undefined
+      ? [{price: p.level2Price, label: p.level2Label ?? '', at: LEVEL_IN + 10}]
+      : []),
+  ];
+  // Once the trade frame draws, the reference line has done its job and its
+  // label sits right on top of the STOP tag. Fade it out rather than stack
+  // them. Without a trade frame there is nothing to make room for — and on a
+  // two-line reel the lines ARE the lesson — so they stay lit.
+  const levelOut =
+    p.entry !== undefined && p.stop !== undefined && p.target !== undefined
+      ? interpolate(frame, [RR_IN - 4, RR_IN + 16], [1, 0.18], {
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+        })
+      : 1;
 
   // -------------------------------------------------------- pattern frame
   const patP = spring({frame: frame - PATTERN_IN, fps, config: SPRINGS.pop});
@@ -519,8 +589,11 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
         />
       </AbsoluteFill>
 
-      {/* everything below rides the camera push-in together */}
-      <AbsoluteFill style={{transform: `scale(${zoom})`}}>
+      {/* HUD layer — hook, countdown, answer. zIndex keeps it painted above
+       * the chart group even though it comes first in the DOM; in fluid mode
+       * it does not ride the camera, so the text stays screen-fixed the way
+       * the reference reels hold their titles. */}
+      <AbsoluteFill style={{transform: uiT, zIndex: 2}}>
         {/* ---------------------------------------------------- 2. hook */}
         <div
           style={{
@@ -564,7 +637,10 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
           <div
             style={{
               position: 'absolute',
-              top: 250,
+              // Fluid camera: the ring floats over the chart's empty band above
+              // the lower reference line (the reference reels do exactly this)
+              // because the tight framing leaves no room in the top band.
+              top: fluid ? 1000 : 250,
               left: 0,
               right: 0,
               display: 'flex',
@@ -666,7 +742,11 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
             </div>
           </div>
         ) : null}
+      </AbsoluteFill>
 
+      {/* chart layer — the terminal and its plot ride the camera (fluid focus
+       * glide, or the legacy push-in) while the HUD above stays put. */}
+      <AbsoluteFill style={{transform: chartT, zIndex: 1}}>
         {/* --------------------------------------------- 5. the terminal */}
         <div
           style={{
@@ -769,20 +849,31 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               ))
             : null}
 
-          {/* level line */}
-          {levelP > 0 ? (
-            <line
-              opacity={levelOut}
-              x1={CHART.x0 - 6}
-              x2={CHART.x0 - 6 + (SCREEN.x + SCREEN.w - 26 - (CHART.x0 - 6)) * levelP}
-              y1={levelY}
-              y2={levelY}
-              stroke={T.ice}
-              strokeWidth={3}
-              strokeDasharray="14 10"
-              style={{filter: `drop-shadow(0 0 ${6 + levelPulse * 8}px ${T.ice}dd)`}}
-            />
-          ) : null}
+          {/* reference line(s) */}
+          {levels.map((lv) => {
+            const lp = interpolate(frame, [lv.at, lv.at + 22], [0, 1], {
+              easing: EASE.enter,
+              extrapolateLeft: 'clamp',
+              extrapolateRight: 'clamp',
+            });
+            if (lp <= 0) return null;
+            const ly = priceToY(lv.price);
+            const pulse = 0.55 + Math.sin(Math.max(0, frame - lv.at) / 11) * 0.45;
+            return (
+              <line
+                key={`line-${lv.label}`}
+                opacity={levelOut}
+                x1={CHART.x0 - 6}
+                x2={CHART.x0 - 6 + (SCREEN.x + SCREEN.w - 26 - (CHART.x0 - 6)) * lp}
+                y1={ly}
+                y2={ly}
+                stroke={T.ice}
+                strokeWidth={3}
+                strokeDasharray="14 10"
+                style={{filter: `drop-shadow(0 0 ${6 + pulse * 8}px ${T.ice}dd)`}}
+              />
+            );
+          })}
 
           {setup.map((k, i) => renderCandle(k, i, DRAW_START + i * DRAW_PER))}
           {reveal.map((k, i) => renderCandle(k, p.revealFrom + i, REVEAL_START + i * REVEAL_PER))}
@@ -823,31 +914,40 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
             </g>
           ) : null}
 
-          {/* level label, above the candles so bars can't paint over it */}
-          {levelP > 0 ? (
-            <g opacity={fadeOf(levelP) * levelOut}>
-              <rect
-                x={CHART.x0 - 10}
-                y={levelY - 44}
-                width={p.levelLabel.length * 15.5 + 16}
-                height={34}
-                rx={8}
-                fill={T.panelTop}
-                opacity={0.92}
-              />
-              <text
-                x={CHART.x0 - 2}
-                y={levelY - 18}
-                fill={T.ice}
-                fontFamily={FONT.mono}
-                fontWeight={700}
-                fontSize={25}
-                letterSpacing={2}
-              >
-                {p.levelLabel}
-              </text>
-            </g>
-          ) : null}
+          {/* level label(s), above the candles so bars can't paint over them */}
+          {levels.map((lv) => {
+            const lp = interpolate(frame, [lv.at, lv.at + 22], [0, 1], {
+              easing: EASE.enter,
+              extrapolateLeft: 'clamp',
+              extrapolateRight: 'clamp',
+            });
+            if (lp <= 0) return null;
+            const ly = priceToY(lv.price);
+            return (
+              <g key={`label-${lv.label}`} opacity={fadeOf(lp) * levelOut}>
+                <rect
+                  x={CHART.x0 - 10}
+                  y={ly - 44}
+                  width={lv.label.length * 15.5 + 16}
+                  height={34}
+                  rx={8}
+                  fill={T.panelTop}
+                  opacity={0.92}
+                />
+                <text
+                  x={CHART.x0 - 2}
+                  y={ly - 18}
+                  fill={T.ice}
+                  fontFamily={FONT.mono}
+                  fontWeight={700}
+                  fontSize={25}
+                  letterSpacing={2}
+                >
+                  {lv.label}
+                </text>
+              </g>
+            );
+          })}
 
           {/* pattern highlight */}
           {patP > 0 ? (
@@ -1004,7 +1104,10 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
           })}
         </AbsoluteFill>
       ) : null}
+      </AbsoluteFill>
 
+      {/* HUD layer — the ask and the rule card, screen-fixed like the hook. */}
+      <AbsoluteFill style={{transform: uiT, zIndex: 2}}>
       {/* -------------------------------------- 7. the ask (pre-answer) */}
         {/* Fills the band under the screen while the viewer is deciding —
          * without it the lower third sits empty for most of the reel. Hands
