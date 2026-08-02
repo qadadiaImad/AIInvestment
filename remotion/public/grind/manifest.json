@@ -1,0 +1,124 @@
+{
+ "clips": [
+  {
+   "i": 1,
+   "word": "AMBITION",
+   "mode": "start",
+   "url": "https://vidgen.x.ai/xai-vidgen-bucket/xai-video-6677c476-f3cf-90fc-90f0-9c6f6a0c2024.mp4",
+   "file_ok": true,
+   "retrieved_at": "2026-08-02T09:21:05Z"
+  },
+  {
+   "i": 2,
+   "word": null,
+   "mode": "ref",
+   "url": "https://vidgen.x.ai/xai-vidgen-bucket/xai-video-58d359e1-5dd7-95c8-aa92-798f38a889a2.mp4",
+   "file_ok": true,
+   "retrieved_at": "2026-08-02T09:21:40Z"
+  },
+  {
+   "i": 3,
+   "word": "STRUGGLE",
+   "mode": "ref",
+   "url": "https://vidgen.x.ai/xai-vidgen-bucket/xai-video-2899e392-03f6-9ed8-bc61-55d6b8910f78.mp4",
+   "file_ok": true,
+   "retrieved_at": "2026-08-02T09:22:18Z"
+  },
+  {
+   "i": 4,
+   "word": "DISCIPLINE",
+   "mode": "ref",
+   "url": "https://vidgen.x.ai/xai-vidgen-bucket/xai-video-1588e5c2-cc41-9751-bdb6-75a2fbb102fa.mp4",
+   "file_ok": true,
+   "retrieved_at": "2026-08-02T09:22:56Z"
+  },
+  {
+   "i": 5,
+   "word": null,
+   "mode": "ref",
+   "url": "https://vidgen.x.ai/xai-vidgen-bucket/xai-video-629ca6be-0bf6-94da-8259-201ccbd27f80.mp4",
+   "file_ok": true,
+   "retrieved_at": "2026-08-02T09:23:34Z"
+  },
+  {
+   "i": 6,
+   "word": "FOCUS",
+   "mode": "ref",
+   "url": "https://vidgen.x.ai/xai-vidgen-bucket/xai-video-59ef9471-b1a2-9fe0-8a45-20541aaa64aa.mp4",
+   "file_ok": true,
+   "retrieved_at": "2026-08-02T09:24:12Z"
+  },
+  {
+   "i": 10,
+   "word": null,
+   "mode": "free",
+   "url": "https://vidgen.x.ai/xai-vidgen-bucket/xai-video-b1a13519-96b7-9cb5-a4a4-7f90a33b1727.mp4",
+   "file_ok": true,
+   "retrieved_at": "2026-08-02T09:25:24Z"
+  },
+  {
+   "i": 11,
+   "word": null,
+   "mode": "ref",
+   "url": "https://vidgen.x.ai/xai-vidgen-bucket/xai-video-282e5267-f878-9533-aef4-f2e9d82b5f2d.mp4",
+   "file_ok": true,
+   "retrieved_at": "2026-08-02T09:26:03Z"
+  },
+  {
+   "i": 12,
+   "word": null,
+   "mode": "free",
+   "url": "https://vidgen.x.ai/xai-vidgen-bucket/xai-video-cd665326-4646-9605-80b4-5b5bf7bddc33.mp4",
+   "file_ok": true,
+   "retrieved_at": "2026-08-02T09:26:42Z"
+  },
+  {
+   "i": 13,
+   "word": null,
+   "mode": "free",
+   "url": "https://vidgen.x.ai/xai-vidgen-bucket/xai-video-8a0e26a5-6f57-91dc-a32e-34e289f898fd.mp4",
+   "file_ok": true,
+   "retrieved_at": "2026-08-02T09:27:20Z"
+  },
+  {
+   "i": 14,
+   "word": "PURPOSE",
+   "mode": "ref",
+   "url": "https://vidgen.x.ai/xai-vidgen-bucket/xai-video-f6c6b609-fbd7-9f01-b737-a0dc8b474c78.mp4",
+   "file_ok": true,
+   "retrieved_at": "2026-08-02T09:27:54Z"
+  },
+  {
+   "i": 15,
+   "word": "WORTH IT",
+   "mode": "start",
+   "url": "https://vidgen.x.ai/xai-vidgen-bucket/xai-video-140d0818-30b6-9ee8-8fec-bfa8c5ea4378.mp4",
+   "file_ok": true,
+   "retrieved_at": "2026-08-02T09:28:34Z"
+  },
+  {
+   "i": 7,
+   "word": null,
+   "mode": "ref",
+   "url": "https://vidgen.x.ai/xai-vidgen-bucket/xai-video-05b8221e-4d20-9ba5-b4b8-ff00de5fb00a.mp4",
+   "file_ok": true,
+   "retrieved_at": "2026-08-02T09:29:21Z"
+  },
+  {
+   "i": 8,
+   "word": "PATIENCE",
+   "mode": "start",
+   "url": "https://vidgen.x.ai/xai-vidgen-bucket/xai-video-ba51af9c-a5fd-9b0a-97cf-01cbeba12cbe.mp4",
+   "file_ok": true,
+   "retrieved_at": "2026-08-02T09:29:59Z"
+  },
+  {
+   "i": 9,
+   "word": "FREEDOM",
+   "mode": "ref",
+   "url": "https://vidgen.x.ai/xai-vidgen-bucket/xai-video-15924572-da8c-993b-ab6f-73c5b85f9877.mp4",
+   "file_ok": true,
+   "retrieved_at": "2026-08-02T09:30:39Z"
+  }
+ ]
+}

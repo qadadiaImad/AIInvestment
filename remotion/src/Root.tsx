@@ -37,6 +37,7 @@ import { PatternEndCard, patternEndCardSchema } from "./compositions/PatternEndC
 import { CameraProbe, cameraProbeSchema, CAMERA_PROBE_FRAMES } from "./compositions/CameraProbe";
 import { HormuzReel, hormuzSchema, HORMUZ_FRAMES } from "./compositions/HormuzReel";
 import { HormuzCover, hormuzCoverSchema } from "./compositions/HormuzCover";
+import { GrindReel, grindReelSchema, GRIND_FRAMES } from "./compositions/GrindReel";
 import patternGalleryFixture from "./fixtures/patterns_post/gallery.json";
 import { RigCheck, rigCheckSchema } from "./compositions/RigCheck";
 import memeReelFixture from "./fixtures/meme_reel/intc_failed_breakout.json";
@@ -333,6 +334,17 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
         schema={hormuzCoverSchema}
+        defaultProps={{}}
+      />
+      {/* Maya grind reel: 15 Grok clips, hard cuts, mood words, no audio. */}
+      <Composition
+        id="GrindReel"
+        component={GrindReel}
+        durationInFrames={GRIND_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={grindReelSchema}
         defaultProps={{}}
       />
       <Composition
