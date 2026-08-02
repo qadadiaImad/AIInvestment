@@ -31,6 +31,7 @@ PRICES = os.path.join(REPO, "data", "prices")
 FIXDIR = os.path.join(REPO, "remotion", "src", "fixtures", "ta_quiz")
 
 DURATION = 682          # must match TRADING_QUIZ_MIN_FRAMES (TradingQuiz.tsx)
+LESSON_DURATION = 690   # must match STRATEGY_LESSON_FRAMES (StrategyLesson.tsx)
 SETUP_MAX = 62          # most context bars the plot stays readable with
 REVEAL = 12             # bars of "what happened next"
 DEV_HARD = 0.15         # bars deviating more than this are not trusted
@@ -83,6 +84,42 @@ def find_setup(bars, pdh, min_above=3, min_reveal=6):
     if len(bars) - 1 - decision < min_reveal:
         return None                     # break held to the end — not a failure
     return {"break_at": break_at, "decision": decision, "closes_above": len(above)}
+
+
+def build_lesson(src_meta, session_date, setup, reveal, lv, hit, start):
+    """The sequel reel's fixture: same tape, same lines, explainer beats.
+
+    The beats are timed off the detector's indices (re-based to the trimmed
+    window) — the composition never re-derives where the break or the last
+    acceptance happened.
+    """
+    allbars = setup + reveal
+    return {
+        "kick": "THE LESSON",
+        "indexLabel": "#83",
+        "subject": f"{src_meta['symbol']} · 5-MIN · {session_date}",
+        "levelPrice": lv["pdh"],
+        "levelLabel": f"Y-DAY HIGH {lv['pdh']}",
+        "level2Price": lv["pdl"],
+        "level2Label": f"Y-DAY LOW {lv['pdl']}",
+        "breakAt": hit["break_at"] - start,
+        "decisionAt": hit["decision"] - start,
+        "captions": [
+            "Sellers defend yesterday's HIGH. Buyers defend yesterday's LOW.",
+            "Price grinds toward the top line…",
+            "It breaks above — but a break only counts if the closes HOLD the line.",
+            "No acceptance — the closes slip back inside. The break has failed.",
+        ],
+        "ruleTitle": "LINE → BREAK → ACCEPTANCE",
+        "ruleText": (
+            "Reach the line, break the line, hold the line. Without the hold, "
+            "the first break is usually sold — that is the fade."
+        ),
+        "footer": (f"{src_meta['symbol']} 5-min bars, IBKR, pulled {src_meta['retrieved_at'][:10]} · "
+                   "Educational only — not financial advice · Historical example — DYOR"),
+        "durationInFrames": LESSON_DURATION,
+        "candles": [{"o": b["o"], "h": b["h"], "l": b["l"], "c": b["c"]} for b in allbars],
+    }
 
 
 # ------------------------------------------------------------------ pipeline
@@ -185,6 +222,12 @@ def main():
     # single bytes that the UTF-8 bundler then renders as replacement chars.
     json.dump(fixture, open(out, "w", encoding="utf-8"), indent=2, ensure_ascii=False)
     print(f"\n{len(allbars)} candles -> {os.path.relpath(out, REPO)}")
+
+    lesson = build_lesson(src, session_date, setup, reveal, lv, hit, start)
+    out2 = os.path.join(FIXDIR, "real_pdh_fade_lesson.json")
+    json.dump(lesson, open(out2, "w", encoding="utf-8"), indent=2, ensure_ascii=False)
+    print(f"lesson fixture -> {os.path.relpath(out2, REPO)} "
+          f"(breakAt {lesson['breakAt']}, decisionAt {lesson['decisionAt']})")
     return 0
 
 

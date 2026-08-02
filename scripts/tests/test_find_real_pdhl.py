@@ -95,3 +95,24 @@ def test_prev_day_levels_refuses_a_gap_it_cannot_bridge():
     daily = [{"date": "2026-07-27", "o": 1, "h": 111, "l": 101, "c": 1}]
 
     assert pdhl.prev_day_levels(daily, "2026-07-24") is None
+
+
+def test_lesson_fixture_carries_the_detector_indices_and_tape():
+    """The sequel reel's beats are timed off breakAt/decisionAt — they must be
+    the detector's indices, re-based to the trimmed window, not re-derived."""
+    setup = _BELOW + _ABOVE
+    reveal = _FAIL
+    hit = {"break_at": 6, "decision": 9, "closes_above": 4}
+
+    fx = pdhl.build_lesson(
+        {"symbol": "SPY", "retrieved_at": "2026-07-26T00:00:00Z"},
+        "2026-07-24", setup, reveal,
+        {"date": "2026-07-23", "pdh": PDH, "pdl": PDL},
+        hit, start=0,
+    )
+
+    assert fx["breakAt"] == 6
+    assert fx["decisionAt"] == 9
+    assert len(fx["candles"]) == len(setup) + len(reveal)
+    assert fx["levelPrice"] == PDH and fx["level2Price"] == PDL
+    assert fx["durationInFrames"] >= 600

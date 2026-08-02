@@ -22,6 +22,8 @@ import { FaceoffOverlay, faceoffOverlaySchema } from "./compositions/FaceoffOver
 import { InfraCountdown, infraCountdownSchema } from "./compositions/InfraCountdown";
 import infraCountdownFixture from "./fixtures/infra_countdown_2026-07-22.json";
 import { TradingQuiz, tradingQuizSchema } from "./compositions/TradingQuiz";
+import { StrategyLesson, strategyLessonSchema } from "./compositions/StrategyLesson";
+import strategyLessonFixture from "./fixtures/ta_quiz/real_pdh_fade_lesson.json";
 import { TradingStyles, tradingStylesSchema } from "./compositions/TradingStyles";
 import { GroundingCheck, groundingCheckSchema } from "./compositions/GroundingCheck";
 import tradingStylesFixture from "./fixtures/trading_styles/trading_styles.json";
@@ -220,6 +222,19 @@ export const RemotionRoot: React.FC = () => {
         height={1920}
         schema={tradingQuizSchema}
         defaultProps={tradingQuizSchema.parse(tradingQuizFixture)}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: props.durationInFrames,
+        })}
+      />
+      <Composition
+        id="StrategyLesson"
+        component={StrategyLesson}
+        durationInFrames={strategyLessonFixture.durationInFrames}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={strategyLessonSchema}
+        defaultProps={strategyLessonSchema.parse(strategyLessonFixture)}
         calculateMetadata={({ props }) => ({
           durationInFrames: props.durationInFrames,
         })}
