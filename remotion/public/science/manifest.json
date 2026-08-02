@@ -1,0 +1,116 @@
+{
+ "shots": [
+  {
+   "i": 0,
+   "kind": "vid",
+   "file_ok": true,
+   "source": "grok-cli imagine vid",
+   "retrieved_at": "2026-08-02T16:05:35Z"
+  },
+  {
+   "i": 1,
+   "kind": "img",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T16:05:47Z"
+  },
+  {
+   "i": 2,
+   "kind": "img",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T16:05:58Z"
+  },
+  {
+   "i": 3,
+   "kind": "img",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T16:06:07Z"
+  },
+  {
+   "i": 4,
+   "kind": "img",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T16:06:16Z"
+  },
+  {
+   "i": 5,
+   "kind": "img",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T16:06:28Z"
+  },
+  {
+   "i": 6,
+   "kind": "img",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T16:06:39Z"
+  },
+  {
+   "i": 7,
+   "kind": "img",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T16:06:48Z"
+  },
+  {
+   "i": 8,
+   "kind": "vid",
+   "file_ok": true,
+   "source": "grok-cli imagine vid",
+   "retrieved_at": "2026-08-02T16:08:01Z"
+  },
+  {
+   "i": 9,
+   "kind": "img",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T16:08:11Z"
+  },
+  {
+   "i": 10,
+   "kind": "img",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T16:08:21Z"
+  },
+  {
+   "i": 11,
+   "kind": "img",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T16:08:32Z"
+  },
+  {
+   "i": 12,
+   "kind": "img",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T16:08:42Z"
+  },
+  {
+   "i": 13,
+   "kind": "img",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T16:08:53Z"
+  },
+  {
+   "i": 14,
+   "kind": "vid",
+   "file_ok": true,
+   "source": "grok-cli imagine vid",
+   "retrieved_at": "2026-08-02T16:09:36Z"
+  },
+  {
+   "i": 15,
+   "kind": "vid",
+   "file_ok": true,
+   "source": "grok-cli imagine vid",
+   "retrieved_at": "2026-08-02T16:10:19Z"
+  }
+ ]
+}

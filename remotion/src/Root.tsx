@@ -40,6 +40,7 @@ import { HormuzCover, hormuzCoverSchema } from "./compositions/HormuzCover";
 import { GrindReel, grindReelSchema, GRIND_FRAMES } from "./compositions/GrindReel";
 import { HabitsReel, habitsReelSchema, HABITS_FRAMES } from "./compositions/HabitsReel";
 import { WhyReel, whyReelSchema, WHY_DEFAULTS } from "./compositions/WhyReel";
+import { ScienceReel, scienceReelSchema, SCIENCE_FRAMES } from "./compositions/ScienceReel";
 import patternGalleryFixture from "./fixtures/patterns_post/gallery.json";
 import { RigCheck, rigCheckSchema } from "./compositions/RigCheck";
 import memeReelFixture from "./fixtures/meme_reel/intc_failed_breakout.json";
@@ -377,6 +378,21 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{}}
         calculateMetadata={({props}) => ({
           durationInFrames: props.totalFrames ?? WHY_DEFAULTS.totalFrames,
+        })}
+      />
+      {/* Science reel: accusations (red) -> the actual sciences (green),
+       * dark-phonk, silent beat-ready grid. */}
+      <Composition
+        id="ScienceReel"
+        component={ScienceReel}
+        durationInFrames={SCIENCE_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={scienceReelSchema}
+        defaultProps={{}}
+        calculateMetadata={({props}) => ({
+          durationInFrames: props.totalFrames ?? SCIENCE_FRAMES,
         })}
       />
       <Composition
