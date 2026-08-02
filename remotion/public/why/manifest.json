@@ -1,0 +1,82 @@
+{
+ "assets": [
+  {
+   "name": "card_growth",
+   "file_ok": true,
+   "source": "grok-cli imagine image",
+   "retrieved_at": "2026-08-02T13:29:00Z"
+  },
+  {
+   "name": "card_skill",
+   "file_ok": true,
+   "source": "grok-cli imagine image",
+   "retrieved_at": "2026-08-02T13:29:11Z"
+  },
+  {
+   "name": "card_discipline",
+   "file_ok": true,
+   "source": "grok-cli imagine image",
+   "retrieved_at": "2026-08-02T13:29:22Z"
+  },
+  {
+   "name": "card_creativity",
+   "file_ok": true,
+   "source": "grok-cli imagine image",
+   "retrieved_at": "2026-08-02T13:29:31Z"
+  },
+  {
+   "name": "card_opportunity",
+   "file_ok": true,
+   "source": "grok-cli imagine image",
+   "retrieved_at": "2026-08-02T13:29:41Z"
+  },
+  {
+   "name": "card_identity",
+   "file_ok": true,
+   "source": "grok-cli imagine image",
+   "retrieved_at": "2026-08-02T13:29:49Z"
+  },
+  {
+   "name": "card_challenge",
+   "file_ok": true,
+   "source": "grok-cli imagine image",
+   "retrieved_at": "2026-08-02T13:29:58Z"
+  },
+  {
+   "name": "card_independence",
+   "file_ok": true,
+   "source": "grok-cli imagine image",
+   "retrieved_at": "2026-08-02T13:30:06Z"
+  },
+  {
+   "name": "card_mastery",
+   "file_ok": true,
+   "source": "grok-cli imagine image",
+   "retrieved_at": "2026-08-02T13:30:15Z"
+  },
+  {
+   "name": "card_control",
+   "file_ok": true,
+   "source": "grok-cli imagine image",
+   "retrieved_at": "2026-08-02T13:30:26Z"
+  },
+  {
+   "name": "card_purpose",
+   "file_ok": true,
+   "source": "grok-cli imagine image",
+   "retrieved_at": "2026-08-02T13:30:35Z"
+  },
+  {
+   "name": "card_freedom",
+   "file_ok": true,
+   "source": "grok-cli imagine image",
+   "retrieved_at": "2026-08-02T13:30:45Z"
+  },
+  {
+   "name": "anchor_base",
+   "file_ok": true,
+   "source": "grok-cli imagine image",
+   "retrieved_at": "2026-08-02T13:30:54Z"
+  }
+ ]
+}

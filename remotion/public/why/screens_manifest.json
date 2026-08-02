@@ -1,0 +1,18 @@
+[
+ {
+  "symbol": "NVDA",
+  "bars": 90,
+  "last_close": 200.75,
+  "source": "https://query1.finance.yahoo.com/v8/finance/chart/NVDA?interval=1d&range=6mo",
+  "source_class": "api",
+  "retrieved_at": "2026-08-02T13:32:15Z"
+ },
+ {
+  "symbol": "SPY",
+  "bars": 90,
+  "last_close": 747.030029296875,
+  "source": "https://query1.finance.yahoo.com/v8/finance/chart/SPY?interval=1d&range=6mo",
+  "source_class": "api",
+  "retrieved_at": "2026-08-02T13:32:15Z"
+ }
+]
