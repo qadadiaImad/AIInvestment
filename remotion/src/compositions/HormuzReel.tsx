@@ -230,7 +230,7 @@ const CAPS: Cap[] = [
     from: 2010,
     to: 2219,
     text: `AFTER A SHOCK: ${SP.crisis.wins} OF ${SP.crisis.n}`,
-    sub: 'A CRISIS LEAVES ONE SIDE IN CONTROL · SMALL SAMPLE',
+    sub: 'THE MARKET LEANS ONE WAY · SMALL SAMPLE',
     big: true,
     keys: true,
   },
@@ -464,7 +464,7 @@ export const HormuzReel: React.FC<HormuzProps> = () => {
 
   // Chrome (header + footer) leaves for the close — the last card is chart,
   // caption and voice, nothing else.
-  const chromeOut = interpolate(frame, [1992, 2024], [1, 0], {
+  const chromeOut = interpolate(frame, [1712, 1748], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -557,71 +557,9 @@ export const HormuzReel: React.FC<HormuzProps> = () => {
           <Caption key={i} cap={c} frame={frame} />
         ))}
 
-        {/* The punchline, held while the camera sits wide on the round trip.
-         * The reel ends on the base rate, not on the winner — one trade that
-         * worked is an anecdote, seventeen is a number (CLAUDE.md 10.6). */}
-        {frame >= 1690 ? (
-          <div
-            style={{
-              position: 'absolute',
-              top: 1272,
-              left: 0,
-              right: 0,
-              paddingTop: 26,
-              paddingBottom: 30,
-              textAlign: 'center',
-              // the number sits over live candles; without a scrim it competes
-              // with whatever bar happens to be behind it
-              background:
-                'linear-gradient(180deg, rgba(2,7,10,0) 0%, rgba(2,7,10,0.93) 22%, rgba(2,7,10,0.93) 78%, rgba(2,7,10,0) 100%)',
-              // lands with the base-rate line, steps aside for the July
-              // confirmation, returns under the final split
-              opacity:
-                frame < 1900
-                  ? interpolate(frame, [1690, 1708], [0, 1], {
-                      easing: EASE.enter,
-                      extrapolateLeft: 'clamp',
-                      extrapolateRight: 'clamp',
-                    }) *
-                    interpolate(frame, [1745, 1778], [1, 0], {
-                      extrapolateLeft: 'clamp',
-                      extrapolateRight: 'clamp',
-                    })
-                  : 0, // it had its moment at 56s — the close is chart and voice only
-              transform: `scale(${interpolate(frame, [1690, 1716], [0.9, 1], {
-                easing: EASE.settleBack,
-                extrapolateLeft: 'clamp',
-                extrapolateRight: 'clamp',
-              })})`,
-            }}
-          >
-            <div
-              style={{
-                fontFamily: FONT.mono,
-                fontSize: 168,
-                fontWeight: 900,
-                color: PT.level,
-                letterSpacing: -6,
-                lineHeight: 1,
-                textShadow: '0 6px 46px rgba(0,0,0,0.96)',
-              }}
-            >
-              {BR.pct}%
-            </div>
-            <div
-              style={{
-                marginTop: 8,
-                fontFamily: FONT.mono,
-                fontSize: 25,
-                fontWeight: 700,
-                color: PT.steel,
-                letterSpacing: 2.2,
-              }}
-            >
-              HIT RATE &middot; 2Y BRENT &middot; {BR.losses} LOST &middot; {BR.open} STILL OPEN
-            </div>
-          </div>
-        ) : null}
+        {/* The 24%% overlay is gone by owner's call — the FIRED-17 caption
+         * carries the honest count, and from that beat on the lower screen is
+         * chart only. */}
       </div>
 
       <Vignette />
