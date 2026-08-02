@@ -1,0 +1,116 @@
+{
+ "shots": [
+  {
+   "i": 1,
+   "kind": "vid",
+   "word": "TALENT LOSES TO ROUTINE",
+   "file_ok": true,
+   "source": "grok-cli imagine vid",
+   "retrieved_at": "2026-08-02T10:00:39Z"
+  },
+  {
+   "i": 2,
+   "kind": "img",
+   "word": "WAKE EARLY",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T10:00:50Z"
+  },
+  {
+   "i": 3,
+   "kind": "img",
+   "word": "TRAIN",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T10:00:58Z"
+  },
+  {
+   "i": 4,
+   "kind": "img",
+   "word": "STUDY",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T10:01:09Z"
+  },
+  {
+   "i": 5,
+   "kind": "img",
+   "word": "PLAN",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T10:01:20Z"
+  },
+  {
+   "i": 6,
+   "kind": "img",
+   "word": "EXECUTE",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T10:01:34Z"
+  },
+  {
+   "i": 7,
+   "kind": "img",
+   "word": "RISK SMALL",
+   "file_ok": true,
+   "source": "grok-cli imagine (cached probe)",
+   "retrieved_at": "2026-08-02T10:01:37Z"
+  },
+  {
+   "i": 8,
+   "kind": "vid",
+   "word": null,
+   "file_ok": true,
+   "source": "grok-cli imagine vid",
+   "retrieved_at": "2026-08-02T10:02:45Z"
+  },
+  {
+   "i": 9,
+   "kind": "img",
+   "word": "JOURNAL EVERYTHING",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T10:02:55Z"
+  },
+  {
+   "i": 10,
+   "kind": "img",
+   "word": "PATIENCE",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T10:03:06Z"
+  },
+  {
+   "i": 11,
+   "kind": "img",
+   "word": "IT COMPOUNDS",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T10:03:16Z"
+  },
+  {
+   "i": 12,
+   "kind": "vid",
+   "word": "FREEDOM",
+   "file_ok": true,
+   "source": "grok-cli imagine vid",
+   "retrieved_at": "2026-08-02T10:03:54Z"
+  },
+  {
+   "i": 13,
+   "kind": "img",
+   "word": "WORTH IT",
+   "file_ok": true,
+   "source": "grok-cli imagine img",
+   "retrieved_at": "2026-08-02T10:04:03Z"
+  },
+  {
+   "i": 14,
+   "kind": "vid",
+   "word": "SAME HABITS. TOMORROW.",
+   "file_ok": true,
+   "source": "grok-cli imagine vid",
+   "retrieved_at": "2026-08-02T10:04:42Z"
+  }
+ ]
+}

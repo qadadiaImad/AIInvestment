@@ -38,6 +38,7 @@ import { CameraProbe, cameraProbeSchema, CAMERA_PROBE_FRAMES } from "./compositi
 import { HormuzReel, hormuzSchema, HORMUZ_FRAMES } from "./compositions/HormuzReel";
 import { HormuzCover, hormuzCoverSchema } from "./compositions/HormuzCover";
 import { GrindReel, grindReelSchema, GRIND_FRAMES } from "./compositions/GrindReel";
+import { HabitsReel, habitsReelSchema, HABITS_FRAMES } from "./compositions/HabitsReel";
 import patternGalleryFixture from "./fixtures/patterns_post/gallery.json";
 import { RigCheck, rigCheckSchema } from "./compositions/RigCheck";
 import memeReelFixture from "./fixtures/meme_reel/intc_failed_breakout.json";
@@ -345,6 +346,18 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
         schema={grindReelSchema}
+        defaultProps={{}}
+      />
+      {/* Habits reel: real-aesthetic stills + videos on a 1.7s beat grid,
+       * silent, loop-closing ender. Replaces the grind reel's approach. */}
+      <Composition
+        id="HabitsReel"
+        component={HabitsReel}
+        durationInFrames={HABITS_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={habitsReelSchema}
         defaultProps={{}}
       />
       <Composition
