@@ -1,0 +1,102 @@
+{
+  "4": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "sd_xl_base_1.0.safetensors"
+    }
+  },
+  "5": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    }
+  },
+  "10": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "lora_name": "comic_eldritch.safetensors",
+      "strength_model": 0.6,
+      "strength_clip": 0.6,
+      "model": [
+        "4",
+        0
+      ],
+      "clip": [
+        "4",
+        1
+      ]
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "comic book, bold black ink outlines, dynamic comic-book shading, dramatic cinematic composition, a rich, detailed, story-telling background full of environmental detail, depth and atmosphere, wide establishing shot, the full environment fills the frame, small figures in a vast scene, deep perspective, epic scale, a fierce howling winter blizzard tearing across a frozen meadow at night, the meadow now buried under deep snow, the dead of winter, midnight, the background is filled with: bare skeletal frozen trees, long jagged icicles, one distant cozy cottage window glowing warm gold, a little fiddle half-buried in a snowdrift, swirling snow, bleak, freezing, cold blue moonlight, ominous, masterpiece, best quality, ultra-detailed, intricate details, sharp focus, dramatic cinematic lighting, rich vivid colors, professional illustration, 8k",
+      "clip": [
+        "10",
+        1
+      ]
+    }
+  },
+  "7": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "text, caption, words, letters, signature, watermark, logo, username, blurry, low quality, low resolution, jpeg artifacts, noisy, grainy, deformed, disfigured, bad anatomy, extra limbs, extra fingers, mutated hands, cropped, out of frame, cluttered, oversaturated, ugly, plain flat lighting, empty background, plain background, blank backdrop, static boring pose, flat lighting",
+      "clip": [
+        "10",
+        1
+      ]
+    }
+  },
+  "3": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 614,
+      "steps": 28,
+      "cfg": 7.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0,
+      "model": [
+        "10",
+        0
+      ],
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "latent_image": [
+        "5",
+        0
+      ]
+    }
+  },
+  "8": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "4",
+        2
+      ]
+    }
+  },
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "aiinvest",
+      "images": [
+        "8",
+        0
+      ]
+    }
+  }
+}
