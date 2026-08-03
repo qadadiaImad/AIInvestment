@@ -41,7 +41,7 @@ NEG_DEFAULT = ("text, caption, words, letters, signature, watermark, logo, usern
 
 
 def build_workflow(prompt, negative, width, height, steps, cfg, seed, ckpt, lora, lora_weight,
-                   ref_filename=None, ip_weight=0.75, twopass=False, pass2_denoise=0.5):
+                   ref_filename=None, ip_weight=0.75, twopass=False, pass2_denoise=0.5, loras=None):
     """SDXL graph in ComfyUI API format.
 
     - base: txt2img.
@@ -56,12 +56,17 @@ def build_workflow(prompt, negative, width, height, steps, cfg, seed, ckpt, lora
         "4": {"class_type": "CheckpointLoaderSimple", "inputs": {"ckpt_name": ckpt}},
         "5": {"class_type": "EmptyLatentImage", "inputs": {"width": width, "height": height, "batch_size": 1}},
     }
+    # LoRA stack: `loras` = list of (name, weight); falls back to the single
+    # lora/lora_weight for backward compat. Chained so e.g. a character LoRA +
+    # a comic-style LoRA compose (trained character IN the comic look).
+    stack = loras if loras is not None else ([(lora, lora_weight)] if lora else [])
     model_src, clip_src = ["4", 0], ["4", 1]
-    if lora:
-        g["10"] = {"class_type": "LoraLoader",
-                   "inputs": {"lora_name": lora, "strength_model": lora_weight, "strength_clip": lora_weight,
-                              "model": ["4", 0], "clip": ["4", 1]}}
-        model_src, clip_src = ["10", 0], ["10", 1]
+    for i, (ln, lw) in enumerate(stack):
+        nid = str(10 + i)
+        g[nid] = {"class_type": "LoraLoader",
+                  "inputs": {"lora_name": ln, "strength_model": lw, "strength_clip": lw,
+                             "model": model_src, "clip": clip_src}}
+        model_src, clip_src = [nid, 0], [nid, 1]
     base_model = model_src  # model before any IPAdapter patch
     g["6"] = {"class_type": "CLIPTextEncode", "inputs": {"text": prompt, "clip": clip_src}}
     g["7"] = {"class_type": "CLIPTextEncode", "inputs": {"text": negative, "clip": clip_src}}
@@ -123,11 +128,12 @@ def upload_ref(path):
 
 def generate(prompt, out, negative=NEG_DEFAULT, width=1024, height=1024, steps=28, cfg=7.0,
              seed=0, ckpt="sd_xl_base_1.0.safetensors", lora=None, lora_weight=0.9, timeout_s=600,
-             quality=True, ref=None, ip_weight=0.75, twopass=False, pass2_denoise=0.5):
+             quality=True, ref=None, ip_weight=0.75, twopass=False, pass2_denoise=0.5, loras=None):
     full_prompt = f"{prompt}, {QUALITY}" if quality else prompt
     ref_filename = upload_ref(ref) if ref else None
     wf = build_workflow(full_prompt, negative, width, height, steps, cfg, seed, ckpt, lora, lora_weight,
-                        ref_filename=ref_filename, ip_weight=ip_weight, twopass=twopass, pass2_denoise=pass2_denoise)
+                        ref_filename=ref_filename, ip_weight=ip_weight, twopass=twopass,
+                        pass2_denoise=pass2_denoise, loras=loras)
     t0 = time.time()
     pid = _post("/prompt", {"prompt": wf})["prompt_id"]
     img = None
@@ -169,13 +175,24 @@ if __name__ == "__main__":
     ap.add_argument("--cfg", type=float, default=7.0)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--ckpt", default="sd_xl_base_1.0.safetensors")
-    ap.add_argument("--lora", default=None)
-    ap.add_argument("--lora-weight", type=float, default=0.9)
+    ap.add_argument("--lora", action="append", default=None,
+                    help="LoRA to apply; repeatable. Use 'name' or 'name:weight' (e.g. fablegh.safetensors:0.9)")
+    ap.add_argument("--lora-weight", type=float, default=0.9, help="default weight for --lora entries without :weight")
     ap.add_argument("--plain", action="store_true", help="do not append the QUALITY suffix to the prompt")
     ap.add_argument("--ref", default=None, help="reference character image (IPAdapter) for consistent face/costume")
     ap.add_argument("--ip-weight", type=float, default=0.75, help="IPAdapter strength (0.5-1.0)")
     ap.add_argument("--twopass", action="store_true", help="scene-then-face-lock: dynamic action/scene, then IPAdapter refines identity")
     ap.add_argument("--pass2-denoise", type=float, default=0.5, help="two-pass refine denoise (0.4-0.6); lower keeps more of the scene")
     a = ap.parse_args()
-    generate(a.prompt, a.out, a.negative, a.width, a.height, a.steps, a.cfg, a.seed, a.ckpt, a.lora, a.lora_weight,
-             quality=not a.plain, ref=a.ref, ip_weight=a.ip_weight, twopass=a.twopass, pass2_denoise=a.pass2_denoise)
+    loras = None
+    if a.lora:
+        loras = []
+        for item in a.lora:
+            if ":" in item:
+                name, w = item.rsplit(":", 1)
+                loras.append((name, float(w)))
+            else:
+                loras.append((item, a.lora_weight))
+    generate(a.prompt, a.out, a.negative, a.width, a.height, a.steps, a.cfg, a.seed, a.ckpt, None, a.lora_weight,
+             quality=not a.plain, ref=a.ref, ip_weight=a.ip_weight, twopass=a.twopass, pass2_denoise=a.pass2_denoise,
+             loras=loras)
