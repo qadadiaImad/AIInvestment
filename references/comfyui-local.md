@@ -1,7 +1,10 @@
 # Local ComfyUI generation backend
 
-Third gen backend beside Higgsfield and grok: free, unlimited, runs on this
-machine's RTX 4070 SUPER (12,282 MiB VRAM). Drives the existing **ComfyUI
+Generation backend alongside grok-cli (paid subscription) and the free
+Kaggle lane: free, unlimited, runs on this machine's RTX 4070 SUPER
+(12,282 MiB VRAM). Higgsfield is retired (owner decision 2026-08-03, cost)
+— do not call `mcp__higgsfield__*` generation tools; this backend, grok-cli,
+and Kaggle cover generation needs now. Drives the existing **ComfyUI
 Desktop** install (`Documents\ComfyUI`) headless through its own local HTTP
 API (`127.0.0.1:8000`, no auth) — same models, same output folder as the
 GUI. Built 2026-08-03; spec is

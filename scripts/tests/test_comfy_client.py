@@ -79,3 +79,51 @@ def test_fetch_writes_file(tmp_path):
                 tmp_path)
     assert p.read_bytes() == b"PNGDATA"
     assert "filename=a.png" in http.gets[0]
+
+
+def test_stage_input_missing_raises(tmp_path):
+    missing = tmp_path / "nope.png"
+    with pytest.raises(client.ComfyError, match="not found"):
+        client.ComfyClient.stage_input(missing)
+
+
+def _queue_generate_response(http, prompt_id):
+    done = {prompt_id: {"outputs": {},
+                        "status": {"status_str": "success",
+                                   "completed": True}}}
+    http.post_queue.append(FakeResp(200, {"prompt_id": prompt_id}))
+    http.get_queue.append(FakeResp(200, done))
+
+
+def test_generate_warns_on_family_switch(monkeypatch, tmp_path, capsys):
+    import comfy.templates as templates_mod
+    monkeypatch.setattr(templates_mod, "load_template",
+                        lambda name, **params: {})
+
+    http = FakeHttp()
+    _queue_generate_response(http, "a")
+    _queue_generate_response(http, "b")
+    c = client.ComfyClient(http=http)
+
+    c.generate("zimage_t2i", tmp_path)
+    assert capsys.readouterr().out == ""
+
+    c.generate("wan22_ti2v_5b", tmp_path)
+    out = capsys.readouterr().out
+    assert "WARNING" in out
+    assert "zimage" in out and "wan22" in out
+
+
+def test_generate_no_warning_same_family(monkeypatch, tmp_path, capsys):
+    import comfy.templates as templates_mod
+    monkeypatch.setattr(templates_mod, "load_template",
+                        lambda name, **params: {})
+
+    http = FakeHttp()
+    _queue_generate_response(http, "a")
+    _queue_generate_response(http, "b")
+    c = client.ComfyClient(http=http)
+
+    c.generate("wan22_ti2v_5b", tmp_path)
+    c.generate("wan22_ti2v_5b_i2v", tmp_path)
+    assert capsys.readouterr().out == ""

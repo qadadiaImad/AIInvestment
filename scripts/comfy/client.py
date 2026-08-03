@@ -28,6 +28,7 @@ class ComfyClient:
         self.base = base
         self.http = http or requests.Session()
         self.client_id = uuid.uuid4().hex
+        self._last_family = None
 
     def submit(self, workflow: dict) -> str:
         r = self.http.post(f"{self.base}/prompt",
@@ -76,6 +77,8 @@ class ComfyClient:
     @staticmethod
     def stage_input(src) -> str:
         src = Path(src)
+        if not src.exists():
+            raise ComfyError(f"input file not found: {src}")
         COMFY_INPUT.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(src, COMFY_INPUT / src.name)
         return src.name
@@ -83,6 +86,16 @@ class ComfyClient:
     def generate(self, template: str, out_dir, timeout: float = 3600,
                  **params) -> list[Path]:
         from .templates import load_template
+        family = template.split("_", 1)[0]
+        if self._last_family is not None and family != self._last_family:
+            print(
+                "WARNING: ComfyUI model family switch "
+                f"({self._last_family} -> {family}) in one server process "
+                "is a known VRAM-eviction corruption risk (static/black "
+                "output, see task-8-report.md / references/comfyui-local.md) "
+                "-- restart the ComfyUI server before this render."
+            )
+        self._last_family = family
         entry = self.wait(self.submit(load_template(template, **params)),
                           timeout=timeout)
         return [self.fetch(i, out_dir) for i in self.outputs(entry)]
