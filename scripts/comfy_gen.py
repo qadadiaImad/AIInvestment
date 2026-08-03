@@ -41,39 +41,54 @@ NEG_DEFAULT = ("text, caption, words, letters, signature, watermark, logo, usern
 
 
 def build_workflow(prompt, negative, width, height, steps, cfg, seed, ckpt, lora, lora_weight,
-                   ref_filename=None, ip_weight=0.75):
-    """SDXL txt2img graph in ComfyUI API format. Optional LoRA is inserted
-    between the checkpoint and the sampler/CLIP. Optional IPAdapter reference
-    image (ref_filename, already uploaded to ComfyUI/input) locks a character's
-    face/costume across generations for consistent comic panels."""
+                   ref_filename=None, ip_weight=0.75, twopass=False, pass2_denoise=0.5):
+    """SDXL graph in ComfyUI API format.
+
+    - base: txt2img.
+    - +ref (single-pass): IPAdapter conditions the whole generation on a
+      reference character — strong identity but tends to copy the ref's pose.
+    - +ref +twopass: PASS 1 renders the full action/scene from the prompt with
+      NO IPAdapter (dynamic pose + rich background), then PASS 2 img2img-refines
+      it (denoise=pass2_denoise) WITH IPAdapter to lock the character's identity
+      onto that scene — dynamic storytelling AND a consistent character.
+    """
     g = {
         "4": {"class_type": "CheckpointLoaderSimple", "inputs": {"ckpt_name": ckpt}},
         "5": {"class_type": "EmptyLatentImage", "inputs": {"width": width, "height": height, "batch_size": 1}},
     }
     model_src, clip_src = ["4", 0], ["4", 1]
     if lora:
-        g["10"] = {
-            "class_type": "LoraLoader",
-            "inputs": {"lora_name": lora, "strength_model": lora_weight, "strength_clip": lora_weight,
-                       "model": ["4", 0], "clip": ["4", 1]},
-        }
+        g["10"] = {"class_type": "LoraLoader",
+                   "inputs": {"lora_name": lora, "strength_model": lora_weight, "strength_clip": lora_weight,
+                              "model": ["4", 0], "clip": ["4", 1]}}
         model_src, clip_src = ["10", 0], ["10", 1]
-    if ref_filename:
-        # IPAdapter: condition the model on a reference character image so the
-        # same face + costume carries across panels (ComfyUI_IPAdapter_plus).
+    base_model = model_src  # model before any IPAdapter patch
+    g["6"] = {"class_type": "CLIPTextEncode", "inputs": {"text": prompt, "clip": clip_src}}
+    g["7"] = {"class_type": "CLIPTextEncode", "inputs": {"text": negative, "clip": clip_src}}
+
+    def ksampler(nid, model, latent, denoise, s):
+        g[nid] = {"class_type": "KSampler", "inputs": {
+            "seed": s, "steps": steps, "cfg": cfg, "sampler_name": "dpmpp_2m", "scheduler": "karras",
+            "denoise": denoise, "model": model, "positive": ["6", 0], "negative": ["7", 0], "latent_image": latent}}
+
+    def ipadapter(model_in):
         g["50"] = {"class_type": "IPAdapterUnifiedLoader",
-                   "inputs": {"model": model_src, "preset": "PLUS (high strength)"}}
+                   "inputs": {"model": model_in, "preset": "PLUS (high strength)"}}
         g["51"] = {"class_type": "LoadImage", "inputs": {"image": ref_filename}}
         g["52"] = {"class_type": "IPAdapterAdvanced", "inputs": {
             "model": ["50", 0], "ipadapter": ["50", 1], "image": ["51", 0],
             "weight": ip_weight, "weight_type": "linear", "combine_embeds": "concat",
             "start_at": 0.0, "end_at": 1.0, "embeds_scaling": "V only"}}
-        model_src = ["52", 0]
-    g["6"] = {"class_type": "CLIPTextEncode", "inputs": {"text": prompt, "clip": clip_src}}
-    g["7"] = {"class_type": "CLIPTextEncode", "inputs": {"text": negative, "clip": clip_src}}
-    g["3"] = {"class_type": "KSampler", "inputs": {
-        "seed": seed, "steps": steps, "cfg": cfg, "sampler_name": "dpmpp_2m", "scheduler": "karras",
-        "denoise": 1.0, "model": model_src, "positive": ["6", 0], "negative": ["7", 0], "latent_image": ["5", 0]}}
+        return ["52", 0]
+
+    if ref_filename and twopass:
+        ksampler("30", base_model, ["5", 0], 1.0, seed)            # pass 1: scene
+        ksampler("3", ipadapter(base_model), ["30", 0], pass2_denoise, seed)  # pass 2: face-lock refine
+    elif ref_filename:
+        ksampler("3", ipadapter(base_model), ["5", 0], 1.0, seed)
+    else:
+        ksampler("3", base_model, ["5", 0], 1.0, seed)
+
     g["8"] = {"class_type": "VAEDecode", "inputs": {"samples": ["3", 0], "vae": ["4", 2]}}
     g["9"] = {"class_type": "SaveImage", "inputs": {"filename_prefix": "aiinvest", "images": ["8", 0]}}
     return g
@@ -108,11 +123,11 @@ def upload_ref(path):
 
 def generate(prompt, out, negative=NEG_DEFAULT, width=1024, height=1024, steps=28, cfg=7.0,
              seed=0, ckpt="sd_xl_base_1.0.safetensors", lora=None, lora_weight=0.9, timeout_s=600,
-             quality=True, ref=None, ip_weight=0.75):
+             quality=True, ref=None, ip_weight=0.75, twopass=False, pass2_denoise=0.5):
     full_prompt = f"{prompt}, {QUALITY}" if quality else prompt
     ref_filename = upload_ref(ref) if ref else None
     wf = build_workflow(full_prompt, negative, width, height, steps, cfg, seed, ckpt, lora, lora_weight,
-                        ref_filename=ref_filename, ip_weight=ip_weight)
+                        ref_filename=ref_filename, ip_weight=ip_weight, twopass=twopass, pass2_denoise=pass2_denoise)
     t0 = time.time()
     pid = _post("/prompt", {"prompt": wf})["prompt_id"]
     img = None
@@ -159,6 +174,8 @@ if __name__ == "__main__":
     ap.add_argument("--plain", action="store_true", help="do not append the QUALITY suffix to the prompt")
     ap.add_argument("--ref", default=None, help="reference character image (IPAdapter) for consistent face/costume")
     ap.add_argument("--ip-weight", type=float, default=0.75, help="IPAdapter strength (0.5-1.0)")
+    ap.add_argument("--twopass", action="store_true", help="scene-then-face-lock: dynamic action/scene, then IPAdapter refines identity")
+    ap.add_argument("--pass2-denoise", type=float, default=0.5, help="two-pass refine denoise (0.4-0.6); lower keeps more of the scene")
     a = ap.parse_args()
     generate(a.prompt, a.out, a.negative, a.width, a.height, a.steps, a.cfg, a.seed, a.ckpt, a.lora, a.lora_weight,
-             quality=not a.plain, ref=a.ref, ip_weight=a.ip_weight)
+             quality=not a.plain, ref=a.ref, ip_weight=a.ip_weight, twopass=a.twopass, pass2_denoise=a.pass2_denoise)
