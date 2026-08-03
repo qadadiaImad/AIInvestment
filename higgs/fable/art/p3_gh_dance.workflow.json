@@ -17,8 +17,8 @@
     "class_type": "LoraLoader",
     "inputs": {
       "lora_name": "fablegh.safetensors",
-      "strength_model": 0.85,
-      "strength_clip": 0.85,
+      "strength_model": 0.9,
+      "strength_clip": 0.9,
       "model": [
         "4",
         0
@@ -33,8 +33,8 @@
     "class_type": "LoraLoader",
     "inputs": {
       "lora_name": "comic_eldritch.safetensors",
-      "strength_model": 0.5,
-      "strength_clip": 0.5,
+      "strength_model": 0.2,
+      "strength_clip": 0.2,
       "model": [
         "10",
         0
@@ -48,7 +48,7 @@
   "6": {
     "class_type": "CLIPTextEncode",
     "inputs": {
-      "text": "comic book, bold black ink outlines, dynamic comic shading, fablegh a cute green grasshopper dancing and hopping joyfully mid-air, twirling his fiddle, laughing and mocking, a sunny summer meadow, masterpiece, best quality, ultra-detailed, intricate details, sharp focus, dramatic cinematic lighting, rich vivid colors, professional illustration, 8k",
+      "text": "comic book, bold black ink outlines, dynamic comic-book shading, dramatic cinematic composition, a rich, detailed, story-telling background full of environmental detail, depth and atmosphere, dynamic full-body action shot, the whole figure visible head to toe, exaggerated dynamic pose, motion lines, sense of movement, fablegh, a cute cartoon green grasshopper character, standing upright on two legs, big amber eyes, translucent dragonfly wings, friendly rounded face dancing and hopping joyfully, arms raised, twirling his fiddle overhead, head thrown back laughing, the sunny summer meadow, the background is filled with: swirling glowing musical notes, a tiny toiling ant far in the background, wildflowers and grass, carefree joyful, vibrant saturated comic colors, masterpiece, best quality, ultra-detailed, intricate details, sharp focus, dramatic cinematic lighting, rich vivid colors, professional illustration, 8k",
       "clip": [
         "11",
         1
@@ -58,7 +58,7 @@
   "7": {
     "class_type": "CLIPTextEncode",
     "inputs": {
-      "text": "text, watermark, blurry, low quality, deformed, cluttered, muscular superhero",
+      "text": "text, caption, words, letters, signature, watermark, logo, username, blurry, low quality, low resolution, jpeg artifacts, noisy, grainy, deformed, disfigured, bad anatomy, extra limbs, extra fingers, mutated hands, cropped, out of frame, cluttered, oversaturated, ugly, plain flat lighting, empty background, plain background, blank backdrop, static boring pose, flat lighting, realistic insect, photorealistic bug, side-view insect, many legs, six legs sprawled, quadruped, crawling on all legs, prone lying flat, human, person, clothing, hoodie, coat, jacket, spandex suit, muscular, buff, superhero, bodybuilder",
       "clip": [
         "11",
         1
@@ -69,7 +69,7 @@
     "class_type": "KSampler",
     "inputs": {
       "seed": 613,
-      "steps": 26,
+      "steps": 28,
       "cfg": 7.0,
       "sampler_name": "dpmpp_2m",
       "scheduler": "karras",

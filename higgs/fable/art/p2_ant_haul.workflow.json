@@ -17,8 +17,8 @@
     "class_type": "LoraLoader",
     "inputs": {
       "lora_name": "fableant.safetensors",
-      "strength_model": 1.0,
-      "strength_clip": 1.0,
+      "strength_model": 0.9,
+      "strength_clip": 0.9,
       "model": [
         "4",
         0
@@ -33,8 +33,8 @@
     "class_type": "LoraLoader",
     "inputs": {
       "lora_name": "comic_eldritch.safetensors",
-      "strength_model": 0.4,
-      "strength_clip": 0.4,
+      "strength_model": 0.2,
+      "strength_clip": 0.2,
       "model": [
         "10",
         0
@@ -48,7 +48,7 @@
   "6": {
     "class_type": "CLIPTextEncode",
     "inputs": {
-      "text": "comic book, bold black ink outlines, fableant a cute cartoon red ant character, standing upright on two legs, bipedal, big round friendly eyes, hauling a big round golden grain over his shoulder with both arms, straining hard and determined, marching upright up a trail toward a mounded anthill, a line of tiny worker ants behind him, hot sunny summer meadow, storytelling background, masterpiece, best quality, ultra-detailed, intricate details, sharp focus, dramatic cinematic lighting, rich vivid colors, professional illustration, 8k",
+      "text": "comic book, bold black ink outlines, vibrant colors, detailed background, fableant, a cute cartoon red ant character, standing fully upright and vertical on two legs like a little person, big expressive teal eyes, two antennae, three round body segments, friendly face, standing upright and hauling a big round golden grain seed in both arms held to his chest, determined, on a sunny meadow trail to an anthill, line of worker ants behind, masterpiece, best quality, ultra-detailed, intricate details, sharp focus, dramatic cinematic lighting, rich vivid colors, professional illustration, 8k",
       "clip": [
         "11",
         1
@@ -58,7 +58,7 @@
   "7": {
     "class_type": "CLIPTextEncode",
     "inputs": {
-      "text": "text, watermark, signature, blurry, low quality, deformed, bad anatomy, extra limbs, realistic insect, photorealistic bug, side view insect, many legs, six legs sprawled, quadruped, crawling on all legs, prone, lying flat, entomology photo, real grasshopper, real ant",
+      "text": "text, watermark, blurry, low quality, deformed, bad anatomy, realistic insect, photorealistic bug, side-view insect, many legs, six legs sprawled, quadruped, crawling on all legs, prone, lying flat, horizontal body, human, person, clothing, scarf, hoodie, coat",
       "clip": [
         "11",
         1
@@ -68,7 +68,7 @@
   "3": {
     "class_type": "KSampler",
     "inputs": {
-      "seed": 612,
+      "seed": 622,
       "steps": 28,
       "cfg": 7.0,
       "sampler_name": "dpmpp_2m",
