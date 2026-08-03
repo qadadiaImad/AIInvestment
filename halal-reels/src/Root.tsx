@@ -10,6 +10,7 @@ import { INTRO_BEATS } from "./IntroScenes";
 import { ValueQuizReel, QUIZ_BEATS } from "./ValueQuizReel";
 import { CorrelationReel, CORRELATION_BEATS, CORRELATION_MINI_TOTAL } from "./CorrelationReel";
 import { SemisReel, SEMIS_BEATS, SEMIS_MINI_TOTAL } from "./SemisReel";
+import { QuarterlyReport, QR_BEATS } from "./QuarterlyReport";
 
 const FPS = 30;
 const W = 1080;
@@ -18,6 +19,7 @@ const H = 1920;
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition id="QuarterlyReport" component={QuarterlyReport} durationInFrames={QR_BEATS.total} fps={FPS} width={W} height={H} />
       <Composition id="WulfReel" component={WulfReel} durationInFrames={1020} fps={FPS} width={W} height={H} />
       <Composition id="EtnReel" component={EtnReel} durationInFrames={1140} fps={FPS} width={W} height={H} />
       <Composition id="IntroReel" component={IntroVideo} durationInFrames={INTRO_BEATS.total} fps={FPS} width={W} height={H} defaultProps={{ wide: false }} />
