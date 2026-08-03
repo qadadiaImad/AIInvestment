@@ -1,0 +1,221 @@
+{
+ "generated_at": "2026-08-03T19:13:41Z",
+ "backend": "ComfyUI local headless",
+ "model": "Z-Image-Turbo fp8",
+ "characters": {
+  "anaquant": "a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers",
+  "rexquant": "a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers",
+  "solquant": "a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly"
+ },
+ "negative": "photograph, photorealistic, 3d render, gradient, soft shading, shadows, screentone, cross-hatching, texture, text, letters, watermark, signature, blurry, background scenery",
+ "sheets": [
+  {
+   "sheet": "rex_s1_turnaround",
+   "seed": 53101,
+   "w": 1216,
+   "h": 832,
+   "prompt": "character turnaround sheet: the same character shown in three full-body standing views in a horizontal row: front view, three-quarter view, side profile view, arms relaxed at sides, identical outfit in every view. a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 18.1
+  },
+  {
+   "sheet": "rex_s2_expressions",
+   "seed": 53102,
+   "w": 1024,
+   "h": 1024,
+   "prompt": "character expression sheet: six large head-and-shoulders portraits of the same character arranged in a 3x2 grid, expressions: neutral, happy open-mouth smile, shocked wide eyes, angry frown, smug confident grin, thoughtful looking up. a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "rex_s3_poses",
+   "seed": 53103,
+   "w": 1216,
+   "h": 832,
+   "prompt": "character pose sheet: six full-body poses of the same character arranged in a 3x2 grid: pointing forward with one arm, presenting sideways with open palm, arms crossed confident, hand on chin thinking, both arms raised celebrating, holding a tablet. a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "rex_s4_actions",
+   "seed": 53104,
+   "w": 1216,
+   "h": 832,
+   "prompt": "character pose sheet: six full-body poses of the same character arranged in a 3x2 grid: walking in profile, running, sitting on a chair typing at a laptop, shrugging, standing back view from behind, leaning against a wall. a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "rex_s5_angles",
+   "seed": 53105,
+   "w": 1216,
+   "h": 832,
+   "prompt": "character turnaround sheet: the same character shown in three full-body standing views in a horizontal row: three-quarter view facing right, side profile facing right, three-quarter back view, arms relaxed at sides, identical outfit in every view. a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.0
+  },
+  {
+   "sheet": "rex_s6_shots",
+   "seed": 53106,
+   "w": 832,
+   "h": 1216,
+   "prompt": "three drawings of the same character at different camera distances stacked vertically: full body shot standing waving, medium shot from waist up presenting with open palm, close-up portrait smiling. a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "sol_s1_turnaround",
+   "seed": 53201,
+   "w": 1216,
+   "h": 832,
+   "prompt": "character turnaround sheet: the same character shown in three full-body standing views in a horizontal row: front view, three-quarter view, side profile view, arms relaxed at sides, identical outfit in every view. a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "sol_s2_expressions",
+   "seed": 53202,
+   "w": 1024,
+   "h": 1024,
+   "prompt": "character expression sheet: six large head-and-shoulders portraits of the same character arranged in a 3x2 grid, expressions: neutral, happy open-mouth smile, shocked wide eyes, angry frown, smug confident grin, thoughtful looking up. a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "sol_s3_poses",
+   "seed": 53203,
+   "w": 1216,
+   "h": 832,
+   "prompt": "character pose sheet: six full-body poses of the same character arranged in a 3x2 grid: pointing forward with one arm, presenting sideways with open palm, arms crossed confident, hand on chin thinking, both arms raised celebrating, holding a tablet. a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "sol_s4_actions",
+   "seed": 53204,
+   "w": 1216,
+   "h": 832,
+   "prompt": "character pose sheet: six full-body poses of the same character arranged in a 3x2 grid: walking in profile, running, sitting on a chair typing at a laptop, shrugging, standing back view from behind, leaning against a wall. a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "sol_s5_angles",
+   "seed": 53205,
+   "w": 1216,
+   "h": 832,
+   "prompt": "character turnaround sheet: the same character shown in three full-body standing views in a horizontal row: three-quarter view facing right, side profile facing right, three-quarter back view, arms relaxed at sides, identical outfit in every view. a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "sol_s6_shots",
+   "seed": 53206,
+   "w": 832,
+   "h": 1216,
+   "prompt": "three drawings of the same character at different camera distances stacked vertically: full body shot standing waving, medium shot from waist up presenting with open palm, close-up portrait smiling. a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "pair_ar_1_sidebyside",
+   "seed": 53301,
+   "w": 1216,
+   "h": 832,
+   "prompt": "two characters standing side by side facing the viewer, both full body. on the left: a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers. on the right: a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers. flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "pair_ar_2_talking",
+   "seed": 53302,
+   "w": 1216,
+   "h": 832,
+   "prompt": "two characters facing each other in conversation, both in profile, full body, one gesturing while speaking. on the left: a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers. on the right: a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers. flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "pair_ar_3_reaction",
+   "seed": 53303,
+   "w": 1216,
+   "h": 832,
+   "prompt": "two characters: the character on the left points excitedly at something off-screen while the character on the right reacts shocked with wide eyes. on the left: a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers. on the right: a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers. flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "pair_ar_4_handshake",
+   "seed": 53304,
+   "w": 1216,
+   "h": 832,
+   "prompt": "two characters shaking hands, facing each other, full body. on the left: a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers. on the right: a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers. flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "pair_as_1_sidebyside",
+   "seed": 53401,
+   "w": 1216,
+   "h": 832,
+   "prompt": "two characters standing side by side facing the viewer, both full body. on the left: a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers. on the right: a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly. flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "pair_as_2_talking",
+   "seed": 53402,
+   "w": 1216,
+   "h": 832,
+   "prompt": "two characters facing each other in conversation, both in profile, full body, one gesturing while speaking. on the left: a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers. on the right: a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly. flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "pair_as_3_reaction",
+   "seed": 53403,
+   "w": 1216,
+   "h": 832,
+   "prompt": "two characters: the character on the left points excitedly at something off-screen while the character on the right reacts shocked with wide eyes. on the left: a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers. on the right: a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly. flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "pair_as_4_handshake",
+   "seed": 53404,
+   "w": 1216,
+   "h": 832,
+   "prompt": "two characters shaking hands, facing each other, full body. on the left: a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers. on the right: a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly. flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "pair_rs_1_sidebyside",
+   "seed": 53501,
+   "w": 1216,
+   "h": 832,
+   "prompt": "two characters standing side by side facing the viewer, both full body. on the left: a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers. on the right: a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly. flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "pair_rs_2_talking",
+   "seed": 53502,
+   "w": 1216,
+   "h": 832,
+   "prompt": "two characters facing each other in conversation, both in profile, full body, one gesturing while speaking. on the left: a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers. on the right: a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly. flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "pair_rs_3_reaction",
+   "seed": 53503,
+   "w": 1216,
+   "h": 832,
+   "prompt": "two characters: the character on the left points excitedly at something off-screen while the character on the right reacts shocked with wide eyes. on the left: a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers. on the right: a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly. flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "pair_rs_4_handshake",
+   "seed": 53504,
+   "w": 1216,
+   "h": 832,
+   "prompt": "two characters shaking hands, facing each other, full body. on the left: a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers. on the right: a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly. flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "trio_1_lineup",
+   "seed": 53601,
+   "w": 1216,
+   "h": 832,
+   "prompt": "three characters standing side by side facing the viewer, full body. on the left: a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers. in the middle: a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers. on the right: a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly. flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "trio_2_desk",
+   "seed": 53602,
+   "w": 1216,
+   "h": 832,
+   "prompt": "three characters gathered around a desk with a laptop, discussing. on the left: a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers. in the middle: a tall lean young male analyst character, short spiky copper orange hair, sharp gray eyes, black rectangular glasses, charcoal gray vest over white shirt with rolled-up sleeves, long dark tie, dark trousers. on the right: a short stocky older male senior analyst character, slicked-back silver gray hair, thick gray mustache, warm brown eyes, burgundy cardigan over white shirt, golden yellow bow tie, dark trousers, round belly. flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.0
+  }
+ ]
+}
