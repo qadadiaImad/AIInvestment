@@ -29,7 +29,15 @@ import urllib.request
 
 HOST = "http://127.0.0.1:8188"
 
-NEG_DEFAULT = "text, watermark, logo, blurry, low quality, jpeg artifacts, deformed, extra limbs"
+# Richer defaults so the CLIP-encode nodes in the saved workflow carry detailed
+# descriptions (owner request 2026-08-03). QUALITY is appended to the positive
+# prompt unless --plain; NEG_DEFAULT is a thorough negative.
+QUALITY = ("masterpiece, best quality, ultra-detailed, intricate details, sharp focus, "
+           "dramatic cinematic lighting, rich vivid colors, professional illustration, 8k")
+NEG_DEFAULT = ("text, caption, words, letters, signature, watermark, logo, username, "
+               "blurry, low quality, low resolution, jpeg artifacts, noisy, grainy, "
+               "deformed, disfigured, bad anatomy, extra limbs, extra fingers, mutated hands, "
+               "cropped, out of frame, cluttered, oversaturated, ugly, plain flat lighting")
 
 
 def build_workflow(prompt, negative, width, height, steps, cfg, seed, ckpt, lora, lora_weight):
@@ -68,8 +76,10 @@ def _get(path):
 
 
 def generate(prompt, out, negative=NEG_DEFAULT, width=1024, height=1024, steps=28, cfg=7.0,
-             seed=0, ckpt="sd_xl_base_1.0.safetensors", lora=None, lora_weight=0.9, timeout_s=600):
-    wf = build_workflow(prompt, negative, width, height, steps, cfg, seed, ckpt, lora, lora_weight)
+             seed=0, ckpt="sd_xl_base_1.0.safetensors", lora=None, lora_weight=0.9, timeout_s=600,
+             quality=True):
+    full_prompt = f"{prompt}, {QUALITY}" if quality else prompt
+    wf = build_workflow(full_prompt, negative, width, height, steps, cfg, seed, ckpt, lora, lora_weight)
     t0 = time.time()
     pid = _post("/prompt", {"prompt": wf})["prompt_id"]
     img = None
@@ -89,7 +99,13 @@ def generate(prompt, out, negative=NEG_DEFAULT, width=1024, height=1024, steps=2
     outp = pathlib.Path(out)
     outp.parent.mkdir(parents=True, exist_ok=True)
     outp.write_bytes(data)
-    print(f"OK {outp}  ({len(data)//1024} KB)  {time.time()-t0:.1f}s  [{width}x{height} {steps}steps{' +LoRA' if lora else ''}]")
+    # Always drop the exact workflow next to the image so it can be reviewed /
+    # imported into the ComfyUI GUI (owner request 2026-08-03). Load via
+    # ComfyUI "Workflow > Open (API)", or just drag the PNG onto the canvas.
+    wf_path = outp.with_name(outp.stem + ".workflow.json")
+    wf_path.write_text(json.dumps(wf, indent=2), encoding="utf-8")
+    print(f"OK {outp}  ({len(data)//1024} KB)  {time.time()-t0:.1f}s  "
+          f"[{width}x{height} {steps}steps{' +LoRA' if lora else ''}]  workflow -> {wf_path.name}")
     return str(outp)
 
 
@@ -107,5 +123,7 @@ if __name__ == "__main__":
     ap.add_argument("--ckpt", default="sd_xl_base_1.0.safetensors")
     ap.add_argument("--lora", default=None)
     ap.add_argument("--lora-weight", type=float, default=0.9)
+    ap.add_argument("--plain", action="store_true", help="do not append the QUALITY suffix to the prompt")
     a = ap.parse_args()
-    generate(a.prompt, a.out, a.negative, a.width, a.height, a.steps, a.cfg, a.seed, a.ckpt, a.lora, a.lora_weight)
+    generate(a.prompt, a.out, a.negative, a.width, a.height, a.steps, a.cfg, a.seed, a.ckpt, a.lora, a.lora_weight,
+             quality=not a.plain)
