@@ -58,6 +58,49 @@ PARAM_MAPS["wan22_ti2v_5b_i2v"] = {
     "image": ("12", "image"),
 }
 
+# Wan 2.2 I2V-A14B, quality lane (Apache 2.0). Graph reconstructed from the
+# native `video_wan2_2_14B_i2v.json` template's "fp8_scaled + 4steps LoRA"
+# group (the group left enabled/mode:0 by default; the plain "fp8_scaled"
+# group is mode:4/bypassed in the native file and is NOT reproduced here).
+# One structural swap from the native graph: each expert's UNETLoader
+# (fp8_scaled .safetensors) is replaced with UnetLoaderGGUF pointing at the
+# repo's Q4_K_M .gguf files (per Task 1's manifest / Task 7's finding that
+# the native 14B template ships fp8_scaled weights, not the GGUF files this
+# repo's video-14b manifest group actually downloads) -- class name
+# confirmed live via GET /object_info (search key containing "gguf"):
+# UnetLoaderGGUF, required=["unet_name"], and its dropdown lists exactly
+# our two on-disk files. Everything else (CLIPLoader umt5_xxl, VAELoader
+# wan_2.1_vae.safetensors per Task 7 Step 2, LoraLoaderModelOnly x2 at
+# strength_model=1.0, ModelSamplingSD3 shift=5, WanImageToVideo, the
+# two-expert KSamplerAdvanced chain, VAEDecode -> CreateVideo(fps=16) ->
+# SaveVideo) is carried over unchanged from the native group's own wiring
+# and widget values.
+#
+# Sampler settings: the native group's own KSamplerAdvanced pair is
+# steps=4 total (NOT 8) split 2/2 -- node "13" (add_noise=enable,
+# start_at_step=0, end_at_step=2, return_with_leftover_noise=enable) then
+# node "14" (add_noise=disable, start_at_step=2, end_at_step=4,
+# return_with_leftover_noise=disable) -- cfg=1, sampler=euler,
+# scheduler=simple, both experts' ModelSamplingSD3 shift=5. This is the
+# native template's actual shipped default, kept here rather than the
+# task brief's assigned starting point of "8 steps split 4/4" (untested
+# alternative: steps=8, end_at_step=4/8 -- see task-8-report.md).
+#
+# This template is I2V-only: LoadImage (node "11") is always wired to
+# WanImageToVideo.start_image, so "image" is a REQUIRED param in practice
+# (a bare filename from ComfyClient.stage_input) even though apply_params
+# itself doesn't enforce presence -- same non-enforced-but-required shape
+# as "wan22_ti2v_5b_i2v"'s own "image" param.
+PARAM_MAPS["wan22_i2v_14b"] = {
+    "prompt":   ("9", "text"),
+    "negative": ("10", "text"),
+    "seed":     ("13", "noise_seed"),
+    "width":    ("12", "width"),
+    "height":   ("12", "height"),
+    "length":   ("12", "length"),
+    "image":    ("11", "image"),
+}
+
 
 def apply_params(workflow: dict, param_map: dict, params: dict) -> dict:
     unknown = set(params) - set(param_map)
