@@ -39,19 +39,26 @@ NEG = comfy_gen.NEG_DEFAULT + ", empty background, plain background, blank backd
 
 @dataclass
 class Panel:
-    char: str | None = None          # focal character reference image (IPAdapter) — None = pure scene
+    char: str | None = None          # focal character reference (IPAdapter) — None = scene / multi-char panel
     ip_weight: float = 0.8           # pass-2 identity strength (two-pass keeps the scene regardless)
     shot: str = "FULL"               # WIDE | FULL | MEDIUM | CLOSEUP
-    action: str = ""                 # what is HAPPENING — strong verbs, dynamic
+    action: str = ""                 # what is HAPPENING — strong verbs, dynamic; describe ALL characters present
     setting: str = ""                # place + season/time/weather
     props: list = field(default_factory=list)  # enriched background artifacts (story-relevant objects)
     mood: str = ""                   # lighting + emotion
     seed: int = 0
     pass2_denoise: float = 0.5       # lower keeps more of pass-1's scene/pose
+    lora_weight: float = 0.85        # comic LoRA strength (lower for softer/cuter, less superhero)
+    neg_extra: str = ""              # panel-specific negatives (e.g. anti-superhero for animal casts)
+    style: str = STYLE               # override the style header if a panel needs a different look
+
+    # For 2-character interaction panels, keep char=None and describe both animals
+    # in `action` (IPAdapter can only lock one identity; generic animal designs
+    # read fine from the prompt). Use `char` only when one figure dominates.
 
 
 def compose(p: Panel) -> str:
-    parts = [STYLE, SHOTS.get(p.shot, SHOTS["FULL"]), p.action, p.setting]
+    parts = [p.style, SHOTS.get(p.shot, SHOTS["FULL"]), p.action, p.setting]
     if p.props:
         parts.append("the background is filled with: " + ", ".join(p.props))
     if p.mood:
@@ -61,9 +68,10 @@ def compose(p: Panel) -> str:
 
 def render_panel(p: Panel, out: str):
     prompt = compose(p)
+    negative = NEG + (", " + p.neg_extra if p.neg_extra else "")
     comfy_gen.generate(
-        prompt, out, negative=NEG, width=1024, height=1024, steps=28, seed=p.seed,
-        lora=COMIC_LORA, lora_weight=0.85,
+        prompt, out, negative=negative, width=1024, height=1024, steps=28, seed=p.seed,
+        lora=COMIC_LORA, lora_weight=p.lora_weight,
         ref=p.char, ip_weight=p.ip_weight,
         twopass=bool(p.char), pass2_denoise=p.pass2_denoise,
         quality=True,
