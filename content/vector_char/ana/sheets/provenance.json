@@ -1,0 +1,42 @@
+{
+ "generated_at": "2026-08-03T18:12:17Z",
+ "backend": "ComfyUI local",
+ "model": "Z-Image-Turbo fp8",
+ "character_lock": "a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background",
+ "style": "flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+ "negative": "photograph, photorealistic, 3d render, gradient, soft shading, shadows, screentone, cross-hatching, texture, text, letters, watermark, signature, blurry, background scenery",
+ "sheets": [
+  {
+   "sheet": "s1_turnaround",
+   "seed": 52001,
+   "w": 1216,
+   "h": 832,
+   "prompt": "character turnaround sheet: the same character shown in three full-body standing views in a horizontal row: front view, three-quarter view, side profile view, arms relaxed at sides, identical outfit in every view. a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 18.2
+  },
+  {
+   "sheet": "s2_expressions",
+   "seed": 52002,
+   "w": 1024,
+   "h": 1024,
+   "prompt": "character expression sheet: six large head-and-shoulders portraits of the same character arranged in a 3x2 grid, expressions: neutral, happy open-mouth smile, shocked wide eyes open mouth, skeptical one raised eyebrow, excited starry eyes, thoughtful looking up. a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "s3_poses",
+   "seed": 52003,
+   "w": 1216,
+   "h": 832,
+   "prompt": "character pose sheet: six full-body poses of the same character arranged in a 3x2 grid: pointing forward with one arm, presenting sideways with open palm, arms crossed confident, hand on chin thinking, both arms raised celebrating, holding a tablet. a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "s4_parts",
+   "seed": 52004,
+   "w": 1024,
+   "h": 1024,
+   "prompt": "animation sprite parts sheet on plain white: isolated body parts of a character neatly arranged in a grid: bent arm, straight arm, pointing hand, open palm hand, closed eyes pair, open mouth, closed mouth, legs walking, legs standing. a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  }
+ ]
+}

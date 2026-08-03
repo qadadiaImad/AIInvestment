@@ -47,6 +47,7 @@ import { StrategyWalkthrough, strategyWalkthroughSchema } from "./compositions/S
 import strategyWalkFixture from "../../content/probe/strategy_walkthrough_props.json";
 import patternGalleryFixture from "./fixtures/patterns_post/gallery.json";
 import { RigCheck, rigCheckSchema } from "./compositions/RigCheck";
+import { AnaVectorPilot, ANA_PILOT_FRAMES } from "./compositions/AnaVectorPilot";
 import memeReelFixture from "./fixtures/meme_reel/intc_failed_breakout.json";
 import tradeFailFixture from "./fixtures/btc_reel/trade_fail_reel.json";
 import { reelPropsSchema } from "./props";
@@ -75,6 +76,14 @@ const kurzSlideDefaultProps = kurzSlidePropsSchema.parse(kurzSlide2Fixture);
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="AnaVectorPilot"
+        component={AnaVectorPilot}
+        durationInFrames={ANA_PILOT_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
       <Composition
         id="CaptionedVideo"
         component={CaptionedVideo}

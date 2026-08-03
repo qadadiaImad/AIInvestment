@@ -1,0 +1,112 @@
+{
+ "front": {
+  "w": 299,
+  "h": 776,
+  "ink_h": 745,
+  "anchor": [
+   0.4984,
+   0.9794
+  ],
+  "src": "characters/ana/s1_02.svg",
+  "scale": 1.0
+ },
+ "three_quarter": {
+  "w": 318,
+  "h": 776,
+  "ink_h": 745,
+  "anchor": [
+   0.4695,
+   0.9794
+  ],
+  "src": "characters/ana/s1_05.svg",
+  "scale": 1.0
+ },
+ "profile": {
+  "w": 265,
+  "h": 776,
+  "ink_h": 745,
+  "anchor": [
+   0.421,
+   0.9794
+  ],
+  "src": "characters/ana/s1_06.svg",
+  "scale": 1.0
+ },
+ "point": {
+  "w": 382,
+  "h": 377,
+  "ink_h": 346,
+  "anchor": [
+   0.2795,
+   0.9576
+  ],
+  "src": "characters/ana/s3_01.svg",
+  "scale": 2.1532
+ },
+ "present": {
+  "w": 349,
+  "h": 375,
+  "ink_h": 344,
+  "anchor": [
+   0.6282,
+   0.9573
+  ],
+  "src": "characters/ana/s3_02.svg",
+  "scale": 2.1657
+ },
+ "crossed": {
+  "w": 211,
+  "h": 374,
+  "ink_h": 343,
+  "anchor": [
+   0.4736,
+   0.9572
+  ],
+  "src": "characters/ana/s3_03.svg",
+  "scale": 2.172
+ },
+ "tablet": {
+  "w": 273,
+  "h": 391,
+  "ink_h": 360,
+  "anchor": [
+   0.4031,
+   0.9591
+  ],
+  "src": "characters/ana/s3_04.svg",
+  "scale": 2.0694
+ },
+ "confident": {
+  "w": 225,
+  "h": 391,
+  "ink_h": 360,
+  "anchor": [
+   0.4119,
+   0.9591
+  ],
+  "src": "characters/ana/s3_05.svg",
+  "scale": 2.0694
+ },
+ "celebrate": {
+  "w": 344,
+  "h": 388,
+  "ink_h": 357,
+  "anchor": [
+   0.4953,
+   0.9588
+  ],
+  "src": "characters/ana/s3_06.svg",
+  "scale": 2.0868
+ },
+ "point_alt": {
+  "w": 511,
+  "h": 979,
+  "ink_h": 948,
+  "anchor": [
+   0.6251,
+   0.9837
+  ],
+  "src": "characters/ana/s4_04.svg",
+  "scale": 0.7859
+ }
+}
