@@ -206,6 +206,7 @@ references/
   ta-pattern-library.json              ← 102 validated TA patterns (see .claude/skills/ta-chart-quiz)
   meme-reel-pipeline.md                ← build brief + paste-ready prompt for the cartoon-character reel
   higgsfield-audio-workflow.md         ← voiceover generation + ffmpeg mux (laptop: auth is interactive)
+  comfyui-local.md                     ← local open-source gen backend (ComfyUI)
 providers/
   README.md                            ← per-provider gating classification + playbooks
 scripts/                               ← REST helpers (TDD, pytest)
