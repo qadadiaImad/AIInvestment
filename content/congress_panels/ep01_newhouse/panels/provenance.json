@@ -1,0 +1,39 @@
+{
+ "generated_at": "2026-08-03T17:23:53Z",
+ "backend": "ComfyUI 0.13.0 local (127.0.0.1:8000)",
+ "model": "z_image_turbo_fp8_e4m3fn (Z-Image-Turbo 6B, Apache 2.0, Tongyi-MAI)",
+ "template": "scripts/comfy/templates/zimage_t2i.json",
+ "size": "832x1216",
+ "negative": "photograph, photorealistic, color, colorful, 3d render, cgi, blurry, soft focus, text, letters, typography, watermark, signature, speech bubble, logo",
+ "use": "non-commercial editorial parody pilot",
+ "panels": [
+  {
+   "panel": "p1_hook",
+   "seed": 41001,
+   "file": "p1_hook.png",
+   "prompt": "dramatic black and white manga panel, heavy ink linework, dense cross-hatching, screentone shading, high contrast, bold composition, 1990s seinen manga aesthetic. Low-angle shot: a stern silver-haired older congressman in a dark suit and tie stands before the United States Capitol building at dusk, a storm of paper documents swirling around him like blades, one document glowing in his raised hand, radiating speed lines, menacing atmosphere, dramatic foreshortening.",
+   "render_seconds": 18.3
+  },
+  {
+   "panel": "p2_committee",
+   "seed": 41002,
+   "file": "p2_committee.png",
+   "prompt": "dramatic black and white manga panel, heavy ink linework, dense cross-hatching, screentone shading, high contrast, bold composition, 1990s seinen manga aesthetic. A silver-haired older congressman seated high at a wooden committee hearing bench, pointing forward with extreme foreshortening, his pointing hand huge in the foreground; behind him on the wall looms the colossal shadow of a coiled dragon wrapped around a giant computer microchip, hard rim lighting, imposing perspective.",
+   "render_seconds": 10.0
+  },
+  {
+   "panel": "p3_reveal",
+   "seed": 41003,
+   "file": "p3_reveal.png",
+   "prompt": "dramatic black and white manga panel, heavy ink linework, dense cross-hatching, screentone shading, high contrast, bold composition, 1990s seinen manga aesthetic. Explosive action shot: a silver-haired older congressman in a flaring suit coat mid-stride, holding aloft a small glowing computer memory chip like a talisman, while giant GPU graphics cards topple and shatter behind him, flying debris, crackling lightning, dense radiating speed lines, impact frame, extreme perspective.",
+   "render_seconds": 10.0
+  },
+  {
+   "panel": "p4_verdict",
+   "seed": 41004,
+   "file": "p4_verdict.png",
+   "prompt": "dramatic black and white manga panel, heavy ink linework, dense cross-hatching, screentone shading, high contrast, bold composition, 1990s seinen manga aesthetic. Quiet aftermath: a silver-haired older congressman sits small behind a vast desk in a dark wood-paneled office at night, neat stacks of paper before him, moonlight through venetian blinds striping the floor, calm still atmosphere, fine screentone, no motion, wide shot.",
+   "render_seconds": 10.0
+  }
+ ]
+}
