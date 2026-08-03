@@ -51,6 +51,11 @@ class Panel:
     lora_weight: float = 0.85        # comic LoRA strength (lower for softer/cuter, less superhero)
     neg_extra: str = ""              # panel-specific negatives (e.g. anti-superhero for animal casts)
     style: str = STYLE               # override the style header if a panel needs a different look
+    loras: list = field(default_factory=list)  # trained character/style LoRA stack: [(name, weight), ...].
+                                                # When set, the character is baked-in (no IPAdapter needed) —
+                                                # reference the character by its trigger word in `action`.
+                                                # BEST for SOLO panels (one trained character); two different
+                                                # character LoRAs in one frame still blend — composite instead.
 
     # For 2-character interaction panels, keep char=None and describe both animals
     # in `action` (IPAdapter can only lock one identity; generic animal designs
@@ -69,13 +74,17 @@ def compose(p: Panel) -> str:
 def render_panel(p: Panel, out: str):
     prompt = compose(p)
     negative = NEG + (", " + p.neg_extra if p.neg_extra else "")
-    comfy_gen.generate(
-        prompt, out, negative=negative, width=1024, height=1024, steps=28, seed=p.seed,
-        lora=COMIC_LORA, lora_weight=p.lora_weight,
-        ref=p.char, ip_weight=p.ip_weight,
-        twopass=bool(p.char), pass2_denoise=p.pass2_denoise,
-        quality=True,
-    )
+    if p.loras:
+        # Trained-LoRA path: character(s) baked in — no IPAdapter. Best for solo
+        # panels; reference the character by its trigger word in `action`.
+        comfy_gen.generate(prompt, out, negative=negative, width=1024, height=1024, steps=28,
+                           seed=p.seed, loras=p.loras, quality=True)
+    else:
+        # IPAdapter path: comic style LoRA + optional reference-image identity (two-pass).
+        comfy_gen.generate(prompt, out, negative=negative, width=1024, height=1024, steps=28, seed=p.seed,
+                           lora=COMIC_LORA, lora_weight=p.lora_weight,
+                           ref=p.char, ip_weight=p.ip_weight,
+                           twopass=bool(p.char), pass2_denoise=p.pass2_denoise, quality=True)
 
 
 def render_panels(panels: dict[str, Panel], outdir: str):
