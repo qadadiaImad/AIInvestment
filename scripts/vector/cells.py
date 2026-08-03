@@ -40,6 +40,30 @@ def white_to_alpha(rgb: np.ndarray, thresh: int = WHITE_THRESH) -> np.ndarray:
     return np.dstack([rgb, alpha])
 
 
+def bg_to_alpha(rgb: np.ndarray, tol: int = 24) -> np.ndarray:
+    """RGB -> RGBA keying out the FLAT background color sampled from the
+    image corners (median of the four 8x8 corner patches). Handles LoRA
+    renders that come back on solid gray/tinted backgrounds instead of
+    white; falls back to plain distance keying, no flood fill needed
+    because the backgrounds are flat by prompt construction."""
+    h, w = rgb.shape[:2]
+    corners = np.concatenate([
+        rgb[:8, :8].reshape(-1, 3), rgb[:8, w-8:].reshape(-1, 3),
+        rgb[h-8:, :8].reshape(-1, 3), rgb[h-8:, w-8:].reshape(-1, 3)])
+    bg_color = np.median(corners, axis=0)
+    dist = np.abs(rgb.astype(int) - bg_color).max(axis=2)
+    candidate = dist <= tol
+    # Key ONLY background-CONNECTED candidate regions (flood from borders):
+    # interior pixels that merely resemble the bg color (shading inside
+    # clothes) must stay opaque, or the figure gets pinholes.
+    labels, _ = ndimage.label(candidate)
+    border = np.unique(np.concatenate([
+        labels[0, :], labels[-1, :], labels[:, 0], labels[:, -1]]))
+    bg_mask = np.isin(labels, border[border != 0])
+    alpha = np.where(bg_mask, 0, 255).astype(np.uint8)
+    return np.dstack([rgb, alpha])
+
+
 def find_cells(rgba: np.ndarray, min_area: int = DEFAULT_MIN_AREA) -> list[tuple]:
     """Connected components of the alpha mask -> [(x0,y0,x1,y1)] in reading
     order (row bands top-to-bottom, then left-to-right within a band)."""

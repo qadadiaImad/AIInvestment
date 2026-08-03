@@ -1,0 +1,124 @@
+{
+ "generated_at": "2026-08-03T23:42:38Z",
+ "base": "Illustrious-XL-v0.1 + ana_cast_v1 @0.9",
+ "renders": [
+  {
+   "name": "sol_smug",
+   "seed": 62001,
+   "w": 896,
+   "h": 1152,
+   "prompt": "solquant, 1boy, solo, old man, gray hair, thick mustache, burgundy cardigan, yellow bow tie, plump, portrait, upper body, smug grin, half-closed eyes, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 10.0
+  },
+  {
+   "name": "sol_laugh",
+   "seed": 62002,
+   "w": 832,
+   "h": 1216,
+   "prompt": "solquant, 1boy, solo, old man, gray hair, thick mustache, burgundy cardigan, yellow bow tie, plump, full body, laughing, head back, hand on belly, open mouth, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.0
+  },
+  {
+   "name": "sol_whisper",
+   "seed": 62003,
+   "w": 896,
+   "h": 1152,
+   "prompt": "solquant, 1boy, solo, old man, gray hair, thick mustache, burgundy cardigan, yellow bow tie, plump, upper body, leaning forward, hand beside mouth, whispering, sly smile, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.1
+  },
+  {
+   "name": "sol_point",
+   "seed": 62004,
+   "w": 832,
+   "h": 1216,
+   "prompt": "solquant, 1boy, solo, old man, gray hair, thick mustache, burgundy cardigan, yellow bow tie, plump, full body, pointing to the side, serious, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.0
+  },
+  {
+   "name": "sol_shrug",
+   "seed": 62005,
+   "w": 832,
+   "h": 1216,
+   "prompt": "solquant, 1boy, solo, old man, gray hair, thick mustache, burgundy cardigan, yellow bow tie, plump, full body, shrugging, open palms, raised eyebrows, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.1
+  },
+  {
+   "name": "sol_wink",
+   "seed": 62006,
+   "w": 896,
+   "h": 1152,
+   "prompt": "solquant, 1boy, solo, old man, gray hair, thick mustache, burgundy cardigan, yellow bow tie, plump, portrait, upper body, wink, warm smile, thumbs up, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.0
+  },
+  {
+   "name": "sol_finger",
+   "seed": 62007,
+   "w": 832,
+   "h": 1216,
+   "prompt": "solquant, 1boy, solo, old man, gray hair, thick mustache, burgundy cardigan, yellow bow tie, plump, full body, index finger raised, lecturing, confident, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.0
+  },
+  {
+   "name": "rex_eager",
+   "seed": 62011,
+   "w": 832,
+   "h": 1216,
+   "prompt": "rexquant, 1boy, solo, orange hair, spiky hair, glasses, gray vest, white shirt, sleeves rolled up, full body, holding notebook and pen, excited, sparkling eyes, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.0
+  },
+  {
+   "name": "rex_listen",
+   "seed": 62012,
+   "w": 832,
+   "h": 1216,
+   "prompt": "rexquant, 1boy, solo, orange hair, spiky hair, glasses, gray vest, white shirt, sleeves rolled up, full body, leaning forward, listening intently, hands on knees, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.0
+  },
+  {
+   "name": "rex_shock",
+   "seed": 62013,
+   "w": 896,
+   "h": 1152,
+   "prompt": "rexquant, 1boy, solo, orange hair, spiky hair, glasses, gray vest, white shirt, sleeves rolled up, portrait, upper body, shocked, screaming, wide eyes, hands on head, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.0
+  },
+  {
+   "name": "rex_skeptic",
+   "seed": 62014,
+   "w": 896,
+   "h": 1152,
+   "prompt": "rexquant, 1boy, solo, orange hair, spiky hair, glasses, gray vest, white shirt, sleeves rolled up, portrait, upper body, skeptical, squinting, arms crossed, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.0
+  },
+  {
+   "name": "rex_determined",
+   "seed": 62015,
+   "w": 832,
+   "h": 1216,
+   "prompt": "rexquant, 1boy, solo, orange hair, spiky hair, glasses, gray vest, white shirt, sleeves rolled up, full body, determined, clenched fist raised, fire in eyes, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.0
+  },
+  {
+   "name": "rex_clutch",
+   "seed": 62016,
+   "w": 832,
+   "h": 1216,
+   "prompt": "rexquant, 1boy, solo, orange hair, spiky hair, glasses, gray vest, white shirt, sleeves rolled up, full body, clutching head with both hands, disbelief, open mouth, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.0
+  },
+  {
+   "name": "sol_armswide",
+   "seed": 62017,
+   "w": 832,
+   "h": 1216,
+   "prompt": "solquant, 1boy, solo, old man, gray hair, thick mustache, burgundy cardigan, yellow bow tie, plump, full body, both arms spread wide, grand gesture, showman, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.0
+  },
+  {
+   "name": "twoshot_regional",
+   "seed": 62021,
+   "template": "sdxl_lora_regional2",
+   "seconds": 16.1
+  }
+ ]
+}

@@ -1,0 +1,145 @@
+{
+ "sol_laugh": {
+  "w": 700,
+  "h": 1058,
+  "ink_h": 1038,
+  "anchor": [
+   0.4586,
+   0.9905
+  ],
+  "src": "characters/cast_ep1/sol_laugh.svg",
+  "scale": 1.0973
+ },
+ "sol_point": {
+  "w": 771,
+  "h": 1159,
+  "ink_h": 1139,
+  "anchor": [
+   0.5076,
+   0.9914
+  ],
+  "src": "characters/cast_ep1/sol_point.svg",
+  "scale": 1.0
+ },
+ "sol_shrug": {
+  "w": 832,
+  "h": 1216,
+  "ink_h": 1215,
+  "anchor": [
+   0.4994,
+   0.9992
+  ],
+  "src": "characters/cast_ep1/sol_shrug.svg",
+  "scale": 0.9374
+ },
+ "sol_finger": {
+  "w": 832,
+  "h": 1159,
+  "ink_h": 1139,
+  "anchor": [
+   0.5263,
+   0.9914
+  ],
+  "src": "characters/cast_ep1/sol_finger.svg",
+  "scale": 1.0
+ },
+ "sol_armswide": {
+  "w": 552,
+  "h": 1118,
+  "ink_h": 1098,
+  "anchor": [
+   0.5405,
+   0.9911
+  ],
+  "src": "characters/cast_ep1/sol_armswide.svg",
+  "scale": 1.0373
+ },
+ "rex_eager": {
+  "w": 731,
+  "h": 1056,
+  "ink_h": 1036,
+  "anchor": [
+   0.5726,
+   0.9905
+  ],
+  "src": "characters/cast_ep1/rex_eager.svg",
+  "scale": 1.0994
+ },
+ "rex_listen": {
+  "w": 764,
+  "h": 1005,
+  "ink_h": 985,
+  "anchor": [
+   0.3881,
+   0.99
+  ],
+  "src": "characters/cast_ep1/rex_listen.svg",
+  "scale": 1.1563
+ },
+ "rex_determined": {
+  "w": 732,
+  "h": 1157,
+  "ink_h": 1137,
+  "anchor": [
+   0.4842,
+   0.9914
+  ],
+  "src": "characters/cast_ep1/rex_determined.svg",
+  "scale": 1.0018
+ },
+ "sol_smug": {
+  "w": 896,
+  "h": 1152,
+  "ink_h": 1151,
+  "anchor": [
+   0.4994,
+   0.9991
+  ],
+  "src": "characters/cast_ep1/sol_smug.svg",
+  "scale": 1.0
+ },
+ "sol_whisper": {
+  "w": 896,
+  "h": 1152,
+  "ink_h": 1151,
+  "anchor": [
+   0.4994,
+   0.9991
+  ],
+  "src": "characters/cast_ep1/sol_whisper.svg",
+  "scale": 1.0
+ },
+ "sol_wink": {
+  "w": 896,
+  "h": 1152,
+  "ink_h": 1151,
+  "anchor": [
+   0.4998,
+   0.9991
+  ],
+  "src": "characters/cast_ep1/sol_wink.svg",
+  "scale": 1.0
+ },
+ "rex_shock": {
+  "w": 896,
+  "h": 1152,
+  "ink_h": 1151,
+  "anchor": [
+   0.4674,
+   0.9991
+  ],
+  "src": "characters/cast_ep1/rex_shock.svg",
+  "scale": 1.0
+ },
+ "rex_skeptic": {
+  "w": 821,
+  "h": 1151,
+  "ink_h": 1140,
+  "anchor": [
+   0.5191,
+   0.9991
+  ],
+  "src": "characters/cast_ep1/rex_skeptic.svg",
+  "scale": 1.0
+ }
+}

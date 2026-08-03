@@ -61,6 +61,18 @@ PARAM_MAPS["sdxl_lora_t2i"] = {
     "lora_sc":    ("2", "strength_clip"),
 }
 
+# Two-character regional variant of sdxl_lora_t2i: core-node area
+# conditioning (ConditioningSetArea left/right halves + Combine with a
+# scene-glue base prompt) to fight cross-character trait bleed at
+# inference. Areas are fixed halves of a 1216x832 canvas.
+PARAM_MAPS["sdxl_lora_regional2"] = {
+    "prompt_base": ("3", "text"),
+    "prompt_left": ("4", "text"),
+    "prompt_right": ("6", "text"),
+    "negative":   ("10", "text"),
+    "seed":       ("12", "seed"),
+}
+
 PARAM_MAPS["wan22_ti2v_5b"] = {
     "prompt":   ("4", "text"),
     "negative": ("5", "text"),
