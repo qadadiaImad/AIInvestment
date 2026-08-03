@@ -31,6 +31,33 @@ PARAM_MAPS["zimage_t2i"] = {
     "height":   ("6", "height"),
 }
 
+# Wan 2.2 TI2V-5B fast video (Apache 2.0). Graph reconstructed from the
+# native `video_wan2_2_5B_ti2v.json` template shipped in
+# comfyui_workflow_templates_media_video: UNETLoader(wan2.2_ti2v_5B_fp16)
+# -> ModelSamplingSD3(shift=8) -> KSampler(steps=20, cfg=5, uni_pc,
+# simple, denoise=1) fed by Wan22ImageToVideoLatent (vae=wan2.2_vae.
+# safetensors, umt5_xxl CLIP type="wan") -> VAEDecode -> CreateVideo
+# (fps=24) -> SaveVideo. The native template is ONE graph with a LoadImage
+# node the user bypasses (UI "mode 4") for T2V and enables for I2V —
+# API-format prompts can't ship a bypassed/dangling node, so this is
+# shipped as two template files sharing everything except the
+# Wan22ImageToVideoLatent.start_image link and its upstream LoadImage:
+# "wan22_ti2v_5b" (T2V, no start_image input at all — the input is
+# optional per /object_info) and "wan22_ti2v_5b_i2v" (adds node "12"
+# LoadImage wired to node "6"'s start_image).
+PARAM_MAPS["wan22_ti2v_5b"] = {
+    "prompt":   ("4", "text"),
+    "negative": ("5", "text"),
+    "seed":     ("8", "seed"),
+    "width":    ("6", "width"),
+    "height":   ("6", "height"),
+    "length":   ("6", "length"),
+}
+PARAM_MAPS["wan22_ti2v_5b_i2v"] = {
+    **PARAM_MAPS["wan22_ti2v_5b"],
+    "image": ("12", "image"),
+}
+
 
 def apply_params(workflow: dict, param_map: dict, params: dict) -> dict:
     unknown = set(params) - set(param_map)
