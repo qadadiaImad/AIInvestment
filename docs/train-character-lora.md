@@ -42,9 +42,9 @@ open('/kaggle/working/s_ant.txt','w').write("fableant, a cute cartoon red ant ca
 !accelerate launch sdxl_train_network.py --pretrained_model_name_or_path=/kaggle/working/sdxl.safetensors \
  --train_data_dir=/kaggle/working/data_fablegh --output_dir=/kaggle/working/out --output_name=fablegh \
  --resolution=768,768 --enable_bucket --network_module=networks.lora --network_dim=16 --network_alpha=8 \
- --train_batch_size=2 --max_train_epochs=8 --learning_rate=1e-4 --optimizer_type=AdamW8bit \
- --mixed_precision=fp16 --save_precision=fp16 --gradient_checkpointing --cache_latents --save_every_n_epochs=8 \
- --sample_every_n_epochs=1 --sample_prompts=/kaggle/working/s_gh.txt --sample_sampler=euler_a \
+ --train_batch_size=1 --max_train_epochs=8 --learning_rate=1e-4 --optimizer_type=AdamW8bit \
+ --mixed_precision=fp16 --save_precision=fp16 --gradient_checkpointing --lowram --cache_latents --cache_latents_to_disk --max_data_loader_n_workers=1 --save_every_n_epochs=8 \
+ --sample_every_n_epochs=2 --sample_prompts=/kaggle/working/s_gh.txt --sample_sampler=euler_a \
  --logging_dir=/kaggle/working/logs --log_with=tensorboard
 ```
 
@@ -54,9 +54,9 @@ open('/kaggle/working/s_ant.txt','w').write("fableant, a cute cartoon red ant ca
 !accelerate launch sdxl_train_network.py --pretrained_model_name_or_path=/kaggle/working/sdxl.safetensors \
  --train_data_dir=/kaggle/working/data_fableant --output_dir=/kaggle/working/out --output_name=fableant \
  --resolution=768,768 --enable_bucket --network_module=networks.lora --network_dim=16 --network_alpha=8 \
- --train_batch_size=2 --max_train_epochs=8 --learning_rate=1e-4 --optimizer_type=AdamW8bit \
- --mixed_precision=fp16 --save_precision=fp16 --gradient_checkpointing --cache_latents --save_every_n_epochs=8 \
- --sample_every_n_epochs=1 --sample_prompts=/kaggle/working/s_ant.txt --sample_sampler=euler_a \
+ --train_batch_size=1 --max_train_epochs=8 --learning_rate=1e-4 --optimizer_type=AdamW8bit \
+ --mixed_precision=fp16 --save_precision=fp16 --gradient_checkpointing --lowram --cache_latents --cache_latents_to_disk --max_data_loader_n_workers=1 --save_every_n_epochs=8 \
+ --sample_every_n_epochs=2 --sample_prompts=/kaggle/working/s_ant.txt --sample_sampler=euler_a \
  --logging_dir=/kaggle/working/logs --log_with=tensorboard
 ```
 
