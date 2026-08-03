@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-03T18:12:17Z",
+ "generated_at": "2026-08-03T18:35:37Z",
  "backend": "ComfyUI local",
  "model": "Z-Image-Turbo fp8",
  "character_lock": "a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background",
@@ -36,6 +36,38 @@
    "w": 1024,
    "h": 1024,
    "prompt": "animation sprite parts sheet on plain white: isolated body parts of a character neatly arranged in a grid: bent arm, straight arm, pointing hand, open palm hand, closed eyes pair, open mouth, closed mouth, legs walking, legs standing. a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "s5_actions",
+   "seed": 52005,
+   "w": 1216,
+   "h": 832,
+   "prompt": "character pose sheet: six full-body poses of the same character arranged in a 3x2 grid: walking in profile, running, sitting on a chair typing at a laptop, jumping with joy, standing back view from behind, leaning against a wall. a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 14.4
+  },
+  {
+   "sheet": "s6_expressions2",
+   "seed": 52006,
+   "w": 1024,
+   "h": 1024,
+   "prompt": "character expression sheet: six large head-and-shoulders portraits of the same character arranged in a 3x2 grid, expressions: angry puffed cheeks, sad teary eyes, smug confident grin, playful wink, determined serious, laughing eyes closed. a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "s7_angles",
+   "seed": 52007,
+   "w": 1216,
+   "h": 832,
+   "prompt": "character turnaround sheet: the same character shown in three full-body standing views in a horizontal row: three-quarter view facing right, side profile facing right, three-quarter back view, arms relaxed at sides, identical outfit in every view. a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
+   "seconds": 10.1
+  },
+  {
+   "sheet": "s8_shots",
+   "seed": 52008,
+   "w": 832,
+   "h": 1216,
+   "prompt": "three drawings of the same character at different camera distances stacked vertically: full body shot standing waving, medium shot from waist up presenting with open palm, close-up portrait smiling. a cheerful young female analyst character, large expressive amber eyes, shoulder-length dark teal hair with side bangs, navy blue blazer over white shirt, emerald green necktie, dark trousers, flat design, anime-inspired, thick clean black outlines, solid flat colors, minimal detail, plain pure white background. flat vector illustration style, no gradients, no shading, crisp edges, sticker-like",
    "seconds": 10.1
   }
  ]

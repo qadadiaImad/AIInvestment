@@ -1,0 +1,149 @@
+{
+ "trigger": "anaquant",
+ "count": 27,
+ "images": [
+  {
+   "file": "01_front.png",
+   "source_part": "s1_02",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, full body, standing, front view, open mouth, smile"
+  },
+  {
+   "file": "02_threeq_left.png",
+   "source_part": "s1_05",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, full body, standing, three-quarter view"
+  },
+  {
+   "file": "03_profile_left.png",
+   "source_part": "s1_06",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, full body, standing, profile, facing left"
+  },
+  {
+   "file": "04_front_alt.png",
+   "source_part": "s7_01",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, full body, standing, arms at sides"
+  },
+  {
+   "file": "05_profile_right.png",
+   "source_part": "s7_02",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, full body, standing, profile, facing right"
+  },
+  {
+   "file": "06_back_threeq.png",
+   "source_part": "s7_03",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, full body, standing, from behind"
+  },
+  {
+   "file": "07_back.png",
+   "source_part": "s5_06",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, full body, standing, from behind, back view"
+  },
+  {
+   "file": "08_waving.png",
+   "source_part": "s8_01",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, full body, standing, waving, smile"
+  },
+  {
+   "file": "09_walking.png",
+   "source_part": "s5_01",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, full body, walking, profile"
+  },
+  {
+   "file": "10_running.png",
+   "source_part": "s5_02",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, full body, running"
+  },
+  {
+   "file": "11_sitting.png",
+   "source_part": "s5_03",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, sitting, chair, laptop, typing"
+  },
+  {
+   "file": "12_pointing.png",
+   "source_part": "s3_01",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, upper body, pointing, arm up, open mouth"
+  },
+  {
+   "file": "13_presenting.png",
+   "source_part": "s3_02",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, upper body, presenting, open palm, profile"
+  },
+  {
+   "file": "14_crossed.png",
+   "source_part": "s3_03",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, upper body, arms crossed, smile"
+  },
+  {
+   "file": "15_tablet.png",
+   "source_part": "s3_04",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, upper body, holding tablet, hand on chin, thinking"
+  },
+  {
+   "file": "16_confident.png",
+   "source_part": "s3_05",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, upper body, hand in pocket, smile"
+  },
+  {
+   "file": "17_celebrate.png",
+   "source_part": "s3_06",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, upper body, arms up, celebrating, open mouth, one eye closed"
+  },
+  {
+   "file": "18_present_med.png",
+   "source_part": "s8_02",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, upper body, presenting, open palm"
+  },
+  {
+   "file": "19_neutral.png",
+   "source_part": "s2_06",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, portrait, neutral expression, looking at viewer"
+  },
+  {
+   "file": "20_happy.png",
+   "source_part": "s2_03",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, portrait, open mouth, smile, happy"
+  },
+  {
+   "file": "21_starry.png",
+   "source_part": "s2_05",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, portrait, sparkling eyes, excited"
+  },
+  {
+   "file": "22_worried.png",
+   "source_part": "s2_01",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, portrait, worried, frown"
+  },
+  {
+   "file": "23_angry.png",
+   "source_part": "s6_01",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, portrait, angry, frown"
+  },
+  {
+   "file": "24_sad.png",
+   "source_part": "s6_02",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, portrait, sad, tears"
+  },
+  {
+   "file": "25_wink.png",
+   "source_part": "s6_03",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, portrait, wink, smile, smug"
+  },
+  {
+   "file": "26_determined.png",
+   "source_part": "s6_04",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, portrait, serious, determined"
+  },
+  {
+   "file": "27_laughing.png",
+   "source_part": "s6_06",
+   "caption": "anaquant, 1girl, solo, teal hair, medium hair, amber eyes, navy blazer, white shirt, green necktie, dark trousers, flat color, simple background, white background, portrait, laughing, closed eyes, open mouth"
+  }
+ ],
+ "excluded": {
+  "s2_02": "off-model chibi proportions",
+  "s4_04": "different detailed style",
+  "s5_04": "skirt breaks outfit canon",
+  "s5_05": "weaker duplicate back view",
+  "s2_04/s6_05": "near-duplicate expressions",
+  "s4 fragments": "not character images"
+ }
+}
