@@ -53,6 +53,19 @@ def frame(name, focus="center 32%"):
     return f"<div class='frame'><div class='art' style=\"background-image:url('{b64(name)}');background-position:{focus}\"></div><div class='grad'></div>"
 
 
+def _half(img, focus):
+    return f"<div style=\"position:absolute;inset:0;background-image:url('{b64(img)}');background-size:cover;background-position:{focus}\"></div>"
+
+
+def split_frame(left, right, lf="center 35%", rf="center 35%"):
+    """Two half-width panels in one frame — for a 2-character interaction beat
+    (each character generated cleanly with its own LoRA, no fragile compositing)."""
+    return (f"<div class='frame'>"
+            f"<div style='position:absolute;left:0;top:0;bottom:0;width:50%;overflow:hidden'>{_half(left, lf)}</div>"
+            f"<div style='position:absolute;right:0;top:0;bottom:0;width:50%;overflow:hidden;border-left:5px solid #0A0D12'>{_half(right, rf)}</div>"
+            f"<div class='grad'></div>")
+
+
 def slides():
     S = []
     # 0 cover
@@ -78,10 +91,10 @@ def slides():
     S.append(page(frame("p4_winter", "center 45%") +
         "<div class='narr'>Then winter came. And it did not forgive.</div>"
         "<div class='sfx' style='left:120px;top:520px'>HOWWWL…</div></div>"))
-    # 5
-    S.append(page(frame("p5_gh_beg", "center 34%") +
-        "<div class='narr'>Starving, the Grasshopper crawled to the Ant's door.</div>"
-        "<div class='bub' style='left:120px;top:840px'>P-please… just a <b>crumb?</b></div></div>"))
+    # 5 — split: grasshopper begging | ant refusing at the door
+    S.append(page(split_frame("p5a_gh_beg", "p5b_ant_door", "center 42%", "center 38%") +
+        "<div class='narr'>Starving, the Grasshopper begged at the Ant's door.</div>"
+        "<div class='bub' style='left:56px;top:930px;max-width:42%'>P-please… just a <b>crumb?</b></div></div>"))
     # 6 — villain reveal + moral
     S.append(page(frame("p6_ant_evil", "center 30%") +
         "<div class='bub' style='left:90px;top:250px;max-width:78%'>You laughed while I slaved, fiddler. Now <b>DANCE IN THE FROST!</b></div>"
