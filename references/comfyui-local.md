@@ -83,8 +83,11 @@ outs = client.generate(
 GGUF MoE chain + lightx2v 4-step LoRA (4 total sampler steps, not 20).
 Params: `prompt, negative, seed, width, height, length, image`. Measured
 **185.2 s** at 832×480×81f (Task 9 deliverable), **138.35 s** at
-832×480×49f fully warm, peak VRAM **11,653–11,757 MiB** (~96% of the
-12,282 MiB card). This is the production video lane.
+832×480×49f — page-cache warm on a freshly restarted server, not GPU-
+resident warmth (`task-8-report.md`). Peak VRAM **11,653 MiB** at 81f
+(Task 9) and **≥11,757 MiB** at 49f (Task 8 — a floor, not a confirmed
+peak; the VRAM poller stopped sampling ~58s before that render finished).
+This is the production video lane.
 
 ```python
 client = ComfyClient()
@@ -121,10 +124,14 @@ racing the headless launcher for the port, running a system Python that
 lacked the `gguf` package the GGUF template needs — check `Get-Process
 ComfyUI` before assuming the headless server owns the port.
 
-**The queue serializes concurrent Claude sessions safely** — observed live
-2026-08-03 when a parallel session's `zimage_t2i` submissions interleaved
-in `/history` with a 5B render and delayed it (~32.5 min of queued time,
-no corruption). Safe, not free: a busy queue is real latency to budget for.
+**The queue interleaves submissions from multiple sessions — that is not
+the same as running safely under contention.** Observed live 2026-08-03: a
+parallel session's `zimage_t2i` submissions interleaved in `/history` with
+the 5B DNF's Attempt 1 (see below), which ran 1,951 s and then hit
+`execution_interrupted` at the `KSampler` node — likely caused by that
+same contention (`benchmark.md`'s own hedge: "likely queue/GPU
+contention"), and a **failed render**, not merely a slow one. Budget for
+outright failure/retry under concurrency, not just added latency.
 
 **GPU etiquette.** `nvidia-smi` preflight before every submission — the
 owner games on this GPU, and a concurrent game is not a Python-catchable
@@ -158,13 +165,15 @@ is available as an owner one-click update — recommended for GGUF/template
 fixes, not applied yet, non-blocking (Task 11). **Krea 2 needs core
 ≥0.26** — out of reach even after that update.
 
-## Excluded, and why
+## Excluded or deferred, and why
 
-- **HunyuanVideo 1.5** — Tencent's Community License territorially excludes
-  the EU (verified from the LICENSE text); the owner is assumed EU (.fr).
-- **LTX-2/2.3** — 19–22B UNet plus a mandatory Gemma-12B text encoder (≥9.45
-  GB at smallest quant) doesn't fit this 12 GB card; its NVFP4 memory gains
-  are Blackwell-only, no help on an Ada card.
+- **HunyuanVideo 1.5 — excluded.** Tencent's Community License territorially
+  excludes the EU (verified from the LICENSE text); the owner is assumed EU
+  (.fr).
+- **LTX-2/2.3 — deferred**, not excluded (spec's own word). 19–22B UNet plus
+  a mandatory Gemma-12B text encoder (≥9.45 GB at smallest quant) doesn't fit
+  this 12 GB card sensibly; its NVFP4 memory gains are Blackwell-only, no
+  help on an Ada card. Revisit if a smaller-footprint variant ships.
 - **"Wan 2.5/2.6/2.7 open weights"** — 2.5/2.6 are API-only, no open weights
   exist; "Wan 2.7 open weights" sites are SEO fakes (checked against the
   official Wan GitHub/HF orgs directly).
