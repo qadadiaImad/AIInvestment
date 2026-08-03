@@ -119,12 +119,12 @@ def pages():
         dict(art="mrmarket_bell", narr="9:30 AM. Mr. Market rings the bell…", bubbles=[("Behold — the FUTURE of chips!", 20, 55)]),
         dict(art="amd_pedestal", narr="…and crowns his Golden Boy.", sfx=("ALL HAIL AMD!", 6, 66)),
         dict(art="crowd_cheer", bubbles=[("BUY! BUY! BUY!", 22, 20)], narr="The crowd went wild."),
-        dict(art="rocket", sfx=("TO THE MOON!", 8, 8), narr="…while an old sage quietly opened his ledger."),
+        dict(art="rocket_sage", focus="center 40%", sfx=("TO THE MOON!", 6, 6), narr="…while an old sage quietly opened his ledger."),
     ]))
     # 2 — HUBRIS
     P.append(page2x2([
-        dict(art="AMD", focus="center 20%", bubbles=[("I'm UNSTOPPABLE!", 16, 20)]),
-        dict(art="MRMARKET", focus="center 24%", narr="Mr. Market pumped him higher…", bubbles=[("HIGHER! HIGHER!", 20, 60)]),
+        dict(art="amd_hero", focus="center 22%", bubbles=[("I'm UNSTOPPABLE!", 16, 20)]),
+        dict(art="mrmarket_hubris", focus="center 24%", narr="Mr. Market pumped him higher…", bubbles=[("HIGHER! HIGHER!", 20, 60)]),
         dict(art="crowd_cheer", narr="Nobody asked what he was WORTH."),
         dict(art="amd_pedestal", focus="center 20%", sfx=("$476!!", 30, 12), narr="The price just… soared."),
     ]))
@@ -138,7 +138,7 @@ def pages():
     # 4 — THE FALL (climax)
     P.append(page2x2([
         dict(art="amd_crack", bubbles=[("N-no… I'm the KING!", 12, 18)]),
-        dict(art="rocket", focus="center 70%", sfx=("SP-SPUTTER…", 6, 40)),
+        dict(art="rocket_red", focus="center 55%", sfx=("SP-SPUTTER…", 6, 40)),
         dict(art="amd_fall", sfx=("CRASH!", 26, 20)),
         dict(art="crowd_panic", bubbles=[("SELL!! SELL!!", 22, 20)]),
     ]))
