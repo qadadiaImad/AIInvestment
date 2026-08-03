@@ -18,16 +18,23 @@ pose/scene/interaction. Triggers: **`fablegh`** (grasshopper), **`fableant`** (a
 %cd /kaggle/working/sd-scripts
 !pip -q install -r requirements.txt && pip -q install bitsandbytes accelerate tensorboard
 !wget -q -O /kaggle/working/sdxl.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors
-import glob, zipfile, os, shutil
-zip_path = glob.glob('/kaggle/input/**/fable_lora_dataset.zip', recursive=True)[0]
-print('dataset:', zip_path)
-zipfile.ZipFile(zip_path).extractall('/kaggle/working/raw')
+import glob, os, shutil, zipfile
+# Kaggle auto-extracts uploaded zips, so detect the extracted folders OR a zip:
+gh = glob.glob('/kaggle/input/**/grasshopper', recursive=True)
+if gh:
+    base = os.path.dirname(gh[0]); print('dataset (already extracted) at:', base)
+else:
+    z = glob.glob('/kaggle/input/**/*.zip', recursive=True)
+    assert z, "No dataset under /kaggle/input — Add Input > attach fable_training, then rerun."
+    print('extracting', z[0]); zipfile.ZipFile(z[0]).extractall('/kaggle/working/raw'); base='/kaggle/working/raw'
 for name, trig in [('grasshopper','fablegh'), ('ant','fableant')]:
     dst=f'/kaggle/working/data_{trig}/10_{trig}'; os.makedirs(dst, exist_ok=True)
-    for f in os.listdir(f'/kaggle/working/raw/{name}'):
-        if f.endswith(('.png','.txt')): shutil.copy(f'/kaggle/working/raw/{name}/{f}', dst)
+    for f in os.listdir(f'{base}/{name}'):
+        if f.endswith(('.png','.txt')): shutil.copy(f'{base}/{name}/{f}', dst)
+    print(name, '->', len([x for x in os.listdir(dst) if x.endswith('.png')]), 'images')
 open('/kaggle/working/s_gh.txt','w').write("fablegh, a cute cartoon green grasshopper playing a fiddle in a meadow --w 768 --h 768 --d 42 --s 24")
 open('/kaggle/working/s_ant.txt','w').write("fableant, a cute cartoon red ant carrying a grain in a forest --w 768 --h 768 --d 42 --s 24")
+print('SETUP DONE')
 ```
 
 ## Cell 2 — live loss graph (optional)
