@@ -45,6 +45,22 @@ PARAM_MAPS["zimage_t2i"] = {
 # "wan22_ti2v_5b" (T2V, no start_image input at all — the input is
 # optional per /object_info) and "wan22_ti2v_5b_i2v" (adds node "12"
 # LoadImage wired to node "6"'s start_image).
+# Illustrious-XL (SDXL) + LoRA text-to-image. Standard SDXL graph:
+# CheckpointLoaderSimple -> LoraLoader -> dual CLIPTextEncode -> KSampler
+# (dpmpp_2m/karras, steps 26, cfg 6) -> VAEDecode -> SaveImage. Written for
+# the ana_cast_v1 cast LoRA (2026-08-04); lora/strength are exposed so any
+# future character or style LoRA reuses the same graph.
+PARAM_MAPS["sdxl_lora_t2i"] = {
+    "prompt":     ("3", "text"),
+    "negative":   ("4", "text"),
+    "seed":       ("6", "seed"),
+    "width":      ("5", "width"),
+    "height":     ("5", "height"),
+    "lora":       ("2", "lora_name"),
+    "lora_sm":    ("2", "strength_model"),
+    "lora_sc":    ("2", "strength_clip"),
+}
+
 PARAM_MAPS["wan22_ti2v_5b"] = {
     "prompt":   ("4", "text"),
     "negative": ("5", "text"),

@@ -1,0 +1,38 @@
+{
+ "generated_at": "2026-08-03T23:33:14Z",
+ "base": "Illustrious-XL-v0.1",
+ "lora": "ana_cast_v1.safetensors @0.9",
+ "sampler": "dpmpp_2m/karras s26 cfg6",
+ "tests": [
+  {
+   "test": "t1_ana_jump",
+   "seed": 61001,
+   "prompt": "anaquant, 1girl, solo, teal hair, amber eyes, navy blazer, green necktie, dark trousers, full body, jumping, arms up, happy, open mouth, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 16.1
+  },
+  {
+   "test": "t2_rex_phone",
+   "seed": 61002,
+   "prompt": "rexquant, 1boy, solo, orange hair, spiky hair, glasses, gray vest, white shirt, sleeves rolled up, full body, crouching, holding smartphone, looking at phone, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.0
+  },
+  {
+   "test": "t3_sol_dance",
+   "seed": 61003,
+   "prompt": "solquant, 1boy, solo, old man, gray hair, thick mustache, burgundy cardigan, yellow bow tie, plump, full body, dancing, happy, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.0
+  },
+  {
+   "test": "t4_pair_highfive",
+   "seed": 61004,
+   "prompt": "anaquant, rexquant, 1girl, 1boy, high five, facing each other, full body, happy, teal hair, orange hair, glasses, navy blazer, gray vest, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.0
+  },
+  {
+   "test": "t5_trio_run",
+   "seed": 61005,
+   "prompt": "anaquant, rexquant, solquant, 1girl, 2boys, running together, side by side, full body, teal hair, orange hair, glasses, gray hair, mustache, burgundy cardigan, masterpiece, best quality, flat color, simple background, white background",
+   "seconds": 8.0
+  }
+ ]
+}
