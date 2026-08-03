@@ -40,9 +40,12 @@ NEG_DEFAULT = ("text, caption, words, letters, signature, watermark, logo, usern
                "cropped, out of frame, cluttered, oversaturated, ugly, plain flat lighting")
 
 
-def build_workflow(prompt, negative, width, height, steps, cfg, seed, ckpt, lora, lora_weight):
+def build_workflow(prompt, negative, width, height, steps, cfg, seed, ckpt, lora, lora_weight,
+                   ref_filename=None, ip_weight=0.75):
     """SDXL txt2img graph in ComfyUI API format. Optional LoRA is inserted
-    between the checkpoint and the sampler/CLIP."""
+    between the checkpoint and the sampler/CLIP. Optional IPAdapter reference
+    image (ref_filename, already uploaded to ComfyUI/input) locks a character's
+    face/costume across generations for consistent comic panels."""
     g = {
         "4": {"class_type": "CheckpointLoaderSimple", "inputs": {"ckpt_name": ckpt}},
         "5": {"class_type": "EmptyLatentImage", "inputs": {"width": width, "height": height, "batch_size": 1}},
@@ -55,6 +58,17 @@ def build_workflow(prompt, negative, width, height, steps, cfg, seed, ckpt, lora
                        "model": ["4", 0], "clip": ["4", 1]},
         }
         model_src, clip_src = ["10", 0], ["10", 1]
+    if ref_filename:
+        # IPAdapter: condition the model on a reference character image so the
+        # same face + costume carries across panels (ComfyUI_IPAdapter_plus).
+        g["50"] = {"class_type": "IPAdapterUnifiedLoader",
+                   "inputs": {"model": model_src, "preset": "PLUS (high strength)"}}
+        g["51"] = {"class_type": "LoadImage", "inputs": {"image": ref_filename}}
+        g["52"] = {"class_type": "IPAdapterAdvanced", "inputs": {
+            "model": ["50", 0], "ipadapter": ["50", 1], "image": ["51", 0],
+            "weight": ip_weight, "weight_type": "linear", "combine_embeds": "concat",
+            "start_at": 0.0, "end_at": 1.0, "embeds_scaling": "V only"}}
+        model_src = ["52", 0]
     g["6"] = {"class_type": "CLIPTextEncode", "inputs": {"text": prompt, "clip": clip_src}}
     g["7"] = {"class_type": "CLIPTextEncode", "inputs": {"text": negative, "clip": clip_src}}
     g["3"] = {"class_type": "KSampler", "inputs": {
@@ -75,11 +89,30 @@ def _get(path):
     return json.loads(urllib.request.urlopen(HOST + path, timeout=30).read())
 
 
+def upload_ref(path):
+    """Upload a reference image to ComfyUI's input/ dir (for IPAdapter LoadImage).
+    Returns the server-side filename."""
+    p = pathlib.Path(path)
+    data = p.read_bytes()
+    boundary = "----aiinvest" + str(len(data))
+    body = (f"--{boundary}\r\n".encode()
+            + f'Content-Disposition: form-data; name="image"; filename="{p.name}"\r\n'.encode()
+            + b"Content-Type: image/png\r\n\r\n" + data + b"\r\n"
+            + f"--{boundary}--\r\n".encode())
+    req = urllib.request.Request(HOST + "/upload/image", data=body,
+                                 headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
+    r = json.loads(urllib.request.urlopen(req, timeout=60).read())
+    sub = r.get("subfolder", "")
+    return f"{sub}/{r['name']}" if sub else r["name"]
+
+
 def generate(prompt, out, negative=NEG_DEFAULT, width=1024, height=1024, steps=28, cfg=7.0,
              seed=0, ckpt="sd_xl_base_1.0.safetensors", lora=None, lora_weight=0.9, timeout_s=600,
-             quality=True):
+             quality=True, ref=None, ip_weight=0.75):
     full_prompt = f"{prompt}, {QUALITY}" if quality else prompt
-    wf = build_workflow(full_prompt, negative, width, height, steps, cfg, seed, ckpt, lora, lora_weight)
+    ref_filename = upload_ref(ref) if ref else None
+    wf = build_workflow(full_prompt, negative, width, height, steps, cfg, seed, ckpt, lora, lora_weight,
+                        ref_filename=ref_filename, ip_weight=ip_weight)
     t0 = time.time()
     pid = _post("/prompt", {"prompt": wf})["prompt_id"]
     img = None
@@ -124,6 +157,8 @@ if __name__ == "__main__":
     ap.add_argument("--lora", default=None)
     ap.add_argument("--lora-weight", type=float, default=0.9)
     ap.add_argument("--plain", action="store_true", help="do not append the QUALITY suffix to the prompt")
+    ap.add_argument("--ref", default=None, help="reference character image (IPAdapter) for consistent face/costume")
+    ap.add_argument("--ip-weight", type=float, default=0.75, help="IPAdapter strength (0.5-1.0)")
     a = ap.parse_args()
     generate(a.prompt, a.out, a.negative, a.width, a.height, a.steps, a.cfg, a.seed, a.ckpt, a.lora, a.lora_weight,
-             quality=not a.plain)
+             quality=not a.plain, ref=a.ref, ip_weight=a.ip_weight)
