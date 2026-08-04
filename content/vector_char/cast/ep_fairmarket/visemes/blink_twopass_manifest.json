@@ -1,0 +1,98 @@
+[
+ {
+  "pose": "sol_point",
+  "viseme": "blink",
+  "out": "sol_point__blink__tp0",
+  "method": "two-pass single-eye inpaint",
+  "denoise": 0.95,
+  "phrase": "sleeping face, eye closed, curved closed eyelid",
+  "seconds": 17.1,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T08:23:30Z"
+ },
+ {
+  "pose": "sol_point",
+  "viseme": "blink",
+  "out": "sol_point__blink__tp1",
+  "method": "two-pass single-eye inpaint",
+  "denoise": 0.95,
+  "phrase": "eye shut, closed eyelid line, no pupil",
+  "seconds": 17.2,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T08:23:47Z"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "blink",
+  "out": "rex_shock_v1__blink__tp0",
+  "method": "two-pass single-eye inpaint",
+  "denoise": 0.95,
+  "phrase": "sleeping face, eye closed, curved closed eyelid",
+  "seconds": 17.8,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T08:24:05Z"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "blink",
+  "out": "rex_shock_v1__blink__tp1",
+  "method": "two-pass single-eye inpaint",
+  "denoise": 0.95,
+  "phrase": "eye shut, closed eyelid line, no pupil",
+  "seconds": 19.7,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T08:24:25Z"
+ },
+ {
+  "pose": "sol_laugh",
+  "viseme": "blink",
+  "out": "sol_laugh__blink__tp0",
+  "method": "two-pass single-eye inpaint",
+  "denoise": 0.95,
+  "phrase": "sleeping face, eye closed, curved closed eyelid",
+  "seconds": 15.2,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T08:24:40Z"
+ },
+ {
+  "pose": "sol_laugh",
+  "viseme": "blink",
+  "out": "sol_laugh__blink__tp1",
+  "method": "two-pass single-eye inpaint",
+  "denoise": 0.95,
+  "phrase": "eye shut, closed eyelid line, no pupil",
+  "seconds": 13.0,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T08:24:53Z"
+ },
+ {
+  "pose": "sol_wink",
+  "viseme": "blink",
+  "out": "sol_wink__blink__tp0",
+  "method": "two-pass single-eye inpaint",
+  "denoise": 0.95,
+  "phrase": "sleeping face, eye closed, curved closed eyelid",
+  "seconds": 17.8,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T08:25:11Z"
+ },
+ {
+  "pose": "sol_wink",
+  "viseme": "blink",
+  "out": "sol_wink__blink__tp1",
+  "method": "two-pass single-eye inpaint",
+  "denoise": 0.95,
+  "phrase": "eye shut, closed eyelid line, no pupil",
+  "seconds": 19.9,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T08:25:31Z"
+ }
+]

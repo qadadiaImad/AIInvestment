@@ -14,18 +14,18 @@ from vector.visemes_ep1 import (VIS, SOL_POSES, REX_POSES, load_anchors,
 ORDER = ["closed", "half", "open", "oh", "blink"]
 
 
+ROUNDS = ("round1", "round2", "round3", "round4", "twopass")
+
+
 def merge_picks() -> dict:
+    """Later rounds win: each was generated to fix what the previous one
+    failed the gate on."""
     picks: dict[str, dict[str, str]] = {}
-    for tag in ("round1", "round2"):
-        for pose, vis in json.loads(
-                (VIS / f"picks_{tag}.json").read_text("utf-8")).items():
-            for v, cand in vis.items():
-                picks.setdefault(pose, {})[v] = cand
-    # round 3: single-pose audit (rex_shock_v1), result inlined by the
-    # orchestrator into picks_round3.json
-    p3 = VIS / "picks_round3.json"
-    if p3.exists():
-        for pose, vis in json.loads(p3.read_text("utf-8")).items():
+    for tag in ROUNDS:
+        p = VIS / f"picks_{tag}.json"
+        if not p.exists():
+            continue
+        for pose, vis in json.loads(p.read_text("utf-8")).items():
             for v, cand in vis.items():
                 picks.setdefault(pose, {})[v] = cand
     (VIS / "picks_final.json").write_text(json.dumps(picks, indent=1),

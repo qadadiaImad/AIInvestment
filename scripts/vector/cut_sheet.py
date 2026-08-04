@@ -35,7 +35,7 @@ CUT = [
     (345,  ["rex_shock"],                "closeup", 1920, 1.00, "REX WHAT?!"),
     (400,  ["sol_point"],                "full",    800,  1.00, "SOL exhibit + card"),
     (458,  ["sol_point"],                "full",    800,  3.00, "  CU, card out"),
-    (523,  ["sol_point"],                "full",    800,  1.00, "  back to card"),
+    (523,  ["sol_finger"],               "full",    800,  1.00, "  back to card"),
     (590,  ["sol_point"],                "full",    800,  2.20, "  kicker CU"),
     (640,  ["rex_shock_v1"],             "panel",   620,  1.00, "REX an INDEX?!"),
     (687,  ["rex_shock_v1"],             "panel",   620,  1.45, "  push"),

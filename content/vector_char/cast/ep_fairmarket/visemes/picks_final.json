@@ -80,5 +80,10 @@
   "closed": "rex_shock_v1__closed__r3c0",
   "half": "rex_shock_v1__half__r3c0",
   "oh": "rex_shock_v1__oh__r3c0"
+ },
+ "sol_laugh": {
+  "closed": "sol_laugh__closed__r4c1",
+  "half": "sol_laugh__half__r4c0",
+  "oh": "sol_laugh__oh__r4c1"
  }
 }

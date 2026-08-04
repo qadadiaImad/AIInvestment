@@ -80,5 +80,11 @@
   "closed": "characters/cast_ep1/visemes/rex_shock_v1__closed.svg",
   "half": "characters/cast_ep1/visemes/rex_shock_v1__half.svg",
   "oh": "characters/cast_ep1/visemes/rex_shock_v1__oh.svg"
+ },
+ "sol_laugh": {
+  "closed": "characters/cast_ep1/visemes/sol_laugh__closed.svg",
+  "half": "characters/cast_ep1/visemes/sol_laugh__half.svg",
+  "oh": "characters/cast_ep1/visemes/sol_laugh__oh.svg",
+  "open": "characters/cast_ep1/sol_laugh.svg"
  }
 }

@@ -49,7 +49,7 @@ MASK_RY = 1.77
 
 SOL_POSES = ["sol_point", "sol_finger", "sol_armswide", "sol_point_v1",
              "sol_smug", "sol_wink", "sol_smug_v1", "sol_smug_v2",
-             "sol_wink_v1"]
+             "sol_wink_v1", "sol_laugh"]
 REX_POSES = ["rex_eager", "rex_eager_v1", "rex_shock", "rex_shock_v1",
              "rex_determined"]
 
@@ -77,6 +77,10 @@ PHRASES = {
               "eyes closed, peaceful expression",
               "closed eyes, mid blink"],
 }
+# poses whose base drawing already IS a viseme, so that slot points at
+# the base SVG instead of a regenerated one
+BASE_IS = {"sol_laugh": "open"}
+
 # candidates per (character, viseme); Sol has no 'closed' (mustache IS closed)
 COUNTS = {"sol": {"half": 2, "open": 2, "oh": 3, "blink": 2},
           "rex": {"closed": 3, "half": 2, "open": 2, "oh": 3, "blink": 3}}
@@ -423,6 +427,14 @@ def phase_vectorize(picks_path: Path) -> None:
             manifest.setdefault(pose, {})[viseme] = \
                 f"characters/cast_ep1/visemes/{pose}__{viseme}.svg"
             print(f"{pose}.{viseme} <- {cand}")
+    # A pose whose BASE drawing already is one of the visemes maps that
+    # slot straight to the base SVG — sol_laugh is drawn mid-laugh, so
+    # its wide-open mouth is the 'open' shape and regenerating one would
+    # only risk drift.
+    for pose, slot in BASE_IS.items():
+        if pose in manifest:
+            manifest[pose][slot] = f"characters/cast_ep1/{pose}.svg"
+            print(f"{pose}.{slot} <- base drawing")
     (FIX / "visemes.json").write_text(json.dumps(manifest, indent=1),
                                       "utf-8")
     print(f"wrote {FIX / 'visemes.json'} "

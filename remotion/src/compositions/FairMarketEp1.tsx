@@ -34,8 +34,14 @@ const HF = headFocus as unknown as Record<string, {fx: number; fy: number}>;
 // and tx/ty place that head on screen; k=1 with no tx/ty is the staged
 // framing unchanged. `only` isolates one actor of a two-shot, which is
 // what turns a static two-shot into shot/reverse-shot.
+// `pose` swaps the DRAWING for this shot. This is not the old per-beat
+// cycling that changed Sol's haircut mid-sentence: that swapped between
+// near-identical framings every 14 frames. A shot-level swap happens once,
+// on a phrase boundary, between two drawings the identity gate rates core
+// tier for the same character AND that the shot-list review does not call
+// interchangeable — i.e. a real cut to a different gesture.
 type Shot = {from: number; k?: number; tx?: number; ty?: number; only?: number;
-             hideCard?: boolean};
+             hideCard?: boolean; pose?: string};
 const shotAt = (shots: Shot[] | undefined, since: number) => {
   if (!shots || !shots.length) return {shot: undefined, shotSince: since};
   let cur = shots[0];
@@ -103,9 +109,13 @@ const BEATS: Beat[] = [
    // 8s was one static shot — 22% of the episode. Cut on the VO's own
    // pauses (scripts/vector/phrase_cuts.py) between the speaker and the
    // evidence: wide+card, punch to Sol, back to the card, kicker CU.
+   // shot 3 cuts to sol_finger: it breaks up 8s of a single drawing, it
+   // is the "here's the key insight" gesture the line wants, and unlike
+   // sol_point it carries a gated blink, so Sol blinks during the
+   // longest sequence in the episode.
    shots: [{from: 0},
            {from: 58, k: 3.0, tx: 520, ty: 760, hideCard: true},
-           {from: 123},
+           {from: 123, pose: "sol_finger", tx: 265},
            {from: 190, k: 2.2, tx: 560, ty: 900, hideCard: true}],
    vo: "v6_sol_exhibit", speaker: "SOL",
    line: "July 2022. The Speaker's household sold NVIDIA — days before the chip subsidies passed. At a loss, kid."},
@@ -206,7 +216,7 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   const idx = cycling
     ? CYCLE[Math.floor(since / SWAP) % CYCLE.length] % a.poses.length
     : 0;
-  const pose = a.poses[idx];
+  const pose = shot?.pose ?? a.poses[idx];
   const d = AN[pose];
   if (!d) return null;
   const swapSince = since % SWAP;
