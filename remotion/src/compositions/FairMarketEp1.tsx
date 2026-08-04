@@ -98,13 +98,20 @@ const mouthStateFor = (beat: Beat, frame: number): {sol: number; rex: number} =>
   return out;
 };
 
-const Mouth: React.FC<{m: M; state: number; w: number; h: number}> = ({m, state, w, h}) => {
+const Mouth: React.FC<{m: M; state: number; w: number; h: number; sol: boolean}> =
+  ({m, state, w, h, sol}) => {
   const mw = m.w * w;
   const cx = m.x * w, cy = m.y * h;
+  // Sol: NO skin patch and nothing when closed — his mustache IS the closed
+  // mouth; painting skin over it was the visible defect. Only the open
+  // states draw, below the mustache.
+  if (sol && state === 0) return null;
   return (
     <>
-      <div style={{position: "absolute", left: cx - mw * 0.85, top: cy - mw * 0.7,
-        width: mw * 1.7, height: mw * 1.4, borderRadius: "50%", background: m.skin}} />
+      {!sol ? (
+        <div style={{position: "absolute", left: cx - mw * 0.85, top: cy - mw * 0.7,
+          width: mw * 1.7, height: mw * 1.4, borderRadius: "50%", background: m.skin}} />
+      ) : null}
       {state === 0 ? (
         <div style={{position: "absolute", left: cx - mw * 0.45, top: cy - mw * 0.06,
           width: mw * 0.9, height: Math.max(5, mw * 0.13), borderRadius: 8, background: "#5A2028"}} />
@@ -148,7 +155,7 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
       transformOrigin: a.kind === "full" ? `${d.anchor[0] * 100}% ${d.anchor[1] * 100}%` : "50% 60%",
       opacity: Math.min(1, since / 3)}}>
       <Img src={staticFile(d.src)} style={{position: "absolute", inset: 0, width: w, height: h}} />
-      {m && speaking ? <Mouth m={m} state={mouthState} w={w} h={h} /> : null}
+      {m && speaking ? <Mouth m={m} state={mouthState} w={w} h={h} sol={pose.startsWith("sol")} /> : null}
     </div>
   );
 };
