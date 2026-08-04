@@ -379,8 +379,13 @@ const BEATS: Beat[] = [
    vo: "a2_sol_sixweeks", speaker: "SOL",
    line: "Copy them. With a filing from six weeks ago?"},
 
-  {at: 2544, actors: [{poses: ["rex_skeptic"], kind: "full", x: 470, y: FLOOR_Y, h: 1180}],
-   shots: [{from: 0, k: 1.14, kEnd: 1.26, tx: 540, ty: 1030}],
+  // Staged at 1180 with a 1.26 push this was the biggest Rex in the
+  // episode by a wide margin, and rex_skeptic is the most realistically
+  // -proportioned drawing in the set — at that size the proportion gap
+  // stops reading as "closer" and starts reading as a different
+  // character. Sized to match his other solos instead.
+  {at: 2544, actors: [{poses: ["rex_skeptic"], kind: "full", x: 470, y: FLOOR_Y, h: 960}],
+   shots: [{from: 0, k: 1.06, kEnd: 1.16, tx: 540, ty: 1120}],
    vo: "a2_rex_six", speaker: "REX", line: "Six weeks?"},
 
   {at: 2599, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
@@ -593,13 +598,25 @@ const ExhibitCard: React.FC<{c: Card; since: number}> = ({c, since}) => {
       transform: `translateY(${(1 - slide) * 14}px)`, opacity: slide}}>
       <div style={{fontFamily: "Impact, Arial", fontSize: 38, letterSpacing: 1,
         borderBottom: "4px solid #111", paddingBottom: 8, marginBottom: 14}}>{c.title}</div>
+      {/* The body used to hard-switch on at since>14, 34, 54 — so the card
+          spent its first half-second as a title over an empty cream box,
+          and a binary opacity flip made that read as a failed render
+          rather than a reveal. Two independent reviewers called it a
+          broken graphic on the frame that carries the episode's strongest
+          line. The body now starts almost with the header and FADES,
+          which is the difference between a card building and a card
+          missing its content. */}
       {c.lines.map((ln, i) => (
         <div key={i} style={{fontSize: 31, fontWeight: 700, lineHeight: 1.36,
-          opacity: since > 14 + i * 20 ? 1 : 0}}>{ln}</div>
+          opacity: Math.max(0, Math.min(1, (since - (4 + i * 10)) / 8)),
+          transform: `translateY(${(1 - Math.max(0, Math.min(1,
+            (since - (4 + i * 10)) / 8))) * 6}px)`}}>{ln}</div>
       ))}
       {c.big ? (
         <div style={{fontFamily: "Impact, Arial", fontSize: 104, textAlign: "center",
-          margin: "2px 0 0", color: "#7A1F2B", opacity: since > 30 ? 1 : 0}}>{c.big}</div>
+          margin: "2px 0 0", color: "#7A1F2B",
+          opacity: Math.max(0, Math.min(1,
+            (since - (8 + c.lines.length * 10)) / 9))}}>{c.big}</div>
       ) : null}
       {c.foot ? (
         <div style={{fontSize: 20, position: "absolute", left: 34, bottom: 18,
@@ -623,8 +640,13 @@ const ExhibitCard: React.FC<{c: Card; since: number}> = ({c, since}) => {
 // the newest one is live, wandering inside its own high/low until it
 // settles. See motion/Infographic.tsx (TickerTape) for the tape rules
 // and for why the series is labelled ILLUSTRATIVE on its face.
-const TVIdle: React.FC<{frame: number}> = ({frame}) => (
-  <TickerTape frame={frame} w={TV_SCREEN.w} h={TV_SCREEN.h}
+// `bare` drops the tape's own header and price readout. The episode
+// title sits over the monitor on the open and the outro, and two
+// unrelated blocks of text stacked on each other read as a layout bug.
+// (The review panel judged this cosmetic and refuted it 2-1; it is a
+// two-line change that removes a real text-on-text stack, so it is in.)
+const TVIdle: React.FC<{frame: number; bare?: boolean}> = ({frame, bare}) => (
+  <TickerTape frame={frame} w={TV_SCREEN.w} h={TV_SCREEN.h} bare={bare}
     label="LAWMAKER TRADE TRACKER"
     sub="disclosed positions, rebuilt from filings" />
 );
@@ -727,7 +749,7 @@ export const FairMarketEp1: React.FC = () => {
               stood down for that shot and the monitor falls back to the
               tape, rather than a head silently covering the graphic the
               line is about. */}
-          {shot?.hideCard ? <TVIdle frame={frame} />
+          {shot?.hideCard ? <TVIdle frame={frame} bare={!!cur.title} />
             : shot?.tvPose ? <TVPose pose={shot.tvPose} since={shotSince} />
             : cur.graphic === "timeline_nvidia" ? (
               <TimelineExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
@@ -743,7 +765,7 @@ export const FairMarketEp1: React.FC = () => {
                 caption="The reporting window can run this long. By the time a trade is public, the move already happened."
                 foot="STOCK Act reporting window" />
             ) : cur.card ? <ExhibitCard c={cur.card} since={since} />
-            : <TVIdle frame={frame} />}
+            : <TVIdle frame={frame} bare={!!cur.title} />}
         </div>
         <TVGlass />
         {/* DARK MOOD. Sits above the room and below the characters, so the

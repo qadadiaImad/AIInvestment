@@ -229,7 +229,12 @@ const barAt = (i: number): Bar => {
 
 export const TickerTape: React.FC<{
   frame: number; w: number; h: number; label: string; sub?: string;
-}> = ({frame, w, h, label, sub}) => {
+  /** Drop the tape's own header/price chrome. Used when the episode title
+   *  is over the monitor: two unrelated blocks of text stacked on each
+   *  other read as a layout bug, and the candles alone still say
+   *  "this is a market" perfectly well. */
+  bare?: boolean;
+}> = ({frame, w, h, label, sub, bare}) => {
   const VIS = 26;                       // bars on screen
   const FPB = 7;                        // frames per new bar
   const head = Math.floor(frame / FPB);
@@ -292,17 +297,20 @@ export const TickerTape: React.FC<{
           strokeDasharray="7 6" opacity={0.5} />
       </svg>
 
-      <div style={{position: 'absolute', left: 22, top: 12,
-        fontFamily: 'Impact, Arial', fontSize: 23, letterSpacing: 2.5,
-        color: '#7C93B5'}}>{label}</div>
-      {sub ? (
-        <div style={{position: 'absolute', left: 22, top: 38, fontSize: 15,
-          letterSpacing: 1, color: '#4C6488', fontFamily: 'Arial'}}>{sub}</div>
-      ) : null}
-
-      <div style={{position: 'absolute', right: 22, top: 12,
-        fontFamily: 'Impact, Arial', fontSize: 30,
-        color: upNow ? UP : DOWN}}>{last.toFixed(2)}</div>
+      {bare ? null : (
+        <>
+          <div style={{position: 'absolute', left: 22, top: 12,
+            fontFamily: 'Impact, Arial', fontSize: 23, letterSpacing: 2.5,
+            color: '#7C93B5'}}>{label}</div>
+          {sub ? (
+            <div style={{position: 'absolute', left: 22, top: 38, fontSize: 15,
+              letterSpacing: 1, color: '#4C6488', fontFamily: 'Arial'}}>{sub}</div>
+          ) : null}
+          <div style={{position: 'absolute', right: 22, top: 12,
+            fontFamily: 'Impact, Arial', fontSize: 30,
+            color: upNow ? UP : DOWN}}>{last.toFixed(2)}</div>
+        </>
+      )}
 
       {/* Non-negotiable: this series is synthetic and says so on its face. */}
       <div style={{position: 'absolute', right: 22, bottom: 10, fontSize: 13,

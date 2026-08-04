@@ -117,10 +117,15 @@ def parse_beats(src: str) -> list[dict]:
                     "hideCard": "hideCard: true" in t,
                     "tvPose": bool(re.search(r'tvPose:\s*"', t)),
                 })
+        gm = re.search(r'\bgraphic:\s*"([a-z0-9_]+)"', b)
         out.append({
             "at": int(at.group(1)), "actors": actors, "shots": shots,
+            "graphic": gm.group(1) if gm else None,
             "exhibit": bool(re.search(r"\b(card|graphic):", b)),
         })
+    # each beat's own length is the gap to the next one
+    for i, b in enumerate(out):
+        b["hold"] = (out[i + 1]["at"] - b["at"]) if i + 1 < len(out) else 200
     return out
 
 
@@ -217,9 +222,33 @@ def main() -> None:
                         print(f"  OFF FRAME  beat {b['at']:4d} shot {si} "
                               f"k={k:.2f}  {pose} spans "
                               f"{bx[0]:.0f}..{bx[2]:.0f} of 0..{W}")
+    # RULE 4: an exhibit must FINISH BUILDING while it is still on screen.
+    # The timeline graphic shipped once running to frame 116 inside a beat
+    # that cut away at 58 — the gap bracket and the share counter, which
+    # ARE the payoff, were never once visible. These animations run on the
+    # BEAT clock (`since`), not the shot clock, so what matters is the last
+    # frame at which the exhibit is still un-hidden.
+    completes = {"timeline_nvidia": 70, "counter_45days": 58, "card": 60}
+    bad_build = 0
+    for b in beats:
+        kind = b.get("graphic") or ("card" if b["exhibit"] else None)
+        if not kind:
+            continue
+        need = completes.get(kind, 60)
+        shots = b["shots"] or [{"from": 0, "hideCard": False}]
+        visible_until = b["hold"]
+        for i, sh in enumerate(shots):
+            if sh["hideCard"] and all(x["hideCard"] for x in shots[i:]):
+                visible_until = sh["from"]
+                break
+        if visible_until < need:
+            bad_build += 1
+            print(f"  UNFINISHED beat {b['at']:4d}  {kind} needs {need}f to "
+                  f"build but is visible for only {visible_until}f")
+
     print(f"\nocclusions {bad_pair} · exhibit covered {bad_tv} · "
-          f"off-frame {bad_edge}")
-    if bad_pair or bad_tv or bad_edge:
+          f"off-frame {bad_edge} · unfinished exhibits {bad_build}")
+    if bad_pair or bad_tv or bad_edge or bad_build:
         raise SystemExit(1)
     print("staging clean")
 
