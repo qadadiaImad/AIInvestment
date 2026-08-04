@@ -114,7 +114,11 @@ const BEATS: Beat[] = [
   // Sol is laughing AT someone, so keep that someone in frame: Rex
   // crouched screen-left in profile, facing right at him.
   {at: 195, actors: [{poses: ["sol_laugh"], kind: "full", x: 720, y: 1800, h: 1210},
-                     {poses: ["rex_listen"], kind: "full", x: 250, y: 1810, h: 660}],
+                     // Rex FLINCHES away from the laugh — the turn aimed
+                     // off-stage left, so the lean and the startle recoil
+                     // both push him back from it.
+                     {poses: ["rex_listen"], kind: "full", x: 250, y: 1810, h: 660,
+                      turns: [{at: 14, tx: -260, ty: 1820}]}],
    vo: "v3_sol_ha", speaker: "SOL", line: "HA! …Fundamentals.", energy: 1.1},
   // EYELINE. rex_listen is drawn in profile facing RIGHT, so Rex has to
   // stand screen-LEFT for his gaze to land on Sol; he was on the right,
@@ -127,7 +131,11 @@ const BEATS: Beat[] = [
    vo: "v4_sol_politics", speaker: "SOL", line: "Sometimes… it trades on POLITICS."},
   {at: 345, actors: [{poses: ["rex_shock"], kind: "closeup", x: 540, y: 900, h: 1920}],
    vo: "v5_rex_what", speaker: "REX", line: "WHAT?!", shout: "WHAT?!", energy: 1.5},
-  {at: 400, actors: [{poses: ["sol_point"], kind: "full", x: 230, y: 1830, h: 800},
+  // Sol stands screen-RIGHT here like he does in every other beat. He was
+  // on the left, which crossed the line the rest of the episode
+  // establishes — and it also stacked him under the exhibit card instead
+  // of balancing it.
+  {at: 400, actors: [{poses: ["sol_point"], kind: "full", x: 800, y: 1830, h: 800},
                      // Rex is present for this whole 8s but only cut to
                      // once, silently, to react to the reveal — the shot
                      // that makes Sol's line land on somebody.
@@ -148,7 +156,7 @@ const BEATS: Beat[] = [
    shots: [{from: 0, only: 0},
            {from: 58, only: 0, k: 3.0, tx: 520, ty: 760, hideCard: true},
            {from: 99, only: 1, hideCard: true},
-           {from: 123, only: 0, pose: "sol_finger", tx: 265},
+           {from: 123, only: 0, pose: "sol_finger", tx: 790},
            {from: 190, only: 0, k: 2.2, tx: 560, ty: 900, hideCard: true}],
    vo: "v6_sol_exhibit", speaker: "SOL",
    line: "July 2022. The Speaker's household sold NVIDIA — days before the chip subsidies passed. At a loss, kid."},

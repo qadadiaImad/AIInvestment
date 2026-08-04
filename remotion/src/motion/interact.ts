@@ -148,12 +148,21 @@ export const turnXform = (
   // recoiling first and then turning is "he was surprised by it", which
   // is the beat when someone pops into the room uninvited.
   const recoil = impact(t - 3, 15) * -22;
+  // FORESHORTENING. A body rotating away from camera gets narrower, and
+  // that width change is most of what sells a turn — lean and tilt alone
+  // read as leaning, not turning. The squeeze peaks with the whip and
+  // eases back to about 96%, so the settled pose is fractionally turned
+  // rather than snapping back to a flat front-on width. Vertical scale
+  // rises to hold volume, the same rule squash() enforces.
+  const shorten = interpolate(t, [0, 5, 11, 22], [1, 0.86, 0.94, 0.96], {
+    easing: EASE.cruise, extrapolateLeft: 'clamp', extrapolateRight: 'clamp',
+  });
   return {
     // Amplitudes are deliberately large. With no drawn head-turn frames
     // the whole read has to come from the body's lean, the tilt and the
     // smear; at 7deg it was invisible on screen.
     dx: ux * (56 * p + recoil), dy: uy * (26 * p + recoil * 0.4),
-    sx: sm.sx, sy: sm.sy,
+    sx: sm.sx * shorten, sy: sm.sy * (1 + (1 - shorten) * 0.55),
     rot: ux * (12 * p + recoil * 0.18),
     opacity: sm.opacity, blur: sm.blur,
   };
