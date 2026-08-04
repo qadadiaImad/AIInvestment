@@ -31,6 +31,28 @@ export const STAGE_H = 1920;
 export type Side = 'L' | 'R';
 export const SIDE_X: Record<Side, number> = {L: 300, R: 790};
 
+/**
+ * TEMPERAMENT. Two characters should not move the same way.
+ *
+ * A two-hander's cast needs distinct PHYSICAL vocabularies, not just
+ * distinct lines — otherwise the same recoil-and-lean grammar plays on a
+ * seventy-year-old veteran and an over-eager junior and they read as one
+ * puppet wearing two costumes. Sol is economical: he arrives slower,
+ * undershoots the recoil, settles once. Rex is jumpy: faster in,
+ * overshoots, takes an extra beat to stop wobbling.
+ *
+ * Applied automatically from which character the drawing is, so no beat
+ * data has to carry it.
+ */
+export type Temper = 'calm' | 'eager';
+
+const TEMPER: Record<Temper, {
+  amp: number; recoil: number; anticipation: number; action: number; settle: number;
+}> = {
+  calm:  {amp: 0.82, recoil: 0.70, anticipation: 5, action: 11, settle: 14},
+  eager: {amp: 1.16, recoil: 1.25, anticipation: 3, action: 7,  settle: 9},
+};
+
 export type MoveKind =
   | 'inL' | 'inR' | 'inT' | 'inB' | 'pop'
   | 'outL' | 'outR' | 'outT' | 'outB' | 'vanish';
@@ -79,7 +101,9 @@ const compose = (a: Xform, b: Xform): Xform => ({
  * a squash-and-burst rather than a slide, because a character appearing
  * somewhere they were not needs to look like an event, not a fade.
  */
-export const moveXform = (m: Move, since: number): Xform => {
+export const moveXform = (m: Move, since: number,
+                          temper: Temper = 'eager'): Xform => {
+  const T = TEMPER[temper];
   const t = since - m.at;
   const isOut = m.kind.startsWith('out') || m.kind === 'vanish';
   const dir = m.kind.replace(/^(in|out)/, '');
@@ -105,7 +129,7 @@ export const moveXform = (m: Move, since: number): Xform => {
     };
   }
 
-  const p = actionCurve(t, 4, 9, 11);
+  const p = actionCurve(t, T.anticipation, T.action + 2, T.settle);
   const q = isOut ? p : 1 - p;                 // 1 = off stage, 0 = home
   const sm = smear(t - 4, cutEnergy(Math.abs(travel[0]) + Math.abs(travel[1]), 900), 3);
   if (!isOut && t < 0) return {...NO_XFORM, dx: travel[0], dy: travel[1], opacity: 0};
@@ -131,14 +155,16 @@ export const moveXform = (m: Move, since: number): Xform => {
  * target rather than a fixed direction.
  */
 export const turnXform = (
-  turn: Turn, since: number, fromX: number, fromY: number
+  turn: Turn, since: number, fromX: number, fromY: number,
+  temper: Temper = 'eager'
 ): Xform => {
   const t = since - turn.at;
   if (t < 0) return NO_XFORM;
+  const T = TEMPER[temper];
   // No upper bound: once he has turned he STAYS turned. Snapping the
   // lean away after a fixed window undoes the whole point — the head
   // would whip round and then drift back as if nothing had happened.
-  const p = actionCurve(t, 4, 6, 10);
+  const p = actionCurve(t, T.anticipation - 1, T.action - 1, T.settle);
   const vx = turn.tx - fromX, vy = turn.ty - fromY;
   const len = Math.max(1, Math.hypot(vx, vy));
   const ux = vx / len, uy = vy / len;
@@ -147,7 +173,7 @@ export const turnXform = (
   // just appeared, decaying out. Turning toward a thing is "he looked";
   // recoiling first and then turning is "he was surprised by it", which
   // is the beat when someone pops into the room uninvited.
-  const recoil = impact(t - 3, 15) * -22;
+  const recoil = impact(t - 3, 15) * -22 * T.recoil;
   // FORESHORTENING. A body rotating away from camera gets narrower, and
   // that width change is most of what sells a turn — lean and tilt alone
   // read as leaning, not turning. The squeeze peaks with the whip and
@@ -161,9 +187,9 @@ export const turnXform = (
     // Amplitudes are deliberately large. With no drawn head-turn frames
     // the whole read has to come from the body's lean, the tilt and the
     // smear; at 7deg it was invisible on screen.
-    dx: ux * (56 * p + recoil), dy: uy * (26 * p + recoil * 0.4),
+    dx: ux * (56 * T.amp * p + recoil), dy: uy * (26 * T.amp * p + recoil * 0.4),
     sx: sm.sx * shorten, sy: sm.sy * (1 + (1 - shorten) * 0.55),
-    rot: ux * (12 * p + recoil * 0.18),
+    rot: ux * (12 * T.amp * p + recoil * 0.18),
     opacity: sm.opacity, blur: sm.blur,
   };
 };
@@ -205,10 +231,13 @@ export const interactXform = (
   moves: Move[] | undefined,
   turns: Turn[] | undefined,
   headX: number,
-  headY: number
+  headY: number,
+  temper: Temper = 'eager'
 ): Xform => {
   let out = NO_XFORM;
-  for (const m of moves ?? []) out = compose(out, moveXform(m, since));
-  for (const tn of turns ?? []) out = compose(out, turnXform(tn, since, headX, headY));
+  for (const m of moves ?? []) out = compose(out, moveXform(m, since, temper));
+  for (const tn of turns ?? []) {
+    out = compose(out, turnXform(tn, since, headX, headY, temper));
+  }
   return out;
 };

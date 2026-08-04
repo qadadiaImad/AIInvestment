@@ -11,7 +11,7 @@
 // all layout math is untouched. Facts/rails unchanged from v2.
 import React from "react";
 import {AbsoluteFill, Audio, Img, Sequence, staticFile, useCurrentFrame} from "remotion";
-import {actionCurve} from "../motion/toon";
+import {actionCurve, holdCurve, squash} from "../motion/toon";
 import {FlashCut, ShockFlicks, ShockRing, SpeedLines, kick} from "../motion/ToonFX";
 import {Grain, Vignette} from "../motion/Polish";
 import {Move, Turn, idle, interactXform} from "../motion/interact";
@@ -150,7 +150,8 @@ const SOL_H = 1165;
 const BEATS: Beat[] = [
   {at: 0, title: ["MARKET LESSONS", "WITH SOL", "ep.1 — the 'fair' market"],
    actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 660, y: 1170, h: 1010}],
-   shots: [{from: 0}, {from: 56, k: 1.45, tx: 540, ty: 1080}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.05},
+           {from: 56, k: 1.38, kEnd: 1.52, tx: 540, ty: 1080}],
    vo: "v1_sol_intro", speaker: "SOL",
    line: "Kid… let me tell you about the so-called “fair” market."},
   // Rex says "Boss!" — so there has to be a boss to say it TO. Sol now
@@ -169,7 +170,9 @@ const BEATS: Beat[] = [
   {at: 110, actors: [{poses: ["rex_eager"], kind: "full", x: 320, y: FLOOR_Y, h: REX_H,
                       turns: [{at: 10, tx: 860, ty: 1120}]},
                      {poses: ["sol_point_v1"], kind: "full", x: 830, y: FLOOR_Y, h: SOL_H}],
-   shots: [{from: 0}, {from: 60, only: 0, k: 1.3, tx: 540, ty: 760}],
+   // was 2 shots (2.00s + 0.83s). The 0.83s cut did not earn itself —
+   // one held shot that creeps in reads calmer AND less choppy than two.
+   shots: [{from: 0, k: 1.0, kEnd: 1.14}],
    sfx: [{at: 14, name: "sfx_whip", vol: 0.42}],
    vo: "v2_rex_fundamentals", speaker: "REX", line: "Boss! It's all fundamentals, right?!", energy: 1},
   // Sol is laughing AT someone, so keep that someone in frame: Rex
@@ -199,7 +202,10 @@ const BEATS: Beat[] = [
   {at: 255, actors: [{poses: ["rex_listen"], kind: "full", x: 268, y: FLOOR_Y, h: 1090},
                      {poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: SOL_H,
                       moves: [{at: 0, kind: "inR"}]}],
-   shots: [{from: 0}, {from: 30, only: 1, k: 1.5, tx: 560, ty: 900}, {from: 74}],
+   // dropped the 0.53s tail shot; the isolate now runs to the beat end
+   // and creeps rather than snapping back to the two-shot for half a second
+   shots: [{from: 0, k: 1.0, kEnd: 1.06},
+           {from: 30, only: 1, k: 1.42, kEnd: 1.56, tx: 560, ty: 900}],
    sfx: [{at: 4, name: "sfx_whoosh", vol: 0.45}],
    vo: "v4_sol_politics", speaker: "SOL", line: "Sometimes… it trades on POLITICS."},
   // A cover-framed reaction take is the one place a face may fill the
@@ -252,13 +258,15 @@ const BEATS: Beat[] = [
    // registered as a flash. She now gets 50 frames of her own in the
    // dark, then 33 more with Sol in frame presenting her, which is what
    // ties her into the telling instead of interrupting it.
-   shots: [{from: 0, only: 0},
-           {from: 58, only: 0, k: 3.0, tx: 520, ty: 860},
-           {from: 88, only: 0, mood: "dark", tvPose: "congress_scheme"},
-           {from: 138, only: 0, mood: "dark", tvPose: "congress_scheme",
-            k: 1.0, kEnd: 1.12},
-           {from: 171, only: 1},
-           {from: 190, only: 0, k: 2.2, tx: 560, ty: 960}],
+   // was SIX shots in 8s, two of them under 1.1s. Now four, each earning
+   // its cut, each creeping instead of holding still: wide+card, push to
+   // Sol, the lawmaker on the monitor (one continuous 2.7s hold that
+   // creeps rather than two cuts), then Rex's silent reaction.
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.08},
+           {from: 58, only: 0, k: 1.55, kEnd: 1.72, tx: 520, ty: 900},
+           {from: 108, only: 0, mood: "dark", tvPose: "congress_scheme",
+            k: 1.0, kEnd: 1.14},
+           {from: 190, only: 1, k: 1.0, kEnd: 1.1}],
    vo: "v6_sol_exhibit", speaker: "SOL",
    line: "July 2022. The Speaker's household sold NVIDIA — days before the chip subsidies passed. At a loss, kid."},
   // rex_eager instead of rex_shock_v1, and NO panel. The panel existed to
@@ -276,8 +284,8 @@ const BEATS: Beat[] = [
    // Both in frame: Rex is the one SPEAKING this line, so cutting him out
    // of it repeats the mistake that shut his mouth mid-scream at 345.
    // She looms behind him instead.
-   shots: [{from: 0, mood: "dark", tvPose: "congress_smug"},
-           {from: 47, k: 1.35, tx: 600, ty: 1180}],
+   shots: [{from: 0, mood: "dark", tvPose: "congress_smug", k: 1.0, kEnd: 1.09},
+           {from: 47, k: 1.28, kEnd: 1.44, tx: 600, ty: 1180}],
    // No shout graphic: with both characters staged there is nowhere for
    // 150pt type to land except across a face, and the subtitle already
    // carries the line. The impact FX stay.
@@ -302,9 +310,9 @@ const BEATS: Beat[] = [
   // Pulled back off a face-filling hold: the room stays visible behind
   // him and the push is a slow creep rather than a static close-up.
   {at: 740, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1120, h: 1040}],
+   // dropped the 1.20s tail; the push now runs to the beat end
    shots: [{from: 0, k: 1.0, kEnd: 1.08},
-           {from: 64, k: 1.2, kEnd: 1.3, tx: 540, ty: 1000},
-           {from: 119, k: 1.0, kEnd: 1.06}],
+           {from: 64, k: 1.18, kEnd: 1.34, tx: 540, ty: 1000}],
    vo: "v8_sol_legal", speaker: "SOL",
    line: "All disclosed. In ranges. Up to 45 days late. All legal."},
   // was a static 4s two-shot with both characters on screen while they
@@ -326,7 +334,8 @@ const BEATS: Beat[] = [
   // note about the eyes, answered by the writing.
   {at: 895, actors: [{poses: ["rex_eager"], kind: "full", x: 340, y: FLOOR_Y, h: REX_H},
                      {poses: ["sol_smug_v1"], kind: "bust", x: 858, y: 1258, h: 690}],
-   shots: [{from: 0}, {from: 54, only: 0, k: 1.5, tx: 520, ty: 1040}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.07},
+           {from: 54, only: 0, k: 1.42, kEnd: 1.56, tx: 520, ty: 1040}],
    vo: "a2_rex_copy", speaker: "REX",
    line: "Then I'll just copy them! Buy what they buy!", energy: 1.3},
 
@@ -334,7 +343,8 @@ const BEATS: Beat[] = [
   // glint is reserved for the line he is actually excited on.
   {at: 995, actors: [{poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: SOL_H},
                      {poses: ["rex_skeptic"], kind: "full", x: 300, y: FLOOR_Y, h: REX_H}],
-   shots: [{from: 0}, {from: 46, only: 0, k: 1.45, tx: 560, ty: 990}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.06},
+           {from: 46, only: 0, k: 1.38, kEnd: 1.52, tx: 560, ty: 990}],
    vo: "a2_sol_sixweeks", speaker: "SOL",
    line: "Copy them. With a filing from six weeks ago?"},
 
@@ -349,10 +359,11 @@ const BEATS: Beat[] = [
                   "but the window runs up to 45 days.",
                   "By the time it is public, the move is old."],
           foot: "STOCK Act reporting window"},
-   shots: [{from: 0, only: 0},
-           {from: 62, only: 0, k: 1.5, kEnd: 1.62, tx: 560, ty: 980},
-           {from: 118, only: 1},
-           {from: 152, only: 0}],
+   // dropped the 1.13s reaction flash; Rex's reaction now holds 1.6s and
+   // is the last thing we see on the line, which is where it lands
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.07},
+           {from: 62, only: 0, k: 1.46, kEnd: 1.62, tx: 560, ty: 980},
+           {from: 147, only: 1, k: 1.0, kEnd: 1.12}],
    vo: "a2_sol_edge", speaker: "SOL",
    line: "The trade is public. The edge is not. By the time you read it, the move already happened."},
 
@@ -365,8 +376,10 @@ const BEATS: Beat[] = [
   {at: 1410, actors: [{poses: ["sol_finger"], kind: "full", x: 700, y: FLOOR_Y, h: SOL_H,
                        moves: [{at: 138, kind: "vanish"}]},
                       {poses: ["rex_listen"], kind: "full", x: 268, y: FLOOR_Y, h: 1020}],
-   shots: [{from: 0}, {from: 58, only: 0, k: 1.5, kEnd: 1.6, tx: 560, ty: 980},
-           {from: 120}],
+   // dropped the 1.17s tail — the vanish at 138 now happens inside the
+   // held push instead of after a needless cut back to the two-shot
+   shots: [{from: 0, k: 1.0, kEnd: 1.06},
+           {from: 58, only: 0, k: 1.44, kEnd: 1.58, tx: 560, ty: 980}],
    sfx: [{at: 138, name: "sfx_poof", vol: 0.5}],
    vo: "a2_sol_map", speaker: "SOL",
    line: "No. They're a map of attention. Who is watching what, and when."},
@@ -379,8 +392,8 @@ const BEATS: Beat[] = [
                      // mid-air — the set gives him somewhere to be
                      {poses: ["sol_smug_v1"], kind: "bust", x: 862, y: 1268, h: 640,
                       moves: [{at: 52, kind: "pop"}]}],
-   shots: [{from: 0, only: 0, k: 1.25, tx: 520, ty: 1000},
-           {from: 50}],
+   shots: [{from: 0, only: 0, k: 1.18, kEnd: 1.3, tx: 520, ty: 1000},
+           {from: 50, k: 1.0, kEnd: 1.08}],
    // beside REX's measured head (~356,1076), fanning up toward Sol
    flicks: [{at: 57, x: 560, y: 1130}],
    sfx: [{at: 52, name: "sfx_pop", vol: 0.6},
@@ -470,6 +483,17 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   // No boil. Its 2-frame random offset read as the picture vibrating on
   // these large clean vectors; idle() breathes and shifts weight instead.
   const idl = idle(frame, pose.length, amp);
+  // THE HELD SHOT. toon.ts ships holdCurve() and squash() for exactly this
+  // and neither was ever imported here, so a held drawing had no life
+  // beyond breathing: it arrived and then simply sat. holdCurve gives the
+  // three-beat shape a real hold has — arrive fast, a small secondary
+  // move partway through, settle — and squash puts that on a
+  // volume-preserving axis rather than a uniform resize. Amplitudes are
+  // deliberately tiny; this is the difference between a drawing that is
+  // held and a drawing that is parked.
+  const hc = holdCurve(shotSince, Math.max(1, shotLen));
+  const drift = a.kind === "closeup" ? 0 : amp * 0.010;
+  const sq = squash((hc - 0.68) * 0.012);
   const scale = a.kind === "full" ? a.h / d.ink_h
     : a.kind === "closeup"
     // cover the frame: no canvas edge can fall inside it. 1.04 pads the
@@ -492,13 +516,18 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   const top = (shot?.ty ?? hy) - hf.fy * h;
   const src = holdMouth ? d.src : visemeSrc(pose, mouthState, speaking, frame);
   const panel = a.kind === "panel";
+  // Sol moves like a veteran, Rex like an over-eager junior — derived
+  // from who the drawing is, so no beat has to carry it.
   const ix = interactXform(since, a.moves, a.turns,
-                           shot?.tx ?? hx, shot?.ty ?? hy);
+                           shot?.tx ?? hx, shot?.ty ?? hy,
+                           pose.startsWith("sol") ? "calm" : "eager");
   return (
-    <div style={{position: "absolute", left: left + idl.dx, top: top + idl.dy,
+    <div style={{position: "absolute",
+      left: left + idl.dx + drift * (hc - 0.68),
+      top: top + idl.dy - drift * 0.35 * (hc - 0.68),
       width: w, height: h,
       transform: `translate(${ix.dx}px, ${ix.dy}px) `
-        + `scale(${pop * ix.sx * idl.sx}, ${pop * ix.sy * idl.sy}) `
+        + `scale(${pop * ix.sx * idl.sx * sq.sx}, ${pop * ix.sy * idl.sy * sq.sy}) `
         + `rotate(${ix.rot + idl.rot + (panel ? -1.2 : 0)}deg)`,
       transformOrigin: a.kind === "full" ? `${d.anchor[0] * 100}% ${d.anchor[1] * 100}%` : "50% 60%",
       opacity: Math.min(1, since / 3) * ix.opacity,
@@ -670,7 +699,11 @@ export const FairMarketEp1: React.FC = () => {
           </>
         ) : null}
       </div>
-      <FlashCut since={since} />
+      {/* The flash is punctuation, so it has to be RARE. It fired on every
+          beat's frame 0 — the flash selling "WHAT?!" was identical to the
+          one on a flat aside, which trains the eye to ignore it. Gated on
+          the same signal the speed lines and shock ring already use. */}
+      {(cur.fx ?? !!cur.shout) ? <FlashCut since={since} /> : null}
       {!outro && cur.line && !sub2 ? <Subtitle speaker={cur.speaker ?? ""} line={cur.line} /> : null}
       {!outro && sub2 ? <Subtitle speaker={cur.speaker2 ?? ""} line={cur.line2 ?? ""} /> : null}
       {outro ? (
