@@ -12,7 +12,7 @@ export const DEFAULT: RigParams = {
   eyes: "open",
   mouth: "flat",
   sweat: false,
-  armL: { shoulder: 150, elbow: 40, wrist: 0 },
-  armR: { shoulder: 210, elbow: -40, wrist: 0 },
+  armL: { shoulder: 20, elbow: 25, wrist: 0 },
+  armR: { shoulder: 340, elbow: -25, wrist: 0 },
   prop: "none",
 };
