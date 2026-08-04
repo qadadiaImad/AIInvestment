@@ -80,6 +80,11 @@ type Beat = {
   shots?: Shot[];
   // drawn "!!" flicks beside a head — the reaction accent on a turn
   flicks?: {at: number; x: number; y: number}[];
+  // Motion hits (scripts/audio/make_toon_sfx.py). `at` is the frame the
+  // sound must LAND on, which is the frame of the fast part of the move,
+  // not the frame the move was scheduled — a move winds up first, and a
+  // whoosh on the wind-up reads as dubbed.
+  sfx?: {at: number; name: string; vol?: number}[];
 };
 
 // ONE drawing per beat. Every pose here is "core" tier in the identity
@@ -110,6 +115,7 @@ const BEATS: Beat[] = [
                       turns: [{at: 10, tx: 860, ty: 1000}]},
                      {poses: ["sol_point_v1"], kind: "full", x: 865, y: 1790, h: 880}],
    shots: [{from: 0}, {from: 60, only: 0, k: 1.3, tx: 540, ty: 760}],
+   sfx: [{at: 14, name: "sfx_whip", vol: 0.42}],
    vo: "v2_rex_fundamentals", speaker: "REX", line: "Boss! It's all fundamentals, right?!", energy: 1},
   // Sol is laughing AT someone, so keep that someone in frame: Rex
   // crouched screen-left in profile, facing right at him.
@@ -119,6 +125,7 @@ const BEATS: Beat[] = [
                      // both push him back from it.
                      {poses: ["rex_listen"], kind: "full", x: 250, y: 1810, h: 660,
                       turns: [{at: 14, tx: -260, ty: 1820}]}],
+   sfx: [{at: 18, name: "sfx_whip", vol: 0.38}],
    vo: "v3_sol_ha", speaker: "SOL", line: "HA! …Fundamentals.", energy: 1.1},
   // EYELINE. rex_listen is drawn in profile facing RIGHT, so Rex has to
   // stand screen-LEFT for his gaze to land on Sol; he was on the right,
@@ -128,6 +135,7 @@ const BEATS: Beat[] = [
                      {poses: ["sol_finger"], kind: "full", x: 760, y: 1640, h: 1000,
                       moves: [{at: 0, kind: "inR"}]}],
    shots: [{from: 0}, {from: 30, only: 1, k: 1.5, tx: 560, ty: 800}, {from: 74}],
+   sfx: [{at: 4, name: "sfx_whoosh", vol: 0.45}],
    vo: "v4_sol_politics", speaker: "SOL", line: "Sometimes… it trades on POLITICS."},
   {at: 345, actors: [{poses: ["rex_shock"], kind: "closeup", x: 540, y: 900, h: 1920}],
    vo: "v5_rex_what", speaker: "REX", line: "WHAT?!", shout: "WHAT?!", energy: 1.5},
@@ -183,6 +191,7 @@ const BEATS: Beat[] = [
   {at: 740, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 540, y: 900, h: 1250,
                       moves: [{at: 138, kind: "vanish"}]}],
    shots: [{from: 0}, {from: 64, k: 1.35, tx: 520, ty: 700}, {from: 119}],
+   sfx: [{at: 138, name: "sfx_poof", vol: 0.5}],
    vo: "v8_sol_legal", speaker: "SOL",
    line: "All disclosed. In ranges. Up to 45 days late. All legal."},
   // was a static 4s two-shot with both characters on screen while they
@@ -199,6 +208,8 @@ const BEATS: Beat[] = [
            {from: 50}],
    // beside REX's measured head (~356,1076), fanning up toward Sol
    flicks: [{at: 57, x: 520, y: 950}],
+   sfx: [{at: 52, name: "sfx_pop", vol: 0.6},
+         {at: 60, name: "sfx_whip", vol: 0.42}],
    vo: "v9_rex_filings", speaker: "REX", line: "So — read the filings!",
    vo2: "v10_sol_learning", speaker2: "SOL", line2: "Now you're learning, kid.", at2: 60},
   {at: 1015, title: ["MARKET LESSONS", "WITH SOL", ""], actors: []},
@@ -378,6 +389,11 @@ export const FairMarketEp1: React.FC = () => {
               <Audio src={staticFile(`audio/fairmarket/${b.vo2}.wav`)} />
             </Sequence>
           ) : null}
+          {(b.sfx ?? []).map((s, i) => (
+            <Sequence key={`s${i}`} from={b.at + s.at} durationInFrames={22}>
+              <Audio src={staticFile(`audio/${s.name}.wav`)} volume={s.vol ?? 0.5} />
+            </Sequence>
+          ))}
         </React.Fragment>
       ))}
       <div style={{position: "absolute", inset: 0,
