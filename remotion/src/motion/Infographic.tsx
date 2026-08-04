@@ -474,3 +474,153 @@ export const PerformanceExhibit: React.FC<{
     </div>
   );
 };
+
+/**
+ * THE COUNTDOWN. Episode 2's whole argument is a clock, so the clock is
+ * the graphic: a trade lands, sixteen minutes elapse, an announcement
+ * lands, and only THEN does the price move.
+ *
+ * The order of events is the entire claim, so the graphic draws it in
+ * that order and never gets ahead of itself — the price line is
+ * deliberately flat until the announcement marker, because that is what
+ * the reporting says happened. Nothing here asserts who placed the
+ * trade; the label says "unknown", which is the state of the evidence.
+ */
+export const CountdownExhibit: React.FC<{
+  since: number; w: number; h: number;
+  title: string;
+  t0: {time: string; label: string};
+  t1: {time: string; label: string};
+  minutes: number;
+  foot: string;
+}> = ({since, w, h, title, t0, t1, minutes, foot}) => {
+  const padX = 54;
+  const x0 = padX + 40, x1 = w - padX - 40;
+  const railY = h * 0.40;
+  const aIn = pop(since, 6, 18);
+  const gap = ease(since, 20, 44);          // the sixteen minutes elapse
+  const bIn = pop(since, 44, 56);
+  const drop = ease(since, 58, 84);         // and only then does price move
+  const mins = Math.round(minutes * gap);
+  const ax = x0, bx = x1;
+
+  // price: flat until the announcement, then falls
+  const pts: string[] = [];
+  for (let i = 0; i <= 40; i++) {
+    const t = i / 40;
+    const px = x0 + (x1 - x0) * t;
+    const after = Math.max(0, (t - 0.62) / 0.38);
+    const py = h * 0.74 + after * drop * h * 0.16;
+    pts.push(`${px.toFixed(1)},${py.toFixed(1)}`);
+  }
+
+  return (
+    <div style={{position: 'absolute', inset: 0, background: PAPER,
+      fontFamily: 'Arial', color: INK}}>
+      <div style={{position: 'absolute', left: padX - 6, top: 16,
+        fontFamily: 'Impact, Arial', fontSize: 31, letterSpacing: 1,
+        opacity: ease(since, 0, 10)}}>{title}</div>
+
+      <svg width={w} height={h} style={{position: 'absolute', inset: 0}}>
+        <line x1={x0} y1={railY} x2={x0 + (x1 - x0) * ease(since, 4, 20)}
+          y2={railY} stroke={INK} strokeWidth={4} strokeLinecap="round" />
+        {/* the gap, measured while it elapses */}
+        <line x1={ax} y1={railY - 46} x2={ax + (bx - ax) * gap} y2={railY - 46}
+          stroke={RED} strokeWidth={3} />
+        <circle cx={ax} cy={railY} r={13 * aIn} fill={RED} />
+        <circle cx={bx} cy={railY} r={13 * bIn} fill={BLUE} />
+        <polyline points={pts.join(' ')} fill="none" stroke={RED}
+          strokeWidth={3} opacity={ease(since, 54, 66)} />
+      </svg>
+
+      {/* the minutes count up as they pass — the number IS the story */}
+      <div style={{position: 'absolute', left: ax, width: bx - ax,
+        top: railY - 92, textAlign: 'center', opacity: ease(since, 22, 34),
+        fontFamily: 'Impact, Arial', fontSize: 34, color: RED}}>
+        {mins} MINUTES
+      </div>
+
+      {[{m: t0, x: ax, t: aIn, c: RED}, {m: t1, x: bx, t: bIn, c: BLUE}].map((e, i) => (
+        <div key={i} style={{position: 'absolute', left: e.x - 155, width: 310,
+          top: railY + 22, textAlign: 'center', opacity: e.t}}>
+          <div style={{fontFamily: 'Impact, Arial', fontSize: 27,
+            color: e.c}}>{e.m.time}</div>
+          <div style={{fontSize: 19, color: MUTED, lineHeight: 1.25,
+            marginTop: 2}}>{e.m.label}</div>
+        </div>
+      ))}
+
+      <div style={{position: 'absolute', left: padX, bottom: 12, right: padX,
+        fontSize: 15, color: MUTED, opacity: ease(since, 76, 90)}}>{foot}</div>
+    </div>
+  );
+};
+
+/**
+ * THE STACK. Three separate trades adding to one number, because the
+ * point is the repetition rather than any single ticket: once is a
+ * coincidence. Each bar lands with its own label, then the total counts.
+ */
+export const StackExhibit: React.FC<{
+  since: number; w: number; h: number;
+  title: string;
+  items: {label: string; usd: number}[];
+  totalLabel: string;
+  foot: string;
+}> = ({since, w, h, title, items, totalLabel, foot}) => {
+  const padX = 52;
+  const max = items.reduce((a, b) => a + b.usd, 0);
+  const trackW = w - padX * 2 - 190;
+  let acc = 0;
+  const segs = items.map((it) => {
+    const s = acc; acc += it.usd; return {...it, from: s, to: acc};
+  });
+  const grow = ease(since, 8, 60);
+  const shown = max * grow;
+  const barY = h * 0.44;
+  const COLS = [RED, '#B03A4A', '#D4626F'];
+  return (
+    <div style={{position: 'absolute', inset: 0, background: PAPER,
+      fontFamily: 'Arial', color: INK}}>
+      <div style={{position: 'absolute', left: padX - 6, top: 16,
+        fontFamily: 'Impact, Arial', fontSize: 31, letterSpacing: 1,
+        opacity: ease(since, 0, 10)}}>{title}</div>
+
+      <svg width={w} height={h} style={{position: 'absolute', inset: 0}}>
+        <rect x={padX} y={barY - 30} width={trackW} height={60} rx={7}
+          fill="#E4DFCE" />
+        {segs.map((s, i) => {
+          const vis = Math.max(0, Math.min(s.to, shown) - s.from);
+          return (
+            <rect key={i} x={padX + (s.from / max) * trackW} y={barY - 30}
+              width={(vis / max) * trackW} height={60}
+              fill={COLS[i % COLS.length]} />
+          );
+        })}
+      </svg>
+
+      <div style={{position: 'absolute', left: padX + trackW + 16, top: barY - 34,
+        fontFamily: 'Impact, Arial', fontSize: 44, color: RED}}>
+        ${(shown / 1000).toFixed(1)}B
+      </div>
+
+      {segs.map((s, i) => (
+        <div key={i} style={{position: 'absolute', left: padX,
+          top: barY + 44 + i * 30, fontSize: 19, color: MUTED,
+          opacity: ease(since, 12 + i * 14, 26 + i * 14)}}>
+          <span style={{display: 'inline-block', width: 13, height: 13,
+            background: COLS[i % COLS.length], marginRight: 9,
+            borderRadius: 2}} />
+          ${s.usd}M — {s.label}
+        </div>
+      ))}
+
+      <div style={{position: 'absolute', right: padX, top: barY + 22,
+        fontSize: 17, color: MUTED, opacity: ease(since, 56, 68)}}>
+        {totalLabel}
+      </div>
+      <div style={{position: 'absolute', left: padX, bottom: 10, right: padX,
+        fontSize: 15, color: MUTED, opacity: ease(since, 62, 76)}}>{foot}</div>
+    </div>
+  );
+};

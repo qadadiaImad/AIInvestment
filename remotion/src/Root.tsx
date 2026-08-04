@@ -49,6 +49,7 @@ import patternGalleryFixture from "./fixtures/patterns_post/gallery.json";
 import { RigCheck, rigCheckSchema } from "./compositions/RigCheck";
 import { AnaVectorPilot, ANA_PILOT_FRAMES } from "./compositions/AnaVectorPilot";
 import { FairMarketEp1, FAIRMARKET_FRAMES } from "./compositions/FairMarketEp1";
+import { FairMarketEp2, EP2_FRAMES } from "./compositions/FairMarketEp2";
 import memeReelFixture from "./fixtures/meme_reel/intc_failed_breakout.json";
 import tradeFailFixture from "./fixtures/btc_reel/trade_fail_reel.json";
 import { reelPropsSchema } from "./props";
@@ -81,6 +82,14 @@ export const RemotionRoot: React.FC = () => {
         id="FairMarketEp1"
         component={FairMarketEp1}
         durationInFrames={FAIRMARKET_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="FairMarketEp2"
+        component={FairMarketEp2}
+        durationInFrames={EP2_FRAMES}
         fps={30}
         width={1080}
         height={1920}

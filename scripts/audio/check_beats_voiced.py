@@ -10,6 +10,7 @@ Usage:  python scripts/audio/check_beats_voiced.py <render.mp4>
 """
 from __future__ import annotations
 
+import os
 import re
 import subprocess
 import sys
@@ -21,7 +22,8 @@ import numpy as np
 REPO = Path(__file__).resolve().parents[2]
 FF = (REPO / "remotion" / "node_modules" / "@remotion" /
       "compositor-win32-x64-msvc" / "ffmpeg.exe")
-COMP = REPO / "remotion" / "src" / "compositions" / "FairMarketEp1.tsx"
+EP = os.environ.get("EP", "1")
+COMP = REPO / "remotion" / "src" / "compositions" / f"FairMarketEp{EP}.tsx"
 FPS = 30
 
 

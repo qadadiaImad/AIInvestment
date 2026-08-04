@@ -1,0 +1,772 @@
+// FairMarketEp1 v4 — voiced anime short with LIMITED-ANIMATION density:
+// each beat cycles 2-3 adjacent LoRA drawings while its line is spoken
+// (pose fills), and the speaking character's mouth is articulated by
+// swapping WHOLE VISEME DRAWINGS (visemes.json: per-pose closed/half/
+// open/oh/blink SVGs, inpaint-generated with the cast LoRA so every
+// mouth is native art at the native position — supersedes the v3 code
+// overlay the owner rejected). States come per-frame from the VO
+// amplitude (mouth_tracks.json, 30fps 0/1/2); sustained open holds
+// alternate open/oh, and a pose-seeded blink fires on closed-mouth
+// frames. Every viseme SVG shares its base drawing's exact canvas, so
+// all layout math is untouched. Facts/rails unchanged from v2.
+import React from "react";
+import {AbsoluteFill, Audio, Img, Sequence, staticFile, useCurrentFrame} from "remotion";
+import {actionCurve, holdCurve, squash} from "../motion/toon";
+import {FlashCut, ShockFlicks, ShockRing, SpeedLines, kick} from "../motion/ToonFX";
+import {Grain, Vignette} from "../motion/Polish";
+import {Move, Turn, idle, interactXform} from "../motion/interact";
+import {FLOOR_Y, Room, TVFrame, TVGlass, TV_SCREEN, H as STAGE_H} from "../motion/Set";
+import {CountdownExhibit, StackExhibit, TickerTape} from "../motion/Infographic";
+import anchors from "../fixtures/cast_ep1/pose_anchors.json";
+import mouthTracks from "../fixtures/cast_ep1/mouth_tracks_ep2.json";
+import visemes from "../fixtures/cast_ep1/visemes.json";
+import headFocus from "../fixtures/cast_ep1/head_focus.json";
+
+type A = {w: number; h: number; ink_h: number; anchor: number[]; src: string; scale: number};
+const AN = anchors as unknown as Record<string, A>;
+type V = Partial<Record<"closed" | "half" | "open" | "oh" | "blink", string>>;
+const VI = visemes as unknown as Record<string, V>;
+const TR = mouthTracks as unknown as Record<string, number[]>;
+const HF = headFocus as unknown as Record<string, {fx: number; fy: number}>;
+
+// A SHOT is a reframing of the staged actor, held from `from` (a frame
+// offset into the beat) until the next shot. Reframing is how one
+// drawing yields several shots: a wide and a punch-in are two shots of
+// the same pixels, so the cut gains rhythm with no second generation and
+// therefore no identity drift. `k` scales about the head (head_focus.json)
+// and tx/ty place that head on screen; k=1 with no tx/ty is the staged
+// framing unchanged. `only` isolates one actor of a two-shot, which is
+// what turns a static two-shot into shot/reverse-shot.
+// `pose` swaps the DRAWING for this shot. This is not the old per-beat
+// cycling that changed Sol's haircut mid-sentence: that swapped between
+// near-identical framings every 14 frames. A shot-level swap happens once,
+// on a phrase boundary, between two drawings the identity gate rates core
+// tier for the same character AND that the shot-list review does not call
+// interchangeable — i.e. a real cut to a different gesture.
+type Shot = {from: number; k?: number; tx?: number; ty?: number; only?: number;
+             hideCard?: boolean; pose?: string;
+             // `show` is `only` for more than one actor — it lets a shot
+             // hold two of three characters, which is what turns a cut-away
+             // into the narrator PRESENTING someone.
+             show?: number[];
+             // Ramp the reframe across the shot instead of holding it —
+             // a slow creep inward, which is how a held shot builds
+             // pressure rather than just sitting there.
+             kEnd?: number;
+             // Drop the room into shadow for this shot. The lawmaker beats
+             // are about money and power being moved quietly; playing them
+             // in the same bright light as the rest of the episode was
+             // what made her read as a caption rather than a character.
+             mood?: "dark";
+             // BROADCAST INSERT: a rectangular photo filling the screen.
+             // The podium officials are FOOTAGE the show is running, not
+             // cut-out figures in the room, so they need no alpha — which
+             // also removes the unkeyed-white-block artefact that fighting
+             // the background key kept producing.
+             tvPhoto?: string};
+const shotAt = (shots: Shot[] | undefined, since: number, hold: number) => {
+  if (!shots || !shots.length) {
+    return {shot: undefined, shotSince: since, shotLen: hold};
+  }
+  let cur = shots[0], idx = 0;
+  for (let i = 0; i < shots.length; i++) {
+    if (since >= shots[i].from) {
+      cur = shots[i];
+      idx = i;
+    }
+  }
+  const end = idx + 1 < shots.length ? shots[idx + 1].from : hold;
+  return {shot: cur, shotSince: since - cur.from,
+          shotLen: Math.max(1, end - cur.from)};
+};
+
+export const EP2_FRAMES = 4500;   // 150s (2:30)
+
+// Hard ceiling on how far a shot may push in. A drawing scaled until the
+// face fills the frame throws away the set and has nowhere left to go —
+// owner rule, after a static full-zoom face-only frame. Any reframe is
+// clamped so the room stays readable behind the character.
+const MAX_K = 1.9;
+const VO_DELAY = 6;
+
+// kind: "full"  — figure standing in frame, scaled by ink height, placed
+//                 by its ground-contact anchor
+//       "bust"  — clean-silhouette upper body floating at a point
+//       "closeup" — a FULL-BLEED drawing (its head is clipped by its own
+//                 canvas edge, see scripts/vector/shot_class.py). Scaled
+//                 to COVER the frame so the canvas boundary is never
+//                 visible; `h` is ignored, `y` biases the vertical crop.
+//       "panel" — a full-bleed drawing used SMALL, where covering the
+//                 frame would bury the exhibit card. Its canvas edge is
+//                 owned instead of hidden: ruled border + drop shadow +
+//                 slight tilt, the same manga-panel language as the card.
+// `moves` are arrivals/exits under cartoon physics and `turns` are head
+// turns toward a point on stage — the two things that make a second
+// character an event this one reacts to, rather than a separate picture
+// that happens to share the frame. See motion/interact.ts.
+type Actor = {poses: string[]; kind: "full" | "bust" | "closeup" | "panel";
+              x: number; y: number; h: number;
+              moves?: Move[]; turns?: Turn[]};
+type Card = {title: string; lines: string[]; big?: string; foot?: string};
+type Beat = {
+  at: number; actors: Actor[];
+  vo?: string; speaker?: "SOL" | "REX"; line?: string;
+  vo2?: string; speaker2?: "SOL" | "REX"; line2?: string; at2?: number;
+  shout?: string; card?: Card; title?: string[]; energy?: number;
+  shots?: Shot[];
+  // drawn "!!" flicks beside a head — the reaction accent on a turn
+  flicks?: {at: number; x: number; y: number}[];
+  // Motion hits (scripts/audio/make_toon_sfx.py). `at` is the frame the
+  // sound must LAND on, which is the frame of the fast part of the move,
+  // not the frame the move was scheduled — a move winds up first, and a
+  // whoosh on the wind-up reads as dubbed.
+  sfx?: {at: number; name: string; vol?: number}[];
+  // Hold the base drawing's own mouth for the whole beat. A VO track
+  // only covers the spoken word, and the mouth state falls back to
+  // "closed" once it runs out — which shut Rex's mouth in the middle of
+  // his own scream, because the shout lasts 26 frames and the take holds
+  // for 55. On a reaction beat the drawing IS the performance.
+  holdMouth?: boolean;
+  // Move the shout off a character's face when the staging needs it.
+  shoutAt?: {left: number; right: number; top: number};
+  // A code-drawn exhibit for the monitor, instead of a text card. The
+  // card restated the spoken line; a graphic shows the mechanism.
+  graphic?: "countdown_16" | "stack_26";
+  // Impact FX (speed lines + shock ring) used to be gated on `shout`
+  // existing, so deleting a shout graphic silently deleted the beat's
+  // punch as well. They are independent now; defaults to whether there
+  // is a shout so older beats are unchanged.
+  fx?: boolean;
+};
+
+// There is no longer a single height constant per character. Every beat
+// carries its own staged heights, because a figure's on-screen WIDTH
+// follows its height — so one global height cannot satisfy both "Rex is
+// taller" and "two figures fit in a 1080px frame without touching", and
+// it also cannot satisfy "nobody covers the monitor" on exhibit beats.
+// The per-beat numbers are output from scripts/vector/stage_audit.py,
+// which measures real ink bounds against the real BEATS array; re-run it
+// after ANY staging change. What stays invariant is the relationship:
+// Rex reads TALLER (he is the young one, Sol is a short round old man)
+// and both plant on Set.FLOOR_Y, so the floor is always shared.
+
+// TWO-SHOT sizes. A figure's on-screen WIDTH is driven by its height, and
+// at solo size rex_eager is 1009px wide — two of those cannot fit in a
+// 1080px frame, which is why every two-shot was overlapping by 150-490px
+// with both characters running off the edges. Solved numerically by
+// scripts/vector/overlap_audit.py: each pair sized so both fit fully
+// inside the frame with a real gap between them, Rex keeping a height
+// advantage. A two-shot being smaller than a solo is correct anyway — it
+// is a wider shot. The per-beat heights below ARE that solver's output —
+// re-run overlap_audit after any staging change to re-verify.
+
+// ONE drawing per beat. Every pose here is "core" tier in the identity
+// gate (scripts/vector/pose_contact.py -> same haircut, same 3/4 head
+// direction, same wardrobe as the canonical sol_smug / rex_eager) AND a
+// clean silhouette, except where the kind is "closeup"/"panel" which
+// exist to present the full-bleed drawings honestly. Deliberately NOT
+// used: sol_armswide (single-tuft hair + side profile), sol_whisper_v1
+// (no cardigan, no bow tie), rex_determined (adds a necktie no other
+// Rex drawing has), rex_eager_v1/rex_skeptic/sol_shrug_v1 (a leaner,
+// thinner-lined rendering cluster).
+const BEATS: Beat[] = [
+  // ═══ COLD OPEN — "last time on" ══════════════════════════════════════
+  // The recap is not housekeeping. It restates ep.1's thesis (public,
+  // legal, forty-five days late) precisely so this episode can be its
+  // inverse: what it looks like when somebody is NOT late. Rex delivers
+  // the callback himself, which is the joke — being late is the exact
+  // mistake he made last episode.
+  {at: 0, title: ["MARKET LESSONS", "WITH SOL", "ep.2 — sixteen minutes"],
+   actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 640, y: 1180, h: 940}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.06},
+           {from: 70, k: 1.24, kEnd: 1.36, tx: 540, ty: 1140}],
+   vo: "r1_sol_lasttime", speaker: "SOL",
+   line: "Last time, I showed you a filing. Public. Legal. Forty-five days late."},
+
+  {at: 170, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681},
+                     {poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.08}],
+   vo: "r2_rex_useless", speaker: "REX", line: "And useless if I tried to copy it."},
+
+  {at: 250, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.07},
+           {from: 120, k: 1.2, kEnd: 1.32, tx: 600, ty: 1190}],
+   vo: "r3_sol_otherside", speaker: "SOL",
+   line: "Late, kid. Not useless. Today I'll show you the other side of that — what it looks like when somebody isn't late at all."},
+
+  // ═══ ACT 1 — THE CLOCK ═══════════════════════════════════════════════
+  {at: 480, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+   shots: [{from: 0, k: 1.06, kEnd: 1.16, tx: 540, ty: 1190}],
+   vo: "e1_sol_march", speaker: "SOL",
+   line: "March twenty-third. Six forty-nine in the morning."},
+
+  // THE SUBJECT OF THIS SENTENCE IS "SOMEBODY", AND IT STAYS THAT WAY.
+  // No trader has been identified and no charge has been filed, so the
+  // episode never supplies a name, a face or an implication. The figure
+  // on the monitor is a faceless silhouette for the same reason — that
+  // is the state of the evidence, not a stylistic choice.
+  {at: 590, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+                     {poses: ["rex_skeptic"], kind: "bust", x: 420, y: 1250, h: 850}],
+   shots: [{from: 0, only: 0, tvPhoto: "trader_unknown", mood: "dark", k: 1.0, kEnd: 1.08},
+           {from: 100, only: 1, mood: "dark", k: 1.0, kEnd: 1.08}],
+   vo: "e2_sol_buys", speaker: "SOL",
+   line: "Somebody buys five hundred and eighty million dollars of oil futures."},
+
+  {at: 740, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679,
+                      turns: [{at: 12, tx: 830, ty: 1210}]},
+                     {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1300, h: 596}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.08},
+           {from: 54, only: 0, k: 1.3, kEnd: 1.42, tx: 520, ty: 1020}],
+   vo: "e3_rex_bullish", speaker: "REX",
+   line: "Okay. Big trade. Somebody's feeling bullish.", energy: 1.1},
+
+  {at: 860, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
+   shots: [{from: 0, k: 1.04, kEnd: 1.16, tx: 580, ty: 1190}],
+   sfx: [{at: 8, name: "sfx_whip", vol: 0.4}],
+   vo: "e4_sol_no", speaker: "SOL",
+   line: "No. They were betting oil would fall. And stocks would rise."},
+
+  // ═══ ACT 2 — THE SIXTEEN MINUTES ═════════════════════════════════════
+  // The order of events IS the claim, so the graphic draws it in order
+  // and never gets ahead of itself: trade, then the wait, then the
+  // announcement, and only then the price.
+  {at: 1000, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+                      {poses: ["rex_skeptic"], kind: "bust", x: 420, y: 1250, h: 850}],
+   graphic: "countdown_16",
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.06},
+           {from: 130, only: 1, k: 1.0, kEnd: 1.1, hideCard: true}],
+   vo: "e5_sol_sixteen", speaker: "SOL",
+   line: "Sixteen minutes later, the President posts that talks with Iran went well."},
+
+  {at: 1160, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+                      {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
+   graphic: "countdown_16",
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.08},
+           {from: 108, only: 1, k: 1.0, kEnd: 1.08, hideCard: true}],
+   vo: "e6_sol_exactly", speaker: "SOL",
+   line: "Oil falls. Stocks rise. Exactly the way that trade was pointed."},
+
+  {at: 1320, actors: [{poses: ["rex_shock"], kind: "full", x: 500, y: FLOOR_Y, h: 900}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.1}],
+   holdMouth: true, fx: true,
+   sfx: [{at: 6, name: "impact", vol: 0.5}],
+   vo: "e7_rex_coincidence", speaker: "REX",
+   line: "That's a coincidence. Boss. Tell me that's a coincidence.", energy: 1.4},
+
+  {at: 1460, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+   shots: [{from: 0, k: 1.08, kEnd: 1.18, tx: 540, ty: 1190}],
+   vo: "e8_sol_once", speaker: "SOL", line: "Once is a coincidence, kid."},
+
+  // ═══ ACT 3 — IT HAPPENED AGAIN ═══════════════════════════════════════
+  {at: 1540, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+   graphic: "stack_26",
+   shots: [{from: 0, k: 1.0, kEnd: 1.06},
+           {from: 160, k: 1.16, kEnd: 1.26, tx: 600, ty: 1190, hideCard: true}],
+   vo: "e9_sol_again", speaker: "SOL",
+   line: "Two weeks later. Nine hundred and fifty million, betting oil falls. Hours before a ceasefire nobody had announced."},
+
+  {at: 1790, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
+   graphic: "stack_26",
+   shots: [{from: 0, k: 1.0, kEnd: 1.07}],
+   vo: "e10_sol_hormuz", speaker: "SOL",
+   line: "And another one. Seven hundred and sixty million, minutes before the Hormuz announcement."},
+
+  {at: 1970, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681},
+                      {poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.1}],
+   vo: "e11_rex_total", speaker: "REX", line: "How much is that all together?"},
+
+  {at: 2040, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+                      {poses: ["rex_skeptic"], kind: "bust", x: 420, y: 1250, h: 850}],
+   graphic: "stack_26",
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.08},
+           {from: 115, only: 1, k: 1.0, kEnd: 1.08, hideCard: true}],
+   vo: "e12_sol_billions", speaker: "SOL",
+   line: "The Justice Department and the CFTC are looking at about two point six billion."},
+
+  {at: 2210, actors: [{poses: ["rex_eager"], kind: "full", x: 500, y: FLOOR_Y, h: 900}],
+   shots: [{from: 0, k: 1.04, kEnd: 1.14}],
+   vo: "e13_rex_caught", speaker: "REX", line: "So they caught them.", energy: 1.2},
+
+  // THE SHORTEST LINE IN EITHER EPISODE, AND THE HARDEST. Half a second,
+  // held wide, no graphic, no push — everything else gets out of its way.
+  {at: 2270, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.05}],
+   vo: "e14_sol_nope", speaker: "SOL", line: "No."},
+
+  // ═══ ACT 4 — NOBODY KNOWS WHO ════════════════════════════════════════
+  // The podium and the shadow, cut against each other. The known faces
+  // announced; an unknown figure traded. Nothing on screen connects them
+  // because nothing in the evidence does — that gap is the whole act.
+  {at: 2340, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+   shots: [{from: 0, tvPhoto: "podium_speaker", k: 1.0, kEnd: 1.06},
+           {from: 80, tvPhoto: "podium_official_a", k: 1.0, kEnd: 1.06},
+           {from: 150, tvPhoto: "trader_unknown", mood: "dark", k: 1.0, kEnd: 1.1}],
+   vo: "e15_sol_sitwith", speaker: "SOL",
+   line: "That's the part I need you to sit with. Not one charge. Not one name. The tape knew, and the tape doesn't sign its orders."},
+
+  {at: 2600, actors: [{poses: ["rex_listen"], kind: "full", x: 400, y: FLOOR_Y, h: 820}],
+   shots: [{from: 0, k: 1.06, kEnd: 1.16, tx: 520, ty: 1250}],
+   vo: "e16_rex_someone", speaker: "REX", line: "Somebody has to know something."},
+
+  {at: 2680, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+   card: {title: "WHO IS ASKING",
+          lines: ["Sens. Warren, Whitehouse, Warnock —",
+                  "letters to the CFTC.",
+                  "Rep. Torres — SEC and CFTC referral."],
+          foot: "DOJ and CFTC reviewing · no charges filed · investigation open"},
+   shots: [{from: 0, k: 1.0, kEnd: 1.06},
+           {from: 140, k: 1.16, kEnd: 1.26, tx: 600, ty: 1190, hideCard: true}],
+   vo: "e17_sol_open", speaker: "SOL",
+   line: "Four members of Congress have written asking exactly that. The investigation is open. That's where it sits."},
+
+  // ═══ ACT 5 — BUT THEY *CAN* CATCH YOU ════════════════════════════════
+  // A REAL, CHARGED, UNSEALED CASE — and kept explicitly separate from
+  // the oil probe. It proves the mechanism is prosecutable. It is not
+  // evidence about these trades and the episode never blurs the two.
+  {at: 2900, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
+   shots: [{from: 0, k: 1.04, kEnd: 1.14, tx: 580, ty: 1190}],
+   vo: "e18_sol_didcatch", speaker: "SOL",
+   line: "Now. They did catch one. Different war, same idea."},
+
+  {at: 3040, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+                      {poses: ["rex_skeptic"], kind: "bust", x: 420, y: 1250, h: 850}],
+   card: {title: "THE ONE THEY CHARGED",
+          lines: ["A service member traded a prediction",
+                  "market on an operation he had been",
+                  "briefed on. Classified. Indicted."],
+          foot: "a separate case, a different event — not the oil trades"},
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.06},
+           {from: 150, only: 1, k: 1.0, kEnd: 1.1, hideCard: true}],
+   vo: "e19_sol_soldier", speaker: "SOL",
+   line: "A special forces soldier bet a prediction market on an operation he had been briefed on. Classified. Indicted."},
+
+  {at: 3250, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679},
+                      {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1300, h: 596}],
+   shots: [{from: 0, only: 0, k: 1.1, kEnd: 1.2, tx: 520, ty: 1030}],
+   vo: "e20_rex_provable", speaker: "REX", line: "So it is provable.", energy: 1.1},
+
+  {at: 3320, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+   shots: [{from: 0, k: 1.04, kEnd: 1.14, tx: 540, ty: 1190}],
+   vo: "e21_sol_whentrail", speaker: "SOL", line: "When the trail leads somewhere. Yes."},
+
+  {at: 3420, actors: [{poses: ["rex_listen"], kind: "full", x: 400, y: FLOOR_Y, h: 820}],
+   shots: [{from: 0, k: 1.06, kEnd: 1.14, tx: 520, ty: 1250}],
+   vo: "e22_rex_whennot", speaker: "REX", line: "And when it doesn't?"},
+
+  {at: 3480, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+   graphic: "countdown_16",
+   shots: [{from: 0, k: 1.0, kEnd: 1.08}],
+   vo: "e23_sol_clock", speaker: "SOL", line: "Then all you have is the clock."},
+
+  // ═══ ACT 6 — THE LESSON, AND THE CALLBACK ════════════════════════════
+  {at: 3560, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
+   shots: [{from: 0, k: 1.02, kEnd: 1.12, tx: 580, ty: 1190}],
+   vo: "e24_sol_lastweek", speaker: "SOL",
+   line: "Last week I told you public information isn't enough to find an edge."},
+
+  {at: 3700, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+                      {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
+   graphic: "countdown_16",
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.1},
+           {from: 115, only: 1, k: 1.0, kEnd: 1.08, hideCard: true}],
+   vo: "e25_sol_thisweek", speaker: "SOL",
+   line: "This week? Somebody had an edge sixteen minutes before the public had a headline."},
+
+  {at: 3870, actors: [{poses: ["rex_skeptic"], kind: "full", x: 470, y: FLOOR_Y, h: 960}],
+   shots: [{from: 0, k: 1.06, kEnd: 1.16, tx: 540, ty: 1120}],
+   vo: "e26_rex_sowhat", speaker: "REX", line: "So what do I do with that?"},
+
+  {at: 3940, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+                      {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.08},
+           {from: 120, only: 1, k: 1.0, kEnd: 1.08}],
+   vo: "e27_sol_newsfirst", speaker: "SOL",
+   line: "You stop assuming the news moves the market. Sometimes the market moves first, and the news catches up."},
+
+  // The signature close, same shape as ep.1 so the series has a shape.
+  {at: 4160, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.12, tx: 540, ty: 1200}],
+   vo: "e28_sol_fair", speaker: "SOL",
+   line: "Fair? No. But now you know what to watch."},
+
+  {at: 4290, title: ["MARKET LESSONS", "WITH SOL", ""], actors: []},
+];
+
+const beatAt = (f: number) => {
+  let i = 0;
+  for (let k = 0; k < BEATS.length; k++) if (f >= BEATS[k].at) i = k;
+  const cur = BEATS[i];
+  const next = BEATS[i + 1];
+  return {cur, since: f - cur.at, hold: (next ? next.at : EP2_FRAMES) - cur.at};
+};
+
+const CYCLE = [0, 1, 0, 2];
+const SWAP = 14;
+const W = 1080, H = 1920;
+
+// Intra-beat pose cycling is OFF by default. Each pose variant is an
+// independent LoRA generation, so swapping drawings mid-sentence changed
+// Sol's haircut and head direction every 14 frames — it read as a glitch,
+// not as animation. Density now comes from the viseme swaps, blinks and
+// the toon motion instead. A pair may only re-enter this set if the
+// identity gate certifies both drawings as the same haircut, head
+// direction and framing (scripts/vector/pose_contact.py).
+const SAFE_CYCLES: string[][] = [];
+const cycleAllowed = (poses: string[]) =>
+  poses.length > 1 &&
+  SAFE_CYCLES.some((g) => poses.every((p) => g.includes(p)));
+
+const mouthStateFor = (beat: Beat, frame: number): {sol: number; rex: number} => {
+  const out = {sol: 0, rex: 0};
+  const apply = (vo?: string, speaker?: string, offset = 0) => {
+    if (!vo || !speaker) return;
+    const t = TR[vo];
+    const i = frame - (beat.at + offset + VO_DELAY);
+    if (t && i >= 0 && i < t.length) {
+      if (speaker === "SOL") out.sol = Math.max(out.sol, t[i]);
+      else out.rex = Math.max(out.rex, t[i]);
+    }
+  };
+  apply(beat.vo, beat.speaker, 0);
+  apply(beat.vo2, beat.speaker2, beat.at2 ?? 0);
+  return out;
+};
+
+// Pick the drawing for this frame: the base pose art, or one of its
+// inpainted viseme variants. Blink only fires when the mouth is closed
+// (never fights a talk shape); sustained state-2 holds alternate
+// open/oh every 7 frames so long vowels stay alive.
+const visemeSrc = (pose: string, state: number, speaking: boolean,
+                   frame: number): string => {
+  const d = AN[pose];
+  const v = VI[pose];
+  if (!v) return d.src;
+  const seed = (pose.charCodeAt(0) * 31 + pose.length * 7) % 97;
+  const blinking = v.blink && ((frame + seed * 5) % (96 + (seed % 29))) < 3;
+  if (!speaking) return blinking ? v.blink! : d.src;
+  if (state === 0) return blinking ? v.blink! : (v.closed ?? d.src);
+  if (state === 1) return v.half ?? v.closed ?? d.src;
+  const alt = Math.floor(frame / 7) % 2 === 0;
+  return (alt ? v.open : v.oh) ?? v.open ?? v.oh ?? d.src;
+};
+
+const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
+                      mouthState: number; shot?: Shot; shotSince: number;
+                      shotLen: number; holdMouth?: boolean}> =
+  ({a, since, frame, speaking, mouthState, shot, shotSince, shotLen,
+    holdMouth}) => {
+  const cycling = speaking && cycleAllowed(a.poses);
+  const idx = cycling
+    ? CYCLE[Math.floor(since / SWAP) % CYCLE.length] % a.poses.length
+    : 0;
+  const pose = shot?.pose ?? a.poses[idx];
+  const d = AN[pose];
+  if (!d) return null;
+  const swapSince = since % SWAP;
+  // the snap belongs to the SHOT, not the beat: a reframe is a cut and
+  // has to arrive with its own anticipation/settle, or the punch-in
+  // reads as a zoom.
+  const act = actionCurve(cycling ? swapSince : shotSince, 2, 5, 8);
+  const pop = 0.955 + 0.045 * Math.min(1, Math.max(0, act));
+  const amp = a.kind === "closeup" ? STAGE_H * 0.5 : a.h;
+  // No boil. Its 2-frame random offset read as the picture vibrating on
+  // these large clean vectors; idle() breathes and shifts weight instead.
+  // temper is derived from WHO the drawing is, so no beat has to carry it
+  const temper = pose.startsWith("sol") ? "calm" : "eager";
+  const idl = idle(frame, pose.length, amp, temper);
+  // THE HELD SHOT. toon.ts ships holdCurve() and squash() for exactly this
+  // and neither was ever imported here, so a held drawing had no life
+  // beyond breathing: it arrived and then simply sat. holdCurve gives the
+  // three-beat shape a real hold has — arrive fast, a small secondary
+  // move partway through, settle — and squash puts that on a
+  // volume-preserving axis rather than a uniform resize. Amplitudes are
+  // deliberately tiny; this is the difference between a drawing that is
+  // held and a drawing that is parked.
+  const hc = holdCurve(shotSince, Math.max(1, shotLen));
+  const drift = a.kind === "closeup" ? 0 : amp * 0.010;
+  const sq = squash((hc - 0.68) * 0.012);
+  const scale = a.kind === "full" ? a.h / d.ink_h
+    : a.kind === "closeup"
+    // cover the frame: no canvas edge can fall inside it. 1.04 pads the
+    // boil/bob/pop jitter so a wobble can't reveal a corner.
+    ? 1.04 * Math.max(W / d.w, H / d.h)
+    : a.h / d.h;
+  const w0 = d.w * scale, h0 = d.h * scale;
+  const left0 = a.kind === "full" ? a.x - d.anchor[0] * w0 : a.x - w0 / 2;
+  const top0 = a.kind === "full" ? a.y - d.anchor[1] * h0 : a.y - h0 / 2;
+  // Reframe about the HEAD, so a punch-in keeps the face on screen
+  // instead of drifting toward the canvas centre.
+  const hf = HF[pose] ?? {fx: 0.5, fy: 0.32};
+  const k0 = Math.min(MAX_K, shot?.k ?? 1);
+  const kE = shot?.kEnd === undefined ? undefined : Math.min(MAX_K, shot.kEnd);
+  const k = kE === undefined ? k0
+    : k0 + (kE - k0) * Math.min(1, shotSince / shotLen);
+  const w = w0 * k, h = h0 * k;
+  const hx = left0 + hf.fx * w0, hy = top0 + hf.fy * h0;
+  const left = (shot?.tx ?? hx) - hf.fx * w;
+  const top = (shot?.ty ?? hy) - hf.fy * h;
+  const src = holdMouth ? d.src : visemeSrc(pose, mouthState, speaking, frame);
+  const panel = a.kind === "panel";
+  // Sol moves like a veteran, Rex like an over-eager junior — derived
+  // from who the drawing is, so no beat has to carry it.
+  const ix = interactXform(since, a.moves, a.turns,
+                           shot?.tx ?? hx, shot?.ty ?? hy, temper);
+  return (
+    <div style={{position: "absolute",
+      left: left + idl.dx + drift * (hc - 0.68),
+      top: top + idl.dy - drift * 0.35 * (hc - 0.68),
+      width: w, height: h,
+      transform: `translate(${ix.dx}px, ${ix.dy}px) `
+        + `scale(${pop * ix.sx * idl.sx * sq.sx}, ${pop * ix.sy * idl.sy * sq.sy}) `
+        + `rotate(${ix.rot + idl.rot + (panel ? -1.2 : 0)}deg)`,
+      transformOrigin: a.kind === "full" ? `${d.anchor[0] * 100}% ${d.anchor[1] * 100}%` : "50% 60%",
+      opacity: Math.min(1, since / 3) * ix.opacity,
+      ...(ix.blur > 0.05 ? {filter: `blur(${ix.blur}px)`} : {}),
+      ...(panel ? {border: "6px solid #111", borderRadius: 8, overflow: "hidden",
+        boxShadow: "10px 12px 0 rgba(0,0,0,0.35)", background: "#F7F3E8"} : {})}}>
+      <Img src={staticFile(src)} style={{position: "absolute", inset: 0, width: "100%", height: "100%"}} />
+    </div>
+  );
+};
+
+// The exhibit is now BROADCAST — it fills the studio monitor rather than
+// floating in the air, so the characters are looking at something in the
+// room with them. Type is sized to the screen, not the frame.
+const ExhibitCard: React.FC<{c: Card; since: number}> = ({c, since}) => {
+  const slide = Math.min(1, since / 9);
+  return (
+    <div style={{position: "absolute", inset: 0, background: "#F7F4E9",
+      fontFamily: "Arial", color: "#111", padding: "26px 34px",
+      transform: `translateY(${(1 - slide) * 14}px)`, opacity: slide}}>
+      <div style={{fontFamily: "Impact, Arial", fontSize: 38, letterSpacing: 1,
+        borderBottom: "4px solid #111", paddingBottom: 8, marginBottom: 14}}>{c.title}</div>
+      {/* The body used to hard-switch on at since>14, 34, 54 — so the card
+          spent its first half-second as a title over an empty cream box,
+          and a binary opacity flip made that read as a failed render
+          rather than a reveal. Two independent reviewers called it a
+          broken graphic on the frame that carries the episode's strongest
+          line. The body now starts almost with the header and FADES,
+          which is the difference between a card building and a card
+          missing its content. */}
+      {c.lines.map((ln, i) => (
+        <div key={i} style={{fontSize: 31, fontWeight: 700, lineHeight: 1.36,
+          opacity: Math.max(0, Math.min(1, (since - (4 + i * 10)) / 8)),
+          transform: `translateY(${(1 - Math.max(0, Math.min(1,
+            (since - (4 + i * 10)) / 8))) * 6}px)`}}>{ln}</div>
+      ))}
+      {c.big ? (
+        <div style={{fontFamily: "Impact, Arial", fontSize: 104, textAlign: "center",
+          margin: "2px 0 0", color: "#7A1F2B",
+          opacity: Math.max(0, Math.min(1,
+            (since - (8 + c.lines.length * 10)) / 9))}}>{c.big}</div>
+      ) : null}
+      {c.foot ? (
+        <div style={{fontSize: 20, position: "absolute", left: 34, bottom: 18,
+          color: "#555"}}>{c.foot}</div>
+      ) : null}
+    </div>
+  );
+};
+
+// The monitor's IDLE state. The studio screen used to be conditionally
+// rendered — present only on beats that had an exhibit — so for the
+// first 13 seconds the room had a blank wall where a monitor should be,
+// and the screen popped in and out at beat boundaries instead of being
+// furniture. It is now always on, and when it has nothing specific to
+// show it runs the thing the episode is ABOUT.
+//
+// That used to be a single scrolling polyline, which read as "a chart"
+// and nothing more. The subject here is a TRACKER — a portfolio
+// reconstructed from disclosures — so the screen behind the hosts now
+// prints that tracker as candles: each bar is a period with a range, and
+// the newest one is live, wandering inside its own high/low until it
+// settles. See motion/Infographic.tsx (TickerTape) for the tape rules
+// and for why the series is labelled ILLUSTRATIVE on its face.
+// `bare` drops the tape's own header and price readout. The episode
+// title sits over the monitor on the open and the outro, and two
+// unrelated blocks of text stacked on each other read as a layout bug.
+// (The review panel judged this cosmetic and refuted it 2-1; it is a
+// two-line change that removes a real text-on-text stack, so it is in.)
+const TVIdle: React.FC<{frame: number; bare?: boolean}> = ({frame, bare}) => (
+  <TickerTape frame={frame} w={TV_SCREEN.w} h={TV_SCREEN.h} bare={bare}
+    label="LAWMAKER TRADE TRACKER"
+    sub="disclosed positions, rebuilt from filings" />
+);
+
+// A caricature playing on the monitor. Contained by the screen, so she
+// is always "footage the show is running" rather than a figure standing
+// impossibly in the room next to the cast.
+// TVPose (ep.1's keyed caricature insert) is unused here: episode 2
+// puts footage on the monitor via Shot.tvPhoto instead.
+
+
+const Subtitle: React.FC<{speaker: string; line: string}> = ({speaker, line}) => (
+  <div style={{position: "absolute", left: 60, right: 60, bottom: 90, textAlign: "center"}}>
+    <div style={{fontFamily: "Impact, Arial", fontSize: 30, letterSpacing: 2,
+      color: speaker === "SOL" ? "#E8A54B" : "#FF8A50", marginBottom: 6,
+      textShadow: "2px 2px 0 #000"}}>{speaker}</div>
+    <div style={{fontFamily: "Arial", fontWeight: 800, fontSize: 44, lineHeight: 1.3,
+      color: "white",
+      textShadow: "3px 3px 0 #000, -3px 3px 0 #000, 3px -3px 0 #000, -3px -3px 0 #000, 0 4px 8px rgba(0,0,0,0.8)"}}>
+      {line}
+    </div>
+  </div>
+);
+
+export const FairMarketEp2: React.FC = () => {
+  const frame = useCurrentFrame();
+  const {cur, since, hold} = beatAt(frame);
+  const outro = cur.at === 1685;
+  const nrg = cur.energy ?? 0.7;
+  const k = kick(since, 10 * nrg, 14);
+  const sub2 = cur.vo2 && since >= (cur.at2 ?? 0);
+  const ms = mouthStateFor(cur, frame);
+  const activeSpeaker = sub2 ? cur.speaker2 : cur.speaker;
+  const {shot, shotSince, shotLen} = shotAt(cur.shots, since, hold);
+
+  return (
+    <AbsoluteFill style={{background: "#101828", overflow: "hidden"}}>
+      {BEATS.map((b) => (
+        <React.Fragment key={b.at}>
+          {b.vo ? (
+            <Sequence from={b.at + VO_DELAY} durationInFrames={320}>
+              <Audio src={staticFile(`audio/fairmarket_ep2/${b.vo}.wav`)} />
+            </Sequence>
+          ) : null}
+          {b.vo2 ? (
+            <Sequence from={b.at + (b.at2 ?? 0) + VO_DELAY} durationInFrames={120}>
+              <Audio src={staticFile(`audio/fairmarket_ep2/${b.vo2}.wav`)} />
+            </Sequence>
+          ) : null}
+          {(b.sfx ?? []).map((s, i) => (
+            <Sequence key={`s${i}`} from={b.at + s.at} durationInFrames={22}>
+              <Audio src={staticFile(`audio/${s.name}.wav`)} volume={s.vol ?? 0.5} />
+            </Sequence>
+          ))}
+        </React.Fragment>
+      ))}
+      <div style={{position: "absolute", inset: 0,
+        transform: `translate(${k.x}px, ${k.y * 0.4}px) scale(${1 + 0.03 * Math.max(0, 1 - since / 10) * nrg})`,
+        transformOrigin: "50% 45%"}}>
+        <Room dark={shot?.mood === "dark"} />
+        {/* The monitor is FURNITURE — always in the room, never popping in
+            and out at beat boundaries, and it fills the upper frame that
+            was otherwise dead wall above the cast. */}
+        <TVFrame glow={(!!cur.card || !!cur.graphic || !!shot?.tvPhoto)
+          && !shot?.hideCard} />
+        <div style={{position: "absolute", left: TV_SCREEN.x, top: TV_SCREEN.y,
+          width: TV_SCREEN.w, height: TV_SCREEN.h, overflow: "hidden",
+          borderRadius: 4}}>
+          {/* `hideCard` was a declared-but-never-read field. It is wired
+              now, and it is what lets a beat push in close on a character
+              WITHOUT hiding its own evidence: the exhibit is explicitly
+              stood down for that shot and the monitor falls back to the
+              tape, rather than a head silently covering the graphic the
+              line is about. */}
+          {shot?.hideCard ? <TVIdle frame={frame} bare={!!cur.title} />
+            : shot?.tvPhoto ? (
+              <div style={{position: "absolute", inset: 0, overflow: "hidden",
+                background: "#0B1220"}}>
+                <Img src={staticFile(`characters/cast_ep1/ep2/${shot.tvPhoto}.png`)}
+                  style={{position: "absolute", width: "100%", height: "auto",
+                    left: 0, top: `${-6 - Math.min(1, shotSince / 150) * 5}%`,
+                    opacity: Math.min(1, shotSince / 10)}} />
+              </div>
+            ) : cur.graphic === "countdown_16" ? (
+              <CountdownExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
+                title="MARCH 23 — THE ORDER OF EVENTS"
+                t0={{time: "06:49 ET", label: "$580M in oil futures, an unknown buyer"}}
+                t1={{time: "07:05 ET", label: "the post: talks with Iran went well"}}
+                minutes={16}
+                foot="as reported · DOJ and CFTC reviewing · no charges filed" />
+            ) : cur.graphic === "stack_26" ? (
+              <StackExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
+                title="ONCE IS A COINCIDENCE"
+                items={[{label: "before the Iran talks post", usd: 580},
+                        {label: "before the ceasefire", usd: 950},
+                        {label: "before the Hormuz announcement", usd: 760}]}
+                totalLabel="these three tickets"
+                foot="the reported DOJ / CFTC review is wider, about $2.6B · buyers unidentified · no charges filed" />
+            ) : cur.card ? <ExhibitCard c={cur.card} since={since} />
+            : <TVIdle frame={frame} bare={!!cur.title} />}
+        </div>
+        <TVGlass />
+        {/* DARK MOOD. Sits above the room and below the characters, so the
+            figures stay readable while the space around them goes cold and
+            closes in — a slow squeeze rather than a cut to black. */}
+        {shot?.mood === "dark" ? (
+          <div style={{position: "absolute", inset: 0, pointerEvents: "none",
+            background: "radial-gradient(ellipse 62% 46% at 50% 52%,"
+              + " rgba(8,10,18,0) 0%, rgba(8,10,18,0.55) 62%,"
+              + " rgba(5,6,12,0.9) 100%)",
+            opacity: Math.min(1, shotSince / 10)}} />
+        ) : null}
+        {(cur.fx ?? !!cur.shout) && since < 26
+          ? <SpeedLines k={Math.max(0, 1 - since / 26)} seed={cur.at} /> : null}
+        {cur.title && !outro ? (
+          <div style={{position: "absolute", left: 60, top: 150, fontFamily: "Impact, Arial",
+            color: "#F2F6FF", lineHeight: 1.02}}>
+            <div style={{fontSize: 110}}>{cur.title[0]}</div>
+            <div style={{fontSize: 110, color: "#FFD860"}}>{cur.title[1]}</div>
+            <div style={{fontSize: 42, fontFamily: "Arial", fontWeight: 700, marginTop: 16,
+              color: "#9FB2D8"}}>{cur.title[2]}</div>
+          </div>
+        ) : null}
+        {cur.actors.map((a, i) => {
+          if (shot?.show && !shot.show.includes(i)) return null;
+          if (!shot?.show && shot?.only !== undefined && shot.only !== i) return null;
+          const isSol = a.poses[0].startsWith("sol");
+          const speaking = activeSpeaker === (isSol ? "SOL" : "REX");
+          return <Char key={i} a={a} since={since} frame={frame} speaking={speaking}
+                       mouthState={isSol ? ms.sol : ms.rex}
+                       shot={shot} shotSince={shotSince} shotLen={shotLen}
+                       holdMouth={cur.holdMouth} />;
+        })}
+        {(cur.flicks ?? []).map((f, i) => (
+          <ShockFlicks key={i} x={f.x} y={f.y} since={since - f.at} size={72} />
+        ))}
+        {cur.fx ?? !!cur.shout ? <ShockRing x={540} y={860} since={since} /> : null}
+        {cur.shout ? (
+          <>
+            <div style={{position: "absolute",
+              left: cur.shoutAt?.left ?? 0, right: cur.shoutAt?.right ?? 0,
+              top: cur.shoutAt?.top ?? 1380, textAlign: "center",
+              fontFamily: "Impact, Arial", fontSize: 150, color: "#FFD860",
+              transform: `rotate(-3deg) scale(${0.7 + 0.3 * Math.min(1, since / 4)})`,
+              textShadow: "6px 6px 0 #000", opacity: since < 40 ? 1 : Math.max(0, 1 - (since - 40) / 10)}}>
+              {cur.shout}
+            </div>
+          </>
+        ) : null}
+      </div>
+      {/* The flash is punctuation, so it has to be RARE. It fired on every
+          beat's frame 0 — the flash selling "WHAT?!" was identical to the
+          one on a flat aside, which trains the eye to ignore it. Gated on
+          the same signal the speed lines and shock ring already use. */}
+      {(cur.fx ?? !!cur.shout) ? <FlashCut since={since} /> : null}
+      {!outro && cur.line && !sub2 ? <Subtitle speaker={cur.speaker ?? ""} line={cur.line} /> : null}
+      {!outro && sub2 ? <Subtitle speaker={cur.speaker2 ?? ""} line={cur.line2 ?? ""} /> : null}
+      {outro ? (
+        <div style={{position: "absolute", inset: 0, background: "#0B111E",
+          display: "flex", flexDirection: "column", justifyContent: "center",
+          alignItems: "center", textAlign: "center", fontFamily: "Arial", color: "#E8F0FF"}}>
+          <div style={{fontFamily: "Impact, Arial", fontSize: 96}}>MARKET LESSONS</div>
+          <div style={{fontFamily: "Impact, Arial", fontSize: 96, color: "#FFD860"}}>WITH SOL</div>
+          <div style={{fontSize: 30, marginTop: 40, color: "#8FA3C8", maxWidth: 760, lineHeight: 1.6}}>
+            PARODY · STYLIZED CHARACTERS · BASED ON PUBLIC FILINGS & REPORTS
+            <br />EDUCATIONAL, NOT ADVICE · NOT AN ACCUSATION
+            <br />made with a local model + code · $0
+          </div>
+        </div>
+      ) : (
+        <div style={{position: "absolute", left: 0, right: 0, bottom: 20, textAlign: "center",
+          fontFamily: "Arial", fontSize: 22, color: "#6C7FA6"}}>
+          parody · public record · educational, not advice
+        </div>
+      )}
+      <Vignette strength={0.28} />
+      <Grain opacity={0.03} />
+    </AbsoluteFill>
+  );
+};

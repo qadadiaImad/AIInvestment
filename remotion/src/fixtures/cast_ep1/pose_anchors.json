@@ -306,5 +306,49 @@
   ],
   "src": "characters/cast_ep1/congress2_smug.svg",
   "scale": 1.0
+ },
+ "podium_speaker": {
+  "w": 757,
+  "h": 1213,
+  "ink_h": 1204,
+  "anchor": [
+   0.5104,
+   0.9992
+  ],
+  "src": "characters/cast_ep1/podium_speaker.svg",
+  "scale": 1.0
+ },
+ "podium_official_a": {
+  "w": 787,
+  "h": 899,
+  "ink_h": 898,
+  "anchor": [
+   0.6096,
+   0.9989
+  ],
+  "src": "characters/cast_ep1/podium_official_a.svg",
+  "scale": 1.0
+ },
+ "podium_official_b": {
+  "w": 819,
+  "h": 912,
+  "ink_h": 903,
+  "anchor": [
+   0.495,
+   0.9989
+  ],
+  "src": "characters/cast_ep1/podium_official_b.svg",
+  "scale": 1.0
+ },
+ "trader_unknown": {
+  "w": 559,
+  "h": 834,
+  "ink_h": 818,
+  "anchor": [
+   0.5696,
+   0.9904
+  ],
+  "src": "characters/cast_ep1/trader_unknown.svg",
+  "scale": 1.0
  }
 }

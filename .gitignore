@@ -82,3 +82,13 @@ studio/.claude/
 # content, kept locally for comparison, never committed.
 Enregistrement*.mp4
 example.mp4
+
+# ── Rendered media is NOT committed ──────────────────────────────────────
+# Every episode adds 60-100 MB of mp4 and the pushes started failing on it
+# outright (HTTP 408, connection reset). A master is fully reproducible
+# from the composition + audio + assets in one render command, so it is
+# derived output, not source. The files stay on disk - never deleted -
+# they simply are not git's job.
+content/vector_char/cast/**/*.mp4
+content/vector_char/cast/**/frames_*/
+content/probe/**/*.mp4

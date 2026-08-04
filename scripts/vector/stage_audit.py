@@ -32,13 +32,15 @@ from PIL import Image
 from vector.visemes_ep1 import RENDERS, FIX
 
 REPO = Path(__file__).resolve().parent.parent.parent
-COMP = REPO / "remotion" / "src" / "compositions" / "FairMarketEp1.tsx"
+import os
+EP = os.environ.get("EP", "1")
+COMP = REPO / "remotion" / "src" / "compositions" / f"FairMarketEp{EP}.tsx"
 
 W, H = 1080, 1920
 FLOOR_Y = 1730
-TOTAL_FRAMES = 5490
+TOTAL_FRAMES = 5490 if EP == "1" else 4500
 VO_DELAY = 6
-VO_DIR = REPO / "remotion" / "public" / "audio" / "fairmarket"
+VO_DIR = REPO / "remotion" / "public" / "audio" / ("fairmarket" if EP == "1" else f"fairmarket_ep{EP}")
 FFPROBE = (REPO / "remotion" / "node_modules" / "@remotion"
            / "compositor-win32-x64-msvc" / "ffprobe.exe")
 
