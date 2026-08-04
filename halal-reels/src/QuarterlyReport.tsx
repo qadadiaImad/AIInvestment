@@ -24,6 +24,10 @@ import {
 } from "remotion";
 import { loadFont as loadLuckiest } from "@remotion/google-fonts/LuckiestGuy";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
+import { Character } from "./toon/rig";
+import { DEFAULT } from "./toon/defaults";
+import { POSES, EXPR } from "./toon/poses";
+import { merge } from "./toon/merge";
 
 const luckiest = loadLuckiest("normal", { weights: ["400"], subsets: ["latin"] });
 const inter = loadInter("normal", { weights: ["700", "800", "900"], subsets: ["latin"] });
@@ -79,37 +83,6 @@ const isBlinking = (f: number) => {
 };
 const inWindows = (f: number, wins: [number, number][]) => wins.some(([a, b]) => f >= a && f <= b);
 const flap = (f: number) => Math.floor(f / 4) % 2 === 0;
-
-// ================= CHARACTER =================
-const Guy: React.FC<{ talk: boolean; blink: boolean; bob: number }> = ({ talk, blink, bob }) => (
-  <g transform={`translate(0 ${bob})`}>
-    <line x1="270" y1="300" x2="270" y2="360" stroke={P.skinLine} strokeWidth="9" />
-    <path d="M150 520 C150 400 205 350 270 350 C335 350 390 400 390 520 Z" fill={P.shirt} stroke={P.skinLine} strokeWidth="9" />
-    <path d="M175 400 C120 430 110 500 150 540" fill="none" stroke={P.skinLine} strokeWidth="9" strokeLinecap="round" />
-    <path d="M365 400 C430 430 445 500 405 545" fill="none" stroke={P.skinLine} strokeWidth="9" strokeLinecap="round" />
-    <circle cx="150" cy="542" r="13" fill={P.skin} stroke={P.skinLine} strokeWidth="8" />
-    <circle cx="405" cy="547" r="13" fill={P.skin} stroke={P.skinLine} strokeWidth="8" />
-    <circle cx="270" cy="200" r="115" fill={P.skin} stroke={P.skinLine} strokeWidth="10" />
-    <line x1="212" y1="150" x2="252" y2="152" stroke={P.skinLine} strokeWidth="8" strokeLinecap="round" />
-    <line x1="288" y1="152" x2="328" y2="150" stroke={P.skinLine} strokeWidth="8" strokeLinecap="round" />
-    {blink ? (
-      <>
-        <line x1="222" y1="196" x2="252" y2="196" stroke={P.skinLine} strokeWidth="8" strokeLinecap="round" />
-        <line x1="288" y1="196" x2="318" y2="196" stroke={P.skinLine} strokeWidth="8" strokeLinecap="round" />
-      </>
-    ) : (
-      <>
-        <circle cx="237" cy="196" r="14" fill={P.skinLine} />
-        <circle cx="303" cy="196" r="14" fill={P.skinLine} />
-      </>
-    )}
-    {talk ? (
-      <ellipse cx="270" cy="252" rx="20" ry="15" fill={P.skinLine} />
-    ) : (
-      <line x1="242" y1="252" x2="298" y2="252" stroke={P.skinLine} strokeWidth="7" strokeLinecap="round" />
-    )}
-  </g>
-);
 
 // ================= TITLE CARD =================
 const TitleCard: React.FC = () => {
@@ -185,7 +158,12 @@ const OfficeScene: React.FC = () => {
   const bob = Math.sin(f / 9) * 4;
   const push = interpolate(f, [126, 180], [1, 1.14], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const numAppear = interpolate(f, [126, 146], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-  const talk = inWindows(f, [[8, 91], [100, 246]]) && flap(f);
+  const talking = inWindows(f, [[8, 91], [100, 246]]) && flap(f);
+  const params = merge(DEFAULT, POSES.rest.patch, EXPR.deadpan.patch, {
+    mouth: talking ? "open" : "flat",
+    eyes: isBlinking(f) ? "blink" : "open",
+    bob,
+  });
 
   let cap: React.ReactNode = null;
   if (f >= 8 && f < 96) cap = <Caption text="This quarter, the market called Nvidia a “bubble.”" />;
@@ -217,7 +195,7 @@ const OfficeScene: React.FC = () => {
             </g>
           </g>
           <g transform="translate(120 640)">
-            <Guy talk={talk} blink={isBlinking(f)} bob={bob} />
+            <Character p={params} />
           </g>
         </svg>
       </AbsoluteFill>
