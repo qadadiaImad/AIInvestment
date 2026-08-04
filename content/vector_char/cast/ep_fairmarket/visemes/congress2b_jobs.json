@@ -1,0 +1,50 @@
+[
+ {
+  "name": "c5_scheme_0",
+  "prompt": "solo, 1man, old man, elderly, 70 years old, aged face, deep wrinkles, forehead creases, heavy jowls, double chin, thick neck, overweight heavyset build, broad shoulders, distinctive swept-back and combed-over pale golden blond hair, ruddy tanned complexion, very long bright red silk necktie, dark navy suit jacket, white dress shirt, american flag lapel pin, steepled fingers, sly scheming smirk, narrowed half-lidded scheming eyes, leaning forward conspiratorially, plotting, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man, youthful, teenager, bishounen, handsome young face, smooth skin, slim, skinny, black hair, brown hair",
+  "seed": 93000,
+  "width": 832,
+  "height": 1216
+ },
+ {
+  "name": "c5_scheme_1",
+  "prompt": "solo, 1man, old man, elderly, 70 years old, aged face, deep wrinkles, forehead creases, heavy jowls, double chin, thick neck, overweight heavyset build, broad shoulders, distinctive swept-back and combed-over pale golden blond hair, ruddy tanned complexion, very long bright red silk necktie, dark navy suit jacket, white dress shirt, american flag lapel pin, steepled fingers, sly scheming smirk, narrowed half-lidded scheming eyes, leaning forward conspiratorially, plotting, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man, youthful, teenager, bishounen, handsome young face, smooth skin, slim, skinny, black hair, brown hair",
+  "seed": 93001,
+  "width": 832,
+  "height": 1216
+ },
+ {
+  "name": "c5_scheme_2",
+  "prompt": "solo, 1man, old man, elderly, 70 years old, aged face, deep wrinkles, forehead creases, heavy jowls, double chin, thick neck, overweight heavyset build, broad shoulders, distinctive swept-back and combed-over pale golden blond hair, ruddy tanned complexion, very long bright red silk necktie, dark navy suit jacket, white dress shirt, american flag lapel pin, steepled fingers, sly scheming smirk, narrowed half-lidded scheming eyes, leaning forward conspiratorially, plotting, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man, youthful, teenager, bishounen, handsome young face, smooth skin, slim, skinny, black hair, brown hair",
+  "seed": 93002,
+  "width": 832,
+  "height": 1216
+ },
+ {
+  "name": "c5_smug_0",
+  "prompt": "solo, 1man, old man, elderly, 70 years old, aged face, deep wrinkles, forehead creases, heavy jowls, double chin, thick neck, overweight heavyset build, broad shoulders, distinctive swept-back and combed-over pale golden blond hair, ruddy tanned complexion, very long bright red silk necktie, dark navy suit jacket, white dress shirt, american flag lapel pin, arms crossed, smug self-satisfied smirk, squinting eyes, chin raised, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man, youthful, teenager, bishounen, handsome young face, smooth skin, slim, skinny, black hair, brown hair",
+  "seed": 93050,
+  "width": 832,
+  "height": 1216
+ },
+ {
+  "name": "c5_smug_1",
+  "prompt": "solo, 1man, old man, elderly, 70 years old, aged face, deep wrinkles, forehead creases, heavy jowls, double chin, thick neck, overweight heavyset build, broad shoulders, distinctive swept-back and combed-over pale golden blond hair, ruddy tanned complexion, very long bright red silk necktie, dark navy suit jacket, white dress shirt, american flag lapel pin, arms crossed, smug self-satisfied smirk, squinting eyes, chin raised, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man, youthful, teenager, bishounen, handsome young face, smooth skin, slim, skinny, black hair, brown hair",
+  "seed": 93051,
+  "width": 832,
+  "height": 1216
+ },
+ {
+  "name": "c5_smug_2",
+  "prompt": "solo, 1man, old man, elderly, 70 years old, aged face, deep wrinkles, forehead creases, heavy jowls, double chin, thick neck, overweight heavyset build, broad shoulders, distinctive swept-back and combed-over pale golden blond hair, ruddy tanned complexion, very long bright red silk necktie, dark navy suit jacket, white dress shirt, american flag lapel pin, arms crossed, smug self-satisfied smirk, squinting eyes, chin raised, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man, youthful, teenager, bishounen, handsome young face, smooth skin, slim, skinny, black hair, brown hair",
+  "seed": 93052,
+  "width": 832,
+  "height": 1216
+ }
+]

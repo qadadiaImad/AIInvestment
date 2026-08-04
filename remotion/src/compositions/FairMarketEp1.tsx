@@ -16,6 +16,7 @@ import {FlashCut, ShockFlicks, ShockRing, SpeedLines, kick} from "../motion/Toon
 import {Grain, Vignette} from "../motion/Polish";
 import {Move, Turn, idle, interactXform} from "../motion/interact";
 import {FLOOR_Y, Room, TVFrame, TVGlass, TV_SCREEN, H as STAGE_H} from "../motion/Set";
+import {CounterExhibit, TickerTape, TimelineExhibit} from "../motion/Infographic";
 import anchors from "../fixtures/cast_ep1/pose_anchors.json";
 import mouthTracks from "../fixtures/cast_ep1/mouth_tracks.json";
 import visemes from "../fixtures/cast_ep1/visemes.json";
@@ -75,7 +76,7 @@ const shotAt = (shots: Shot[] | undefined, since: number, hold: number) => {
           shotLen: Math.max(1, end - cur.from)};
 };
 
-export const FAIRMARKET_FRAMES = 1800;
+export const FAIRMARKET_FRAMES = 3600;
 
 // Hard ceiling on how far a shot may push in. A drawing scaled until the
 // face fills the frame throws away the set and has nowhere left to go —
@@ -124,6 +125,9 @@ type Beat = {
   holdMouth?: boolean;
   // Move the shout off a character's face when the staging needs it.
   shoutAt?: {left: number; right: number; top: number};
+  // A code-drawn exhibit for the monitor, instead of a text card. The
+  // card restated the spoken line; a graphic shows the mechanism.
+  graphic?: "timeline_nvidia" | "counter_45days";
   // Impact FX (speed lines + shock ring) used to be gated on `shout`
   // existing, so deleting a shout graphic silently deleted the beat's
   // punch as well. They are independent now; defaults to whether there
@@ -131,12 +135,16 @@ type Beat = {
   fx?: boolean;
 };
 
-// One height per character, used everywhere they stand. Rex is the
-// TALLER of the two — he is the young one; Sol is a short round old man,
-// which is also why Sol's oversized chibi head no longer makes him read
-// as a giant. Both plant on Set.FLOOR_Y, so the floor is shared.
-const REX_H = 1430;
-const SOL_H = 1165;
+// There is no longer a single height constant per character. Every beat
+// carries its own staged heights, because a figure's on-screen WIDTH
+// follows its height — so one global height cannot satisfy both "Rex is
+// taller" and "two figures fit in a 1080px frame without touching", and
+// it also cannot satisfy "nobody covers the monitor" on exhibit beats.
+// The per-beat numbers are output from scripts/vector/stage_audit.py,
+// which measures real ink bounds against the real BEATS array; re-run it
+// after ANY staging change. What stays invariant is the relationship:
+// Rex reads TALLER (he is the young one, Sol is a short round old man)
+// and both plant on Set.FLOOR_Y, so the floor is always shared.
 
 // TWO-SHOT sizes. A figure's on-screen WIDTH is driven by its height, and
 // at solo size rex_eager is 1009px wide — two of those cannot fit in a
@@ -158,262 +166,284 @@ const SOL_H = 1165;
 // Rex drawing has), rex_eager_v1/rex_skeptic/sol_shrug_v1 (a leaner,
 // thinner-lined rendering cluster).
 const BEATS: Beat[] = [
+  // ═══ ACT 1 — THE CLAIM ═══════════════════════════════════════════════
   {at: 0, title: ["MARKET LESSONS", "WITH SOL", "ep.1 — the 'fair' market"],
    actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 660, y: 1170, h: 1010}],
    shots: [{from: 0, k: 1.0, kEnd: 1.05},
-           {from: 56, k: 1.38, kEnd: 1.52, tx: 540, ty: 1080}],
+           {from: 62, k: 1.34, kEnd: 1.48, tx: 540, ty: 1080}],
    vo: "v1_sol_intro", speaker: "SOL",
    line: "Kid… let me tell you about the so-called “fair” market."},
-  // Rex says "Boss!" — so there has to be a boss to say it TO. Sol now
-  // stands in the shot wearing the smirk the shot-list review describes
-  // as "dry, unimpressed skepticism", and Rex turns to him on the line.
-  // NOTE: the push shot carries tx/ty, which re-centres whichever actor
-  // it draws, so it must isolate one (only) or the two would stack.
-  // Sol is a FULL-BODY drawing here, not the smug bust: a floating
-  // head-and-shoulders standing next to a grounded full figure reads as
-  // a cut-out pasted in, which is the exact complaint this pass exists
-  // to fix. sol_point_v1 is core tier, clean, and otherwise unused.
-  // Every standing figure is planted on FLOOR_Y now, and Rex is the
-  // TALLER of the two — he is the young one and Sol is a short round old
-  // man, which is also why Sol's head can stay large without him reading
-  // as a giant.
-  {at: 110, actors: [{poses: ["rex_eager"], kind: "full", x: 327, y: FLOOR_Y, h: 717,
+
+  // Rex says "Boss!" — so there has to be a boss to say it TO. Every
+  // standing figure plants on FLOOR_Y, and Rex is the TALLER of the two:
+  // he is the young one, Sol is a short round old man. These pair heights
+  // are scripts/vector/overlap_audit.py output, not eyeballed.
+  {at: 150, actors: [{poses: ["rex_eager"], kind: "full", x: 327, y: FLOOR_Y, h: 717,
                       turns: [{at: 10, tx: 860, ty: 1180}]},
                      {poses: ["sol_point_v1"], kind: "full", x: 831, y: FLOOR_Y, h: 629}],
-   // was 2 shots (2.00s + 0.83s). The 0.83s cut did not earn itself —
-   // one held shot that creeps in reads calmer AND less choppy than two.
    shots: [{from: 0, k: 1.0, kEnd: 1.14}],
    sfx: [{at: 14, name: "sfx_whip", vol: 0.42}],
-   vo: "v2_rex_fundamentals", speaker: "REX", line: "Boss! It's all fundamentals, right?!", energy: 1},
-  // Sol is laughing AT someone, so keep that someone in frame: Rex
-  // crouched screen-left in profile, facing right at him.
-  // Scale: Sol was 63% of frame height beside a 34% crouching Rex who
-  // was also clipped by the left edge — it read as a giant beside a
-  // child, and clipped Sol frame-right too.
-  // HEAD SIZE, not body height, is what makes two characters read as the
-  // same scale — these drawings have very different head-to-body ratios
-  // (scripts/vector/head_scale.py). Matched by ink height, Sol's head
-  // rendered 432px wide against rex_listen's 128px: a giant beside a
-  // child. rex_skeptic's proportions match Sol's, and "arms crossed, not
+   vo: "v2_rex_fundamentals", speaker: "REX",
+   line: "Boss! It's all fundamentals, right?!", energy: 1},
+
+  // Sol is laughing AT someone, so keep that someone in frame. Matched by
+  // HEAD size rather than body height (scripts/vector/head_scale.py) —
+  // rex_skeptic's proportions match Sol's, and "arms crossed, not
   // convinced" is the right read for being laughed at anyway.
-  {at: 195, actors: [{poses: ["sol_laugh"], kind: "full", x: 814, y: FLOOR_Y, h: 622},
+  {at: 235, actors: [{poses: ["sol_laugh"], kind: "full", x: 814, y: FLOOR_Y, h: 622},
                      {poses: ["rex_skeptic"], kind: "full", x: 309, y: FLOOR_Y, h: 710,
                       turns: [{at: 14, tx: -260, ty: 1650}]}],
-   // this beat had NO shots array at all — the only beat with no camera
-   // life, so its flinch was the sole motion in two seconds
    shots: [{from: 0, k: 1.0, kEnd: 1.12}],
    sfx: [{at: 18, name: "sfx_whip", vol: 0.38}],
    vo: "v3_sol_ha", speaker: "SOL", line: "HA! …Fundamentals.", energy: 1.1},
-  // EYELINE. rex_listen is drawn in profile facing RIGHT, so Rex has to
-  // stand screen-LEFT for his gaze to land on Sol; he was on the right,
-  // staring away from the man talking to him. Sol now slides in from the
-  // right to join him instead of simply being there on the cut.
-  // rex_listen is a realistically-proportioned crouch among chibi
-  // drawings — its head measures a quarter of Sol's at equal ink height,
-  // so it is staged much larger and read as foreground rather than
-  // matched by body height.
-  {at: 255, actors: [{poses: ["rex_listen"], kind: "full", x: 236, y: FLOOR_Y, h: 659},
+
+  // EYELINE. rex_listen is drawn in profile facing RIGHT, so Rex stands
+  // screen-LEFT for his gaze to land on Sol, who slides in from the right
+  // to join him rather than simply being there on the cut.
+  {at: 295, actors: [{poses: ["rex_listen"], kind: "full", x: 236, y: FLOOR_Y, h: 659},
                      {poses: ["sol_finger"], kind: "full", x: 840, y: FLOOR_Y, h: 578,
                       moves: [{at: 0, kind: "inR"}]}],
-   // dropped the 0.53s tail shot; the isolate now runs to the beat end
-   // and creeps rather than snapping back to the two-shot for half a second
    shots: [{from: 0, k: 1.0, kEnd: 1.06},
-           {from: 30, only: 1, k: 1.42, kEnd: 1.56, tx: 560, ty: 900}],
+           {from: 32, only: 1, k: 1.42, kEnd: 1.56, tx: 560, ty: 900}],
    sfx: [{at: 4, name: "sfx_whoosh", vol: 0.45}],
    vo: "v4_sol_politics", speaker: "SOL", line: "Sometimes… it trades on POLITICS."},
-  // A cover-framed reaction take is the one place a face may fill the
-  // frame — but it must not SIT there: it creeps for its 1.8s under
-  // speed lines and the shock ring.
-  {at: 345, actors: [{poses: ["rex_shock"], kind: "closeup", x: 540, y: 900, h: 1920}],
-   shots: [{from: 0, k: 1.0, kEnd: 1.09}],
-   // No shout graphic here: it sat over his collar at low contrast and
-   // duplicated the subtitle directly beneath it. The held scream and
-   // the speed lines carry the beat.
+
+  // THE TAKE — and it stays IN THE ROOM, at a size where the room is
+  // actually visible. First pass at this fix only went from "covers
+  // 1080x1920" to "900px of head" — still a face filling the frame, just
+  // a slightly smaller one. At 900px staged, Rex's whole figure sits
+  // BELOW the monitor's lower edge, so the set, the tracker and the
+  // parody footer are all readable behind the scream.
+  // The original defect: this was a cover-framed closeup —
+  // the drawing scaled until it covered 1080x1920, which threw the set
+  // away and left a face filling the screen with nowhere to go. Owner
+  // ruling, twice: never a full-zoomed face-only frame. Rex is now a
+  // grounded full figure at 1080px — a medium shot. Even at the top of
+  // the push the room and the top two thirds of the monitor stay visible
+  // behind him, so the take reads as a boy reacting IN a place.
+  {at: 383, actors: [{poses: ["rex_shock"], kind: "full", x: 520, y: FLOOR_Y, h: 900}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.10}],
+   // The scream lasts 27 frames and the take holds 55, so the mouth would
+   // fall back to "closed" mid-shout without this.
    holdMouth: true, fx: true,
+   sfx: [{at: 6, name: "impact", vol: 0.55}],
    vo: "v5_rex_what", speaker: "REX", line: "WHAT?!", energy: 1.5},
-  // Sol stands screen-RIGHT here like he does in every other beat. He was
-  // on the left, which crossed the line the rest of the episode
-  // establishes — and it also stacked him under the exhibit card instead
-  // of balancing it.
-  {at: 400, actors: [{poses: ["sol_point"], kind: "full", x: 800, y: FLOOR_Y, h: SOL_H},
-                     // Rex is present for this whole 8s but only cut to
-                     // once, silently, to react to the reveal — the shot
-                     // that makes Sol's line land on somebody.
-                     // The lawmaker the filing is about. A generic senior
-                     // -stateswoman ARCHETYPE drawn as flat caricature —
-                     // never a likeness of a named individual, and no
-                     // on-screen text names anyone. The card states only
-                     // what the public filing states, and the footer
-                     // carries the parody / not-an-accusation rail.
-                     // Steepled fingers, narrowed eyes: she is thinking
-                     // about the trade, not presenting it. She now plays
-                     // ON THE STUDIO MONITOR (Shot.tvPose) rather than
-                     // standing in the room — she is archive footage the
-                     // show is running, which is both truer to what she
-                     // is and removes the scale problem of a
-                     // differently-drawn figure sharing the floor.
-                     {poses: ["rex_skeptic"], kind: "bust", x: 540, y: 1010, h: 1060}],
-   card: {title: "JULY 2022 · PUBLIC FILING",
-          lines: ["The then-Speaker's household sold",
-                  "25,000 NVIDIA shares — days before",
-                  "Congress passed billions in chip subsidies.",
-                  "Sold at a loss (≈ $341K), amid the scrutiny."],
-          foot: "STOCK Act disclosure · widely reported"},
-   // 8s was one static shot — 22% of the episode. Cut on the VO's own
-   // pauses (scripts/vector/phrase_cuts.py) between the speaker and the
-   // evidence: wide+card, punch to Sol, back to the card, kicker CU.
-   // shot 3 cuts to sol_finger: it breaks up 8s of a single drawing, it
-   // is the "here's the key insight" gesture the line wants, and unlike
-   // sol_point it carries a gated blink, so Sol blinks during the
-   // longest sequence in the episode.
-   // cut points are the VO's own pauses (scripts/vector/phrase_cuts.py).
-   // The lawmaker held for 22 frames before — under a second, so she
-   // registered as a flash. She now gets 50 frames of her own in the
-   // dark, then 33 more with Sol in frame presenting her, which is what
-   // ties her into the telling instead of interrupting it.
-   // was SIX shots in 8s, two of them under 1.1s. Now four, each earning
-   // its cut, each creeping instead of holding still: wide+card, push to
-   // Sol, the lawmaker on the monitor (one continuous 2.7s hold that
-   // creeps rather than two cuts), then Rex's silent reaction.
-   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.08},
-           {from: 58, only: 0, k: 1.55, kEnd: 1.72, tx: 520, ty: 900},
-           {from: 108, only: 0, mood: "dark", tvPose: "congress_scheme",
-            k: 1.0, kEnd: 1.14},
-           {from: 190, only: 1, k: 1.0, kEnd: 1.1}],
+
+  // ═══ ACT 2 — THE EVIDENCE ════════════════════════════════════════════
+  // The exhibit is a DRAWN timeline, not a paragraph: the rail draws, both
+  // events land, a bracket measures the gap between them and the share
+  // count runs up. The gap IS the point, and no paragraph makes you feel
+  // a gap. It needs ~70 frames to build, so the exhibit shot holds 80.
+  //
+  // Everyone on an exhibit beat is staged SHORT (<=930) so no head reaches
+  // above the monitor's lower edge at y=736. Nothing may hide the
+  // evidence — same rule as nothing may hide the other character.
+  // Verified by scripts/vector/exhibit_clearance.py.
+  {at: 438, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+                     {poses: ["rex_skeptic"], kind: "bust", x: 470, y: 1250, h: 880}],
+   graphic: "timeline_nvidia",
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.07},
+           {from: 86, only: 0, k: 1.34, kEnd: 1.44, tx: 560, ty: 1180, hideCard: true},
+           {from: 150, only: 0, mood: "dark", tvPose: "congress_scheme",
+            k: 1.0, kEnd: 1.1},
+           {from: 232, only: 1, k: 1.0, kEnd: 1.1, hideCard: true}],
    vo: "v6_sol_exhibit", speaker: "SOL",
    line: "July 2022. The Speaker's household sold NVIDIA — days before the chip subsidies passed. At a loss, kid."},
-  // rex_eager instead of rex_shock_v1, and NO panel. The panel existed to
-  // present a full-bleed drawing honestly, but its cream backing plate
-  // read as "character pasted on a little white card" — the owner's
-  // objection. A clean-silhouette drawing needs no plate: it just floats.
-  // She RETURNS here — arms crossed, cold, while the card explains that
-  // the trades became a product. One appearance reads as a cutaway; a
-  // recurring figure reads as a character in the story.
-  {at: 640, actors: [{poses: ["rex_eager"], kind: "full", x: 620, y: FLOOR_Y, h: REX_H}],
+
+  // ═══ ACT 3 — THE LEADERBOARD (new) ═══════════════════════════════════
+  // Rex used to blurt "They made it an INDEX?!" out of nowhere — he
+  // announced a fact he had no way of knowing, which is narration
+  // captioning itself. This act is the ramp that EARNS that reaction:
+  // one filing -> people track these portfolios like a leaderboard ->
+  // here are the ones they watch -> somebody wrapped it in a fund.
+  {at: 738, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681},
+                     {poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.08},
+           {from: 52, only: 0, k: 1.36, kEnd: 1.48, tx: 520, ty: 1010}],
+   vo: "a3_rex_onetrade", speaker: "REX",
+   line: "Okay… but that's one trade. One person."},
+
+  {at: 843, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1120, h: 1040}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.09},
+           {from: 60, k: 1.2, kEnd: 1.34, tx: 540, ty: 1010}],
+   vo: "a3_sol_leaderboard", speaker: "SOL",
+   line: "One? People track these disclosures like a leaderboard."},
+
+  // THE TAPE IS THE POINT of this beat, so Sol is staged clear of it and
+  // the monitor runs its default state: candles printing, the newest one
+  // live and wandering inside its own range. See motion/Infographic.tsx.
+  {at: 955, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.06},
+           {from: 92, k: 1.16, kEnd: 1.26, tx: 620, ty: 1180}],
+   vo: "a3_sol_portfolios", speaker: "SOL",
+   line: "Whole portfolios. Filing by filing. Year by year."},
+
+  // The lawmaker archetype returns — the same figure from the July 2022
+  // exhibit, so she reads as a character in the story rather than a
+  // one-off cutaway. She plays ON THE MONITOR: archive footage the show
+  // is running, never a figure standing impossibly in the room.
+  {at: 1120, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 900}],
+   shots: [{from: 0, mood: "dark", tvPose: "congress_scheme", k: 1.0, kEnd: 1.08},
+           // kEnd was 1.34, which pushed Sol 28px over the monitor at the
+           // top of the creep — measured by scripts/vector/stage_audit.py,
+           // not eyeballed. Nothing may hide the evidence.
+           {from: 96, mood: "dark", tvPose: "congress_scheme",
+            k: 1.22, kEnd: 1.26, tx: 600, ty: 1200}],
+   vo: "a3_sol_speaker", speaker: "SOL",
+   line: "The Speaker's household. Technology, mostly. Big positions, disclosed late."},
+
+  // THE SECOND ARCHETYPE, and the reason the line is worded the way it is.
+  // Periodic-transaction reporting under the STOCK Act is a CONGRESSIONAL
+  // mechanism, and a president is not a member of Congress — so with both
+  // caricatures in play the script says "politicians whose trades people
+  // track", never "congress investors". Caricature, no on-screen name, no
+  // accusation; the footer carries the parody / public-record rail.
+  {at: 1290, actors: [{poses: ["sol_finger"], kind: "full", x: 760, y: FLOOR_Y, h: 900}],
+   shots: [{from: 0, mood: "dark", tvPose: "congress2_scheme", k: 1.0, kEnd: 1.07},
+           {from: 104, mood: "dark", tvPose: "congress2_scheme",
+            k: 1.2, kEnd: 1.32, tx: 600, ty: 1210}],
+   vo: "a3_sol_others", speaker: "SOL",
+   line: "And it's not one person, or one party. Other politicians get tracked exactly the same way."},
+
+  {at: 1495, actors: [{poses: ["rex_shock"], kind: "full", x: 500, y: FLOOR_Y, h: 880}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.08}],
+   holdMouth: true, fx: true,
+   sfx: [{at: 6, name: "impact", vol: 0.5}],
+   vo: "a3_rex_score", speaker: "REX", line: "People are keeping SCORE?", energy: 1.4},
+
+  {at: 1575, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.06},
+           {from: 96, k: 1.18, kEnd: 1.3, tx: 600, ty: 1190}],
+   vo: "a3_sol_beating", speaker: "SOL",
+   line: "Some years, the trackers reported those portfolios beating the market. That's why people watch."},
+
+  {at: 1760, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1120, h: 1040}],
+   shots: [{from: 0, k: 1.12, kEnd: 1.28, tx: 540, ty: 1030}],
+   vo: "a3_sol_obvious", speaker: "SOL", line: "And then somebody did the obvious thing."},
+
+  // ...which is what Rex is now reacting TO, instead of announcing.
+  {at: 1842, actors: [{poses: ["rex_eager"], kind: "full", x: 560, y: FLOOR_Y, h: 930}],
    card: {title: "FEB 2023 · IT BECAME A PRODUCT",
           lines: ["An ETF now copies Democratic lawmakers'",
                   "disclosed trades. Actively managed."],
           big: "NANC", foot: "public filings in · portfolio out"},
-   // Both in frame: Rex is the one SPEAKING this line, so cutting him out
-   // of it repeats the mistake that shut his mouth mid-scream at 345.
-   // She looms behind him instead.
-   shots: [{from: 0, mood: "dark", tvPose: "congress_smug", k: 1.0, kEnd: 1.09},
-           {from: 47, k: 1.28, kEnd: 1.44, tx: 600, ty: 1180}],
-   // No shout graphic: with both characters staged there is nowhere for
-   // 150pt type to land except across a face, and the subtitle already
-   // carries the line. The impact FX stay.
+   shots: [{from: 0, k: 1.0, kEnd: 1.1}],
    fx: true,
+   sfx: [{at: 6, name: "impact", vol: 0.5}],
    vo: "v7_rex_index", speaker: "REX", line: "They made it an INDEX?!",
    energy: 1.3},
-  // was sol_point_v1 — which the shot-list review groups as
-  // interchangeable with beat 400's sol_point (same stance, same size,
-  // both WS to camera), so the two longest Sol beats read as one shot.
-  // sol_smug_v1 is core tier, carries visemes + a blink, and is the only
-  // Sol CU with a CLEAN silhouette — sol_smug reads the same but is
-  // full-bleed, so covering the frame forced an extreme crop that lost
-  // the eyes. Reused from beat 0, but at 4x the size and 25s later; the
-  // shot-list review only warns against cutting the smug set together
-  // back to back.
-  // ...and then he's gone. The vanish is what MOTIVATES the pop-in at
-  // 895: Rex asks an empty room, and Sol answers from somewhere he
-  // wasn't. Without the exit, the pop is just an arrival.
-  // Sol no longer vanishes here — act two continues with him present.
-  // The vanish moved to the end of act two, which is what now motivates
-  // his pop-in on the closer.
-  // Pulled back off a face-filling hold: the room stays visible behind
-  // him and the push is a slow creep rather than a static close-up.
-  {at: 740, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1120, h: 1040}],
-   // dropped the 1.20s tail; the push now runs to the beat end
-   shots: [{from: 0, k: 1.0, kEnd: 1.08},
-           {from: 64, k: 1.18, kEnd: 1.34, tx: 540, ty: 1000}],
+
+  {at: 1917, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+   shots: [{from: 0, mood: "dark", tvPose: "congress2_smug", k: 1.0, kEnd: 1.08},
+           {from: 88, k: 1.18, kEnd: 1.3, tx: 600, ty: 1200}],
+   vo: "v11_sol_bothsides", speaker: "SOL",
+   line: "And it's not one party, kid. There's a fund that copies the other side too."},
+
+  {at: 2069, actors: [{poses: ["rex_skeptic"], kind: "full", x: 500, y: FLOOR_Y, h: 1120}],
+   shots: [{from: 0, k: 1.08, kEnd: 1.2, tx: 540, ty: 1060}],
+   vo: "v12_rex_both", speaker: "REX", line: "Both teams have an index?!",
+   energy: 1.2},
+
+  // What a filing actually contains — the mechanics, not a restatement of
+  // the line. A range, not an amount; a date, not a price; filed weeks
+  // later. This is the fact that makes act four's failure inevitable.
+  {at: 2147, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+                      {poses: ["rex_skeptic"], kind: "bust", x: 400, y: 1250, h: 860}],
+   card: {title: "WHAT THE FILING ACTUALLY SAYS",
+          lines: ["A range, not an amount.",
+                  "A date, not a price.",
+                  "Filed up to 45 days later."],
+          foot: "STOCK Act periodic transaction report"},
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.07},
+           {from: 104, only: 0, k: 1.24, kEnd: 1.36, tx: 600, ty: 1190, hideCard: true},
+           {from: 158, only: 1, k: 1.0, kEnd: 1.1, hideCard: true}],
    vo: "v8_sol_legal", speaker: "SOL",
    line: "All disclosed. In ranges. Up to 45 days late. All legal."},
-  // was a static 4s two-shot with both characters on screen while they
-  // took turns speaking. Now shot/reverse-shot, cutting on the handover.
-  // THE EXCHANGE. Rex asks the room; Sol is not there, then POPS IN top
-  // right and Rex's head whips round to find him. Both stay on screen for
-  // the answer, so the last beat is two characters in one space rather
-  // than two solo portraits cut together.
-  // ─── ACT TWO ── Rex acts on what he learned, and is wrong ───────────
-  // The 36s cut was one reveal stated three ways, and Rex arrived at
-  // "read the filings" having done nothing to earn it. Here he proposes
-  // copying the trades, Sol punctures it with the disclosure delay, Rex
-  // over-corrects to "then they're useless", and Sol reframes what a
-  // filing is FOR — so the closer lands on someone who changed his mind.
-  //
-  // It also gives the glint-eyed rex_eager drawing an honest job: Rex is
-  // genuinely excited exactly once, right here, and wears the ordinary
-  // -eyed rex_skeptic / rex_listen for the rest of the act. The owner's
-  // note about the eyes, answered by the writing.
-  {at: 895, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679},
-                     {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1290, h: 596}],
+
+  // ═══ ACT 4 — REX ACTS ON IT, AND IS WRONG ════════════════════════════
+  // This is where the glint-eyed rex_eager drawing gets an honest job:
+  // Rex is genuinely excited exactly once, right here, and wears the
+  // ordinary-eyed rex_skeptic / rex_listen through the rest of the act.
+  // The owner's note about the eyes, answered by the writing.
+  {at: 2342, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679},
+                      {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1290, h: 596}],
    shots: [{from: 0, k: 1.0, kEnd: 1.07},
            {from: 54, only: 0, k: 1.42, kEnd: 1.56, tx: 520, ty: 1040}],
    vo: "a2_rex_copy", speaker: "REX",
    line: "Then I'll just copy them! Buy what they buy!", energy: 1.3},
 
-  // Rex is LISTENING here, so he wears the ordinary-eyed drawing — the
-  // glint is reserved for the line he is actually excited on.
-  {at: 995, actors: [{poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597},
-                     {poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681}],
+  {at: 2444, actors: [{poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597},
+                      {poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681}],
    shots: [{from: 0, k: 1.0, kEnd: 1.06},
            {from: 46, only: 0, k: 1.38, kEnd: 1.52, tx: 560, ty: 990}],
    vo: "a2_sol_sixweeks", speaker: "SOL",
    line: "Copy them. With a filing from six weeks ago?"},
 
-  {at: 1090, actors: [{poses: ["rex_skeptic"], kind: "full", x: 470, y: FLOOR_Y, h: REX_H}],
-   shots: [{from: 0, k: 1.3, kEnd: 1.42, tx: 540, ty: 1030}],
+  {at: 2544, actors: [{poses: ["rex_skeptic"], kind: "full", x: 470, y: FLOOR_Y, h: 1180}],
+   shots: [{from: 0, k: 1.14, kEnd: 1.26, tx: 540, ty: 1030}],
    vo: "a2_rex_six", speaker: "REX", line: "Six weeks?"},
 
-  {at: 1145, actors: [{poses: ["sol_point"], kind: "full", x: 800, y: FLOOR_Y, h: SOL_H},
-                      {poses: ["rex_skeptic"], kind: "bust", x: 540, y: 1010, h: 1060}],
-   card: {title: "WHY COPYING FAILS",
-          lines: ["Covered trades must be disclosed —",
-                  "but the window runs up to 45 days.",
-                  "By the time it is public, the move is old."],
-          foot: "STOCK Act reporting window"},
-   // dropped the 1.13s reaction flash; Rex's reaction now holds 1.6s and
-   // is the last thing we see on the line, which is where it lands
+  {at: 2599, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+                      {poses: ["rex_skeptic"], kind: "bust", x: 430, y: 1250, h: 880}],
+   graphic: "counter_45days",
    shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.07},
-           {from: 62, only: 0, k: 1.46, kEnd: 1.62, tx: 560, ty: 980},
-           {from: 147, only: 1, k: 1.0, kEnd: 1.12}],
+           {from: 92, only: 0, k: 1.3, kEnd: 1.42, tx: 560, ty: 1190, hideCard: true},
+           {from: 162, only: 1, k: 1.0, kEnd: 1.12, hideCard: true}],
    vo: "a2_sol_edge", speaker: "SOL",
    line: "The trade is public. The edge is not. By the time you read it, the move already happened."},
 
-  {at: 1340, actors: [{poses: ["rex_listen"], kind: "full", x: 420, y: FLOOR_Y, h: 1090}],
+  {at: 2814, actors: [{poses: ["rex_listen"], kind: "full", x: 420, y: FLOOR_Y, h: 1090}],
    shots: [{from: 0, k: 1.2, kEnd: 1.3, tx: 520, ty: 1120}],
    vo: "a2_rex_useless", speaker: "REX", line: "So the filings are useless."},
 
-  // Sol's reframe, then he's gone — which is what makes the pop-in on
-  // the closer an answer from somewhere he wasn't.
-  {at: 1410, actors: [{poses: ["sol_finger"], kind: "full", x: 840, y: FLOOR_Y, h: 578,
-                       moves: [{at: 138, kind: "vanish"}]},
+  // Sol's reframe — and then he's gone, which is what makes his answer on
+  // the next-but-one beat an answer from somewhere he wasn't.
+  {at: 2886, actors: [{poses: ["sol_finger"], kind: "full", x: 840, y: FLOOR_Y, h: 578,
+                       moves: [{at: 140, kind: "vanish"}]},
                       {poses: ["rex_listen"], kind: "full", x: 236, y: FLOOR_Y, h: 659}],
-   // dropped the 1.17s tail — the vanish at 138 now happens inside the
-   // held push instead of after a needless cut back to the two-shot
    shots: [{from: 0, k: 1.0, kEnd: 1.06},
            {from: 58, only: 0, k: 1.44, kEnd: 1.58, tx: 560, ty: 980}],
-   sfx: [{at: 138, name: "sfx_poof", vol: 0.5}],
+   sfx: [{at: 140, name: "sfx_poof", vol: 0.5}],
    vo: "a2_sol_map", speaker: "SOL",
    line: "No. They're a map of attention. Who is watching what, and when."},
 
-  {at: 1565, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679,
-                      turns: [{at: 56, tx: 830, ty: 1230}]},
-                     // sol_smug_v1: clean silhouette, so he pops in as a
-                     // floating figure with no backing plate.
-                     // he pops up BEHIND THE DESK beside Rex now, not in
-                     // mid-air — the set gives him somewhere to be
-                     {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1300, h: 596,
-                      moves: [{at: 52, kind: "pop"}]}],
-   shots: [{from: 0, only: 0, k: 1.18, kEnd: 1.3, tx: 520, ty: 1000},
-           {from: 50, k: 1.0, kEnd: 1.08}],
-   // beside REX's measured head (~356,1076), fanning up toward Sol
-   flicks: [{at: 57, x: 560, y: 1130}],
-   sfx: [{at: 52, name: "sfx_pop", vol: 0.6},
-         {at: 60, name: "sfx_whip", vol: 0.42}],
+  // ═══ ACT 5 — THE PAYOFF ══════════════════════════════════════════════
+  // Rex asks the empty room. Nobody is there to answer, which is the
+  // setup for the pop-in.
+  {at: 3051, actors: [{poses: ["rex_listen"], kind: "full", x: 380, y: FLOOR_Y, h: 1010}],
+   shots: [{from: 0, k: 1.1, kEnd: 1.22, tx: 520, ty: 1120}],
+   vo: "a5_rex_dowhat", speaker: "REX", line: "So what do I actually do with it?"},
+
+  // ...and Sol answers from behind the desk, where he was not a moment
+  // ago. The one piece of ACTIONABLE method in the episode, and the only
+  // place it belongs: after Rex has been wrong once and asked for it.
+  {at: 3181, actors: [{poses: ["rex_skeptic"], kind: "full", x: 312, y: FLOOR_Y, h: 679,
+                       turns: [{at: 20, tx: 830, ty: 1230}]},
+                      {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1300, h: 596,
+                       moves: [{at: 14, kind: "pop"}]}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.08},
+           {from: 74, only: 1, k: 1.3, kEnd: 1.42, tx: 560, ty: 1080}],
+   flicks: [{at: 21, x: 560, y: 1130}],
+   sfx: [{at: 14, name: "sfx_pop", vol: 0.6},
+         {at: 24, name: "sfx_whip", vol: 0.42}],
+   vo: "a5_sol_homework", speaker: "SOL",
+   line: "Watch what they sit near. Committees. Hearings. Then do your own homework."},
+
+  {at: 3291, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679},
+                      {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1300, h: 596}],
+   shots: [{from: 0, only: 0, k: 1.2, kEnd: 1.32, tx: 520, ty: 1000},
+           {from: 62, k: 1.0, kEnd: 1.08}],
    vo: "v9_rex_filings", speaker: "REX", line: "So — read the filings!",
-   vo2: "v10_sol_learning", speaker2: "SOL", line2: "Now you're learning, kid.", at2: 60},
-  {at: 1685, title: ["MARKET LESSONS", "WITH SOL", ""], actors: []},
+   vo2: "v10_sol_learning", speaker2: "SOL", line2: "Now you're learning, kid.", at2: 62},
+
+  // THE THESIS, CLOSED. The cold open promised to explain the "fair"
+  // market and the 60-second cut never came back to the word. Sol answers
+  // it to camera, and the answer is the honest one: not fair — legible.
+  {at: 3421, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1120, h: 1040}],
+   shots: [{from: 0, k: 1.06, kEnd: 1.2, tx: 540, ty: 1040}],
+   vo: "a5_sol_fair", speaker: "SOL", line: "Fair? No. But now you can read it."},
+
+  {at: 3531, title: ["MARKET LESSONS", "WITH SOL", ""], actors: []},
 ];
 
 const beatAt = (f: number) => {
@@ -584,42 +614,20 @@ const ExhibitCard: React.FC<{c: Card; since: number}> = ({c, since}) => {
 // first 13 seconds the room had a blank wall where a monitor should be,
 // and the screen popped in and out at beat boundaries instead of being
 // furniture. It is now always on, and when it has nothing specific to
-// show it runs the market it is talking about: a slow ticker line,
-// code-drawn so it can move continuously and carry the eye across cuts.
-const TVIdle: React.FC<{frame: number}> = ({frame}) => {
-  const N = 44;
-  const w = TV_SCREEN.w, h = TV_SCREEN.h;
-  const pts: string[] = [];
-  for (let i = 0; i < N; i++) {
-    const t = i / (N - 1);
-    // deterministic pseudo-random walk with a slow upward drift, scrolled
-    const s = i + Math.floor(frame / 3);
-    const noise = Math.sin(s * 12.9898) * 43758.5453;
-    const jitter = (noise - Math.floor(noise) - 0.5) * 0.34;
-    const y = h * (0.72 - t * 0.34 + jitter * 0.5
-      + Math.sin((frame / 42) + t * 3.1) * 0.05);
-    pts.push(`${(t * w).toFixed(1)},${y.toFixed(1)}`);
-  }
-  const grid = [0.25, 0.5, 0.75];
-  return (
-    <div style={{position: "absolute", inset: 0,
-      background: "linear-gradient(180deg,#101827 0%,#0A0F1A 100%)"}}>
-      <svg width={w} height={h} style={{position: "absolute", inset: 0}}>
-        {grid.map((g) => (
-          <line key={g} x1={0} x2={w} y1={h * g} y2={h * g}
-            stroke="#1E2A40" strokeWidth={2} />
-        ))}
-        <polyline points={pts.join(" ")} fill="none"
-          stroke="#3FA7FF" strokeWidth={4} strokeLinejoin="round" />
-        <polyline points={`0,${h} ${pts.join(" ")} ${w},${h}`}
-          fill="rgba(63,167,255,0.10)" stroke="none" />
-      </svg>
-      <div style={{position: "absolute", left: 24, top: 14,
-        fontFamily: "Impact, Arial", fontSize: 24, letterSpacing: 3,
-        color: "#4C6488"}}>MARKET · LIVE</div>
-    </div>
-  );
-};
+// show it runs the thing the episode is ABOUT.
+//
+// That used to be a single scrolling polyline, which read as "a chart"
+// and nothing more. The subject here is a TRACKER — a portfolio
+// reconstructed from disclosures — so the screen behind the hosts now
+// prints that tracker as candles: each bar is a period with a range, and
+// the newest one is live, wandering inside its own high/low until it
+// settles. See motion/Infographic.tsx (TickerTape) for the tape rules
+// and for why the series is labelled ILLUSTRATIVE on its face.
+const TVIdle: React.FC<{frame: number}> = ({frame}) => (
+  <TickerTape frame={frame} w={TV_SCREEN.w} h={TV_SCREEN.h}
+    label="LAWMAKER TRADE TRACKER"
+    sub="disclosed positions, rebuilt from filings" />
+);
 
 // A caricature playing on the monitor. Contained by the screen, so she
 // is always "footage the show is running" rather than a figure standing
@@ -627,19 +635,31 @@ const TVIdle: React.FC<{frame: number}> = ({frame}) => {
 const TVPose: React.FC<{pose: string; since: number}> = ({pose, since}) => {
   const d = AN[pose];
   if (!d) return null;
-  // Framed like an interview insert, not a full-length portrait: a
-  // standing figure letterboxed into a 16:9 screen is a sliver, so she
-  // is pushed in until her head and hands fill the picture.
-  const s = (TV_SCREEN.h * 1.85) / d.h;
+  // Framed like an interview insert, not a full-length portrait.
+  //
+  // Scaling by HEIGHT (the old `TV_SCREEN.h * 1.85 / d.h`) sizes a
+  // portrait-shaped drawing by its long axis, so on an 864x486 screen it
+  // came out 611px wide and sat in 250px of black bars — a small dark
+  // picture inside a large dark rectangle, which is exactly the "she
+  // appears and disappears too quickly to register" complaint in visual
+  // form. Scale by WIDTH so she fills the screen edge to edge, and take
+  // the crop off the BOTTOM: the head and hands are the performance, the
+  // legs were never in the shot anyway.
+  const s = (TV_SCREEN.w * 0.92) / d.w;
   const w = d.w * s, h = d.h * s;
   const rise = Math.min(1, since / 12);
+  // slow drift down over the hold, so a 5-second insert is never a still
+  const drift = Math.min(1, since / 150) * 24;
+  // Anchor the crop on the FACE (about 29% down these busts) rather than
+  // on the top edge. Pinning the top cut the chin off the taller of the
+  // two drawings, which reads as a framing mistake rather than a choice.
   return (
     <div style={{position: "absolute", inset: 0, overflow: "hidden",
       background: "linear-gradient(180deg,#1B2438 0%,#0E1422 100%)"}}>
       <Img src={staticFile(d.src)}
         style={{position: "absolute", width: w, height: h,
           left: TV_SCREEN.w / 2 - w / 2,
-          top: TV_SCREEN.h * 0.06 - h * 0.06 + (1 - rise) * 30,
+          top: TV_SCREEN.h / 2 - h * 0.29 - drift + (1 - rise) * 30,
           opacity: rise}} />
     </div>
   );
@@ -697,12 +717,32 @@ export const FairMarketEp1: React.FC = () => {
         {/* The monitor is FURNITURE — always in the room, never popping in
             and out at beat boundaries, and it fills the upper frame that
             was otherwise dead wall above the cast. */}
-        <TVFrame glow={!!cur.card || !!shot?.tvPose} />
+        <TVFrame glow={(!!cur.card || !!shot?.tvPose) && !shot?.hideCard} />
         <div style={{position: "absolute", left: TV_SCREEN.x, top: TV_SCREEN.y,
           width: TV_SCREEN.w, height: TV_SCREEN.h, overflow: "hidden",
           borderRadius: 4}}>
-          {shot?.tvPose ? <TVPose pose={shot.tvPose} since={shotSince} />
-            : cur.card ? <ExhibitCard c={cur.card} since={since} />
+          {/* `hideCard` was a declared-but-never-read field. It is wired
+              now, and it is what lets a beat push in close on a character
+              WITHOUT hiding its own evidence: the exhibit is explicitly
+              stood down for that shot and the monitor falls back to the
+              tape, rather than a head silently covering the graphic the
+              line is about. */}
+          {shot?.hideCard ? <TVIdle frame={frame} />
+            : shot?.tvPose ? <TVPose pose={shot.tvPose} since={shotSince} />
+            : cur.graphic === "timeline_nvidia" ? (
+              <TimelineExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
+                title="JULY 2022 · PUBLIC FILING"
+                left={{date: "JUL 2022", label: "household sells\n25,000 NVIDIA shares"}}
+                right={{date: "AUG 2022", label: "Congress passes\nchip subsidies"}}
+                gapLabel="DAYS APART"
+                counter={{to: 25000, label: "shares disclosed"}}
+                foot="STOCK Act disclosure · widely reported" />
+            ) : cur.graphic === "counter_45days" ? (
+              <CounterExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
+                title="WHY COPYING FAILS" to={45} unit="days"
+                caption="The reporting window can run this long. By the time a trade is public, the move already happened."
+                foot="STOCK Act reporting window" />
+            ) : cur.card ? <ExhibitCard c={cur.card} since={since} />
             : <TVIdle frame={frame} />}
         </div>
         <TVGlass />

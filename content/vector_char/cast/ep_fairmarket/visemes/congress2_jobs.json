@@ -1,0 +1,50 @@
+[
+ {
+  "name": "c4_scheme_0",
+  "prompt": "solo, 1man, elderly statesman, heavy build, jowly face, distinctive swept-back golden blond hair, long bright red necktie, navy blue suit jacket, white dress shirt, steepled fingers, sly scheming smirk, narrowed half-lidded eyes, leaning forward conspiratorially, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man",
+  "seed": 91200,
+  "width": 832,
+  "height": 1216
+ },
+ {
+  "name": "c4_scheme_1",
+  "prompt": "solo, 1man, elderly statesman, heavy build, jowly face, distinctive swept-back golden blond hair, long bright red necktie, navy blue suit jacket, white dress shirt, steepled fingers, sly scheming smirk, narrowed half-lidded eyes, leaning forward conspiratorially, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man",
+  "seed": 91201,
+  "width": 832,
+  "height": 1216
+ },
+ {
+  "name": "c4_scheme_2",
+  "prompt": "solo, 1man, elderly statesman, heavy build, jowly face, distinctive swept-back golden blond hair, long bright red necktie, navy blue suit jacket, white dress shirt, steepled fingers, sly scheming smirk, narrowed half-lidded eyes, leaning forward conspiratorially, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man",
+  "seed": 91202,
+  "width": 832,
+  "height": 1216
+ },
+ {
+  "name": "c4_smug_0",
+  "prompt": "solo, 1man, elderly statesman, heavy build, jowly face, distinctive swept-back golden blond hair, long bright red necktie, navy blue suit jacket, white dress shirt, arms crossed, smug confident smirk, squinting eyes, chin raised, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man",
+  "seed": 91210,
+  "width": 832,
+  "height": 1216
+ },
+ {
+  "name": "c4_smug_1",
+  "prompt": "solo, 1man, elderly statesman, heavy build, jowly face, distinctive swept-back golden blond hair, long bright red necktie, navy blue suit jacket, white dress shirt, arms crossed, smug confident smirk, squinting eyes, chin raised, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man",
+  "seed": 91211,
+  "width": 832,
+  "height": 1216
+ },
+ {
+  "name": "c4_smug_2",
+  "prompt": "solo, 1man, elderly statesman, heavy build, jowly face, distinctive swept-back golden blond hair, long bright red necktie, navy blue suit jacket, white dress shirt, arms crossed, smug confident smirk, squinting eyes, chin raised, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man",
+  "seed": 91212,
+  "width": 832,
+  "height": 1216
+ }
+]

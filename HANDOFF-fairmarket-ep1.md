@@ -9,9 +9,32 @@ to Rex (young analyst) that markets sometimes trade on politics, using
 real congressional filings. All local generation ($0): Illustrious-XL +
 `ana_cast_v1` LoRA on ComfyUI, vectorised to SVG, animated in Remotion.
 
-**Current deliverable:** `content/vector_char/cast/ep_fairmarket/fairmarket_ep1_anime_v15.mp4`
-(36.2s, 1080x1920, 26.8 MB). Every version v4→v15 is kept on disk and in
+**Current deliverable:** `content/vector_char/cast/ep_fairmarket/fairmarket_ep1_anime_v20.mp4`
+(**120.0s**, 1080x1920). Every version v4→v20 is kept on disk and in
 git — **never delete rendered media** (owner rule).
+
+**v20 is a substantial rewrite, not a tweak.** Read
+`content/vector_char/cast/ep_fairmarket/SCRIPT-v2-2min.md` before touching
+the beat list. Three things changed shape:
+
+1. **The script gained an act.** Rex no longer announces the index; Sol
+   builds to it across a new act three (leaderboard → the tracked
+   portfolios → somebody wrapped it in a fund). 29 beats, 3600 frames.
+2. **Two tools now parse the composition instead of mirroring it.**
+   `scripts/vector/stage_audit.py` (occlusion / exhibit-coverage /
+   framing) and `scripts/audio/check_beats_voiced.py` both read the real
+   `BEATS` array out of the TSX. **Run stage_audit after ANY staging
+   change** — it is the only thing standing between you and the three
+   defects that shipped by eye before it existed. `overlap_audit.py` is
+   superseded; its hard-coded `FLOOR_Y = 1900` is two revisions stale.
+3. **The monitor idles on a candlestick tracker** (`TickerTape` in
+   `motion/Infographic.tsx`), not a polyline.
+
+**Accuracy rail added in v20:** a second politician caricature is now on
+screen, and periodic-transaction reporting under the STOCK Act is a
+*congressional* mechanism — a president is not a member of Congress. So
+wherever both caricatures appear, the script says "politicians whose
+trades people track", never "congress investors". Do not loosen this.
 
 ---
 

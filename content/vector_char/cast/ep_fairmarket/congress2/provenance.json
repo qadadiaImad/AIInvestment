@@ -1,0 +1,74 @@
+[
+ {
+  "name": "c4_scheme_0",
+  "prompt": "solo, 1man, elderly statesman, heavy build, jowly face, distinctive swept-back golden blond hair, long bright red necktie, navy blue suit jacket, white dress shirt, steepled fingers, sly scheming smirk, narrowed half-lidded eyes, leaning forward conspiratorially, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man",
+  "seed": 91200,
+  "width": 832,
+  "height": 1216,
+  "seconds": 26.2,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T12:37:14Z"
+ },
+ {
+  "name": "c4_scheme_1",
+  "prompt": "solo, 1man, elderly statesman, heavy build, jowly face, distinctive swept-back golden blond hair, long bright red necktie, navy blue suit jacket, white dress shirt, steepled fingers, sly scheming smirk, narrowed half-lidded eyes, leaning forward conspiratorially, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man",
+  "seed": 91201,
+  "width": 832,
+  "height": 1216,
+  "seconds": 10.0,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T12:37:24Z"
+ },
+ {
+  "name": "c4_scheme_2",
+  "prompt": "solo, 1man, elderly statesman, heavy build, jowly face, distinctive swept-back golden blond hair, long bright red necktie, navy blue suit jacket, white dress shirt, steepled fingers, sly scheming smirk, narrowed half-lidded eyes, leaning forward conspiratorially, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man",
+  "seed": 91202,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.0,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T12:37:32Z"
+ },
+ {
+  "name": "c4_smug_0",
+  "prompt": "solo, 1man, elderly statesman, heavy build, jowly face, distinctive swept-back golden blond hair, long bright red necktie, navy blue suit jacket, white dress shirt, arms crossed, smug confident smirk, squinting eyes, chin raised, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man",
+  "seed": 91210,
+  "width": 832,
+  "height": 1216,
+  "seconds": 10.1,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T12:37:42Z"
+ },
+ {
+  "name": "c4_smug_1",
+  "prompt": "solo, 1man, elderly statesman, heavy build, jowly face, distinctive swept-back golden blond hair, long bright red necktie, navy blue suit jacket, white dress shirt, arms crossed, smug confident smirk, squinting eyes, chin raised, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man",
+  "seed": 91211,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.0,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T12:37:50Z"
+ },
+ {
+  "name": "c4_smug_2",
+  "prompt": "solo, 1man, elderly statesman, heavy build, jowly face, distinctive swept-back golden blond hair, long bright red necktie, navy blue suit jacket, white dress shirt, arms crossed, smug confident smirk, squinting eyes, chin raised, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple boys, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome, young man",
+  "seed": 91212,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.1,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T12:37:58Z"
+ }
+]

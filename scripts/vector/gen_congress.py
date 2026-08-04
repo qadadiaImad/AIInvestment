@@ -11,25 +11,34 @@ person. The episode's own footer already carries "parody · public record
 · educational, not advice · not an accusation", and the exhibit card
 states only what the public filing states.
 
-Run from scripts/:  python -m vector.gen_congress
+A SECOND archetype was added later, and the accuracy rail is different
+for him: periodic-transaction reporting under the STOCK Act is a
+CONGRESSIONAL mechanism, so whenever both figures are on screen the
+script says "politicians whose trades people track", never "congress
+investors". Same drawing rails as above — caricature, never a likeness
+presented as a real photograph, no on-screen name, parody footer.
+
+Run from scripts/:  python -m vector.gen_congress [jobs_file] [out_dir]
 """
 from __future__ import annotations
 
 import json
+import sys
 import time
 
 from comfy.client import ComfyClient
 from comfy.launch import ensure_server
 from vector.visemes_ep1 import VIS, now_utc
 
-OUT = VIS.parent / "congress"
+JOBS = sys.argv[1] if len(sys.argv) > 1 else "congress_jobs.json"
+OUT = VIS.parent / (sys.argv[2] if len(sys.argv) > 2 else "congress")
 
 
 def main() -> None:
     ensure_server()
     client = ComfyClient()
     client._last_family = "sdxl"
-    jobs = json.loads((VIS / "congress_jobs.json").read_text("utf-8"))
+    jobs = json.loads((VIS / JOBS).read_text("utf-8"))
     OUT.mkdir(parents=True, exist_ok=True)
     manifest = []
     for n, j in enumerate(jobs, 1):

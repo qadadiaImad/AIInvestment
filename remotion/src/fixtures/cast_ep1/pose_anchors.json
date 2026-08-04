@@ -284,5 +284,27 @@
   ],
   "src": "characters/cast_ep1/congress_smug.svg",
   "scale": 1.0
+ },
+ "congress2_scheme": {
+  "w": 786,
+  "h": 1157,
+  "ink_h": 1141,
+  "anchor": [
+   0.4894,
+   0.9931
+  ],
+  "src": "characters/cast_ep1/congress2_scheme.svg",
+  "scale": 1.0
+ },
+ "congress2_smug": {
+  "w": 832,
+  "h": 1206,
+  "ink_h": 1197,
+  "anchor": [
+   0.4994,
+   0.9992
+  ],
+  "src": "characters/cast_ep1/congress2_smug.svg",
+  "scale": 1.0
  }
 }
