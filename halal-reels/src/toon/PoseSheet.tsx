@@ -23,7 +23,7 @@ export const PoseSheet: React.FC = () => {
           return (
             <g key={it.label} transform={`translate(${x} ${y})`}>
               <rect x={2} y={2} width={CELL - 4} height={CELL - 4} fill="#B7A6AE" stroke="#1A1A1A" strokeWidth={2} />
-              <g transform={`translate(30 -80) scale(0.45)`}>
+              <g transform={`translate(42 8) scale(0.40)`}>
                 <Character p={it.params} />
               </g>
               <text x={CELL / 2} y={CELL - 14} textAnchor="middle" fontFamily="monospace" fontSize={20} fill="#141414">
