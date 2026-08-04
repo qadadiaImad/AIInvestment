@@ -17,12 +17,31 @@ import {Grain, Vignette} from "../motion/Polish";
 import anchors from "../fixtures/cast_ep1/pose_anchors.json";
 import mouthTracks from "../fixtures/cast_ep1/mouth_tracks.json";
 import visemes from "../fixtures/cast_ep1/visemes.json";
+import headFocus from "../fixtures/cast_ep1/head_focus.json";
 
 type A = {w: number; h: number; ink_h: number; anchor: number[]; src: string; scale: number};
 const AN = anchors as unknown as Record<string, A>;
 type V = Partial<Record<"closed" | "half" | "open" | "oh" | "blink", string>>;
 const VI = visemes as unknown as Record<string, V>;
 const TR = mouthTracks as unknown as Record<string, number[]>;
+const HF = headFocus as unknown as Record<string, {fx: number; fy: number}>;
+
+// A SHOT is a reframing of the staged actor, held from `from` (a frame
+// offset into the beat) until the next shot. Reframing is how one
+// drawing yields several shots: a wide and a punch-in are two shots of
+// the same pixels, so the cut gains rhythm with no second generation and
+// therefore no identity drift. `k` scales about the head (head_focus.json)
+// and tx/ty place that head on screen; k=1 with no tx/ty is the staged
+// framing unchanged. `only` isolates one actor of a two-shot, which is
+// what turns a static two-shot into shot/reverse-shot.
+type Shot = {from: number; k?: number; tx?: number; ty?: number; only?: number;
+             hideCard?: boolean};
+const shotAt = (shots: Shot[] | undefined, since: number) => {
+  if (!shots || !shots.length) return {shot: undefined, shotSince: since};
+  let cur = shots[0];
+  for (const s of shots) if (since >= s.from) cur = s;
+  return {shot: cur, shotSince: since - cur.from};
+};
 
 export const FAIRMARKET_FRAMES = 1085;
 const VO_DELAY = 6;
@@ -45,6 +64,7 @@ type Beat = {
   vo?: string; speaker?: "SOL" | "REX"; line?: string;
   vo2?: string; speaker2?: "SOL" | "REX"; line2?: string; at2?: number;
   shout?: string; card?: Card; title?: string[]; energy?: number;
+  shots?: Shot[];
 };
 
 // ONE drawing per beat. Every pose here is "core" tier in the identity
@@ -59,14 +79,17 @@ type Beat = {
 const BEATS: Beat[] = [
   {at: 0, title: ["MARKET LESSONS", "WITH SOL", "ep.1 — the 'fair' market"],
    actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 740, y: 1330, h: 760}],
+   shots: [{from: 0}, {from: 56, k: 1.5, tx: 480, ty: 1100}],
    vo: "v1_sol_intro", speaker: "SOL",
    line: "Kid… let me tell you about the so-called “fair” market."},
   {at: 110, actors: [{poses: ["rex_eager"], kind: "full", x: 540, y: 1700, h: 1090}],
+   shots: [{from: 0}, {from: 60, k: 1.3, tx: 540, ty: 760}],
    vo: "v2_rex_fundamentals", speaker: "REX", line: "Boss! It's all fundamentals, right?!", energy: 1},
   {at: 195, actors: [{poses: ["sol_laugh"], kind: "full", x: 540, y: 1770, h: 1270}],
    vo: "v3_sol_ha", speaker: "SOL", line: "HA! …Fundamentals.", energy: 1.1},
   {at: 255, actors: [{poses: ["sol_finger"], kind: "full", x: 430, y: 1640, h: 1000},
                      {poses: ["rex_listen"], kind: "full", x: 850, y: 1750, h: 700}],
+   shots: [{from: 0}, {from: 26, only: 0, k: 1.5, tx: 470, ty: 800}, {from: 72}],
    vo: "v4_sol_politics", speaker: "SOL", line: "Sometimes… it trades on POLITICS."},
   {at: 345, actors: [{poses: ["rex_shock"], kind: "closeup", x: 540, y: 900, h: 1920}],
    vo: "v5_rex_what", speaker: "REX", line: "WHAT?!", shout: "WHAT?!", energy: 1.5},
@@ -77,6 +100,13 @@ const BEATS: Beat[] = [
                   "Congress passed billions in chip subsidies.",
                   "Sold at a loss (≈ $341K), amid the scrutiny."],
           foot: "STOCK Act disclosure · widely reported"},
+   // 8s was one static shot — 22% of the episode. Cut on the VO's own
+   // pauses (scripts/vector/phrase_cuts.py) between the speaker and the
+   // evidence: wide+card, punch to Sol, back to the card, kicker CU.
+   shots: [{from: 0},
+           {from: 58, k: 3.0, tx: 520, ty: 760, hideCard: true},
+           {from: 123},
+           {from: 190, k: 2.2, tx: 560, ty: 900, hideCard: true}],
    vo: "v6_sol_exhibit", speaker: "SOL",
    line: "July 2022. The Speaker's household sold NVIDIA — days before the chip subsidies passed. At a loss, kid."},
   {at: 640, actors: [{poses: ["rex_shock_v1"], kind: "panel", x: 760, y: 1370, h: 620}],
@@ -84,13 +114,28 @@ const BEATS: Beat[] = [
           lines: ["An ETF now copies Democratic lawmakers'",
                   "disclosed trades. Actively managed."],
           big: "NANC", foot: "public filings in · portfolio out"},
+   shots: [{from: 0}, {from: 47, k: 1.45, tx: 690, ty: 1200}],
    vo: "v7_rex_index", speaker: "REX", line: "They made it an INDEX?!",
    shout: "AN INDEX?!", energy: 1.3},
-  {at: 740, actors: [{poses: ["sol_point_v1"], kind: "full", x: 540, y: 1790, h: 1180}],
+  // was sol_point_v1 — which the shot-list review groups as
+  // interchangeable with beat 400's sol_point (same stance, same size,
+  // both WS to camera), so the two longest Sol beats read as one shot.
+  // sol_smug_v1 is core tier, carries visemes + a blink, and is the only
+  // Sol CU with a CLEAN silhouette — sol_smug reads the same but is
+  // full-bleed, so covering the frame forced an extreme crop that lost
+  // the eyes. Reused from beat 0, but at 4x the size and 25s later; the
+  // shot-list review only warns against cutting the smug set together
+  // back to back.
+  {at: 740, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 540, y: 900, h: 1250}],
+   shots: [{from: 0}, {from: 64, k: 1.35, tx: 520, ty: 700}, {from: 119}],
    vo: "v8_sol_legal", speaker: "SOL",
    line: "All disclosed. In ranges. Up to 45 days late. All legal."},
+  // was a static 4s two-shot with both characters on screen while they
+  // took turns speaking. Now shot/reverse-shot, cutting on the handover.
   {at: 895, actors: [{poses: ["rex_eager"], kind: "full", x: 350, y: 1740, h: 1000},
                      {poses: ["sol_wink"], kind: "panel", x: 770, y: 1370, h: 560}],
+   shots: [{from: 0, only: 0, k: 1.35, tx: 520, ty: 620},
+           {from: 60, only: 1, k: 1.9, tx: 540, ty: 780}],
    vo: "v9_rex_filings", speaker: "REX", line: "So — read the filings!",
    vo2: "v10_sol_learning", speaker2: "SOL", line2: "Now you're learning, kid.", at2: 60},
   {at: 1015, title: ["MARKET LESSONS", "WITH SOL", ""], actors: []},
@@ -154,8 +199,9 @@ const visemeSrc = (pose: string, state: number, speaking: boolean,
   return (alt ? v.open : v.oh) ?? v.open ?? v.oh ?? d.src;
 };
 
-const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean; mouthState: number}> =
-  ({a, since, frame, speaking, mouthState}) => {
+const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
+                      mouthState: number; shot?: Shot; shotSince: number}> =
+  ({a, since, frame, speaking, mouthState, shot, shotSince}) => {
   const cycling = speaking && cycleAllowed(a.poses);
   const idx = cycling
     ? CYCLE[Math.floor(since / SWAP) % CYCLE.length] % a.poses.length
@@ -164,7 +210,10 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   const d = AN[pose];
   if (!d) return null;
   const swapSince = since % SWAP;
-  const act = actionCurve(cycling ? swapSince : since, 2, 5, 8);
+  // the snap belongs to the SHOT, not the beat: a reframe is a cut and
+  // has to arrive with its own anticipation/settle, or the punch-in
+  // reads as a zoom.
+  const act = actionCurve(cycling ? swapSince : shotSince, 2, 5, 8);
   const pop = 0.955 + 0.045 * Math.min(1, Math.max(0, act));
   const amp = a.kind === "closeup" ? H * 0.5 : a.h;
   const bl = boil(frame, pose.length, amp * 0.0015);
@@ -175,9 +224,17 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
     // boil/bob/pop jitter so a wobble can't reveal a corner.
     ? 1.04 * Math.max(W / d.w, H / d.h)
     : a.h / d.h;
-  const w = d.w * scale, h = d.h * scale;
-  const left = a.kind === "full" ? a.x - d.anchor[0] * w : a.x - w / 2;
-  const top = a.kind === "full" ? a.y - d.anchor[1] * h : a.y - h / 2;
+  const w0 = d.w * scale, h0 = d.h * scale;
+  const left0 = a.kind === "full" ? a.x - d.anchor[0] * w0 : a.x - w0 / 2;
+  const top0 = a.kind === "full" ? a.y - d.anchor[1] * h0 : a.y - h0 / 2;
+  // Reframe about the HEAD, so a punch-in keeps the face on screen
+  // instead of drifting toward the canvas centre.
+  const hf = HF[pose] ?? {fx: 0.5, fy: 0.32};
+  const k = shot?.k ?? 1;
+  const w = w0 * k, h = h0 * k;
+  const hx = left0 + hf.fx * w0, hy = top0 + hf.fy * h0;
+  const left = (shot?.tx ?? hx) - hf.fx * w;
+  const top = (shot?.ty ?? hy) - hf.fy * h;
   const src = visemeSrc(pose, mouthState, speaking, frame);
   const panel = a.kind === "panel";
   return (
@@ -236,6 +293,7 @@ export const FairMarketEp1: React.FC = () => {
   const sub2 = cur.vo2 && since >= (cur.at2 ?? 0);
   const ms = mouthStateFor(cur, frame);
   const activeSpeaker = sub2 ? cur.speaker2 : cur.speaker;
+  const {shot, shotSince} = shotAt(cur.shots, since);
 
   return (
     <AbsoluteFill style={{background: "#101828", overflow: "hidden"}}>
@@ -268,12 +326,14 @@ export const FairMarketEp1: React.FC = () => {
               color: "#9FB2D8"}}>{cur.title[2]}</div>
           </div>
         ) : null}
-        {cur.card ? <ExhibitCard c={cur.card} since={since} /> : null}
+        {cur.card && !shot?.hideCard ? <ExhibitCard c={cur.card} since={since} /> : null}
         {cur.actors.map((a, i) => {
+          if (shot?.only !== undefined && shot.only !== i) return null;
           const isSol = a.poses[0].startsWith("sol");
           const speaking = activeSpeaker === (isSol ? "SOL" : "REX");
           return <Char key={i} a={a} since={since} frame={frame} speaking={speaking}
-                       mouthState={isSol ? ms.sol : ms.rex} />;
+                       mouthState={isSol ? ms.sol : ms.rex}
+                       shot={shot} shotSince={shotSince} />;
         })}
         {cur.shout ? (
           <>
