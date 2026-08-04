@@ -4,15 +4,21 @@ import { Character } from "./rig";
 import { DEFAULT } from "./defaults";
 import { merge } from "./merge";
 import { POSES, EXPR } from "./poses";
+import { PosePatch } from "./types";
+import catalogJson from "./catalog.json";
+
+const catalog = catalogJson as { id: string; params: PosePatch; desc: string; tags: string[] }[];
 
 const CELL = 300;
 const COLS = 6;
 
-export const PoseSheet: React.FC = () => {
-  const items = [
-    ...Object.entries(POSES).map(([k, v]) => ({ label: k, params: merge(DEFAULT, v.patch, EXPR.deadpan.patch) })),
-    ...Object.entries(EXPR).map(([k, v]) => ({ label: k, params: merge(DEFAULT, v.patch) })),
-  ];
+export const PoseSheet: React.FC<{ fromCatalog?: boolean }> = ({ fromCatalog }) => {
+  const items = fromCatalog
+    ? catalog.map((c) => ({ label: c.id, params: merge(DEFAULT, c.params, EXPR.deadpan.patch) }))
+    : [
+        ...Object.entries(POSES).map(([k, v]) => ({ label: k, params: merge(DEFAULT, v.patch, EXPR.deadpan.patch) })),
+        ...Object.entries(EXPR).map(([k, v]) => ({ label: k, params: merge(DEFAULT, v.patch) })),
+      ];
   const rows = Math.ceil(items.length / COLS);
   return (
     <AbsoluteFill style={{ background: "#8A97A6" }}>

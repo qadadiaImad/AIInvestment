@@ -72,6 +72,7 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{ mini: true }}
       />
       <Composition id="ToonPoseSheet" component={PoseSheet} durationInFrames={1} fps={FPS} width={1800} height={900} />
+      <Composition id="ToonCatalogSheet" component={PoseSheet} durationInFrames={1} fps={FPS} width={1800} height={2400} defaultProps={{ fromCatalog: true }} />
     </>
   );
 };

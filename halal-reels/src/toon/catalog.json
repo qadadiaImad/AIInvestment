@@ -1,0 +1,680 @@
+[
+  {
+    "id": "arms_crossed",
+    "params": {
+      "armL": {
+        "shoulder": 55,
+        "elbow": 95
+      },
+      "armR": {
+        "shoulder": 305,
+        "elbow": -95
+      }
+    },
+    "desc": "arms crossed (crossed, confident, closed-off, defensive)",
+    "tags": [
+      "crossed",
+      "confident",
+      "closed-off",
+      "defensive"
+    ]
+  },
+  {
+    "id": "wave",
+    "params": {
+      "armR": {
+        "shoulder": 140,
+        "elbow": -15
+      },
+      "headTurn": 8
+    },
+    "desc": "wave (greeting, friendly, hello)",
+    "tags": [
+      "greeting",
+      "friendly",
+      "hello"
+    ]
+  },
+  {
+    "id": "thumbs_up",
+    "params": {
+      "armR": {
+        "shoulder": 65,
+        "elbow": 50
+      }
+    },
+    "desc": "thumbs up (approval, positive, agree)",
+    "tags": [
+      "approval",
+      "positive",
+      "agree"
+    ]
+  },
+  {
+    "id": "hand_on_hip",
+    "params": {
+      "armL": {
+        "shoulder": 282,
+        "elbow": -90
+      }
+    },
+    "desc": "hand on hip (confident, sassy, attitude)",
+    "tags": [
+      "confident",
+      "sassy",
+      "attitude"
+    ]
+  },
+  {
+    "id": "cheer_both_hands_up",
+    "params": {
+      "armL": {
+        "shoulder": 215,
+        "elbow": 15
+      },
+      "armR": {
+        "shoulder": 145,
+        "elbow": -15
+      }
+    },
+    "desc": "cheer both hands up (excited, celebrate, hooray)",
+    "tags": [
+      "excited",
+      "celebrate",
+      "hooray"
+    ]
+  },
+  {
+    "id": "scratch_head",
+    "params": {
+      "armR": {
+        "shoulder": 132,
+        "elbow": 42
+      },
+      "headTurn": -5
+    },
+    "desc": "scratch head (confused, puzzled, thinking)",
+    "tags": [
+      "confused",
+      "puzzled",
+      "thinking"
+    ]
+  },
+  {
+    "id": "check_watch",
+    "params": {
+      "armL": {
+        "shoulder": 28,
+        "elbow": 135
+      },
+      "headTurn": -10
+    },
+    "desc": "check watch (impatient, time, hurry)",
+    "tags": [
+      "impatient",
+      "time",
+      "hurry"
+    ]
+  },
+  {
+    "id": "thinking_chin",
+    "params": {
+      "armR": {
+        "shoulder": 150,
+        "elbow": 90
+      },
+      "headTurn": -6
+    },
+    "desc": "thinking chin (pondering, thoughtful, analysis)",
+    "tags": [
+      "pondering",
+      "thoughtful",
+      "analysis"
+    ]
+  },
+  {
+    "id": "phone_to_ear",
+    "params": {
+      "armR": {
+        "shoulder": 120,
+        "elbow": 100
+      },
+      "prop": "phone",
+      "headTurn": -8
+    },
+    "desc": "phone to ear (call, phone, talking)",
+    "tags": [
+      "call",
+      "phone",
+      "talking"
+    ]
+  },
+  {
+    "id": "point_right",
+    "params": {
+      "armR": {
+        "shoulder": 72,
+        "elbow": 0
+      }
+    },
+    "desc": "point right (point, direction, gesture)",
+    "tags": [
+      "point",
+      "direction",
+      "gesture"
+    ]
+  },
+  {
+    "id": "reach_forward",
+    "params": {
+      "armR": {
+        "shoulder": 60,
+        "elbow": -5
+      },
+      "armL": {
+        "shoulder": 340,
+        "elbow": -15
+      },
+      "lean": 5
+    },
+    "desc": "reach forward (reach, grab, forward)",
+    "tags": [
+      "reach",
+      "grab",
+      "forward"
+    ]
+  },
+  {
+    "id": "arms_out_wide",
+    "params": {
+      "armL": {
+        "shoulder": 270,
+        "elbow": 0
+      },
+      "armR": {
+        "shoulder": 90,
+        "elbow": 0
+      }
+    },
+    "desc": "arms out wide (open, big, welcoming, ta-da)",
+    "tags": [
+      "open",
+      "big",
+      "welcoming",
+      "ta-da"
+    ]
+  },
+  {
+    "id": "one_hand_raised",
+    "params": {
+      "armR": {
+        "shoulder": 135,
+        "elbow": 20
+      }
+    },
+    "desc": "one hand raised (question, raise-hand, ask)",
+    "tags": [
+      "question",
+      "raise-hand",
+      "ask"
+    ]
+  },
+  {
+    "id": "facepalm_both",
+    "params": {
+      "armR": {
+        "shoulder": 168,
+        "elbow": 34
+      },
+      "armL": {
+        "shoulder": 192,
+        "elbow": -34
+      }
+    },
+    "desc": "facepalm both (disbelief, exasperated, double-facepalm)",
+    "tags": [
+      "disbelief",
+      "exasperated",
+      "double-facepalm"
+    ]
+  },
+  {
+    "id": "explain_both_hands",
+    "params": {
+      "armL": {
+        "shoulder": 310,
+        "elbow": -40
+      },
+      "armR": {
+        "shoulder": 50,
+        "elbow": 40
+      }
+    },
+    "desc": "explain both hands (explaining, talking, gesturing)",
+    "tags": [
+      "explaining",
+      "talking",
+      "gesturing"
+    ]
+  },
+  {
+    "id": "slumped",
+    "params": {
+      "armL": {
+        "shoulder": 8,
+        "elbow": 15
+      },
+      "armR": {
+        "shoulder": 352,
+        "elbow": -15
+      },
+      "lean": 10
+    },
+    "desc": "slumped (tired, defeated, low-energy)",
+    "tags": [
+      "tired",
+      "defeated",
+      "low-energy"
+    ]
+  },
+  {
+    "id": "victory_arms",
+    "params": {
+      "armL": {
+        "shoulder": 220,
+        "elbow": -25
+      },
+      "armR": {
+        "shoulder": 140,
+        "elbow": 25
+      }
+    },
+    "desc": "victory arms (victory, win, celebrate)",
+    "tags": [
+      "victory",
+      "win",
+      "celebrate"
+    ]
+  },
+  {
+    "id": "lean_forward_desk",
+    "params": {
+      "armL": {
+        "shoulder": 15,
+        "elbow": 30
+      },
+      "armR": {
+        "shoulder": 345,
+        "elbow": -30
+      },
+      "lean": -8
+    },
+    "desc": "lean forward desk (engaged, leaning-in, focused)",
+    "tags": [
+      "engaged",
+      "leaning-in",
+      "focused"
+    ]
+  },
+  {
+    "id": "wave_left",
+    "params": {
+      "armL": {
+        "shoulder": 220,
+        "elbow": 15
+      },
+      "headTurn": -8
+    },
+    "desc": "wave left (greeting, hello, left-hand)",
+    "tags": [
+      "greeting",
+      "hello",
+      "left-hand"
+    ]
+  },
+  {
+    "id": "thumbs_up_both",
+    "params": {
+      "armR": {
+        "shoulder": 65,
+        "elbow": 50
+      },
+      "armL": {
+        "shoulder": 295,
+        "elbow": -50
+      }
+    },
+    "desc": "thumbs up both (approval, enthusiastic, double-thumbs)",
+    "tags": [
+      "approval",
+      "enthusiastic",
+      "double-thumbs"
+    ]
+  },
+  {
+    "id": "clap",
+    "params": {
+      "armL": {
+        "shoulder": 50,
+        "elbow": 90
+      },
+      "armR": {
+        "shoulder": 310,
+        "elbow": -90
+      }
+    },
+    "desc": "clap (applause, clap, congratulate)",
+    "tags": [
+      "applause",
+      "clap",
+      "congratulate"
+    ]
+  },
+  {
+    "id": "count_on_fingers",
+    "params": {
+      "armR": {
+        "shoulder": 80,
+        "elbow": 10
+      }
+    },
+    "desc": "count on fingers (counting, listing, enumerate)",
+    "tags": [
+      "counting",
+      "listing",
+      "enumerate"
+    ]
+  },
+  {
+    "id": "cross_arms_lean",
+    "params": {
+      "armL": {
+        "shoulder": 60,
+        "elbow": 85
+      },
+      "armR": {
+        "shoulder": 300,
+        "elbow": -85
+      },
+      "lean": 9
+    },
+    "desc": "cross arms lean (skeptical, confident, crossed)",
+    "tags": [
+      "skeptical",
+      "confident",
+      "crossed"
+    ]
+  },
+  {
+    "id": "hands_clasped",
+    "params": {
+      "armL": {
+        "shoulder": 30,
+        "elbow": 90
+      },
+      "armR": {
+        "shoulder": 330,
+        "elbow": -90
+      }
+    },
+    "desc": "hands clasped (patient, formal, waiting)",
+    "tags": [
+      "patient",
+      "formal",
+      "waiting"
+    ]
+  },
+  {
+    "id": "rub_hands_eager",
+    "params": {
+      "armL": {
+        "shoulder": 25,
+        "elbow": 100
+      },
+      "armR": {
+        "shoulder": 335,
+        "elbow": -100
+      }
+    },
+    "desc": "rub hands eager (scheming, eager, plotting)",
+    "tags": [
+      "scheming",
+      "eager",
+      "plotting"
+    ]
+  },
+  {
+    "id": "adjust_glasses",
+    "params": {
+      "armR": {
+        "shoulder": 160,
+        "elbow": -20
+      }
+    },
+    "desc": "adjust glasses (glasses, adjust, nerdy)",
+    "tags": [
+      "glasses",
+      "adjust",
+      "nerdy"
+    ]
+  },
+  {
+    "id": "cover_mouth",
+    "params": {
+      "armR": {
+        "shoulder": 155,
+        "elbow": 55
+      }
+    },
+    "desc": "cover mouth (gasp, surprise, shock)",
+    "tags": [
+      "gasp",
+      "surprise",
+      "shock"
+    ]
+  },
+  {
+    "id": "wipe_brow",
+    "params": {
+      "armR": {
+        "shoulder": 145,
+        "elbow": 75
+      }
+    },
+    "desc": "wipe brow (relief, phew, tired)",
+    "tags": [
+      "relief",
+      "phew",
+      "tired"
+    ]
+  },
+  {
+    "id": "salute",
+    "params": {
+      "armR": {
+        "shoulder": 110,
+        "elbow": 70
+      }
+    },
+    "desc": "salute (salute, respect, acknowledge)",
+    "tags": [
+      "salute",
+      "respect",
+      "acknowledge"
+    ]
+  },
+  {
+    "id": "karate_chop_desk",
+    "params": {
+      "armR": {
+        "shoulder": 25,
+        "elbow": -80
+      }
+    },
+    "desc": "karate chop desk (emphatic, chop, forceful)",
+    "tags": [
+      "emphatic",
+      "chop",
+      "forceful"
+    ]
+  },
+  {
+    "id": "raise_both_fists",
+    "params": {
+      "armL": {
+        "shoulder": 210,
+        "elbow": 0
+      },
+      "armR": {
+        "shoulder": 150,
+        "elbow": 0
+      }
+    },
+    "desc": "raise both fists (determined, fists, pump-up)",
+    "tags": [
+      "determined",
+      "fists",
+      "pump-up"
+    ]
+  },
+  {
+    "id": "hold_phone_two_hands",
+    "params": {
+      "armL": {
+        "shoulder": 20,
+        "elbow": 90
+      },
+      "armR": {
+        "shoulder": 340,
+        "elbow": -90
+      },
+      "prop": "phone"
+    },
+    "desc": "hold phone two hands (phone, texting, reading)",
+    "tags": [
+      "phone",
+      "texting",
+      "reading"
+    ]
+  },
+  {
+    "id": "beckon",
+    "params": {
+      "armR": {
+        "shoulder": 100,
+        "elbow": 80
+      }
+    },
+    "desc": "beckon (beckon, come-here, summon)",
+    "tags": [
+      "beckon",
+      "come-here",
+      "summon"
+    ]
+  },
+  {
+    "id": "flex_bicep",
+    "params": {
+      "armR": {
+        "shoulder": 90,
+        "elbow": 90
+      }
+    },
+    "desc": "flex bicep (flex, strong, muscle)",
+    "tags": [
+      "flex",
+      "strong",
+      "muscle"
+    ]
+  },
+  {
+    "id": "dismiss_wave",
+    "params": {
+      "armR": {
+        "shoulder": 80,
+        "elbow": -40
+      }
+    },
+    "desc": "dismiss wave (dismiss, wave-off, whatever)",
+    "tags": [
+      "dismiss",
+      "wave-off",
+      "whatever"
+    ]
+  },
+  {
+    "id": "point_down",
+    "params": {
+      "armR": {
+        "shoulder": 30,
+        "elbow": -20
+      }
+    },
+    "desc": "point down (point-down, desk, chart)",
+    "tags": [
+      "point-down",
+      "desk",
+      "chart"
+    ]
+  },
+  {
+    "id": "hand_on_chest",
+    "params": {
+      "armR": {
+        "shoulder": 160,
+        "elbow": -120
+      }
+    },
+    "desc": "hand on chest (sincere, oath, heart)",
+    "tags": [
+      "sincere",
+      "oath",
+      "heart"
+    ]
+  },
+  {
+    "id": "lean_on_hand",
+    "params": {
+      "armR": {
+        "shoulder": 5,
+        "elbow": 150
+      }
+    },
+    "desc": "lean on hand (tired, propped, bored)",
+    "tags": [
+      "tired",
+      "propped",
+      "bored"
+    ]
+  },
+  {
+    "id": "gesture_left_open",
+    "params": {
+      "armL": {
+        "shoulder": 300,
+        "elbow": -60
+      }
+    },
+    "desc": "gesture left open (explaining, open-hand, left)",
+    "tags": [
+      "explaining",
+      "open-hand",
+      "left"
+    ]
+  },
+  {
+    "id": "touch_ear",
+    "params": {
+      "armR": {
+        "shoulder": 125,
+        "elbow": 55
+      }
+    },
+    "desc": "touch ear (listen, earpiece, attentive)",
+    "tags": [
+      "listen",
+      "earpiece",
+      "attentive"
+    ]
+  }
+]
