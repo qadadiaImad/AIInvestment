@@ -101,22 +101,6 @@
     ]
   },
   {
-    "id": "check_watch",
-    "params": {
-      "armL": {
-        "shoulder": 28,
-        "elbow": 135
-      },
-      "headTurn": -10
-    },
-    "desc": "check watch (impatient, time, hurry)",
-    "tags": [
-      "impatient",
-      "time",
-      "hurry"
-    ]
-  },
-  {
     "id": "thinking_chin",
     "params": {
       "armR": {
@@ -217,25 +201,6 @@
       "question",
       "raise-hand",
       "ask"
-    ]
-  },
-  {
-    "id": "facepalm_both",
-    "params": {
-      "armR": {
-        "shoulder": 168,
-        "elbow": 34
-      },
-      "armL": {
-        "shoulder": 192,
-        "elbow": -34
-      }
-    },
-    "desc": "facepalm both (disbelief, exasperated, double-facepalm)",
-    "tags": [
-      "disbelief",
-      "exasperated",
-      "double-facepalm"
     ]
   },
   {
@@ -352,25 +317,6 @@
     ]
   },
   {
-    "id": "clap",
-    "params": {
-      "armL": {
-        "shoulder": 50,
-        "elbow": 90
-      },
-      "armR": {
-        "shoulder": 310,
-        "elbow": -90
-      }
-    },
-    "desc": "clap (applause, clap, congratulate)",
-    "tags": [
-      "applause",
-      "clap",
-      "congratulate"
-    ]
-  },
-  {
     "id": "count_on_fingers",
     "params": {
       "armR": {
@@ -403,44 +349,6 @@
       "skeptical",
       "confident",
       "crossed"
-    ]
-  },
-  {
-    "id": "hands_clasped",
-    "params": {
-      "armL": {
-        "shoulder": 30,
-        "elbow": 90
-      },
-      "armR": {
-        "shoulder": 330,
-        "elbow": -90
-      }
-    },
-    "desc": "hands clasped (patient, formal, waiting)",
-    "tags": [
-      "patient",
-      "formal",
-      "waiting"
-    ]
-  },
-  {
-    "id": "rub_hands_eager",
-    "params": {
-      "armL": {
-        "shoulder": 25,
-        "elbow": 100
-      },
-      "armR": {
-        "shoulder": 335,
-        "elbow": -100
-      }
-    },
-    "desc": "rub hands eager (scheming, eager, plotting)",
-    "tags": [
-      "scheming",
-      "eager",
-      "plotting"
     ]
   },
   {
