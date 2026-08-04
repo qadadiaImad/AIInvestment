@@ -1,0 +1,110 @@
+[
+ {
+  "name": "p1_speaker_0",
+  "prompt": "solo, 1man, old man, elderly, 70 years old, heavy build, jowly face, swept-back golden blond hair, very long red necktie, dark navy suit, standing at a wooden lectern, hands gripping the lectern, mouth open mid-speech, confident, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, young man, youthful, teenager, bishounen, smooth skin, slim, skinny",
+  "seed": 95000,
+  "width": 832,
+  "height": 1216,
+  "seconds": 18.1,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T17:20:13Z"
+ },
+ {
+  "name": "p1_speaker_1",
+  "prompt": "solo, 1man, old man, elderly, 70 years old, heavy build, jowly face, swept-back golden blond hair, very long red necktie, dark navy suit, standing at a wooden lectern, hands gripping the lectern, mouth open mid-speech, confident, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, young man, youthful, teenager, bishounen, smooth skin, slim, skinny",
+  "seed": 95001,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.0,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T17:20:21Z"
+ },
+ {
+  "name": "p2_official_a_0",
+  "prompt": "solo, 1man, older man, 60 years old, silver grey hair, receding hairline, rimless glasses, grey business suit, blue tie, standing at a lectern, speaking, serious expression, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, young man, youthful, teenager, bishounen, smooth skin, slim, skinny",
+  "seed": 95020,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.1,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T17:20:29Z"
+ },
+ {
+  "name": "p2_official_a_1",
+  "prompt": "solo, 1man, older man, 60 years old, silver grey hair, receding hairline, rimless glasses, grey business suit, blue tie, standing at a lectern, speaking, serious expression, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, young man, youthful, teenager, bishounen, smooth skin, slim, skinny",
+  "seed": 95021,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.0,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T17:20:37Z"
+ },
+ {
+  "name": "p3_official_b_0",
+  "prompt": "solo, 1man, middle aged man, dark hair, clean shaven, sharp jaw, dark navy suit, red patterned tie, standing at a lectern, speaking firmly, stern expression, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, young man, youthful, teenager, bishounen, smooth skin, slim, skinny",
+  "seed": 95040,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.0,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T17:20:45Z"
+ },
+ {
+  "name": "p3_official_b_1",
+  "prompt": "solo, 1man, middle aged man, dark hair, clean shaven, sharp jaw, dark navy suit, red patterned tie, standing at a lectern, speaking firmly, stern expression, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, young man, youthful, teenager, bishounen, smooth skin, slim, skinny",
+  "seed": 95041,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.1,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T17:20:53Z"
+ },
+ {
+  "name": "t_unknown_0",
+  "prompt": "solo, 1man, faceless silhouette, completely black featureless shadow figure, no face, no eyes, businessman silhouette in a suit, holding a paper trading ticket, standing, anonymous, mysterious, flat color, thick clean black outlines, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, young man, youthful, teenager, bishounen, smooth skin, slim, skinny, visible face, eyes, facial features, portrait",
+  "seed": 96000,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.0,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T17:21:01Z"
+ },
+ {
+  "name": "t_unknown_1",
+  "prompt": "solo, 1man, faceless silhouette, completely black featureless shadow figure, no face, no eyes, businessman silhouette in a suit, holding a paper trading ticket, standing, anonymous, mysterious, flat color, thick clean black outlines, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, young man, youthful, teenager, bishounen, smooth skin, slim, skinny, visible face, eyes, facial features, portrait",
+  "seed": 96001,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.0,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T17:21:09Z"
+ },
+ {
+  "name": "t_unknown_2",
+  "prompt": "solo, 1man, faceless silhouette, completely black featureless shadow figure, no face, no eyes, businessman silhouette in a suit, holding a paper trading ticket, standing, anonymous, mysterious, flat color, thick clean black outlines, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, young man, youthful, teenager, bishounen, smooth skin, slim, skinny, visible face, eyes, facial features, portrait",
+  "seed": 96002,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.1,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T17:21:17Z"
+ }
+]

@@ -77,7 +77,7 @@ const shotAt = (shots: Shot[] | undefined, since: number, hold: number) => {
           shotLen: Math.max(1, end - cur.from)};
 };
 
-export const FAIRMARKET_FRAMES = 5100;
+export const FAIRMARKET_FRAMES = 5490;
 
 // Hard ceiling on how far a shot may push in. A drawing scaled until the
 // face fills the frame throws away the set and has nowhere left to go —
@@ -549,7 +549,31 @@ const BEATS: Beat[] = [
    shots: [{from: 0, k: 1.06, kEnd: 1.2, tx: 540, ty: 1040}],
    vo: "a5_sol_fair", speaker: "SOL", line: "Fair? No. But now you can read it."},
 
-  {at: 4915, title: ["MARKET LESSONS", "WITH SOL", ""], actors: []},
+  // ═══ THE HOOK INTO EPISODE 2 ═════════════════════════════════════════
+  // Rex won't let it go, which is in character, and Sol refuses to
+  // squeeze it into a footnote. It also EARNS the next episode rather
+  // than announcing it: ep.1's thesis is that public information isn't
+  // enough to find an edge, so the obvious next question is what happens
+  // when somebody has information that ISN'T public. That is ep.2.
+  {at: 4920, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679,
+                       turns: [{at: 12, tx: 830, ty: 1230}]},
+                      {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1300, h: 596}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.08},
+           {from: 96, only: 0, k: 1.28, kEnd: 1.4, tx: 520, ty: 1020}],
+   flicks: [{at: 14, x: 560, y: 1140}],
+   sfx: [{at: 12, name: "sfx_whip", vol: 0.42}],
+   vo: "a7_rex_oilthing", speaker: "REX",
+   line: "Wait, boss. What about the oil thing? Five hundred million dollars, sixteen minutes before the announcement?",
+   energy: 1.2},
+
+  // Sol alone, dry, direct to camera — the smash cut to the title is the
+  // joke, so nothing competes with him on the monitor.
+  {at: 5121, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.1, tx: 540, ty: 1200}],
+   vo: "a7_sol_ownepisode", speaker: "SOL",
+   line: "Ah. That one doesn't fit in a footnote, kid. That one gets its own episode."},
+
+  {at: 5289, title: ["MARKET LESSONS", "WITH SOL", "ep.2 — sixteen minutes"], actors: []},
 ];
 
 const beatAt = (f: number) => {

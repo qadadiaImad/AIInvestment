@@ -36,7 +36,7 @@ COMP = REPO / "remotion" / "src" / "compositions" / "FairMarketEp1.tsx"
 
 W, H = 1080, 1920
 FLOOR_Y = 1730
-TOTAL_FRAMES = 5100
+TOTAL_FRAMES = 5490
 VO_DELAY = 6
 VO_DIR = REPO / "remotion" / "public" / "audio" / "fairmarket"
 FFPROBE = (REPO / "remotion" / "node_modules" / "@remotion"

@@ -29,7 +29,7 @@ FFPROBE = (REPO / "remotion" / "node_modules" / "@remotion"
            / "compositor-win32-x64-msvc" / "ffprobe.exe")
 FPS = 30
 VO_DELAY = 6
-TOTAL = 5100          # 170s (2:50) — owner chose to run long rather than
+TOTAL = 5490          # +11s for the episode-2 hook          # 170s (2:50) — owner chose to run long rather than
                       # trim the both-sides beats for the closing argument
 MIN_TAIL = 14          # never let a line end flush with the cut
 MIN_SILENT = 66        # a title/outro card with no dialogue still needs

@@ -1,0 +1,74 @@
+[
+ {
+  "name": "p1b_speaker_0",
+  "prompt": "solo, 1man, old man, elderly, 70 years old, heavy build, jowly face, double chin, swept-back golden blond hair, very long bright red necktie, dark navy suit, standing behind a wooden lectern, both hands gripping the lectern, mouth open mid-speech, addressing a crowd, confident, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, speech bubble, speech balloon, japanese text, letters, caption, young man, youthful, teenager, bishounen, smooth skin, slim, skinny, grey moustache, bow tie, cardigan, close-up, extreme close-up, face only",
+  "seed": 97100,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.1,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T17:22:17Z"
+ },
+ {
+  "name": "p1b_speaker_1",
+  "prompt": "solo, 1man, old man, elderly, 70 years old, heavy build, jowly face, double chin, swept-back golden blond hair, very long bright red necktie, dark navy suit, standing behind a wooden lectern, both hands gripping the lectern, mouth open mid-speech, addressing a crowd, confident, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, speech bubble, speech balloon, japanese text, letters, caption, young man, youthful, teenager, bishounen, smooth skin, slim, skinny, grey moustache, bow tie, cardigan, close-up, extreme close-up, face only",
+  "seed": 97101,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.1,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T17:22:25Z"
+ },
+ {
+  "name": "p1b_speaker_2",
+  "prompt": "solo, 1man, old man, elderly, 70 years old, heavy build, jowly face, double chin, swept-back golden blond hair, very long bright red necktie, dark navy suit, standing behind a wooden lectern, both hands gripping the lectern, mouth open mid-speech, addressing a crowd, confident, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, speech bubble, speech balloon, japanese text, letters, caption, young man, youthful, teenager, bishounen, smooth skin, slim, skinny, grey moustache, bow tie, cardigan, close-up, extreme close-up, face only",
+  "seed": 97102,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.0,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T17:22:33Z"
+ },
+ {
+  "name": "p1b_speaker_3",
+  "prompt": "solo, 1man, old man, elderly, 70 years old, heavy build, jowly face, double chin, swept-back golden blond hair, very long bright red necktie, dark navy suit, standing behind a wooden lectern, both hands gripping the lectern, mouth open mid-speech, addressing a crowd, confident, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, speech bubble, speech balloon, japanese text, letters, caption, young man, youthful, teenager, bishounen, smooth skin, slim, skinny, grey moustache, bow tie, cardigan, close-up, extreme close-up, face only",
+  "seed": 97103,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.0,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T17:22:41Z"
+ },
+ {
+  "name": "t2_unknown_0",
+  "prompt": "solo, one faceless silhouette figure, completely black featureless shadow, no face, no facial features, businessman in a suit silhouette, holding up a paper trading ticket in one hand, standing confidently, anonymous, single figure, centered, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, speech bubble, speech balloon, japanese text, letters, caption, young man, youthful, teenager, bishounen, smooth skin, slim, skinny, grey moustache, bow tie, cardigan, close-up, extreme close-up, face only, two people, crowd, visible face, eyes, hoodie",
+  "seed": 97200,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.1,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T17:22:49Z"
+ },
+ {
+  "name": "t2_unknown_1",
+  "prompt": "solo, one faceless silhouette figure, completely black featureless shadow, no face, no facial features, businessman in a suit silhouette, holding up a paper trading ticket in one hand, standing confidently, anonymous, single figure, centered, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, speech bubble, speech balloon, japanese text, letters, caption, young man, youthful, teenager, bishounen, smooth skin, slim, skinny, grey moustache, bow tie, cardigan, close-up, extreme close-up, face only, two people, crowd, visible face, eyes, hoodie",
+  "seed": 97201,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.1,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T17:22:57Z"
+ }
+]
