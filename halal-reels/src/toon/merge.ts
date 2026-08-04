@@ -18,3 +18,27 @@ function deep<T>(base: T, patch: unknown): T {
 export function merge(base: RigParams, ...patches: PosePatch[]): RigParams {
   return patches.reduce<RigParams>((acc, p) => deep(acc, p), deep(base, {}));
 }
+
+const lerp = (x: number, y: number, t: number) => x + (y - x) * t;
+
+export function tween(a: RigParams, b: RigParams, t: number): RigParams {
+  const pick = <T>(x: T, y: T) => (t >= 0.5 ? y : x);
+  const arm = (x: RigParams["armL"], y: RigParams["armL"]) => ({
+    shoulder: lerp(x.shoulder, y.shoulder, t),
+    elbow: lerp(x.elbow, y.elbow, t),
+    wrist: lerp(x.wrist, y.wrist, t),
+  });
+  return {
+    skin: pick(a.skin, b.skin),
+    headTurn: lerp(a.headTurn, b.headTurn, t),
+    lean: lerp(a.lean, b.lean, t),
+    bob: lerp(a.bob, b.bob, t),
+    brows: { l: pick(a.brows.l, b.brows.l), r: pick(a.brows.r, b.brows.r) },
+    eyes: pick(a.eyes, b.eyes),
+    mouth: pick(a.mouth, b.mouth),
+    sweat: pick(a.sweat, b.sweat),
+    armL: arm(a.armL, b.armL),
+    armR: arm(a.armR, b.armR),
+    prop: pick(a.prop, b.prop),
+  };
+}
