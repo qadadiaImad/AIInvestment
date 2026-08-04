@@ -12,8 +12,9 @@
 import React from "react";
 import {AbsoluteFill, Audio, Img, Sequence, staticFile, useCurrentFrame} from "remotion";
 import {actionCurve, bob, boil} from "../motion/toon";
-import {FlashCut, ShockRing, SpeedLines, kick} from "../motion/ToonFX";
+import {FlashCut, ShockFlicks, ShockRing, SpeedLines, kick} from "../motion/ToonFX";
 import {Grain, Vignette} from "../motion/Polish";
+import {Move, Turn, interactXform} from "../motion/interact";
 import anchors from "../fixtures/cast_ep1/pose_anchors.json";
 import mouthTracks from "../fixtures/cast_ep1/mouth_tracks.json";
 import visemes from "../fixtures/cast_ep1/visemes.json";
@@ -63,7 +64,13 @@ const VO_DELAY = 6;
 //                 frame would bury the exhibit card. Its canvas edge is
 //                 owned instead of hidden: ruled border + drop shadow +
 //                 slight tilt, the same manga-panel language as the card.
-type Actor = {poses: string[]; kind: "full" | "bust" | "closeup" | "panel"; x: number; y: number; h: number};
+// `moves` are arrivals/exits under cartoon physics and `turns` are head
+// turns toward a point on stage — the two things that make a second
+// character an event this one reacts to, rather than a separate picture
+// that happens to share the frame. See motion/interact.ts.
+type Actor = {poses: string[]; kind: "full" | "bust" | "closeup" | "panel";
+              x: number; y: number; h: number;
+              moves?: Move[]; turns?: Turn[]};
 type Card = {title: string; lines: string[]; big?: string; foot?: string};
 type Beat = {
   at: number; actors: Actor[];
@@ -71,6 +78,8 @@ type Beat = {
   vo2?: string; speaker2?: "SOL" | "REX"; line2?: string; at2?: number;
   shout?: string; card?: Card; title?: string[]; energy?: number;
   shots?: Shot[];
+  // drawn "!!" flicks beside a head — the reaction accent on a turn
+  flicks?: {at: number; x: number; y: number}[];
 };
 
 // ONE drawing per beat. Every pose here is "core" tier in the identity
@@ -93,13 +102,22 @@ const BEATS: Beat[] = [
    vo: "v2_rex_fundamentals", speaker: "REX", line: "Boss! It's all fundamentals, right?!", energy: 1},
   {at: 195, actors: [{poses: ["sol_laugh"], kind: "full", x: 540, y: 1770, h: 1270}],
    vo: "v3_sol_ha", speaker: "SOL", line: "HA! …Fundamentals.", energy: 1.1},
-  {at: 255, actors: [{poses: ["sol_finger"], kind: "full", x: 430, y: 1640, h: 1000},
-                     {poses: ["rex_listen"], kind: "full", x: 850, y: 1750, h: 700}],
-   shots: [{from: 0}, {from: 26, only: 0, k: 1.5, tx: 470, ty: 800}, {from: 72}],
+  // EYELINE. rex_listen is drawn in profile facing RIGHT, so Rex has to
+  // stand screen-LEFT for his gaze to land on Sol; he was on the right,
+  // staring away from the man talking to him. Sol now slides in from the
+  // right to join him instead of simply being there on the cut.
+  {at: 255, actors: [{poses: ["rex_listen"], kind: "full", x: 285, y: 1770, h: 720},
+                     {poses: ["sol_finger"], kind: "full", x: 760, y: 1640, h: 1000,
+                      moves: [{at: 0, kind: "inR"}]}],
+   shots: [{from: 0}, {from: 30, only: 1, k: 1.5, tx: 560, ty: 800}, {from: 74}],
    vo: "v4_sol_politics", speaker: "SOL", line: "Sometimes… it trades on POLITICS."},
   {at: 345, actors: [{poses: ["rex_shock"], kind: "closeup", x: 540, y: 900, h: 1920}],
    vo: "v5_rex_what", speaker: "REX", line: "WHAT?!", shout: "WHAT?!", energy: 1.5},
-  {at: 400, actors: [{poses: ["sol_point"], kind: "full", x: 230, y: 1830, h: 800}],
+  {at: 400, actors: [{poses: ["sol_point"], kind: "full", x: 230, y: 1830, h: 800},
+                     // Rex is present for this whole 8s but only cut to
+                     // once, silently, to react to the reveal — the shot
+                     // that makes Sol's line land on somebody.
+                     {poses: ["rex_skeptic"], kind: "bust", x: 540, y: 980, h: 1120}],
    card: {title: "JULY 2022 · PUBLIC FILING",
           lines: ["The then-Speaker's household sold",
                   "25,000 NVIDIA shares — days before",
@@ -113,10 +131,11 @@ const BEATS: Beat[] = [
    // is the "here's the key insight" gesture the line wants, and unlike
    // sol_point it carries a gated blink, so Sol blinks during the
    // longest sequence in the episode.
-   shots: [{from: 0},
-           {from: 58, k: 3.0, tx: 520, ty: 760, hideCard: true},
-           {from: 123, pose: "sol_finger", tx: 265},
-           {from: 190, k: 2.2, tx: 560, ty: 900, hideCard: true}],
+   shots: [{from: 0, only: 0},
+           {from: 58, only: 0, k: 3.0, tx: 520, ty: 760, hideCard: true},
+           {from: 99, only: 1, hideCard: true},
+           {from: 123, only: 0, pose: "sol_finger", tx: 265},
+           {from: 190, only: 0, k: 2.2, tx: 560, ty: 900, hideCard: true}],
    vo: "v6_sol_exhibit", speaker: "SOL",
    line: "July 2022. The Speaker's household sold NVIDIA — days before the chip subsidies passed. At a loss, kid."},
   {at: 640, actors: [{poses: ["rex_shock_v1"], kind: "panel", x: 760, y: 1370, h: 620}],
@@ -142,10 +161,18 @@ const BEATS: Beat[] = [
    line: "All disclosed. In ranges. Up to 45 days late. All legal."},
   // was a static 4s two-shot with both characters on screen while they
   // took turns speaking. Now shot/reverse-shot, cutting on the handover.
-  {at: 895, actors: [{poses: ["rex_eager"], kind: "full", x: 350, y: 1740, h: 1000},
-                     {poses: ["sol_wink"], kind: "panel", x: 770, y: 1370, h: 560}],
-   shots: [{from: 0, only: 0, k: 1.35, tx: 520, ty: 620},
-           {from: 60, only: 1, k: 1.9, tx: 540, ty: 780}],
+  // THE EXCHANGE. Rex asks the room; Sol is not there, then POPS IN top
+  // right and Rex's head whips round to find him. Both stay on screen for
+  // the answer, so the last beat is two characters in one space rather
+  // than two solo portraits cut together.
+  {at: 895, actors: [{poses: ["rex_eager"], kind: "full", x: 380, y: 1800, h: 1030,
+                      turns: [{at: 56, tx: 830, ty: 520}]},
+                     {poses: ["sol_wink"], kind: "panel", x: 800, y: 560, h: 540,
+                      moves: [{at: 52, kind: "pop"}]}],
+   shots: [{from: 0, only: 0, k: 1.3, tx: 500, ty: 700},
+           {from: 50}],
+   // beside REX's measured head (~356,1076), fanning up toward Sol
+   flicks: [{at: 57, x: 520, y: 950}],
    vo: "v9_rex_filings", speaker: "REX", line: "So — read the filings!",
    vo2: "v10_sol_learning", speaker2: "SOL", line2: "Now you're learning, kid.", at2: 60},
   {at: 1015, title: ["MARKET LESSONS", "WITH SOL", ""], actors: []},
@@ -247,11 +274,17 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   const top = (shot?.ty ?? hy) - hf.fy * h;
   const src = visemeSrc(pose, mouthState, speaking, frame);
   const panel = a.kind === "panel";
+  const ix = interactXform(since, a.moves, a.turns,
+                           shot?.tx ?? hx, shot?.ty ?? hy);
   return (
     <div style={{position: "absolute", left: left + bl.x, top: top + by + bl.y,
-      width: w, height: h, transform: `scale(${pop})${panel ? " rotate(-1.2deg)" : ""}`,
+      width: w, height: h,
+      transform: `translate(${ix.dx}px, ${ix.dy}px) `
+        + `scale(${pop * ix.sx}, ${pop * ix.sy}) `
+        + `rotate(${ix.rot + (panel ? -1.2 : 0)}deg)`,
       transformOrigin: a.kind === "full" ? `${d.anchor[0] * 100}% ${d.anchor[1] * 100}%` : "50% 60%",
-      opacity: Math.min(1, since / 3),
+      opacity: Math.min(1, since / 3) * ix.opacity,
+      ...(ix.blur > 0.05 ? {filter: `blur(${ix.blur}px)`} : {}),
       ...(panel ? {border: "6px solid #111", borderRadius: 8, overflow: "hidden",
         boxShadow: "10px 12px 0 rgba(0,0,0,0.35)", background: "#F7F3E8"} : {})}}>
       <Img src={staticFile(src)} style={{position: "absolute", inset: 0, width: "100%", height: "100%"}} />
@@ -345,6 +378,9 @@ export const FairMarketEp1: React.FC = () => {
                        mouthState={isSol ? ms.sol : ms.rex}
                        shot={shot} shotSince={shotSince} />;
         })}
+        {(cur.flicks ?? []).map((f, i) => (
+          <ShockFlicks key={i} x={f.x} y={f.y} since={since - f.at} size={72} />
+        ))}
         {cur.shout ? (
           <>
             <ShockRing x={540} y={860} since={since} />
