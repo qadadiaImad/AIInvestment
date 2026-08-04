@@ -11,6 +11,7 @@ import { ValueQuizReel, QUIZ_BEATS } from "./ValueQuizReel";
 import { CorrelationReel, CORRELATION_BEATS, CORRELATION_MINI_TOTAL } from "./CorrelationReel";
 import { SemisReel, SEMIS_BEATS, SEMIS_MINI_TOTAL } from "./SemisReel";
 import { QuarterlyReport, QR_BEATS } from "./QuarterlyReport";
+import { PoseSheet } from "./toon/PoseSheet";
 
 const FPS = 30;
 const W = 1080;
@@ -70,6 +71,7 @@ export const RemotionRoot: React.FC = () => {
         height={H}
         defaultProps={{ mini: true }}
       />
+      <Composition id="ToonPoseSheet" component={PoseSheet} durationInFrames={1} fps={FPS} width={1800} height={900} />
     </>
   );
 };
