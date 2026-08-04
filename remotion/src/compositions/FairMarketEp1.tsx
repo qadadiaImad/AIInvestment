@@ -138,6 +138,16 @@ type Beat = {
 const REX_H = 1430;
 const SOL_H = 1165;
 
+// TWO-SHOT sizes. A figure's on-screen WIDTH is driven by its height, and
+// at solo size rex_eager is 1009px wide — two of those cannot fit in a
+// 1080px frame, which is why every two-shot was overlapping by 150-490px
+// with both characters running off the edges. Solved numerically by
+// scripts/vector/overlap_audit.py: each pair sized so both fit fully
+// inside the frame with a real gap between them, Rex keeping a height
+// advantage. A two-shot being smaller than a solo is correct anyway — it
+// is a wider shot. The per-beat heights below ARE that solver's output —
+// re-run overlap_audit after any staging change to re-verify.
+
 // ONE drawing per beat. Every pose here is "core" tier in the identity
 // gate (scripts/vector/pose_contact.py -> same haircut, same 3/4 head
 // direction, same wardrobe as the canonical sol_smug / rex_eager) AND a
@@ -167,9 +177,9 @@ const BEATS: Beat[] = [
   // TALLER of the two — he is the young one and Sol is a short round old
   // man, which is also why Sol's head can stay large without him reading
   // as a giant.
-  {at: 110, actors: [{poses: ["rex_eager"], kind: "full", x: 320, y: FLOOR_Y, h: REX_H,
-                      turns: [{at: 10, tx: 860, ty: 1120}]},
-                     {poses: ["sol_point_v1"], kind: "full", x: 830, y: FLOOR_Y, h: SOL_H}],
+  {at: 110, actors: [{poses: ["rex_eager"], kind: "full", x: 327, y: FLOOR_Y, h: 717,
+                      turns: [{at: 10, tx: 860, ty: 1180}]},
+                     {poses: ["sol_point_v1"], kind: "full", x: 831, y: FLOOR_Y, h: 629}],
    // was 2 shots (2.00s + 0.83s). The 0.83s cut did not earn itself —
    // one held shot that creeps in reads calmer AND less choppy than two.
    shots: [{from: 0, k: 1.0, kEnd: 1.14}],
@@ -186,9 +196,12 @@ const BEATS: Beat[] = [
   // rendered 432px wide against rex_listen's 128px: a giant beside a
   // child. rex_skeptic's proportions match Sol's, and "arms crossed, not
   // convinced" is the right read for being laughed at anyway.
-  {at: 195, actors: [{poses: ["sol_laugh"], kind: "full", x: 760, y: FLOOR_Y, h: SOL_H},
-                     {poses: ["rex_skeptic"], kind: "full", x: 300, y: FLOOR_Y, h: REX_H,
-                      turns: [{at: 14, tx: -260, ty: 1820}]}],
+  {at: 195, actors: [{poses: ["sol_laugh"], kind: "full", x: 814, y: FLOOR_Y, h: 622},
+                     {poses: ["rex_skeptic"], kind: "full", x: 309, y: FLOOR_Y, h: 710,
+                      turns: [{at: 14, tx: -260, ty: 1650}]}],
+   // this beat had NO shots array at all — the only beat with no camera
+   // life, so its flinch was the sole motion in two seconds
+   shots: [{from: 0, k: 1.0, kEnd: 1.12}],
    sfx: [{at: 18, name: "sfx_whip", vol: 0.38}],
    vo: "v3_sol_ha", speaker: "SOL", line: "HA! …Fundamentals.", energy: 1.1},
   // EYELINE. rex_listen is drawn in profile facing RIGHT, so Rex has to
@@ -199,8 +212,8 @@ const BEATS: Beat[] = [
   // drawings — its head measures a quarter of Sol's at equal ink height,
   // so it is staged much larger and read as foreground rather than
   // matched by body height.
-  {at: 255, actors: [{poses: ["rex_listen"], kind: "full", x: 268, y: FLOOR_Y, h: 1090},
-                     {poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: SOL_H,
+  {at: 255, actors: [{poses: ["rex_listen"], kind: "full", x: 236, y: FLOOR_Y, h: 659},
+                     {poses: ["sol_finger"], kind: "full", x: 840, y: FLOOR_Y, h: 578,
                       moves: [{at: 0, kind: "inR"}]}],
    // dropped the 0.53s tail shot; the isolate now runs to the beat end
    // and creeps rather than snapping back to the two-shot for half a second
@@ -332,8 +345,8 @@ const BEATS: Beat[] = [
   // genuinely excited exactly once, right here, and wears the ordinary
   // -eyed rex_skeptic / rex_listen for the rest of the act. The owner's
   // note about the eyes, answered by the writing.
-  {at: 895, actors: [{poses: ["rex_eager"], kind: "full", x: 340, y: FLOOR_Y, h: REX_H},
-                     {poses: ["sol_smug_v1"], kind: "bust", x: 858, y: 1258, h: 690}],
+  {at: 895, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679},
+                     {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1290, h: 596}],
    shots: [{from: 0, k: 1.0, kEnd: 1.07},
            {from: 54, only: 0, k: 1.42, kEnd: 1.56, tx: 520, ty: 1040}],
    vo: "a2_rex_copy", speaker: "REX",
@@ -341,8 +354,8 @@ const BEATS: Beat[] = [
 
   // Rex is LISTENING here, so he wears the ordinary-eyed drawing — the
   // glint is reserved for the line he is actually excited on.
-  {at: 995, actors: [{poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: SOL_H},
-                     {poses: ["rex_skeptic"], kind: "full", x: 300, y: FLOOR_Y, h: REX_H}],
+  {at: 995, actors: [{poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597},
+                     {poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681}],
    shots: [{from: 0, k: 1.0, kEnd: 1.06},
            {from: 46, only: 0, k: 1.38, kEnd: 1.52, tx: 560, ty: 990}],
    vo: "a2_sol_sixweeks", speaker: "SOL",
@@ -373,9 +386,9 @@ const BEATS: Beat[] = [
 
   // Sol's reframe, then he's gone — which is what makes the pop-in on
   // the closer an answer from somewhere he wasn't.
-  {at: 1410, actors: [{poses: ["sol_finger"], kind: "full", x: 700, y: FLOOR_Y, h: SOL_H,
+  {at: 1410, actors: [{poses: ["sol_finger"], kind: "full", x: 840, y: FLOOR_Y, h: 578,
                        moves: [{at: 138, kind: "vanish"}]},
-                      {poses: ["rex_listen"], kind: "full", x: 268, y: FLOOR_Y, h: 1020}],
+                      {poses: ["rex_listen"], kind: "full", x: 236, y: FLOOR_Y, h: 659}],
    // dropped the 1.17s tail — the vanish at 138 now happens inside the
    // held push instead of after a needless cut back to the two-shot
    shots: [{from: 0, k: 1.0, kEnd: 1.06},
@@ -384,13 +397,13 @@ const BEATS: Beat[] = [
    vo: "a2_sol_map", speaker: "SOL",
    line: "No. They're a map of attention. Who is watching what, and when."},
 
-  {at: 1565, actors: [{poses: ["rex_eager"], kind: "full", x: 360, y: FLOOR_Y, h: REX_H,
-                      turns: [{at: 56, tx: 830, ty: 1060}]},
+  {at: 1565, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679,
+                      turns: [{at: 56, tx: 830, ty: 1230}]},
                      // sol_smug_v1: clean silhouette, so he pops in as a
                      // floating figure with no backing plate.
                      // he pops up BEHIND THE DESK beside Rex now, not in
                      // mid-air — the set gives him somewhere to be
-                     {poses: ["sol_smug_v1"], kind: "bust", x: 862, y: 1268, h: 640,
+                     {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1300, h: 596,
                       moves: [{at: 52, kind: "pop"}]}],
    shots: [{from: 0, only: 0, k: 1.18, kEnd: 1.3, tx: 520, ty: 1000},
            {from: 50, k: 1.0, kEnd: 1.08}],
@@ -566,6 +579,48 @@ const ExhibitCard: React.FC<{c: Card; since: number}> = ({c, since}) => {
   );
 };
 
+// The monitor's IDLE state. The studio screen used to be conditionally
+// rendered — present only on beats that had an exhibit — so for the
+// first 13 seconds the room had a blank wall where a monitor should be,
+// and the screen popped in and out at beat boundaries instead of being
+// furniture. It is now always on, and when it has nothing specific to
+// show it runs the market it is talking about: a slow ticker line,
+// code-drawn so it can move continuously and carry the eye across cuts.
+const TVIdle: React.FC<{frame: number}> = ({frame}) => {
+  const N = 44;
+  const w = TV_SCREEN.w, h = TV_SCREEN.h;
+  const pts: string[] = [];
+  for (let i = 0; i < N; i++) {
+    const t = i / (N - 1);
+    // deterministic pseudo-random walk with a slow upward drift, scrolled
+    const s = i + Math.floor(frame / 3);
+    const noise = Math.sin(s * 12.9898) * 43758.5453;
+    const jitter = (noise - Math.floor(noise) - 0.5) * 0.34;
+    const y = h * (0.72 - t * 0.34 + jitter * 0.5
+      + Math.sin((frame / 42) + t * 3.1) * 0.05);
+    pts.push(`${(t * w).toFixed(1)},${y.toFixed(1)}`);
+  }
+  const grid = [0.25, 0.5, 0.75];
+  return (
+    <div style={{position: "absolute", inset: 0,
+      background: "linear-gradient(180deg,#101827 0%,#0A0F1A 100%)"}}>
+      <svg width={w} height={h} style={{position: "absolute", inset: 0}}>
+        {grid.map((g) => (
+          <line key={g} x1={0} x2={w} y1={h * g} y2={h * g}
+            stroke="#1E2A40" strokeWidth={2} />
+        ))}
+        <polyline points={pts.join(" ")} fill="none"
+          stroke="#3FA7FF" strokeWidth={4} strokeLinejoin="round" />
+        <polyline points={`0,${h} ${pts.join(" ")} ${w},${h}`}
+          fill="rgba(63,167,255,0.10)" stroke="none" />
+      </svg>
+      <div style={{position: "absolute", left: 24, top: 14,
+        fontFamily: "Impact, Arial", fontSize: 24, letterSpacing: 3,
+        color: "#4C6488"}}>MARKET · LIVE</div>
+    </div>
+  );
+};
+
 // A caricature playing on the monitor. Contained by the screen, so she
 // is always "footage the show is running" rather than a figure standing
 // impossibly in the room next to the cast.
@@ -639,18 +694,18 @@ export const FairMarketEp1: React.FC = () => {
         transform: `translate(${k.x}px, ${k.y * 0.4}px) scale(${1 + 0.03 * Math.max(0, 1 - since / 10) * nrg})`,
         transformOrigin: "50% 45%"}}>
         <Room dark={shot?.mood === "dark"} />
-        {cur.card || shot?.tvPose ? (
-          <>
-            <TVFrame glow />
-            <div style={{position: "absolute", left: TV_SCREEN.x, top: TV_SCREEN.y,
-              width: TV_SCREEN.w, height: TV_SCREEN.h, overflow: "hidden",
-              borderRadius: 4}}>
-              {shot?.tvPose ? <TVPose pose={shot.tvPose} since={shotSince} />
-                : cur.card ? <ExhibitCard c={cur.card} since={since} /> : null}
-            </div>
-            <TVGlass />
-          </>
-        ) : null}
+        {/* The monitor is FURNITURE — always in the room, never popping in
+            and out at beat boundaries, and it fills the upper frame that
+            was otherwise dead wall above the cast. */}
+        <TVFrame glow={!!cur.card || !!shot?.tvPose} />
+        <div style={{position: "absolute", left: TV_SCREEN.x, top: TV_SCREEN.y,
+          width: TV_SCREEN.w, height: TV_SCREEN.h, overflow: "hidden",
+          borderRadius: 4}}>
+          {shot?.tvPose ? <TVPose pose={shot.tvPose} since={shotSince} />
+            : cur.card ? <ExhibitCard c={cur.card} since={since} />
+            : <TVIdle frame={frame} />}
+        </div>
+        <TVGlass />
         {/* DARK MOOD. Sits above the room and below the characters, so the
             figures stay readable while the space around them goes cold and
             closes in — a slow squeeze rather than a cut to black. */}

@@ -26,11 +26,18 @@ export const H = 1920;
 /** Wall meets floor here. */
 export const HORIZON = 1180;
 /** Top edge of the desk slab — everything below is foreground. */
-export const DESK_TOP = 1560;
+export const DESK_TOP = 1620;
 /** Where a standing figure's feet go. Below DESK_TOP on purpose: the
  *  desk hides the legs, so drawings cropped at different heights still
- *  share a believable ground. */
-export const FLOOR_Y = 1900;
+ *  share a believable ground.
+ *
+ *  The gap between these two is how much of a figure the desk EATS, and
+ *  it used to be 340px — which forced every character to be staged huge
+ *  just to be visible above it, and a huge figure is a wide figure, and
+ *  two wide figures cannot fit side by side in a 1080px frame. That is
+ *  the real reason the two-shots were overlapping. The desk now hides
+ *  110px, so a two-shot can be staged at a sane size and still read. */
+export const FLOOR_Y = 1730;
 
 /** The monitor's picture area — exhibits play in here. */
 export const TV_SCREEN = {x: 108, y: 250, w: 864, h: 486};
