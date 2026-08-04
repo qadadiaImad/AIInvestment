@@ -1,0 +1,21 @@
+{
+  "1": {"class_type": "CheckpointLoaderSimple",
+        "inputs": {"ckpt_name": "Illustrious-XL-v0.1.safetensors"}},
+  "2": {"class_type": "LoraLoader",
+        "inputs": {"model": ["1", 0], "clip": ["1", 1],
+                   "lora_name": "ana_cast_v1.safetensors",
+                   "strength_model": 0.9, "strength_clip": 0.9}},
+  "3": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 1], "text": "open mouth"}},
+  "4": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 1], "text": "worst quality, low quality"}},
+  "5": {"class_type": "LoadImage", "inputs": {"image": "base.png"}},
+  "6": {"class_type": "LoadImage", "inputs": {"image": "mask.png"}},
+  "7": {"class_type": "ImageToMask", "inputs": {"image": ["6", 0], "channel": "red"}},
+  "8": {"class_type": "VAEEncode", "inputs": {"pixels": ["5", 0], "vae": ["1", 2]}},
+  "9": {"class_type": "SetLatentNoiseMask", "inputs": {"samples": ["8", 0], "mask": ["7", 0]}},
+  "10": {"class_type": "KSampler",
+         "inputs": {"model": ["2", 0], "positive": ["3", 0], "negative": ["4", 0],
+                    "latent_image": ["9", 0], "seed": 0, "steps": 26, "cfg": 6.0,
+                    "sampler_name": "dpmpp_2m", "scheduler": "karras", "denoise": 0.8}},
+  "11": {"class_type": "VAEDecode", "inputs": {"samples": ["10", 0], "vae": ["1", 2]}},
+  "12": {"class_type": "SaveImage", "inputs": {"images": ["11", 0], "filename_prefix": "inpaint"}}
+}

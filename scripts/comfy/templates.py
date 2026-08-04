@@ -65,6 +65,19 @@ PARAM_MAPS["sdxl_lora_t2i"] = {
 # conditioning (ConditioningSetArea left/right halves + Combine with a
 # scene-glue base prompt) to fight cross-character trait bleed at
 # inference. Areas are fixed halves of a 1216x832 canvas.
+# Mouth-viseme inpainting: regenerate ONLY a masked mouth region of a
+# base drawing (SetLatentNoiseMask, denoise 0.8) so every viseme shares
+# pixel-identical art outside the mask. base/mask are staged into the
+# ComfyUI input dir via ComfyClient.stage_input.
+PARAM_MAPS["sdxl_lora_inpaint"] = {
+    "prompt":   ("3", "text"),
+    "negative": ("4", "text"),
+    "image":    ("5", "image"),
+    "mask":     ("6", "image"),
+    "seed":     ("10", "seed"),
+    "denoise":  ("10", "denoise"),
+}
+
 PARAM_MAPS["sdxl_lora_regional2"] = {
     "prompt_base": ("3", "text"),
     "prompt_left": ("4", "text"),
