@@ -87,6 +87,61 @@
   "src": "characters/cast_ep1/rex_determined.svg",
   "scale": 1.0018
  },
+ "sol_laugh_v1": {
+  "w": 807,
+  "h": 1211,
+  "ink_h": 1200,
+  "anchor": [
+   0.5893,
+   0.9992
+  ],
+  "src": "characters/cast_ep1/sol_laugh_v1.svg",
+  "scale": 0.9492
+ },
+ "sol_point_v1": {
+  "w": 794,
+  "h": 1177,
+  "ink_h": 1157,
+  "anchor": [
+   0.5142,
+   0.9915
+  ],
+  "src": "characters/cast_ep1/sol_point_v1.svg",
+  "scale": 0.9844
+ },
+ "sol_shrug_v1": {
+  "w": 708,
+  "h": 1122,
+  "ink_h": 1102,
+  "anchor": [
+   0.5114,
+   0.9911
+  ],
+  "src": "characters/cast_ep1/sol_shrug_v1.svg",
+  "scale": 1.0336
+ },
+ "rex_eager_v1": {
+  "w": 672,
+  "h": 1166,
+  "ink_h": 1146,
+  "anchor": [
+   0.6062,
+   0.9914
+  ],
+  "src": "characters/cast_ep1/rex_eager_v1.svg",
+  "scale": 0.9939
+ },
+ "rex_determined_v1": {
+  "w": 785,
+  "h": 1216,
+  "ink_h": 1207,
+  "anchor": [
+   0.6588,
+   0.9992
+  ],
+  "src": "characters/cast_ep1/rex_determined_v1.svg",
+  "scale": 0.9437
+ },
  "sol_smug": {
   "w": 896,
   "h": 1152,
@@ -140,6 +195,61 @@
    0.9991
   ],
   "src": "characters/cast_ep1/rex_skeptic.svg",
+  "scale": 1.0
+ },
+ "sol_smug_v1": {
+  "w": 846,
+  "h": 1101,
+  "ink_h": 1081,
+  "anchor": [
+   0.5217,
+   0.9909
+  ],
+  "src": "characters/cast_ep1/sol_smug_v1.svg",
+  "scale": 1.0
+ },
+ "sol_smug_v2": {
+  "w": 896,
+  "h": 1152,
+  "ink_h": 1151,
+  "anchor": [
+   0.4994,
+   0.9991
+  ],
+  "src": "characters/cast_ep1/sol_smug_v2.svg",
+  "scale": 1.0
+ },
+ "sol_whisper_v1": {
+  "w": 896,
+  "h": 1152,
+  "ink_h": 1151,
+  "anchor": [
+   0.4995,
+   0.9991
+  ],
+  "src": "characters/cast_ep1/sol_whisper_v1.svg",
+  "scale": 1.0
+ },
+ "rex_shock_v1": {
+  "w": 896,
+  "h": 1152,
+  "ink_h": 1151,
+  "anchor": [
+   0.4994,
+   0.9991
+  ],
+  "src": "characters/cast_ep1/rex_shock_v1.svg",
+  "scale": 1.0
+ },
+ "sol_wink_v1": {
+  "w": 896,
+  "h": 1152,
+  "ink_h": 1151,
+  "anchor": [
+   0.4994,
+   0.9991
+  ],
+  "src": "characters/cast_ep1/sol_wink_v1.svg",
   "scale": 1.0
  }
 }
