@@ -36,7 +36,7 @@ COMP = REPO / "remotion" / "src" / "compositions" / "FairMarketEp1.tsx"
 
 W, H = 1080, 1920
 FLOOR_Y = 1730
-TOTAL_FRAMES = 3600
+TOTAL_FRAMES = 4290
 VO_DELAY = 6
 VO_DIR = REPO / "remotion" / "public" / "audio" / "fairmarket"
 FFPROBE = (REPO / "remotion" / "node_modules" / "@remotion"
@@ -255,7 +255,7 @@ def main() -> None:
     # BEAT clock (`since`), not the shot clock, so what matters is the last
     # frame at which the exhibit is still un-hidden.
     completes = {"timeline_nvidia": 70, "counter_45days": 58,
-                 "perf_2024": 64, "card": 60}
+                 "perf_2024": 64, "lag_cost": 78, "card": 60}
     bad_build = 0
     for b in beats:
         kind = b.get("graphic") or ("card" if b["exhibit"] else None)

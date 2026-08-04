@@ -409,15 +409,17 @@ export const TickerTape: React.FC<{
 export const PerformanceExhibit: React.FC<{
   since: number; w: number; h: number;
   title: string; year: string;
-  a: {label: string; pct: number};
-  b: {label: string; pct: number};
+  rows: {label: string; pct: number; tone?: 'red' | 'blue' | 'grey'}[];
   foot: string;
-}> = ({since, w, h, title, year, a, b, foot}) => {
+}> = ({since, w, h, title, year, rows, foot}) => {
   const padX = 52;
-  const maxPct = Math.max(a.pct, b.pct);
+  const maxPct = Math.max(...rows.map((r) => r.pct));
   const trackW = w - padX * 2 - 150;
-  const rowY = [h * 0.44, h * 0.68];
-  const rows = [a, b];
+  const n = rows.length;
+  // rows share the plot evenly, so 2 or 3 bars both sit correctly
+  const top0 = h * 0.34, gap = (h * 0.58 - top0) / Math.max(1, n - 1);
+  const rowY = rows.map((_, i) => (n === 1 ? h * 0.5 : top0 + gap * i + h * 0.06));
+  const TONE = {red: RED, blue: BLUE, grey: '#8A93A6'} as const;
   return (
     <div style={{position: 'absolute', inset: 0, background: PAPER,
       fontFamily: 'Arial', color: INK}}>
@@ -430,7 +432,7 @@ export const PerformanceExhibit: React.FC<{
 
       <svg width={w} height={h} style={{position: 'absolute', inset: 0}}>
         {rows.map((r, i) => {
-          // staggered, so the eye reads one bar and then the other
+          // staggered, so the eye reads one bar and then the next
           const g = ease(since, 12 + i * 14, 50 + i * 14);
           return (
             <g key={i}>
@@ -438,7 +440,7 @@ export const PerformanceExhibit: React.FC<{
                 rx={6} fill="#E4DFCE" />
               <rect x={padX} y={rowY[i] - 24}
                 width={trackW * (r.pct / maxPct) * g} height={48} rx={6}
-                fill={i === 0 ? RED : BLUE} />
+                fill={TONE[r.tone ?? (i === 0 ? 'red' : 'blue')]} />
             </g>
           );
         })}
@@ -446,14 +448,20 @@ export const PerformanceExhibit: React.FC<{
 
       {rows.map((r, i) => {
         const g = ease(since, 12 + i * 14, 50 + i * 14);
+        // With three bars the rows sit close enough that a label ABOVE a
+        // bar lands on top of the bar above it — which hid the middle
+        // label entirely. Labels ride INSIDE their own track instead, so
+        // the layout holds at any row count.
         return (
           <div key={i}>
-            <div style={{position: 'absolute', left: padX, top: rowY[i] - 54,
-              fontSize: 19, letterSpacing: 1, color: MUTED,
+            <div style={{position: 'absolute', left: padX + 14,
+              top: rowY[i] - 11, width: trackW - 28, fontSize: 17,
+              letterSpacing: 0.8, fontWeight: 700, color: '#FFFFFF',
+              mixBlendMode: 'difference',
               opacity: ease(since, 10 + i * 14, 24 + i * 14)}}>{r.label}</div>
             <div style={{position: 'absolute', left: padX + trackW + 14,
-              top: rowY[i] - 26, fontFamily: 'Impact, Arial', fontSize: 38,
-              color: i === 0 ? RED : BLUE}}>
+              top: rowY[i] - 24, fontFamily: 'Impact, Arial', fontSize: 34,
+              color: TONE[r.tone ?? (i === 0 ? 'red' : 'blue')]}}>
               +{(r.pct * g).toFixed(1)}%
             </div>
           </div>
