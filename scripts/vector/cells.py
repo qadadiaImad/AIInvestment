@@ -144,12 +144,59 @@ def compute_anchor(rgba: np.ndarray, foot_band: float = 0.08) -> dict:
     }
 
 
-def vectorize(png_path, svg_path, **overrides) -> Path:
+# Small high-contrast features — a closed mouth line, the rim of an "oh"
+# — are where the default speckle filter does damage: it is sized to drop
+# anti-aliasing crumbs off a big flat shape, and at mouth scale it eats
+# and re-joins the outline instead, which is where the stray black hook
+# in rex_shock_v1's closed mouth came from. Tracing detail is raised and
+# the input is posterised first, because vtracer wants genuinely flat
+# colour and a diffusion model never returns quite that.
+VTRACER_DETAIL = dict(
+    filter_speckle=3,
+    color_precision=8,
+    corner_threshold=45,
+    path_precision=4,
+)
+
+
+def flatten_palette(png_path, out_path, colors: int = 40) -> Path:
+    """Posterise to a small palette, preserving alpha, so the tracer sees
+    flat regions rather than the soft gradients the generator leaves.
+
+    OFF by default, and it should stay off at these palette sizes: a
+    median-cut quantise over a whole character shifts colours that
+    matter. At 40 colours Sol's pink cheek blush came back olive and his
+    bow tie lost its gold. The speckle filter, not the gradients, was
+    what damaged the mouths — `detail=True` alone fixes them.
+    """
+    im = Image.open(png_path).convert("RGBA")
+    alpha = im.getchannel("A")
+    flat = im.convert("RGB").quantize(
+        colors=colors, method=Image.MEDIANCUT, dither=Image.NONE)
+    out = flat.convert("RGBA")
+    out.putalpha(alpha)
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out.save(out_path)
+    return out_path
+
+
+def vectorize(png_path, svg_path, detail: bool = False,
+              flatten: bool = False, **overrides) -> Path:
     """Vectorize one RGBA PNG to SVG via vtracer."""
     import vtracer
 
-    params = {**VTRACER_DEFAULTS, **overrides}
+    params = {**VTRACER_DEFAULTS}
+    if detail:
+        params.update(VTRACER_DETAIL)
+    params.update(overrides)
     svg_path = Path(svg_path)
     svg_path.parent.mkdir(parents=True, exist_ok=True)
-    vtracer.convert_image_to_svg_py(str(png_path), str(svg_path), **params)
+    src = png_path
+    if flatten:
+        src = flatten_palette(
+            png_path, svg_path.parent / f"_flat_{Path(png_path).name}")
+    vtracer.convert_image_to_svg_py(str(src), str(svg_path), **params)
+    if flatten:
+        Path(src).unlink(missing_ok=True)
     return svg_path

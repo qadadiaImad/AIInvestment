@@ -85,6 +85,14 @@ type Beat = {
   // not the frame the move was scheduled — a move winds up first, and a
   // whoosh on the wind-up reads as dubbed.
   sfx?: {at: number; name: string; vol?: number}[];
+  // Hold the base drawing's own mouth for the whole beat. A VO track
+  // only covers the spoken word, and the mouth state falls back to
+  // "closed" once it runs out — which shut Rex's mouth in the middle of
+  // his own scream, because the shout lasts 26 frames and the take holds
+  // for 55. On a reaction beat the drawing IS the performance.
+  holdMouth?: boolean;
+  // Move the shout off a character's face when the staging needs it.
+  shoutAt?: {left: number; right: number; top: number};
 };
 
 // ONE drawing per beat. Every pose here is "core" tier in the identity
@@ -119,11 +127,14 @@ const BEATS: Beat[] = [
    vo: "v2_rex_fundamentals", speaker: "REX", line: "Boss! It's all fundamentals, right?!", energy: 1},
   // Sol is laughing AT someone, so keep that someone in frame: Rex
   // crouched screen-left in profile, facing right at him.
-  {at: 195, actors: [{poses: ["sol_laugh"], kind: "full", x: 720, y: 1800, h: 1210},
+  // Scale: Sol was 63% of frame height beside a 34% crouching Rex who
+  // was also clipped by the left edge — it read as a giant beside a
+  // child, and clipped Sol frame-right too.
+  {at: 195, actors: [{poses: ["sol_laugh"], kind: "full", x: 712, y: 1800, h: 1000},
                      // Rex FLINCHES away from the laugh — the turn aimed
                      // off-stage left, so the lean and the startle recoil
                      // both push him back from it.
-                     {poses: ["rex_listen"], kind: "full", x: 250, y: 1810, h: 660,
+                     {poses: ["rex_listen"], kind: "full", x: 268, y: 1812, h: 745,
                       turns: [{at: 14, tx: -260, ty: 1820}]}],
    sfx: [{at: 18, name: "sfx_whip", vol: 0.38}],
    vo: "v3_sol_ha", speaker: "SOL", line: "HA! …Fundamentals.", energy: 1.1},
@@ -138,6 +149,7 @@ const BEATS: Beat[] = [
    sfx: [{at: 4, name: "sfx_whoosh", vol: 0.45}],
    vo: "v4_sol_politics", speaker: "SOL", line: "Sometimes… it trades on POLITICS."},
   {at: 345, actors: [{poses: ["rex_shock"], kind: "closeup", x: 540, y: 900, h: 1920}],
+   holdMouth: true, shoutAt: {left: 0, right: 0, top: 1500},
    vo: "v5_rex_what", speaker: "REX", line: "WHAT?!", shout: "WHAT?!", energy: 1.5},
   // Sol stands screen-RIGHT here like he does in every other beat. He was
   // on the left, which crossed the line the rest of the episode
@@ -174,6 +186,9 @@ const BEATS: Beat[] = [
                   "disclosed trades. Actively managed."],
           big: "NANC", foot: "public filings in · portfolio out"},
    shots: [{from: 0}, {from: 47, k: 1.45, tx: 690, ty: 1200}],
+   // the shout sat straight across Rex's mouth — the one place the eye
+   // goes. Moved into the empty left column beside the panel.
+   shoutAt: {left: 10, right: 560, top: 1180},
    vo: "v7_rex_index", speaker: "REX", line: "They made it an INDEX?!",
    shout: "AN INDEX?!", energy: 1.3},
   // was sol_point_v1 — which the shot-list review groups as
@@ -274,8 +289,9 @@ const visemeSrc = (pose: string, state: number, speaking: boolean,
 };
 
 const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
-                      mouthState: number; shot?: Shot; shotSince: number}> =
-  ({a, since, frame, speaking, mouthState, shot, shotSince}) => {
+                      mouthState: number; shot?: Shot; shotSince: number;
+                      holdMouth?: boolean}> =
+  ({a, since, frame, speaking, mouthState, shot, shotSince, holdMouth}) => {
   const cycling = speaking && cycleAllowed(a.poses);
   const idx = cycling
     ? CYCLE[Math.floor(since / SWAP) % CYCLE.length] % a.poses.length
@@ -309,7 +325,7 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   const hx = left0 + hf.fx * w0, hy = top0 + hf.fy * h0;
   const left = (shot?.tx ?? hx) - hf.fx * w;
   const top = (shot?.ty ?? hy) - hf.fy * h;
-  const src = visemeSrc(pose, mouthState, speaking, frame);
+  const src = holdMouth ? d.src : visemeSrc(pose, mouthState, speaking, frame);
   const panel = a.kind === "panel";
   const ix = interactXform(since, a.moves, a.turns,
                            shot?.tx ?? hx, shot?.ty ?? hy);
@@ -418,7 +434,8 @@ export const FairMarketEp1: React.FC = () => {
           const speaking = activeSpeaker === (isSol ? "SOL" : "REX");
           return <Char key={i} a={a} since={since} frame={frame} speaking={speaking}
                        mouthState={isSol ? ms.sol : ms.rex}
-                       shot={shot} shotSince={shotSince} />;
+                       shot={shot} shotSince={shotSince}
+                       holdMouth={cur.holdMouth} />;
         })}
         {(cur.flicks ?? []).map((f, i) => (
           <ShockFlicks key={i} x={f.x} y={f.y} since={since - f.at} size={72} />
@@ -426,7 +443,9 @@ export const FairMarketEp1: React.FC = () => {
         {cur.shout ? (
           <>
             <ShockRing x={540} y={860} since={since} />
-            <div style={{position: "absolute", left: 0, right: 0, top: 1380, textAlign: "center",
+            <div style={{position: "absolute",
+              left: cur.shoutAt?.left ?? 0, right: cur.shoutAt?.right ?? 0,
+              top: cur.shoutAt?.top ?? 1380, textAlign: "center",
               fontFamily: "Impact, Arial", fontSize: 150, color: "#FFD860",
               transform: `rotate(-3deg) scale(${0.7 + 0.3 * Math.min(1, since / 4)})`,
               textShadow: "6px 6px 0 #000", opacity: since < 40 ? 1 : Math.max(0, 1 - (since - 40) / 10)}}>

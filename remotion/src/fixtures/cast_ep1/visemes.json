@@ -77,7 +77,6 @@
  },
  "rex_shock_v1": {
   "open": "characters/cast_ep1/visemes/rex_shock_v1__open.svg",
-  "closed": "characters/cast_ep1/visemes/rex_shock_v1__closed.svg",
   "half": "characters/cast_ep1/visemes/rex_shock_v1__half.svg",
   "oh": "characters/cast_ep1/visemes/rex_shock_v1__oh.svg"
  },
