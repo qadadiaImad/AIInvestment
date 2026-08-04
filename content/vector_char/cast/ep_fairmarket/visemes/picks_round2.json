@@ -1,0 +1,20 @@
+{
+ "rex_shock": {
+  "closed": "rex_shock__closed__r2c1",
+  "half": "rex_shock__half__r2c1"
+ },
+ "rex_shock_v1": {
+  "open": "rex_shock_v1__open__r2c0"
+ },
+ "sol_armswide": {
+  "open": "sol_armswide__open__r2c1"
+ },
+ "sol_point": {},
+ "sol_point_v1": {},
+ "sol_smug_v1": {
+  "blink": "sol_smug_v1__blink__r2c0"
+ },
+ "sol_smug_v2": {},
+ "sol_wink": {},
+ "sol_wink_v1": {}
+}

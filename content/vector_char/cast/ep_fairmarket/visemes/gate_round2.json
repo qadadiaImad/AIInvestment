@@ -1,0 +1,335 @@
+[
+ {
+  "pose": "sol_point_v1",
+  "verdicts": [
+   {
+    "candidate": "blink__r2c0",
+    "pass": false,
+    "note": "Eyes remain fully open with visible pupils, unchanged from BASE \u2014 no eyelid closure at all."
+   },
+   {
+    "candidate": "blink__r2c1",
+    "pass": false,
+    "note": "Eyes remain fully open with visible pupils, unchanged from BASE \u2014 no eyelid closure at all."
+   },
+   {
+    "candidate": "blink__r2c2",
+    "pass": false,
+    "note": "Eyes remain fully open with visible pupils, unchanged from BASE \u2014 no eyelid closure at all."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": null,
+   "open": null,
+   "oh": null,
+   "blink": null
+  }
+ },
+ {
+  "pose": "sol_smug_v1",
+  "verdicts": [
+   {
+    "candidate": "blink__r2c0",
+    "pass": true,
+    "note": "Both eyes fully closed with curved eyelid/lash lines, no pupils visible; clean seam, mustache/glasses undamaged. Correct blink."
+   },
+   {
+    "candidate": "blink__r2c1",
+    "pass": false,
+    "note": "Eyes are open, not closed: left eye shows a visible round black pupil on white sclera; right eye shows a curved motion-swoosh mark but pupil/white still visible. Does not read as a blink."
+   },
+   {
+    "candidate": "blink__r2c2",
+    "pass": false,
+    "note": "Eyes remain open: left eye shows a large black pupil on white sclera, right eye has a swirl mark over visible white. No closed-eyelid shape present, fails the blink requirement."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": null,
+   "open": null,
+   "oh": null,
+   "blink": "blink__r2c0"
+  }
+ },
+ {
+  "pose": "sol_smug_v2",
+  "verdicts": [
+   {
+    "candidate": "blink__r2c0",
+    "pass": false,
+    "note": "Eyes unchanged from BASE \u2014 both pupils and white sclera fully visible, no closed-eyelid lines. Not a blink."
+   },
+   {
+    "candidate": "blink__r2c1",
+    "pass": false,
+    "note": "Eyes remain open with visible black pupils and sclera; only the eyebrow strokes were regenerated (thinner/lighter), not the eyes themselves."
+   },
+   {
+    "candidate": "blink__r2c2",
+    "pass": false,
+    "note": "Same failure \u2014 eyes still open, pupils visible, no closed lids. Eyebrow line slightly altered but mouth/eye region shows no blink."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": null,
+   "open": null,
+   "oh": null,
+   "blink": null
+  }
+ },
+ {
+  "pose": "sol_point",
+  "verdicts": [
+   {
+    "candidate": "blink__r2c0",
+    "pass": false,
+    "note": "Eyes unchanged from BASE \u2014 both wide open with full pupils and white sclera visible, no closure at all."
+   },
+   {
+    "candidate": "blink__r2c1",
+    "pass": false,
+    "note": "Eyes unchanged from BASE \u2014 both wide open with full pupils and white sclera visible, no closure at all."
+   },
+   {
+    "candidate": "blink__r2c2",
+    "pass": false,
+    "note": "Eyes unchanged from BASE \u2014 both wide open with full pupils and white sclera visible, no closure at all."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": null,
+   "open": null,
+   "oh": null,
+   "blink": null
+  }
+ },
+ {
+  "pose": "sol_wink_v1",
+  "verdicts": [
+   {
+    "candidate": "blink__r2c0",
+    "pass": false,
+    "note": "Eyes are not closed: both pupils remain visible as solid dark ovals (essentially unchanged from BASE open eyes), with stray dark scribble/dash marks added near each eye rather than a clean closed-eyelid curve. Reads as garbled artifact, not a blink."
+   },
+   {
+    "candidate": "blink__r2c1",
+    "pass": false,
+    "note": "Both eyes are open, not closed \u2014 pupils are intact and now have an added white sclera highlight ring, making them read even more clearly open than BASE. Opposite of blink intent."
+   },
+   {
+    "candidate": "blink__r2c2",
+    "pass": false,
+    "note": "Asymmetric: left eye shows a closed eyelid curve (no pupil), but right eye still has its full solid black pupil open and unchanged from BASE. This is a wink, not a blink \u2014 explicit fail condition per instructions."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": null,
+   "open": null,
+   "oh": null,
+   "blink": null
+  }
+ },
+ {
+  "pose": "sol_wink",
+  "verdicts": [
+   {
+    "candidate": "blink__r2c0",
+    "pass": false,
+    "note": "Left eye closes cleanly (solid black lash curve, no pupil) but the right eye retains a large white/off-color crescent patch beside the black lid line -- reads as a half-open eye, not a true blink, and is asymmetric with the fully-closed left eye. Off-color seam patch = fail per instructions."
+   },
+   {
+    "candidate": "blink__r2c1",
+    "pass": false,
+    "note": "Both eyes still show a clearly visible dark pupil inside a white sclera -- eyes read as open, not closed. Fails the blink requirement outright."
+   },
+   {
+    "candidate": "blink__r2c2",
+    "pass": false,
+    "note": "Same defect as r2c0: left eye is a clean solid closed lash line, but the right eye shows a residual white crescent patch around the black lid line, giving a half-open/inconsistent look rather than a full closed-eye blink."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": null,
+   "open": null,
+   "oh": null,
+   "blink": null
+  }
+ },
+ {
+  "pose": "rex_shock",
+  "verdicts": [
+   {
+    "candidate": "closed__r2c0",
+    "pass": true,
+    "note": "Lips fully closed, thin flat line, no teeth/opening, no visible seam or off-color patch; glasses intact."
+   },
+   {
+    "candidate": "closed__r2c1",
+    "pass": true,
+    "note": "Lips fully closed, clean single thin line, no teeth/opening; cleanest of the closed set, no seam artifacts."
+   },
+   {
+    "candidate": "closed__r2c2",
+    "pass": false,
+    "note": "Mouth still wide open with visible teeth and dark interior \u2014 essentially unchanged from BASE's scream; fails 'closed' intent entirely."
+   },
+   {
+    "candidate": "half__r2c0",
+    "pass": false,
+    "note": "Open-mouth oval is nearly the same height/width as BASE's wide-open scream (measured ~same extent), not clearly smaller \u2014 reads as 'open', not 'half'."
+   },
+   {
+    "candidate": "half__r2c1",
+    "pass": true,
+    "note": "Small thin parted-lip sliver, clearly and substantially smaller than BASE's huge opening; clean seam, glasses intact."
+   },
+   {
+    "candidate": "half__r2c2",
+    "pass": false,
+    "note": "Large round open mouth with full dark interior and tongue, close to an 'oh'/open shape rather than a subtly parted 'half' mouth; not clearly small enough."
+   }
+  ],
+  "best": {
+   "closed": "closed__r2c1",
+   "half": "half__r2c1",
+   "open": null,
+   "oh": null,
+   "blink": null
+  }
+ },
+ {
+  "pose": "sol_armswide",
+  "verdicts": [
+   {
+    "candidate": "blink__r2c0",
+    "pass": false,
+    "note": "Both eyes remain fully open with pupils visible, essentially unchanged from BASE \u2014 no blink shape present."
+   },
+   {
+    "candidate": "blink__r2c1",
+    "pass": false,
+    "note": "Both eyes remain fully open with pupils visible, unchanged from BASE \u2014 no blink shape present."
+   },
+   {
+    "candidate": "blink__r2c2",
+    "pass": false,
+    "note": "Eyes still open with pupils visible (no blink), and the left eyebrow is warped/garbled \u2014 double fail."
+   },
+   {
+    "candidate": "open__r2c0",
+    "pass": false,
+    "note": "Visible teal/cyan color-artifact speck along the mustache-mouth seam at the lower right corner; opening also reads narrow/triangular rather than wide."
+   },
+   {
+    "candidate": "open__r2c1",
+    "pass": true,
+    "note": "Mouth opening is clearly wide and round below/through the mustache, pink tongue visible, flat color, mustache stays plausible; no seam artifacts of note."
+   },
+   {
+    "candidate": "open__r2c2",
+    "pass": false,
+    "note": "Mouth opening is notably smaller/narrower than r2c1 \u2014 reads closer to a half-open mouth than a WIDE open mouth."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": null,
+   "open": "open__r2c1",
+   "oh": null,
+   "blink": null
+  }
+ },
+ {
+  "pose": "rex_shock_v1",
+  "verdicts": [
+   {
+    "candidate": "blink__r2c0",
+    "pass": false,
+    "note": "Both eyes remain fully open with visible pupils, unchanged from BASE \u2014 no closure at all."
+   },
+   {
+    "candidate": "blink__r2c1",
+    "pass": false,
+    "note": "Left eye slightly squints but pupil still visible; reads as a partial squint/wink, not a full closed-eyes blink. Right eye fully open."
+   },
+   {
+    "candidate": "blink__r2c2",
+    "pass": false,
+    "note": "Both eyes open with pupils visible, essentially unchanged from BASE."
+   },
+   {
+    "candidate": "closed__r2c0",
+    "pass": false,
+    "note": "Mouth line is mostly closed but the right corner has a garbled dark gap with a stray white/pink patch bleeding above the lip line \u2014 a dark opening remains, violating 'no dark opening' for closed."
+   },
+   {
+    "candidate": "closed__r2c1",
+    "pass": false,
+    "note": "Same corner defect as r2c0: small dark gap + off-color white/pink patch at the right mouth corner, breaking the closed-lip requirement."
+   },
+   {
+    "candidate": "closed__r2c2",
+    "pass": false,
+    "note": "Mouth is clearly open with visible pink tongue/interior and teeth \u2014 wrong shape entirely for 'closed'."
+   },
+   {
+    "candidate": "half__r2c0",
+    "pass": false,
+    "note": "Mouth size/shape reads as a reasonable half-open, but there is a visible off-color white gloss/seam leak at the top-right corner where the outline is broken and paint bleeds onto skin \u2014 not present in BASE at that spot."
+   },
+   {
+    "candidate": "half__r2c1",
+    "pass": false,
+    "note": "Mouth is essentially a closed frown line (not open at all) plus a garbled dark smudge/highlight at the right corner \u2014 wrong shape for 'half' and has an artifact."
+   },
+   {
+    "candidate": "half__r2c2",
+    "pass": false,
+    "note": "Similar half-open size as r2c0 but the right-corner seam is worse: jagged edge with visible color fringing (cyan/green pixels), a clear compositing artifact."
+   },
+   {
+    "candidate": "open__r2c0",
+    "pass": true,
+    "note": "Wide open scream mouth matching BASE's style closely (flat teeth bar, flat tongue), clean edges, no seam or gloss artifacts on close inspection."
+   },
+   {
+    "candidate": "open__r2c1",
+    "pass": true,
+    "note": "Same as r2c0 \u2014 wide open, clean flat-color rendering consistent with BASE, no visible seams."
+   },
+   {
+    "candidate": "open__r2c2",
+    "pass": true,
+    "note": "Same as r2c0/r2c1 \u2014 wide open, clean, matches BASE style with no artifacts."
+   },
+   {
+    "candidate": "oh__r2c0",
+    "pass": false,
+    "note": "Mouth shape is garbled \u2014 reads as a pair of curved parenthesis/frown marks, not an O-shape, and there is a separate stray white splotch artifact on the left cheek."
+   },
+   {
+    "candidate": "oh__r2c1",
+    "pass": false,
+    "note": "Good round O outline, but there is a distinct white gloss/highlight teardrop patch inside the black mouth interior near the top-right \u2014 not present in BASE's flat-color style, violates the no-gloss-inside-mouth rule."
+   },
+   {
+    "candidate": "oh__r2c2",
+    "pass": false,
+    "note": "Shape is flatter/more oval than a round O (reads closer to 'open'), and shows an added white highlight rim along the lower lip/tongue edge not present in BASE \u2014 a gloss/gradient defect and a shape mismatch."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": null,
+   "open": "open__r2c0",
+   "oh": null,
+   "blink": null
+  }
+ }
+]

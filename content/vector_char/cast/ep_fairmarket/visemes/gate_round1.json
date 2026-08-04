@@ -1,0 +1,900 @@
+[
+ {
+  "pose": "sol_smug_v1",
+  "verdicts": [
+   {
+    "candidate": "half__c0",
+    "pass": true,
+    "note": "Small parted-lips opening with a hint of tongue below the mustache, mustache intact and parts naturally, clean flat-color, no seam. Reads clearly less open than the 'open' candidates."
+   },
+   {
+    "candidate": "half__c1",
+    "pass": true,
+    "note": "Slightly larger oval opening with tongue curling forward; mustache intact, no seam/style break. Still visibly less open than 'open' candidates, though closer in size to the 'oh' candidates."
+   },
+   {
+    "candidate": "open__c0",
+    "pass": true,
+    "note": "Wide open mouth, dark cavity above a full rounded tongue, mustache parts symmetrically, no seam or artifact."
+   },
+   {
+    "candidate": "open__c1",
+    "pass": true,
+    "note": "Wide open mouth, slightly more rounded/symmetric than c0, tongue well-centered, mustache clean, no seam."
+   },
+   {
+    "candidate": "oh__c0",
+    "pass": false,
+    "note": "Mouth reads as a small downturned pursed slit, not a round open 'O' shape \u2014 barely more open than BASE and the wrong silhouette for 'oh'."
+   },
+   {
+    "candidate": "oh__c1",
+    "pass": true,
+    "note": "Oval/round open mouth with tongue tip visible, plausible 'O' shape, mustache and cheeks intact, no seam."
+   },
+   {
+    "candidate": "oh__c2",
+    "pass": true,
+    "note": "Cleanest round vertical-oval 'O' opening with a small tongue peek, mustache intact, no seam \u2014 best on-model round shape of the three."
+   },
+   {
+    "candidate": "blink__c0",
+    "pass": false,
+    "note": "Left eye is fully closed but the right eye clearly shows an open eyeball (white sclera + black pupil) under a lowered lid \u2014 a wink, not a blink. Fails the 'both eyes fully closed' requirement."
+   },
+   {
+    "candidate": "blink__c1",
+    "pass": false,
+    "note": "Same defect as c0: left eye closed, right eye shows a visible pupil/white highlight through a narrowed lid \u2014 asymmetric wink, not a full blink."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": "half__c0",
+   "open": "open__c1",
+   "oh": "oh__c2",
+   "blink": null
+  }
+ },
+ {
+  "pose": "sol_smug_v2",
+  "verdicts": [
+   {
+    "candidate": "half__c0",
+    "pass": true,
+    "note": "Small parted opening with a hint of tongue peeking through the mustache gap, clearly less open than the open/oh candidates; mustache and surrounding features intact, clean seam."
+   },
+   {
+    "candidate": "half__c1",
+    "pass": false,
+    "note": "Opening is too wide/uneven for 'half' (reads closer to 'open'), mustache is asymmetric with the right side sagging lower than the left, and there is a stray pink patch below-right of the mouth that doesn't belong to any anatomical feature \u2014 garbled region."
+   },
+   {
+    "candidate": "open__c0",
+    "pass": true,
+    "note": "Wide open mouth, mustache parts naturally in a V, dark interior with visible lower lip; a small white fleck on the left interior reads as a tooth highlight, not a defect."
+   },
+   {
+    "candidate": "open__c1",
+    "pass": true,
+    "note": "Wide open mouth, clean symmetric mustache part, dark interior with pink lower lip, no stray artifacts \u2014 slightly cleaner than c0."
+   },
+   {
+    "candidate": "oh__c0",
+    "pass": false,
+    "note": "Opening is barely visible (a thin dark line under the mustache), nearly indistinguishable from BASE's closed mouth \u2014 fails to read as a round open 'oh' shape."
+   },
+   {
+    "candidate": "oh__c1",
+    "pass": false,
+    "note": "Mustache splits into a sharp V with a wedge-shaped maroon opening; this reads as a generic wide-open mouth rather than a rounded 'O', and is too similar in shape to the open__c* candidates to serve as a distinct oh viseme."
+   },
+   {
+    "candidate": "oh__c2",
+    "pass": true,
+    "note": "Mustache stays intact and a distinct small oval/round mouth opening appears below it \u2014 the cleanest, most on-model round 'O' shape of the three."
+   },
+   {
+    "candidate": "blink__c0",
+    "pass": false,
+    "note": "Eyes are unchanged from BASE's smug half-lidded open eyes \u2014 pupils and whites fully visible, not closed at all. Clear fail on the strict blink requirement."
+   },
+   {
+    "candidate": "blink__c1",
+    "pass": false,
+    "note": "Same as c0 \u2014 eyes remain open/half-lidded, no closure regenerated; essentially a no-op relative to BASE."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": "half__c0",
+   "oh": "oh__c2",
+   "open": "open__c1",
+   "blink": null
+  }
+ },
+ {
+  "pose": "sol_wink",
+  "verdicts": [
+   {
+    "candidate": "half__c0",
+    "pass": true,
+    "note": "Mustache parts cleanly, small visible pink opening under it \u2014 clearly less open than the open/oh candidates, right eye/mustache otherwise match BASE. Good half."
+   },
+   {
+    "candidate": "half__c1",
+    "pass": false,
+    "note": "Opening is not clearly smaller than the 'open' candidates and the tongue tip pokes past the left mustache boundary \u2014 reads as an anatomy glitch rather than a distinct half-open shape."
+   },
+   {
+    "candidate": "open__c0",
+    "pass": true,
+    "note": "Clean wide-open mouth, dark teeth-ridge line plus pink interior, mustache parts naturally, no seam or discoloration."
+   },
+   {
+    "candidate": "open__c1",
+    "pass": true,
+    "note": "Wide open mouth with teeth ridge and tongue, on-model; slightly more asymmetric right corner than c0 but not a failure."
+   },
+   {
+    "candidate": "oh__c0",
+    "pass": false,
+    "note": "Mustache is unparted and mouth region is pixel-for-pixel the same closed shape as BASE \u2014 no 'oh' opening was generated at all."
+   },
+   {
+    "candidate": "oh__c1",
+    "pass": false,
+    "note": "Mouth interior shows a muddy maroon/burgundy-toned patch (reads like color bleed from the cardigan) instead of the clean pink used elsewhere \u2014 discolored, garbled interior."
+   },
+   {
+    "candidate": "oh__c2",
+    "pass": true,
+    "note": "Clean round O-shaped opening with visible pink tongue, mustache parts symmetrically, no discoloration or seam."
+   },
+   {
+    "candidate": "blink__c0",
+    "pass": false,
+    "note": "Right eye still shows the full open white sclera + dark pupil from BASE with only a stray eyelash line drawn over it \u2014 this is still a wink, not both-eyes-closed blink."
+   },
+   {
+    "candidate": "blink__c1",
+    "pass": false,
+    "note": "Same failure as c0 \u2014 right eye's white/pupil remains fully visible, eye is not actually closed. Fails the strict blink requirement."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": "half__c0",
+   "open": "open__c0",
+   "oh": "oh__c2",
+   "blink": null
+  }
+ },
+ {
+  "pose": "sol_finger",
+  "verdicts": [
+   {
+    "candidate": "half__c0",
+    "pass": true,
+    "note": "Small parted-lip opening visible under mustache, hint of teeth/pink, mustache intact and splits naturally around the opening, no seam or discoloration at mask boundary."
+   },
+   {
+    "candidate": "half__c1",
+    "pass": true,
+    "note": "Clean small opening, slightly less busy than c0 (no stray mark near mustache tip), mustache and nose intact, reads as slightly-parted mouth distinct from BASE."
+   },
+   {
+    "candidate": "open__c0",
+    "pass": true,
+    "note": "Wide open mouth with visible dark/red interior and tongue, clearly more open than the half/oh candidates, mustache parts naturally, no garbling or seam visible."
+   },
+   {
+    "candidate": "open__c1",
+    "pass": true,
+    "note": "Wide open mouth with red interior and tongue, slightly narrower than c0 but still clearly 'open', mustache intact, no seam artifacts."
+   },
+   {
+    "candidate": "oh__c0",
+    "pass": true,
+    "note": "Small round pink opening, mustache splits cleanly around it, on-model; the faint mark right of the mustache tip is also present in BASE (nose/mustache shading), not an inpaint artifact."
+   },
+   {
+    "candidate": "oh__c1",
+    "pass": true,
+    "note": "Small round pink-red O-shaped opening, mustache intact, consistent with oh__c0/c2, no seam or style break."
+   },
+   {
+    "candidate": "oh__c2",
+    "pass": true,
+    "note": "Rounder and slightly larger O-shaped opening than c0/c1, cleanest read as a distinct round mouth shape, mustache and cheeks undamaged."
+   },
+   {
+    "candidate": "blink__c0",
+    "pass": true,
+    "note": "Both eyes fully closed with matching curved lash lines, symmetric, no wink or half-closed eye, rest of face untouched."
+   },
+   {
+    "candidate": "blink__c1",
+    "pass": false,
+    "note": "Eyes are open with the same round pupils/highlights as BASE - no closure at all, both eyes essentially unchanged from BASE. Fails the blink intent entirely."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": "half__c1",
+   "open": "open__c0",
+   "oh": "oh__c2",
+   "blink": "blink__c0"
+  }
+ },
+ {
+  "pose": "sol_point_v1",
+  "verdicts": [
+   {
+    "candidate": "half__c0",
+    "pass": true,
+    "note": "Small parted mouth visible under mustache, tongue tip and dark cavity read clearly, mustache parts naturally, no seam/style artifacts."
+   },
+   {
+    "candidate": "half__c1",
+    "pass": true,
+    "note": "Slightly larger parted opening than c0, mustache intact, clean edges, no artifacts \u2014 valid half-open."
+   },
+   {
+    "candidate": "open__c0",
+    "pass": false,
+    "note": "Right side of the mouth-mustache boundary is blurred/feathered (not crisp linework like the rest of the art), plus a glowing yellowish highlight blob at mustache center \u2014 style break inconsistent with flat-color art."
+   },
+   {
+    "candidate": "open__c1",
+    "pass": true,
+    "note": "Wide open mouth with visible teeth, crisp mustache outline, clean dark-red cavity, no seam or gloss artifacts."
+   },
+   {
+    "candidate": "oh__c0",
+    "pass": true,
+    "note": "Small round O-shaped opening, clean edges, mustache intact, no artifacts."
+   },
+   {
+    "candidate": "oh__c1",
+    "pass": true,
+    "note": "Larger, more distinctly round O-shaped opening than c0, clean crisp linework, best 'oh' read."
+   },
+   {
+    "candidate": "oh__c2",
+    "pass": false,
+    "note": "Same shape as c0 but with a rainbow/prism gloss artifact at the mustache-nose junction \u2014 style break inconsistent with flat-color art."
+   },
+   {
+    "candidate": "blink__c0",
+    "pass": false,
+    "note": "Both eyes are correctly closed (curved slits, not a wink), but zoomed inspection shows an off-color yellow/rainbow glint artifact at both eye corners \u2014 a style-break defect; held to strict blink standard, fails."
+   },
+   {
+    "candidate": "blink__c1",
+    "pass": false,
+    "note": "Eyes are fully open, identical in shape to BASE \u2014 no blink occurred at all."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": "half__c0",
+   "open": "open__c1",
+   "oh": "oh__c1",
+   "blink": null
+  }
+ },
+ {
+  "pose": "sol_armswide",
+  "verdicts": [
+   {
+    "candidate": "half__c0",
+    "pass": true,
+    "note": "Clean small mouth opening below mustache, mustache intact and gray, no seam/artifact \u2014 reads correctly as a slightly parted mouth."
+   },
+   {
+    "candidate": "half__c1",
+    "pass": false,
+    "note": "Visible blue/teal color smudge artifact at the bottom-right corner of the mouth and a teal fleck on the mustache \u2014 style break, not flat-color art."
+   },
+   {
+    "candidate": "open__c0",
+    "pass": false,
+    "note": "Wide, clearly-open maroon mouth with visible tongue, clean mustache, no artifacts \u2014 but pose baseline in this sheet shows the same degree of parting as half, so verify against 'half__c0' before wiring (kept as pass on shape/cleanliness grounds)."
+   },
+   {
+    "candidate": "open__c1",
+    "pass": false,
+    "note": "Opening is small and essentially the same size/shape as the half candidates \u2014 does not read as clearly more open than 'half'; fails the 'wide open' intent for its label."
+   },
+   {
+    "candidate": "oh__c0",
+    "pass": true,
+    "note": "Rounded vertical-oval opening with visible tongue, mustache parts naturally and stays intact, no seam artifacts \u2014 best O-shape of the oh set."
+   },
+   {
+    "candidate": "oh__c1",
+    "pass": false,
+    "note": "Bright white/glow smudge artifact on the cheek just left of the nose bridge, inconsistent with flat-color style \u2014 style break inside the regenerated region."
+   },
+   {
+    "candidate": "oh__c2",
+    "pass": true,
+    "note": "Round-ish opening with visible tongue, clean mustache, no artifacts \u2014 slightly wider/flatter than c0 but acceptable."
+   },
+   {
+    "candidate": "blink__c0",
+    "pass": false,
+    "note": "Not a clean blink: left eye reads as a wink crescent while the right eye shows a garbled dark reddish-brown shape instead of a closed eyelid \u2014 asymmetric and mangled."
+   },
+   {
+    "candidate": "blink__c1",
+    "pass": false,
+    "note": "Both eyes are still fully open with visible dark irises, essentially unchanged from BASE \u2014 no blink occurred."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": "half__c0",
+   "oh": "oh__c0",
+   "open": null,
+   "blink": null
+  }
+ },
+ {
+  "pose": "sol_smug",
+  "verdicts": [
+   {
+    "candidate": "half__c0",
+    "pass": false,
+    "note": "Mouth opening size and mustache split are fine, but a spurious reddish-skin blob artifact appears below the mouth (not present in BASE) \u2014 off-model blemish inside the regenerated region."
+   },
+   {
+    "candidate": "half__c1",
+    "pass": true,
+    "note": "Clean small-to-moderate mouth opening below mustache, tongue tip visible, mustache parts naturally, no seam artifacts. Clearly less open than the open__c0 candidate."
+   },
+   {
+    "candidate": "open__c0",
+    "pass": true,
+    "note": "Wide, clearly open mouth with visible dark interior cavity, mustache splits cleanly, no seams or artifacts. Best 'open' candidate."
+   },
+   {
+    "candidate": "open__c1",
+    "pass": false,
+    "note": "Mouth barely parted (reads closer to 'half' or even closed) \u2014 insufficient opening for 'open'. Also has a visible jagged red/white seam artifact at the mask boundary beside the mustache tip, absent in BASE."
+   },
+   {
+    "candidate": "oh__c0",
+    "pass": false,
+    "note": "No visible mouth opening at all \u2014 mustache and lower face are essentially identical to BASE's closed mouth. Fails the round-open-mouth requirement for 'oh'."
+   },
+   {
+    "candidate": "oh__c1",
+    "pass": false,
+    "note": "Plausible open-ish mouth shape, but a visible off-color seam (thin red/white/dark streak) is present at the mask boundary beside the mustache tip where BASE is clean skin."
+   },
+   {
+    "candidate": "oh__c2",
+    "pass": true,
+    "note": "Clean round-ish open mouth with tongue tip visible below, mustache parts naturally with intact shading strokes, no boundary seams. Best 'oh' candidate."
+   },
+   {
+    "candidate": "blink__c0",
+    "pass": false,
+    "note": "Right eye has a mangled skin/yellow-toned notch artifact poking into the black closed-eye shape (confirmed absent in BASE) \u2014 reads as a rendering glitch, not a clean closed eye."
+   },
+   {
+    "candidate": "blink__c1",
+    "pass": true,
+    "note": "Both eyes read as fully closed, matching BASE's closed-eye arcs; only a negligible sub-pixel fleck at one eye tip, not enough to break the shape. Best 'blink' candidate."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": "half__c1",
+   "open": "open__c0",
+   "oh": "oh__c2",
+   "blink": "blink__c1"
+  }
+ },
+ {
+  "pose": "rex_eager",
+  "verdicts": [
+   {
+    "candidate": "closed__c0",
+    "pass": true,
+    "note": "Lips fully closed, flat neutral line, no teeth/opening, no seam. Clean."
+   },
+   {
+    "candidate": "closed__c1",
+    "pass": true,
+    "note": "Fully closed with a very slight upward smile curve, no residual opening, clean seam."
+   },
+   {
+    "candidate": "closed__c2",
+    "pass": true,
+    "note": "Fully closed, slightly downturned line, no opening/teeth, clean seam."
+   },
+   {
+    "candidate": "half__c0",
+    "pass": true,
+    "note": "Small-medium oval opening, area ~91% of BASE and clearly smaller than either open candidate; no teeth/tongue garbling, clean seam."
+   },
+   {
+    "candidate": "half__c1",
+    "pass": true,
+    "note": "Slightly smaller opening than c0 (area ~84% of BASE), reads as the more clearly 'parted' variant, clean anatomy and seam."
+   },
+   {
+    "candidate": "open__c0",
+    "pass": true,
+    "note": "Widest of all mouth candidates (clearly bigger than half/oh), dark cavity + tongue, a specular highlight streak reads as natural wet-mouth gloss, no garbling."
+   },
+   {
+    "candidate": "open__c1",
+    "pass": true,
+    "note": "Wide open with visible upper/lower teeth strips, clean rendering, no garbled anatomy, though only marginally larger than BASE/half by pixel area (teeth rims eat into the dark-area measurement)."
+   },
+   {
+    "candidate": "oh__c0",
+    "pass": true,
+    "note": "Round O-shaped opening, tongue visible, clean lip rim and seam. Shape is close to half/BASE size but reads as rounder."
+   },
+   {
+    "candidate": "oh__c1",
+    "pass": true,
+    "note": "Same round O shape, clean, near-identical to c0/c2; no artifacts."
+   },
+   {
+    "candidate": "oh__c2",
+    "pass": true,
+    "note": "Round O shape, clean, no artifacts; visually near-duplicate of c0/c1."
+   },
+   {
+    "candidate": "blink__c0",
+    "pass": true,
+    "note": "Both eyes fully closed with matching curved lash shapes, glasses frames intact/unwarped, no wink asymmetry. Passes."
+   },
+   {
+    "candidate": "blink__c1",
+    "pass": true,
+    "note": "Both eyes closed; a small white catchlight speck sits on the left lid (reads as gloss highlight, not an opening). Slightly lower quality than c0/c2 but not a wink and not a fail."
+   },
+   {
+    "candidate": "blink__c2",
+    "pass": true,
+    "note": "Cleanest closed-eye candidate: both eyes fully shut, symmetric, no highlight artifacts, glasses frames intact. Brows read slightly more knit/furrowed than BASE but not damaged."
+   }
+  ],
+  "best": {
+   "closed": "closed__c0",
+   "open": "open__c0",
+   "oh": "oh__c0",
+   "half": "half__c1",
+   "blink": "blink__c2"
+  }
+ },
+ {
+  "pose": "rex_determined",
+  "verdicts": [
+   {
+    "candidate": "closed__c0",
+    "pass": true,
+    "note": "Fully closed straight lip line, no teeth, no residual opening. Clean, on-model."
+   },
+   {
+    "candidate": "closed__c1",
+    "pass": true,
+    "note": "Fully closed, slight upturned/smirk curve to the line but no opening or teeth. Valid closed mouth, just a different corner shape than c0."
+   },
+   {
+    "candidate": "closed__c2",
+    "pass": true,
+    "note": "Fully closed line, no opening/teeth, clean seam."
+   },
+   {
+    "candidate": "half__c0",
+    "pass": true,
+    "note": "Small-medium rounded opening, dark interior + tongue base, clearly less open than the open__ set. No teeth. Cleanest half."
+   },
+   {
+    "candidate": "half__c1",
+    "pass": true,
+    "note": "Slightly larger parted opening than c0 but still clearly smaller than open__c0/c1. No garbling."
+   },
+   {
+    "candidate": "open__c0",
+    "pass": true,
+    "note": "Wide open mouth with distinct white teeth strips top and bottom, large squared opening. Best open candidate."
+   },
+   {
+    "candidate": "open__c1",
+    "pass": true,
+    "note": "Wide dark opening reaching toward chin with visible tongue; less crisp teeth definition than c0 and a faint pink smear at the lower seam, but reads clearly as wide open."
+   },
+   {
+    "candidate": "oh__c0",
+    "pass": true,
+    "note": "Rounded O-shaped opening, single subtle highlight, no exposed teeth strip \u2014 reads distinctly as a round vowel shape rather than a bared-teeth open mouth."
+   },
+   {
+    "candidate": "oh__c1",
+    "pass": false,
+    "note": "Opening has visible white teeth strips at both top and bottom rim like the open__ candidates, and is taller/more rectangular than round \u2014 reads as 'open' not a round O, wrong shape for the label."
+   },
+   {
+    "candidate": "oh__c2",
+    "pass": true,
+    "note": "Clean rounded O opening, nose blush mark preserved outside mask, no teeth exposure. Good round shape."
+   },
+   {
+    "candidate": "blink__c0",
+    "pass": true,
+    "note": "Both eyes fully closed with symmetric curved eyelid lines, eyebrows and glasses frames intact and unwarped."
+   },
+   {
+    "candidate": "blink__c1",
+    "pass": false,
+    "note": "Character's left eye (image right) is a garbled hook/gun-shaped mark instead of a smooth closed-lid curve \u2014 asymmetric and malformed versus the other eye. Fails the strict blink bar."
+   },
+   {
+    "candidate": "blink__c2",
+    "pass": true,
+    "note": "Both eyes fully closed with symmetric curved lid lines, glasses intact, matches BASE brow shape well."
+   }
+  ],
+  "best": {
+   "closed": "closed__c0",
+   "half": "half__c0",
+   "open": "open__c0",
+   "oh": "oh__c0",
+   "blink": "blink__c0"
+  }
+ },
+ {
+  "pose": "rex_shock",
+  "verdicts": [
+   {
+    "candidate": "blink__c0",
+    "pass": true,
+    "note": "Both eyes fully closed with natural curved lash lines, symmetric, glasses frames intact and unwarped. Clean pass."
+   },
+   {
+    "candidate": "blink__c1",
+    "pass": false,
+    "note": "Eyes are wide open with visible pupils \u2014 essentially identical to BASE's shocked open eyes. No blink occurred at all."
+   },
+   {
+    "candidate": "blink__c2",
+    "pass": true,
+    "note": "Both eyes fully closed, glasses intact. Minor lens glint highlight on right lens but consistent/plausible, no warping."
+   },
+   {
+    "candidate": "closed__c0",
+    "pass": false,
+    "note": "Full-res inspection shows a wide-open mouth with dark cavity, visible tongue/inner-lip, and a stray skin-colored blob artifact below the lip \u2014 not closed at all; thumbnail was misleading."
+   },
+   {
+    "candidate": "closed__c1",
+    "pass": false,
+    "note": "Mouth open with tongue sticking out \u2014 clearly not closed, no lip closure achieved."
+   },
+   {
+    "candidate": "closed__c2",
+    "pass": false,
+    "note": "Mouth open with a dark frown-shaped cavity \u2014 clearly not closed, no lip closure achieved."
+   },
+   {
+    "candidate": "half__c0",
+    "pass": false,
+    "note": "Measured aperture is indistinguishable from BASE/open \u2014 full wide-open mouth, not 'clearly less open than open' as required for half."
+   },
+   {
+    "candidate": "half__c1",
+    "pass": false,
+    "note": "Same failure as c0: aperture size matches full open mouth, no partial-parting achieved."
+   },
+   {
+    "candidate": "open__c0",
+    "pass": true,
+    "note": "Wide open mouth with teeth top and corners plus tongue; on-model flat coloring, no seam or anatomy garbling. Slightly more embellished (extra corner teeth) than BASE style."
+   },
+   {
+    "candidate": "open__c1",
+    "pass": true,
+    "note": "Wide open mouth, closest style match to BASE (thin tooth-line highlight, same cavity/tongue treatment), clean seam."
+   },
+   {
+    "candidate": "oh__c0",
+    "pass": true,
+    "note": "Round-ish open aperture; minor V-notch dip in the top tooth-line (slightly irregular) but not garbled anatomy or a style break."
+   },
+   {
+    "candidate": "oh__c1",
+    "pass": true,
+    "note": "Cleanest, most symmetric round O-shaped aperture, smooth top highlight line, no artifacts."
+   },
+   {
+    "candidate": "oh__c2",
+    "pass": true,
+    "note": "Round symmetric aperture, clean seam, consistent flat-color style."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": null,
+   "open": "open__c1",
+   "oh": "oh__c1",
+   "blink": "blink__c0"
+  }
+ },
+ {
+  "pose": "rex_shock_v1",
+  "verdicts": [
+   {
+    "candidate": "closed__c0",
+    "pass": false,
+    "note": "Mouth still wide open with visible upper teeth bar and tongue \u2014 not closed at all, essentially identical to BASE's open mouth."
+   },
+   {
+    "candidate": "closed__c1",
+    "pass": false,
+    "note": "Mouth still wide open (same as BASE); also a stray white garbled fragment/highlight artifact at the top-right of the opening."
+   },
+   {
+    "candidate": "closed__c2",
+    "pass": false,
+    "note": "Lips do close to a thin line, but a garbled dark curved mark with a white sliver and pink shading appears on the right cheek/jaw near the mask seam \u2014 malformed secondary feature."
+   },
+   {
+    "candidate": "half__c0",
+    "pass": false,
+    "note": "Mouth opening is the same size/shape as BASE (not 'clearly less open' than open); interior shows a brown gloss/gradient inconsistent with the flat-color style (BASE interior is flat black)."
+   },
+   {
+    "candidate": "half__c1",
+    "pass": false,
+    "note": "Same issue: opening unreduced from BASE, plus a visible brown gloss/gradient sheen across the mouth interior \u2014 style break."
+   },
+   {
+    "candidate": "open__c0",
+    "pass": false,
+    "note": "Shape reads as wide open (fine), but interior shows a clear brown gradient/gloss highlight sweeping across it, unlike BASE's flat solid black \u2014 style break."
+   },
+   {
+    "candidate": "open__c1",
+    "pass": false,
+    "note": "Same gloss/gradient style break in the mouth interior as open__c0; also a stray highlight streak wrapping the lower-left edge."
+   },
+   {
+    "candidate": "oh__c0",
+    "pass": false,
+    "note": "Interior stays flat (no gloss), but shape is essentially an unchanged copy of BASE's wide rectangular open mouth \u2014 not a round O-pucker."
+   },
+   {
+    "candidate": "oh__c1",
+    "pass": false,
+    "note": "Same non-round shape issue as oh__c0, plus a garbled gap/seam at the top of the mouth outline where skin tone bleeds through oddly."
+   },
+   {
+    "candidate": "oh__c2",
+    "pass": false,
+    "note": "Flat interior but shape is again just BASE's open mouth reproduced \u2014 no round O shape achieved."
+   },
+   {
+    "candidate": "blink__c0",
+    "pass": false,
+    "note": "Wink, not blink: left eye closed with a squiggly line, right eye fully open with visible round pupil. Fails the both-eyes-closed requirement outright."
+   },
+   {
+    "candidate": "blink__c1",
+    "pass": false,
+    "note": "Same wink failure \u2014 one eye closed, one eye wide open."
+   },
+   {
+    "candidate": "blink__c2",
+    "pass": false,
+    "note": "Same wink failure \u2014 one eye closed, one eye wide open."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": null,
+   "open": null,
+   "oh": null,
+   "blink": null
+  }
+ },
+ {
+  "pose": "sol_point",
+  "verdicts": [
+   {
+    "candidate": "half__c0",
+    "pass": true,
+    "note": "Clean small parting under mustache, pink tongue-tip visible, mustache/nose/blush intact, no seam artifacts. Reads correctly as a subtle 'half' opening (measured opening area smallest of the half/open set)."
+   },
+   {
+    "candidate": "half__c1",
+    "pass": true,
+    "note": "Mustache accent line matches base's original fold detail (not a gloss artifact). Opening is noticeably larger/more toothy than half__c0 - on the wide side for 'half' but still clearly smaller than the best 'open' candidate, so it still reads as parted rather than wide open."
+   },
+   {
+    "candidate": "open__c0",
+    "pass": true,
+    "note": "Largest, clearest mouth opening of the whole set (roughly 2.5x the area of half__c0) - correctly reads as wide open. Mustache clean, no seam or gloss issues."
+   },
+   {
+    "candidate": "open__c1",
+    "pass": false,
+    "note": "FAIL: opening size is essentially identical to the half candidates (measured area ~2900 vs open__c0's ~6800) - does not read as 'wide open', indistinguishable from a half-parted mouth. Wrong magnitude for its label."
+   },
+   {
+    "candidate": "oh__c0",
+    "pass": true,
+    "note": "Clean round pink 'O' visible below mustache, mustache and face intact, no artifacts. Smallest of the oh set but shape is clearly round/O-shaped, not a slit like half."
+   },
+   {
+    "candidate": "oh__c1",
+    "pass": true,
+    "note": "Best roundness of the oh set (near 1:1 width:height opening), clear dark cavity with visible interior, mustache clean aside from a tiny natural notch at the center part (matches base's linework style, not an artifact)."
+   },
+   {
+    "candidate": "oh__c2",
+    "pass": true,
+    "note": "Round-ish opening, moderate size, pink tongue visible, mustache and face clean. Solid but slightly less circular than oh__c1."
+   },
+   {
+    "candidate": "blink__c0",
+    "pass": false,
+    "note": "FAIL: left eye is closed/winked but right eye clearly still shows an open pupil and white sclera highlight - this is a wink, not a blink."
+   },
+   {
+    "candidate": "blink__c1",
+    "pass": false,
+    "note": "FAIL: same issue as blink__c0 - left eye closed, right eye visibly open with pupil and highlight intact. Wink, not a full blink."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": "half__c0",
+   "open": "open__c0",
+   "oh": "oh__c1",
+   "blink": null
+  }
+ },
+ {
+  "pose": "rex_eager_v1",
+  "verdicts": [
+   {
+    "candidate": "closed__c0",
+    "pass": false,
+    "note": "Mouth line desaturates to a yellow/orange smudge and the glasses lens shows a visible tan-yellow contamination blob at its base \u2014 clear off-color patch at the mask boundary vs. BASE's clean brown lip line and clear lens."
+   },
+   {
+    "candidate": "closed__c1",
+    "pass": true,
+    "note": "Lips fully closed, line color and thickness match BASE closely, glasses lens stays clear with only a negligible edge tint. Best closed candidate."
+   },
+   {
+    "candidate": "closed__c2",
+    "pass": false,
+    "note": "Closed-lip line renders in an olive/green tint distinctly different from BASE's brown-maroon line \u2014 visible style/color break on the primary drawn element."
+   },
+   {
+    "candidate": "half__c0",
+    "pass": true,
+    "note": "Small, clearly-parted opening with dark interior, no teeth peeking, lens stays essentially clean. Reads correctly as less-open than 'open'. Best half candidate."
+   },
+   {
+    "candidate": "half__c1",
+    "pass": false,
+    "note": "Visible yellow/orange smudge contaminates the glasses lens at the mask seam (larger and more visible than c0's), and the opening shows a sliver of teeth, pushing the shape closer to 'open' than a true half-parted mouth."
+   },
+   {
+    "candidate": "open__c0",
+    "pass": true,
+    "note": "Wide open mouth, teeth row and tongue rendered cleanly, lens stays clear; small dark speck right at the lower lip corner is minor."
+   },
+   {
+    "candidate": "open__c1",
+    "pass": true,
+    "note": "Wide open mouth with teeth and tongue, natural shape, only a faint lens edge tint and tiny color flecks at the mouth corner (negligible at normal viewing scale). Best open candidate."
+   },
+   {
+    "candidate": "oh__c0",
+    "pass": true,
+    "note": "Rounded open-mouth shape distinct from 'open' and 'half', dark interior with visible top teeth sliver; a small green fleck at the lower lip corner is minor."
+   },
+   {
+    "candidate": "oh__c1",
+    "pass": false,
+    "note": "Visible tan/yellow smudge contaminates the glasses lens at the seam, and the mouth opening reads too close to the wide 'open' shape rather than a distinct round O."
+   },
+   {
+    "candidate": "oh__c2",
+    "pass": true,
+    "note": "Clean, compact rounded opening, no visible lens contamination, shape reads clearly as its own round-mouth viseme distinct from 'open'/'half'. Best oh candidate."
+   },
+   {
+    "candidate": "blink__c0",
+    "pass": true,
+    "note": "Both-eyes-implied lid fully closed under the glasses (skin-tone eyelid fill with a thin closed-lid crease replacing the open pupil), glasses frame intact and unwarped. Best blink candidate."
+   },
+   {
+    "candidate": "blink__c1",
+    "pass": false,
+    "note": "Eye region still shows a pale/whitish fill inside the lens rather than a convincingly closed lid \u2014 reads as ambiguous/half-closed, which fails the strict blink bar."
+   },
+   {
+    "candidate": "blink__c2",
+    "pass": false,
+    "note": "A distinct blue-colored smudge artifact appears at the eyebrow/lens-top boundary \u2014 visible off-palette color break near the eye region."
+   }
+  ],
+  "best": {
+   "closed": "closed__c1",
+   "half": "half__c0",
+   "open": "open__c1",
+   "oh": "oh__c2",
+   "blink": "blink__c0"
+  }
+ },
+ {
+  "pose": "sol_wink_v1",
+  "verdicts": [
+   {
+    "candidate": "half__c0",
+    "pass": true,
+    "note": "Small parted mouth beneath mustache, dark interior + pink lower lip visible, mustache intact and clean, no seam artifacts in the regenerated region. Clearly smaller/less open than the open/oh candidates -- solid 'half'."
+   },
+   {
+    "candidate": "half__c1",
+    "pass": false,
+    "note": "Mouth opening is nearly as wide/tall as the open__c0 and oh__c1/oh__c2 candidates (measured comparable pixel area), so it fails to read as 'clearly less open than open' -- ambiguous degree for the half label even though the region itself is clean."
+   },
+   {
+    "candidate": "open__c0",
+    "pass": true,
+    "note": "Wide-open mouth clearly larger than the half candidates, dark interior + pink tongue, mustache parts naturally, no garbling or seam issues."
+   },
+   {
+    "candidate": "open__c1",
+    "pass": true,
+    "note": "Widest, most convincing wide-open mouth of the set; mustache parts naturally around it, clean edges, no artifacts. Best 'open'."
+   },
+   {
+    "candidate": "oh__c0",
+    "pass": false,
+    "note": "No mouth opening is visible -- face reads essentially identical to BASE under the mustache (confirmed low delta vs base in that immediate area). Absent shape for the 'oh' label."
+   },
+   {
+    "candidate": "oh__c1",
+    "pass": true,
+    "note": "Round-ish open mouth visible beneath mustache, plausible 'oh' shape, mustache intact; one sub-pixel stray dark/blue fleck at the mustache tip is negligible at normal viewing size."
+   },
+   {
+    "candidate": "oh__c2",
+    "pass": true,
+    "note": "Clean, symmetric round O-shaped opening, best roundness of the three oh candidates, mustache intact, no visible seam or artifact. Best 'oh'."
+   },
+   {
+    "candidate": "blink__c0",
+    "pass": false,
+    "note": "Eyes are closed asymmetrically: left eye is a thick crescent with an odd downward hook, right eye is a tiny, thin, disconnected sliver that reads as mangled/incomplete rather than a matching closed eye. Fails strict blink symmetry requirement."
+   },
+   {
+    "candidate": "blink__c1",
+    "pass": false,
+    "note": "Both eyes remain open black ovals (only slightly reshaped with a small comma-like hook), essentially unchanged from BASE -- this is not a blink at all."
+   }
+  ],
+  "best": {
+   "closed": null,
+   "half": "half__c0",
+   "open": "open__c1",
+   "oh": "oh__c2",
+   "blink": null
+  }
+ }
+]

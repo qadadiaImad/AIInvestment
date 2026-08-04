@@ -1,0 +1,75 @@
+{
+ "rex_determined": {
+  "closed": "rex_determined__closed__c0",
+  "half": "rex_determined__half__c0",
+  "open": "rex_determined__open__c0",
+  "oh": "rex_determined__oh__c0",
+  "blink": "rex_determined__blink__c0"
+ },
+ "rex_eager": {
+  "closed": "rex_eager__closed__c0",
+  "open": "rex_eager__open__c0",
+  "oh": "rex_eager__oh__c0",
+  "half": "rex_eager__half__c1",
+  "blink": "rex_eager__blink__c2"
+ },
+ "rex_eager_v1": {
+  "closed": "rex_eager_v1__closed__c1",
+  "half": "rex_eager_v1__half__c0",
+  "open": "rex_eager_v1__open__c1",
+  "oh": "rex_eager_v1__oh__c2",
+  "blink": "rex_eager_v1__blink__c0"
+ },
+ "rex_shock": {
+  "open": "rex_shock__open__c1",
+  "oh": "rex_shock__oh__c1",
+  "blink": "rex_shock__blink__c0"
+ },
+ "rex_shock_v1": {},
+ "sol_armswide": {
+  "half": "sol_armswide__half__c0",
+  "oh": "sol_armswide__oh__c0"
+ },
+ "sol_finger": {
+  "half": "sol_finger__half__c1",
+  "open": "sol_finger__open__c0",
+  "oh": "sol_finger__oh__c2",
+  "blink": "sol_finger__blink__c0"
+ },
+ "sol_point": {
+  "half": "sol_point__half__c0",
+  "open": "sol_point__open__c0",
+  "oh": "sol_point__oh__c1"
+ },
+ "sol_point_v1": {
+  "half": "sol_point_v1__half__c0",
+  "open": "sol_point_v1__open__c1",
+  "oh": "sol_point_v1__oh__c1"
+ },
+ "sol_smug": {
+  "half": "sol_smug__half__c1",
+  "open": "sol_smug__open__c0",
+  "oh": "sol_smug__oh__c2",
+  "blink": "sol_smug__blink__c1"
+ },
+ "sol_smug_v1": {
+  "half": "sol_smug_v1__half__c0",
+  "open": "sol_smug_v1__open__c1",
+  "oh": "sol_smug_v1__oh__c2"
+ },
+ "sol_smug_v2": {
+  "half": "sol_smug_v2__half__c0",
+  "oh": "sol_smug_v2__oh__c2",
+  "open": "sol_smug_v2__open__c1"
+ },
+ "sol_wink": {
+  "half": "sol_wink__half__c0",
+  "open": "sol_wink__open__c0",
+  "oh": "sol_wink__oh__c2"
+ },
+ "sol_wink_v1": {
+  "half": "sol_wink_v1__half__c0",
+  "open": "sol_wink_v1__open__c1",
+  "oh": "sol_wink_v1__oh__c2"
+ }
+}

@@ -1,22 +1,27 @@
-// FairMarketEp1 v3 — voiced anime short with LIMITED-ANIMATION density:
+// FairMarketEp1 v4 — voiced anime short with LIMITED-ANIMATION density:
 // each beat cycles 2-3 adjacent LoRA drawings while its line is spoken
-// (pose fills), and the speaking character's mouth is articulated by a
-// code overlay driven per-frame by the VO amplitude (mouth_tracks.json,
-// 30fps states 0/1/2) at the auto-detected mouth anchor of the active
-// drawing (mouth_anchors.json). Facts/rails unchanged from v2.
+// (pose fills), and the speaking character's mouth is articulated by
+// swapping WHOLE VISEME DRAWINGS (visemes.json: per-pose closed/half/
+// open/oh/blink SVGs, inpaint-generated with the cast LoRA so every
+// mouth is native art at the native position — supersedes the v3 code
+// overlay the owner rejected). States come per-frame from the VO
+// amplitude (mouth_tracks.json, 30fps 0/1/2); sustained open holds
+// alternate open/oh, and a pose-seeded blink fires on closed-mouth
+// frames. Every viseme SVG shares its base drawing's exact canvas, so
+// all layout math is untouched. Facts/rails unchanged from v2.
 import React from "react";
 import {AbsoluteFill, Audio, Img, Sequence, staticFile, useCurrentFrame} from "remotion";
 import {actionCurve, bob, boil} from "../motion/toon";
 import {FlashCut, ShockRing, SpeedLines, kick} from "../motion/ToonFX";
 import {Grain, Vignette} from "../motion/Polish";
 import anchors from "../fixtures/cast_ep1/pose_anchors.json";
-import mouthAnchors from "../fixtures/cast_ep1/mouth_anchors.json";
 import mouthTracks from "../fixtures/cast_ep1/mouth_tracks.json";
+import visemes from "../fixtures/cast_ep1/visemes.json";
 
 type A = {w: number; h: number; ink_h: number; anchor: number[]; src: string; scale: number};
 const AN = anchors as unknown as Record<string, A>;
-type M = {x: number; y: number; w: number; skin: string};
-const MO = mouthAnchors as unknown as Record<string, M>;
+type V = Partial<Record<"closed" | "half" | "open" | "oh" | "blink", string>>;
+const VI = visemes as unknown as Record<string, V>;
 const TR = mouthTracks as unknown as Record<string, number[]>;
 
 export const FAIRMARKET_FRAMES = 1085;
@@ -98,37 +103,22 @@ const mouthStateFor = (beat: Beat, frame: number): {sol: number; rex: number} =>
   return out;
 };
 
-const Mouth: React.FC<{m: M; state: number; w: number; h: number; sol: boolean}> =
-  ({m, state, w, h, sol}) => {
-  const mw = m.w * w;
-  const cx = m.x * w, cy = m.y * h;
-  // Sol: NO skin patch and nothing when closed — his mustache IS the closed
-  // mouth; painting skin over it was the visible defect. Only the open
-  // states draw, below the mustache.
-  if (sol && state === 0) return null;
-  return (
-    <>
-      {!sol ? (
-        <div style={{position: "absolute", left: cx - mw * 0.85, top: cy - mw * 0.7,
-          width: mw * 1.7, height: mw * 1.4, borderRadius: "50%", background: m.skin}} />
-      ) : null}
-      {state === 0 ? (
-        <div style={{position: "absolute", left: cx - mw * 0.45, top: cy - mw * 0.06,
-          width: mw * 0.9, height: Math.max(5, mw * 0.13), borderRadius: 8, background: "#5A2028"}} />
-      ) : state === 1 ? (
-        <div style={{position: "absolute", left: cx - mw * 0.38, top: cy - mw * 0.24,
-          width: mw * 0.76, height: mw * 0.5, borderRadius: "50%", background: "#6E2530",
-          border: "3px solid #3A1015"}} />
-      ) : (
-        <div style={{position: "absolute", left: cx - mw * 0.5, top: cy - mw * 0.44,
-          width: mw, height: mw * 0.92, borderRadius: "46%", background: "#6E2530",
-          border: "3px solid #3A1015", overflow: "hidden"}}>
-          <div style={{position: "absolute", left: "14%", bottom: -mw * 0.12, width: "72%",
-            height: mw * 0.4, borderRadius: "50%", background: "#B84A56"}} />
-        </div>
-      )}
-    </>
-  );
+// Pick the drawing for this frame: the base pose art, or one of its
+// inpainted viseme variants. Blink only fires when the mouth is closed
+// (never fights a talk shape); sustained state-2 holds alternate
+// open/oh every 7 frames so long vowels stay alive.
+const visemeSrc = (pose: string, state: number, speaking: boolean,
+                   frame: number): string => {
+  const d = AN[pose];
+  const v = VI[pose];
+  if (!v) return d.src;
+  const seed = (pose.charCodeAt(0) * 31 + pose.length * 7) % 97;
+  const blinking = v.blink && ((frame + seed * 5) % (96 + (seed % 29))) < 3;
+  if (!speaking) return blinking ? v.blink! : d.src;
+  if (state === 0) return blinking ? v.blink! : (v.closed ?? d.src);
+  if (state === 1) return v.half ?? v.closed ?? d.src;
+  const alt = Math.floor(frame / 7) % 2 === 0;
+  return (alt ? v.open : v.oh) ?? v.open ?? v.oh ?? d.src;
 };
 
 const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean; mouthState: number}> =
@@ -148,14 +138,13 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   const w = d.w * scale, h = d.h * scale;
   const left = a.kind === "full" ? a.x - d.anchor[0] * w : a.x - w / 2;
   const top = a.kind === "full" ? a.y - d.anchor[1] * h : a.y - h / 2;
-  const m = MO[pose];
+  const src = visemeSrc(pose, mouthState, speaking, frame);
   return (
     <div style={{position: "absolute", left: left + bl.x, top: top + by + bl.y,
       width: w, height: h, transform: `scale(${pop})`,
       transformOrigin: a.kind === "full" ? `${d.anchor[0] * 100}% ${d.anchor[1] * 100}%` : "50% 60%",
       opacity: Math.min(1, since / 3)}}>
-      <Img src={staticFile(d.src)} style={{position: "absolute", inset: 0, width: w, height: h}} />
-      {m && speaking ? <Mouth m={m} state={mouthState} w={w} h={h} sol={pose.startsWith("sol")} /> : null}
+      <Img src={staticFile(src)} style={{position: "absolute", inset: 0, width: w, height: h}} />
     </div>
   );
 };

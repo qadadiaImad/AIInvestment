@@ -1,0 +1,134 @@
+[
+ {
+  "pose": "rex_shock",
+  "viseme": "open"
+ },
+ {
+  "pose": "rex_shock",
+  "viseme": "oh"
+ },
+ {
+  "pose": "rex_shock",
+  "viseme": "blink"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "closed"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "half"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "oh"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "blink"
+ },
+ {
+  "pose": "sol_armswide",
+  "viseme": "half"
+ },
+ {
+  "pose": "sol_armswide",
+  "viseme": "oh"
+ },
+ {
+  "pose": "sol_armswide",
+  "viseme": "blink"
+ },
+ {
+  "pose": "sol_point",
+  "viseme": "half"
+ },
+ {
+  "pose": "sol_point",
+  "viseme": "open"
+ },
+ {
+  "pose": "sol_point",
+  "viseme": "oh"
+ },
+ {
+  "pose": "sol_point",
+  "viseme": "blink"
+ },
+ {
+  "pose": "sol_point_v1",
+  "viseme": "half"
+ },
+ {
+  "pose": "sol_point_v1",
+  "viseme": "open"
+ },
+ {
+  "pose": "sol_point_v1",
+  "viseme": "oh"
+ },
+ {
+  "pose": "sol_point_v1",
+  "viseme": "blink"
+ },
+ {
+  "pose": "sol_smug_v1",
+  "viseme": "half"
+ },
+ {
+  "pose": "sol_smug_v1",
+  "viseme": "open"
+ },
+ {
+  "pose": "sol_smug_v1",
+  "viseme": "oh"
+ },
+ {
+  "pose": "sol_smug_v2",
+  "viseme": "half"
+ },
+ {
+  "pose": "sol_smug_v2",
+  "viseme": "open"
+ },
+ {
+  "pose": "sol_smug_v2",
+  "viseme": "oh"
+ },
+ {
+  "pose": "sol_smug_v2",
+  "viseme": "blink"
+ },
+ {
+  "pose": "sol_wink",
+  "viseme": "half"
+ },
+ {
+  "pose": "sol_wink",
+  "viseme": "open"
+ },
+ {
+  "pose": "sol_wink",
+  "viseme": "oh"
+ },
+ {
+  "pose": "sol_wink",
+  "viseme": "blink"
+ },
+ {
+  "pose": "sol_wink_v1",
+  "viseme": "half"
+ },
+ {
+  "pose": "sol_wink_v1",
+  "viseme": "open"
+ },
+ {
+  "pose": "sol_wink_v1",
+  "viseme": "oh"
+ },
+ {
+  "pose": "sol_wink_v1",
+  "viseme": "blink"
+ }
+]

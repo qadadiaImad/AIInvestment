@@ -1,0 +1,282 @@
+{
+ "sol_point": {
+  "canvas": [
+   771,
+   1159
+  ],
+  "mouth": {
+   "cx": 385.5,
+   "cy": 463.6,
+   "rx": 138.78,
+   "ry": 92.72
+  },
+  "eyes": {
+   "cx": 370.08,
+   "cy": 318.725,
+   "rx": 169.62,
+   "ry": 69.53999999999999
+  },
+  "source": "renders/_sol_point_rgba.png + anchor_overrides.json",
+  "retrieved_at": "2026-08-04T01:21:12Z"
+ },
+ "sol_finger": {
+  "canvas": [
+   832,
+   1159
+  ],
+  "mouth": {
+   "cx": 403.52,
+   "cy": 399.85499999999996,
+   "rx": 145.6,
+   "ry": 98.515
+  },
+  "eyes": {
+   "cx": 399.36,
+   "cy": 260.77500000000003,
+   "rx": 158.08,
+   "ry": 63.745
+  },
+  "source": "renders/_sol_finger_rgba.png + anchor_overrides.json",
+  "retrieved_at": "2026-08-04T01:21:12Z"
+ },
+ "sol_armswide": {
+  "canvas": [
+   552,
+   1118
+  ],
+  "mouth": {
+   "cx": 207.0,
+   "cy": 262.72999999999996,
+   "rx": 93.84,
+   "ry": 55.900000000000006
+  },
+  "eyes": {
+   "cx": 220.8,
+   "cy": 184.47,
+   "rx": 104.88,
+   "ry": 50.309999999999995
+  },
+  "source": "renders/_sol_armswide_rgba.png + anchor_overrides.json",
+  "retrieved_at": "2026-08-04T01:21:12Z"
+ },
+ "sol_point_v1": {
+  "canvas": [
+   794,
+   1177
+  ],
+  "mouth": {
+   "cx": 452.58,
+   "cy": 500.22499999999997,
+   "rx": 127.04,
+   "ry": 88.27499999999999
+  },
+  "eyes": {
+   "cx": 440.67,
+   "cy": 335.445,
+   "rx": 158.8,
+   "ry": 64.735
+  },
+  "source": "renders/_sol_point_v1_rgba.png + anchor_overrides.json",
+  "retrieved_at": "2026-08-04T01:21:12Z"
+ },
+ "sol_smug": {
+  "canvas": [
+   896,
+   1152
+  ],
+  "mouth": {
+   "cx": 412.16,
+   "cy": 564.48,
+   "rx": 215.04,
+   "ry": 149.76
+  },
+  "eyes": {
+   "cx": 394.24,
+   "cy": 334.08,
+   "rx": 232.96,
+   "ry": 63.36
+  },
+  "source": "renders/_sol_smug_rgba.png + anchor_overrides.json",
+  "retrieved_at": "2026-08-04T01:21:12Z"
+ },
+ "sol_wink": {
+  "canvas": [
+   896,
+   1152
+  ],
+  "mouth": {
+   "cx": 398.72,
+   "cy": 622.08,
+   "rx": 241.92000000000002,
+   "ry": 138.24
+  },
+  "eyes": {
+   "cx": 376.32,
+   "cy": 311.04,
+   "rx": 268.8,
+   "ry": 115.2
+  },
+  "source": "renders/_sol_wink_rgba.png + anchor_overrides.json",
+  "retrieved_at": "2026-08-04T01:21:12Z"
+ },
+ "sol_smug_v1": {
+  "canvas": [
+   846,
+   1101
+  ],
+  "mouth": {
+   "cx": 397.62,
+   "cy": 644.0849999999999,
+   "rx": 177.66,
+   "ry": 142.029
+  },
+  "eyes": {
+   "cx": 338.40000000000003,
+   "cy": 440.40000000000003,
+   "rx": 236.88000000000002,
+   "ry": 66.06
+  },
+  "source": "renders/_sol_smug_v1_rgba.png + anchor_overrides.json",
+  "retrieved_at": "2026-08-04T01:21:12Z"
+ },
+ "sol_smug_v2": {
+  "canvas": [
+   896,
+   1152
+  ],
+  "mouth": {
+   "cx": 331.52,
+   "cy": 737.28,
+   "rx": 224.0,
+   "ry": 161.28000000000003
+  },
+  "eyes": {
+   "cx": 331.52,
+   "cy": 443.52,
+   "rx": 268.8,
+   "ry": 80.64000000000001
+  },
+  "source": "renders/_sol_smug_v2_rgba.png + anchor_overrides.json",
+  "retrieved_at": "2026-08-04T01:21:12Z"
+ },
+ "sol_wink_v1": {
+  "canvas": [
+   896,
+   1152
+  ],
+  "mouth": {
+   "cx": 385.28,
+   "cy": 587.52,
+   "rx": 206.08,
+   "ry": 126.72
+  },
+  "eyes": {
+   "cx": 358.40000000000003,
+   "cy": 357.12,
+   "rx": 224.0,
+   "ry": 80.64000000000001
+  },
+  "source": "renders/_sol_wink_v1_rgba.png + anchor_overrides.json",
+  "retrieved_at": "2026-08-04T01:21:12Z"
+ },
+ "rex_eager": {
+  "canvas": [
+   731,
+   1056
+  ],
+  "mouth": {
+   "cx": 402.05,
+   "cy": 417.12,
+   "rx": 95.03,
+   "ry": 68.64
+  },
+  "eyes": {
+   "cx": 394.74,
+   "cy": 295.68,
+   "rx": 153.51,
+   "ry": 63.36
+  },
+  "source": "renders/_rex_eager_rgba.png + anchor_overrides.json",
+  "retrieved_at": "2026-08-04T01:21:12Z"
+ },
+ "rex_eager_v1": {
+  "canvas": [
+   672,
+   1166
+  ],
+  "mouth": {
+   "cx": 90.72,
+   "cy": 204.04999999999998,
+   "rx": 33.6,
+   "ry": 40.81
+  },
+  "eyes": {
+   "cx": 60.48,
+   "cy": 169.07,
+   "rx": 33.6,
+   "ry": 34.98
+  },
+  "source": "renders/_rex_eager_v1_rgba.png + anchor_overrides.json",
+  "retrieved_at": "2026-08-04T01:21:12Z"
+ },
+ "rex_shock": {
+  "canvas": [
+   896,
+   1152
+  ],
+  "mouth": {
+   "cx": 448.0,
+   "cy": 610.5600000000001,
+   "rx": 179.20000000000002,
+   "ry": 172.79999999999998
+  },
+  "eyes": {
+   "cx": 465.92,
+   "cy": 345.59999999999997,
+   "rx": 224.0,
+   "ry": 109.44
+  },
+  "source": "renders/_rex_shock_rgba.png + anchor_overrides.json",
+  "retrieved_at": "2026-08-04T01:21:12Z"
+ },
+ "rex_shock_v1": {
+  "canvas": [
+   896,
+   1152
+  ],
+  "mouth": {
+   "cx": 430.08,
+   "cy": 616.32,
+   "rx": 179.20000000000002,
+   "ry": 155.52
+  },
+  "eyes": {
+   "cx": 403.2,
+   "cy": 322.56000000000006,
+   "rx": 232.96,
+   "ry": 109.44
+  },
+  "source": "renders/_rex_shock_v1_rgba.png + anchor_overrides.json",
+  "retrieved_at": "2026-08-04T01:21:12Z"
+ },
+ "rex_determined": {
+  "canvas": [
+   732,
+   1157
+  ],
+  "mouth": {
+   "cx": 333.06,
+   "cy": 242.97,
+   "rx": 69.54,
+   "ry": 38.181000000000004
+  },
+  "eyes": {
+   "cx": 318.42,
+   "cy": 179.335,
+   "rx": 84.18,
+   "ry": 38.181000000000004
+  },
+  "source": "renders/_rex_determined_rgba.png + anchor_overrides.json",
+  "retrieved_at": "2026-08-04T01:21:12Z"
+ }
+}

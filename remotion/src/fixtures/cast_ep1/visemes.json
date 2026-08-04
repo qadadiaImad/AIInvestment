@@ -1,0 +1,84 @@
+{
+ "rex_determined": {
+  "closed": "characters/cast_ep1/visemes/rex_determined__closed.svg",
+  "half": "characters/cast_ep1/visemes/rex_determined__half.svg",
+  "open": "characters/cast_ep1/visemes/rex_determined__open.svg",
+  "oh": "characters/cast_ep1/visemes/rex_determined__oh.svg",
+  "blink": "characters/cast_ep1/visemes/rex_determined__blink.svg"
+ },
+ "rex_eager": {
+  "closed": "characters/cast_ep1/visemes/rex_eager__closed.svg",
+  "open": "characters/cast_ep1/visemes/rex_eager__open.svg",
+  "oh": "characters/cast_ep1/visemes/rex_eager__oh.svg",
+  "half": "characters/cast_ep1/visemes/rex_eager__half.svg",
+  "blink": "characters/cast_ep1/visemes/rex_eager__blink.svg"
+ },
+ "rex_eager_v1": {
+  "closed": "characters/cast_ep1/visemes/rex_eager_v1__closed.svg",
+  "half": "characters/cast_ep1/visemes/rex_eager_v1__half.svg",
+  "open": "characters/cast_ep1/visemes/rex_eager_v1__open.svg",
+  "oh": "characters/cast_ep1/visemes/rex_eager_v1__oh.svg",
+  "blink": "characters/cast_ep1/visemes/rex_eager_v1__blink.svg"
+ },
+ "rex_shock": {
+  "open": "characters/cast_ep1/visemes/rex_shock__open.svg",
+  "oh": "characters/cast_ep1/visemes/rex_shock__oh.svg",
+  "blink": "characters/cast_ep1/visemes/rex_shock__blink.svg",
+  "closed": "characters/cast_ep1/visemes/rex_shock__closed.svg",
+  "half": "characters/cast_ep1/visemes/rex_shock__half.svg"
+ },
+ "sol_armswide": {
+  "half": "characters/cast_ep1/visemes/sol_armswide__half.svg",
+  "oh": "characters/cast_ep1/visemes/sol_armswide__oh.svg",
+  "open": "characters/cast_ep1/visemes/sol_armswide__open.svg"
+ },
+ "sol_finger": {
+  "half": "characters/cast_ep1/visemes/sol_finger__half.svg",
+  "open": "characters/cast_ep1/visemes/sol_finger__open.svg",
+  "oh": "characters/cast_ep1/visemes/sol_finger__oh.svg",
+  "blink": "characters/cast_ep1/visemes/sol_finger__blink.svg"
+ },
+ "sol_point": {
+  "half": "characters/cast_ep1/visemes/sol_point__half.svg",
+  "open": "characters/cast_ep1/visemes/sol_point__open.svg",
+  "oh": "characters/cast_ep1/visemes/sol_point__oh.svg"
+ },
+ "sol_point_v1": {
+  "half": "characters/cast_ep1/visemes/sol_point_v1__half.svg",
+  "open": "characters/cast_ep1/visemes/sol_point_v1__open.svg",
+  "oh": "characters/cast_ep1/visemes/sol_point_v1__oh.svg"
+ },
+ "sol_smug": {
+  "half": "characters/cast_ep1/visemes/sol_smug__half.svg",
+  "open": "characters/cast_ep1/visemes/sol_smug__open.svg",
+  "oh": "characters/cast_ep1/visemes/sol_smug__oh.svg",
+  "blink": "characters/cast_ep1/visemes/sol_smug__blink.svg"
+ },
+ "sol_smug_v1": {
+  "half": "characters/cast_ep1/visemes/sol_smug_v1__half.svg",
+  "open": "characters/cast_ep1/visemes/sol_smug_v1__open.svg",
+  "oh": "characters/cast_ep1/visemes/sol_smug_v1__oh.svg",
+  "blink": "characters/cast_ep1/visemes/sol_smug_v1__blink.svg"
+ },
+ "sol_smug_v2": {
+  "half": "characters/cast_ep1/visemes/sol_smug_v2__half.svg",
+  "oh": "characters/cast_ep1/visemes/sol_smug_v2__oh.svg",
+  "open": "characters/cast_ep1/visemes/sol_smug_v2__open.svg"
+ },
+ "sol_wink": {
+  "half": "characters/cast_ep1/visemes/sol_wink__half.svg",
+  "open": "characters/cast_ep1/visemes/sol_wink__open.svg",
+  "oh": "characters/cast_ep1/visemes/sol_wink__oh.svg"
+ },
+ "sol_wink_v1": {
+  "half": "characters/cast_ep1/visemes/sol_wink_v1__half.svg",
+  "open": "characters/cast_ep1/visemes/sol_wink_v1__open.svg",
+  "oh": "characters/cast_ep1/visemes/sol_wink_v1__oh.svg"
+ },
+ "rex_shock_v1": {
+  "open": "characters/cast_ep1/visemes/rex_shock_v1__open.svg",
+  "closed": "characters/cast_ep1/visemes/rex_shock_v1__closed.svg",
+  "half": "characters/cast_ep1/visemes/rex_shock_v1__half.svg",
+  "oh": "characters/cast_ep1/visemes/rex_shock_v1__oh.svg"
+ }
+}

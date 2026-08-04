@@ -1,0 +1,101 @@
+[
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "closed",
+  "mask": "mouth",
+  "phrase": "mouth completely closed, lips pressed into a thin line, worried frown",
+  "prompt": "rexquant, 1boy, solo, orange hair, spiky hair, glasses, gray vest, white shirt, mouth completely closed, lips pressed into a thin line, worried frown, masterpiece, best quality, flat color, simple background, white background",
+  "negative": "worst quality, low quality, open mouth, teeth, tongue, screaming, shouting, gradient, glossy, 3d, realistic shading",
+  "seed": 95000,
+  "denoise": 0.9,
+  "out": "rex_shock_v1__closed__r3c0"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "closed",
+  "mask": "mouth",
+  "phrase": "closed mouth, thin frown line, no teeth",
+  "prompt": "rexquant, 1boy, solo, orange hair, spiky hair, glasses, gray vest, white shirt, closed mouth, thin frown line, no teeth, masterpiece, best quality, flat color, simple background, white background",
+  "negative": "worst quality, low quality, open mouth, teeth, tongue, screaming, shouting, gradient, glossy, 3d, realistic shading",
+  "seed": 95001,
+  "denoise": 0.9,
+  "out": "rex_shock_v1__closed__r3c1"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "closed",
+  "mask": "mouth",
+  "phrase": "small closed frowning mouth, calm",
+  "prompt": "rexquant, 1boy, solo, orange hair, spiky hair, glasses, gray vest, white shirt, small closed frowning mouth, calm, masterpiece, best quality, flat color, simple background, white background",
+  "negative": "worst quality, low quality, open mouth, teeth, tongue, screaming, shouting, gradient, glossy, 3d, realistic shading",
+  "seed": 95002,
+  "denoise": 0.9,
+  "out": "rex_shock_v1__closed__r3c2"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "half",
+  "mask": "mouth",
+  "phrase": "small slightly open mouth, talking",
+  "prompt": "rexquant, 1boy, solo, orange hair, spiky hair, glasses, gray vest, white shirt, small slightly open mouth, talking, masterpiece, best quality, flat color, simple background, white background",
+  "negative": "worst quality, low quality, wide open mouth, screaming, huge mouth, gradient, glossy, 3d, realistic shading",
+  "seed": 95003,
+  "denoise": 0.9,
+  "out": "rex_shock_v1__half__r3c0"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "half",
+  "mask": "mouth",
+  "phrase": "small parted lips, speaking softly",
+  "prompt": "rexquant, 1boy, solo, orange hair, spiky hair, glasses, gray vest, white shirt, small parted lips, speaking softly, masterpiece, best quality, flat color, simple background, white background",
+  "negative": "worst quality, low quality, wide open mouth, screaming, huge mouth, gradient, glossy, 3d, realistic shading",
+  "seed": 95004,
+  "denoise": 0.9,
+  "out": "rex_shock_v1__half__r3c1"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "half",
+  "mask": "mouth",
+  "phrase": "small narrow open mouth",
+  "prompt": "rexquant, 1boy, solo, orange hair, spiky hair, glasses, gray vest, white shirt, small narrow open mouth, masterpiece, best quality, flat color, simple background, white background",
+  "negative": "worst quality, low quality, wide open mouth, screaming, huge mouth, gradient, glossy, 3d, realistic shading",
+  "seed": 95005,
+  "denoise": 0.9,
+  "out": "rex_shock_v1__half__r3c2"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "oh",
+  "mask": "mouth",
+  "phrase": "small round o shaped mouth, whistling",
+  "prompt": "rexquant, 1boy, solo, orange hair, spiky hair, glasses, gray vest, white shirt, small round o shaped mouth, whistling, masterpiece, best quality, flat color, simple background, white background",
+  "negative": "worst quality, low quality, wide rectangular mouth, screaming, teeth, gradient, glossy, 3d, realistic shading",
+  "seed": 95006,
+  "denoise": 0.9,
+  "out": "rex_shock_v1__oh__r3c0"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "oh",
+  "mask": "mouth",
+  "phrase": "round o mouth, surprised",
+  "prompt": "rexquant, 1boy, solo, orange hair, spiky hair, glasses, gray vest, white shirt, round o mouth, surprised, masterpiece, best quality, flat color, simple background, white background",
+  "negative": "worst quality, low quality, wide rectangular mouth, screaming, teeth, gradient, glossy, 3d, realistic shading",
+  "seed": 95007,
+  "denoise": 0.9,
+  "out": "rex_shock_v1__oh__r3c1"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "oh",
+  "mask": "mouth",
+  "phrase": "small circular open mouth, flat color",
+  "prompt": "rexquant, 1boy, solo, orange hair, spiky hair, glasses, gray vest, white shirt, small circular open mouth, flat color, masterpiece, best quality, flat color, simple background, white background",
+  "negative": "worst quality, low quality, wide rectangular mouth, screaming, teeth, gradient, glossy, 3d, realistic shading",
+  "seed": 95008,
+  "denoise": 0.9,
+  "out": "rex_shock_v1__oh__r3c2"
+ }
+]

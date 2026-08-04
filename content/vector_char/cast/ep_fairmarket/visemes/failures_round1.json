@@ -1,0 +1,62 @@
+[
+ {
+  "pose": "rex_shock",
+  "viseme": "closed"
+ },
+ {
+  "pose": "rex_shock",
+  "viseme": "half"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "closed"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "half"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "open"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "oh"
+ },
+ {
+  "pose": "rex_shock_v1",
+  "viseme": "blink"
+ },
+ {
+  "pose": "sol_armswide",
+  "viseme": "open"
+ },
+ {
+  "pose": "sol_armswide",
+  "viseme": "blink"
+ },
+ {
+  "pose": "sol_point",
+  "viseme": "blink"
+ },
+ {
+  "pose": "sol_point_v1",
+  "viseme": "blink"
+ },
+ {
+  "pose": "sol_smug_v1",
+  "viseme": "blink"
+ },
+ {
+  "pose": "sol_smug_v2",
+  "viseme": "blink"
+ },
+ {
+  "pose": "sol_wink",
+  "viseme": "blink"
+ },
+ {
+  "pose": "sol_wink_v1",
+  "viseme": "blink"
+ }
+]
