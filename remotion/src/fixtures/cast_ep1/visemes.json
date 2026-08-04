@@ -85,5 +85,18 @@
   "half": "characters/cast_ep1/visemes/sol_laugh__half.svg",
   "oh": "characters/cast_ep1/visemes/sol_laugh__oh.svg",
   "open": "characters/cast_ep1/sol_laugh.svg"
+ },
+ "rex_skeptic": {
+  "closed": "characters/cast_ep1/visemes/rex_skeptic__closed.svg",
+  "half": "characters/cast_ep1/visemes/rex_skeptic__half.svg",
+  "open": "characters/cast_ep1/visemes/rex_skeptic__open.svg",
+  "oh": "characters/cast_ep1/visemes/rex_skeptic__oh.svg",
+  "blink": "characters/cast_ep1/visemes/rex_skeptic__blink.svg"
+ },
+ "rex_listen": {
+  "closed": "characters/cast_ep1/visemes/rex_listen__closed.svg",
+  "half": "characters/cast_ep1/visemes/rex_listen__half.svg",
+  "open": "characters/cast_ep1/visemes/rex_listen__open.svg",
+  "oh": "characters/cast_ep1/visemes/rex_listen__oh.svg"
  }
 }

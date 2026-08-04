@@ -209,18 +209,31 @@ export const turnXform = (
  * Amplitudes are in fractions of the figure's height, so a close-up and
  * a wide shot breathe by the same visible amount.
  */
-export const idle = (frame: number, seed: number, h: number): Xform => {
+export const idle = (frame: number, seed: number, h: number,
+                     temper: Temper = 'calm'): Xform => {
   const p = seed * 7.13;
-  // ~13.5 breaths/min at 30fps, and a weight shift about a third of that
-  const breath = Math.sin((frame + p) / 21.2);
-  const sway = Math.sin((frame + p * 1.7) / 61.0);
-  const rise = 1 + breath * 0.0055;
+  // TEMPER APPLIES HERE TOO. This used to be one curve for everybody, so
+  // the old man and the over-eager junior stood still in exactly the same
+  // way — which is half of why Rex read as the less alive of the two even
+  // on beats where his mouth WAS articulating. An eager kid breathes
+  // faster, shifts weight more often and can't keep his shoulders
+  // still; a veteran is economical.
+  const t = temper === 'eager'
+    ? {breath: 17.4, sway: 44.0, amp: 1.55, rot: 1.7, bob: 1.45}
+    : {breath: 21.2, sway: 61.0, amp: 1.00, rot: 1.0, bob: 1.00};
+  const breath = Math.sin((frame + p) / t.breath);
+  const sway = Math.sin((frame + p * 1.7) / t.sway);
+  // a second, slower sway on the eager curve so the motion doesn't read
+  // as one clean sine — a metronome is as dead as a freeze, just busier
+  const drift = temper === 'eager'
+    ? Math.sin((frame + p * 2.9) / 97.0) * 0.45 : 0;
+  const rise = 1 + breath * 0.0055 * t.bob;
   return {
-    dx: sway * h * 0.004,
-    dy: -breath * h * 0.0022,
+    dx: (sway + drift) * h * 0.004 * t.amp,
+    dy: -breath * h * 0.0022 * t.bob,
     sx: 1 / rise,               // volume preserving, as squash() requires
     sy: rise,
-    rot: sway * 0.28,
+    rot: (sway + drift * 0.6) * 0.28 * t.rot,
     opacity: 1, blur: 0,
   };
 };

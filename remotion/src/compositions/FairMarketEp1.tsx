@@ -256,7 +256,8 @@ const BEATS: Beat[] = [
   // captioning itself. This act is the ramp that EARNS that reaction:
   // one filing -> people track these portfolios like a leaderboard ->
   // here are the ones they watch -> somebody wrapped it in a fund.
-  {at: 738, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681},
+  {at: 738, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681,
+                      turns: [{at: 12, tx: 860, ty: 1200}]},
                      {poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08},
            {from: 52, only: 0, k: 1.36, kEnd: 1.48, tx: 520, ty: 1010}],
@@ -415,7 +416,8 @@ const BEATS: Beat[] = [
   // ═══ ACT 5 — THE PAYOFF ══════════════════════════════════════════════
   // Rex asks the empty room. Nobody is there to answer, which is the
   // setup for the pop-in.
-  {at: 3051, actors: [{poses: ["rex_listen"], kind: "full", x: 380, y: FLOOR_Y, h: 1010}],
+  {at: 3051, actors: [{poses: ["rex_listen"], kind: "full", x: 380, y: FLOOR_Y, h: 1010,
+                       turns: [{at: 16, tx: 900, ty: 1250}]}],
    shots: [{from: 0, k: 1.1, kEnd: 1.22, tx: 520, ty: 1120}],
    vo: "a5_rex_dowhat", speaker: "REX", line: "So what do I actually do with it?"},
 
@@ -530,7 +532,9 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   const amp = a.kind === "closeup" ? STAGE_H * 0.5 : a.h;
   // No boil. Its 2-frame random offset read as the picture vibrating on
   // these large clean vectors; idle() breathes and shifts weight instead.
-  const idl = idle(frame, pose.length, amp);
+  // temper is derived from WHO the drawing is, so no beat has to carry it
+  const temper = pose.startsWith("sol") ? "calm" : "eager";
+  const idl = idle(frame, pose.length, amp, temper);
   // THE HELD SHOT. toon.ts ships holdCurve() and squash() for exactly this
   // and neither was ever imported here, so a held drawing had no life
   // beyond breathing: it arrived and then simply sat. holdCurve gives the
@@ -567,8 +571,7 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   // Sol moves like a veteran, Rex like an over-eager junior — derived
   // from who the drawing is, so no beat has to carry it.
   const ix = interactXform(since, a.moves, a.turns,
-                           shot?.tx ?? hx, shot?.ty ?? hy,
-                           pose.startsWith("sol") ? "calm" : "eager");
+                           shot?.tx ?? hx, shot?.ty ?? hy, temper);
   return (
     <div style={{position: "absolute",
       left: left + idl.dx + drift * (hc - 0.68),

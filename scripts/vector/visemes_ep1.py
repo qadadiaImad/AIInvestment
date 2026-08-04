@@ -50,8 +50,13 @@ MASK_RY = 1.77
 SOL_POSES = ["sol_point", "sol_finger", "sol_armswide", "sol_point_v1",
              "sol_smug", "sol_wink", "sol_smug_v1", "sol_smug_v2",
              "sol_wink_v1", "sol_laugh"]
+# rex_skeptic and rex_listen were MISSING from this list, and that single
+# omission is why Rex reads as less alive than Sol: between them they carry
+# 5 of his 11 speaking beats, and a pose with no viseme art is delivered
+# with a completely static mouth. Every one of Sol's poses was covered, so
+# he articulates in all 18 of his. Measured, not guessed.
 REX_POSES = ["rex_eager", "rex_eager_v1", "rex_shock", "rex_shock_v1",
-             "rex_determined"]
+             "rex_determined", "rex_skeptic", "rex_listen"]
 
 SOL_LOCK = ("solquant, 1boy, solo, old man, gray hair, thick mustache, "
             "burgundy cardigan, yellow bow tie, plump")
@@ -370,6 +375,10 @@ def phase_sheets(comp_dir="comp", suffix="") -> None:
     for p in sorted((VIS / comp_dir).glob("*.png")):
         by_pose.setdefault(p.stem.split("__")[0], []).append(p)
     for pose, files in by_pose.items():
+        # the comp dir accumulates debug artefacts (_compare_grid.png etc.)
+        # whose stem is not a pose; skip them instead of dying on KeyError
+        if pose not in anchors:
+            continue
         a = anchors[pose]
         tiles = [_sheet_tile(flatten_white(load_base(pose)), "BASE", a)]
         for p in files:
