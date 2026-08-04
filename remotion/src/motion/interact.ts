@@ -168,6 +168,37 @@ export const turnXform = (
   };
 };
 
+/**
+ * IDLE. What a held drawing does when nothing is happening.
+ *
+ * `boil` was doing this job and it is the wrong tool here: it is a
+ * 2-frame random offset, which on a large clean vector figure does not
+ * read as hand-drawn media, it reads as the picture VIBRATING. Owner's
+ * note exactly. A body at rest instead has a slow breath — chest rises,
+ * a little vertical scale, volume preserved — and an even slower weight
+ * shift from foot to foot. Both are continuous sinusoids at frequencies
+ * far below the flicker threshold, seeded per character so two figures
+ * never breathe in lockstep.
+ *
+ * Amplitudes are in fractions of the figure's height, so a close-up and
+ * a wide shot breathe by the same visible amount.
+ */
+export const idle = (frame: number, seed: number, h: number): Xform => {
+  const p = seed * 7.13;
+  // ~13.5 breaths/min at 30fps, and a weight shift about a third of that
+  const breath = Math.sin((frame + p) / 21.2);
+  const sway = Math.sin((frame + p * 1.7) / 61.0);
+  const rise = 1 + breath * 0.0055;
+  return {
+    dx: sway * h * 0.004,
+    dy: -breath * h * 0.0022,
+    sx: 1 / rise,               // volume preserving, as squash() requires
+    sy: rise,
+    rot: sway * 0.28,
+    opacity: 1, blur: 0,
+  };
+};
+
 /** Fold every move + turn active on this frame into one transform. */
 export const interactXform = (
   since: number,

@@ -11,10 +11,11 @@
 // all layout math is untouched. Facts/rails unchanged from v2.
 import React from "react";
 import {AbsoluteFill, Audio, Img, Sequence, staticFile, useCurrentFrame} from "remotion";
-import {actionCurve, bob, boil} from "../motion/toon";
+import {actionCurve} from "../motion/toon";
 import {FlashCut, ShockFlicks, ShockRing, SpeedLines, kick} from "../motion/ToonFX";
 import {Grain, Vignette} from "../motion/Polish";
-import {Move, Turn, interactXform} from "../motion/interact";
+import {Move, Turn, idle, interactXform} from "../motion/interact";
+import {FLOOR_Y, Room, TVFrame, TVGlass, TV_SCREEN, H as STAGE_H} from "../motion/Set";
 import anchors from "../fixtures/cast_ep1/pose_anchors.json";
 import mouthTracks from "../fixtures/cast_ep1/mouth_tracks.json";
 import visemes from "../fixtures/cast_ep1/visemes.json";
@@ -55,7 +56,9 @@ type Shot = {from: number; k?: number; tx?: number; ty?: number; only?: number;
              // are about money and power being moved quietly; playing them
              // in the same bright light as the rest of the episode was
              // what made her read as a caption rather than a character.
-             mood?: "dark"};
+             mood?: "dark";
+             // put a caricature on the studio monitor for this shot
+             tvPose?: string};
 const shotAt = (shots: Shot[] | undefined, since: number, hold: number) => {
   if (!shots || !shots.length) {
     return {shot: undefined, shotSince: since, shotLen: hold};
@@ -122,6 +125,13 @@ type Beat = {
   fx?: boolean;
 };
 
+// One height per character, used everywhere they stand. Rex is the
+// TALLER of the two — he is the young one; Sol is a short round old man,
+// which is also why Sol's oversized chibi head no longer makes him read
+// as a giant. Both plant on Set.FLOOR_Y, so the floor is shared.
+const REX_H = 1430;
+const SOL_H = 1165;
+
 // ONE drawing per beat. Every pose here is "core" tier in the identity
 // gate (scripts/vector/pose_contact.py -> same haircut, same 3/4 head
 // direction, same wardrobe as the canonical sol_smug / rex_eager) AND a
@@ -133,8 +143,8 @@ type Beat = {
 // thinner-lined rendering cluster).
 const BEATS: Beat[] = [
   {at: 0, title: ["MARKET LESSONS", "WITH SOL", "ep.1 — the 'fair' market"],
-   actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 740, y: 1330, h: 760}],
-   shots: [{from: 0}, {from: 56, k: 1.5, tx: 480, ty: 1100}],
+   actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 660, y: 1170, h: 1010}],
+   shots: [{from: 0}, {from: 56, k: 1.45, tx: 540, ty: 1080}],
    vo: "v1_sol_intro", speaker: "SOL",
    line: "Kid… let me tell you about the so-called “fair” market."},
   // Rex says "Boss!" — so there has to be a boss to say it TO. Sol now
@@ -146,9 +156,13 @@ const BEATS: Beat[] = [
   // head-and-shoulders standing next to a grounded full figure reads as
   // a cut-out pasted in, which is the exact complaint this pass exists
   // to fix. sol_point_v1 is core tier, clean, and otherwise unused.
-  {at: 110, actors: [{poses: ["rex_eager"], kind: "full", x: 330, y: 1770, h: 1000,
-                      turns: [{at: 10, tx: 860, ty: 1000}]},
-                     {poses: ["sol_point_v1"], kind: "full", x: 855, y: 1795, h: 780}],
+  // Every standing figure is planted on FLOOR_Y now, and Rex is the
+  // TALLER of the two — he is the young one and Sol is a short round old
+  // man, which is also why Sol's head can stay large without him reading
+  // as a giant.
+  {at: 110, actors: [{poses: ["rex_eager"], kind: "full", x: 320, y: FLOOR_Y, h: REX_H,
+                      turns: [{at: 10, tx: 860, ty: 1120}]},
+                     {poses: ["sol_point_v1"], kind: "full", x: 830, y: FLOOR_Y, h: SOL_H}],
    shots: [{from: 0}, {from: 60, only: 0, k: 1.3, tx: 540, ty: 760}],
    sfx: [{at: 14, name: "sfx_whip", vol: 0.42}],
    vo: "v2_rex_fundamentals", speaker: "REX", line: "Boss! It's all fundamentals, right?!", energy: 1},
@@ -163,8 +177,8 @@ const BEATS: Beat[] = [
   // rendered 432px wide against rex_listen's 128px: a giant beside a
   // child. rex_skeptic's proportions match Sol's, and "arms crossed, not
   // convinced" is the right read for being laughed at anyway.
-  {at: 195, actors: [{poses: ["sol_laugh"], kind: "full", x: 745, y: 1805, h: 770},
-                     {poses: ["rex_skeptic"], kind: "full", x: 300, y: 1815, h: 1040,
+  {at: 195, actors: [{poses: ["sol_laugh"], kind: "full", x: 760, y: FLOOR_Y, h: SOL_H},
+                     {poses: ["rex_skeptic"], kind: "full", x: 300, y: FLOOR_Y, h: REX_H,
                       turns: [{at: 14, tx: -260, ty: 1820}]}],
    sfx: [{at: 18, name: "sfx_whip", vol: 0.38}],
    vo: "v3_sol_ha", speaker: "SOL", line: "HA! …Fundamentals.", energy: 1.1},
@@ -176,10 +190,10 @@ const BEATS: Beat[] = [
   // drawings — its head measures a quarter of Sol's at equal ink height,
   // so it is staged much larger and read as foreground rather than
   // matched by body height.
-  {at: 255, actors: [{poses: ["rex_listen"], kind: "full", x: 250, y: 1830, h: 1120},
-                     {poses: ["sol_finger"], kind: "full", x: 760, y: 1640, h: 1000,
+  {at: 255, actors: [{poses: ["rex_listen"], kind: "full", x: 268, y: FLOOR_Y, h: 1090},
+                     {poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: SOL_H,
                       moves: [{at: 0, kind: "inR"}]}],
-   shots: [{from: 0}, {from: 30, only: 1, k: 1.5, tx: 560, ty: 800}, {from: 74}],
+   shots: [{from: 0}, {from: 30, only: 1, k: 1.5, tx: 560, ty: 900}, {from: 74}],
    sfx: [{at: 4, name: "sfx_whoosh", vol: 0.45}],
    vo: "v4_sol_politics", speaker: "SOL", line: "Sometimes… it trades on POLITICS."},
   {at: 345, actors: [{poses: ["rex_shock"], kind: "closeup", x: 540, y: 900, h: 1920}],
@@ -192,11 +206,10 @@ const BEATS: Beat[] = [
   // on the left, which crossed the line the rest of the episode
   // establishes — and it also stacked him under the exhibit card instead
   // of balancing it.
-  {at: 400, actors: [{poses: ["sol_point"], kind: "full", x: 800, y: 1830, h: 800},
+  {at: 400, actors: [{poses: ["sol_point"], kind: "full", x: 800, y: FLOOR_Y, h: SOL_H},
                      // Rex is present for this whole 8s but only cut to
                      // once, silently, to react to the reveal — the shot
                      // that makes Sol's line land on somebody.
-                     {poses: ["rex_skeptic"], kind: "bust", x: 540, y: 980, h: 1120},
                      // The lawmaker the filing is about. A generic senior
                      // -stateswoman ARCHETYPE drawn as flat caricature —
                      // never a likeness of a named individual, and no
@@ -204,11 +217,13 @@ const BEATS: Beat[] = [
                      // what the public filing states, and the footer
                      // carries the parody / not-an-accusation rail.
                      // Steepled fingers, narrowed eyes: she is thinking
-                     // about the trade, not presenting it. She rises into
-                     // frame rather than cutting in, and the shot creeps
-                     // toward her while she is held.
-                     {poses: ["congress_scheme"], kind: "full", x: 430, y: 1880, h: 1120,
-                      moves: [{at: 88, kind: "inB"}]}],
+                     // about the trade, not presenting it. She now plays
+                     // ON THE STUDIO MONITOR (Shot.tvPose) rather than
+                     // standing in the room — she is archive footage the
+                     // show is running, which is both truer to what she
+                     // is and removes the scale problem of a
+                     // differently-drawn figure sharing the floor.
+                     {poses: ["rex_skeptic"], kind: "bust", x: 540, y: 1010, h: 1060}],
    card: {title: "JULY 2022 · PUBLIC FILING",
           lines: ["The then-Speaker's household sold",
                   "25,000 NVIDIA shares — days before",
@@ -228,11 +243,12 @@ const BEATS: Beat[] = [
    // dark, then 33 more with Sol in frame presenting her, which is what
    // ties her into the telling instead of interrupting it.
    shots: [{from: 0, only: 0},
-           {from: 58, only: 0, k: 3.0, tx: 520, ty: 760, hideCard: true},
-           {from: 88, only: 2, mood: "dark", k: 1.0, kEnd: 1.22, hideCard: true},
-           {from: 138, show: [0, 2], mood: "dark"},
-           {from: 171, only: 1, hideCard: true},
-           {from: 190, only: 0, k: 2.2, tx: 560, ty: 900, hideCard: true}],
+           {from: 58, only: 0, k: 3.0, tx: 520, ty: 860},
+           {from: 88, only: 0, mood: "dark", tvPose: "congress_scheme"},
+           {from: 138, only: 0, mood: "dark", tvPose: "congress_scheme",
+            k: 1.0, kEnd: 1.12},
+           {from: 171, only: 1},
+           {from: 190, only: 0, k: 2.2, tx: 560, ty: 960}],
    vo: "v6_sol_exhibit", speaker: "SOL",
    line: "July 2022. The Speaker's household sold NVIDIA — days before the chip subsidies passed. At a loss, kid."},
   // rex_eager instead of rex_shock_v1, and NO panel. The panel existed to
@@ -242,9 +258,7 @@ const BEATS: Beat[] = [
   // She RETURNS here — arms crossed, cold, while the card explains that
   // the trades became a product. One appearance reads as a cutaway; a
   // recurring figure reads as a character in the story.
-  {at: 640, actors: [{poses: ["rex_eager"], kind: "full", x: 745, y: 1810, h: 900},
-                     {poses: ["congress_smug"], kind: "full", x: 330, y: 1900, h: 1240,
-                      moves: [{at: 4, kind: "inB"}]}],
+  {at: 640, actors: [{poses: ["rex_eager"], kind: "full", x: 620, y: FLOOR_Y, h: REX_H}],
    card: {title: "FEB 2023 · IT BECAME A PRODUCT",
           lines: ["An ETF now copies Democratic lawmakers'",
                   "disclosed trades. Actively managed."],
@@ -252,8 +266,8 @@ const BEATS: Beat[] = [
    // Both in frame: Rex is the one SPEAKING this line, so cutting him out
    // of it repeats the mistake that shut his mouth mid-scream at 345.
    // She looms behind him instead.
-   shots: [{from: 0, show: [0, 1], mood: "dark", k: 1.0, kEnd: 1.1},
-           {from: 47, only: 0, k: 1.4, tx: 700, ty: 1120}],
+   shots: [{from: 0, mood: "dark", tvPose: "congress_smug"},
+           {from: 47, k: 1.35, tx: 600, ty: 1180}],
    // No shout graphic: with both characters staged there is nowhere for
    // 150pt type to land except across a face, and the subtitle already
    // carries the line. The impact FX stay.
@@ -272,9 +286,9 @@ const BEATS: Beat[] = [
   // ...and then he's gone. The vanish is what MOTIVATES the pop-in at
   // 895: Rex asks an empty room, and Sol answers from somewhere he
   // wasn't. Without the exit, the pop is just an arrival.
-  {at: 740, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 540, y: 900, h: 1250,
+  {at: 740, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 540, y: 1040, h: 1330,
                       moves: [{at: 138, kind: "vanish"}]}],
-   shots: [{from: 0}, {from: 64, k: 1.35, tx: 520, ty: 700}, {from: 119}],
+   shots: [{from: 0}, {from: 64, k: 1.3, tx: 520, ty: 880}, {from: 119}],
    sfx: [{at: 138, name: "sfx_poof", vol: 0.5}],
    vo: "v8_sol_legal", speaker: "SOL",
    line: "All disclosed. In ranges. Up to 45 days late. All legal."},
@@ -284,16 +298,18 @@ const BEATS: Beat[] = [
   // right and Rex's head whips round to find him. Both stay on screen for
   // the answer, so the last beat is two characters in one space rather
   // than two solo portraits cut together.
-  {at: 895, actors: [{poses: ["rex_eager"], kind: "full", x: 380, y: 1800, h: 1030,
-                      turns: [{at: 56, tx: 830, ty: 520}]},
+  {at: 895, actors: [{poses: ["rex_eager"], kind: "full", x: 360, y: FLOOR_Y, h: REX_H,
+                      turns: [{at: 56, tx: 830, ty: 1060}]},
                      // sol_smug_v1: clean silhouette, so he pops in as a
                      // floating figure with no backing plate.
-                     {poses: ["sol_smug_v1"], kind: "bust", x: 800, y: 620, h: 700,
+                     // he pops up BEHIND THE DESK beside Rex now, not in
+                     // mid-air — the set gives him somewhere to be
+                     {poses: ["sol_smug_v1"], kind: "bust", x: 862, y: 1268, h: 640,
                       moves: [{at: 52, kind: "pop"}]}],
-   shots: [{from: 0, only: 0, k: 1.3, tx: 500, ty: 700},
+   shots: [{from: 0, only: 0, k: 1.25, tx: 520, ty: 1000},
            {from: 50}],
    // beside REX's measured head (~356,1076), fanning up toward Sol
-   flicks: [{at: 57, x: 520, y: 950}],
+   flicks: [{at: 57, x: 560, y: 1130}],
    sfx: [{at: 52, name: "sfx_pop", vol: 0.6},
          {at: 60, name: "sfx_whip", vol: 0.42}],
    vo: "v9_rex_filings", speaker: "REX", line: "So — read the filings!",
@@ -377,9 +393,10 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   // reads as a zoom.
   const act = actionCurve(cycling ? swapSince : shotSince, 2, 5, 8);
   const pop = 0.955 + 0.045 * Math.min(1, Math.max(0, act));
-  const amp = a.kind === "closeup" ? H * 0.5 : a.h;
-  const bl = boil(frame, pose.length, amp * 0.0015);
-  const by = bob(frame, pose.length + 2, amp * 0.004, 36);
+  const amp = a.kind === "closeup" ? STAGE_H * 0.5 : a.h;
+  // No boil. Its 2-frame random offset read as the picture vibrating on
+  // these large clean vectors; idle() breathes and shifts weight instead.
+  const idl = idle(frame, pose.length, amp);
   const scale = a.kind === "full" ? a.h / d.ink_h
     : a.kind === "closeup"
     // cover the frame: no canvas edge can fall inside it. 1.04 pads the
@@ -404,11 +421,11 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   const ix = interactXform(since, a.moves, a.turns,
                            shot?.tx ?? hx, shot?.ty ?? hy);
   return (
-    <div style={{position: "absolute", left: left + bl.x, top: top + by + bl.y,
+    <div style={{position: "absolute", left: left + idl.dx, top: top + idl.dy,
       width: w, height: h,
       transform: `translate(${ix.dx}px, ${ix.dy}px) `
-        + `scale(${pop * ix.sx}, ${pop * ix.sy}) `
-        + `rotate(${ix.rot + (panel ? -1.2 : 0)}deg)`,
+        + `scale(${pop * ix.sx * idl.sx}, ${pop * ix.sy * idl.sy}) `
+        + `rotate(${ix.rot + idl.rot + (panel ? -1.2 : 0)}deg)`,
       transformOrigin: a.kind === "full" ? `${d.anchor[0] * 100}% ${d.anchor[1] * 100}%` : "50% 60%",
       opacity: Math.min(1, since / 3) * ix.opacity,
       ...(ix.blur > 0.05 ? {filter: `blur(${ix.blur}px)`} : {}),
@@ -419,24 +436,53 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   );
 };
 
+// The exhibit is now BROADCAST — it fills the studio monitor rather than
+// floating in the air, so the characters are looking at something in the
+// room with them. Type is sized to the screen, not the frame.
 const ExhibitCard: React.FC<{c: Card; since: number}> = ({c, since}) => {
-  const pop = 0.9 + 0.1 * Math.min(1, since / 8);
+  const slide = Math.min(1, since / 9);
   return (
-    <div style={{position: "absolute", left: 90, top: 300, width: 900,
-      background: "#FFFDF4", border: "6px solid #111", borderRadius: 10,
-      transform: `scale(${pop}) rotate(-1.2deg)`, padding: "34px 40px",
-      boxShadow: "10px 12px 0 rgba(0,0,0,0.3)", fontFamily: "Arial", color: "#111"}}>
-      <div style={{fontFamily: "Impact, Arial", fontSize: 44, letterSpacing: 1,
-        borderBottom: "4px solid #111", paddingBottom: 10, marginBottom: 18}}>{c.title}</div>
+    <div style={{position: "absolute", inset: 0, background: "#F7F4E9",
+      fontFamily: "Arial", color: "#111", padding: "26px 34px",
+      transform: `translateY(${(1 - slide) * 14}px)`, opacity: slide}}>
+      <div style={{fontFamily: "Impact, Arial", fontSize: 38, letterSpacing: 1,
+        borderBottom: "4px solid #111", paddingBottom: 8, marginBottom: 14}}>{c.title}</div>
       {c.lines.map((ln, i) => (
-        <div key={i} style={{fontSize: 38, fontWeight: 700, lineHeight: 1.5,
-          opacity: since > 14 + i * 22 ? 1 : 0}}>{ln}</div>
+        <div key={i} style={{fontSize: 31, fontWeight: 700, lineHeight: 1.36,
+          opacity: since > 14 + i * 20 ? 1 : 0}}>{ln}</div>
       ))}
       {c.big ? (
-        <div style={{fontFamily: "Impact, Arial", fontSize: 150, textAlign: "center",
-          margin: "16px 0 4px", color: "#7A1F2B", opacity: since > 30 ? 1 : 0}}>{c.big}</div>
+        <div style={{fontFamily: "Impact, Arial", fontSize: 104, textAlign: "center",
+          margin: "2px 0 0", color: "#7A1F2B", opacity: since > 30 ? 1 : 0}}>{c.big}</div>
       ) : null}
-      {c.foot ? <div style={{fontSize: 24, marginTop: 14, color: "#555"}}>{c.foot}</div> : null}
+      {c.foot ? (
+        <div style={{fontSize: 20, position: "absolute", left: 34, bottom: 18,
+          color: "#555"}}>{c.foot}</div>
+      ) : null}
+    </div>
+  );
+};
+
+// A caricature playing on the monitor. Contained by the screen, so she
+// is always "footage the show is running" rather than a figure standing
+// impossibly in the room next to the cast.
+const TVPose: React.FC<{pose: string; since: number}> = ({pose, since}) => {
+  const d = AN[pose];
+  if (!d) return null;
+  // Framed like an interview insert, not a full-length portrait: a
+  // standing figure letterboxed into a 16:9 screen is a sliver, so she
+  // is pushed in until her head and hands fill the picture.
+  const s = (TV_SCREEN.h * 1.85) / d.h;
+  const w = d.w * s, h = d.h * s;
+  const rise = Math.min(1, since / 12);
+  return (
+    <div style={{position: "absolute", inset: 0, overflow: "hidden",
+      background: "linear-gradient(180deg,#1B2438 0%,#0E1422 100%)"}}>
+      <Img src={staticFile(d.src)}
+        style={{position: "absolute", width: w, height: h,
+          left: TV_SCREEN.w / 2 - w / 2,
+          top: TV_SCREEN.h * 0.06 - h * 0.06 + (1 - rise) * 30,
+          opacity: rise}} />
     </div>
   );
 };
@@ -489,11 +535,21 @@ export const FairMarketEp1: React.FC = () => {
       <div style={{position: "absolute", inset: 0,
         transform: `translate(${k.x}px, ${k.y * 0.4}px) scale(${1 + 0.03 * Math.max(0, 1 - since / 10) * nrg})`,
         transformOrigin: "50% 45%"}}>
-        <div style={{position: "absolute", left: 540 - 640, top: 980 - 640, width: 1280,
-          height: 1280, borderRadius: "50%",
-          background: shot?.mood === "dark" ? "#141A2B" : "#1A2740"}} />
+        <Room dark={shot?.mood === "dark"} />
+        {cur.card || shot?.tvPose ? (
+          <>
+            <TVFrame glow />
+            <div style={{position: "absolute", left: TV_SCREEN.x, top: TV_SCREEN.y,
+              width: TV_SCREEN.w, height: TV_SCREEN.h, overflow: "hidden",
+              borderRadius: 4}}>
+              {shot?.tvPose ? <TVPose pose={shot.tvPose} since={shotSince} />
+                : cur.card ? <ExhibitCard c={cur.card} since={since} /> : null}
+            </div>
+            <TVGlass />
+          </>
+        ) : null}
         {/* DARK MOOD. Sits above the room and below the characters, so the
-            figure stays readable while the space around her goes cold and
+            figures stay readable while the space around them goes cold and
             closes in — a slow squeeze rather than a cut to black. */}
         {shot?.mood === "dark" ? (
           <div style={{position: "absolute", inset: 0, pointerEvents: "none",
@@ -513,7 +569,6 @@ export const FairMarketEp1: React.FC = () => {
               color: "#9FB2D8"}}>{cur.title[2]}</div>
           </div>
         ) : null}
-        {cur.card && !shot?.hideCard ? <ExhibitCard c={cur.card} since={since} /> : null}
         {cur.actors.map((a, i) => {
           if (shot?.show && !shot.show.includes(i)) return null;
           if (!shot?.show && shot?.only !== undefined && shot.only !== i) return null;
