@@ -227,53 +227,107 @@ const barAt = (i: number): Bar => {
   return {o, c, h: Math.max(o, c) + wick, l: Math.min(o, c) - wick};
 };
 
+
+/** Trading-day calendar without Date(): 21 sessions a month, deterministic. */
+const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
+                'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+const dayLabel = (i: number) => {
+  const k = ((i % 252) + 252) % 252;      // 252 sessions ≈ one year
+  return `${MONTHS[Math.floor(k / 21)]} ${(k % 21) * 1 + 1}`;
+};
+
+/** Round a span out to a readable step, so the axis lands on flat numbers
+ *  (100, 102.5, 105 …) instead of 101.37. */
+const niceStep = (span: number) => {
+  const raw = span / 4;
+  const mag = Math.pow(10, Math.floor(Math.log10(Math.max(raw, 1e-6))));
+  const n = raw / mag;
+  return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * mag;
+};
+
 export const TickerTape: React.FC<{
   frame: number; w: number; h: number; label: string; sub?: string;
-  /** Drop the tape's own header/price chrome. Used when the episode title
-   *  is over the monitor: two unrelated blocks of text stacked on each
-   *  other read as a layout bug, and the candles alone still say
-   *  "this is a market" perfectly well. */
+  /** Drop the chart's header chrome. Used when the episode title is over
+   *  the monitor: two unrelated blocks of text stacked on each other read
+   *  as a layout bug, and the candles alone still say "this is a market". */
   bare?: boolean;
 }> = ({frame, w, h, label, sub, bare}) => {
-  const VIS = 26;                       // bars on screen
+  const VIS = 30;                       // bars on screen
   const FPB = 7;                        // frames per new bar
   const head = Math.floor(frame / FPB);
-  const sub01 = (frame % FPB) / FPB;    // sub-bar scroll, so it glides
+  const sub01 = (frame % FPB) / FPB;
   const bars: Bar[] = [];
   for (let i = 0; i < VIS + 1; i++) bars.push(barAt(head - VIS + i));
 
-  // The newest bar is still forming: walk its close inside its own range,
-  // then let it settle onto its real close as it leaves the live slot.
+  // the newest bar is still forming: its close wanders inside its own range
   const live = bars[bars.length - 1];
-  const t = sub01;
-  if (t <= 0.86) {
+  if (sub01 <= 0.86) {
     live.c = live.l + (live.h - live.l) *
-      (0.5 + 0.42 * Math.sin(t * 9.1 + head) * (1 - t * 0.55));
+      (0.5 + 0.42 * Math.sin(sub01 * 9.1 + head) * (1 - sub01 * 0.55));
   }
 
-  const top = 54, bot = h - 40;
-  const lo = Math.min(...bars.map((b) => b.l));
-  const hi = Math.max(...bars.map((b) => b.h));
-  const pad = (hi - lo) * 0.12 || 1;
-  const yOf = (v: number) =>
-    bot - ((v - (lo - pad)) / ((hi + pad) - (lo - pad))) * (bot - top);
+  // THE SCALE MUST NOT BREATHE. Fitting min/max to the visible window
+  // recomputed the axis every single frame, so the candles inflated and
+  // deflated as bars scrolled in and out — the "widening" that made this
+  // unpleasant to watch. The range is taken from a long trailing window
+  // and then SNAPPED to a round step, so it holds still for seconds at a
+  // time and only ever steps by a whole gridline.
+  const wide: Bar[] = [];
+  for (let i = 0; i < 110; i++) wide.push(barAt(head - 110 + i));
+  const wLo = Math.min(...wide.map((b) => b.l));
+  const wHi = Math.max(...wide.map((b) => b.h));
+  const step = niceStep(wHi - wLo);
+  const lo = Math.floor(wLo / step) * step - step * 0.25;
+  const hi = Math.ceil(wHi / step) * step + step * 0.25;
 
-  const slot = w / VIS;
-  const bw = slot * 0.56;
+  const padR = 96, padB = 34, top = bare ? 18 : 62;
+  const plotW = w - padR, bot = h - padB;
+  const yOf = (v: number) => bot - ((v - lo) / (hi - lo)) * (bot - top);
+
+  const levels: number[] = [];
+  for (let v = Math.ceil(lo / step) * step; v <= hi; v += step) levels.push(v);
+
+  const slot = plotW / VIS;
+  const bw = Math.max(4, slot * 0.58);
   const UP = '#00E676', DOWN = '#FF3B30';
   const last = live.c, prev = bars[bars.length - 2].c;
   const upNow = last >= prev;
+  const chg = ((last / bars[0].c - 1) * 100);
 
   return (
     <div style={{position: 'absolute', inset: 0, overflow: 'hidden',
-      background: 'linear-gradient(180deg,#0A1018 0%,#050A12 100%)'}}>
+      background: 'linear-gradient(180deg,#040A12 0%,#02070A 100%)'}}>
       <svg width={w} height={h} style={{position: 'absolute', inset: 0}}>
-        {[0.2, 0.4, 0.6, 0.8].map((g) => (
-          <line key={g} x1={0} x2={w} y1={top + (bot - top) * g}
-            y2={top + (bot - top) * g} stroke="#16202F" strokeWidth={2} />
+        {/* PRICE LEVELS — ruled, labelled, and they stay put */}
+        {levels.map((v) => (
+          <g key={v}>
+            <line x1={0} x2={plotW} y1={yOf(v)} y2={yOf(v)}
+              stroke="#12202E" strokeWidth={1.5} />
+            <text x={plotW + 10} y={yOf(v) + 5} fill="#5A7290"
+              fontFamily="Arial" fontSize={15}>{v.toFixed(step < 1 ? 2 : 1)}</text>
+          </g>
         ))}
-        {/* the tape scrolls a whole slot per bar, offset sub-bar so it
-            glides instead of stepping */}
+        {/* SESSION MARKERS — a dated x-axis, so the chart reads as time */}
+        <g transform={`translate(${-sub01 * slot},0)`}>
+          {bars.map((b, i) => {
+            const idx = head - VIS + i;
+            if (i % 6 !== 0) return null;
+            return (
+              <g key={`d${i}`}>
+                <line x1={i * slot + slot / 2} x2={i * slot + slot / 2}
+                  y1={top} y2={bot} stroke="#0D1926" strokeWidth={1} />
+                <text x={i * slot + slot / 2} y={bot + 20} fill="#4C6488"
+                  fontFamily="Arial" fontSize={14} textAnchor="middle">
+                  {dayLabel(idx)}
+                </text>
+              </g>
+            );
+          })}
+        </g>
+        <line x1={0} x2={plotW} y1={bot} y2={bot} stroke="#1E3348" strokeWidth={2} />
+        <line x1={plotW} x2={plotW} y1={top} y2={bot} stroke="#1E3348" strokeWidth={2} />
+
+        {/* the candles */}
         <g transform={`translate(${-sub01 * slot},0)`}>
           {bars.map((b, i) => {
             const x = i * slot + slot / 2;
@@ -283,40 +337,132 @@ export const TickerTape: React.FC<{
             return (
               <g key={i} opacity={i === 0 ? 1 - sub01 : 1}>
                 <line x1={x} x2={x} y1={yOf(b.h)} y2={yOf(b.l)}
-                  stroke={col} strokeWidth={isLive ? 3 : 2} opacity={0.85} />
+                  stroke={col} strokeWidth={isLive ? 2.6 : 1.8} opacity={0.9} />
                 <rect x={x - bw / 2} y={Math.min(yO, yC)} width={bw}
                   height={Math.max(2, Math.abs(yC - yO))} fill={col}
-                  opacity={isLive ? 0.95 : 0.8} />
+                  opacity={isLive ? 1 : 0.86} />
               </g>
             );
           })}
         </g>
-        {/* last-price rule — the one line the eye can track across a cut */}
-        <line x1={0} x2={w} y1={yOf(last)} y2={yOf(last)}
-          stroke={upNow ? UP : DOWN} strokeWidth={1.5}
-          strokeDasharray="7 6" opacity={0.5} />
+
+        {/* last-price rule + tag on the axis, the one line the eye tracks */}
+        <line x1={0} x2={plotW} y1={yOf(last)} y2={yOf(last)}
+          stroke={upNow ? UP : DOWN} strokeWidth={1.4}
+          strokeDasharray="6 6" opacity={0.55} />
+        <rect x={plotW + 2} y={yOf(last) - 12} width={padR - 6} height={24}
+          rx={3} fill={upNow ? UP : DOWN} />
+        <text x={plotW + 8} y={yOf(last) + 5} fill="#04120A"
+          fontFamily="Arial" fontSize={15} fontWeight="bold">
+          {last.toFixed(2)}
+        </text>
       </svg>
 
       {bare ? null : (
         <>
-          <div style={{position: 'absolute', left: 22, top: 12,
-            fontFamily: 'Impact, Arial', fontSize: 23, letterSpacing: 2.5,
-            color: '#7C93B5'}}>{label}</div>
-          {sub ? (
-            <div style={{position: 'absolute', left: 22, top: 38, fontSize: 15,
-              letterSpacing: 1, color: '#4C6488', fontFamily: 'Arial'}}>{sub}</div>
-          ) : null}
-          <div style={{position: 'absolute', right: 22, top: 12,
-            fontFamily: 'Impact, Arial', fontSize: 30,
-            color: upNow ? UP : DOWN}}>{last.toFixed(2)}</div>
+          {/* SYMBOL — deliberately fictional. Attaching a synthetic series
+              to a real ticker would be a claim about a real fund. */}
+          <div style={{position: 'absolute', left: 20, top: 10,
+            display: 'flex', alignItems: 'baseline', gap: 10}}>
+            <span style={{fontFamily: 'Impact, Arial', fontSize: 30,
+              letterSpacing: 1, color: '#E9F1FF'}}>LTX</span>
+            <span style={{fontFamily: 'Arial', fontSize: 14, letterSpacing: 1.5,
+              color: '#7C93B5'}}>{label}</span>
+          </div>
+          <div style={{position: 'absolute', left: 20, top: 40, fontSize: 13,
+            letterSpacing: 1, color: '#4C6488', fontFamily: 'Arial'}}>
+            {sub} · 1D
+          </div>
+          <div style={{position: 'absolute', right: 20, top: 10,
+            textAlign: 'right'}}>
+            <div style={{fontFamily: 'Impact, Arial', fontSize: 30,
+              color: upNow ? UP : DOWN, lineHeight: 1}}>{last.toFixed(2)}</div>
+            <div style={{fontFamily: 'Arial', fontSize: 14, marginTop: 2,
+              color: chg >= 0 ? UP : DOWN}}>
+              {chg >= 0 ? '+' : ''}{chg.toFixed(2)}%
+            </div>
+          </div>
         </>
       )}
 
-      {/* Non-negotiable: this series is synthetic and says so on its face. */}
-      <div style={{position: 'absolute', right: 22, bottom: 10, fontSize: 13,
+      {/* Non-negotiable: the series is synthetic and says so on its face. */}
+      <div style={{position: 'absolute', left: 20, bottom: 8, fontSize: 12,
         letterSpacing: 2, color: '#3C4C66', fontFamily: 'Arial'}}>
-        ILLUSTRATIVE
+        ILLUSTRATIVE — NOT A REAL PRICE HISTORY
       </div>
+    </div>
+  );
+};
+
+/**
+ * THE PERFORMANCE BARS. Two bars racing: a tracked lawmaker portfolio
+ * against the index, for one named year.
+ *
+ * COMPLIANCE, because this one carries a real number about a real
+ * household. Every figure is what a PUBLIC TRACKER REPORTED and the
+ * graphic says so on its face — the word "reported", the source and the
+ * year are all printed, and the subject is DISCLOSED trades, which are
+ * public record under the STOCK Act. No accusation is made or implied:
+ * outperforming an index is not an allegation. The episode's parody /
+ * public-record / not-advice footer still runs underneath.
+ */
+export const PerformanceExhibit: React.FC<{
+  since: number; w: number; h: number;
+  title: string; year: string;
+  a: {label: string; pct: number};
+  b: {label: string; pct: number};
+  foot: string;
+}> = ({since, w, h, title, year, a, b, foot}) => {
+  const padX = 52;
+  const maxPct = Math.max(a.pct, b.pct);
+  const trackW = w - padX * 2 - 150;
+  const rowY = [h * 0.44, h * 0.68];
+  const rows = [a, b];
+  return (
+    <div style={{position: 'absolute', inset: 0, background: PAPER,
+      fontFamily: 'Arial', color: INK}}>
+      <div style={{position: 'absolute', left: padX - 6, top: 16,
+        fontFamily: 'Impact, Arial', fontSize: 32, letterSpacing: 1,
+        opacity: ease(since, 0, 10)}}>{title}</div>
+      <div style={{position: 'absolute', right: padX - 6, top: 20,
+        fontFamily: 'Impact, Arial', fontSize: 30, color: MUTED,
+        opacity: ease(since, 4, 14)}}>{year}</div>
+
+      <svg width={w} height={h} style={{position: 'absolute', inset: 0}}>
+        {rows.map((r, i) => {
+          // staggered, so the eye reads one bar and then the other
+          const g = ease(since, 12 + i * 14, 50 + i * 14);
+          return (
+            <g key={i}>
+              <rect x={padX} y={rowY[i] - 24} width={trackW} height={48}
+                rx={6} fill="#E4DFCE" />
+              <rect x={padX} y={rowY[i] - 24}
+                width={trackW * (r.pct / maxPct) * g} height={48} rx={6}
+                fill={i === 0 ? RED : BLUE} />
+            </g>
+          );
+        })}
+      </svg>
+
+      {rows.map((r, i) => {
+        const g = ease(since, 12 + i * 14, 50 + i * 14);
+        return (
+          <div key={i}>
+            <div style={{position: 'absolute', left: padX, top: rowY[i] - 54,
+              fontSize: 19, letterSpacing: 1, color: MUTED,
+              opacity: ease(since, 10 + i * 14, 24 + i * 14)}}>{r.label}</div>
+            <div style={{position: 'absolute', left: padX + trackW + 14,
+              top: rowY[i] - 26, fontFamily: 'Impact, Arial', fontSize: 38,
+              color: i === 0 ? RED : BLUE}}>
+              +{(r.pct * g).toFixed(1)}%
+            </div>
+          </div>
+        );
+      })}
+
+      <div style={{position: 'absolute', left: padX, bottom: 12, right: padX,
+        fontSize: 15, lineHeight: 1.3, color: MUTED,
+        opacity: ease(since, 50, 64)}}>{foot}</div>
     </div>
   );
 };

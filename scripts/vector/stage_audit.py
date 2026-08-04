@@ -36,6 +36,26 @@ COMP = REPO / "remotion" / "src" / "compositions" / "FairMarketEp1.tsx"
 
 W, H = 1080, 1920
 FLOOR_Y = 1730
+TOTAL_FRAMES = 3600
+VO_DELAY = 6
+VO_DIR = REPO / "remotion" / "public" / "audio" / "fairmarket"
+FFPROBE = (REPO / "remotion" / "node_modules" / "@remotion"
+           / "compositor-win32-x64-msvc" / "ffprobe.exe")
+
+
+@lru_cache(maxsize=64)
+def vo_frames(stem: str) -> int:
+    """Length of a VO track in frames. Decoded with ffprobe rather than
+    read from the WAV header — some generators write a placeholder header
+    that reports 44,739 seconds."""
+    import subprocess
+    p = VO_DIR / f"{stem}.wav"
+    if not p.exists():
+        return 0
+    out = subprocess.run([str(FFPROBE), "-v", "error", "-show_entries",
+                          "format=duration", "-of", "csv=p=0", str(p)],
+                         capture_output=True, text=True).stdout.strip()
+    return int(round(float(out) * 30)) if out else 0
 TV = {"x": 108, "y": 250, "w": 864, "h": 486}
 TV_BOX = (TV["x"], TV["y"], TV["x"] + TV["w"], TV["y"] + TV["h"])
 MAX_K = 1.9
@@ -118,9 +138,15 @@ def parse_beats(src: str) -> list[dict]:
                     "tvPose": bool(re.search(r'tvPose:\s*"', t)),
                 })
         gm = re.search(r'\bgraphic:\s*"([a-z0-9_]+)"', b)
+        vo = re.search(r'\bvo:\s*"([a-z0-9_]+)"', b)
+        vo2 = re.search(r'\bvo2:\s*"([a-z0-9_]+)"', b)
+        at2 = re.search(r"\bat2:\s*(\d+)", b)
         out.append({
             "at": int(at.group(1)), "actors": actors, "shots": shots,
             "graphic": gm.group(1) if gm else None,
+            "vo": vo.group(1) if vo else None,
+            "vo2": vo2.group(1) if vo2 else None,
+            "at2": int(at2.group(1)) if at2 else 0,
             "exhibit": bool(re.search(r"\b(card|graphic):", b)),
         })
     # each beat's own length is the gap to the next one
@@ -228,7 +254,8 @@ def main() -> None:
     # ARE the payoff, were never once visible. These animations run on the
     # BEAT clock (`since`), not the shot clock, so what matters is the last
     # frame at which the exhibit is still un-hidden.
-    completes = {"timeline_nvidia": 70, "counter_45days": 58, "card": 60}
+    completes = {"timeline_nvidia": 70, "counter_45days": 58,
+                 "perf_2024": 64, "card": 60}
     bad_build = 0
     for b in beats:
         kind = b.get("graphic") or ("card" if b["exhibit"] else None)
@@ -246,9 +273,31 @@ def main() -> None:
             print(f"  UNFINISHED beat {b['at']:4d}  {kind} needs {need}f to "
                   f"build but is visible for only {visible_until}f")
 
+    # RULE 5: NOBODY INTERRUPTS ANYBODY. A beat shorter than its own line
+    # does not truncate the audio — the <Audio> keeps playing while the
+    # NEXT beat starts its line over the top, so one character talks over
+    # the other. Shipped once at the end of the episode: Sol's closing
+    # advice needed 137 frames, had 110, and Rex's "read the filings!"
+    # landed 27 frames early on top of him.
+    bad_vo = 0
+    for i, b in enumerate(beats):
+        nxt = beats[i + 1]["at"] if i + 1 < len(beats) else TOTAL_FRAMES
+        ln = nxt - b["at"]
+        need = 0
+        if b.get("vo"):
+            need = max(need, VO_DELAY + vo_frames(b["vo"]))
+        if b.get("vo2"):
+            need = max(need, b.get("at2", 0) + VO_DELAY + vo_frames(b["vo2"]))
+        if need > ln:
+            bad_vo += 1
+            print(f"  INTERRUPTED beat {b['at']:4d}  '{b.get('vo')}' needs "
+                  f"{need}f but the next beat starts after {ln}f "
+                  f"(talks over by {need - ln}f)")
+
     print(f"\nocclusions {bad_pair} · exhibit covered {bad_tv} · "
-          f"off-frame {bad_edge} · unfinished exhibits {bad_build}")
-    if bad_pair or bad_tv or bad_edge or bad_build:
+          f"off-frame {bad_edge} · unfinished exhibits {bad_build} · "
+          f"interrupted lines {bad_vo}")
+    if bad_pair or bad_tv or bad_edge or bad_build or bad_vo:
         raise SystemExit(1)
     print("staging clean")
 
