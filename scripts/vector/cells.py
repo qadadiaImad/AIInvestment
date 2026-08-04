@@ -64,6 +64,27 @@ def bg_to_alpha(rgb: np.ndarray, tol: int = 24) -> np.ndarray:
     return np.dstack([rgb, alpha])
 
 
+def white_bg_to_alpha(rgb: np.ndarray, thresh: int = 226) -> np.ndarray:
+    """RGB -> RGBA keying out only BORDER-CONNECTED near-white pixels.
+
+    `bg_to_alpha` samples the four corner patches for the background
+    colour, which silently fails on tight bust closeups where the head
+    fills the canvas and the corners are hair or skin -- those poses came
+    out fully opaque and composited as a visible white rectangle over the
+    scene. Here the test is absolute (near-white) and the flood is from
+    the border, so an interior white shirt keeps its pixels while the
+    margin around the figure is keyed regardless of what the corners
+    happen to contain.
+    """
+    bright = (rgb >= thresh).all(axis=2)
+    labels, _ = ndimage.label(bright)
+    border = np.unique(np.concatenate([
+        labels[0, :], labels[-1, :], labels[:, 0], labels[:, -1]]))
+    bg_mask = np.isin(labels, border[border != 0])
+    alpha = np.where(bg_mask, 0, 255).astype(np.uint8)
+    return np.dstack([rgb, alpha])
+
+
 def find_cells(rgba: np.ndarray, min_area: int = DEFAULT_MIN_AREA) -> list[tuple]:
     """Connected components of the alpha mask -> [(x0,y0,x1,y1)] in reading
     order (row bands top-to-bottom, then left-to-right within a band)."""

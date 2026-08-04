@@ -27,7 +27,18 @@ const TR = mouthTracks as unknown as Record<string, number[]>;
 export const FAIRMARKET_FRAMES = 1085;
 const VO_DELAY = 6;
 
-type Actor = {poses: string[]; kind: "full" | "bust"; x: number; y: number; h: number};
+// kind: "full"  — figure standing in frame, scaled by ink height, placed
+//                 by its ground-contact anchor
+//       "bust"  — clean-silhouette upper body floating at a point
+//       "closeup" — a FULL-BLEED drawing (its head is clipped by its own
+//                 canvas edge, see scripts/vector/shot_class.py). Scaled
+//                 to COVER the frame so the canvas boundary is never
+//                 visible; `h` is ignored, `y` biases the vertical crop.
+//       "panel" — a full-bleed drawing used SMALL, where covering the
+//                 frame would bury the exhibit card. Its canvas edge is
+//                 owned instead of hidden: ruled border + drop shadow +
+//                 slight tilt, the same manga-panel language as the card.
+type Actor = {poses: string[]; kind: "full" | "bust" | "closeup" | "panel"; x: number; y: number; h: number};
 type Card = {title: string; lines: string[]; big?: string; foot?: string};
 type Beat = {
   at: number; actors: Actor[];
@@ -36,21 +47,30 @@ type Beat = {
   shout?: string; card?: Card; title?: string[]; energy?: number;
 };
 
+// ONE drawing per beat. Every pose here is "core" tier in the identity
+// gate (scripts/vector/pose_contact.py -> same haircut, same 3/4 head
+// direction, same wardrobe as the canonical sol_smug / rex_eager) AND a
+// clean silhouette, except where the kind is "closeup"/"panel" which
+// exist to present the full-bleed drawings honestly. Deliberately NOT
+// used: sol_armswide (single-tuft hair + side profile), sol_whisper_v1
+// (no cardigan, no bow tie), rex_determined (adds a necktie no other
+// Rex drawing has), rex_eager_v1/rex_skeptic/sol_shrug_v1 (a leaner,
+// thinner-lined rendering cluster).
 const BEATS: Beat[] = [
   {at: 0, title: ["MARKET LESSONS", "WITH SOL", "ep.1 — the 'fair' market"],
-   actors: [{poses: ["sol_smug_v1", "sol_smug_v2"], kind: "bust", x: 740, y: 1330, h: 760}],
+   actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 740, y: 1330, h: 760}],
    vo: "v1_sol_intro", speaker: "SOL",
    line: "Kid… let me tell you about the so-called “fair” market."},
-  {at: 110, actors: [{poses: ["rex_eager", "rex_eager_v1"], kind: "full", x: 540, y: 1700, h: 1090}],
+  {at: 110, actors: [{poses: ["rex_eager"], kind: "full", x: 540, y: 1700, h: 1090}],
    vo: "v2_rex_fundamentals", speaker: "REX", line: "Boss! It's all fundamentals, right?!", energy: 1},
-  {at: 195, actors: [{poses: ["sol_laugh", "sol_laugh_v1"], kind: "full", x: 540, y: 1770, h: 1270}],
+  {at: 195, actors: [{poses: ["sol_laugh"], kind: "full", x: 540, y: 1770, h: 1270}],
    vo: "v3_sol_ha", speaker: "SOL", line: "HA! …Fundamentals.", energy: 1.1},
-  {at: 255, actors: [{poses: ["sol_whisper"], kind: "bust", x: 370, y: 920, h: 860},
+  {at: 255, actors: [{poses: ["sol_finger"], kind: "full", x: 430, y: 1640, h: 1000},
                      {poses: ["rex_listen"], kind: "full", x: 850, y: 1750, h: 700}],
    vo: "v4_sol_politics", speaker: "SOL", line: "Sometimes… it trades on POLITICS."},
-  {at: 345, actors: [{poses: ["rex_shock", "rex_shock_v1"], kind: "bust", x: 540, y: 880, h: 1260}],
+  {at: 345, actors: [{poses: ["rex_shock"], kind: "closeup", x: 540, y: 900, h: 1920}],
    vo: "v5_rex_what", speaker: "REX", line: "WHAT?!", shout: "WHAT?!", energy: 1.5},
-  {at: 400, actors: [{poses: ["sol_point", "sol_point_v1", "sol_finger"], kind: "full", x: 230, y: 1830, h: 800}],
+  {at: 400, actors: [{poses: ["sol_point"], kind: "full", x: 230, y: 1830, h: 800}],
    card: {title: "JULY 2022 · PUBLIC FILING",
           lines: ["The then-Speaker's household sold",
                   "25,000 NVIDIA shares — days before",
@@ -59,18 +79,18 @@ const BEATS: Beat[] = [
           foot: "STOCK Act disclosure · widely reported"},
    vo: "v6_sol_exhibit", speaker: "SOL",
    line: "July 2022. The Speaker's household sold NVIDIA — days before the chip subsidies passed. At a loss, kid."},
-  {at: 640, actors: [{poses: ["rex_shock_v1", "rex_shock"], kind: "bust", x: 860, y: 1560, h: 600}],
+  {at: 640, actors: [{poses: ["rex_shock_v1"], kind: "panel", x: 760, y: 1370, h: 620}],
    card: {title: "FEB 2023 · IT BECAME A PRODUCT",
           lines: ["An ETF now copies Democratic lawmakers'",
                   "disclosed trades. Actively managed."],
           big: "NANC", foot: "public filings in · portfolio out"},
    vo: "v7_rex_index", speaker: "REX", line: "They made it an INDEX?!",
    shout: "AN INDEX?!", energy: 1.3},
-  {at: 740, actors: [{poses: ["sol_shrug"], kind: "full", x: 540, y: 1770, h: 1230}],
+  {at: 740, actors: [{poses: ["sol_point_v1"], kind: "full", x: 540, y: 1790, h: 1180}],
    vo: "v8_sol_legal", speaker: "SOL",
    line: "All disclosed. In ranges. Up to 45 days late. All legal."},
-  {at: 895, actors: [{poses: ["rex_determined"], kind: "full", x: 350, y: 1720, h: 1050},
-                     {poses: ["sol_wink", "sol_wink_v1"], kind: "bust", x: 830, y: 1500, h: 550}],
+  {at: 895, actors: [{poses: ["rex_eager"], kind: "full", x: 350, y: 1740, h: 1000},
+                     {poses: ["sol_wink"], kind: "panel", x: 770, y: 1370, h: 560}],
    vo: "v9_rex_filings", speaker: "REX", line: "So — read the filings!",
    vo2: "v10_sol_learning", speaker2: "SOL", line2: "Now you're learning, kid.", at2: 60},
   {at: 1015, title: ["MARKET LESSONS", "WITH SOL", ""], actors: []},
@@ -86,6 +106,19 @@ const beatAt = (f: number) => {
 
 const CYCLE = [0, 1, 0, 2];
 const SWAP = 14;
+const W = 1080, H = 1920;
+
+// Intra-beat pose cycling is OFF by default. Each pose variant is an
+// independent LoRA generation, so swapping drawings mid-sentence changed
+// Sol's haircut and head direction every 14 frames — it read as a glitch,
+// not as animation. Density now comes from the viseme swaps, blinks and
+// the toon motion instead. A pair may only re-enter this set if the
+// identity gate certifies both drawings as the same haircut, head
+// direction and framing (scripts/vector/pose_contact.py).
+const SAFE_CYCLES: string[][] = [];
+const cycleAllowed = (poses: string[]) =>
+  poses.length > 1 &&
+  SAFE_CYCLES.some((g) => poses.every((p) => g.includes(p)));
 
 const mouthStateFor = (beat: Beat, frame: number): {sol: number; rex: number} => {
   const out = {sol: 0, rex: 0};
@@ -123,28 +156,38 @@ const visemeSrc = (pose: string, state: number, speaking: boolean,
 
 const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean; mouthState: number}> =
   ({a, since, frame, speaking, mouthState}) => {
-  const idx = a.poses.length > 1 && speaking
+  const cycling = speaking && cycleAllowed(a.poses);
+  const idx = cycling
     ? CYCLE[Math.floor(since / SWAP) % CYCLE.length] % a.poses.length
     : 0;
   const pose = a.poses[idx];
   const d = AN[pose];
   if (!d) return null;
   const swapSince = since % SWAP;
-  const act = actionCurve(speaking ? swapSince : since, 2, 5, 8);
+  const act = actionCurve(cycling ? swapSince : since, 2, 5, 8);
   const pop = 0.955 + 0.045 * Math.min(1, Math.max(0, act));
-  const bl = boil(frame, pose.length, a.h * 0.0015);
-  const by = bob(frame, pose.length + 2, a.h * 0.004, 36);
-  const scale = a.h / (a.kind === "full" ? d.ink_h : d.h);
+  const amp = a.kind === "closeup" ? H * 0.5 : a.h;
+  const bl = boil(frame, pose.length, amp * 0.0015);
+  const by = bob(frame, pose.length + 2, amp * 0.004, 36);
+  const scale = a.kind === "full" ? a.h / d.ink_h
+    : a.kind === "closeup"
+    // cover the frame: no canvas edge can fall inside it. 1.04 pads the
+    // boil/bob/pop jitter so a wobble can't reveal a corner.
+    ? 1.04 * Math.max(W / d.w, H / d.h)
+    : a.h / d.h;
   const w = d.w * scale, h = d.h * scale;
   const left = a.kind === "full" ? a.x - d.anchor[0] * w : a.x - w / 2;
   const top = a.kind === "full" ? a.y - d.anchor[1] * h : a.y - h / 2;
   const src = visemeSrc(pose, mouthState, speaking, frame);
+  const panel = a.kind === "panel";
   return (
     <div style={{position: "absolute", left: left + bl.x, top: top + by + bl.y,
-      width: w, height: h, transform: `scale(${pop})`,
+      width: w, height: h, transform: `scale(${pop})${panel ? " rotate(-1.2deg)" : ""}`,
       transformOrigin: a.kind === "full" ? `${d.anchor[0] * 100}% ${d.anchor[1] * 100}%` : "50% 60%",
-      opacity: Math.min(1, since / 3)}}>
-      <Img src={staticFile(src)} style={{position: "absolute", inset: 0, width: w, height: h}} />
+      opacity: Math.min(1, since / 3),
+      ...(panel ? {border: "6px solid #111", borderRadius: 8, overflow: "hidden",
+        boxShadow: "10px 12px 0 rgba(0,0,0,0.35)", background: "#F7F3E8"} : {})}}>
+      <Img src={staticFile(src)} style={{position: "absolute", inset: 0, width: "100%", height: "100%"}} />
     </div>
   );
 };

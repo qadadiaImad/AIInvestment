@@ -147,7 +147,7 @@
   "h": 1152,
   "ink_h": 1151,
   "anchor": [
-   0.4994,
+   0.5396,
    0.9991
   ],
   "src": "characters/cast_ep1/sol_smug.svg",
@@ -158,7 +158,7 @@
   "h": 1152,
   "ink_h": 1151,
   "anchor": [
-   0.4994,
+   0.485,
    0.9991
   ],
   "src": "characters/cast_ep1/sol_whisper.svg",
@@ -169,7 +169,7 @@
   "h": 1152,
   "ink_h": 1151,
   "anchor": [
-   0.4998,
+   0.5134,
    0.9991
   ],
   "src": "characters/cast_ep1/sol_wink.svg",
@@ -189,9 +189,9 @@
  "rex_skeptic": {
   "w": 821,
   "h": 1151,
-  "ink_h": 1140,
+  "ink_h": 1141,
   "anchor": [
-   0.5191,
+   0.5189,
    0.9991
   ],
   "src": "characters/cast_ep1/rex_skeptic.svg",
@@ -213,7 +213,7 @@
   "h": 1152,
   "ink_h": 1151,
   "anchor": [
-   0.4994,
+   0.4986,
    0.9991
   ],
   "src": "characters/cast_ep1/sol_smug_v2.svg",
@@ -224,7 +224,7 @@
   "h": 1152,
   "ink_h": 1151,
   "anchor": [
-   0.4995,
+   0.4994,
    0.9991
   ],
   "src": "characters/cast_ep1/sol_whisper_v1.svg",
@@ -235,7 +235,7 @@
   "h": 1152,
   "ink_h": 1151,
   "anchor": [
-   0.4994,
+   0.5367,
    0.9991
   ],
   "src": "characters/cast_ep1/rex_shock_v1.svg",
