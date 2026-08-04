@@ -1,0 +1,29 @@
+{
+ "cutStarts": [
+  0,
+  96,
+  151,
+  193,
+  257,
+  329,
+  371,
+  413,
+  473,
+  624,
+  673,
+  715,
+  757,
+  802,
+  870,
+  947
+ ],
+ "totalFrames": 1001,
+ "pipClips": [
+  "science/pip/clip0.mp4",
+  "science/pip/clip1.mp4",
+  "science/pip/clip2.mp4",
+  "science/pip/clip3.mp4",
+  "science/pip/clip4.mp4",
+  "science/pip/clip5.mp4"
+ ]
+}

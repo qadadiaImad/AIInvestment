@@ -1,0 +1,134 @@
+[
+ {
+  "pose": "rex_calm",
+  "viseme": "base",
+  "out": "rex_calm__base__c0",
+  "phrase": "calm neutral expression, plain simple eyes, ordinary black pupils",
+  "denoise": 0.72,
+  "seconds": 12.5,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T10:46:20Z"
+ },
+ {
+  "pose": "rex_calm",
+  "viseme": "base",
+  "out": "rex_calm__base__c1",
+  "phrase": "relaxed face, normal round eyes, plain dark pupils, no highlights",
+  "denoise": 0.72,
+  "seconds": 6.5,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T10:46:26Z"
+ },
+ {
+  "pose": "rex_calm",
+  "viseme": "closed",
+  "out": "rex_calm__closed__c0",
+  "phrase": "calm neutral expression, plain simple eyes, ordinary black pupils",
+  "denoise": 0.72,
+  "seconds": 6.6,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T10:46:33Z"
+ },
+ {
+  "pose": "rex_calm",
+  "viseme": "closed",
+  "out": "rex_calm__closed__c1",
+  "phrase": "relaxed face, normal round eyes, plain dark pupils, no highlights",
+  "denoise": 0.72,
+  "seconds": 6.5,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T10:46:39Z"
+ },
+ {
+  "pose": "rex_calm",
+  "viseme": "open",
+  "out": "rex_calm__open__c0",
+  "phrase": "calm neutral expression, plain simple eyes, ordinary black pupils",
+  "denoise": 0.72,
+  "seconds": 6.6,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T10:46:46Z"
+ },
+ {
+  "pose": "rex_calm",
+  "viseme": "open",
+  "out": "rex_calm__open__c1",
+  "phrase": "relaxed face, normal round eyes, plain dark pupils, no highlights",
+  "denoise": 0.72,
+  "seconds": 6.5,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T10:46:52Z"
+ },
+ {
+  "pose": "rex_calm",
+  "viseme": "oh",
+  "out": "rex_calm__oh__c0",
+  "phrase": "calm neutral expression, plain simple eyes, ordinary black pupils",
+  "denoise": 0.72,
+  "seconds": 8.5,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T10:47:01Z"
+ },
+ {
+  "pose": "rex_calm",
+  "viseme": "oh",
+  "out": "rex_calm__oh__c1",
+  "phrase": "relaxed face, normal round eyes, plain dark pupils, no highlights",
+  "denoise": 0.72,
+  "seconds": 6.5,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T10:47:07Z"
+ },
+ {
+  "pose": "rex_calm",
+  "viseme": "half",
+  "out": "rex_calm__half__c0",
+  "phrase": "calm neutral expression, plain simple eyes, ordinary black pupils",
+  "denoise": 0.72,
+  "seconds": 6.6,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T10:47:14Z"
+ },
+ {
+  "pose": "rex_calm",
+  "viseme": "half",
+  "out": "rex_calm__half__c1",
+  "phrase": "relaxed face, normal round eyes, plain dark pupils, no highlights",
+  "denoise": 0.72,
+  "seconds": 6.5,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T10:47:20Z"
+ },
+ {
+  "pose": "rex_calm",
+  "viseme": "blink",
+  "out": "rex_calm__blink__c0",
+  "phrase": "calm neutral expression, plain simple eyes, ordinary black pupils",
+  "denoise": 0.72,
+  "seconds": 6.6,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T10:47:27Z"
+ },
+ {
+  "pose": "rex_calm",
+  "viseme": "blink",
+  "out": "rex_calm__blink__c1",
+  "phrase": "relaxed face, normal round eyes, plain dark pupils, no highlights",
+  "denoise": 0.72,
+  "seconds": 6.5,
+  "source": "local ComfyUI sdxl_lora_inpaint Illustrious-XL-v0.1 + ana_cast_v1@0.9",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T10:47:34Z"
+ }
+]

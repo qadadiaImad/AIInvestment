@@ -1,0 +1,11 @@
+file 'C:\Users\imadq\AIInvestment\content\probe\maya_voice\cards\card0.png'
+duration 4.681
+file 'C:\Users\imadq\AIInvestment\content\probe\maya_voice\cards\card1.png'
+duration 4.543
+file 'C:\Users\imadq\AIInvestment\content\probe\maya_voice\cards\card2.png'
+duration 3.885
+file 'C:\Users\imadq\AIInvestment\content\probe\maya_voice\cards\card3.png'
+duration 4.715
+file 'C:\Users\imadq\AIInvestment\content\probe\maya_voice\cards\card4.png'
+duration 5.165
+file 'C:\Users\imadq\AIInvestment\content\probe\maya_voice\cards\card4.png'

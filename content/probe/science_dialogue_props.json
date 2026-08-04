@@ -1,0 +1,29 @@
+{
+ "cutStarts": [
+  0,
+  121,
+  181,
+  213,
+  290,
+  375,
+  418,
+  469,
+  556,
+  726,
+  774,
+  818,
+  857,
+  906,
+  972,
+  1004
+ ],
+ "totalFrames": 1086,
+ "pipClips": [
+  "science/pip/dlg0.mp4",
+  "science/pip/dlg1.mp4",
+  "science/pip/dlg2.mp4",
+  "science/pip/dlg3.mp4",
+  "science/pip/dlg4.mp4",
+  "science/pip/dlg5.mp4"
+ ]
+}

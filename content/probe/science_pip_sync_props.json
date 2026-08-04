@@ -1,0 +1,29 @@
+{
+ "cutStarts": [
+  0,
+  96,
+  151,
+  193,
+  257,
+  329,
+  371,
+  413,
+  473,
+  624,
+  673,
+  715,
+  757,
+  802,
+  870,
+  947
+ ],
+ "totalFrames": 1001,
+ "pipClips": [
+  "science/pip/sync0.mp4",
+  "science/pip/sync1.mp4",
+  "science/pip/sync2.mp4",
+  "science/pip/sync3.mp4",
+  "science/pip/sync4.mp4",
+  "science/pip/sync5.mp4"
+ ]
+}
