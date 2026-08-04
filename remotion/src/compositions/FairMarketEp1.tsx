@@ -75,7 +75,13 @@ const shotAt = (shots: Shot[] | undefined, since: number, hold: number) => {
           shotLen: Math.max(1, end - cur.from)};
 };
 
-export const FAIRMARKET_FRAMES = 1085;
+export const FAIRMARKET_FRAMES = 1800;
+
+// Hard ceiling on how far a shot may push in. A drawing scaled until the
+// face fills the frame throws away the set and has nowhere left to go —
+// owner rule, after a static full-zoom face-only frame. Any reframe is
+// clamped so the room stays readable behind the character.
+const MAX_K = 1.9;
 const VO_DELAY = 6;
 
 // kind: "full"  — figure standing in frame, scaled by ink height, placed
@@ -196,7 +202,11 @@ const BEATS: Beat[] = [
    shots: [{from: 0}, {from: 30, only: 1, k: 1.5, tx: 560, ty: 900}, {from: 74}],
    sfx: [{at: 4, name: "sfx_whoosh", vol: 0.45}],
    vo: "v4_sol_politics", speaker: "SOL", line: "Sometimes… it trades on POLITICS."},
+  // A cover-framed reaction take is the one place a face may fill the
+  // frame — but it must not SIT there: it creeps for its 1.8s under
+  // speed lines and the shock ring.
   {at: 345, actors: [{poses: ["rex_shock"], kind: "closeup", x: 540, y: 900, h: 1920}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.09}],
    // No shout graphic here: it sat over his collar at low contrast and
    // duplicated the subtitle directly beneath it. The held scream and
    // the speed lines carry the beat.
@@ -286,10 +296,15 @@ const BEATS: Beat[] = [
   // ...and then he's gone. The vanish is what MOTIVATES the pop-in at
   // 895: Rex asks an empty room, and Sol answers from somewhere he
   // wasn't. Without the exit, the pop is just an arrival.
-  {at: 740, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 540, y: 1040, h: 1330,
-                      moves: [{at: 138, kind: "vanish"}]}],
-   shots: [{from: 0}, {from: 64, k: 1.3, tx: 520, ty: 880}, {from: 119}],
-   sfx: [{at: 138, name: "sfx_poof", vol: 0.5}],
+  // Sol no longer vanishes here — act two continues with him present.
+  // The vanish moved to the end of act two, which is what now motivates
+  // his pop-in on the closer.
+  // Pulled back off a face-filling hold: the room stays visible behind
+  // him and the push is a slow creep rather than a static close-up.
+  {at: 740, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1120, h: 1040}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.08},
+           {from: 64, k: 1.2, kEnd: 1.3, tx: 540, ty: 1000},
+           {from: 119, k: 1.0, kEnd: 1.06}],
    vo: "v8_sol_legal", speaker: "SOL",
    line: "All disclosed. In ranges. Up to 45 days late. All legal."},
   // was a static 4s two-shot with both characters on screen while they
@@ -298,7 +313,65 @@ const BEATS: Beat[] = [
   // right and Rex's head whips round to find him. Both stay on screen for
   // the answer, so the last beat is two characters in one space rather
   // than two solo portraits cut together.
-  {at: 895, actors: [{poses: ["rex_eager"], kind: "full", x: 360, y: FLOOR_Y, h: REX_H,
+  // ─── ACT TWO ── Rex acts on what he learned, and is wrong ───────────
+  // The 36s cut was one reveal stated three ways, and Rex arrived at
+  // "read the filings" having done nothing to earn it. Here he proposes
+  // copying the trades, Sol punctures it with the disclosure delay, Rex
+  // over-corrects to "then they're useless", and Sol reframes what a
+  // filing is FOR — so the closer lands on someone who changed his mind.
+  //
+  // It also gives the glint-eyed rex_eager drawing an honest job: Rex is
+  // genuinely excited exactly once, right here, and wears the ordinary
+  // -eyed rex_skeptic / rex_listen for the rest of the act. The owner's
+  // note about the eyes, answered by the writing.
+  {at: 895, actors: [{poses: ["rex_eager"], kind: "full", x: 340, y: FLOOR_Y, h: REX_H},
+                     {poses: ["sol_smug_v1"], kind: "bust", x: 858, y: 1258, h: 690}],
+   shots: [{from: 0}, {from: 54, only: 0, k: 1.5, tx: 520, ty: 1040}],
+   vo: "a2_rex_copy", speaker: "REX",
+   line: "Then I'll just copy them! Buy what they buy!", energy: 1.3},
+
+  // Rex is LISTENING here, so he wears the ordinary-eyed drawing — the
+  // glint is reserved for the line he is actually excited on.
+  {at: 995, actors: [{poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: SOL_H},
+                     {poses: ["rex_skeptic"], kind: "full", x: 300, y: FLOOR_Y, h: REX_H}],
+   shots: [{from: 0}, {from: 46, only: 0, k: 1.45, tx: 560, ty: 990}],
+   vo: "a2_sol_sixweeks", speaker: "SOL",
+   line: "Copy them. With a filing from six weeks ago?"},
+
+  {at: 1090, actors: [{poses: ["rex_skeptic"], kind: "full", x: 470, y: FLOOR_Y, h: REX_H}],
+   shots: [{from: 0, k: 1.3, kEnd: 1.42, tx: 540, ty: 1030}],
+   vo: "a2_rex_six", speaker: "REX", line: "Six weeks?"},
+
+  {at: 1145, actors: [{poses: ["sol_point"], kind: "full", x: 800, y: FLOOR_Y, h: SOL_H},
+                      {poses: ["rex_skeptic"], kind: "bust", x: 540, y: 1010, h: 1060}],
+   card: {title: "WHY COPYING FAILS",
+          lines: ["Covered trades must be disclosed —",
+                  "but the window runs up to 45 days.",
+                  "By the time it is public, the move is old."],
+          foot: "STOCK Act reporting window"},
+   shots: [{from: 0, only: 0},
+           {from: 62, only: 0, k: 1.5, kEnd: 1.62, tx: 560, ty: 980},
+           {from: 118, only: 1},
+           {from: 152, only: 0}],
+   vo: "a2_sol_edge", speaker: "SOL",
+   line: "The trade is public. The edge is not. By the time you read it, the move already happened."},
+
+  {at: 1340, actors: [{poses: ["rex_listen"], kind: "full", x: 420, y: FLOOR_Y, h: 1090}],
+   shots: [{from: 0, k: 1.2, kEnd: 1.3, tx: 520, ty: 1120}],
+   vo: "a2_rex_useless", speaker: "REX", line: "So the filings are useless."},
+
+  // Sol's reframe, then he's gone — which is what makes the pop-in on
+  // the closer an answer from somewhere he wasn't.
+  {at: 1410, actors: [{poses: ["sol_finger"], kind: "full", x: 700, y: FLOOR_Y, h: SOL_H,
+                       moves: [{at: 138, kind: "vanish"}]},
+                      {poses: ["rex_listen"], kind: "full", x: 268, y: FLOOR_Y, h: 1020}],
+   shots: [{from: 0}, {from: 58, only: 0, k: 1.5, kEnd: 1.6, tx: 560, ty: 980},
+           {from: 120}],
+   sfx: [{at: 138, name: "sfx_poof", vol: 0.5}],
+   vo: "a2_sol_map", speaker: "SOL",
+   line: "No. They're a map of attention. Who is watching what, and when."},
+
+  {at: 1565, actors: [{poses: ["rex_eager"], kind: "full", x: 360, y: FLOOR_Y, h: REX_H,
                       turns: [{at: 56, tx: 830, ty: 1060}]},
                      // sol_smug_v1: clean silhouette, so he pops in as a
                      // floating figure with no backing plate.
@@ -314,7 +387,7 @@ const BEATS: Beat[] = [
          {at: 60, name: "sfx_whip", vol: 0.42}],
    vo: "v9_rex_filings", speaker: "REX", line: "So — read the filings!",
    vo2: "v10_sol_learning", speaker2: "SOL", line2: "Now you're learning, kid.", at2: 60},
-  {at: 1015, title: ["MARKET LESSONS", "WITH SOL", ""], actors: []},
+  {at: 1685, title: ["MARKET LESSONS", "WITH SOL", ""], actors: []},
 ];
 
 const beatAt = (f: number) => {
@@ -409,9 +482,10 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   // Reframe about the HEAD, so a punch-in keeps the face on screen
   // instead of drifting toward the canvas centre.
   const hf = HF[pose] ?? {fx: 0.5, fy: 0.32};
-  const k0 = shot?.k ?? 1;
-  const k = shot?.kEnd === undefined ? k0
-    : k0 + (shot.kEnd - k0) * Math.min(1, shotSince / shotLen);
+  const k0 = Math.min(MAX_K, shot?.k ?? 1);
+  const kE = shot?.kEnd === undefined ? undefined : Math.min(MAX_K, shot.kEnd);
+  const k = kE === undefined ? k0
+    : k0 + (kE - k0) * Math.min(1, shotSince / shotLen);
   const w = w0 * k, h = h0 * k;
   const hx = left0 + hf.fx * w0, hy = top0 + hf.fy * h0;
   const left = (shot?.tx ?? hx) - hf.fx * w;
@@ -503,7 +577,7 @@ const Subtitle: React.FC<{speaker: string; line: string}> = ({speaker, line}) =>
 export const FairMarketEp1: React.FC = () => {
   const frame = useCurrentFrame();
   const {cur, since, hold} = beatAt(frame);
-  const outro = cur.at === 1015;
+  const outro = cur.at === 1685;
   const nrg = cur.energy ?? 0.7;
   const k = kick(since, 10 * nrg, 14);
   const sub2 = cur.vo2 && since >= (cur.at2 ?? 0);
