@@ -64,8 +64,6 @@ export const Character: React.FC<{ p: RigParams }> = ({ p }) => {
   const o = p.skin.outline;
   const L = armGeom(215, 360, p.armL);
   const R = armGeom(325, 360, p.armR);
-  const propArm = p.armR; // prop rides the right hand
-  void propArm;
   return (
     <g transform={`translate(0 ${p.bob}) rotate(${p.lean} 270 400)`}>
       <line x1={270} y1={300} x2={270} y2={360} stroke={o} strokeWidth={9} />
@@ -73,9 +71,13 @@ export const Character: React.FC<{ p: RigParams }> = ({ p }) => {
       {/* arms */}
       <path d={`M215 360 L${L.ex} ${L.ey} L${L.hx} ${L.hy}`} fill="none" stroke={o} strokeWidth={9} strokeLinecap="round" strokeLinejoin="round" />
       <path d={`M325 360 L${R.ex} ${R.ey} L${R.hx} ${R.hy}`} fill="none" stroke={o} strokeWidth={9} strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx={L.hx} cy={L.hy} r={13} fill={p.skin.skinFill} stroke={o} strokeWidth={8} />
-      <circle cx={R.hx} cy={R.hy} r={13} fill={p.skin.skinFill} stroke={o} strokeWidth={8} />
-      <Prop kind={p.prop} x={R.hx} y={R.hy} o={o} />
+      <g transform={`rotate(${p.armL.wrist} ${L.hx} ${L.hy})`}>
+        <circle cx={L.hx} cy={L.hy} r={13} fill={p.skin.skinFill} stroke={o} strokeWidth={8} />
+      </g>
+      <g transform={`rotate(${p.armR.wrist} ${R.hx} ${R.hy})`}>
+        <circle cx={R.hx} cy={R.hy} r={13} fill={p.skin.skinFill} stroke={o} strokeWidth={8} />
+        <Prop kind={p.prop} x={R.hx} y={R.hy} o={o} />
+      </g>
       {/* head */}
       <g transform={`translate(${p.headTurn} 0)`}>
         <circle cx={270} cy={200} r={115} fill={p.skin.skinFill} stroke={o} strokeWidth={10} />
