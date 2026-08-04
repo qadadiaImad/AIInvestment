@@ -60,6 +60,54 @@ const Prop: React.FC<{ kind: string; x: number; y: number; o: string }> = ({ kin
   return null;
 };
 
+const Hair: React.FC<{ kind: string; c: string; o: string }> = ({ kind, c, o }) => {
+  if (!kind || kind === "none") return null;
+  const cap = (d: string) => <path d={d} fill={c} stroke={o} strokeWidth={8} strokeLinejoin="round" />;
+  switch (kind) {
+    case "buzz":
+      return cap("M176 150 A108 108 0 0 1 364 150 Q364 136 270 138 Q176 136 176 150 Z");
+    case "short":
+      return cap("M160 198 A116 116 0 0 1 380 198 Q380 146 270 156 Q160 146 160 198 Z");
+    case "sidepart":
+      return (
+        <>
+          {cap("M160 198 A116 116 0 0 1 380 198 Q380 146 270 156 Q160 146 160 198 Z")}
+          <path d="M306 108 Q296 134 288 156" stroke={o} strokeWidth={5} fill="none" strokeLinecap="round" />
+        </>
+      );
+    case "mop":
+      return cap("M150 235 A122 122 0 0 1 390 235 Q390 150 270 156 Q150 150 150 235 Z");
+    case "bun":
+      return (
+        <>
+          <circle cx={270} cy={92} r={26} fill={c} stroke={o} strokeWidth={7} />
+          {cap("M162 196 A114 114 0 0 1 378 196 Q378 150 270 158 Q162 150 162 196 Z")}
+        </>
+      );
+    default:
+      return null;
+  }
+};
+
+const Glasses: React.FC<{ kind: string; o: string }> = ({ kind, o }) => {
+  if (!kind || kind === "none") return null;
+  if (kind === "round")
+    return (
+      <>
+        <circle cx={237} cy={196} r={26} fill="none" stroke={o} strokeWidth={7} />
+        <circle cx={303} cy={196} r={26} fill="none" stroke={o} strokeWidth={7} />
+        <line x1={263} y1={193} x2={277} y2={193} stroke={o} strokeWidth={7} />
+      </>
+    );
+  return (
+    <>
+      <rect x={211} y={178} width={52} height={38} rx={7} fill="none" stroke={o} strokeWidth={7} />
+      <rect x={277} y={178} width={52} height={38} rx={7} fill="none" stroke={o} strokeWidth={7} />
+      <line x1={263} y1={193} x2={277} y2={193} stroke={o} strokeWidth={7} />
+    </>
+  );
+};
+
 export const Character: React.FC<{ p: RigParams }> = ({ p }) => {
   const o = p.skin.outline;
   const L = armGeom(215, 360, p.armL);
@@ -81,9 +129,11 @@ export const Character: React.FC<{ p: RigParams }> = ({ p }) => {
       {/* head */}
       <g transform={`translate(${p.headTurn} 0)`}>
         <circle cx={270} cy={200} r={115} fill={p.skin.skinFill} stroke={o} strokeWidth={10} />
+        <Hair kind={p.skin.hair ?? "none"} c={p.skin.hairColor ?? "#3A2A1A"} o={o} />
         <Brow x={232} kind={p.brows.l} o={o} />
         <Brow x={308} kind={p.brows.r} o={o} />
         <Eyes kind={p.eyes} o={o} />
+        <Glasses kind={p.skin.glasses ?? "none"} o={o} />
         <Mouth kind={p.mouth} o={o} />
         {p.sweat && <path d="M355 175 q10 20 0 34 q-10 -14 0 -34" fill="#8FD3FF" stroke={o} strokeWidth={3} />}
       </g>

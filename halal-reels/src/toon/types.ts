@@ -4,7 +4,19 @@ export type Mouth = "flat" | "open" | "frown" | "smile" | "grimace" | "o";
 export type Prop = "none" | "fiddle" | "paper" | "phone" | "pointer";
 
 export interface Arm { shoulder: number; elbow: number; wrist: number } // degrees
-export interface Skin { skinFill: string; outline: string; shirtFill: string }
+
+export type Hair = "none" | "buzz" | "short" | "sidepart" | "mop" | "bun";
+export type Glasses = "none" | "rect" | "round";
+// A character "skin": palette + optional persona features (hair, glasses). The
+// rig stays skin-parametric — swapping skins yields a distinct character.
+export interface Skin {
+  skinFill: string;
+  outline: string;
+  shirtFill: string;
+  hair?: Hair;
+  hairColor?: string;
+  glasses?: Glasses;
+}
 
 export interface RigParams {
   skin: Skin;

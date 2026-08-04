@@ -12,6 +12,7 @@ import { CorrelationReel, CORRELATION_BEATS, CORRELATION_MINI_TOTAL } from "./Co
 import { SemisReel, SEMIS_BEATS, SEMIS_MINI_TOTAL } from "./SemisReel";
 import { QuarterlyReport, QR_BEATS } from "./QuarterlyReport";
 import { PoseSheet } from "./toon/PoseSheet";
+import { CastSheet } from "./toon/CastSheet";
 
 const FPS = 30;
 const W = 1080;
@@ -73,6 +74,7 @@ export const RemotionRoot: React.FC = () => {
       />
       <Composition id="ToonPoseSheet" component={PoseSheet} durationInFrames={1} fps={FPS} width={1800} height={900} />
       <Composition id="ToonCatalogSheet" component={PoseSheet} durationInFrames={1} fps={FPS} width={1800} height={1800} defaultProps={{ fromCatalog: true }} />
+      <Composition id="ToonCastSheet" component={CastSheet} durationInFrames={1} fps={FPS} width={1200} height={800} />
     </>
   );
 };
