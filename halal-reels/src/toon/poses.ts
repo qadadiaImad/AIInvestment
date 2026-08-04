@@ -7,7 +7,7 @@ const P = (patch: PosePatch, desc: string): Entry => ({ patch, desc });
 // 270=screen-left; forearm direction = shoulder + elbow. Left arm origin
 // (215,360), right (325,360). Gestures must reach OUTSIDE the torso to read.
 export const POSES: Record<string, Entry> = {
-  rest: P({ armL: { shoulder: 20, elbow: 25 }, armR: { shoulder: 340, elbow: -25 } }, "hands resting on desk"),
+  rest: P({ armL: { shoulder: 348, elbow: 12 }, armR: { shoulder: 12, elbow: -12 } }, "arms resting down at the sides"),
   point_left: P({ armL: { shoulder: 288, elbow: 0 } }, "left arm pointing to the side"),
   point_up: P({ armR: { shoulder: 150, elbow: -20 } }, "right arm pointing up"),
   shrug: P({ armL: { shoulder: 302, elbow: -58 }, armR: { shoulder: 58, elbow: 58 } }, "both arms shrugging"),
