@@ -97,10 +97,24 @@ const BEATS: Beat[] = [
    shots: [{from: 0}, {from: 56, k: 1.5, tx: 480, ty: 1100}],
    vo: "v1_sol_intro", speaker: "SOL",
    line: "Kid… let me tell you about the so-called “fair” market."},
-  {at: 110, actors: [{poses: ["rex_eager"], kind: "full", x: 540, y: 1700, h: 1090}],
-   shots: [{from: 0}, {from: 60, k: 1.3, tx: 540, ty: 760}],
+  // Rex says "Boss!" — so there has to be a boss to say it TO. Sol now
+  // stands in the shot wearing the smirk the shot-list review describes
+  // as "dry, unimpressed skepticism", and Rex turns to him on the line.
+  // NOTE: the push shot carries tx/ty, which re-centres whichever actor
+  // it draws, so it must isolate one (only) or the two would stack.
+  // Sol is a FULL-BODY drawing here, not the smug bust: a floating
+  // head-and-shoulders standing next to a grounded full figure reads as
+  // a cut-out pasted in, which is the exact complaint this pass exists
+  // to fix. sol_point_v1 is core tier, clean, and otherwise unused.
+  {at: 110, actors: [{poses: ["rex_eager"], kind: "full", x: 330, y: 1770, h: 1000,
+                      turns: [{at: 10, tx: 860, ty: 1000}]},
+                     {poses: ["sol_point_v1"], kind: "full", x: 865, y: 1790, h: 880}],
+   shots: [{from: 0}, {from: 60, only: 0, k: 1.3, tx: 540, ty: 760}],
    vo: "v2_rex_fundamentals", speaker: "REX", line: "Boss! It's all fundamentals, right?!", energy: 1},
-  {at: 195, actors: [{poses: ["sol_laugh"], kind: "full", x: 540, y: 1770, h: 1270}],
+  // Sol is laughing AT someone, so keep that someone in frame: Rex
+  // crouched screen-left in profile, facing right at him.
+  {at: 195, actors: [{poses: ["sol_laugh"], kind: "full", x: 720, y: 1800, h: 1210},
+                     {poses: ["rex_listen"], kind: "full", x: 250, y: 1810, h: 660}],
    vo: "v3_sol_ha", speaker: "SOL", line: "HA! …Fundamentals.", energy: 1.1},
   // EYELINE. rex_listen is drawn in profile facing RIGHT, so Rex has to
   // stand screen-LEFT for his gaze to land on Sol; he was on the right,
@@ -155,7 +169,11 @@ const BEATS: Beat[] = [
   // the eyes. Reused from beat 0, but at 4x the size and 25s later; the
   // shot-list review only warns against cutting the smug set together
   // back to back.
-  {at: 740, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 540, y: 900, h: 1250}],
+  // ...and then he's gone. The vanish is what MOTIVATES the pop-in at
+  // 895: Rex asks an empty room, and Sol answers from somewhere he
+  // wasn't. Without the exit, the pop is just an arrival.
+  {at: 740, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 540, y: 900, h: 1250,
+                      moves: [{at: 138, kind: "vanish"}]}],
    shots: [{from: 0}, {from: 64, k: 1.35, tx: 520, ty: 700}, {from: 119}],
    vo: "v8_sol_legal", speaker: "SOL",
    line: "All disclosed. In ranges. Up to 45 days late. All legal."},

@@ -143,13 +143,18 @@ export const turnXform = (
   const len = Math.max(1, Math.hypot(vx, vy));
   const ux = vx / len, uy = vy / len;
   const sm = smear(t - 4, 1.3, 3);
+  // A STARTLE on top of the turn: a short shove back AWAY from whatever
+  // just appeared, decaying out. Turning toward a thing is "he looked";
+  // recoiling first and then turning is "he was surprised by it", which
+  // is the beat when someone pops into the room uninvited.
+  const recoil = impact(t - 3, 15) * -22;
   return {
     // Amplitudes are deliberately large. With no drawn head-turn frames
     // the whole read has to come from the body's lean, the tilt and the
     // smear; at 7deg it was invisible on screen.
-    dx: ux * 56 * p, dy: uy * 26 * p,
+    dx: ux * (56 * p + recoil), dy: uy * (26 * p + recoil * 0.4),
     sx: sm.sx, sy: sm.sy,
-    rot: ux * 12 * p,
+    rot: ux * (12 * p + recoil * 0.18),
     opacity: sm.opacity, blur: sm.blur,
   };
 };

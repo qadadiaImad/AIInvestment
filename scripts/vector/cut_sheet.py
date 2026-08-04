@@ -26,9 +26,9 @@ FRAME_H = 1920
 CUT = [
     (0,    ["sol_smug_v1"],              "bust",    760,  1.00, "SOL intro"),
     (56,   ["sol_smug_v1"],              "bust",    760,  1.50, "  push"),
-    (110,  ["rex_eager"],                "full",    1090, 1.00, "REX fundamentals"),
-    (170,  ["rex_eager"],                "full",    1090, 1.30, "  push"),
-    (195,  ["sol_laugh"],                "full",    1270, 1.00, "SOL HA!"),
+    (110,  ["rex_eager", "sol_point_v1"], "full",   1000, 1.00, "REX asks SOL (2-shot)"),
+    (170,  ["rex_eager"],                "full",    1000, 1.30, "  push to REX"),
+    (195,  ["sol_laugh", "rex_listen"],  "full",    1210, 1.00, "SOL laughs AT rex"),
     (255,  ["rex_listen", "sol_finger"], "full",    1000, 1.00, "2-shot, SOL enters"),
     (285,  ["sol_finger"],               "full",    1000, 1.50, "  SOL isolated"),
     (329,  ["rex_listen", "sol_finger"], "full",    1000, 1.00, "  back to 2-shot"),
