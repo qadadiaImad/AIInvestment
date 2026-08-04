@@ -28,6 +28,7 @@ import { Character } from "./toon/rig";
 import { DEFAULT } from "./toon/defaults";
 import { POSES, EXPR } from "./toon/poses";
 import { merge } from "./toon/merge";
+import { CHARACTERS } from "./toon/characters";
 
 const luckiest = loadLuckiest("normal", { weights: ["400"], subsets: ["latin"] });
 const inter = loadInter("normal", { weights: ["700", "800", "900"], subsets: ["latin"] });
@@ -159,7 +160,7 @@ const OfficeScene: React.FC = () => {
   const push = interpolate(f, [126, 180], [1, 1.14], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const numAppear = interpolate(f, [126, 146], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const talking = inWindows(f, [[8, 91], [100, 246]]) && flap(f);
-  const params = merge(DEFAULT, POSES.rest.patch, EXPR.deadpan.patch, {
+  const params = merge(DEFAULT, { skin: CHARACTERS.quant }, POSES.rest.patch, EXPR.deadpan.patch, {
     mouth: talking ? "open" : "flat",
     eyes: isBlinking(f) ? "blink" : "open",
     bob,
@@ -212,9 +213,18 @@ const ReactionFace: React.FC = () => {
     <AbsoluteFill style={{ background: `linear-gradient(180deg, ${P.orange}, ${P.orangeDk})` }}>
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
         <svg width="760" height="760" viewBox="0 0 760 760" style={{ transform: `translateX(${shake}px)` }}>
-          <circle cx="380" cy="360" r="300" fill={P.skin} stroke={P.skinLine} strokeWidth="14" />
+          <circle cx="380" cy="360" r="300" fill="#F1C7A0" stroke={P.skinLine} strokeWidth="14" />
+          {/* quant identity: mop hair + round glasses, mapped from head-space to this big face */}
+          <g transform="translate(380 360) scale(2.609) translate(-270 -200)">
+            <path d="M150 235 A122 122 0 0 1 390 235 Q390 150 270 156 Q150 150 150 235 Z" fill="#3A2A1A" stroke={P.skinLine} strokeWidth="8" strokeLinejoin="round" />
+          </g>
           <circle cx="290" cy="330" r="30" fill={P.skinLine} />
           <circle cx="470" cy="330" r="30" fill={P.skinLine} />
+          <g transform="translate(380 360) scale(2.609) translate(-270 -200)">
+            <circle cx="237" cy="196" r="26" fill="none" stroke={P.skinLine} strokeWidth="7" />
+            <circle cx="303" cy="196" r="26" fill="none" stroke={P.skinLine} strokeWidth="7" />
+            <line x1="263" y1="193" x2="277" y2="193" stroke={P.skinLine} strokeWidth="7" />
+          </g>
           <line x1="250" y1="470" x2="510" y2="470" stroke={P.skinLine} strokeWidth="14" strokeLinecap="round" />
         </svg>
       </AbsoluteFill>
