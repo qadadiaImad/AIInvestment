@@ -121,7 +121,7 @@ const BEATS: Beat[] = [
   // to fix. sol_point_v1 is core tier, clean, and otherwise unused.
   {at: 110, actors: [{poses: ["rex_eager"], kind: "full", x: 330, y: 1770, h: 1000,
                       turns: [{at: 10, tx: 860, ty: 1000}]},
-                     {poses: ["sol_point_v1"], kind: "full", x: 865, y: 1790, h: 880}],
+                     {poses: ["sol_point_v1"], kind: "full", x: 855, y: 1795, h: 780}],
    shots: [{from: 0}, {from: 60, only: 0, k: 1.3, tx: 540, ty: 760}],
    sfx: [{at: 14, name: "sfx_whip", vol: 0.42}],
    vo: "v2_rex_fundamentals", speaker: "REX", line: "Boss! It's all fundamentals, right?!", energy: 1},
@@ -130,11 +130,14 @@ const BEATS: Beat[] = [
   // Scale: Sol was 63% of frame height beside a 34% crouching Rex who
   // was also clipped by the left edge — it read as a giant beside a
   // child, and clipped Sol frame-right too.
-  {at: 195, actors: [{poses: ["sol_laugh"], kind: "full", x: 712, y: 1800, h: 1000},
-                     // Rex FLINCHES away from the laugh — the turn aimed
-                     // off-stage left, so the lean and the startle recoil
-                     // both push him back from it.
-                     {poses: ["rex_listen"], kind: "full", x: 268, y: 1812, h: 745,
+  // HEAD SIZE, not body height, is what makes two characters read as the
+  // same scale — these drawings have very different head-to-body ratios
+  // (scripts/vector/head_scale.py). Matched by ink height, Sol's head
+  // rendered 432px wide against rex_listen's 128px: a giant beside a
+  // child. rex_skeptic's proportions match Sol's, and "arms crossed, not
+  // convinced" is the right read for being laughed at anyway.
+  {at: 195, actors: [{poses: ["sol_laugh"], kind: "full", x: 745, y: 1805, h: 770},
+                     {poses: ["rex_skeptic"], kind: "full", x: 300, y: 1815, h: 1040,
                       turns: [{at: 14, tx: -260, ty: 1820}]}],
    sfx: [{at: 18, name: "sfx_whip", vol: 0.38}],
    vo: "v3_sol_ha", speaker: "SOL", line: "HA! …Fundamentals.", energy: 1.1},
@@ -142,15 +145,22 @@ const BEATS: Beat[] = [
   // stand screen-LEFT for his gaze to land on Sol; he was on the right,
   // staring away from the man talking to him. Sol now slides in from the
   // right to join him instead of simply being there on the cut.
-  {at: 255, actors: [{poses: ["rex_listen"], kind: "full", x: 285, y: 1770, h: 720},
+  // rex_listen is a realistically-proportioned crouch among chibi
+  // drawings — its head measures a quarter of Sol's at equal ink height,
+  // so it is staged much larger and read as foreground rather than
+  // matched by body height.
+  {at: 255, actors: [{poses: ["rex_listen"], kind: "full", x: 250, y: 1830, h: 1120},
                      {poses: ["sol_finger"], kind: "full", x: 760, y: 1640, h: 1000,
                       moves: [{at: 0, kind: "inR"}]}],
    shots: [{from: 0}, {from: 30, only: 1, k: 1.5, tx: 560, ty: 800}, {from: 74}],
    sfx: [{at: 4, name: "sfx_whoosh", vol: 0.45}],
    vo: "v4_sol_politics", speaker: "SOL", line: "Sometimes… it trades on POLITICS."},
   {at: 345, actors: [{poses: ["rex_shock"], kind: "closeup", x: 540, y: 900, h: 1920}],
-   holdMouth: true, shoutAt: {left: 0, right: 0, top: 1500},
-   vo: "v5_rex_what", speaker: "REX", line: "WHAT?!", shout: "WHAT?!", energy: 1.5},
+   // No shout graphic here: it sat over his collar at low contrast and
+   // duplicated the subtitle directly beneath it. The held scream and
+   // the speed lines carry the beat.
+   holdMouth: true,
+   vo: "v5_rex_what", speaker: "REX", line: "WHAT?!", energy: 1.5},
   // Sol stands screen-RIGHT here like he does in every other beat. He was
   // on the left, which crossed the line the rest of the episode
   // establishes — and it also stacked him under the exhibit card instead
@@ -159,7 +169,15 @@ const BEATS: Beat[] = [
                      // Rex is present for this whole 8s but only cut to
                      // once, silently, to react to the reveal — the shot
                      // that makes Sol's line land on somebody.
-                     {poses: ["rex_skeptic"], kind: "bust", x: 540, y: 980, h: 1120}],
+                     {poses: ["rex_skeptic"], kind: "bust", x: 540, y: 980, h: 1120},
+                     // The lawmaker the filing is about. A generic senior
+                     // -stateswoman ARCHETYPE drawn as flat caricature —
+                     // never a likeness of a named individual, and no
+                     // on-screen text names anyone. The card states only
+                     // what the public filing states, and the footer
+                     // carries the parody / not-an-accusation rail.
+                     {poses: ["congress_papers"], kind: "full", x: 300, y: 1810, h: 900,
+                      moves: [{at: 88, kind: "inL"}]}],
    card: {title: "JULY 2022 · PUBLIC FILING",
           lines: ["The then-Speaker's household sold",
                   "25,000 NVIDIA shares — days before",
@@ -173,22 +191,28 @@ const BEATS: Beat[] = [
    // is the "here's the key insight" gesture the line wants, and unlike
    // sol_point it carries a gated blink, so Sol blinks during the
    // longest sequence in the episode.
+   // cut points are the VO's own pauses (scripts/vector/phrase_cuts.py)
    shots: [{from: 0, only: 0},
            {from: 58, only: 0, k: 3.0, tx: 520, ty: 760, hideCard: true},
-           {from: 99, only: 1, hideCard: true},
-           {from: 123, only: 0, pose: "sol_finger", tx: 790},
+           {from: 88, only: 2},
+           {from: 110, only: 1, hideCard: true},
+           {from: 133, only: 0, pose: "sol_finger", tx: 790},
            {from: 190, only: 0, k: 2.2, tx: 560, ty: 900, hideCard: true}],
    vo: "v6_sol_exhibit", speaker: "SOL",
    line: "July 2022. The Speaker's household sold NVIDIA — days before the chip subsidies passed. At a loss, kid."},
-  {at: 640, actors: [{poses: ["rex_shock_v1"], kind: "panel", x: 760, y: 1370, h: 620}],
+  // rex_eager instead of rex_shock_v1, and NO panel. The panel existed to
+  // present a full-bleed drawing honestly, but its cream backing plate
+  // read as "character pasted on a little white card" — the owner's
+  // objection. A clean-silhouette drawing needs no plate: it just floats.
+  {at: 640, actors: [{poses: ["rex_eager"], kind: "full", x: 745, y: 1810, h: 900}],
    card: {title: "FEB 2023 · IT BECAME A PRODUCT",
           lines: ["An ETF now copies Democratic lawmakers'",
                   "disclosed trades. Actively managed."],
           big: "NANC", foot: "public filings in · portfolio out"},
-   shots: [{from: 0}, {from: 47, k: 1.45, tx: 690, ty: 1200}],
+   shots: [{from: 0}, {from: 47, k: 1.4, tx: 700, ty: 1120}],
    // the shout sat straight across Rex's mouth — the one place the eye
-   // goes. Moved into the empty left column beside the panel.
-   shoutAt: {left: 10, right: 560, top: 1180},
+   // goes. Moved into the empty left column beside him.
+   shoutAt: {left: 10, right: 580, top: 1150},
    vo: "v7_rex_index", speaker: "REX", line: "They made it an INDEX?!",
    shout: "AN INDEX?!", energy: 1.3},
   // was sol_point_v1 — which the shot-list review groups as
@@ -217,7 +241,9 @@ const BEATS: Beat[] = [
   // than two solo portraits cut together.
   {at: 895, actors: [{poses: ["rex_eager"], kind: "full", x: 380, y: 1800, h: 1030,
                       turns: [{at: 56, tx: 830, ty: 520}]},
-                     {poses: ["sol_wink"], kind: "panel", x: 800, y: 560, h: 540,
+                     // sol_smug_v1: clean silhouette, so he pops in as a
+                     // floating figure with no backing plate.
+                     {poses: ["sol_smug_v1"], kind: "bust", x: 800, y: 620, h: 700,
                       moves: [{at: 52, kind: "pop"}]}],
    shots: [{from: 0, only: 0, k: 1.3, tx: 500, ty: 700},
            {from: 50}],

@@ -1,0 +1,74 @@
+[
+ {
+  "name": "c2_gavel_0",
+  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, holding a wooden gavel, smug confident smirk, upper body, facing viewer, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark",
+  "seed": 88500,
+  "width": 832,
+  "height": 1216,
+  "seconds": 10.1,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T09:56:32Z"
+ },
+ {
+  "name": "c2_gavel_1",
+  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, holding a wooden gavel, smug confident smirk, upper body, facing viewer, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark",
+  "seed": 88501,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.1,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T09:56:40Z"
+ },
+ {
+  "name": "c2_papers_0",
+  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, holding a sheet of paper, sly knowing smile, upper body, facing viewer, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark",
+  "seed": 88510,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.0,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T09:56:48Z"
+ },
+ {
+  "name": "c2_papers_1",
+  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, holding a sheet of paper, sly knowing smile, upper body, facing viewer, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark",
+  "seed": 88511,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.0,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T09:56:56Z"
+ },
+ {
+  "name": "c2_point_0",
+  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, full body, one hand raised presenting, pleased expression, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark",
+  "seed": 88520,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.0,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T09:57:04Z"
+ },
+ {
+  "name": "c2_point_1",
+  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, full body, one hand raised presenting, pleased expression, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark",
+  "seed": 88521,
+  "width": 832,
+  "height": 1216,
+  "seconds": 8.1,
+  "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 + ana_cast_v1@0.3",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-04T09:57:12Z"
+ }
+]

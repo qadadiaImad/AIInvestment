@@ -251,5 +251,16 @@
   ],
   "src": "characters/cast_ep1/sol_wink_v1.svg",
   "scale": 1.0
+ },
+ "congress_papers": {
+  "w": 734,
+  "h": 1146,
+  "ink_h": 1137,
+  "anchor": [
+   0.2422,
+   0.9991
+  ],
+  "src": "characters/cast_ep1/congress_papers.svg",
+  "scale": 1.0
  }
 }
