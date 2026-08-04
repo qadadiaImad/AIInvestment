@@ -42,12 +42,34 @@ const HF = headFocus as unknown as Record<string, {fx: number; fy: number}>;
 // tier for the same character AND that the shot-list review does not call
 // interchangeable — i.e. a real cut to a different gesture.
 type Shot = {from: number; k?: number; tx?: number; ty?: number; only?: number;
-             hideCard?: boolean; pose?: string};
-const shotAt = (shots: Shot[] | undefined, since: number) => {
-  if (!shots || !shots.length) return {shot: undefined, shotSince: since};
-  let cur = shots[0];
-  for (const s of shots) if (since >= s.from) cur = s;
-  return {shot: cur, shotSince: since - cur.from};
+             hideCard?: boolean; pose?: string;
+             // `show` is `only` for more than one actor — it lets a shot
+             // hold two of three characters, which is what turns a cut-away
+             // into the narrator PRESENTING someone.
+             show?: number[];
+             // Ramp the reframe across the shot instead of holding it —
+             // a slow creep inward, which is how a held shot builds
+             // pressure rather than just sitting there.
+             kEnd?: number;
+             // Drop the room into shadow for this shot. The lawmaker beats
+             // are about money and power being moved quietly; playing them
+             // in the same bright light as the rest of the episode was
+             // what made her read as a caption rather than a character.
+             mood?: "dark"};
+const shotAt = (shots: Shot[] | undefined, since: number, hold: number) => {
+  if (!shots || !shots.length) {
+    return {shot: undefined, shotSince: since, shotLen: hold};
+  }
+  let cur = shots[0], idx = 0;
+  for (let i = 0; i < shots.length; i++) {
+    if (since >= shots[i].from) {
+      cur = shots[i];
+      idx = i;
+    }
+  }
+  const end = idx + 1 < shots.length ? shots[idx + 1].from : hold;
+  return {shot: cur, shotSince: since - cur.from,
+          shotLen: Math.max(1, end - cur.from)};
 };
 
 export const FAIRMARKET_FRAMES = 1085;
@@ -93,6 +115,11 @@ type Beat = {
   holdMouth?: boolean;
   // Move the shout off a character's face when the staging needs it.
   shoutAt?: {left: number; right: number; top: number};
+  // Impact FX (speed lines + shock ring) used to be gated on `shout`
+  // existing, so deleting a shout graphic silently deleted the beat's
+  // punch as well. They are independent now; defaults to whether there
+  // is a shout so older beats are unchanged.
+  fx?: boolean;
 };
 
 // ONE drawing per beat. Every pose here is "core" tier in the identity
@@ -159,7 +186,7 @@ const BEATS: Beat[] = [
    // No shout graphic here: it sat over his collar at low contrast and
    // duplicated the subtitle directly beneath it. The held scream and
    // the speed lines carry the beat.
-   holdMouth: true,
+   holdMouth: true, fx: true,
    vo: "v5_rex_what", speaker: "REX", line: "WHAT?!", energy: 1.5},
   // Sol stands screen-RIGHT here like he does in every other beat. He was
   // on the left, which crossed the line the rest of the episode
@@ -176,8 +203,12 @@ const BEATS: Beat[] = [
                      // on-screen text names anyone. The card states only
                      // what the public filing states, and the footer
                      // carries the parody / not-an-accusation rail.
-                     {poses: ["congress_papers"], kind: "full", x: 300, y: 1810, h: 900,
-                      moves: [{at: 88, kind: "inL"}]}],
+                     // Steepled fingers, narrowed eyes: she is thinking
+                     // about the trade, not presenting it. She rises into
+                     // frame rather than cutting in, and the shot creeps
+                     // toward her while she is held.
+                     {poses: ["congress_scheme"], kind: "full", x: 430, y: 1880, h: 1120,
+                      moves: [{at: 88, kind: "inB"}]}],
    card: {title: "JULY 2022 · PUBLIC FILING",
           lines: ["The then-Speaker's household sold",
                   "25,000 NVIDIA shares — days before",
@@ -191,12 +222,16 @@ const BEATS: Beat[] = [
    // is the "here's the key insight" gesture the line wants, and unlike
    // sol_point it carries a gated blink, so Sol blinks during the
    // longest sequence in the episode.
-   // cut points are the VO's own pauses (scripts/vector/phrase_cuts.py)
+   // cut points are the VO's own pauses (scripts/vector/phrase_cuts.py).
+   // The lawmaker held for 22 frames before — under a second, so she
+   // registered as a flash. She now gets 50 frames of her own in the
+   // dark, then 33 more with Sol in frame presenting her, which is what
+   // ties her into the telling instead of interrupting it.
    shots: [{from: 0, only: 0},
            {from: 58, only: 0, k: 3.0, tx: 520, ty: 760, hideCard: true},
-           {from: 88, only: 2},
-           {from: 110, only: 1, hideCard: true},
-           {from: 133, only: 0, pose: "sol_finger", tx: 790},
+           {from: 88, only: 2, mood: "dark", k: 1.0, kEnd: 1.22, hideCard: true},
+           {from: 138, show: [0, 2], mood: "dark"},
+           {from: 171, only: 1, hideCard: true},
            {from: 190, only: 0, k: 2.2, tx: 560, ty: 900, hideCard: true}],
    vo: "v6_sol_exhibit", speaker: "SOL",
    line: "July 2022. The Speaker's household sold NVIDIA — days before the chip subsidies passed. At a loss, kid."},
@@ -204,17 +239,27 @@ const BEATS: Beat[] = [
   // present a full-bleed drawing honestly, but its cream backing plate
   // read as "character pasted on a little white card" — the owner's
   // objection. A clean-silhouette drawing needs no plate: it just floats.
-  {at: 640, actors: [{poses: ["rex_eager"], kind: "full", x: 745, y: 1810, h: 900}],
+  // She RETURNS here — arms crossed, cold, while the card explains that
+  // the trades became a product. One appearance reads as a cutaway; a
+  // recurring figure reads as a character in the story.
+  {at: 640, actors: [{poses: ["rex_eager"], kind: "full", x: 745, y: 1810, h: 900},
+                     {poses: ["congress_smug"], kind: "full", x: 330, y: 1900, h: 1240,
+                      moves: [{at: 4, kind: "inB"}]}],
    card: {title: "FEB 2023 · IT BECAME A PRODUCT",
           lines: ["An ETF now copies Democratic lawmakers'",
                   "disclosed trades. Actively managed."],
           big: "NANC", foot: "public filings in · portfolio out"},
-   shots: [{from: 0}, {from: 47, k: 1.4, tx: 700, ty: 1120}],
-   // the shout sat straight across Rex's mouth — the one place the eye
-   // goes. Moved into the empty left column beside him.
-   shoutAt: {left: 10, right: 580, top: 1150},
+   // Both in frame: Rex is the one SPEAKING this line, so cutting him out
+   // of it repeats the mistake that shut his mouth mid-scream at 345.
+   // She looms behind him instead.
+   shots: [{from: 0, show: [0, 1], mood: "dark", k: 1.0, kEnd: 1.1},
+           {from: 47, only: 0, k: 1.4, tx: 700, ty: 1120}],
+   // No shout graphic: with both characters staged there is nowhere for
+   // 150pt type to land except across a face, and the subtitle already
+   // carries the line. The impact FX stay.
+   fx: true,
    vo: "v7_rex_index", speaker: "REX", line: "They made it an INDEX?!",
-   shout: "AN INDEX?!", energy: 1.3},
+   energy: 1.3},
   // was sol_point_v1 — which the shot-list review groups as
   // interchangeable with beat 400's sol_point (same stance, same size,
   // both WS to camera), so the two longest Sol beats read as one shot.
@@ -316,8 +361,9 @@ const visemeSrc = (pose: string, state: number, speaking: boolean,
 
 const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
                       mouthState: number; shot?: Shot; shotSince: number;
-                      holdMouth?: boolean}> =
-  ({a, since, frame, speaking, mouthState, shot, shotSince, holdMouth}) => {
+                      shotLen: number; holdMouth?: boolean}> =
+  ({a, since, frame, speaking, mouthState, shot, shotSince, shotLen,
+    holdMouth}) => {
   const cycling = speaking && cycleAllowed(a.poses);
   const idx = cycling
     ? CYCLE[Math.floor(since / SWAP) % CYCLE.length] % a.poses.length
@@ -346,7 +392,9 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   // Reframe about the HEAD, so a punch-in keeps the face on screen
   // instead of drifting toward the canvas centre.
   const hf = HF[pose] ?? {fx: 0.5, fy: 0.32};
-  const k = shot?.k ?? 1;
+  const k0 = shot?.k ?? 1;
+  const k = shot?.kEnd === undefined ? k0
+    : k0 + (shot.kEnd - k0) * Math.min(1, shotSince / shotLen);
   const w = w0 * k, h = h0 * k;
   const hx = left0 + hf.fx * w0, hy = top0 + hf.fy * h0;
   const left = (shot?.tx ?? hx) - hf.fx * w;
@@ -408,14 +456,14 @@ const Subtitle: React.FC<{speaker: string; line: string}> = ({speaker, line}) =>
 
 export const FairMarketEp1: React.FC = () => {
   const frame = useCurrentFrame();
-  const {cur, since} = beatAt(frame);
+  const {cur, since, hold} = beatAt(frame);
   const outro = cur.at === 1015;
   const nrg = cur.energy ?? 0.7;
   const k = kick(since, 10 * nrg, 14);
   const sub2 = cur.vo2 && since >= (cur.at2 ?? 0);
   const ms = mouthStateFor(cur, frame);
   const activeSpeaker = sub2 ? cur.speaker2 : cur.speaker;
-  const {shot, shotSince} = shotAt(cur.shots, since);
+  const {shot, shotSince, shotLen} = shotAt(cur.shots, since, hold);
 
   return (
     <AbsoluteFill style={{background: "#101828", overflow: "hidden"}}>
@@ -442,8 +490,20 @@ export const FairMarketEp1: React.FC = () => {
         transform: `translate(${k.x}px, ${k.y * 0.4}px) scale(${1 + 0.03 * Math.max(0, 1 - since / 10) * nrg})`,
         transformOrigin: "50% 45%"}}>
         <div style={{position: "absolute", left: 540 - 640, top: 980 - 640, width: 1280,
-          height: 1280, borderRadius: "50%", background: "#1A2740"}} />
-        {cur.shout && since < 26 ? <SpeedLines k={Math.max(0, 1 - since / 26)} seed={cur.at} /> : null}
+          height: 1280, borderRadius: "50%",
+          background: shot?.mood === "dark" ? "#141A2B" : "#1A2740"}} />
+        {/* DARK MOOD. Sits above the room and below the characters, so the
+            figure stays readable while the space around her goes cold and
+            closes in — a slow squeeze rather than a cut to black. */}
+        {shot?.mood === "dark" ? (
+          <div style={{position: "absolute", inset: 0, pointerEvents: "none",
+            background: "radial-gradient(ellipse 62% 46% at 50% 52%,"
+              + " rgba(8,10,18,0) 0%, rgba(8,10,18,0.55) 62%,"
+              + " rgba(5,6,12,0.9) 100%)",
+            opacity: Math.min(1, shotSince / 10)}} />
+        ) : null}
+        {(cur.fx ?? !!cur.shout) && since < 26
+          ? <SpeedLines k={Math.max(0, 1 - since / 26)} seed={cur.at} /> : null}
         {cur.title && !outro ? (
           <div style={{position: "absolute", left: 60, top: 150, fontFamily: "Impact, Arial",
             color: "#F2F6FF", lineHeight: 1.02}}>
@@ -455,20 +515,21 @@ export const FairMarketEp1: React.FC = () => {
         ) : null}
         {cur.card && !shot?.hideCard ? <ExhibitCard c={cur.card} since={since} /> : null}
         {cur.actors.map((a, i) => {
-          if (shot?.only !== undefined && shot.only !== i) return null;
+          if (shot?.show && !shot.show.includes(i)) return null;
+          if (!shot?.show && shot?.only !== undefined && shot.only !== i) return null;
           const isSol = a.poses[0].startsWith("sol");
           const speaking = activeSpeaker === (isSol ? "SOL" : "REX");
           return <Char key={i} a={a} since={since} frame={frame} speaking={speaking}
                        mouthState={isSol ? ms.sol : ms.rex}
-                       shot={shot} shotSince={shotSince}
+                       shot={shot} shotSince={shotSince} shotLen={shotLen}
                        holdMouth={cur.holdMouth} />;
         })}
         {(cur.flicks ?? []).map((f, i) => (
           <ShockFlicks key={i} x={f.x} y={f.y} since={since - f.at} size={72} />
         ))}
+        {cur.fx ?? !!cur.shout ? <ShockRing x={540} y={860} since={since} /> : null}
         {cur.shout ? (
           <>
-            <ShockRing x={540} y={860} since={since} />
             <div style={{position: "absolute",
               left: cur.shoutAt?.left ?? 0, right: cur.shoutAt?.right ?? 0,
               top: cur.shoutAt?.top ?? 1380, textAlign: "center",

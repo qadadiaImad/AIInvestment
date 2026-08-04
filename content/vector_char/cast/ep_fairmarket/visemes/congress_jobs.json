@@ -1,49 +1,65 @@
 [
  {
-  "name": "c2_gavel_0",
-  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, holding a wooden gavel, smug confident smirk, upper body, facing viewer, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
-  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark",
-  "seed": 88500,
+  "name": "c3_scheme_0",
+  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, steepled fingers, sinister scheming smirk, narrowed half-lidded eyes, leaning forward, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome",
+  "seed": 89100,
   "width": 832,
   "height": 1216
  },
  {
-  "name": "c2_gavel_1",
-  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, holding a wooden gavel, smug confident smirk, upper body, facing viewer, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
-  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark",
-  "seed": 88501,
+  "name": "c3_scheme_1",
+  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, steepled fingers, sinister scheming smirk, narrowed half-lidded eyes, leaning forward, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome",
+  "seed": 89101,
   "width": 832,
   "height": 1216
  },
  {
-  "name": "c2_papers_0",
-  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, holding a sheet of paper, sly knowing smile, upper body, facing viewer, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
-  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark",
-  "seed": 88510,
+  "name": "c3_greed_0",
+  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, holding a fan of banknotes, greedy sly grin, narrowed eyes, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome",
+  "seed": 89110,
   "width": 832,
   "height": 1216
  },
  {
-  "name": "c2_papers_1",
-  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, holding a sheet of paper, sly knowing smile, upper body, facing viewer, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
-  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark",
-  "seed": 88511,
+  "name": "c3_greed_1",
+  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, holding a fan of banknotes, greedy sly grin, narrowed eyes, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome",
+  "seed": 89111,
   "width": 832,
   "height": 1216
  },
  {
-  "name": "c2_point_0",
-  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, full body, one hand raised presenting, pleased expression, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
-  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark",
-  "seed": 88520,
+  "name": "c3_smug_0",
+  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, arms crossed, cold smug sneer, looking down at viewer, condescending, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome",
+  "seed": 89120,
   "width": 832,
   "height": 1216
  },
  {
-  "name": "c2_point_1",
-  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, full body, one hand raised presenting, pleased expression, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
-  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark",
-  "seed": 88521,
+  "name": "c3_smug_1",
+  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, arms crossed, cold smug sneer, looking down at viewer, condescending, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome",
+  "seed": 89121,
+  "width": 832,
+  "height": 1216
+ },
+ {
+  "name": "c3_chart_0",
+  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, one hand raised gesturing at a rising line chart, calculating expression, sly smile, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome",
+  "seed": 89130,
+  "width": 832,
+  "height": 1216
+ },
+ {
+  "name": "c3_chart_1",
+  "prompt": "solo, 1woman, elderly stateswoman, wrinkles, silver bob hairstyle, navy blue power suit, pearl necklace, one hand raised gesturing at a rising line chart, calculating expression, sly smile, upper body, flat color, thick clean black outlines, cel shading, simple background, white background, masterpiece, best quality",
+  "negative": "worst quality, low quality, multiple views, expression sheet, multiple girls, several characters, comic panels, character sheet, gradient, soft shading, photorealistic, 3d, text, watermark, kind smile, friendly, wholesome",
+  "seed": 89131,
   "width": 832,
   "height": 1216
  }
