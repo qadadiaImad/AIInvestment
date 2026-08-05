@@ -18,8 +18,8 @@ const MiniLine: React.FC<{ c: string }> = ({ c }) => (
 
 export const NewsStudio: React.FC<{
   host: React.ReactNode; screen: React.ReactNode; ticker: string; accent: string; skin: string; f: number;
-  wall?: React.ReactNode;
-}> = ({ host, screen, ticker, accent, skin, f, wall }) => {
+  wall?: React.ReactNode; screenLabel?: string;
+}> = ({ host, screen, ticker, accent, skin, f, wall, screenLabel = "● LIVE DATA" }) => {
   const scroll = -((f * 3) % 1680);
   return (
     <svg width="1080" height="1920" viewBox="0 0 1080 1920">
@@ -86,7 +86,7 @@ export const NewsStudio: React.FC<{
         <rect x="0" y="0" width="436" height="330" rx="16" fill="#0a1220" stroke={accent} strokeWidth="3" />
         <rect x="0" y="0" width="436" height="46" rx="16" fill={accent} />
         <rect x="0" y="30" width="436" height="16" fill={accent} />
-        <text x="22" y="32" fontFamily={BODY} fontWeight="800" fontSize="24" fill="#0a1220">● LIVE DATA</text>
+        <text x="22" y="32" fontFamily={BODY} fontWeight="800" fontSize="24" fill="#0a1220">{screenLabel}</text>
         <g transform="translate(3 52)">{screen}</g>
       </g>
 
