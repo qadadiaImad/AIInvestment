@@ -12,6 +12,7 @@ import { CorrelationReel, CORRELATION_BEATS, CORRELATION_MINI_TOTAL } from "./Co
 import { SemisReel, SEMIS_BEATS, SEMIS_MINI_TOTAL } from "./SemisReel";
 import { QuarterlyReport, QR_BEATS } from "./QuarterlyReport";
 import { QuarterlyReportEp2, QR_EP2_BEATS } from "./QuarterlyReportEp2";
+import { QuarterlyReportKorea, QR_KOREA_BEATS } from "./QuarterlyReportKorea";
 import { PoseSheet } from "./toon/PoseSheet";
 import { CastSheet } from "./toon/CastSheet";
 
@@ -24,6 +25,7 @@ export const RemotionRoot: React.FC = () => {
     <>
       <Composition id="QuarterlyReport" component={QuarterlyReport} durationInFrames={QR_BEATS.total} fps={FPS} width={W} height={H} />
       <Composition id="QuarterlyReportEp2" component={QuarterlyReportEp2} durationInFrames={QR_EP2_BEATS.total} fps={FPS} width={W} height={H} />
+      <Composition id="QuarterlyReportKorea" component={QuarterlyReportKorea} durationInFrames={QR_KOREA_BEATS.total} fps={FPS} width={W} height={H} />
       <Composition id="WulfReel" component={WulfReel} durationInFrames={1020} fps={FPS} width={W} height={H} />
       <Composition id="EtnReel" component={EtnReel} durationInFrames={1140} fps={FPS} width={W} height={H} />
       <Composition id="IntroReel" component={IntroVideo} durationInFrames={INTRO_BEATS.total} fps={FPS} width={W} height={H} defaultProps={{ wide: false }} />
