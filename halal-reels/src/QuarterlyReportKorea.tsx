@@ -90,6 +90,28 @@ const Chyron: React.FC<{ f: number }> = ({ f }) => {
   );
 };
 
+// back-wall hero chart: KOSPI all-time-high → bear-market crash
+const KospiWall: React.FC<{ f: number }> = ({ f }) => {
+  const pulse = 3 + 4 * (1 + Math.sin(f / 6)) / 2;
+  const appear = interpolate(f, [96, 132], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  return (
+    <g opacity={appear}>
+      <rect x="0" y="0" width="896" height="410" rx="18" fill="#0b1524" stroke="#22344c" strokeWidth="2" opacity="0.92" />
+      <text x="28" y="50" fontFamily={BODY} fontWeight="900" fontSize="30" fill="#e6edf6">KOSPI · KOREA COMPOSITE</text>
+      <text x="868" y="50" textAnchor="end" fontFamily={FUN} fontSize="36" fill={P.red}>▼ 27%</text>
+      {[130, 200, 270, 340].map((y) => <line key={y} x1="40" y1={y} x2="856" y2={y} stroke="#1b2a40" strokeWidth="1" />)}
+      <polygon points="540,128 600,190 662,258 732,326 812,356 812,362 540,362" fill={P.red} opacity="0.16" />
+      <polyline points="56,326 160,306 262,258 360,214 462,166 540,128" fill="none" stroke={P.gold} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+      <polyline points="540,128 600,190 662,258 732,326 812,356" fill="none" stroke={P.red} strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+      <text x="540" y="112" textAnchor="middle" fontFamily={BODY} fontWeight="800" fontSize="24" fill={P.gold}>9,385</text>
+      <text x="830" y="394" textAnchor="end" fontFamily={BODY} fontWeight="800" fontSize="24" fill={P.red}>6,820</text>
+      <circle cx="812" cy="356" r={pulse + 7} fill={P.red} opacity="0.28" />
+      <circle cx="812" cy="356" r="7" fill={P.red} />
+      <text x="28" y="394" fontFamily={BODY} fontWeight="700" fontSize="20" fill="#8893A4">JUN 19 → JUL 16, 2026 · ALL-TIME HIGH TO BEAR MARKET</text>
+    </g>
+  );
+};
+
 const KTICK = "KOSPI −27% FROM PEAK   ·   ₩38.6T RECORD MARGIN DEBT   ·   1.2M MARGIN CALLS IN ONE WEEK   ·   ~360,000 FORCIBLY LIQUIDATED   ·   SAMSUNG + SK HYNIX EXTEND LOSSES   ·   ";
 
 // ---------- Scene A: office (hook + setup) ----------
@@ -120,7 +142,7 @@ const Office: React.FC = () => {
   );
   return (
     <AbsoluteFill style={{ background: P.wall }}>
-      <AbsoluteFill><NewsStudio host={host} screen={monitor} ticker={KTICK} accent={P.gold} skin="#F4C9A6" f={f} /></AbsoluteFill>
+      <AbsoluteFill><NewsStudio host={host} screen={monitor} ticker={KTICK} accent={P.gold} skin="#F4C9A6" f={f} wall={<KospiWall f={f} />} /></AbsoluteFill>
       <div style={{ position: "absolute", left: 50, right: 50, top: 168, textAlign: "center", opacity: hookOverlay, zIndex: 3 }}>
         <div style={{ fontFamily: FUN, fontSize: 76, color: P.paper, WebkitTextStroke: `6px ${P.ink}`, paintOrder: "stroke", lineHeight: 1.0 }}>1,200,000<br />MARGIN CALLS.</div>
       </div>

@@ -18,7 +18,8 @@ const MiniLine: React.FC<{ c: string }> = ({ c }) => (
 
 export const NewsStudio: React.FC<{
   host: React.ReactNode; screen: React.ReactNode; ticker: string; accent: string; skin: string; f: number;
-}> = ({ host, screen, ticker, accent, skin, f }) => {
+  wall?: React.ReactNode;
+}> = ({ host, screen, ticker, accent, skin, f, wall }) => {
   const scroll = -((f * 3) % 1680);
   return (
     <svg width="1080" height="1920" viewBox="0 0 1080 1920">
@@ -37,6 +38,14 @@ export const NewsStudio: React.FC<{
           <stop offset="100%" stopColor="#060a10" />
         </linearGradient>
         <filter id="st-glow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="0" stdDeviation="14" floodColor={accent} floodOpacity="0.5" /></filter>
+        <radialGradient id="st-vig" cx="50%" cy="44%" r="72%">
+          <stop offset="52%" stopColor="#000" stopOpacity="0" />
+          <stop offset="100%" stopColor="#000" stopOpacity="0.5" />
+        </radialGradient>
+        <radialGradient id="st-spot" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor={accent} stopOpacity="0.18" />
+          <stop offset="100%" stopColor={accent} stopOpacity="0" />
+        </radialGradient>
       </defs>
 
       {/* studio background */}
@@ -54,6 +63,12 @@ export const NewsStudio: React.FC<{
           })
         )}
       </g>
+      {/* spotlight behind anchor + optional back-wall hero chart */}
+      <ellipse cx="392" cy="840" rx="370" ry="300" fill="url(#st-spot)" />
+      {wall && <g transform="translate(92 250)">{wall}</g>}
+      {/* back-wall vignette for depth */}
+      <rect x="44" y="96" width="992" height="1000" rx="22" fill="url(#st-vig)" />
+
       {/* ambient chart screens (top corners) */}
       <g transform="translate(96 150)"><rect x="-10" y="-8" width="128" height="92" rx="8" fill="#0e1a2c" stroke="#243a5a" strokeWidth="2" /><MiniBars c="#4ea1ff" /></g>
       <g transform="translate(872 150)"><rect x="-10" y="-8" width="128" height="92" rx="8" fill="#0e1a2c" stroke="#243a5a" strokeWidth="2" /><MiniLine c={accent} /></g>
