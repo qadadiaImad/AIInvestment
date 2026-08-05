@@ -143,6 +143,45 @@ PARAM_MAPS["wan22_i2v_14b"] = {
 }
 
 
+# AnimateDiff img2img: a motion module over the SAME Illustrious + cast
+# LoRA stack, with every frame anchored to an already-approved drawing
+# (LoadImage -> VAEEncode -> RepeatLatentBatch, denoise ~0.45). The point
+# is NOT to generate video - it is to generate IN-BETWEENS that then go
+# through the existing key/vectorise/gate pipeline as ordinary poses, so
+# visemes, staging audit and identity gating all keep working.
+# Plain anchored img2img - NO motion module. Used for turnaround views,
+# which are stills. Running them through the AnimateDiff graph with a
+# batch of one produced pure confetti noise: the motion module needs a
+# temporal batch and destroys the sample without one.
+PARAM_MAPS["sdxl_lora_img2img"] = {
+    "prompt":   ("3", "text"),
+    "negative": ("4", "text"),
+    "seed":     ("6", "seed"),
+    "denoise":  ("6", "denoise"),
+    "steps":    ("6", "steps"),
+    "image":    ("11", "image"),
+    "lora":     ("2", "lora_name"),
+    "lora_sm":  ("2", "strength_model"),
+    "lora_sc":  ("2", "strength_clip"),
+}
+
+PARAM_MAPS["sdxl_lora_animate"] = {
+    "prompt":     ("3", "text"),
+    "negative":   ("4", "text"),
+    "seed":       ("6", "seed"),
+    "denoise":    ("6", "denoise"),
+    "steps":      ("6", "steps"),
+    "image":      ("11", "image"),
+    "frames":     ("13", "amount"),
+    "ctx_len":    ("9", "context_length"),
+    "motion":     ("14", "float_val"),
+    "closed":     ("9", "closed_loop"),
+    "lora":       ("2", "lora_name"),
+    "lora_sm":    ("2", "strength_model"),
+    "lora_sc":    ("2", "strength_clip"),
+}
+
+
 def apply_params(workflow: dict, param_map: dict, params: dict) -> dict:
     unknown = set(params) - set(param_map)
     if unknown:

@@ -1,0 +1,40 @@
+{
+ "sol_point": {
+  "w": 771,
+  "h": 1159,
+  "pivots": {
+   "head": [
+    0.48967120622568094,
+    0.4979404659188956
+   ],
+   "torso": [
+    0.4994678583009079,
+    0.9930197368421053
+   ],
+   "armL": [
+    0.41716542284776265,
+    0.44391803278688524
+   ],
+   "armR": [
+    0.6614785992217899,
+    0.47852955133735986
+   ],
+   "legL": [
+    0.30025950470168616,
+    0.7238999137187231
+   ],
+   "legR": [
+    0.5428015564202334,
+    0.7031924072476272
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/sol_point__head.svg",
+   "torso": "characters/cast_ep1/parts/sol_point__torso.svg",
+   "armL": "characters/cast_ep1/parts/sol_point__armL.svg",
+   "armR": "characters/cast_ep1/parts/sol_point__armR.svg",
+   "legL": "characters/cast_ep1/parts/sol_point__legL.svg",
+   "legR": "characters/cast_ep1/parts/sol_point__legR.svg"
+  }
+ }
+}
