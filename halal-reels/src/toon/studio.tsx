@@ -20,7 +20,9 @@ export const NewsStudio: React.FC<{
   host: React.ReactNode; screen: React.ReactNode; ticker: string; accent: string; skin: string; f: number;
   wall?: React.ReactNode; screenLabel?: string;
 }> = ({ host, screen, ticker, accent, skin, f, wall, screenLabel = "● LIVE DATA" }) => {
-  const scroll = -((f * 3) % 1680);
+  // period = width of one ticker copy so the two copies tile seamlessly (no overlap/gap)
+  const period = Math.max(1680, Math.round(ticker.length * 16.6));
+  const scroll = -((f * 3) % period);
   return (
     <svg width="1080" height="1920" viewBox="0 0 1080 1920">
       <defs>
@@ -109,7 +111,7 @@ export const NewsStudio: React.FC<{
       <rect x="0" y="1834" width="1080" height="86" fill="#0a0f18" />
       <g transform={`translate(${210 + scroll} 0)`}>
         <text x="0" y="1888" fontFamily={BODY} fontWeight="700" fontSize="32" fill="#cfd8e6">{ticker}</text>
-        <text x="1680" y="1888" fontFamily={BODY} fontWeight="700" fontSize="32" fill="#cfd8e6">{ticker}</text>
+        <text x={period} y="1888" fontFamily={BODY} fontWeight="700" fontSize="32" fill="#cfd8e6">{ticker}</text>
       </g>
       {/* LIVE badge drawn on top so the scroll disappears behind it */}
       <rect x="0" y="1834" width="196" height="86" fill="#D63A34" />
