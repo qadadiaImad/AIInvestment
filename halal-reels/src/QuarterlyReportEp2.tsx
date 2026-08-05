@@ -13,11 +13,7 @@ import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame, Sequence, Audio, staticFile } from "remotion";
 import { loadFont as loadLuckiest } from "@remotion/google-fonts/LuckiestGuy";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
-import { Character } from "./toon/rig";
-import { DEFAULT } from "./toon/defaults";
-import { POSES, EXPR } from "./toon/poses";
-import { merge } from "./toon/merge";
-import { CHARACTERS } from "./toon/characters";
+import { PremiumHost, HOST_ANCHOR } from "./toon/host";
 import caps from "../public/ep2_captions.json";
 
 const luckiest = loadLuckiest("normal", { weights: ["400"], subsets: ["latin"] });
@@ -84,23 +80,17 @@ const Disclaimer: React.FC = () => (
   </div>
 );
 
-// anchor identity mapped onto the giant reaction face (bun hair, no glasses)
-const anchorBig = (
-  <g transform="translate(380 360) scale(2.609) translate(-270 -200)">
-    <circle cx={270} cy={92} r={26} fill="#4A2E1C" stroke={P.skinLine} strokeWidth={7} />
-    <path d="M162 196 A114 114 0 0 1 378 196 Q378 150 270 158 Q162 150 162 196 Z" fill="#4A2E1C" stroke={P.skinLine} strokeWidth={8} strokeLinejoin="round" />
-  </g>
-);
-
 const Office: React.FC = () => {
   const f = useCurrentFrame();
   const bob = Math.sin(f / 9) * 4;
   const push = interpolate(f, [CUE.reveal - 12, CUE.reveal + 30], [1, 1.13], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const numAppear = interpolate(f, [CUE.reveal, CUE.reveal + 16], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const talking = (f < 320) && flap(f);
-  const params = merge(DEFAULT, { skin: CHARACTERS.anchor }, POSES.rest.patch, EXPR.deadpan.patch, {
-    mouth: talking ? "open" : "flat", eyes: isBlink(f) ? "blink" : "open", bob,
-  });
+  const host = (
+    <g transform={`translate(0 ${bob})`}>
+      <PremiumHost e={{ mouth: talking ? "open" : "rest", blink: isBlink(f), brow: 2 }} theme={HOST_ANCHOR} id="ep2o" />
+    </g>
+  );
   // frame-1 baked "thumbnail" overlay during the hook
   const hookOverlay = interpolate(f, [0, 6, 74, 84], [0, 1, 1, 0], { extrapolateRight: "clamp" });
   const active = f < CUE.e2 ? "e1" : f < CUE.e3 ? "e2" : "e3";
@@ -115,7 +105,9 @@ const Office: React.FC = () => {
           <rect x="700" y="230" width="300" height="360" fill={P.window} stroke={P.skinLine} strokeWidth="10" />
           <line x1="850" y1="230" x2="850" y2="590" stroke={P.skinLine} strokeWidth="8" />
           <line x1="700" y1="410" x2="1000" y2="410" stroke={P.skinLine} strokeWidth="8" />
+          <g transform="translate(70 566) scale(1.18)">{host}</g>
           <rect x="0" y="1180" width="1080" height="80" fill={P.desk} stroke={P.deskEdge} strokeWidth="6" />
+          <rect x="0" y="1260" width="1080" height="660" fill={P.floor} />
           <g transform="translate(600 760)">
             <rect x="0" y="0" width="430" height="300" rx="14" fill={P.monitor} stroke={P.skinLine} strokeWidth="10" />
             <rect x="24" y="24" width="382" height="252" rx="6" fill={P.screen} />
@@ -127,7 +119,6 @@ const Office: React.FC = () => {
               <text x="215" y="242" textAnchor="middle" fontFamily={BODY} fontWeight="800" fontSize="26" fill={P.paper}>OVER a model · $90 vs $31</text>
             </g>
           </g>
-          <g transform="translate(120 640)"><Character p={params} /></g>
         </svg>
       </AbsoluteFill>
       <div style={{ position: "absolute", left: 50, right: 50, top: 150, textAlign: "center", opacity: hookOverlay, zIndex: 2 }}>
@@ -148,11 +139,9 @@ const Reaction: React.FC = () => {
     <AbsoluteFill style={{ background: `linear-gradient(180deg, ${P.orange}, ${P.orangeDk})` }}>
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
         <svg width="760" height="760" viewBox="0 0 760 760" style={{ transform: `translateX(${shake}px)` }}>
-          <circle cx="380" cy="360" r="300" fill="#EFC49E" stroke={P.skinLine} strokeWidth="14" />
-          {anchorBig}
-          <circle cx="290" cy="330" r="30" fill={P.skinLine} />
-          <circle cx="470" cy="330" r="30" fill={P.skinLine} />
-          <line x1="250" y1="470" x2="510" y2="470" stroke={P.skinLine} strokeWidth="14" strokeLinecap="round" />
+          <g transform="translate(-52 -90) scale(1.62)">
+            <PremiumHost e={{ mouth: "flat", blink: isBlink(f) }} theme={HOST_ANCHOR} id="ep2r" />
+          </g>
         </svg>
       </AbsoluteFill>
       <Karaoke id="e4" cue={CUE.e4} />
@@ -164,12 +153,10 @@ const Reaction: React.FC = () => {
 const CtaEnd: React.FC = () => {
   const f = useCurrentFrame();
   const pop = interpolate(f, [0, 12], [0.85, 1], { extrapolateRight: "clamp" });
-  // loop: mirror the office open — same anchor deadpan at a desk
-  const params = merge(DEFAULT, { skin: CHARACTERS.anchor }, POSES.rest.patch, EXPR.deadpan.patch, { eyes: isBlink(f) ? "blink" : "open" });
   return (
     <AbsoluteFill style={{ background: P.ink, alignItems: "center", justifyContent: "flex-start" }}>
-      <svg width="1080" height="760" viewBox="0 0 1080 760" style={{ marginTop: 120, transform: `scale(${pop})` }}>
-        <g transform="translate(300 30) scale(0.9)"><Character p={params} /></g>
+      <svg width="1080" height="500" viewBox="0 0 1080 500" style={{ marginTop: 90, transform: `scale(${pop})` }}>
+        <g transform="translate(270 10) scale(0.78)"><PremiumHost e={{ blink: isBlink(f), mouth: "soft", brow: 1 }} theme={HOST_ANCHOR} id="ep2c" /></g>
       </svg>
       <div style={{ textAlign: "center", padding: "0 60px" }}>
         <div style={{ fontFamily: FUN, fontSize: 78, color: P.gold, WebkitTextStroke: "5px #000", paintOrder: "stroke", lineHeight: 1 }}>

@@ -9,7 +9,7 @@
 import React from "react";
 
 export type HostExpr = { mouth?: "rest" | "open" | "soft" | "flat"; blink?: boolean; brow?: number; look?: number };
-export type HostTheme = { skin: string; skinShade: string; hair: string; hairHi: string; blazer: string; blazerShade: string; blouse: string; lip: string; ink: string };
+export type HostTheme = { skin: string; skinShade: string; hair: string; hairHi: string; blazer: string; blazerShade: string; blouse: string; lip: string; ink: string; glasses?: boolean };
 
 export const HOST_ANCHOR: HostTheme = {
   skin: "#F4C9A6", skinShade: "#E3AE86", hair: "#3B2A1E", hairHi: "#5A4130",
@@ -18,6 +18,10 @@ export const HOST_ANCHOR: HostTheme = {
 export const HOST_ANALYST: HostTheme = {
   skin: "#F1C6A0", skinShade: "#DDA97F", hair: "#241A12", hairHi: "#3A2B1E",
   blazer: "#2E5E86", blazerShade: "#20486B", blouse: "#EAF0F6", lip: "#B77B6A", ink: "#22222E",
+};
+export const HOST_QUANT: HostTheme = {
+  skin: "#EEC49B", skinShade: "#D9A87C", hair: "#2A2018", hairHi: "#43342A",
+  blazer: "#2F6F63", blazerShade: "#215248", blouse: "#EAF2EF", lip: "#B0765F", ink: "#20242A", glasses: true,
 };
 
 export const PremiumHost: React.FC<{ e?: HostExpr; theme?: HostTheme; id?: string }> = ({ e = {}, theme = HOST_ANCHOR, id = "h" }) => {
@@ -99,6 +103,17 @@ export const PremiumHost: React.FC<{ e?: HostExpr; theme?: HostTheme; id?: strin
           <circle cx={306 + lx} cy="237" r="3.5" fill="#fff" />
           <path d="M276 228 q26 -10 52 -2" fill="none" stroke={t.ink} strokeWidth="4.5" strokeLinecap="round" opacity="0.85" />
         </>
+      )}
+
+      {/* ---- glasses (optional) ---- */}
+      {t.glasses && (
+        <g stroke={t.ink} strokeWidth="6" fill="none" strokeLinecap="round">
+          <circle cx="238" cy="242" r="33" fill="rgba(150,200,220,0.10)" />
+          <circle cx="302" cy="242" r="33" fill="rgba(150,200,220,0.10)" />
+          <path d="M271 238 q-1 -4 -2 0" />
+          <path d="M205 240 q-16 -4 -30 4" />
+          <path d="M335 240 q16 -4 30 4" />
+        </g>
       )}
 
       {/* ---- nose ---- */}

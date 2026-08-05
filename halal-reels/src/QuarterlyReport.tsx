@@ -24,11 +24,7 @@ import {
 } from "remotion";
 import { loadFont as loadLuckiest } from "@remotion/google-fonts/LuckiestGuy";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
-import { Character } from "./toon/rig";
-import { DEFAULT } from "./toon/defaults";
-import { POSES, EXPR } from "./toon/poses";
-import { merge } from "./toon/merge";
-import { CHARACTERS } from "./toon/characters";
+import { PremiumHost, HOST_QUANT } from "./toon/host";
 
 const luckiest = loadLuckiest("normal", { weights: ["400"], subsets: ["latin"] });
 const inter = loadInter("normal", { weights: ["700", "800", "900"], subsets: ["latin"] });
@@ -160,11 +156,11 @@ const OfficeScene: React.FC = () => {
   const push = interpolate(f, [126, 180], [1, 1.14], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const numAppear = interpolate(f, [126, 146], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const talking = inWindows(f, [[8, 91], [100, 246]]) && flap(f);
-  const params = merge(DEFAULT, { skin: CHARACTERS.quant }, POSES.rest.patch, EXPR.deadpan.patch, {
-    mouth: talking ? "open" : "flat",
-    eyes: isBlinking(f) ? "blink" : "open",
-    bob,
-  });
+  const host = (
+    <g transform={`translate(0 ${bob})`}>
+      <PremiumHost e={{ mouth: talking ? "open" : "rest", blink: isBlinking(f), brow: 2 }} theme={HOST_QUANT} id="ep1o" />
+    </g>
+  );
 
   let cap: React.ReactNode = null;
   if (f >= 8 && f < 96) cap = <Caption text="This quarter, the market called Nvidia a “bubble.”" />;
@@ -180,7 +176,9 @@ const OfficeScene: React.FC = () => {
           <rect x="700" y="230" width="300" height="360" fill={P.window} stroke={P.skinLine} strokeWidth="10" />
           <line x1="850" y1="230" x2="850" y2="590" stroke={P.skinLine} strokeWidth="8" />
           <line x1="700" y1="410" x2="1000" y2="410" stroke={P.skinLine} strokeWidth="8" />
+          <g transform="translate(70 566) scale(1.18)">{host}</g>
           <rect x="0" y="1180" width="1080" height="80" fill={P.desk} stroke={P.deskEdge} strokeWidth="6" />
+          <rect x="0" y="1260" width="1080" height="660" fill={P.floor} />
           <rect x="120" y="1120" width="70" height="70" rx="8" fill={P.green} stroke={P.skinLine} strokeWidth="7" />
           <line x1="140" y1="1120" x2="132" y2="1060" stroke={P.skinLine} strokeWidth="7" strokeLinecap="round" />
           <line x1="165" y1="1120" x2="172" y2="1055" stroke={P.orange} strokeWidth="9" strokeLinecap="round" />
@@ -194,9 +192,6 @@ const OfficeScene: React.FC = () => {
               <text x="215" y="204" textAnchor="middle" fontFamily={FUN} fontSize="104" fill="#5AF0A8" stroke="#0A3D2A" strokeWidth="2" paintOrder="stroke">1.8×</text>
               <text x="215" y="250" textAnchor="middle" fontFamily={BODY} fontWeight="800" fontSize="28" fill={P.paper}>UNDER a model</text>
             </g>
-          </g>
-          <g transform="translate(120 640)">
-            <Character p={params} />
           </g>
         </svg>
       </AbsoluteFill>
@@ -213,19 +208,9 @@ const ReactionFace: React.FC = () => {
     <AbsoluteFill style={{ background: `linear-gradient(180deg, ${P.orange}, ${P.orangeDk})` }}>
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
         <svg width="760" height="760" viewBox="0 0 760 760" style={{ transform: `translateX(${shake}px)` }}>
-          <circle cx="380" cy="360" r="300" fill="#F1C7A0" stroke={P.skinLine} strokeWidth="14" />
-          {/* quant identity: mop hair + round glasses, mapped from head-space to this big face */}
-          <g transform="translate(380 360) scale(2.609) translate(-270 -200)">
-            <path d="M150 235 A122 122 0 0 1 390 235 Q390 150 270 156 Q150 150 150 235 Z" fill="#3A2A1A" stroke={P.skinLine} strokeWidth="8" strokeLinejoin="round" />
+          <g transform="translate(-52 -90) scale(1.62)">
+            <PremiumHost e={{ mouth: "flat", blink: isBlinking(f) }} theme={HOST_QUANT} id="ep1r" />
           </g>
-          <circle cx="290" cy="330" r="30" fill={P.skinLine} />
-          <circle cx="470" cy="330" r="30" fill={P.skinLine} />
-          <g transform="translate(380 360) scale(2.609) translate(-270 -200)">
-            <circle cx="237" cy="196" r="26" fill="none" stroke={P.skinLine} strokeWidth="7" />
-            <circle cx="303" cy="196" r="26" fill="none" stroke={P.skinLine} strokeWidth="7" />
-            <line x1="263" y1="193" x2="277" y2="193" stroke={P.skinLine} strokeWidth="7" />
-          </g>
-          <line x1="250" y1="470" x2="510" y2="470" stroke={P.skinLine} strokeWidth="14" strokeLinecap="round" />
         </svg>
       </AbsoluteFill>
       <Caption text="So naturally, everyone sold it." />
