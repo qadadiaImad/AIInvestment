@@ -13,6 +13,7 @@ import { SemisReel, SEMIS_BEATS, SEMIS_MINI_TOTAL } from "./SemisReel";
 import { QuarterlyReport, QR_BEATS } from "./QuarterlyReport";
 import { QuarterlyReportEp2, QR_EP2_BEATS } from "./QuarterlyReportEp2";
 import { QuarterlyReportKorea, QR_KOREA_BEATS } from "./QuarterlyReportKorea";
+import { HostPreview } from "./toon/host";
 import { PoseSheet } from "./toon/PoseSheet";
 import { CastSheet } from "./toon/CastSheet";
 
@@ -78,6 +79,7 @@ export const RemotionRoot: React.FC = () => {
       />
       <Composition id="ToonPoseSheet" component={PoseSheet} durationInFrames={1} fps={FPS} width={1800} height={900} />
       <Composition id="ToonCatalogSheet" component={PoseSheet} durationInFrames={1} fps={FPS} width={1800} height={1800} defaultProps={{ fromCatalog: true }} />
+      <Composition id="HostPreview" component={HostPreview} durationInFrames={1} fps={FPS} width={W} height={H} />
       <Composition id="ToonCastSheet" component={CastSheet} durationInFrames={1} fps={FPS} width={1200} height={800} />
     </>
   );

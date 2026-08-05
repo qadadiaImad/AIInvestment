@@ -14,11 +14,7 @@ import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame, Sequence, Audio, staticFile } from "remotion";
 import { loadFont as loadLuckiest } from "@remotion/google-fonts/LuckiestGuy";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
-import { Character } from "./toon/rig";
-import { DEFAULT } from "./toon/defaults";
-import { POSES, EXPR } from "./toon/poses";
-import { merge } from "./toon/merge";
-import { CHARACTERS } from "./toon/characters";
+import { PremiumHost, HOST_ANCHOR, HOST_ANALYST } from "./toon/host";
 import caps from "../public/korea_captions.json";
 
 const luckiest = loadLuckiest("normal", { weights: ["400"], subsets: ["latin"] });
@@ -93,7 +89,7 @@ const Chyron: React.FC<{ f: number }> = ({ f }) => {
   );
 };
 
-const Newsroom: React.FC<{ p: React.ComponentProps<typeof Character>["p"]; monitor: React.ReactNode }> = ({ p, monitor }) => (
+const Newsroom: React.FC<{ host: React.ReactNode; monitor: React.ReactNode }> = ({ host, monitor }) => (
   <svg width="1080" height="1920" viewBox="0 0 1080 1920">
     <rect x="0" y="0" width="1080" height="1180" fill={P.wall} />
     <rect x="0" y="1180" width="1080" height="740" fill={P.floor} />
@@ -101,24 +97,30 @@ const Newsroom: React.FC<{ p: React.ComponentProps<typeof Character>["p"]; monit
     <rect x="700" y="230" width="300" height="360" fill={P.window} stroke={P.skinLine} strokeWidth="10" />
     <line x1="850" y1="230" x2="850" y2="590" stroke={P.skinLine} strokeWidth="8" />
     <line x1="700" y1="410" x2="1000" y2="410" stroke={P.skinLine} strokeWidth="8" />
+    {/* host sits BEHIND the desk */}
+    <g transform="translate(70 566) scale(1.18)">{host}</g>
     <rect x="0" y="1180" width="1080" height="80" fill={P.desk} stroke={P.deskEdge} strokeWidth="6" />
-    <g transform="translate(600 760)">
+    <rect x="0" y="1260" width="1080" height="660" fill={P.floor} />
+    <g transform="translate(600 770)">
       <rect x="0" y="0" width="430" height="300" rx="14" fill={P.monitor} stroke={P.skinLine} strokeWidth="10" />
       <rect x="24" y="24" width="382" height="252" rx="6" fill={P.screen} />
       <rect x="195" y="300" width="40" height="70" fill={P.monitor} stroke={P.skinLine} strokeWidth="8" />
       <rect x="150" y="368" width="130" height="16" rx="6" fill={P.monitor} stroke={P.skinLine} strokeWidth="8" />
       {monitor}
     </g>
-    <g transform="translate(120 640)"><Character p={p} /></g>
   </svg>
 );
 
 // ---------- Scene A: office (hook + setup) ----------
 const Office: React.FC = () => {
   const f = useCurrentFrame();
-  const bob = Math.sin(f / 9) * 4;
+  const bob = Math.sin(f / 12) * 3;
   const talking = f < 353 && flap(f);
-  const p = merge(DEFAULT, { skin: CHARACTERS.anchor }, POSES.rest.patch, EXPR.deadpan.patch, { mouth: talking ? "open" : "flat", eyes: isBlink(f) ? "blink" : "open", bob });
+  const host = (
+    <g transform={`translate(0 ${bob})`}>
+      <PremiumHost e={{ mouth: talking ? "open" : "rest", blink: isBlink(f), brow: 2 }} theme={HOST_ANCHOR} id="office" />
+    </g>
+  );
   const s1 = interpolate(f, [30, 48], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }); // 1.2M
   const s2 = interpolate(f, [CUE.k2 + 6, CUE.k2 + 26], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }); // 38.6T
   const hookOverlay = interpolate(f, [0, 8, 120, 138], [0, 1, 1, 0], { extrapolateRight: "clamp" });
@@ -137,7 +139,7 @@ const Office: React.FC = () => {
   );
   return (
     <AbsoluteFill style={{ background: P.wall }}>
-      <AbsoluteFill><Newsroom p={p} monitor={monitor} /></AbsoluteFill>
+      <AbsoluteFill><Newsroom host={host} monitor={monitor} /></AbsoluteFill>
       <div style={{ position: "absolute", left: 50, right: 50, top: 168, textAlign: "center", opacity: hookOverlay, zIndex: 3 }}>
         <div style={{ fontFamily: FUN, fontSize: 76, color: P.paper, WebkitTextStroke: `6px ${P.ink}`, paintOrder: "stroke", lineHeight: 1.0 }}>1,200,000<br />MARGIN CALLS.</div>
       </div>
@@ -155,8 +157,6 @@ const Cutaway: React.FC = () => {
   const bal = interpolate(f, [30, 210], [12000000, -8400000], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const neg = bal < 0;
   const shake = neg ? Math.sin(f / 2) * 3 : 0;
-  const p = merge(DEFAULT, { skin: CHARACTERS.analyst }, POSES.rest.patch,
-    (neg ? EXPR.dead_eyed : EXPR.deadpan).patch, { eyes: isBlink(f) ? "blink" : "open", bob: Math.sin(f / 9) * 3, sweat: neg });
   const kospi = interpolate(f, [24, 60], [9385, 6820], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   return (
     <AbsoluteFill style={{ background: "#141821" }}>
@@ -165,8 +165,10 @@ const Cutaway: React.FC = () => {
         <div style={{ fontFamily: FUN, fontSize: 120, color: neg ? P.red : P.green, transform: `translateX(${shake}px)`, WebkitTextStroke: "4px #000", paintOrder: "stroke", lineHeight: 1.1 }}>{won(bal)}</div>
         <div style={{ fontFamily: BODY, fontWeight: 800, fontSize: 30, color: P.gold, marginTop: 8 }}>KOSPI {Math.round(kospi).toLocaleString()} · <span style={{ color: P.red }}>−27%</span></div>
       </div>
-      <svg width="1080" height="760" viewBox="0 0 1080 760" style={{ position: "absolute", bottom: 150 }}>
-        <g transform="translate(300 20) scale(0.9)"><Character p={p} /></g>
+      <svg width="1080" height="760" viewBox="0 0 1080 760" style={{ position: "absolute", bottom: 130 }}>
+        <g transform={`translate(270 30) scale(1.0) translate(0 ${Math.sin(f / 12) * 3})`}>
+          <PremiumHost e={{ blink: isBlink(f), mouth: neg ? "flat" : "rest", brow: neg ? -3 : 0 }} theme={HOST_ANALYST} id="cut" />
+        </g>
       </svg>
       <Karaoke id="k3" cue={CUE.k3} bottom={110} />
       <Bug />
@@ -176,21 +178,15 @@ const Cutaway: React.FC = () => {
 };
 
 // ---------- Scene C: empathetic reaction (no comedic shake) ----------
-const anchorBig = (
-  <g transform="translate(380 360) scale(2.609) translate(-270 -200)">
-    <circle cx={270} cy={92} r={26} fill="#4A2E1C" stroke={P.skinLine} strokeWidth={7} />
-    <path d="M162 196 A114 114 0 0 1 378 196 Q378 150 270 158 Q162 150 162 196 Z" fill="#4A2E1C" stroke={P.skinLine} strokeWidth={8} strokeLinejoin="round" />
-  </g>
-);
-const Reaction: React.FC = () => (
+const Reaction: React.FC = () => {
+  const f = useCurrentFrame();
+  return (
   <AbsoluteFill style={{ background: "#20242E" }}>
-    <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
-      <svg width="760" height="760" viewBox="0 0 760 760">
-        <circle cx="380" cy="360" r="300" fill="#EFC49E" stroke={P.skinLine} strokeWidth="14" />
-        {anchorBig}
-        <line x1="292" y1="330" x2="322" y2="330" stroke={P.skinLine} strokeWidth="12" strokeLinecap="round" />
-        <line x1="438" y1="330" x2="468" y2="330" stroke={P.skinLine} strokeWidth="12" strokeLinecap="round" />
-        <line x1="270" y1="470" x2="490" y2="470" stroke={P.skinLine} strokeWidth="14" strokeLinecap="round" />
+    <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-end" }}>
+      <svg width="760" height="820" viewBox="0 0 760 820">
+        <g transform="translate(-52 -90) scale(1.62)">
+          <PremiumHost e={{ mouth: "flat", brow: -2, blink: isBlink(f) }} theme={HOST_ANCHOR} id="react" />
+        </g>
       </svg>
     </AbsoluteFill>
     <div style={{ position: "absolute", left: 40, right: 40, top: 250, textAlign: "center", zIndex: 4 }}>
@@ -201,17 +197,17 @@ const Reaction: React.FC = () => (
     <Karaoke id="k4" cue={CUE.k4} />
     <Source t="BigGo Finance · Jul 2026" /><Bug />
   </AbsoluteFill>
-);
+  );
+};
 
 // ---------- Scene D: CTA / loop ----------
 const CtaEnd: React.FC = () => {
   const f = useCurrentFrame();
   const pop = interpolate(f, [0, 12], [0.85, 1], { extrapolateRight: "clamp" });
-  const p = merge(DEFAULT, { skin: CHARACTERS.anchor }, POSES.rest.patch, EXPR.deadpan.patch, { eyes: isBlink(f) ? "blink" : "open" });
   return (
     <AbsoluteFill style={{ background: P.ink, alignItems: "center", justifyContent: "flex-start" }}>
-      <svg width="1080" height="620" viewBox="0 0 1080 620" style={{ marginTop: 90, transform: `scale(${pop})` }}>
-        <g transform="translate(300 20) scale(0.82)"><Character p={p} /></g>
+      <svg width="1080" height="500" viewBox="0 0 1080 500" style={{ marginTop: 70, transform: `scale(${pop})` }}>
+        <g transform="translate(270 10) scale(0.78)"><PremiumHost e={{ blink: isBlink(f), mouth: "soft", brow: 1 }} theme={HOST_ANCHOR} id="cta" /></g>
       </svg>
       <div style={{ textAlign: "center", padding: "0 56px" }}>
         <div style={{ fontFamily: FUN, fontSize: 60, color: P.gold, WebkitTextStroke: "4px #000", paintOrder: "stroke", lineHeight: 1.05 }}>
