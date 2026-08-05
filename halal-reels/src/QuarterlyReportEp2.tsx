@@ -14,6 +14,9 @@ import { AbsoluteFill, interpolate, useCurrentFrame, Sequence, Audio, staticFile
 import { loadFont as loadLuckiest } from "@remotion/google-fonts/LuckiestGuy";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
 import { PremiumHost, HOST_ANCHOR } from "./toon/host";
+import { NewsStudio } from "./toon/studio";
+
+const E2TICK = "INTEL: THE COMEBACK EVERYONE'S BUYING   ·   A FUNDAMENTAL MODEL: ~2.9× OVERVALUED ($90 vs $31)   ·   YOU'RE PAYING TRIPLE FOR THE STORY   ·   EDUCATIONAL — NOT FINANCIAL ADVICE   ·   ";
 import caps from "../public/ep2_captions.json";
 
 const luckiest = loadLuckiest("normal", { weights: ["400"], subsets: ["latin"] });
@@ -75,7 +78,7 @@ const Bug: React.FC = () => (
   </div>
 );
 const Disclaimer: React.FC = () => (
-  <div style={{ position: "absolute", left: 0, right: 0, bottom: 70, textAlign: "center", fontFamily: BODY, fontWeight: 700, fontSize: 22, color: "#Dfe5ec", textShadow: "0 1px 8px #000", zIndex: 3 }}>
+  <div style={{ position: "absolute", left: 0, right: 0, bottom: 108, textAlign: "center", fontFamily: BODY, fontWeight: 700, fontSize: 22, color: "#Dfe5ec", textShadow: "0 1px 8px #000", zIndex: 6 }}>
     Educational · a model’s read, not a call · not financial advice
   </div>
 );
@@ -95,31 +98,17 @@ const Office: React.FC = () => {
   const hookOverlay = interpolate(f, [0, 6, 74, 84], [0, 1, 1, 0], { extrapolateRight: "clamp" });
   const active = f < CUE.e2 ? "e1" : f < CUE.e3 ? "e2" : "e3";
   const cue = active === "e1" ? CUE.e1 : active === "e2" ? CUE.e2 : CUE.e3;
+  const screen = (
+    <g opacity={numAppear}>
+      <text x="215" y="92" textAnchor="middle" fontFamily={BODY} fontWeight="900" fontSize="54" fill={P.gold}>INTC</text>
+      <text x="215" y="182" textAnchor="middle" fontFamily={FUN} fontSize="94" fill={P.gold} stroke="#3D2A08" strokeWidth="2" paintOrder="stroke">2.9×</text>
+      <text x="215" y="228" textAnchor="middle" fontFamily={BODY} fontWeight="800" fontSize="24" fill={P.paper}>OVER a model · $90 vs $31</text>
+    </g>
+  );
   return (
-    <AbsoluteFill style={{ background: P.wall }}>
+    <AbsoluteFill style={{ background: "#0a1017" }}>
       <AbsoluteFill style={{ transform: `scale(${push})`, transformOrigin: "60% 42%" }}>
-        <svg width="1080" height="1920" viewBox="0 0 1080 1920">
-          <rect x="0" y="0" width="1080" height="1180" fill={P.wall} />
-          <rect x="0" y="1180" width="1080" height="740" fill={P.floor} />
-          <line x1="0" y1="1180" x2="1080" y2="1180" stroke={P.wallDk} strokeWidth="6" />
-          <rect x="700" y="230" width="300" height="360" fill={P.window} stroke={P.skinLine} strokeWidth="10" />
-          <line x1="850" y1="230" x2="850" y2="590" stroke={P.skinLine} strokeWidth="8" />
-          <line x1="700" y1="410" x2="1000" y2="410" stroke={P.skinLine} strokeWidth="8" />
-          <g transform="translate(70 566) scale(1.18)">{host}</g>
-          <rect x="0" y="1180" width="1080" height="80" fill={P.desk} stroke={P.deskEdge} strokeWidth="6" />
-          <rect x="0" y="1260" width="1080" height="660" fill={P.floor} />
-          <g transform="translate(600 760)">
-            <rect x="0" y="0" width="430" height="300" rx="14" fill={P.monitor} stroke={P.skinLine} strokeWidth="10" />
-            <rect x="24" y="24" width="382" height="252" rx="6" fill={P.screen} />
-            <rect x="195" y="300" width="40" height="70" fill={P.monitor} stroke={P.skinLine} strokeWidth="8" />
-            <rect x="150" y="368" width="130" height="16" rx="6" fill={P.monitor} stroke={P.skinLine} strokeWidth="8" />
-            <g opacity={numAppear}>
-              <text x="215" y="104" textAnchor="middle" fontFamily={BODY} fontWeight="900" fontSize="56" fill={P.gold}>INTC</text>
-              <text x="215" y="196" textAnchor="middle" fontFamily={FUN} fontSize="98" fill={P.gold} stroke="#3D2A08" strokeWidth="2" paintOrder="stroke">2.9×</text>
-              <text x="215" y="242" textAnchor="middle" fontFamily={BODY} fontWeight="800" fontSize="26" fill={P.paper}>OVER a model · $90 vs $31</text>
-            </g>
-          </g>
-        </svg>
+        <NewsStudio host={host} screen={screen} ticker={E2TICK} accent={P.gold} skin="#F4C9A6" f={f} />
       </AbsoluteFill>
       <div style={{ position: "absolute", left: 50, right: 50, top: 150, textAlign: "center", opacity: hookOverlay, zIndex: 2 }}>
         <div style={{ fontFamily: FUN, fontSize: 92, color: P.paper, WebkitTextStroke: `7px ${P.ink}`, paintOrder: "stroke", lineHeight: 0.98 }}>

@@ -25,6 +25,9 @@ import {
 import { loadFont as loadLuckiest } from "@remotion/google-fonts/LuckiestGuy";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
 import { PremiumHost, HOST_QUANT } from "./toon/host";
+import { NewsStudio } from "./toon/studio";
+
+const E1TICK = "NVDA SCREENS ~1.8× UNDER A FUNDAMENTAL MODEL   ·   THE MARKET CALLS IT AN 'AI BUBBLE'   ·   VALUE PRICES THE BUSINESS, NOT THE STORY   ·   EDUCATIONAL — NOT FINANCIAL ADVICE   ·   ";
 
 const luckiest = loadLuckiest("normal", { weights: ["400"], subsets: ["latin"] });
 const inter = loadInter("normal", { weights: ["700", "800", "900"], subsets: ["latin"] });
@@ -166,34 +169,18 @@ const OfficeScene: React.FC = () => {
   if (f >= 8 && f < 96) cap = <Caption text="This quarter, the market called Nvidia a “bubble.”" />;
   else if (f >= 100) cap = <Caption text="A model says it’s worth 1.8× the price. So… half off." hot="1.8× the price" />;
 
+  const screen = (
+    <g opacity={numAppear}>
+      <text x="215" y="96" textAnchor="middle" fontFamily={BODY} fontWeight="900" fontSize="54" fill="#7FE9C2">NVDA</text>
+      <text x="215" y="188" textAnchor="middle" fontFamily={FUN} fontSize="100" fill="#5AF0A8" stroke="#0A3D2A" strokeWidth="2" paintOrder="stroke">1.8×</text>
+      <text x="215" y="234" textAnchor="middle" fontFamily={BODY} fontWeight="800" fontSize="27" fill={P.paper}>UNDER a model</text>
+    </g>
+  );
+
   return (
-    <AbsoluteFill style={{ background: P.wall }}>
+    <AbsoluteFill style={{ background: "#0a1017" }}>
       <AbsoluteFill style={{ transform: `scale(${push})`, transformOrigin: "60% 42%" }}>
-        <svg width="1080" height="1920" viewBox="0 0 1080 1920">
-          <rect x="0" y="0" width="1080" height="1180" fill={P.wall} />
-          <rect x="0" y="1180" width="1080" height="740" fill={P.floor} />
-          <line x1="0" y1="1180" x2="1080" y2="1180" stroke={P.wallDk} strokeWidth="6" />
-          <rect x="700" y="230" width="300" height="360" fill={P.window} stroke={P.skinLine} strokeWidth="10" />
-          <line x1="850" y1="230" x2="850" y2="590" stroke={P.skinLine} strokeWidth="8" />
-          <line x1="700" y1="410" x2="1000" y2="410" stroke={P.skinLine} strokeWidth="8" />
-          <g transform="translate(70 566) scale(1.18)">{host}</g>
-          <rect x="0" y="1180" width="1080" height="80" fill={P.desk} stroke={P.deskEdge} strokeWidth="6" />
-          <rect x="0" y="1260" width="1080" height="660" fill={P.floor} />
-          <rect x="120" y="1120" width="70" height="70" rx="8" fill={P.green} stroke={P.skinLine} strokeWidth="7" />
-          <line x1="140" y1="1120" x2="132" y2="1060" stroke={P.skinLine} strokeWidth="7" strokeLinecap="round" />
-          <line x1="165" y1="1120" x2="172" y2="1055" stroke={P.orange} strokeWidth="9" strokeLinecap="round" />
-          <g transform="translate(600 760)">
-            <rect x="0" y="0" width="430" height="300" rx="14" fill={P.monitor} stroke={P.skinLine} strokeWidth="10" />
-            <rect x="24" y="24" width="382" height="252" rx="6" fill={P.screen} />
-            <rect x="195" y="300" width="40" height="70" fill={P.monitor} stroke={P.skinLine} strokeWidth="8" />
-            <rect x="150" y="368" width="130" height="16" rx="6" fill={P.monitor} stroke={P.skinLine} strokeWidth="8" />
-            <g opacity={numAppear}>
-              <text x="215" y="108" textAnchor="middle" fontFamily={BODY} fontWeight="900" fontSize="56" fill="#7FE9C2">NVDA</text>
-              <text x="215" y="204" textAnchor="middle" fontFamily={FUN} fontSize="104" fill="#5AF0A8" stroke="#0A3D2A" strokeWidth="2" paintOrder="stroke">1.8×</text>
-              <text x="215" y="250" textAnchor="middle" fontFamily={BODY} fontWeight="800" fontSize="28" fill={P.paper}>UNDER a model</text>
-            </g>
-          </g>
-        </svg>
+        <NewsStudio host={host} screen={screen} ticker={E1TICK} accent="#34D399" skin="#EEC49B" f={f} />
       </AbsoluteFill>
       {cap}
     </AbsoluteFill>
