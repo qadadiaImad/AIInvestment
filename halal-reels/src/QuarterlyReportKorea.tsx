@@ -15,6 +15,7 @@ import { AbsoluteFill, interpolate, useCurrentFrame, Sequence, Audio, staticFile
 import { loadFont as loadLuckiest } from "@remotion/google-fonts/LuckiestGuy";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
 import { PremiumHost, HOST_ANCHOR, HOST_ANALYST } from "./toon/host";
+import { NewsStudio } from "./toon/studio";
 import caps from "../public/korea_captions.json";
 
 const luckiest = loadLuckiest("normal", { weights: ["400"], subsets: ["latin"] });
@@ -70,12 +71,12 @@ const Bug: React.FC = () => (
   </div>
 );
 const Disclaimer: React.FC = () => (
-  <div style={{ position: "absolute", left: 0, right: 0, bottom: 66, textAlign: "center", fontFamily: BODY, fontWeight: 700, fontSize: 21, color: "#DfE5Ec", textShadow: "0 1px 8px #000", zIndex: 5 }}>
+  <div style={{ position: "absolute", left: 0, right: 0, bottom: 108, textAlign: "center", fontFamily: BODY, fontWeight: 700, fontSize: 21, color: "#DfE5Ec", textShadow: "0 1px 8px #000", zIndex: 6 }}>
     Educational · reported figures, perishable · not financial advice
   </div>
 );
 const Source: React.FC<{ t: string }> = ({ t }) => (
-  <div style={{ position: "absolute", left: 0, right: 0, bottom: 96, textAlign: "center", fontFamily: BODY, fontWeight: 700, fontSize: 19, color: "#A9B3C0", textShadow: "0 1px 8px #000", zIndex: 5 }}>{t}</div>
+  <div style={{ position: "absolute", left: 0, right: 0, bottom: 140, textAlign: "center", fontFamily: BODY, fontWeight: 700, fontSize: 19, color: "#A9B3C0", textShadow: "0 1px 8px #000", zIndex: 6 }}>{t}</div>
 );
 
 const Chyron: React.FC<{ f: number }> = ({ f }) => {
@@ -89,27 +90,7 @@ const Chyron: React.FC<{ f: number }> = ({ f }) => {
   );
 };
 
-const Newsroom: React.FC<{ host: React.ReactNode; monitor: React.ReactNode }> = ({ host, monitor }) => (
-  <svg width="1080" height="1920" viewBox="0 0 1080 1920">
-    <rect x="0" y="0" width="1080" height="1180" fill={P.wall} />
-    <rect x="0" y="1180" width="1080" height="740" fill={P.floor} />
-    <line x1="0" y1="1180" x2="1080" y2="1180" stroke={P.wallDk} strokeWidth="6" />
-    <rect x="700" y="230" width="300" height="360" fill={P.window} stroke={P.skinLine} strokeWidth="10" />
-    <line x1="850" y1="230" x2="850" y2="590" stroke={P.skinLine} strokeWidth="8" />
-    <line x1="700" y1="410" x2="1000" y2="410" stroke={P.skinLine} strokeWidth="8" />
-    {/* host sits BEHIND the desk */}
-    <g transform="translate(70 566) scale(1.18)">{host}</g>
-    <rect x="0" y="1180" width="1080" height="80" fill={P.desk} stroke={P.deskEdge} strokeWidth="6" />
-    <rect x="0" y="1260" width="1080" height="660" fill={P.floor} />
-    <g transform="translate(600 770)">
-      <rect x="0" y="0" width="430" height="300" rx="14" fill={P.monitor} stroke={P.skinLine} strokeWidth="10" />
-      <rect x="24" y="24" width="382" height="252" rx="6" fill={P.screen} />
-      <rect x="195" y="300" width="40" height="70" fill={P.monitor} stroke={P.skinLine} strokeWidth="8" />
-      <rect x="150" y="368" width="130" height="16" rx="6" fill={P.monitor} stroke={P.skinLine} strokeWidth="8" />
-      {monitor}
-    </g>
-  </svg>
-);
+const KTICK = "KOSPI −27% FROM PEAK   ·   ₩38.6T RECORD MARGIN DEBT   ·   1.2M MARGIN CALLS IN ONE WEEK   ·   ~360,000 FORCIBLY LIQUIDATED   ·   SAMSUNG + SK HYNIX EXTEND LOSSES   ·   ";
 
 // ---------- Scene A: office (hook + setup) ----------
 const Office: React.FC = () => {
@@ -139,7 +120,7 @@ const Office: React.FC = () => {
   );
   return (
     <AbsoluteFill style={{ background: P.wall }}>
-      <AbsoluteFill><Newsroom host={host} monitor={monitor} /></AbsoluteFill>
+      <AbsoluteFill><NewsStudio host={host} screen={monitor} ticker={KTICK} accent={P.gold} skin="#F4C9A6" f={f} /></AbsoluteFill>
       <div style={{ position: "absolute", left: 50, right: 50, top: 168, textAlign: "center", opacity: hookOverlay, zIndex: 3 }}>
         <div style={{ fontFamily: FUN, fontSize: 76, color: P.paper, WebkitTextStroke: `6px ${P.ink}`, paintOrder: "stroke", lineHeight: 1.0 }}>1,200,000<br />MARGIN CALLS.</div>
       </div>

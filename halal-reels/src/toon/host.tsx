@@ -51,17 +51,28 @@ export const PremiumHost: React.FC<{ e?: HostExpr; theme?: HostTheme; id?: strin
         </filter>
       </defs>
 
-      {/* ---- body / blazer (behind head) ---- */}
+      {/* ---- body (behind head): sculpted shoulders, structured blazer ---- */}
       <g filter={`url(#${g("soft")})`}>
-        {/* shoulders + blazer */}
-        <path d="M104 560 C104 452 168 404 270 404 C372 404 436 452 436 560 L436 680 L104 680 Z" fill={`url(#${g("blazer")})`} />
-        {/* blouse V */}
-        <path d="M234 410 L270 486 L306 410 C306 470 306 470 306 470 L270 520 L234 470 Z" fill={t.blouse} />
-        {/* lapels */}
-        <path d="M234 410 L270 486 L246 500 L214 452 Z" fill={t.blazerShade} opacity="0.9" />
-        <path d="M306 410 L270 486 L294 500 L326 452 Z" fill={t.blazerShade} opacity="0.9" />
-        {/* neck */}
-        <path d="M244 372 C244 410 296 410 296 372 L296 344 L244 344 Z" fill={t.skinShade} />
+        {/* neck + under-chin shadow */}
+        <path d="M242 348 L242 372 C242 412 298 412 298 372 L298 348 Z" fill={t.skinShade} />
+        <ellipse cx="270" cy="356" rx="32" ry="13" fill="#000" opacity="0.12" />
+        {/* torso / blazer */}
+        <path d="M88 584 C88 444 168 394 270 394 C372 394 452 444 452 584 L452 680 L88 680 Z" fill={`url(#${g("blazer")})`} />
+        {/* shoulder sheen */}
+        <path d="M126 468 C168 430 216 414 270 414 C324 414 372 430 414 468" fill="none" stroke="#fff" strokeOpacity="0.10" strokeWidth="16" strokeLinecap="round" />
+        {/* shirt V */}
+        <path d="M234 400 L270 512 L306 400 L306 458 L270 502 L234 458 Z" fill={t.blouse} />
+        {/* shirt collar */}
+        <path d="M248 400 L270 452 L234 470 L222 428 Z" fill="#fff" opacity="0.9" />
+        <path d="M292 400 L270 452 L306 470 L318 428 Z" fill="#fff" opacity="0.9" />
+        {/* blazer lapels */}
+        <path d="M234 398 L270 512 L238 532 L200 452 Z" fill={t.blazerShade} />
+        <path d="M306 398 L270 512 L302 532 L340 452 Z" fill={t.blazerShade} />
+        {/* placket buttons */}
+        <circle cx="270" cy="540" r="5" fill={t.blazerShade} />
+        <circle cx="270" cy="582" r="5" fill={t.blazerShade} />
+        {/* lapel pin (brand accent) */}
+        <circle cx="230" cy="486" r="7" fill="#E7B23B" stroke={t.ink} strokeWidth="2" />
       </g>
 
       {/* ---- hair back ---- */}
