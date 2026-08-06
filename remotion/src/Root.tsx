@@ -52,6 +52,7 @@ import { FairMarketEp1, FAIRMARKET_FRAMES } from "./compositions/FairMarketEp1";
 import { FairMarketEp2, EP2_FRAMES } from "./compositions/FairMarketEp2";
 import { RigTest, RIGTEST_FRAMES } from "./compositions/RigTest";
 import { FairMarketEp3, EP3_FRAMES } from "./compositions/FairMarketEp3";
+import { FairMarketEp4, EP4_FRAMES } from "./compositions/FairMarketEp4";
 import { RigAnatomy, RIGANATOMY_FRAMES } from "./compositions/RigAnatomy";
 import { RigParity, RIGPARITY_FRAMES } from "./compositions/RigParity";
 import memeReelFixture from "./fixtures/meme_reel/intc_failed_breakout.json";
@@ -94,6 +95,14 @@ export const RemotionRoot: React.FC = () => {
         id="FairMarketEp2"
         component={FairMarketEp2}
         durationInFrames={EP2_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="FairMarketEp4"
+        component={FairMarketEp4}
+        durationInFrames={EP4_FRAMES}
         fps={30}
         width={1080}
         height={1920}

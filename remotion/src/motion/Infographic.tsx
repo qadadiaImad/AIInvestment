@@ -624,3 +624,207 @@ export const StackExhibit: React.FC<{
     </div>
   );
 };
+
+/** A roll-call tally that fills to its result, with the threshold marked.
+ *  The vote count IS the drama in a legislative story, so it is drawn
+ *  rather than narrated. */
+export const VoteExhibit: React.FC<{
+  since: number; w: number; h: number;
+  title: string; yea: number; nay: number; needed: number;
+  yeaLabel: string; nayLabel: string; foot: string; outcome: string;
+}> = ({since, w, h, title, yea, nay, needed, yeaLabel, nayLabel, foot, outcome}) => {
+  const padX = 54;
+  const total = yea + nay;
+  const grow = ease(since, 8, 46);
+  const barW = w - padX * 2;
+  const yW = barW * (yea / total) * grow;
+  const nW = barW * (nay / total) * grow;
+  const thr = barW * (needed / total);
+  const passed = yea >= needed;
+  return (
+    <div style={{position: 'absolute', inset: 0, background: PAPER,
+      fontFamily: 'Arial', color: INK}}>
+      <div style={{position: 'absolute', left: padX - 6, top: 16,
+        fontFamily: 'Impact, Arial', fontSize: 30, letterSpacing: 1,
+        opacity: ease(since, 0, 10)}}>{title}</div>
+      <svg width={w} height={h} style={{position: 'absolute', inset: 0}}>
+        <rect x={padX} y={h * 0.40} width={barW} height={62} rx={7} fill="#E4DFCE" />
+        <rect x={padX} y={h * 0.40} width={yW} height={62} fill={BLUE} />
+        <rect x={padX + barW - nW} y={h * 0.40} width={nW} height={62} fill={RED} />
+        {/* the line it had to cross */}
+        <line x1={padX + thr} y1={h * 0.40 - 16} x2={padX + thr} y2={h * 0.40 + 78}
+          stroke={INK} strokeWidth={3} strokeDasharray="6 5"
+          opacity={ease(since, 26, 40)} />
+        <text x={padX + thr + 8} y={h * 0.40 - 22} fill={MUTED}
+          fontFamily="Arial" fontSize={15}
+          opacity={ease(since, 26, 40)}>needs {needed}</text>
+      </svg>
+      <div style={{position: 'absolute', left: padX, top: h * 0.40 - 40,
+        fontFamily: 'Impact, Arial', fontSize: 34, color: BLUE}}>
+        {Math.round(yea * grow)}
+      </div>
+      <div style={{position: 'absolute', right: padX, top: h * 0.40 - 40,
+        fontFamily: 'Impact, Arial', fontSize: 34, color: RED}}>
+        {Math.round(nay * grow)}
+      </div>
+      <div style={{position: 'absolute', left: padX, top: h * 0.40 + 74,
+        fontSize: 17, color: MUTED}}>{yeaLabel}</div>
+      <div style={{position: 'absolute', right: padX, top: h * 0.40 + 74,
+        fontSize: 17, color: MUTED, textAlign: 'right'}}>{nayLabel}</div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: h * 0.72,
+        textAlign: 'center', fontFamily: 'Impact, Arial', fontSize: 30,
+        color: passed ? BLUE : RED, opacity: ease(since, 48, 60)}}>{outcome}</div>
+      <div style={{position: 'absolute', left: padX, bottom: 12, right: padX,
+        fontSize: 15, color: MUTED, opacity: ease(since, 56, 70)}}>{foot}</div>
+    </div>
+  );
+};
+
+/** Two columns: what a rule covers, and what it doesn't. The gap between
+ *  them is usually the whole story of a piece of legislation. */
+export const ScopeExhibit: React.FC<{
+  since: number; w: number; h: number;
+  title: string; inLabel: string; outLabel: string;
+  inItems: string[]; outItems: string[]; foot: string;
+}> = ({since, w, h, title, inLabel, outLabel, inItems, outItems, foot}) => {
+  const padX = 46;
+  const colW = (w - padX * 3) / 2;
+  const cols = [
+    {label: inLabel, items: inItems, tone: BLUE, x: padX},
+    {label: outLabel, items: outItems, tone: RED, x: padX * 2 + colW},
+  ];
+  return (
+    <div style={{position: 'absolute', inset: 0, background: PAPER,
+      fontFamily: 'Arial', color: INK}}>
+      <div style={{position: 'absolute', left: padX - 6, top: 14,
+        fontFamily: 'Impact, Arial', fontSize: 28, letterSpacing: 1,
+        opacity: ease(since, 0, 10)}}>{title}</div>
+      {cols.map((c, ci) => (
+        <div key={ci} style={{position: 'absolute', left: c.x, top: 58,
+          width: colW}}>
+          <div style={{fontFamily: 'Impact, Arial', fontSize: 22,
+            letterSpacing: 1, color: c.tone, borderBottom: `3px solid ${c.tone}`,
+            paddingBottom: 5, opacity: ease(since, 4 + ci * 8, 18 + ci * 8)}}>
+            {c.label}
+          </div>
+          {c.items.map((it, i) => {
+            const t = ease(since, 16 + ci * 10 + i * 11, 30 + ci * 10 + i * 11);
+            return (
+              <div key={i} style={{fontSize: 19, lineHeight: 1.3, marginTop: 11,
+                opacity: t, transform: `translateY(${(1 - t) * 7}px)`}}>
+                {it}
+              </div>
+            );
+          })}
+        </div>
+      ))}
+      <div style={{position: 'absolute', left: padX, bottom: 10, right: padX,
+        fontSize: 15, color: MUTED, opacity: ease(since, 60, 74)}}>{foot}</div>
+    </div>
+  );
+};
+
+/** One number, alone, held. For the fact that IS the episode. */
+export const BigNumberExhibit: React.FC<{
+  since: number; w: number; h: number;
+  kicker: string; value: string; caption: string; foot: string;
+}> = ({since, w, h, kicker, value, caption, foot}) => {
+  const pop01 = pop(since, 6, 24);
+  return (
+    <div style={{position: 'absolute', inset: 0, background: PAPER,
+      fontFamily: 'Arial', color: INK}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: h * 0.16,
+        textAlign: 'center', fontSize: 20, letterSpacing: 2, color: MUTED,
+        opacity: ease(since, 0, 12)}}>{kicker}</div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: h * 0.28,
+        textAlign: 'center', fontFamily: 'Impact, Arial', fontSize: 132,
+        color: RED, lineHeight: 1,
+        transform: `scale(${0.7 + 0.3 * pop01})`, opacity: pop01}}>{value}</div>
+      <div style={{position: 'absolute', left: 40, right: 40, top: h * 0.62,
+        textAlign: 'center', fontSize: 24, lineHeight: 1.3,
+        opacity: ease(since, 24, 40)}}>{caption}</div>
+      <div style={{position: 'absolute', left: 40, right: 40, bottom: 12,
+        textAlign: 'center', fontSize: 15, color: MUTED,
+        opacity: ease(since, 42, 56)}}>{foot}</div>
+    </div>
+  );
+};
+
+/** N labelled columns of very different heights. The gap BETWEEN the bars is
+ *  the story — approved vs shipped vs booked are never the same number, and
+ *  drawing them side by side is the whole argument in one image. */
+export const ColumnsExhibit: React.FC<{
+  since: number; w: number; h: number;
+  title: string; foot: string;
+  cols: {label: string; sub: string; frac: number; tone?: 'blue' | 'red'}[];
+}> = ({since, w, h, title, foot, cols}) => {
+  const padX = 60;
+  const gap = 34;
+  const colW = (w - padX * 2 - gap * (cols.length - 1)) / cols.length;
+  const baseY = h * 0.74;
+  const maxH = h * 0.46;
+  return (
+    <div style={{position: 'absolute', inset: 0, background: PAPER,
+      fontFamily: 'Arial', color: INK}}>
+      <div style={{position: 'absolute', left: padX - 6, top: 16,
+        fontFamily: 'Impact, Arial', fontSize: 30, letterSpacing: 1,
+        opacity: ease(since, 0, 10)}}>{title}</div>
+      {cols.map((c, i) => {
+        const grow = ease(since, 10 + i * 10, 40 + i * 10);
+        const bh = Math.max(5, maxH * c.frac * grow);
+        const x = padX + i * (colW + gap);
+        const tone = c.tone === 'red' ? RED : BLUE;
+        return (
+          <React.Fragment key={c.label}>
+            <div style={{position: 'absolute', left: x, top: baseY - bh,
+              width: colW, height: bh, background: tone, borderRadius: 6}} />
+            <div style={{position: 'absolute', left: x, top: baseY - bh - 30,
+              width: colW, textAlign: 'center', fontFamily: 'Impact, Arial',
+              fontSize: 22, color: tone, opacity: grow}}>{c.sub}</div>
+            <div style={{position: 'absolute', left: x, top: baseY + 10,
+              width: colW, textAlign: 'center', fontSize: 18,
+              letterSpacing: 1, opacity: ease(since, 14 + i * 10, 40 + i * 10)
+              }}>{c.label}</div>
+          </React.Fragment>
+        );
+      })}
+      <div style={{position: 'absolute', left: padX, bottom: 12, right: padX,
+        fontSize: 15, color: MUTED, opacity: ease(since, 56, 70)}}>{foot}</div>
+    </div>
+  );
+};
+
+/** A dominant share draining away: the big number counts DOWN while the
+ *  "elsewhere" column fills. What a year of "maybe" does to a market. */
+export const CollapseExhibit: React.FC<{
+  since: number; w: number; h: number;
+  title: string; fromPct: number; caption: string; foot: string;
+}> = ({since, w, h, title, fromPct, caption, foot}) => {
+  const t = ease(since, 16, 80);
+  const pct = Math.round(fromPct * (1 - t));
+  const padX = 60;
+  return (
+    <div style={{position: 'absolute', inset: 0, background: PAPER,
+      fontFamily: 'Arial', color: INK}}>
+      <div style={{position: 'absolute', left: padX - 6, top: 16,
+        fontFamily: 'Impact, Arial', fontSize: 30, letterSpacing: 1,
+        opacity: ease(since, 0, 10)}}>{title}</div>
+      <div style={{position: 'absolute', left: 0, width: w * 0.52, top: h * 0.30,
+        textAlign: 'center', fontFamily: 'Impact, Arial', fontSize: 120,
+        lineHeight: 1, color: pct > 20 ? BLUE : RED,
+        opacity: ease(since, 4, 16)}}>{pct}%</div>
+      {/* where it went */}
+      <div style={{position: 'absolute', right: padX, top: h * 0.30 + 120 * (1 - t * 0.8) - 100,
+        width: w * 0.24, height: 100 + t * 0.8 * 120, background: RED,
+        borderRadius: 6, opacity: ease(since, 20, 40)}} />
+      <div style={{position: 'absolute', right: padX, top: h * 0.30 + 132,
+        width: w * 0.24, textAlign: 'center', fontSize: 17,
+        opacity: ease(since, 24, 44)}}>bought elsewhere</div>
+      <div style={{position: 'absolute', left: padX, right: padX, top: h * 0.68,
+        textAlign: 'center', fontSize: 22, lineHeight: 1.35,
+        opacity: ease(since, 40, 56)}}>{caption}</div>
+      <div style={{position: 'absolute', left: padX, bottom: 12, right: padX,
+        fontSize: 15, color: MUTED, opacity: ease(since, 56, 70)}}>{foot}</div>
+    </div>
+  );
+};
