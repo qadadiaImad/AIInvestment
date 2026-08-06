@@ -18,13 +18,16 @@ export const RIGANATOMY_FRAMES = 1;
 const RIG = rigParts as unknown as Record<string, Rig>;
 const POSE = "sol_point";
 
-const PARTS: {name: string; n: number; joint: string}[] = [
-  {name: "head", n: 78, joint: "neck"},
-  {name: "torso", n: 27, joint: "hips"},
-  {name: "armL", n: 21, joint: "L shoulder"},
-  {name: "armR", n: 5, joint: "R shoulder"},
-  {name: "legL", n: 16, joint: "L hip"},
-  {name: "legR", n: 15, joint: "R hip"},
+// The body ships as ONE piece of artwork and is drawn three times, each
+// clipped to a different band, because vtracer emitted the whole silhouette
+// as a single path and no amount of sorting can split one path.
+const PARTS: {src: string; pivot: string; label: string; note: string}[] = [
+  {src: "head", pivot: "head", label: "head", note: "78 paths - pivot: neck"},
+  {src: "armL", pivot: "armL", label: "armL", note: "21 paths - pivot: L shoulder"},
+  {src: "armR", pivot: "armR", label: "armR", note: "5 paths - pivot: R shoulder"},
+  {src: "body", pivot: "torso", label: "body -> torso", note: "clipped above the cut"},
+  {src: "body", pivot: "legL", label: "body -> foot L", note: "clipped below, left"},
+  {src: "body", pivot: "legR", label: "body -> foot R", note: "clipped below, right"},
 ];
 
 export const RigAnatomy: React.FC = () => {
@@ -46,16 +49,27 @@ export const RigAnatomy: React.FC = () => {
           color: "#16203A",
         }}
       >
-        sol_point.svg — 162 vector paths, clustered into 6 parts by position
+        sol_point.svg — 162 paths → 4 artworks, drawn as 6 independent pieces
       </div>
 
       {PARTS.map((p, i) => {
-        const src = rig.parts[p.name];
-        const [px, py] = rig.pivots[p.name] ?? [0.5, 0.5];
+        const src = rig.parts[p.src];
+        const [px, py] = rig.pivots[p.pivot] ?? [0.5, 0.5];
+        const cut = rig.legCut ?? 0.9;
+        const fm = rig.footMid ?? 0.5;
+        const pcv = (v: number) => `${(v * 100).toFixed(2)}%`;
+        const clip =
+          p.label === "body -> torso"
+            ? `inset(0% 0% ${pcv(1 - (cut + 0.075))} 0%)`
+            : p.label === "body -> foot L"
+              ? `inset(${pcv(cut)} ${pcv(1 - fm)} 0% 0%)`
+              : p.label === "body -> foot R"
+                ? `inset(${pcv(cut)} 0% 0% ${pcv(fm)})`
+                : undefined;
         const x = 60 + (i % 3) * (cellW + 40);
         const y = 90 + Math.floor(i / 3) * (cellH + 74);
         return (
-          <div key={p.name} style={{position: "absolute", left: x, top: y}}>
+          <div key={p.label} style={{position: "absolute", left: x, top: y}}>
             <div
               style={{
                 position: "relative",
@@ -67,15 +81,17 @@ export const RigAnatomy: React.FC = () => {
               }}
             >
               {src ? (
-                <Img
-                  src={staticFile(src)}
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    width: "100%",
-                    height: "100%",
-                  }}
-                />
+                <div style={{position: "absolute", inset: 0, clipPath: clip}}>
+                  <Img
+                    src={staticFile(src)}
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  />
+                </div>
               ) : null}
               {/* the measured pivot — this is what the part rotates about */}
               <div
@@ -93,10 +109,10 @@ export const RigAnatomy: React.FC = () => {
               />
             </div>
             <div style={{fontSize: 17, color: "#16203A", marginTop: 7}}>
-              <b>{p.name}</b> · {p.n} paths
+              <b>{p.label}</b>
             </div>
             <div style={{fontSize: 15, color: "#7A879B"}}>
-              pivot = {p.joint} ({px.toFixed(3)}, {py.toFixed(3)})
+              {p.note} ({px.toFixed(3)}, {py.toFixed(3)})
             </div>
           </div>
         );
@@ -140,9 +156,11 @@ export const RigAnatomy: React.FC = () => {
           lineHeight: 1.5,
         }}
       >
-        Every part is re-emitted with the SAME svg header and viewBox, so
-        stacking them reproduces the drawing exactly. Motion = per-frame
-        rotate/translate/scale about the red dots. No pixels are generated.
+        vtracer emitted the whole silhouette as ONE path (97% of the frame), so
+        legs cannot be sorted out of it. Instead the body artwork is drawn three
+        times, each clipped to a different band and transformed on its own; the
+        torso draw overlaps the cut so the straight edge never shows. Motion =
+        per-frame rotate/translate/scale about the red dots. Nothing generated.
       </div>
     </AbsoluteFill>
   );

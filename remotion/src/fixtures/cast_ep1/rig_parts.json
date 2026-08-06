@@ -7,7 +7,7 @@
     0.48967120622568094,
     0.4979404659188956
    ],
-   "torso": [
+   "body": [
     0.4994678583009079,
     0.9930197368421053
    ],
@@ -19,22 +19,986 @@
     0.6614785992217899,
     0.47852955133735986
    ],
+   "torso": [
+    0.48,
+    0.995
+   ],
    "legL": [
-    0.30025950470168616,
-    0.7238999137187231
+    0.3719455252918288,
+    0.8816609145815357
    ],
    "legR": [
-    0.5428015564202334,
-    0.7031924072476272
+    0.6319455252918288,
+    0.8816609145815357
    ]
   },
   "parts": {
    "head": "characters/cast_ep1/parts/sol_point__head.svg",
-   "torso": "characters/cast_ep1/parts/sol_point__torso.svg",
+   "body": "characters/cast_ep1/parts/sol_point__body.svg",
    "armL": "characters/cast_ep1/parts/sol_point__armL.svg",
-   "armR": "characters/cast_ep1/parts/sol_point__armR.svg",
-   "legL": "characters/cast_ep1/parts/sol_point__legL.svg",
-   "legR": "characters/cast_ep1/parts/sol_point__legR.svg"
-  }
+   "armR": "characters/cast_ep1/parts/sol_point__armR.svg"
+  },
+  "crotch": 0.9266609145815358,
+  "legCut": 0.8816609145815357,
+  "footMid": 0.5019455252918288,
+  "feetSplit": true
+ },
+ "rex_determined": {
+  "w": 732,
+  "h": 1157,
+  "pivots": {
+   "head": [
+    0.477169868510929,
+    0.35695764909248057
+   ],
+   "body": [
+    0.5016277322404371,
+    0.9923474503025065
+   ],
+   "armL": [
+    0.31010928961748635,
+    0.23100172860847018
+   ],
+   "armR": [
+    0.47700409836065577,
+    0.1780466724286949
+   ],
+   "torso": [
+    0.435,
+    0.995
+   ],
+   "legL": [
+    0.37,
+    0.885
+   ],
+   "legR": [
+    0.63,
+    0.885
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/rex_determined__head.svg",
+   "body": "characters/cast_ep1/parts/rex_determined__body.svg",
+   "armL": "characters/cast_ep1/parts/rex_determined__armL.svg",
+   "armR": "characters/cast_ep1/parts/rex_determined__armR.svg"
+  },
+  "crotch": 0.93,
+  "legCut": 0.885,
+  "footMid": 0.5,
+  "feetSplit": false
+ },
+ "rex_determined_v1": {
+  "w": 785,
+  "h": 1216,
+  "pivots": {
+   "head": [
+    0.5006786624203822,
+    1.0
+   ],
+   "body": [
+    0.6516133757961784,
+    1.0
+   ],
+   "armR": [
+    0.6484076433121019,
+    0.5148026315789473
+   ],
+   "torso": [
+    0.5,
+    0.995
+   ],
+   "legL": [
+    0.37,
+    0.885
+   ],
+   "legR": [
+    0.63,
+    0.885
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/rex_determined_v1__head.svg",
+   "body": "characters/cast_ep1/parts/rex_determined_v1__body.svg",
+   "armR": "characters/cast_ep1/parts/rex_determined_v1__armR.svg"
+  },
+  "crotch": 0.93,
+  "legCut": 0.885,
+  "footMid": 0.5,
+  "feetSplit": false
+ },
+ "rex_eager": {
+  "w": 731,
+  "h": 1056,
+  "pivots": {
+   "head": [
+    0.5458809849521203,
+    0.518998106060606
+   ],
+   "body": [
+    0.5008495212038303,
+    0.9919649621212122
+   ],
+   "armL": [
+    0.5006839945280438,
+    0.5063920454545454
+   ],
+   "armR": [
+    0.6292749658002736,
+    0.4971590909090909
+   ],
+   "torso": [
+    0.54,
+    0.995
+   ],
+   "legL": [
+    0.37,
+    0.885
+   ],
+   "legR": [
+    0.63,
+    0.885
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/rex_eager__head.svg",
+   "body": "characters/cast_ep1/parts/rex_eager__body.svg",
+   "armL": "characters/cast_ep1/parts/rex_eager__armL.svg",
+   "armR": "characters/cast_ep1/parts/rex_eager__armR.svg"
+  },
+  "crotch": 0.93,
+  "legCut": 0.885,
+  "footMid": 0.5,
+  "feetSplit": false
+ },
+ "rex_eager_v1": {
+  "w": 672,
+  "h": 1166,
+  "pivots": {
+   "head": [
+    0.35044642857142855,
+    0.45373842195540304
+   ],
+   "body": [
+    0.5149813988095238,
+    0.9953224699828473
+   ],
+   "armR": [
+    0.01488095238095238,
+    0.008576329331046312
+   ],
+   "torso": [
+    0.09,
+    0.995
+   ],
+   "legL": [
+    0.37,
+    0.885
+   ],
+   "legR": [
+    0.63,
+    0.885
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/rex_eager_v1__head.svg",
+   "body": "characters/cast_ep1/parts/rex_eager_v1__body.svg",
+   "armR": "characters/cast_ep1/parts/rex_eager_v1__armR.svg"
+  },
+  "crotch": 0.93,
+  "legCut": 0.885,
+  "footMid": 0.5,
+  "feetSplit": false
+ },
+ "rex_listen": {
+  "w": 764,
+  "h": 1005,
+  "pivots": {
+   "head": [
+    0.5006603403141361,
+    0.9914796019900498
+   ],
+   "body": [
+    0.5113795811518325,
+    0.9915480099502488
+   ],
+   "armL": [
+    0.468586387434555,
+    0.43283582089552236
+   ],
+   "armR": [
+    0.6649214659685864,
+    0.5353233830845772
+   ],
+   "torso": [
+    0.5,
+    0.995
+   ],
+   "legL": [
+    0.37,
+    0.885
+   ],
+   "legR": [
+    0.63,
+    0.885
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/rex_listen__head.svg",
+   "body": "characters/cast_ep1/parts/rex_listen__body.svg",
+   "armL": "characters/cast_ep1/parts/rex_listen__armL.svg",
+   "armR": "characters/cast_ep1/parts/rex_listen__armR.svg"
+  },
+  "crotch": 0.93,
+  "legCut": 0.885,
+  "footMid": 0.5,
+  "feetSplit": false
+ },
+ "rex_shock": {
+  "w": 896,
+  "h": 1152,
+  "pivots": {
+   "head": [
+    0.5000770219654909,
+    1.0000000836203495
+   ],
+   "body": [
+    0.5005385044642857,
+    1.0
+   ],
+   "armL": [
+    0.3470982142857143,
+    0.5668402777777778
+   ],
+   "armR": [
+    0.6763392857142857,
+    0.5321180555555556
+   ],
+   "torso": [
+    0.52,
+    0.995
+   ],
+   "legL": [
+    0.3934375,
+    0.7605555555555555
+   ],
+   "legR": [
+    0.6534375,
+    0.7605555555555555
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/rex_shock__head.svg",
+   "body": "characters/cast_ep1/parts/rex_shock__body.svg",
+   "armL": "characters/cast_ep1/parts/rex_shock__armL.svg",
+   "armR": "characters/cast_ep1/parts/rex_shock__armR.svg"
+  },
+  "crotch": 0.8055555555555556,
+  "legCut": 0.7605555555555555,
+  "footMid": 0.5234375,
+  "feetSplit": true
+ },
+ "rex_shock_v1": {
+  "w": 896,
+  "h": 1152,
+  "pivots": {
+   "head": [
+    0.5009795654637273,
+    0.9999997028387152
+   ],
+   "body": [
+    0.44644140625,
+    1.001689236111111
+   ],
+   "armL": [
+    0.2916484375,
+    0.4522569444444444
+   ],
+   "armR": [
+    0.5636160714285714,
+    0.4288194444444444
+   ],
+   "torso": [
+    0.45,
+    0.995
+   ],
+   "legL": [
+    0.4899776785714286,
+    0.8421527777777778
+   ],
+   "legR": [
+    0.7499776785714286,
+    0.8421527777777778
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/rex_shock_v1__head.svg",
+   "body": "characters/cast_ep1/parts/rex_shock_v1__body.svg",
+   "armL": "characters/cast_ep1/parts/rex_shock_v1__armL.svg",
+   "armR": "characters/cast_ep1/parts/rex_shock_v1__armR.svg"
+  },
+  "crotch": 0.8871527777777778,
+  "legCut": 0.8421527777777778,
+  "footMid": 0.6199776785714286,
+  "feetSplit": true
+ },
+ "rex_skeptic": {
+  "w": 821,
+  "h": 1151,
+  "pivots": {
+   "head": [
+    0.5279473964677223,
+    1.0000001900521285
+   ],
+   "body": [
+    0.4805115712545676,
+    1.0017437011294528
+   ],
+   "armL": [
+    0.364190012180268,
+    0.523892267593397
+   ],
+   "armR": [
+    0.6988416565164434,
+    0.5065160729800173
+   ],
+   "torso": [
+    0.5,
+    0.995
+   ],
+   "legL": [
+    0.37,
+    0.885
+   ],
+   "legR": [
+    0.63,
+    0.885
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/rex_skeptic__head.svg",
+   "body": "characters/cast_ep1/parts/rex_skeptic__body.svg",
+   "armL": "characters/cast_ep1/parts/rex_skeptic__armL.svg",
+   "armR": "characters/cast_ep1/parts/rex_skeptic__armR.svg"
+  },
+  "crotch": 0.93,
+  "legCut": 0.885,
+  "footMid": 0.5,
+  "feetSplit": false
+ },
+ "sol_armswide": {
+  "w": 552,
+  "h": 1118,
+  "pivots": {
+   "head": [
+    0.5717255434782609,
+    0.3384935588802549
+   ],
+   "body": [
+    0.500083106884058,
+    0.9924505534436494
+   ],
+   "armL": [
+    0.42934782608695654,
+    0.19051878354203935
+   ],
+   "armR": [
+    0.3605072463768116,
+    0.22361359570661896
+   ],
+   "torso": [
+    0.4,
+    0.995
+   ],
+   "legL": [
+    0.37,
+    0.885
+   ],
+   "legR": [
+    0.63,
+    0.885
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/sol_armswide__head.svg",
+   "body": "characters/cast_ep1/parts/sol_armswide__body.svg",
+   "armL": "characters/cast_ep1/parts/sol_armswide__armL.svg",
+   "armR": "characters/cast_ep1/parts/sol_armswide__armR.svg"
+  },
+  "crotch": 0.93,
+  "legCut": 0.885,
+  "footMid": 0.5,
+  "feetSplit": false
+ },
+ "sol_finger": {
+  "w": 832,
+  "h": 1159,
+  "pivots": {
+   "head": [
+    0.49422596153846154,
+    0.4516798964624677
+   ],
+   "body": [
+    0.49772716346153845,
+    0.9926807592752374
+   ],
+   "armL": [
+    0.35383533653846155,
+    0.31531761283973253
+   ],
+   "armR": [
+    0.6708870192307692,
+    0.3917169974115617
+   ],
+   "torso": [
+    0.48000000000000004,
+    0.995
+   ],
+   "legL": [
+    0.3994471153846154,
+    0.8738955996548748
+   ],
+   "legR": [
+    0.6594471153846154,
+    0.8738955996548748
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/sol_finger__head.svg",
+   "body": "characters/cast_ep1/parts/sol_finger__body.svg",
+   "armL": "characters/cast_ep1/parts/sol_finger__armL.svg",
+   "armR": "characters/cast_ep1/parts/sol_finger__armR.svg"
+  },
+  "crotch": 0.9188955996548749,
+  "legCut": 0.8738955996548748,
+  "footMid": 0.5294471153846154,
+  "feetSplit": true
+ },
+ "sol_laugh": {
+  "w": 700,
+  "h": 1058,
+  "pivots": {
+   "head": [
+    0.5010157142857143,
+    0.9917339319470699
+   ],
+   "body": [
+    0.5114284235491071,
+    0.9905482041587902
+   ],
+   "armL": [
+    0.6040714285714286,
+    0.38074574669187145
+   ],
+   "armR": [
+    0.37172,
+    0.40673629489603025
+   ],
+   "torso": [
+    0.5,
+    0.995
+   ],
+   "legL": [
+    0.30428571428571427,
+    0.8226748582230623
+   ],
+   "legR": [
+    0.5642857142857143,
+    0.8226748582230623
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/sol_laugh__head.svg",
+   "body": "characters/cast_ep1/parts/sol_laugh__body.svg",
+   "armL": "characters/cast_ep1/parts/sol_laugh__armL.svg",
+   "armR": "characters/cast_ep1/parts/sol_laugh__armR.svg"
+  },
+  "crotch": 0.8676748582230623,
+  "legCut": 0.8226748582230623,
+  "footMid": 0.4342857142857143,
+  "feetSplit": true
+ },
+ "sol_laugh_v1": {
+  "w": 807,
+  "h": 1211,
+  "pivots": {
+   "head": [
+    0.4941853701982652,
+    1.0000001548307185
+   ],
+   "body": [
+    0.5238996282527881,
+    1.0006531791907514
+   ],
+   "armL": [
+    0.5613382899628253,
+    0.3699083402146986
+   ],
+   "armR": [
+    0.5526641883519207,
+    0.37572254335260113
+   ],
+   "torso": [
+    0.5,
+    0.995
+   ],
+   "legL": [
+    0.37,
+    0.885
+   ],
+   "legR": [
+    0.63,
+    0.885
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/sol_laugh_v1__head.svg",
+   "body": "characters/cast_ep1/parts/sol_laugh_v1__body.svg",
+   "armL": "characters/cast_ep1/parts/sol_laugh_v1__armL.svg",
+   "armR": "characters/cast_ep1/parts/sol_laugh_v1__armR.svg"
+  },
+  "crotch": 0.93,
+  "legCut": 0.885,
+  "footMid": 0.5,
+  "feetSplit": false
+ },
+ "sol_point_v1": {
+  "w": 794,
+  "h": 1177,
+  "pivots": {
+   "head": [
+    0.46256989924433245,
+    0.5535911347706033
+   ],
+   "body": [
+    0.4971498374650701,
+    1.0014244506109946
+   ],
+   "armL": [
+    0.4582581863979848,
+    0.5101520815632965
+   ],
+   "armR": [
+    0.6850931989924434,
+    0.48364485981308414
+   ],
+   "torso": [
+    0.555,
+    0.995
+   ],
+   "legL": [
+    0.3895214105793451,
+    0.8810832625318606
+   ],
+   "legR": [
+    0.6495214105793451,
+    0.8810832625318606
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/sol_point_v1__head.svg",
+   "body": "characters/cast_ep1/parts/sol_point_v1__body.svg",
+   "armL": "characters/cast_ep1/parts/sol_point_v1__armL.svg",
+   "armR": "characters/cast_ep1/parts/sol_point_v1__armR.svg"
+  },
+  "crotch": 0.9260832625318607,
+  "legCut": 0.8810832625318606,
+  "footMid": 0.5195214105793451,
+  "feetSplit": true
+ },
+ "sol_shrug": {
+  "w": 832,
+  "h": 1216,
+  "pivots": {
+   "head": [
+    0.5005274868143292,
+    0.9999996786399891
+   ],
+   "body": [
+    0.5005354567307692,
+    1.0015986071134868
+   ],
+   "armL": [
+    0.31389663461538464,
+    0.634046052631579
+   ],
+   "armR": [
+    0.6475709134615385,
+    0.5542763157894737
+   ],
+   "torso": [
+    0.5,
+    0.995
+   ],
+   "legL": [
+    0.37,
+    0.885
+   ],
+   "legR": [
+    0.63,
+    0.885
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/sol_shrug__head.svg",
+   "body": "characters/cast_ep1/parts/sol_shrug__body.svg",
+   "armL": "characters/cast_ep1/parts/sol_shrug__armL.svg",
+   "armR": "characters/cast_ep1/parts/sol_shrug__armR.svg"
+  },
+  "crotch": 0.93,
+  "legCut": 0.885,
+  "footMid": 0.5,
+  "feetSplit": false
+ },
+ "sol_shrug_v1": {
+  "w": 708,
+  "h": 1122,
+  "pivots": {
+   "head": [
+    0.5083411016949152,
+    0.9925329768270945
+   ],
+   "body": [
+    0.5143594632768361,
+    0.9055258467023173
+   ],
+   "armL": [
+    0.4930655455508475,
+    0.4553288213012478
+   ],
+   "armR": [
+    0.4293785310734463,
+    0.4295900178253119
+   ],
+   "torso": [
+    0.5,
+    0.995
+   ],
+   "legL": [
+    0.379180790960452,
+    0.8578520499108734
+   ],
+   "legR": [
+    0.639180790960452,
+    0.8578520499108734
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/sol_shrug_v1__head.svg",
+   "body": "characters/cast_ep1/parts/sol_shrug_v1__body.svg",
+   "armL": "characters/cast_ep1/parts/sol_shrug_v1__armL.svg",
+   "armR": "characters/cast_ep1/parts/sol_shrug_v1__armR.svg"
+  },
+  "crotch": 0.9028520499108734,
+  "legCut": 0.8578520499108734,
+  "footMid": 0.509180790960452,
+  "feetSplit": true
+ },
+ "sol_smug": {
+  "w": 896,
+  "h": 1152,
+  "pivots": {
+   "head": [
+    0.4999679870690618,
+    0.9999998339282141
+   ],
+   "body": [
+    0.5008507254464286,
+    1.0011875
+   ],
+   "armL": [
+    0.2578125,
+    0.5700954861111112
+   ],
+   "armR": [
+    0.6707589285714286,
+    0.4973958333333333
+   ],
+   "torso": [
+    0.44,
+    0.995
+   ],
+   "legL": [
+    0.37,
+    0.885
+   ],
+   "legR": [
+    0.63,
+    0.885
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/sol_smug__head.svg",
+   "body": "characters/cast_ep1/parts/sol_smug__body.svg",
+   "armL": "characters/cast_ep1/parts/sol_smug__armL.svg",
+   "armR": "characters/cast_ep1/parts/sol_smug__armR.svg"
+  },
+  "crotch": 0.93,
+  "legCut": 0.885,
+  "footMid": 0.5,
+  "feetSplit": false
+ },
+ "sol_smug_v1": {
+  "w": 846,
+  "h": 1101,
+  "pivots": {
+   "head": [
+    0.5005768321513002,
+    0.9919491371480472
+   ],
+   "body": [
+    0.500895390070922,
+    0.9920772025431427
+   ],
+   "armL": [
+    0.1879432624113475,
+    0.6648501362397821
+   ],
+   "armR": [
+    0.7906323877068558,
+    0.6409514078110808
+   ],
+   "torso": [
+    0.4,
+    0.995
+   ],
+   "legL": [
+    0.37,
+    0.885
+   ],
+   "legR": [
+    0.63,
+    0.885
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/sol_smug_v1__head.svg",
+   "body": "characters/cast_ep1/parts/sol_smug_v1__body.svg",
+   "armL": "characters/cast_ep1/parts/sol_smug_v1__armL.svg",
+   "armR": "characters/cast_ep1/parts/sol_smug_v1__armR.svg"
+  },
+  "crotch": 0.93,
+  "legCut": 0.885,
+  "footMid": 0.5,
+  "feetSplit": false
+ },
+ "sol_smug_v2": {
+  "w": 896,
+  "h": 1152,
+  "pivots": {
+   "head": [
+    0.49975167410714283,
+    1.0
+   ],
+   "body": [
+    0.5003024379185268,
+    1.000881076388889
+   ],
+   "armL": [
+    0.23602120535714285,
+    0.6284722222222222
+   ],
+   "armR": [
+    0.40290136718749997,
+    0.6047804090711806
+   ],
+   "torso": [
+    0.37,
+    0.995
+   ],
+   "legL": [
+    0.37,
+    0.885
+   ],
+   "legR": [
+    0.63,
+    0.885
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/sol_smug_v2__head.svg",
+   "body": "characters/cast_ep1/parts/sol_smug_v2__body.svg",
+   "armL": "characters/cast_ep1/parts/sol_smug_v2__armL.svg",
+   "armR": "characters/cast_ep1/parts/sol_smug_v2__armR.svg"
+  },
+  "crotch": 0.93,
+  "legCut": 0.885,
+  "footMid": 0.5,
+  "feetSplit": false
+ },
+ "sol_whisper": {
+  "w": 896,
+  "h": 1152,
+  "pivots": {
+   "head": [
+    0.4990027901785714,
+    1.0
+   ],
+   "body": [
+    0.49956808035714284,
+    1.0010711805555554
+   ],
+   "armL": [
+    0.48367002650669644,
+    0.5007635362413194
+   ],
+   "armR": [
+    0.7332589285714286,
+    0.5217013888888888
+   ],
+   "torso": [
+    0.5,
+    0.995
+   ],
+   "legL": [
+    0.4810491071428571,
+    0.814375
+   ],
+   "legR": [
+    0.7410491071428571,
+    0.814375
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/sol_whisper__head.svg",
+   "body": "characters/cast_ep1/parts/sol_whisper__body.svg",
+   "armL": "characters/cast_ep1/parts/sol_whisper__armL.svg",
+   "armR": "characters/cast_ep1/parts/sol_whisper__armR.svg"
+  },
+  "crotch": 0.859375,
+  "legCut": 0.814375,
+  "footMid": 0.6110491071428571,
+  "feetSplit": true
+ },
+ "sol_whisper_v1": {
+  "w": 896,
+  "h": 1152,
+  "pivots": {
+   "head": [
+    0.4993314732142857,
+    1.0
+   ],
+   "body": [
+    0.383677734375,
+    1.0014010416666668
+   ],
+   "armL": [
+    0.2948113839285714,
+    0.3758680555555556
+   ],
+   "armR": [
+    0.6583504464285715,
+    0.04079861111111111
+   ],
+   "torso": [
+    0.5,
+    0.995
+   ],
+   "legL": [
+    0.37,
+    0.885
+   ],
+   "legR": [
+    0.63,
+    0.885
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/sol_whisper_v1__head.svg",
+   "body": "characters/cast_ep1/parts/sol_whisper_v1__body.svg",
+   "armL": "characters/cast_ep1/parts/sol_whisper_v1__armL.svg",
+   "armR": "characters/cast_ep1/parts/sol_whisper_v1__armR.svg"
+  },
+  "crotch": 0.93,
+  "legCut": 0.885,
+  "footMid": 0.5,
+  "feetSplit": false
+ },
+ "sol_wink": {
+  "w": 896,
+  "h": 1152,
+  "pivots": {
+   "head": [
+    0.4997248883928571,
+    0.6057924262152778
+   ],
+   "body": [
+    0.49823381696428576,
+    1.0014184027777777
+   ],
+   "armL": [
+    0.24776785714285715,
+    0.5190972222222222
+   ],
+   "armR": [
+    0.6808035714285714,
+    0.5251736111111112
+   ],
+   "torso": [
+    0.42,
+    0.995
+   ],
+   "legL": [
+    0.4436607142857143,
+    0.8933680555555555
+   ],
+   "legR": [
+    0.7036607142857143,
+    0.8933680555555555
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/sol_wink__head.svg",
+   "body": "characters/cast_ep1/parts/sol_wink__body.svg",
+   "armL": "characters/cast_ep1/parts/sol_wink__armL.svg",
+   "armR": "characters/cast_ep1/parts/sol_wink__armR.svg"
+  },
+  "crotch": 0.9383680555555556,
+  "legCut": 0.8933680555555555,
+  "footMid": 0.5736607142857143,
+  "feetSplit": true
+ },
+ "sol_wink_v1": {
+  "w": 896,
+  "h": 1152,
+  "pivots": {
+   "head": [
+    0.5001049107142858,
+    1.0
+   ],
+   "body": [
+    0.43622042410714285,
+    1.0014453125
+   ],
+   "armL": [
+    0.28794642857142855,
+    0.4869791666666667
+   ],
+   "armR": [
+    0.5821104910714286,
+    0.36284765625
+   ],
+   "torso": [
+    0.4,
+    0.995
+   ],
+   "legL": [
+    0.37,
+    0.885
+   ],
+   "legR": [
+    0.63,
+    0.885
+   ]
+  },
+  "parts": {
+   "head": "characters/cast_ep1/parts/sol_wink_v1__head.svg",
+   "body": "characters/cast_ep1/parts/sol_wink_v1__body.svg",
+   "armL": "characters/cast_ep1/parts/sol_wink_v1__armL.svg",
+   "armR": "characters/cast_ep1/parts/sol_wink_v1__armR.svg"
+  },
+  "crotch": 0.93,
+  "legCut": 0.885,
+  "footMid": 0.5,
+  "feetSplit": false
  }
 }

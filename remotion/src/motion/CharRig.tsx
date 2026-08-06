@@ -31,6 +31,17 @@ export type Rig = {
   h: number;
   pivots: Record<string, number[]>;
   parts: Record<string, string>;
+  /** measured off the pose's alpha: where the two feet first separate */
+  crotch?: number;
+  /** where the body is cut into torso and feet — sits ABOVE the crotch so
+   *  the torso draw covers the straight edge */
+  legCut?: number;
+  /** x of the gap between the two feet */
+  footMid?: number;
+  /** true only when a real gap between the feet was measured. Where it is
+   *  false the feet are one connected blob and must move together — halving
+   *  it and moving the halves apart tears the drawing. */
+  feetSplit?: boolean;
 };
 
 /** One articulated pose. Everything is optional and defaults to rest, so a
@@ -59,17 +70,23 @@ export type RigPose = {
 
 const Part: React.FC<{
   rig: Rig;
-  name: string;
+  /** which artwork file to draw */
+  src: string;
+  /** which pivot to rotate about */
+  pivot: string;
   rot?: number;
   dx?: number;
   dy?: number;
   sx?: number;
   sy?: number;
   z: number;
-}> = ({rig, name, rot = 0, dx = 0, dy = 0, sx = 1, sy = 1, z}) => {
-  const src = rig.parts[name];
-  if (!src) return null;
-  const [px, py] = rig.pivots[name] ?? [0.5, 0.5];
+  /** CSS inset() clip, applied in the part's own rest space BEFORE the
+   *  transform — so the clipped piece rotates as one object. */
+  clip?: string;
+}> = ({rig, src, pivot, rot = 0, dx = 0, dy = 0, sx = 1, sy = 1, z, clip}) => {
+  const file = rig.parts[src];
+  if (!file) return null;
+  const [px, py] = rig.pivots[pivot] ?? [0.5, 0.5];
   return (
     <div
       style={{
@@ -80,10 +97,12 @@ const Part: React.FC<{
         transformOrigin: `${px * 100}% ${py * 100}%`,
       }}
     >
-      <Img
-        src={staticFile(src)}
-        style={{position: "absolute", inset: 0, width: "100%", height: "100%"}}
-      />
+      <div style={{position: "absolute", inset: 0, clipPath: clip}}>
+        <Img
+          src={staticFile(file)}
+          style={{position: "absolute", inset: 0, width: "100%", height: "100%"}}
+        />
+      </div>
     </div>
   );
 };
@@ -134,15 +153,29 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
   const swayDx = sway * W * 0.006;
 
   // ── walk ────────────────────────────────────────────────────────────────
-  // Legs are counter-phase; the body bobs at DOUBLE leg frequency because the
-  // pelvis rises once per step, not once per cycle. Arms counter-swing
-  // against the legs, which is what stops a walk reading as a shuffle.
+  // This cast walks with a WADDLE, and that is a fact about the drawings
+  // rather than a stylistic choice. Sol's cardigan hangs to his shoe tops:
+  // his silhouette is one unbroken mass down to y=0.938, so there are no legs
+  // to swing. What he has is two feet below that line and a heavy body above
+  // it, which is exactly the Peanuts/chibi cycle — the body rocks, the feet
+  // alternate, and the weight lands on the planted side.
+  //
+  // Feet alternate in counter-phase; the body bobs at DOUBLE that frequency
+  // because the hips rise once per step, not once per cycle. Arms counter-
+  // swing against the feet, which is what stops a walk reading as a shuffle.
   const s = stride;
-  const legLRot = Math.sin(walkPhase) * 15 * s;
-  const legRRot = Math.sin(walkPhase + Math.PI) * 15 * s;
+  const stepL = Math.sin(walkPhase);
+  const stepR = Math.sin(walkPhase + Math.PI);
+  const footLRot = stepL * 9 * s;
+  const footRRot = stepR * 9 * s;
+  // a foot lifts as it swings forward and plants as it comes back
+  const footLDy = -Math.max(0, stepL) * rig.h * 0.016 * s;
+  const footRDy = -Math.max(0, stepR) * rig.h * 0.016 * s;
   const bob = -Math.abs(Math.cos(walkPhase)) * rig.h * 0.012 * s;
+  // the rock: the body leans over whichever foot is planted
+  const rock = -stepL * 2.6 * s;
   const walkLean = 2.4 * s;
-  const armSwing = Math.sin(walkPhase + Math.PI) * 11 * s;
+  const armSwing = stepR * 11 * s;
 
   // ── point at the screen ─────────────────────────────────────────────────
   // Overshoot on the way up, then settle. A gesture that arrives linearly on
@@ -173,7 +206,8 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
     const far = isL ? lIsFar : !lIsFar;
     const isGesture = name === gestureArm;
     return {
-      name,
+      src: name,
+      pivot: name,
       // far arm goes behind the torso; a raised gesture goes above the head
       z: far && at > 0.12 ? 0 : isGesture && p > 0.5 ? 6 : far ? 3 : 4,
       sx: far ? 1 - 0.34 * at : 1 + 0.06 * at,
@@ -191,31 +225,67 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
   const armL = arm("armL");
   const armR = arm("armR");
 
+  // THE CUT. The body ships as one piece of artwork and is drawn three times,
+  // each clipped to a different region and transformed on its own. The cut
+  // sits ABOVE the crotch and the torso draw covers it, so the straight edge
+  // is never on screen and each foot swings about a pivot nobody can see.
+  const cut = rig.legCut ?? 0.9;
+  const fm = rig.footMid ?? 0.5;
+  const pc = (v: number) => `${(v * 100).toFixed(3)}%`;
+  const clipFootL = `inset(${pc(cut)} ${pc(1 - fm)} 0% 0%)`;
+  const clipFootR = `inset(${pc(cut)} 0% 0% ${pc(fm)})`;
+  // overlap past the cut so the seam is buried under the torso
+  const clipTorso = `inset(0% 0% ${pc(1 - Math.min(1, cut + 0.075))} 0%)`;
+  const clipFeet = `inset(${pc(cut)} 0% 0% 0%)`;
+  const split = rig.feetSplit !== false;
+
   return (
     <>
       <Part rig={rig} {...armL} />
       <Part rig={rig} {...armR} />
+      {split ? (
+        <>
+          <Part
+            rig={rig}
+            src="body"
+            pivot="legL"
+            clip={clipFootL}
+            z={1}
+            rot={footLRot + leanRot * 0.2}
+            dx={legDx + swayDx * 0.4}
+            dy={footLDy}
+            sx={torsoSx}
+          />
+          <Part
+            rig={rig}
+            src="body"
+            pivot="legR"
+            clip={clipFootR}
+            z={1}
+            rot={footRRot + leanRot * 0.2}
+            dx={legDx + swayDx * 0.4}
+            dy={footRDy}
+            sx={torsoSx}
+          />
+        </>
+      ) : (
+        <Part
+          rig={rig}
+          src="body"
+          pivot="torso"
+          clip={clipFeet}
+          z={1}
+          dx={legDx + swayDx * 0.4}
+          sx={torsoSx}
+        />
+      )}
       <Part
         rig={rig}
-        name="legL"
-        z={1}
-        rot={legLRot + leanRot * 0.2}
-        dx={legDx + swayDx * 0.4}
-        sx={torsoSx}
-      />
-      <Part
-        rig={rig}
-        name="legR"
-        z={1}
-        rot={legRRot + leanRot * 0.2}
-        dx={legDx + swayDx * 0.4}
-        sx={torsoSx}
-      />
-      <Part
-        rig={rig}
-        name="torso"
+        src="body"
+        pivot="torso"
+        clip={clipTorso}
         z={2}
-        rot={leanRot + walkLean + sway * 0.6}
+        rot={leanRot + walkLean + rock + sway * 0.6}
         dx={torsoDx + swayDx}
         dy={-br * 2 + bob}
         sx={torsoSx * (1 - br * 0.004)}
@@ -223,9 +293,10 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
       />
       <Part
         rig={rig}
-        name="head"
+        src="head"
+        pivot="head"
         z={5}
-        rot={headRot + lookRot + leanRot * 0.5 + brLag * 0.5 + sway * 1.9}
+        rot={headRot + lookRot + leanRot * 0.5 + rock * 0.8 + brLag * 0.5 + sway * 1.9}
         dx={headDx + swayDx * 1.6}
         dy={-brLag * 4.2 + lookDy + bob * 1.15}
         sx={headSx * (1 + brLag * 0.003)}
