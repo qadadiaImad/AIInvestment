@@ -100,6 +100,28 @@ def _publish_processed(src: Path, dst: Path, base_rgb, pal,
     Image.fromarray(arr).save(dst)
 
 
+def _unify_ladder(pose: str, ordered: list) -> None:
+    """Rebase every rung onto rung0's pixels outside its own diff region."""
+    import numpy as np
+    from PIL import Image
+    from scipy import ndimage
+
+    if len(ordered) < 2:
+        return
+    paths = [PUB / ("%s__%s.png" % (pose, n)) for n in ordered]
+    base = np.asarray(Image.open(paths[0]).convert("RGBA")).astype(float)
+    for p in paths[1:]:
+        r = np.asarray(Image.open(p).convert("RGBA")).astype(float)
+        rgb_diff = np.abs(r[..., :3] - base[..., :3]).max(axis=2)
+        a_diff = np.abs(r[..., 3] - base[..., 3])
+        m = (rgb_diff > 26) | (a_diff > 26)
+        m = ndimage.binary_dilation(m, iterations=3).astype(float)
+        # feather so the cel boundary never shows as a hard seam
+        m = ndimage.gaussian_filter(m, sigma=2.0)[..., None]
+        out = base * (1 - m) + r * m
+        Image.fromarray(out.astype(np.uint8)).save(p)
+
+
 def order_by_arm(d: Path, pose: str, names: list) -> list:
     """Order variants along the smoothest possible path between drawings.
 
@@ -200,6 +222,19 @@ def main() -> None:
         # offsets read as one continuous gesture.
         variants = order_by_arm(d, pose, variants)
         rig["variants"] = variants
+        # ONE CEL, NOT A FULL REDRAW. The owner's word for the ladder was
+        # still "physical cuts", and the cause is structural: every rung
+        # swapped the ENTIRE body drawing, so even when only the hand moved,
+        # the whole cardigan's shading and outline re-randomised - 90% of
+        # pixels changing every 3 frames reads as a cut no matter how close
+        # the poses are. Real cel animation holds everything and changes only
+        # the moving part. So each ladder is unified onto its FIRST drawing's
+        # canvas: rung r becomes rung0 everywhere except inside its own
+        # feathered diff region. Outside the arm, consecutive rungs are now
+        # pixel-identical; the swap is confined to the cel that moves. Where
+        # rung r has no ink but rung0 had an arm, the mask covers it and r's
+        # transparency erases it - the old arm cannot linger.
+        _unify_ladder(pose, variants)
         print("  %-16s %d variants  %s" % (pose, len(variants),
                                            " -> ".join(variants[:4]) + " ..."))
 

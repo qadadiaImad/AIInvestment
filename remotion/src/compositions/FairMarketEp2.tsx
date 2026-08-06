@@ -444,6 +444,31 @@ const cycleAllowed = (poses: string[]) =>
   poses.length > 1 &&
   SAFE_CYCLES.some((g) => poses.every((p) => g.includes(p)));
 
+// THE ONE CLOCK. The owner's second verdict was "non synchronised
+// motions", and it was true by construction: drawing swaps ran on a
+// 38-frame timer, head actions on their own envelope, visemes on the
+// audio, expressions on segments - four clocks, so nothing ever landed
+// together. Real acting has one clock, the speech. A "stress" is the
+// track's transition into state 2 (a wide vowel): the hand steps one
+// rung, the head accents, and the expression turns all ON that frame,
+// and everything HOLDS between stresses instead of drifting.
+const stressFor = (beat: Beat, frame: number): {n: number; since: number} => {
+  const vo = beat.vo;
+  const t = vo ? TR[vo] : undefined;
+  if (!t) return {n: 0, since: 9999};
+  const i = frame - (beat.at + VO_DELAY);
+  let n = 0;
+  let last = -9999;
+  const lim = Math.min(Math.max(0, i), t.length - 1);
+  for (let k = 1; k <= lim; k++) {
+    if (t[k] === 2 && t[k - 1] !== 2 && k - last > 8) {
+      n++;
+      last = k;
+    }
+  }
+  return {n, since: i - last};
+};
+
 const mouthStateFor = (beat: Beat, frame: number): {sol: number; rex: number} => {
   const out = {sol: 0, rex: 0};
   const apply = (vo?: string, speaker?: string, offset = 0) => {
@@ -492,9 +517,10 @@ const visemeSrc = (pose: string, state: number, speaking: boolean,
 const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
                       mouthState: number; shot?: Shot; shotSince: number;
                       shotLen: number; holdMouth?: boolean; otherX?: number;
-                      beatLen?: number}> =
+                      beatLen?: number; stressN?: number;
+                      stressSince?: number}> =
   ({a, since, frame, speaking, mouthState, shot, shotSince, shotLen,
-    holdMouth, otherX, beatLen}) => {
+    holdMouth, otherX, beatLen, stressN = 0, stressSince = 9999}) => {
   const cycling = speaking && cycleAllowed(a.poses);
   const idx = cycling
     ? CYCLE[Math.floor(since / SWAP) % CYCLE.length] % a.poses.length
@@ -583,9 +609,14 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   // So the character fires a discrete action roughly once a second, chosen
   // from a small vocabulary, seeded off the pose and the beat so it is
   // deterministic, repeatable and different per character.
-  const PERIOD = 38;
-  const seg = Math.floor(shotSince / PERIOD);
-  const local = shotSince - seg * PERIOD;
+  // Segments are now STRESSES, not a timer. While the character speaks,
+  // seg advances only when the voice hits a wide vowel; between stresses
+  // everything holds. The listener rides the same clock at lower gain, so
+  // reaction and delivery share one rhythm. Silence falls back to a slow
+  // timer so nobody freezes solid between lines.
+  const onStress = speaking && stressN > 0;
+  const seg = onStress ? stressN : Math.floor(shotSince / 56);
+  const local = onStress ? Math.min(stressSince, 999) : shotSince - seg * 56;
   const pick = (seg * 7 + pose.length * 3 + (speaking ? 0 : 5)) % 5;
   // wind up the OPPOSITE way first, then arrive fast with a little overshoot,
   // then sit still. The wind-up is the part everyone skips and the part that
@@ -808,6 +839,7 @@ export const FairMarketEp2: React.FC = () => {
   const sub2 = cur.vo2 && since >= (cur.at2 ?? 0);
   const ms = mouthStateFor(cur, frame);
   const activeSpeaker = sub2 ? cur.speaker2 : cur.speaker;
+  const stress = stressFor(cur, frame);
   const {shot, shotSince, shotLen} = shotAt(cur.shots, since, hold);
 
   return (
@@ -912,6 +944,7 @@ export const FairMarketEp2: React.FC = () => {
                        mouthState={isSol ? ms.sol : ms.rex}
                        shot={shot} shotSince={shotSince} shotLen={shotLen}
                        otherX={other?.x} beatLen={hold}
+                       stressN={stress.n} stressSince={stress.since}
                        holdMouth={cur.holdMouth} />;
         })}
         {(cur.flicks ?? []).map((f, i) => (
