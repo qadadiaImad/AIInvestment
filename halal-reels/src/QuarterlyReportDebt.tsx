@@ -1,7 +1,8 @@
 /**
  * "The World Owes $348 Trillion — To WHO?" — debt & bonds explainer (long form, ~91s).
- * Question → mechanism (bonds) → reveal (the creditor is mostly us). Male anchor + a warm
- * British "In a Nutshell"-style VO. Debuts the DEBT CLOCK newsroom fixture (toon/props). All figures
+ * Question → mechanism (bonds) → reveal (the creditor is mostly us). Male anchor + an
+ * expressive Chatterbox (Resemble AI) VO — natural, non-robotic (gen_debt_chatterbox.py).
+ * Debuts the DEBT CLOCK newsroom fixture (toon/props). All figures
  * stamped 2026-08-06: IIF Global Debt Monitor (Q4'25 $348.3T), US Treasury / CRS holders,
  * CFRB/PGPF net-interest ($970B FY25 > $917B defense). Educational, not financial advice.
  */
@@ -248,13 +249,13 @@ const Cta: React.FC = () => {
 export const QuarterlyReportDebt: React.FC = () => (
   <AbsoluteFill style={{ background: "#000" }}>
     <Audio src={staticFile("qr_news_bed.wav")} volume={0.12} />
-    <Sequence from={ABS.d1}><Audio src={staticFile("debt_d1.mp3")} /></Sequence>
-    <Sequence from={ABS.d2}><Audio src={staticFile("debt_d2.mp3")} /></Sequence>
-    <Sequence from={ABS.d3}><Audio src={staticFile("debt_d3.mp3")} /></Sequence>
-    <Sequence from={ABS.d4}><Audio src={staticFile("debt_d4.mp3")} /></Sequence>
-    <Sequence from={ABS.d5}><Audio src={staticFile("debt_d5.mp3")} /></Sequence>
-    <Sequence from={ABS.d6}><Audio src={staticFile("debt_d6.mp3")} /></Sequence>
-    <Sequence from={ABS.d7}><Audio src={staticFile("debt_d7.mp3")} /></Sequence>
+    <Sequence from={ABS.d1}><Audio src={staticFile("debt_d1.wav")} /></Sequence>
+    <Sequence from={ABS.d2}><Audio src={staticFile("debt_d2.wav")} /></Sequence>
+    <Sequence from={ABS.d3}><Audio src={staticFile("debt_d3.wav")} /></Sequence>
+    <Sequence from={ABS.d4}><Audio src={staticFile("debt_d4.wav")} /></Sequence>
+    <Sequence from={ABS.d5}><Audio src={staticFile("debt_d5.wav")} /></Sequence>
+    <Sequence from={ABS.d6}><Audio src={staticFile("debt_d6.wav")} /></Sequence>
+    <Sequence from={ABS.d7}><Audio src={staticFile("debt_d7.wav")} /></Sequence>
     <Sequence durationInFrames={A}><Studio /></Sequence>
     <Sequence from={A} durationInFrames={Cn}><Kicker /></Sequence>
     <Sequence from={A + Cn} durationInFrames={D}><Cta /></Sequence>
