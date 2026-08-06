@@ -164,12 +164,17 @@ def main() -> None:
         # fall just below the silhouette's centre. Size decides, not position.
         if (y1 - y0) > h * 0.55 or (x1 - x0) * (y1 - y0) > w * h * 0.30:
             groups["body"].append(it)
-        elif cy < neck:
-            groups["head"].append(it)
+        # ARMS BEFORE HEAD. A raised hand sits ABOVE the neck line, and the
+        # old head-first order swallowed it into the head cluster - so the
+        # base pose's fingers rode the head transform at z=5 and floated
+        # beside the face as skin-coloured flecks whenever a variant put the
+        # arm elsewhere. Laterality decides before height does.
         elif cy < hip_guess and cx < midx - w * 0.17:
             groups["armL"].append(it)
         elif cy < hip_guess and cx > midx + w * 0.17:
             groups["armR"].append(it)
+        elif cy < neck:
+            groups["head"].append(it)
         else:
             groups["body"].append(it)
 
@@ -226,7 +231,15 @@ def main() -> None:
         print("  %-6s %3d paths -> %s" % (name, len(lst), p.name))
 
     all_m = json.loads(OUT.read_text("utf-8")) if OUT.exists() else {}
-    all_m[pose] = manifest
+    # MERGE, do not replace: the publishers add head__*/body__*/expr__* parts
+    # plus variants/expressions/eyeBox/headBox to this entry, and a fresh
+    # dict would silently wipe them all.
+    prev = all_m.get(pose, {})
+    prev_parts = prev.get("parts", {})
+    prev_parts.update(manifest["parts"])
+    prev.update(manifest)
+    prev["parts"] = prev_parts
+    all_m[pose] = prev
     OUT.write_text(json.dumps(all_m, indent=1), "utf-8")
     print("-> " + str(OUT))
 

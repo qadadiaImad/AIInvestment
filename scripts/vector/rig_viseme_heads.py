@@ -89,6 +89,13 @@ def main() -> None:
                     continue
                 if (bb[2] - bb[0]) * (bb[3] - bb[1]) > rig["w"] * h * 0.30:
                     continue
+                cx = (bb[0] + bb[2]) / 2
+                # same arms-first rule as rig_parts: a raised hand above the
+                # neck line is arm ink, not head ink
+                if abs(cx - hf["fx"] * rig["w"]) > rig["w"] * 0.17 * 1.0                         and cx < rig["w"] * hf["fx"] - rig["w"] * 0.17:
+                    continue
+                if cx > rig["w"] * hf["fx"] + rig["w"] * 0.17:
+                    continue
                 if (bb[1] + bb[3]) / 2 < neck:
                     head.append(m.group(0))
             if not head:

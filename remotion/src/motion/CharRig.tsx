@@ -47,6 +47,9 @@ export type Rig = {
   /** the neck line — where the body silhouette is cut so its head region
    *  can travel with the head part instead of staying behind it */
   neck?: number;
+  /** measured x-extent of the head ink, so the head band can be clipped to
+   *  the head and nothing else */
+  headBox?: number[];
   /** true only when a real gap between the feet was measured. Where it is
    *  false the feet are one connected blob and must move together — halving
    *  it and moving the halves apart tears the drawing. */
@@ -287,7 +290,18 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
   // fixes that: the outline turns with the face. The head part draws over
   // the cut, so the straight edge is never visible.
   const neck = rig.neck ?? 0.48;
-  const clipHeadBand = `inset(0% 0% ${pc(1 - neck)} 0%)`;
+  // THE BAND IS CLIPPED TO THE HEAD'S OWN WIDTH, and this closes a ghost
+  // the owner caught in motion: on poses whose base drawing raises a hand
+  // (or Rex's tablet) ABOVE the neck line, that arm ink lived inside the
+  // above-neck band and rode the head transform - so when the ladder showed
+  // a variant whose arm is elsewhere, the base arm's line art floated
+  // beside the face as a dark fragment, appearing and vanishing with every
+  // head tilt. The band's one job is the head outline; the measured headBox
+  // keeps it to exactly that.
+  const [hbx0, hbx1] = rig.headBox ?? [0, 1];
+  const clipHeadBand =
+    `inset(0% ${pc(Math.max(0, 1 - hbx1 - 0.02))} ` +
+    `${pc(1 - neck)} ${pc(Math.max(0, hbx0 - 0.02))})`;
   // THE TORSO BAND UNDERLAPS THE NECK, and this is not a nicety. The head
   // band's straight bottom edge rotates WITH the head; the torso band's top
   // edge does not. Butt them together and every degree of head tilt opens a
