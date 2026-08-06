@@ -52,7 +52,12 @@
    "expr__brow_raise": "characters/cast_ep1/poses/sol_point__ex_brow_raise.png",
    "expr__side_eye": "characters/cast_ep1/poses/sol_point__ex_side_eye.png",
    "expr__squint": "characters/cast_ep1/poses/sol_point__ex_squint.png",
-   "expr__wide": "characters/cast_ep1/poses/sol_point__ex_wide.png"
+   "expr__wide": "characters/cast_ep1/poses/sol_point__ex_wide.png",
+   "body__arc0": "characters/cast_ep1/poses/sol_point__arc0.png",
+   "body__arc1": "characters/cast_ep1/poses/sol_point__arc1.png",
+   "body__arc2": "characters/cast_ep1/poses/sol_point__arc2.png",
+   "body__arc3": "characters/cast_ep1/poses/sol_point__arc3.png",
+   "body__arc4": "characters/cast_ep1/poses/sol_point__arc4.png"
   },
   "crotch": 0.9266609145815358,
   "legCut": 0.8816609145815357,
@@ -60,14 +65,11 @@
   "feetSplit": true,
   "neck": 0.47952,
   "variants": [
-   "countup",
-   "hiphand",
-   "reachout",
-   "chinrub",
-   "presentL",
-   "armsdown",
-   "bothout",
-   "armscross"
+   "arc0",
+   "arc4",
+   "arc1",
+   "arc3",
+   "arc2"
   ],
   "eyeBox": [
    0.227,
@@ -246,7 +248,12 @@
    "expr__brow_raise": "characters/cast_ep1/poses/rex_eager__ex_brow_raise.png",
    "expr__side_eye": "characters/cast_ep1/poses/rex_eager__ex_side_eye.png",
    "expr__squint": "characters/cast_ep1/poses/rex_eager__ex_squint.png",
-   "expr__wide": "characters/cast_ep1/poses/rex_eager__ex_wide.png"
+   "expr__wide": "characters/cast_ep1/poses/rex_eager__ex_wide.png",
+   "body__arc0": "characters/cast_ep1/poses/rex_eager__arc0.png",
+   "body__arc1": "characters/cast_ep1/poses/rex_eager__arc1.png",
+   "body__arc2": "characters/cast_ep1/poses/rex_eager__arc2.png",
+   "body__arc3": "characters/cast_ep1/poses/rex_eager__arc3.png",
+   "body__arc4": "characters/cast_ep1/poses/rex_eager__arc4.png"
   },
   "crotch": 0.93,
   "legCut": 0.885,
@@ -614,7 +621,12 @@
    "expr__brow_raise": "characters/cast_ep1/poses/rex_skeptic__ex_brow_raise.png",
    "expr__side_eye": "characters/cast_ep1/poses/rex_skeptic__ex_side_eye.png",
    "expr__squint": "characters/cast_ep1/poses/rex_skeptic__ex_squint.png",
-   "expr__wide": "characters/cast_ep1/poses/rex_skeptic__ex_wide.png"
+   "expr__wide": "characters/cast_ep1/poses/rex_skeptic__ex_wide.png",
+   "body__arc0": "characters/cast_ep1/poses/rex_skeptic__arc0.png",
+   "body__arc1": "characters/cast_ep1/poses/rex_skeptic__arc1.png",
+   "body__arc2": "characters/cast_ep1/poses/rex_skeptic__arc2.png",
+   "body__arc3": "characters/cast_ep1/poses/rex_skeptic__arc3.png",
+   "body__arc4": "characters/cast_ep1/poses/rex_skeptic__arc4.png"
   },
   "crotch": 0.93,
   "legCut": 0.885,
@@ -961,7 +973,12 @@
    "expr__brow_raise": "characters/cast_ep1/poses/sol_point_v1__ex_brow_raise.png",
    "expr__side_eye": "characters/cast_ep1/poses/sol_point_v1__ex_side_eye.png",
    "expr__squint": "characters/cast_ep1/poses/sol_point_v1__ex_squint.png",
-   "expr__wide": "characters/cast_ep1/poses/sol_point_v1__ex_wide.png"
+   "expr__wide": "characters/cast_ep1/poses/sol_point_v1__ex_wide.png",
+   "body__arc0": "characters/cast_ep1/poses/sol_point_v1__arc0.png",
+   "body__arc1": "characters/cast_ep1/poses/sol_point_v1__arc1.png",
+   "body__arc2": "characters/cast_ep1/poses/sol_point_v1__arc2.png",
+   "body__arc3": "characters/cast_ep1/poses/sol_point_v1__arc3.png",
+   "body__arc4": "characters/cast_ep1/poses/sol_point_v1__arc4.png"
   },
   "crotch": 0.9260832625318607,
   "legCut": 0.8810832625318606,
@@ -969,14 +986,11 @@
   "feetSplit": true,
   "neck": 0.4928040000000001,
   "variants": [
-   "reachout",
-   "chinrub",
-   "hiphand",
-   "countup",
-   "armscross",
-   "presentL",
-   "bothout",
-   "armsdown"
+   "arc2",
+   "arc0",
+   "arc4",
+   "arc1",
+   "arc3"
   ],
   "eyeBox": [
    0.325,

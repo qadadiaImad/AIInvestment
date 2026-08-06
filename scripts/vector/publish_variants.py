@@ -158,6 +158,20 @@ def main() -> None:
         # same underlap as the neck bands: the erased edge sits 14% above the
         # neck so the static body always fills the wedge a rotating head opens
         erase = max(0.0, rig.get("neck", 0.48) - 0.14)
+        # A GESTURE ARC REPLACES THE VOCABULARY. The arc is one hand shape at
+        # several positions; the vocabulary is eight different gestures.
+        # Mixing them would reintroduce the hand-shape morphing the arc
+        # exists to remove, so where an arc is APPROVED it IS the ladder.
+        #
+        # Approval is a whitelist, not a heuristic, because both heuristics
+        # failed on inspection: rex_skeptic's arcs are same-seed clones (low
+        # travel), and rex_eager's have HIGH travel precisely because the
+        # inpaint deleted the tablet he holds in the base - an object that
+        # would pop out of existence the moment the ladder starts. Only the
+        # Sol point arcs hold one hand shape, real travel, and continuity.
+        arc_d = d.parent.parent / "arcs" / pose
+        if pose in ("sol_point", "sol_point_v1") and arc_d.exists()                 and list(arc_d.glob("arc*.png")):
+            d = arc_d
         variants = []
         for png in sorted(d.glob("*.png")):
             if png.stem in ("contact_sheet",):
