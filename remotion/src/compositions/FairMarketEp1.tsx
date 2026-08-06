@@ -807,28 +807,26 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   // cut-out can produce. Segment 0 always holds the approved base drawing so
   // a beat opens on-model, and the cut lands on the same frame as the
   // action's wind-up, so it reads as a decision rather than as a glitch.
-  // THREE DRAWINGS PER ACTION, not one. A single swap every 38 frames is a
-  // slide change: the drawing is correct but nothing happens BETWEEN the
-  // extremes, so the action has no attack. Limited animation spends its
-  // drawings where the movement is — an anticipation held 3 frames, an
-  // extreme held 5, then the settle carries the rest of the beat.
+  // A SWEEP, NOT A MONTAGE. The owner's word for the previous cut was
+  // "montage", and that is what it was: independent drawings hard-cut with
+  // holds, each pick unrelated to the last frame shown. Drawn animation is
+  // smooth because it plays CONSECUTIVE drawings — the classic on-threes
+  // cadence — and the variant list is already sorted by arm height, so
+  // consecutive entries ARE consecutive arm positions.
+  //
+  // So the arm now rides a triangle wave over that ladder: one rung every 3
+  // frames for 24 frames — a genuine sweep, low to high and back — then a
+  // 14-frame hold at wherever it arrived. The step count accumulates across
+  // segments, so a new segment CONTINUES the ladder from where the last one
+  // stopped instead of teleporting; direction reverses only at the ladder's
+  // ends. Deterministic, per-character offset, no state.
   const vars = rig?.variants ?? [];
-  // Step ONE rung per action, not three. The list is now ordered by arm
-  // height, so a step of one is a neighbouring arm position and the gesture
-  // carries across actions; stepping three threw the hand somewhere else
-  // every 38 frames, which is the shake.
-  const vAt = (k: number) =>
-    vars.length ? "body__" + vars[((seg + pose.length + k) % vars.length
-      + vars.length) % vars.length] : "body";
-  const bodyPart = !vars.length || seg === 0
-    ? "body"
-    : local < 3 ? vAt(-1)          // anticipation: the shape before the shape
-    : local < 8 ? vAt(1)           // the extreme
-    : vAt(0);                      // settle, and hold
-  // SMEAR on every drawing change. Two frames of horizontal stretch and blur,
-  // which is what stops a cut reading as a glitch and starts it reading as
-  // speed. Sized by nothing clever — these changes are all roughly the same
-  // magnitude — but gated so it only ever fires on the frames that changed.
+  const NL = vars.length;
+  const steps = seg * 8 + Math.min(8, Math.floor(local / 3)) + pose.length * 5;
+  const M = Math.max(1, 2 * (NL - 1));
+  const triw = ((steps % M) + M) % M;
+  const rung = triw < NL ? triw : M - triw;
+  const bodyPart = NL ? "body__" + vars[rung] : "body";
   // EXPRESSION. Arm variants do nothing for a bust, and the busts are most
   // of the episode - sol_smug_v1 alone is 12 of 39 beats and shows barely
   // any body. On a bust the only thing that can act is the face, so the
@@ -844,9 +842,10 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
     ? "expr__" + pool[(seg * 2 + pose.length) % pool.length]
     : undefined;
 
-  const cutAt = local === 0 || local === 3 || local === 8;
-  const cutJust = local === 1 || local === 4 || local === 9;
-  const smear = seg > 0 && vars.length ? (cutAt ? 1 : cutJust ? 0.5 : 0) : 0;
+  // No smear. It existed to hide teleports between unrelated drawings; a
+  // one-rung ladder step needs no hiding, and a constant smear on tiny
+  // steps was itself part of the "montage" smell.
+  const smear = 0;
   const nod = 0;
   const tilt = A.tilt * e + idleTilt;
   const gest = Math.max(0, A.point * e);

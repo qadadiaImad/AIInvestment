@@ -60,14 +60,14 @@
   "feetSplit": true,
   "neck": 0.47952,
   "variants": [
-   "hiphand",
-   "armsdown",
-   "reachout",
    "countup",
-   "bothout",
+   "hiphand",
+   "reachout",
+   "chinrub",
    "presentL",
-   "armscross",
-   "chinrub"
+   "armsdown",
+   "bothout",
+   "armscross"
   ],
   "eyeBox": [
    0.227,
@@ -254,13 +254,13 @@
   "feetSplit": false,
   "neck": 0.48762000000000005,
   "variants": [
-   "chinrub",
-   "hiphand",
-   "reachout",
-   "armscross",
    "armsdown",
+   "armscross",
+   "hiphand",
    "presentL",
    "countup",
+   "reachout",
+   "chinrub",
    "bothout"
   ],
   "eyeBox": [
@@ -402,14 +402,14 @@
   "feetSplit": false,
   "neck": 0.5184000000000001,
   "variants": [
-   "presentL",
+   "armscross",
    "hiphand",
-   "armsdown",
-   "reachout",
    "countup",
+   "reachout",
+   "presentL",
+   "armsdown",
    "bothout",
-   "chinrub",
-   "armscross"
+   "chinrub"
   ],
   "eyeBox": [
    0.6073,
@@ -622,14 +622,14 @@
   "feetSplit": false,
   "neck": 0.5184000000000001,
   "variants": [
-   "bothout",
-   "reachout",
    "armscross",
-   "presentL",
+   "armsdown",
+   "reachout",
    "hiphand",
    "countup",
-   "armsdown",
-   "chinrub"
+   "presentL",
+   "chinrub",
+   "bothout"
   ],
   "eyeBox": [
    0.2665,
@@ -773,14 +773,14 @@
   "feetSplit": true,
   "neck": 0.395604,
   "variants": [
-   "countup",
-   "hiphand",
-   "armscross",
    "bothout",
-   "armsdown",
    "presentL",
+   "countup",
+   "armscross",
    "reachout",
-   "chinrub"
+   "chinrub",
+   "hiphand",
+   "armsdown"
   ],
   "eyeBox": [
    0.2615,
@@ -969,14 +969,14 @@
   "feetSplit": true,
   "neck": 0.4928040000000001,
   "variants": [
+   "reachout",
+   "chinrub",
+   "hiphand",
    "countup",
    "armscross",
-   "hiphand",
-   "armsdown",
-   "chinrub",
-   "reachout",
    "presentL",
-   "bothout"
+   "bothout",
+   "armsdown"
   ],
   "eyeBox": [
    0.325,
@@ -1211,14 +1211,14 @@
   "feetSplit": false,
   "neck": 0.62,
   "variants": [
-   "bothout",
    "armscross",
-   "presentL",
-   "hiphand",
-   "armsdown",
-   "countup",
+   "bothout",
    "chinrub",
-   "reachout"
+   "presentL",
+   "reachout",
+   "countup",
+   "armsdown",
+   "hiphand"
   ],
   "eyeBox": [
    0.078,

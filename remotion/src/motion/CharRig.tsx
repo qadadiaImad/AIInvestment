@@ -298,6 +298,15 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
   const clipTorsoBand =
     `inset(${pc(Math.max(0, neck - 0.14))} 0% ` +
     `${pc(1 - Math.min(1, cut + 0.075))} 0%)`;
+  // VARIANTS ARE NOT CLIPPED AT THE TOP. The horizontal band that separates
+  // torso from head is safe on the base drawing — its arms live in their own
+  // parts — but a variant carries its arms IN the body artwork, and a raised
+  // hand crosses the band line, so the clip guillotined fingers ("characters
+  // are cut"). Variants ship with their head region erased at publish time
+  // instead (only changed pixels survive above the line), so the top clip
+  // has nothing left to do and the whole gesture stays whole.
+  const clipVariantTorso =
+    `inset(0% 0% ${pc(1 - Math.min(1, cut + 0.075))} 0%)`;
 
   return (
     <>
@@ -343,7 +352,7 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
         rig={rig}
         src={BODY}
         pivot="torso"
-        clip={clipTorsoBand}
+        clip={isVariant ? clipVariantTorso : clipTorsoBand}
         z={2}
         rot={leanRot + walkLean + rock + sway * 0.6}
         dx={torsoDx + swayDx}
@@ -353,7 +362,7 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
       />
       <Part
         rig={rig}
-        src={BODY}
+        src="body"
         pivot="head"
         clip={clipHeadBand}
         z={0}

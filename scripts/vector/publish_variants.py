@@ -27,33 +27,118 @@ PUB = REPO / "remotion/public/characters/cast_ep1/poses"
 MANIFEST = REPO / "remotion/src/fixtures/cast_ep1/rig_parts.json"
 
 
-def order_by_arm(d: Path, pose: str, names: list) -> list:
-    """Sort variants along the arm's travel, low hand to high hand.
+def _base_flat(pose: str):
+    import numpy as np
+    from PIL import Image
 
-    Each variant differs from the base only inside the body mask, so the
-    centroid of that difference IS the arm's position. Sorting by its height
-    lays the drawings out as a ladder, which is what lets three consecutive
-    picks read as one gesture instead of three unrelated poses.
+    p = (REPO / "content/vector_char/cast/ep_fairmarket/renders"
+         / ("_%s_rgba.png" % pose))
+    if not p.exists():
+        return None, None
+    b = np.asarray(Image.open(p).convert("RGBA")).astype(float)
+    a = b[..., 3:4] / 255.0
+    rgb = (b[..., :3] * a + 255 * (1 - a)).astype(np.uint8)
+    return rgb, (b[..., 3] > 128)
+
+
+def _palette(rgb, ink, k: int = 24):
+    """The base drawing's own colours, most-used first.
+
+    Flat cel art has a small true palette; everything else is antialiasing.
+    Bucket at 16 levels per channel, take the top-k bucket means.
     """
+    import numpy as np
+
+    px = rgb[ink].astype(int)
+    keys = (px[:, 0] >> 4) * 256 + (px[:, 1] >> 4) * 16 + (px[:, 2] >> 4)
+    uniq, inv, cnt = np.unique(keys, return_inverse=True, return_counts=True)
+    order = np.argsort(-cnt)[:k]
+    return np.stack([px[inv == o].mean(axis=0) for o in order])
+
+
+def _publish_processed(src: Path, dst: Path, base_rgb, pal,
+                       erase_above: float | None) -> None:
+    """Colour-lock a generated drawing to the base palette, and optionally
+    erase its (base-identical) head so the head system stays the sole owner
+    of that region.
+
+    WHY. Each variant is an independent diffusion sample: outside the mask it
+    is bit-exact, but INSIDE it the cardigan comes back a slightly different
+    burgundy with different shading every time, so stepping between variants
+    made the wardrobe pulse - the owner's "changes colors". Snapping every
+    generated pixel to the nearest of the base's own 24 colours kills the
+    hue drift outright (fold placement still varies, which reads as line
+    boil - normal for drawn animation).
+
+    The head erase exists because the torso draw is now UNCLIPPED at the top
+    (the horizontal clip line was slicing raised hands off - "characters are
+    cut"). Unclipped, the variant's embedded copy of the base head would sit
+    static behind the rotating head part and show as a double image; erasing
+    every unchanged pixel above the line removes the head while keeping any
+    raised-hand ink, which is exactly the set of pixels that must survive.
+    """
+    import numpy as np
+    from PIL import Image
+    from scipy import ndimage
+
+    arr = np.asarray(Image.open(src).convert("RGBA")).copy()
+    H = arr.shape[0]
+    rgb = arr[..., :3].astype(int)
+    diff = np.abs(rgb - base_rgb.astype(int)).max(axis=2)
+    changed = ndimage.binary_dilation(diff > 26, iterations=3)
+
+    if changed.any():
+        px = rgb[changed].astype(float)
+        d2 = ((px[:, None, :] - pal[None, :, :]) ** 2).sum(axis=2)
+        arr[..., :3][changed] = pal[d2.argmin(axis=1)].astype(np.uint8)
+
+    if erase_above is not None:
+        y = int(erase_above * H)
+        keep = changed[:y]
+        arr[:y, :, 3] = np.where(keep, arr[:y, :, 3], 0)
+
+    Image.fromarray(arr).save(dst)
+
+
+def order_by_arm(d: Path, pose: str, names: list) -> list:
+    """Order variants along the smoothest possible path between drawings.
+
+    First attempt sorted by the mean height of the changed region, and it
+    was a weak proxy: hiphand changes ink at the hip AND the shoulder, so
+    its centroid lands mid-ladder while the hand reads low, and the sweep
+    jumped. What actually needs minimising is the VISUAL step between
+    consecutive drawings — so order them as the shortest Hamiltonian path
+    over pairwise pixel distance, anchored at the variant nearest the base.
+    Eight nodes is 5040 permutations: solved exactly, no heuristic.
+    """
+    import itertools
+
     import numpy as np
     from PIL import Image
 
     base_p = (REPO / "content/vector_char/cast/ep_fairmarket/renders"
               / ("_%s_rgba.png" % pose))
-    if not base_p.exists():
+    if not base_p.exists() or len(names) > 9:
         return names
     b = np.asarray(Image.open(base_p).convert("RGBA")).astype(float)
     a = b[..., 3:4] / 255.0
-    base = b[..., :3] * a + 255 * (1 - a)
-    scored = []
-    for n in names:
-        g = np.asarray(Image.open(d / (n + ".png")).convert("RGB")).astype(float)
-        diff = np.abs(g - base).mean(axis=2)
-        ys, xs = np.nonzero(diff > 28)
-        # height of the changed region, inverted so index 0 is the LOWEST arm
-        scored.append((float(ys.mean()) if len(ys) else 1e9, n))
-    scored.sort(reverse=True)
-    return [n for _, n in scored]
+    base = (b[..., :3] * a + 255 * (1 - a))[::4, ::4]
+    imgs = [np.asarray(Image.open(d / (n + ".png")).convert("RGB")
+                       ).astype(float)[::4, ::4] for n in names]
+    n = len(imgs)
+    D = np.zeros((n, n))
+    for i in range(n):
+        for j in range(i + 1, n):
+            D[i, j] = D[j, i] = np.abs(imgs[i] - imgs[j]).mean()
+    start = int(np.argmin([np.abs(im - base).mean() for im in imgs]))
+    rest = [i for i in range(n) if i != start]
+    best, best_cost = None, 1e18
+    for perm in itertools.permutations(rest):
+        path = (start,) + perm
+        cost = sum(D[path[k], path[k + 1]] for k in range(n - 1))
+        if cost < best_cost:
+            best, best_cost = path, cost
+    return [names[i] for i in best]
 
 
 def main() -> None:
@@ -68,12 +153,20 @@ def main() -> None:
         if not rig:
             print("  %-16s no rig - skipped" % pose)
             continue
+        base_rgb, base_ink = _base_flat(pose)
+        pal = _palette(base_rgb, base_ink) if base_rgb is not None else None
+        # same underlap as the neck bands: the erased edge sits 14% above the
+        # neck so the static body always fills the wedge a rotating head opens
+        erase = max(0.0, rig.get("neck", 0.48) - 0.14)
         variants = []
         for png in sorted(d.glob("*.png")):
             if png.stem in ("contact_sheet",):
                 continue
             dst = PUB / ("%s__%s.png" % (pose, png.stem))
-            shutil.copyfile(png, dst)
+            if pal is not None:
+                _publish_processed(png, dst, base_rgb, pal, erase)
+            else:
+                shutil.copyfile(png, dst)
             rig["parts"]["body__" + png.stem] = (
                 "characters/cast_ep1/poses/%s__%s.png" % (pose, png.stem))
             variants.append(png.stem)
@@ -111,11 +204,19 @@ def main() -> None:
                          max(0.0, (cy - ry * 1.1) / H),
                          min(1.0, (e["cx"] + e["rx"] * 1.15) / W),
                          min(1.0, (cy + ry * 1.1) / H)]
+        base_rgb, base_ink = _base_flat(pose)
+        pal = _palette(base_rgb, base_ink) if base_rgb is not None else None
         names = []
         for png in sorted(d.glob("*.png")):
             if png.stem == "contact_sheet":
                 continue
-            shutil.copyfile(png, PUB / ("%s__ex_%s.png" % (pose, png.stem)))
+            dst = PUB / ("%s__ex_%s.png" % (pose, png.stem))
+            if pal is not None:
+                # colour-locked like the body variants; no head erase — the
+                # overlay is clipped to eyeBox, so it owns nothing else
+                _publish_processed(png, dst, base_rgb, pal, None)
+            else:
+                shutil.copyfile(png, dst)
             rig["parts"]["expr__" + png.stem] = (
                 "characters/cast_ep1/poses/%s__ex_%s.png" % (pose, png.stem))
             names.append(png.stem)
