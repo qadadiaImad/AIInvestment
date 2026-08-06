@@ -16,6 +16,7 @@
 // start), staggered so the eye is led one element at a time rather than
 // everything arriving at once.
 import React from 'react';
+import {PeepTrader} from './PeepTrader';
 import {Easing, interpolate} from 'remotion';
 
 const INK = '#141A26';
@@ -927,6 +928,12 @@ export const DecayExhibit: React.FC<{
         fontSize: 17, color: MUTED}}>the close</div>
       <div style={{position: 'absolute', left: padX - 40, top: padTop - 28,
         fontSize: 17, color: MUTED, opacity: ease(since, 6, 18)}}>value</div>
+      {side === 'buyer' ? (
+        /* the retail trader watching his own curve — Open Peeps, CC0; his
+           face falls on the SAME progress that drives the decay */
+        <PeepTrader progress={prog} x={w - w * 0.27} y={h * 0.14}
+          size={w * 0.23} f={since} />
+      ) : null}
       <div style={{position: 'absolute', left: 0, right: 0, top: h * 0.76,
         textAlign: 'center', fontFamily: 'Impact, Arial', fontSize: 26,
         color: tone, opacity: ease(since, 90, 110)}}>

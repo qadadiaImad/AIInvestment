@@ -1,0 +1,65 @@
+[
+ {
+  "file": "remotion/public/characters/peeps/trader__calm.svg",
+  "face": "calm",
+  "source": "https://api.dicebear.com/9.x/open-peeps/svg?seed=retailtrader&head=shaved2&clothingColor=456dff&skinColor=ffdbb4&accessories=glasses&accessoriesProbability=100&facialHairProbability=0&face=calm",
+  "source_class": "api",
+  "license": "CC0 1.0 (Open Peeps by Pablo Stanley, remix via DiceBear)",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "retrieved_at": "2026-08-06T15:46:40Z"
+ },
+ {
+  "file": "remotion/public/characters/peeps/trader__concerned.svg",
+  "face": "concerned",
+  "source": "https://api.dicebear.com/9.x/open-peeps/svg?seed=retailtrader&head=shaved2&clothingColor=456dff&skinColor=ffdbb4&accessories=glasses&accessoriesProbability=100&facialHairProbability=0&face=concerned",
+  "source_class": "api",
+  "license": "CC0 1.0 (Open Peeps by Pablo Stanley, remix via DiceBear)",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "retrieved_at": "2026-08-06T15:46:40Z"
+ },
+ {
+  "file": "remotion/public/characters/peeps/trader__concernedFear.svg",
+  "face": "concernedFear",
+  "source": "https://api.dicebear.com/9.x/open-peeps/svg?seed=retailtrader&head=shaved2&clothingColor=456dff&skinColor=ffdbb4&accessories=glasses&accessoriesProbability=100&facialHairProbability=0&face=concernedFear",
+  "source_class": "api",
+  "license": "CC0 1.0 (Open Peeps by Pablo Stanley, remix via DiceBear)",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "retrieved_at": "2026-08-06T15:46:40Z"
+ },
+ {
+  "file": "remotion/public/characters/peeps/trader__fear.svg",
+  "face": "fear",
+  "source": "https://api.dicebear.com/9.x/open-peeps/svg?seed=retailtrader&head=shaved2&clothingColor=456dff&skinColor=ffdbb4&accessories=glasses&accessoriesProbability=100&facialHairProbability=0&face=fear",
+  "source_class": "api",
+  "license": "CC0 1.0 (Open Peeps by Pablo Stanley, remix via DiceBear)",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "retrieved_at": "2026-08-06T15:46:40Z"
+ },
+ {
+  "file": "remotion/public/characters/peeps/trader__awe.svg",
+  "face": "awe",
+  "source": "https://api.dicebear.com/9.x/open-peeps/svg?seed=retailtrader&head=shaved2&clothingColor=456dff&skinColor=ffdbb4&accessories=glasses&accessoriesProbability=100&facialHairProbability=0&face=awe",
+  "source_class": "api",
+  "license": "CC0 1.0 (Open Peeps by Pablo Stanley, remix via DiceBear)",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "retrieved_at": "2026-08-06T15:46:40Z"
+ },
+ {
+  "file": "remotion/public/characters/peeps/trader__tired.svg",
+  "face": "tired",
+  "source": "https://api.dicebear.com/9.x/open-peeps/svg?seed=retailtrader&head=shaved2&clothingColor=456dff&skinColor=ffdbb4&accessories=glasses&accessoriesProbability=100&facialHairProbability=0&face=tired",
+  "source_class": "api",
+  "license": "CC0 1.0 (Open Peeps by Pablo Stanley, remix via DiceBear)",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "retrieved_at": "2026-08-06T15:46:40Z"
+ },
+ {
+  "file": "remotion/public/characters/peeps/trader__serious.svg",
+  "face": "serious",
+  "source": "https://api.dicebear.com/9.x/open-peeps/svg?seed=retailtrader&head=shaved2&clothingColor=456dff&skinColor=ffdbb4&accessories=glasses&accessoriesProbability=100&facialHairProbability=0&face=serious",
+  "source_class": "api",
+  "license": "CC0 1.0 (Open Peeps by Pablo Stanley, remix via DiceBear)",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "retrieved_at": "2026-08-06T15:46:40Z"
+ }
+]
