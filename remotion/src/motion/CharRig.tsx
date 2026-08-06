@@ -36,6 +36,8 @@ export type Rig = {
   /** where the body is cut into torso and feet — sits ABOVE the crotch so
    *  the torso draw covers the straight edge */
   legCut?: number;
+  /** generated arm-pose variants available for this pose */
+  variants?: string[];
   /** x of the gap between the two feet */
   footMid?: number;
   /** the neck line — where the body silhouette is cut so its head region
@@ -72,6 +74,14 @@ export type RigPose = {
   breathPhase?: number;
   /** slow standing weight shift, -1..1. */
   sway?: number;
+  /** which BODY artwork to draw — "body", or "body__chinrub"/"body__countup"
+   *  /… for a generated arm-pose variant. Variants are full-body PNGs pixel-
+   *  aligned to the base, made by masked inpainting BELOW THE NECK, so the
+   *  head is not regenerated at all: it is the same pixels. That is what
+   *  makes cutting between them legal — the objection that killed per-beat
+   *  pose cycling was that independent generations changed Sol's haircut
+   *  mid-sentence, and an inpaint physically cannot. */
+  bodyPart?: string;
   /** which head artwork to draw — "head", or "head__open"/"head__oh"/... for
    *  a viseme variant. The variants differ ONLY inside the mouth mask, so a
    *  variant head registers exactly with the base body. */
@@ -131,8 +141,11 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
     breathPhase = 0,
     sway = 0,
     headPart = "head",
+    bodyPart = "body",
   } = pose;
 
+  const BODY = rig.parts[bodyPart] ? bodyPart : "body";
+  const isVariant = BODY !== "body";
   const W = rig.w;
   const t = Math.max(-1, Math.min(1, turn));
   const at = Math.abs(t);
@@ -270,13 +283,13 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
 
   return (
     <>
-      <Part rig={rig} {...armL} />
-      <Part rig={rig} {...armR} />
+      {isVariant ? null : <Part rig={rig} {...armL} />}
+      {isVariant ? null : <Part rig={rig} {...armR} />}
       {split ? (
         <>
           <Part
             rig={rig}
-            src="body"
+            src={BODY}
             pivot="legL"
             clip={clipFootL}
             z={1}
@@ -287,7 +300,7 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
           />
           <Part
             rig={rig}
-            src="body"
+            src={BODY}
             pivot="legR"
             clip={clipFootR}
             z={1}
@@ -300,7 +313,7 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
       ) : (
         <Part
           rig={rig}
-          src="body"
+          src={BODY}
           pivot="torso"
           clip={clipFeet}
           z={1}
@@ -310,7 +323,7 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
       )}
       <Part
         rig={rig}
-        src="body"
+        src={BODY}
         pivot="torso"
         clip={clipTorsoBand}
         z={2}
@@ -322,7 +335,7 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
       />
       <Part
         rig={rig}
-        src="body"
+        src={BODY}
         pivot="head"
         clip={clipHeadBand}
         z={0}

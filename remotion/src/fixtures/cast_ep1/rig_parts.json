@@ -39,13 +39,31 @@
    "armR": "characters/cast_ep1/parts/sol_point__armR.svg",
    "head__half": "characters/cast_ep1/parts/sol_point__v_half.svg",
    "head__oh": "characters/cast_ep1/parts/sol_point__v_oh.svg",
-   "head__open": "characters/cast_ep1/parts/sol_point__v_open.svg"
+   "head__open": "characters/cast_ep1/parts/sol_point__v_open.svg",
+   "body__armscross": "characters/cast_ep1/poses/sol_point__armscross.png",
+   "body__armsdown": "characters/cast_ep1/poses/sol_point__armsdown.png",
+   "body__bothout": "characters/cast_ep1/poses/sol_point__bothout.png",
+   "body__chinrub": "characters/cast_ep1/poses/sol_point__chinrub.png",
+   "body__countup": "characters/cast_ep1/poses/sol_point__countup.png",
+   "body__hiphand": "characters/cast_ep1/poses/sol_point__hiphand.png",
+   "body__presentL": "characters/cast_ep1/poses/sol_point__presentL.png",
+   "body__reachout": "characters/cast_ep1/poses/sol_point__reachout.png"
   },
   "crotch": 0.9266609145815358,
   "legCut": 0.8816609145815357,
   "footMid": 0.5019455252918288,
   "feetSplit": true,
-  "neck": 0.47952
+  "neck": 0.47952,
+  "variants": [
+   "armscross",
+   "armsdown",
+   "bothout",
+   "chinrub",
+   "countup",
+   "hiphand",
+   "presentL",
+   "reachout"
+  ]
  },
  "rex_determined": {
   "w": 732,
@@ -179,13 +197,31 @@
    "head__closed": "characters/cast_ep1/parts/rex_eager__v_closed.svg",
    "head__half": "characters/cast_ep1/parts/rex_eager__v_half.svg",
    "head__oh": "characters/cast_ep1/parts/rex_eager__v_oh.svg",
-   "head__open": "characters/cast_ep1/parts/rex_eager__v_open.svg"
+   "head__open": "characters/cast_ep1/parts/rex_eager__v_open.svg",
+   "body__armscross": "characters/cast_ep1/poses/rex_eager__armscross.png",
+   "body__armsdown": "characters/cast_ep1/poses/rex_eager__armsdown.png",
+   "body__bothout": "characters/cast_ep1/poses/rex_eager__bothout.png",
+   "body__chinrub": "characters/cast_ep1/poses/rex_eager__chinrub.png",
+   "body__countup": "characters/cast_ep1/poses/rex_eager__countup.png",
+   "body__hiphand": "characters/cast_ep1/poses/rex_eager__hiphand.png",
+   "body__presentL": "characters/cast_ep1/poses/rex_eager__presentL.png",
+   "body__reachout": "characters/cast_ep1/poses/rex_eager__reachout.png"
   },
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
   "feetSplit": false,
-  "neck": 0.48762000000000005
+  "neck": 0.48762000000000005,
+  "variants": [
+   "armscross",
+   "armsdown",
+   "bothout",
+   "chinrub",
+   "countup",
+   "hiphand",
+   "presentL",
+   "reachout"
+  ]
  },
  "rex_eager_v1": {
   "w": 672,
@@ -273,13 +309,31 @@
    "head__closed": "characters/cast_ep1/parts/rex_listen__v_closed.svg",
    "head__half": "characters/cast_ep1/parts/rex_listen__v_half.svg",
    "head__oh": "characters/cast_ep1/parts/rex_listen__v_oh.svg",
-   "head__open": "characters/cast_ep1/parts/rex_listen__v_open.svg"
+   "head__open": "characters/cast_ep1/parts/rex_listen__v_open.svg",
+   "body__armscross": "characters/cast_ep1/poses/rex_listen__armscross.png",
+   "body__armsdown": "characters/cast_ep1/poses/rex_listen__armsdown.png",
+   "body__bothout": "characters/cast_ep1/poses/rex_listen__bothout.png",
+   "body__chinrub": "characters/cast_ep1/poses/rex_listen__chinrub.png",
+   "body__countup": "characters/cast_ep1/poses/rex_listen__countup.png",
+   "body__hiphand": "characters/cast_ep1/poses/rex_listen__hiphand.png",
+   "body__presentL": "characters/cast_ep1/poses/rex_listen__presentL.png",
+   "body__reachout": "characters/cast_ep1/poses/rex_listen__reachout.png"
   },
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
   "feetSplit": false,
-  "neck": 0.5184000000000001
+  "neck": 0.5184000000000001,
+  "variants": [
+   "armscross",
+   "armsdown",
+   "bothout",
+   "chinrub",
+   "countup",
+   "hiphand",
+   "presentL",
+   "reachout"
+  ]
  },
  "rex_shock": {
   "w": 896,
@@ -421,13 +475,31 @@
    "head__closed": "characters/cast_ep1/parts/rex_skeptic__v_closed.svg",
    "head__half": "characters/cast_ep1/parts/rex_skeptic__v_half.svg",
    "head__oh": "characters/cast_ep1/parts/rex_skeptic__v_oh.svg",
-   "head__open": "characters/cast_ep1/parts/rex_skeptic__v_open.svg"
+   "head__open": "characters/cast_ep1/parts/rex_skeptic__v_open.svg",
+   "body__armscross": "characters/cast_ep1/poses/rex_skeptic__armscross.png",
+   "body__armsdown": "characters/cast_ep1/poses/rex_skeptic__armsdown.png",
+   "body__bothout": "characters/cast_ep1/poses/rex_skeptic__bothout.png",
+   "body__chinrub": "characters/cast_ep1/poses/rex_skeptic__chinrub.png",
+   "body__countup": "characters/cast_ep1/poses/rex_skeptic__countup.png",
+   "body__hiphand": "characters/cast_ep1/poses/rex_skeptic__hiphand.png",
+   "body__presentL": "characters/cast_ep1/poses/rex_skeptic__presentL.png",
+   "body__reachout": "characters/cast_ep1/poses/rex_skeptic__reachout.png"
   },
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
   "feetSplit": false,
-  "neck": 0.5184000000000001
+  "neck": 0.5184000000000001,
+  "variants": [
+   "armscross",
+   "armsdown",
+   "bothout",
+   "chinrub",
+   "countup",
+   "hiphand",
+   "presentL",
+   "reachout"
+  ]
  },
  "sol_armswide": {
   "w": 552,
@@ -518,13 +590,31 @@
    "head__blink": "characters/cast_ep1/parts/sol_finger__v_blink.svg",
    "head__half": "characters/cast_ep1/parts/sol_finger__v_half.svg",
    "head__oh": "characters/cast_ep1/parts/sol_finger__v_oh.svg",
-   "head__open": "characters/cast_ep1/parts/sol_finger__v_open.svg"
+   "head__open": "characters/cast_ep1/parts/sol_finger__v_open.svg",
+   "body__armsdown": "characters/cast_ep1/poses/sol_finger__armsdown.png",
+   "body__bothout": "characters/cast_ep1/poses/sol_finger__bothout.png",
+   "body__chinrub": "characters/cast_ep1/poses/sol_finger__chinrub.png",
+   "body__countup": "characters/cast_ep1/poses/sol_finger__countup.png",
+   "body__hiphand": "characters/cast_ep1/poses/sol_finger__hiphand.png",
+   "body__presentL": "characters/cast_ep1/poses/sol_finger__presentL.png",
+   "body__armscross": "characters/cast_ep1/poses/sol_finger__armscross.png",
+   "body__reachout": "characters/cast_ep1/poses/sol_finger__reachout.png"
   },
   "crotch": 0.9188955996548749,
   "legCut": 0.8738955996548748,
   "footMid": 0.5294471153846154,
   "feetSplit": true,
-  "neck": 0.395604
+  "neck": 0.395604,
+  "variants": [
+   "armscross",
+   "armsdown",
+   "bothout",
+   "chinrub",
+   "countup",
+   "hiphand",
+   "presentL",
+   "reachout"
+  ]
  },
  "sol_laugh": {
   "w": 700,
@@ -660,13 +750,31 @@
    "armR": "characters/cast_ep1/parts/sol_point_v1__armR.svg",
    "head__half": "characters/cast_ep1/parts/sol_point_v1__v_half.svg",
    "head__oh": "characters/cast_ep1/parts/sol_point_v1__v_oh.svg",
-   "head__open": "characters/cast_ep1/parts/sol_point_v1__v_open.svg"
+   "head__open": "characters/cast_ep1/parts/sol_point_v1__v_open.svg",
+   "body__armsdown": "characters/cast_ep1/poses/sol_point_v1__armsdown.png",
+   "body__bothout": "characters/cast_ep1/poses/sol_point_v1__bothout.png",
+   "body__countup": "characters/cast_ep1/poses/sol_point_v1__countup.png",
+   "body__hiphand": "characters/cast_ep1/poses/sol_point_v1__hiphand.png",
+   "body__presentL": "characters/cast_ep1/poses/sol_point_v1__presentL.png",
+   "body__armscross": "characters/cast_ep1/poses/sol_point_v1__armscross.png",
+   "body__chinrub": "characters/cast_ep1/poses/sol_point_v1__chinrub.png",
+   "body__reachout": "characters/cast_ep1/poses/sol_point_v1__reachout.png"
   },
   "crotch": 0.9260832625318607,
   "legCut": 0.8810832625318606,
   "footMid": 0.5195214105793451,
   "feetSplit": true,
-  "neck": 0.4928040000000001
+  "neck": 0.4928040000000001,
+  "variants": [
+   "armscross",
+   "armsdown",
+   "bothout",
+   "chinrub",
+   "countup",
+   "hiphand",
+   "presentL",
+   "reachout"
+  ]
  },
  "sol_shrug": {
   "w": 832,
@@ -848,13 +956,31 @@
    "head__blink": "characters/cast_ep1/parts/sol_smug_v1__v_blink.svg",
    "head__half": "characters/cast_ep1/parts/sol_smug_v1__v_half.svg",
    "head__oh": "characters/cast_ep1/parts/sol_smug_v1__v_oh.svg",
-   "head__open": "characters/cast_ep1/parts/sol_smug_v1__v_open.svg"
+   "head__open": "characters/cast_ep1/parts/sol_smug_v1__v_open.svg",
+   "body__armscross": "characters/cast_ep1/poses/sol_smug_v1__armscross.png",
+   "body__armsdown": "characters/cast_ep1/poses/sol_smug_v1__armsdown.png",
+   "body__bothout": "characters/cast_ep1/poses/sol_smug_v1__bothout.png",
+   "body__chinrub": "characters/cast_ep1/poses/sol_smug_v1__chinrub.png",
+   "body__countup": "characters/cast_ep1/poses/sol_smug_v1__countup.png",
+   "body__hiphand": "characters/cast_ep1/poses/sol_smug_v1__hiphand.png",
+   "body__presentL": "characters/cast_ep1/poses/sol_smug_v1__presentL.png",
+   "body__reachout": "characters/cast_ep1/poses/sol_smug_v1__reachout.png"
   },
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
   "feetSplit": false,
-  "neck": 0.62
+  "neck": 0.62,
+  "variants": [
+   "armscross",
+   "armsdown",
+   "bothout",
+   "chinrub",
+   "countup",
+   "hiphand",
+   "presentL",
+   "reachout"
+  ]
  },
  "sol_smug_v2": {
   "w": 896,

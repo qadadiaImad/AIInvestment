@@ -800,6 +800,34 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   // the baseline the actions ride on: he is never completely still even
   // between actions
   const idleTilt = Math.sin(tt * 1.1 + ph) * 2.2;
+
+  // THE CUT. This is the part a rig cannot do: the drawing itself changes.
+  // Each variant is a real generated drawing with a different arm position -
+  // an elbow that bends, a hand that opens - which no transform of a flat
+  // cut-out can produce. Segment 0 always holds the approved base drawing so
+  // a beat opens on-model, and the cut lands on the same frame as the
+  // action's wind-up, so it reads as a decision rather than as a glitch.
+  // THREE DRAWINGS PER ACTION, not one. A single swap every 38 frames is a
+  // slide change: the drawing is correct but nothing happens BETWEEN the
+  // extremes, so the action has no attack. Limited animation spends its
+  // drawings where the movement is — an anticipation held 3 frames, an
+  // extreme held 5, then the settle carries the rest of the beat.
+  const vars = rig?.variants ?? [];
+  const vAt = (k: number) =>
+    vars.length ? "body__" + vars[((seg * 3 + pose.length + k) % vars.length
+      + vars.length) % vars.length] : "body";
+  const bodyPart = !vars.length || seg === 0
+    ? "body"
+    : local < 3 ? vAt(-1)          // anticipation: the shape before the shape
+    : local < 8 ? vAt(1)           // the extreme
+    : vAt(0);                      // settle, and hold
+  // SMEAR on every drawing change. Two frames of horizontal stretch and blur,
+  // which is what stops a cut reading as a glitch and starts it reading as
+  // speed. Sized by nothing clever — these changes are all roughly the same
+  // magnitude — but gated so it only ever fires on the frames that changed.
+  const cutAt = local === 0 || local === 3 || local === 8;
+  const cutJust = local === 1 || local === 4 || local === 9;
+  const smear = seg > 0 && vars.length ? (cutAt ? 1 : cutJust ? 0.5 : 0) : 0;
   const nod = 0;
   const tilt = A.tilt * e + idleTilt;
   const gest = Math.max(0, A.point * e);
@@ -820,6 +848,7 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
     lean: (shot?.walk ?? 0) * 0.25 + push,
     gestureArm: "armL",
     headPart: vk ? "head__" + vk : "head",
+    bodyPart,
   };
   void beatLen; void faceTurn; void nod;
   // Sol moves like a veteran, Rex like an over-eager junior — derived
@@ -832,11 +861,13 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
       top: top + idl.dy - drift * 0.35 * (hc - 0.68),
       width: w, height: h,
       transform: `translate(${ix.dx}px, ${ix.dy}px) `
-        + `scale(${pop * ix.sx * idl.sx * sq.sx}, ${pop * ix.sy * idl.sy * sq.sy}) `
+        + `scale(${pop * ix.sx * idl.sx * sq.sx * (1 + smear * 0.16)}, `
+        + `${pop * ix.sy * idl.sy * sq.sy * (1 - smear * 0.05)}) `
         + `rotate(${ix.rot + idl.rot + (panel ? -1.2 : 0)}deg)`,
       transformOrigin: a.kind === "full" ? `${d.anchor[0] * 100}% ${d.anchor[1] * 100}%` : "50% 60%",
       opacity: Math.min(1, since / 3) * ix.opacity,
-      ...(ix.blur > 0.05 ? {filter: `blur(${ix.blur}px)`} : {}),
+      ...(ix.blur + smear * 2.6 > 0.05
+        ? {filter: `blur(${ix.blur + smear * 2.6}px)`} : {}),
       ...(panel ? {border: "6px solid #111", borderRadius: 8, overflow: "hidden",
         boxShadow: "10px 12px 0 rgba(0,0,0,0.35)", background: "#F7F3E8"} : {})}}>
       {rigged
