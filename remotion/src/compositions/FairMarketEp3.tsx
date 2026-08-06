@@ -349,7 +349,7 @@ const BEATS: Beat[] = [
    vo: "e24_rex_howmany", speaker: "REX", line: "How many."},
 
   // The other number. Fourteen years, zero.
-  {at: 3360, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+  {at: 3360, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1215, h: 830}],
    graphic: "zero_prosecutions",
    shots: [{from: 0, k: 1.0, kEnd: 1.06, tx: 540, ty: 1210}],
    vo: "e25_sol_none", speaker: "SOL",
