@@ -195,9 +195,20 @@ const BEATS: Beat[] = [
    shots: [{from: 0, k: 1.0, kEnd: 1.08}],
    vo: "r2_rex_useless", speaker: "REX", line: "And useless if I tried to copy it."},
 
-  {at: 259, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+  {at: 259,
+   // RECAP ON THE MONITOR. Sol says "the other side of THAT" — the card
+   // shows what "that" was, so the callback lands for anyone who missed
+   // ep.1 and the thesis flip is visible, not just spoken.
+   card: {title: "LAST WEEK — THE FILING",
+          lines: ["Public. Legal.",
+                  "A range, not an amount.",
+                  "Up to 45 days late."],
+          foot: "ep.1 — the lag ate the edge"}, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.0, kEnd: 1.07},
-           {from: 120, k: 1.2, kEnd: 1.32, tx: 600, ty: 1190}],
+           // the card has had 4 seconds; when the camera commits to Sol the
+           // push would lift his head 23px over it, so it yields (the same
+           // hideCard pattern every ep.1 push-in over an exhibit uses)
+           {from: 120, k: 1.2, kEnd: 1.32, tx: 600, ty: 1190, hideCard: true}],
    vo: "r3_sol_otherside", speaker: "SOL",
    line: "Late, kid. Not useless. Today I'll show you the other side of that — what it looks like when somebody isn't late at all."},
 
@@ -367,7 +378,16 @@ const BEATS: Beat[] = [
    vo: "e23_sol_clock", speaker: "SOL", line: "Then all you have is the clock."},
 
   // ═══ ACT 6 — THE LESSON, AND THE CALLBACK ════════════════════════════
-  {at: 3599, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
+  {at: 3599,
+   // THE THESIS BEAT. The episode's whole point is the juxtaposition of the
+   // two lessons, and it was delivered over an idle ticker. Not a
+   // restatement of the line — the card carries the CONTRAST, which the
+   // spoken words only half-say at a time.
+   card: {title: "THE TWO LESSONS",
+          lines: ["Last week: public info, 45 days late.",
+                  "This week: an edge, 16 minutes early.",
+                  "One had a name on it. One didn't."],
+          foot: "as reported · DOJ / CFTC reviewing · no charges filed"}, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.02, kEnd: 1.12, tx: 580, ty: 1190}],
    vo: "e24_sol_lastweek", speaker: "SOL",
    line: "Last week I told you public information isn't enough to find an edge."},
