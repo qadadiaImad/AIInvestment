@@ -15,7 +15,7 @@ import {actionCurve, holdCurve, squash} from "../motion/toon";
 import {FlashCut, ShockFlicks, ShockRing, SpeedLines, kick} from "../motion/ToonFX";
 import {Grain, Vignette} from "../motion/Polish";
 import {Move, Turn, idle, interactXform} from "../motion/interact";
-import {FLOOR_Y, PANEL_FLOOR, Room, RoundDesk, SEATS, WALL, WallFrame, H as STAGE_H} from "../motion/Set";
+import {FLOOR_Y, NewsBand, PANEL_FLOOR, Room, RoundDesk, SEATS, WALL, WallFrame, H as STAGE_H} from "../motion/Set";
 import {ColumnsExhibit, DecayExhibit, SplitPriceExhibit, TickerTape} from "../motion/Infographic";
 import anchors from "../fixtures/cast_ep1/pose_anchors.json";
 import mouthTracks from "../fixtures/cast_ep1/mouth_tracks_ep5.json";
@@ -742,7 +742,17 @@ const TVIdle: React.FC<{frame: number; bare?: boolean}> = ({frame, bare}) => (
 
 
 const Subtitle: React.FC<{speaker: string; line: string}> = ({speaker, line}) => (
-  <div style={{position: "absolute", left: 60, right: 60, bottom: 90, textAlign: "center"}}>
+  <>
+    {/* SCRIM. The desk's rim is a curve, so it crosses the caption zone at
+        the wings no matter where the text sits. A soft band behind the
+        words is what every broadcaster does and it guarantees legibility
+        over desk, wood grain or wall. */}
+    <div style={{position: "absolute", left: 0, right: 0, bottom: 150, height: 300,
+      pointerEvents: "none",
+      background: "linear-gradient(180deg, rgba(6,10,18,0) 0%,"
+        + " rgba(6,10,18,0.55) 34%, rgba(6,10,18,0.72) 70%,"
+        + " rgba(6,10,18,0.55) 100%)"}} />
+  <div style={{position: "absolute", left: 60, right: 60, bottom: 196, textAlign: "center"}}>
     <div style={{fontFamily: "Impact, Arial", fontSize: 30, letterSpacing: 2,
       color: speaker === "SOL" ? "#E8A54B" : "#FF8A50", marginBottom: 6,
       textShadow: "2px 2px 0 #000"}}>{speaker}</div>
@@ -752,6 +762,7 @@ const Subtitle: React.FC<{speaker: string; line: string}> = ({speaker, line}) =>
       {line}
     </div>
   </div>
+  </>
 );
 
 export const FairMarketEp5: React.FC = () => {
@@ -915,6 +926,11 @@ export const FairMarketEp5: React.FC = () => {
                        holdMouth={cur.holdMouth} />;
         })}
         <RoundDesk dark={shot?.mood === "dark"} />
+        {/* NO DRAWN HANDS. The first attempt added a hand per panelist
+            and it was wrong twice over: it straddled the desk rim, and Rex
+            ALREADY has hands in his drawing (holding his tablet), so he
+            grew a third. The cast's own hands land on the table once the
+            desk sits at the right height - real art, right style, free. */}
         {(cur.flicks ?? []).map((f, i) => (
           <ShockFlicks key={i} x={f.x} y={f.y} since={since - f.at} size={72} />
         ))}
@@ -952,11 +968,12 @@ export const FairMarketEp5: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div style={{position: "absolute", left: 0, right: 0, bottom: 20, textAlign: "center",
-          fontFamily: "Arial", fontSize: 22, color: "#6C7FA6"}}>
+        <div style={{position: "absolute", left: 0, right: 0, bottom: 6, textAlign: "center",
+          fontFamily: "Arial", fontSize: 20, color: "#6C7FA6"}}>
           parody · public record · educational, not advice
         </div>
       )}
+      <NewsBand frame={frame} dark={shot?.mood === "dark"} />
       <Vignette strength={0.28} />
       <Grain opacity={0.03} />
     </AbsoluteFill>

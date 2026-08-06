@@ -131,12 +131,25 @@ export const WALL = {x: 52, y: 150, w: 976, h: 740};
 /** Where a panelist's feet go in desk mode. The foreground desk (drawn
  *  OVER the actors) hides everything below the waist, which is what makes
  *  a standing drawing read as seated. */
-export const PANEL_FLOOR = 1958;
+export const PANEL_FLOOR = 1826;
 
 /** Fixed seats — the panel does not wander. Rex stage-left, Sol stage-right. */
+// RESCALED for the table. At h~1000 the heads filled the frame and the
+// desk read as a strip under two portraits; a panel shot wants the person
+// SMALLER than the room. These sit head-and-shoulders above the curve with
+// studio visible around them.
 export const SEATS: Record<'sol' | 'rex', {x: number; h: number}> = {
-  rex: {x: 292, h: 1010},
-  sol: {x: 782, h: 985},
+  rex: {x: 322, h: 792},
+  sol: {x: 760, h: 772},
+};
+
+/** Each panelist's palette, for the hand that rests on the table — pulled
+ *  from their own drawings so the drawn hand and the generated character
+ *  share skin, sleeve and line colour exactly. */
+export const HAND_PALETTE: Record<'sol' | 'rex',
+  {skin: string; cuff: string; ink: string}> = {
+  sol: {skin: '#F9D9C1', cuff: '#693B40', ink: '#3E1A20'},
+  rex: {skin: '#F6D8BC', cuff: '#8A8F98', ink: '#1A1615'},
 };
 
 export const WallFrame: React.FC<{glow?: boolean}> = ({glow = false}) => (
@@ -196,8 +209,8 @@ export const RoundDesk: React.FC<{dark?: boolean}> = ({dark = false}) => {
   const top = dark ? '#4A362B' : '#5C4434';
   const rim = dark ? 'rgba(190,150,110,0.5)' : 'rgba(230,190,140,0.85)';
   // the near-edge arc: high at the wings, lowest (nearest) at centre
-  const arc = 'M -80 1445 Q 540 1650 1160 1445';
-  const arcTop = 'M -80 1405 Q 540 1610 1160 1405';
+  const arc = 'M -80 1546 Q 540 1752 1160 1546';
+  const arcTop = 'M -80 1506 Q 540 1712 1160 1506';
   return (
     <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}
       style={{position: 'absolute', inset: 0}}>
@@ -205,21 +218,114 @@ export const RoundDesk: React.FC<{dark?: boolean}> = ({dark = false}) => {
       <path d={`${arcTop} L 1160 1445 Q 540 1650 -80 1445 Z`}
         fill={top} />
       {/* subtle sheen on the top */}
-      <path d={`M -80 1412 Q 540 1616 1160 1412 L 1160 1424 Q 540 1628 -80 1424 Z`}
+      <path d={`M -80 1513 Q 540 1718 1160 1513 L 1160 1525 Q 540 1730 -80 1525 Z`}
         fill="#fff" opacity={0.07} />
       {/* gold rim on the near edge */}
       <path d={arc} fill="none" stroke={rim} strokeWidth={7} />
       {/* front face down to the bottom of frame */}
       <path d={`${arc} L 1160 ${H} L -80 ${H} Z`} fill={wood} />
-      <path d={`M -80 1740 Q 540 1900 1160 1740 L 1160 ${H} L -80 ${H} Z`}
+      <path d={`M -80 1782 Q 540 1940 1160 1782 L 1160 ${H} L -80 ${H} Z`}
         fill={woodLo} opacity={0.75} />
       {/* seat divider hints wrapping the curve */}
-      <path d="M 214 1518 q 8 60 2 400" stroke={woodLo} strokeWidth={5}
+      <path d="M 214 1619 q 8 60 2 300" stroke={woodLo} strokeWidth={5}
         fill="none" opacity={0.55} />
-      <path d="M 866 1518 q -8 60 -2 400" stroke={woodLo} strokeWidth={5}
+      <path d="M 866 1619 q -8 60 -2 300" stroke={woodLo} strokeWidth={5}
         fill="none" opacity={0.55} />
       {/* no badge on the face: the subtitles own that zone, and the first
           still had the show name striking through Sol's own line */}
     </svg>
+  );
+};
+
+/** y of the desk's near edge at any x — the same quadratic RoundDesk draws
+ *  with, exported so hands and props can sit ON the table rather than at a
+ *  guessed height that only matches at one point of the curve. */
+export const deskYAt = (x: number) => {
+  const t = Math.max(0, Math.min(1, (x + 80) / 1240));
+  return (1 - t) * (1 - t) * 1546 + 2 * t * (1 - t) * 1752 + t * t * 1546;
+};
+
+export type HandSpec = {
+  x: number; skin: string; cuff: string; ink: string;
+  /** 0..1 — a small lift-and-land, used sparingly on the speaker */
+  tap?: number;
+  flip?: boolean;
+};
+
+/** A hand resting on the table. Drawn rather than cut from the cast art:
+ *  the pose drawings' arms are raised or crossed, and rotating one down to
+ *  the desk pulled its fill off the shared line art (the same failure that
+ *  produced the floating-fragment ghost). A drawn hand in the character's
+ *  own palette, with the cast's line weight, sits on the desk correctly at
+ *  every camera angle and costs nothing. */
+export const DeskHand: React.FC<HandSpec> = ({
+  x, skin, cuff, ink, tap = 0, flip = false,
+}) => {
+  const y = deskYAt(x) - 6 - tap * 12;
+  const s = flip ? -1 : 1;
+  return (
+    <g transform={`translate(${x} ${y}) scale(${s} 1) rotate(${tap * -3})`}>
+      {/* sleeve cuff, behind the hand and running back under the desk edge */}
+      <path d="M -66 -6 q -6 -40 26 -46 l 44 0 q 30 6 24 46 z"
+        fill={cuff} stroke={ink} strokeWidth={7} strokeLinejoin="round" />
+      {/* back of the hand */}
+      <path d="M -34 2 q -26 -34 8 -46 q 34 -12 56 6 q 22 18 14 40 q -6 14 -30 12 z"
+        fill={skin} stroke={ink} strokeWidth={7} strokeLinejoin="round" />
+      {/* finger separations along the near edge */}
+      <path d="M -14 -4 q 2 -14 4 -22 M 6 -2 q 3 -15 4 -24 M 26 -2 q 2 -13 1 -22"
+        fill="none" stroke={ink} strokeWidth={5} strokeLinecap="round"
+        opacity={0.75} />
+      {/* thumb */}
+      <path d="M -34 -10 q -16 -6 -14 -22 q 2 -14 18 -10"
+        fill={skin} stroke={ink} strokeWidth={7} strokeLinecap="round"
+        strokeLinejoin="round" />
+    </g>
+  );
+};
+
+export const DeskHands: React.FC<{hands: HandSpec[]}> = ({hands}) => (
+  <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}
+    style={{position: 'absolute', inset: 0, pointerEvents: 'none'}}>
+    {hands.map((h, i) => <DeskHand key={i} {...h} />)}
+  </svg>
+);
+
+/** The crawl along the desk face — the band a market channel runs, in the
+ *  space the table was otherwise wasting. Two copies tile so the loop is
+ *  seamless, and the illustrative-data rail rides INSIDE the crawl so the
+ *  fictional tape can never be mistaken for a quote feed. */
+export const NewsBand: React.FC<{frame: number; dark?: boolean}> = ({
+  frame, dark = false,
+}) => {
+  const ITEMS = [
+    'MARKET LESSONS · THE DESK',
+    'ILLUSTRATIVE TAPE · NOT REAL PRICES',
+    'LTX  111.13  ▲ 0.42%',
+    'VOLQ  24.80  ▼ 1.10%',
+    'CRUDE  63.40  ▲ 0.88%',
+    'EDUCATIONAL · NOT ADVICE',
+    'BONDS  4.12%  ▼ 3bp',
+    'MEGA-CAP  ▲ 0.31%',
+  ];
+  const line = ITEMS.join('     ·     ') + '     ·     ';
+  const SPEED = 78; // px per second
+  const CYCLE = 2600; // approx px of one copy at this font size
+  const dx = -((frame / 30) * SPEED) % CYCLE;
+  const bg = dark ? '#0A0E17' : '#0D1322';
+  return (
+    <div style={{position: 'absolute', left: 0, right: 0, top: 1792, height: 62,
+      background: bg, borderTop: '2px solid rgba(230,190,140,0.45)',
+      borderBottom: '2px solid rgba(0,0,0,0.5)', overflow: 'hidden'}}>
+      <div style={{position: 'absolute', left: 0, top: 0, height: 62,
+        whiteSpace: 'nowrap', transform: `translateX(${dx}px)`,
+        fontFamily: 'Arial', fontWeight: 700, fontSize: 27, lineHeight: '62px',
+        letterSpacing: 1.5, color: '#9FE8C0'}}>
+        {line}{line}
+      </div>
+      {/* soft edges so items enter and leave rather than pop */}
+      <div style={{position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: `linear-gradient(90deg, ${bg} 0%, rgba(0,0,0,0) 7%,`
+          + ` rgba(0,0,0,0) 93%, ${bg} 100%)`}} />
+    </div>
   );
 };
