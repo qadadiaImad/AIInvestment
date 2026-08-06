@@ -17,6 +17,7 @@ import { QuarterlyReportCongress, QR_CONGRESS_BEATS } from "./QuarterlyReportCon
 import { QuarterlyReportLoop, QR_LOOP_BEATS } from "./QuarterlyReportLoop";
 import { QuarterlyReportTier, QR_TIER_BEATS } from "./QuarterlyReportTier";
 import { QuarterlyReportCascade, QR_CASCADE_BEATS } from "./QuarterlyReportCascade";
+import { QuarterlyReportDebt, QR_DEBT_BEATS } from "./QuarterlyReportDebt";
 import { HostPreview } from "./toon/host";
 import { PoseSheet } from "./toon/PoseSheet";
 import { CastSheet } from "./toon/CastSheet";
@@ -35,6 +36,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="QuarterlyReportLoop" component={QuarterlyReportLoop} durationInFrames={QR_LOOP_BEATS.total} fps={FPS} width={W} height={H} />
       <Composition id="QuarterlyReportTier" component={QuarterlyReportTier} durationInFrames={QR_TIER_BEATS.total} fps={FPS} width={W} height={H} />
       <Composition id="QuarterlyReportCascade" component={QuarterlyReportCascade} durationInFrames={QR_CASCADE_BEATS.total} fps={FPS} width={W} height={H} />
+      <Composition id="QuarterlyReportDebt" component={QuarterlyReportDebt} durationInFrames={QR_DEBT_BEATS.total} fps={FPS} width={W} height={H} />
       <Composition id="WulfReel" component={WulfReel} durationInFrames={1020} fps={FPS} width={W} height={H} />
       <Composition id="EtnReel" component={EtnReel} durationInFrames={1140} fps={FPS} width={W} height={H} />
       <Composition id="IntroReel" component={IntroVideo} durationInFrames={INTRO_BEATS.total} fps={FPS} width={W} height={H} defaultProps={{ wide: false }} />

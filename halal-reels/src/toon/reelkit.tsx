@@ -19,15 +19,26 @@ export const isBlink = (f: number) => { const c = f % 78; return c < 4 || (c > 4
 export const flap = (f: number) => Math.floor(f / 4) % 2 === 0;
 
 type Cap = { words: { w: string; t0: number; t1: number }[]; dur: number };
-export const Karaoke: React.FC<{ caps: Record<string, Cap>; id: string; cue: number; bottom?: number; hot?: RegExp }> = ({ caps, id, cue, bottom = 205, hot = /[0-9]/ }) => {
+// `max` chunks a long line into subtitle-sized groups (shows only the group around the
+// currently-spoken word) so multi-second VO lines don't bury the frame in text. Default
+// shows the whole line (short-beat episodes are unaffected).
+export const Karaoke: React.FC<{ caps: Record<string, Cap>; id: string; cue: number; bottom?: number; hot?: RegExp; max?: number }> = ({ caps, id, cue, bottom = 205, hot = /[0-9]/, max = 100 }) => {
   const f = useCurrentFrame();
   const cap = caps[id];
   if (!cap) return null;
   const tt = (f - cue) / 30;
   if (tt < -0.15 || tt > cap.dur + 0.4) return null;
+  const all = cap.words;
+  let shown = all;
+  if (all.length > max) {
+    let ai = all.findIndex((w) => tt >= w.t0 && tt < w.t1);
+    if (ai < 0) ai = tt >= all[all.length - 1].t1 ? all.length - 1 : 0;
+    const base = Math.floor(ai / max) * max;
+    shown = all.slice(base, base + max);
+  }
   return (
     <div style={{ position: "absolute", left: 50, right: 50, bottom, textAlign: "center", lineHeight: 1.16, zIndex: 4 }}>
-      {cap.words.map((w, i) => {
+      {shown.map((w, i) => {
         const active = tt >= w.t0 && tt < w.t1;
         const spoken = tt >= w.t1;
         const color = active ? (hot.test(w.w) ? PAL.gold : PAL.mint) : spoken ? PAL.paper : "rgba(255,246,233,0.5)";
