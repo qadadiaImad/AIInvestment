@@ -42,7 +42,34 @@ LINES = {
 
 
 def sentences(text):
-    return [s.strip() for s in re.findall(r"[^.?!…]+[.?!…]*", text) if s.strip()]
+    # Split ONLY on true sentence enders (. ? !) — never on "…" or "," which are
+    # intra-sentence pauses. Keeps a clause like "That's just… renting it." whole so it
+    # renders as one continuous, human line instead of two disconnected fragments.
+    return [s.strip() for s in re.findall(r"[^.?!]+[.?!]+|[^.?!]+$", text) if s.strip()]
+
+
+def tts_norm(s):
+    # Chatterbox reads a comma as a smooth in-clause pause; the unicode "…" tends to be
+    # mishandled or over-clipped. Swap it for a comma for synthesis (captions keep the "…").
+    s = s.replace("…", ", ")
+    s = re.sub(r"\s*,\s*,", ", ", s)   # collapse doubled commas
+    return re.sub(r"\s+", " ", s).strip().strip(",").strip()
+
+
+def level(wav, peak=0.92):
+    # even out per-sentence loudness so stitched clips don't jump in volume
+    m = wav.abs().max()
+    return wav * (peak / m) if m > 0 else wav
+
+
+def fade(wav, sr, ms=8):
+    # tiny in/out ramps so joins don't click
+    k = int(sr * ms / 1000)
+    if k > 0 and wav.shape[-1] > 2 * k:
+        ramp = torch.linspace(0, 1, k)
+        wav[..., :k] = wav[..., :k] * ramp
+        wav[..., -k:] = wav[..., -k:] * ramp.flip(0)
+    return wav
 
 
 def style(sentence, i):
@@ -50,12 +77,10 @@ def style(sentence, i):
     end = sentence.strip()[-1:] if sentence.strip() else "."
     wig = ((i * 37) % 7 - 3) * 0.02  # deterministic ±0.06 so no two neighbours match
     if end == "?":
-        return min(0.8, 0.70 + wig), 0.40, 0.34            # questions rise, more expressive
-    if end == "…":
-        return max(0.4, 0.52 + wig), 0.42, 0.44            # trailing thought, soft + long pause
+        return min(0.8, 0.70 + wig), 0.40, 0.30            # questions rise, more expressive
     if re.search(r"\d|trillion|billion|hundred|seventy", sentence):
-        return min(0.8, 0.64 + wig), 0.45, 0.30            # numbers get a punch
-    return max(0.42, 0.52 + wig), 0.50, 0.28               # calm default, varied
+        return min(0.8, 0.64 + wig), 0.45, 0.26            # numbers get a punch
+    return max(0.42, 0.52 + wig), 0.50, 0.24               # calm default, varied
 
 
 def word_times(text, t0, t1):
@@ -81,7 +106,8 @@ def main():
         sents = sentences(text)
         for i, s in enumerate(sents):
             exag, cfg, pause = style(s, i)
-            wav = model.generate(s, exaggeration=exag, cfg_weight=cfg)
+            wav = model.generate(tts_norm(s), exaggeration=exag, cfg_weight=cfg)
+            wav = fade(level(wav), sr)
             d = wav.shape[-1] / sr
             words += word_times(s, cur + 0.03, cur + d - 0.03)
             chunks.append(wav)
