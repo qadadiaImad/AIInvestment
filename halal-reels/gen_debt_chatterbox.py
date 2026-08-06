@@ -1,33 +1,34 @@
-"""VO for the debt/bonds explainer using Chatterbox (Resemble AI, MIT) — an expressive,
-natural TTS that doesn't sound like flat parametric "AI slop". Runs from an isolated package
-dir (C:/Users/Amsegt/chatterbox_env) so ComfyUI's env is untouched. CPU by default.
+"""VO for the debt/bonds explainer using Chatterbox (Resemble AI, MIT) — expressive, natural TTS.
 
-Writes public/debt_*.wav + debt_captions.json (word timings estimated proportionally, since
-Chatterbox doesn't emit word boundaries).
+Per-SENTENCE generation: each sentence in a line is synthesized separately with its own
+inflection (questions rise, number/reveal beats punch, trailing "…" thoughts soften), then
+stitched with natural pauses. This gives each phrase its own contour — the way a person varies
+their voice while explaining — instead of one flat tone across the whole line. It also yields
+accurate per-sentence word timing for the karaoke captions.
 
-Run with the ComfyUI embedded python (has a compatible interpreter):
+Runs from an isolated package dir so ComfyUI's env is untouched. CPU by default.
+Writes public/debt_*.wav + debt_captions.json.
+
   /c/Users/Amsegt/comfy/ComfyUI_windows_portable/python_embeded/python.exe gen_debt_chatterbox.py
 """
 import json
 import os
 import pathlib
+import re
 import sys
 
-# We run under ComfyUI's embedded python (compatible interpreter) but must NOT use its
-# site-packages (torch 2.13/cu130 + torchvision) — they clash with our isolated CPU torch.
-# Drop every site-packages entry, keep stdlib, then prepend the isolated Chatterbox env.
+# run under ComfyUI's embedded python but NOT its site-packages (torch 2.13/cu130 + torchvision
+# clash with our isolated CPU torch). Drop site-packages, keep stdlib, prepend the isolated env.
 TARGET = r"C:\Users\Amsegt\chatterbox_env"
 sys.path = [p for p in sys.path if "site-packages" not in p.replace("\\", "/").lower()]
 sys.path.insert(0, TARGET)
 
-import torch  # noqa: E402  (resolved from the isolated env)
+import torch  # noqa: E402
 import torchaudio as ta  # noqa: E402
 from chatterbox.tts import ChatterboxTTS  # noqa: E402
 
 PUB = pathlib.Path(__file__).resolve().parent / "public"
 DEVICE = "cuda" if torch.cuda.is_available() and os.environ.get("CB_CPU") != "1" else "cpu"
-# expressive but composed: some emotion, natural (not rushed) pacing
-EXAG, CFG = 0.6, 0.5
 
 LINES = {
     "d1": "The entire world is in debt. Not one country. Not one company. The whole planet. Three hundred and forty-eight trillion dollars. Which raises a strange little question… in debt to whom?",
@@ -40,14 +41,30 @@ LINES = {
 }
 
 
-def word_times(text, dur):
+def sentences(text):
+    return [s.strip() for s in re.findall(r"[^.?!…]+[.?!…]*", text) if s.strip()]
+
+
+def style(sentence, i):
+    """Per-sentence inflection: (exaggeration, cfg_weight, pause_after_seconds)."""
+    end = sentence.strip()[-1:] if sentence.strip() else "."
+    wig = ((i * 37) % 7 - 3) * 0.02  # deterministic ±0.06 so no two neighbours match
+    if end == "?":
+        return min(0.8, 0.70 + wig), 0.40, 0.34            # questions rise, more expressive
+    if end == "…":
+        return max(0.4, 0.52 + wig), 0.42, 0.44            # trailing thought, soft + long pause
+    if re.search(r"\d|trillion|billion|hundred|seventy", sentence):
+        return min(0.8, 0.64 + wig), 0.45, 0.30            # numbers get a punch
+    return max(0.42, 0.52 + wig), 0.50, 0.28               # calm default, varied
+
+
+def word_times(text, t0, t1):
     toks = text.split()
     wts = [len(w) + 1 for w in toks]
     total = sum(wts) or 1
-    start, end = 0.06, max(0.2, dur - 0.06)
-    t, out = start, []
+    t, out = t0, []
     for w, wt in zip(toks, wts):
-        seg = (end - start) * wt / total
+        seg = (t1 - t0) * wt / total
         out.append({"w": w, "t0": round(t, 3), "t1": round(t + seg, 3)})
         t += seg
     return out
@@ -60,11 +77,23 @@ def main():
     sr = model.sr
     caps = {}
     for lid, text in LINES.items():
-        wav = model.generate(text, exaggeration=EXAG, cfg_weight=CFG)
-        ta.save(str(PUB / f"debt_{lid}.wav"), wav, sr)
-        dur = wav.shape[-1] / sr
-        caps[lid] = {"text": text, "words": word_times(text, dur), "dur": round(dur + 0.1, 3), "frames": round(dur * 30)}
-        print(f"  debt_{lid}.wav  {dur:.2f}s ({round(dur*30)}f)")
+        chunks, words, cur = [], [], 0.0
+        sents = sentences(text)
+        for i, s in enumerate(sents):
+            exag, cfg, pause = style(s, i)
+            wav = model.generate(s, exaggeration=exag, cfg_weight=cfg)
+            d = wav.shape[-1] / sr
+            words += word_times(s, cur + 0.03, cur + d - 0.03)
+            chunks.append(wav)
+            cur += d
+            if i < len(sents) - 1:
+                chunks.append(torch.zeros(1, int(sr * pause)))
+                cur += pause
+        full = torch.cat(chunks, dim=1)
+        ta.save(str(PUB / f"debt_{lid}.wav"), full, sr)
+        dur = full.shape[-1] / sr
+        caps[lid] = {"text": text, "words": words, "dur": round(dur + 0.1, 3), "frames": round(dur * 30)}
+        print(f"  debt_{lid}.wav  {dur:.2f}s ({round(dur*30)}f, {len(sents)} phrases)")
     (PUB / "debt_captions.json").write_text(json.dumps(caps, indent=1), encoding="utf-8")
     print("done")
 
