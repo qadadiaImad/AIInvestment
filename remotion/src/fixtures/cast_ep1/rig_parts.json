@@ -774,7 +774,12 @@
    "expr__brow_raise": "characters/cast_ep1/poses/sol_finger__ex_brow_raise.png",
    "expr__side_eye": "characters/cast_ep1/poses/sol_finger__ex_side_eye.png",
    "expr__squint": "characters/cast_ep1/poses/sol_finger__ex_squint.png",
-   "expr__wide": "characters/cast_ep1/poses/sol_finger__ex_wide.png"
+   "expr__wide": "characters/cast_ep1/poses/sol_finger__ex_wide.png",
+   "body__arc0": "characters/cast_ep1/poses/sol_finger__arc0.png",
+   "body__arc1": "characters/cast_ep1/poses/sol_finger__arc1.png",
+   "body__arc2": "characters/cast_ep1/poses/sol_finger__arc2.png",
+   "body__arc3": "characters/cast_ep1/poses/sol_finger__arc3.png",
+   "body__arc4": "characters/cast_ep1/poses/sol_finger__arc4.png"
   },
   "crotch": 0.9188955996548749,
   "legCut": 0.8738955996548748,
@@ -782,14 +787,11 @@
   "feetSplit": true,
   "neck": 0.395604,
   "variants": [
-   "bothout",
-   "presentL",
-   "countup",
-   "armscross",
-   "reachout",
-   "chinrub",
-   "hiphand",
-   "armsdown"
+   "arc2",
+   "arc4",
+   "arc1",
+   "arc3",
+   "arc0"
   ],
   "eyeBox": [
    0.2615,

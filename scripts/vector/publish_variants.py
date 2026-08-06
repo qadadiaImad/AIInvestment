@@ -174,7 +174,8 @@ def main() -> None:
         # he holds, so it can no longer vanish; rex_skeptic stays on the
         # vocabulary - his arc run produced clones, and arms-crossed suits
         # the skeptic anyway.
-        if pose in ("sol_point", "sol_point_v1", "rex_eager")                 and arc_d.exists() and list(arc_d.glob("arc*.png")):
+        if (pose in ("sol_point", "sol_point_v1", "sol_finger", "rex_eager")
+                and arc_d.exists() and list(arc_d.glob("arc*.png"))):
             d = arc_d
         variants = []
         for png in sorted(d.glob("*.png")):
