@@ -15,7 +15,7 @@ import {actionCurve, holdCurve, squash} from "../motion/toon";
 import {FlashCut, ShockFlicks, ShockRing, SpeedLines, kick} from "../motion/ToonFX";
 import {Grain, Vignette} from "../motion/Polish";
 import {Move, Turn, idle, interactXform} from "../motion/interact";
-import {DeskFront, FLOOR_Y, PANEL_FLOOR, Room, SEATS, WALL, WallFrame, H as STAGE_H} from "../motion/Set";
+import {FLOOR_Y, PANEL_FLOOR, Room, RoundDesk, SEATS, WALL, WallFrame, H as STAGE_H} from "../motion/Set";
 import {ColumnsExhibit, DecayExhibit, SplitPriceExhibit, TickerTape} from "../motion/Infographic";
 import anchors from "../fixtures/cast_ep1/pose_anchors.json";
 import mouthTracks from "../fixtures/cast_ep1/mouth_tracks_ep5.json";
@@ -805,6 +805,14 @@ export const FairMarketEp5: React.FC = () => {
           + `scale(${(1 + 0.03 * Math.max(0, 1 - since / 10) * nrg) * camK})`,
         transformOrigin: `${camX}px ${camY}px`}}>
         <Room dark={shot?.mood === "dark"} />
+        {/* the painted studio plate over the flat room: generated anime
+            background (provenance beside the file), cover-fit and dimmed so
+            the drawn screen, cast and desk sit ON it */}
+        <Img src={staticFile("characters/cast_ep1/studio_bg.png")}
+          style={{position: "absolute", inset: 0, width: "100%",
+            height: "100%", objectFit: "cover",
+            opacity: shot?.mood === "dark" ? 0.35 : 0.55,
+            filter: "saturate(0.9) brightness(0.75)"}} />
         {/* The monitor is FURNITURE — always in the room, never popping in
             and out at beat boundaries, and it fills the upper frame that
             was otherwise dead wall above the cast. */}
@@ -906,7 +914,7 @@ export const FairMarketEp5: React.FC = () => {
                        stressN={stress.n} stressSince={stress.since}
                        holdMouth={cur.holdMouth} />;
         })}
-        <DeskFront dark={shot?.mood === "dark"} />
+        <RoundDesk dark={shot?.mood === "dark"} />
         {(cur.flicks ?? []).map((f, i) => (
           <ShockFlicks key={i} x={f.x} y={f.y} since={since - f.at} size={72} />
         ))}

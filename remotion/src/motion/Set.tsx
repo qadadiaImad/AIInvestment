@@ -184,3 +184,42 @@ export const DeskFront: React.FC<{dark?: boolean}> = ({dark = false}) => (
     </div>
   </>
 );
+
+/** THE ROUND TABLE. Drawn, not generated — two rounds of diffusion
+ *  produced crescent moons and school desks, and a broadcast desk is
+ *  geometry anyway: an elliptical arc that bulges TOWARD camera (nearest
+ *  at centre, rising at the wings) is what reads as "the panel sits
+ *  around a round table". Warm wood, gold rim, seat divider hints. */
+export const RoundDesk: React.FC<{dark?: boolean}> = ({dark = false}) => {
+  const wood = dark ? '#241A16' : '#3A2A22';
+  const woodLo = dark ? '#0D0908' : '#150F0C';
+  const top = dark ? '#4A362B' : '#5C4434';
+  const rim = dark ? 'rgba(190,150,110,0.5)' : 'rgba(230,190,140,0.85)';
+  // the near-edge arc: high at the wings, lowest (nearest) at centre
+  const arc = 'M -80 1445 Q 540 1650 1160 1445';
+  const arcTop = 'M -80 1405 Q 540 1610 1160 1405';
+  return (
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}
+      style={{position: 'absolute', inset: 0}}>
+      {/* desk top surface: a band between two arcs */}
+      <path d={`${arcTop} L 1160 1445 Q 540 1650 -80 1445 Z`}
+        fill={top} />
+      {/* subtle sheen on the top */}
+      <path d={`M -80 1412 Q 540 1616 1160 1412 L 1160 1424 Q 540 1628 -80 1424 Z`}
+        fill="#fff" opacity={0.07} />
+      {/* gold rim on the near edge */}
+      <path d={arc} fill="none" stroke={rim} strokeWidth={7} />
+      {/* front face down to the bottom of frame */}
+      <path d={`${arc} L 1160 ${H} L -80 ${H} Z`} fill={wood} />
+      <path d={`M -80 1740 Q 540 1900 1160 1740 L 1160 ${H} L -80 ${H} Z`}
+        fill={woodLo} opacity={0.75} />
+      {/* seat divider hints wrapping the curve */}
+      <path d="M 214 1518 q 8 60 2 400" stroke={woodLo} strokeWidth={5}
+        fill="none" opacity={0.55} />
+      <path d="M 866 1518 q -8 60 -2 400" stroke={woodLo} strokeWidth={5}
+        fill="none" opacity={0.55} />
+      {/* no badge on the face: the subtitles own that zone, and the first
+          still had the show name striking through Sol's own line */}
+    </svg>
+  );
+};

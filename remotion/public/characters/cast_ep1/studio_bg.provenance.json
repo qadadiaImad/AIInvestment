@@ -1,0 +1,7 @@
+{
+ "file": "remotion/public/characters/cast_ep1/studio_bg.png",
+ "source": "local ComfyUI sdxl_lora_t2i Illustrious-XL-v0.1 (no lora), seed 9522, danbooru scenery tags",
+ "source_class": "local-gen",
+ "retrieved_at": "2026-08-06T20:17:09Z",
+ "prompt": "no humans, scenery, indoors, television studio, news room, large screen, monitor, stage lights, night, dark blue theme, anime background"
+}
