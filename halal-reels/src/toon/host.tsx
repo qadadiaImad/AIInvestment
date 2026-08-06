@@ -9,7 +9,7 @@
 import React from "react";
 
 export type HostExpr = { mouth?: "rest" | "open" | "soft" | "flat"; blink?: boolean; brow?: number; look?: number };
-export type HostTheme = { skin: string; skinShade: string; hair: string; hairHi: string; blazer: string; blazerShade: string; blouse: string; lip: string; ink: string; glasses?: boolean };
+export type HostTheme = { skin: string; skinShade: string; hair: string; hairHi: string; blazer: string; blazerShade: string; blouse: string; lip: string; ink: string; glasses?: boolean; masc?: boolean };
 
 export const HOST_ANCHOR: HostTheme = {
   skin: "#F4C9A6", skinShade: "#E3AE86", hair: "#3B2A1E", hairHi: "#5A4130",
@@ -18,6 +18,11 @@ export const HOST_ANCHOR: HostTheme = {
 export const HOST_ANALYST: HostTheme = {
   skin: "#F1C6A0", skinShade: "#DDA97F", hair: "#241A12", hairHi: "#3A2B1E",
   blazer: "#2E5E86", blazerShade: "#20486B", blouse: "#EAF0F6", lip: "#B77B6A", ink: "#22222E",
+};
+// masculine anchor — short crop, squarer jaw shading, muted lips (navy suit, red tie accent)
+export const HOST_ANCHOR_M: HostTheme = {
+  skin: "#E7B488", skinShade: "#CE9868", hair: "#241A12", hairHi: "#3C2C1E",
+  blazer: "#2C4A6E", blazerShade: "#1E3653", blouse: "#EAF0F6", lip: "#A9765F", ink: "#20232E", masc: true,
 };
 export const HOST_QUANT: HostTheme = {
   skin: "#EEC49B", skinShade: "#D9A87C", hair: "#2A2018", hairHi: "#43342A",
@@ -30,6 +35,8 @@ export const PremiumHost: React.FC<{ e?: HostExpr; theme?: HostTheme; id?: strin
   const lx = (e.look ?? 0); // eye look offset px
   const brow = e.brow ?? 0; // px raise
   const mouth = e.mouth ?? "rest";
+  const masc = !!t.masc;
+  const lipW = masc ? 7 : 9;
   const g = (s: string) => `${id}-${s}`;
   return (
     <g>
@@ -65,6 +72,13 @@ export const PremiumHost: React.FC<{ e?: HostExpr; theme?: HostTheme; id?: strin
         {/* shirt collar */}
         <path d="M248 400 L270 452 L234 470 L222 428 Z" fill="#fff" opacity="0.9" />
         <path d="M292 400 L270 452 L306 470 L318 428 Z" fill="#fff" opacity="0.9" />
+        {/* tie (masc) */}
+        {masc && (
+          <g>
+            <path d="M258 404 L282 404 L276 424 L264 424 Z" fill="#B4322E" />
+            <path d="M264 424 L276 424 L286 502 L270 520 L254 502 Z" fill="#9E2A26" />
+          </g>
+        )}
         {/* blazer lapels */}
         <path d="M234 398 L270 512 L238 532 L200 452 Z" fill={t.blazerShade} />
         <path d="M306 398 L270 512 L302 532 L340 452 Z" fill={t.blazerShade} />
@@ -76,7 +90,12 @@ export const PremiumHost: React.FC<{ e?: HostExpr; theme?: HostTheme; id?: strin
       </g>
 
       {/* ---- hair back ---- */}
-      <path d="M150 250 C150 132 200 96 270 96 C340 96 390 132 390 250 C390 330 372 372 356 404 L332 372 C348 320 344 250 344 250 L196 250 C196 250 192 320 208 372 L184 404 C168 372 150 330 150 250 Z" fill={`url(#${g("hair")})`} />
+      {masc ? (
+        // short back-and-sides: a cap that ends near ear level, with brief sideburns
+        <path d="M158 262 C158 140 210 100 270 100 C330 100 382 140 382 262 L376 292 L360 262 C360 224 352 208 340 200 L200 200 C188 208 180 224 180 262 L164 292 Z" fill={`url(#${g("hair")})`} />
+      ) : (
+        <path d="M150 250 C150 132 200 96 270 96 C340 96 390 132 390 250 C390 330 372 372 356 404 L332 372 C348 320 344 250 344 250 L196 250 C196 250 192 320 208 372 L184 404 C168 372 150 330 150 250 Z" fill={`url(#${g("hair")})`} />
+      )}
 
       {/* ---- head ---- */}
       <ellipse cx="270" cy="248" rx="104" ry="118" fill={`url(#${g("skin")})`} />
@@ -86,8 +105,13 @@ export const PremiumHost: React.FC<{ e?: HostExpr; theme?: HostTheme; id?: strin
       <ellipse cx="168" cy="256" rx="15" ry="22" fill={t.skinShade} />
       <ellipse cx="372" cy="256" rx="15" ry="22" fill={t.skinShade} />
 
-      {/* ---- hair front (clean side-swept fringe) ---- */}
-      <path d="M166 236 C166 130 214 100 270 100 C326 100 374 130 374 236 C356 198 330 180 298 176 C304 194 304 200 304 200 C272 182 236 190 216 210 C198 208 180 218 166 236 Z" fill={`url(#${g("hair")})`} />
+      {/* ---- hair front ---- */}
+      {masc ? (
+        // short side part: crisp low hairline, small swept fringe
+        <path d="M170 224 C172 138 216 104 270 104 C324 104 372 136 372 224 C356 198 332 184 304 182 C296 178 288 178 288 178 C270 168 236 176 214 198 C198 196 182 206 170 224 Z" fill={`url(#${g("hair")})`} />
+      ) : (
+        <path d="M166 236 C166 130 214 100 270 100 C326 100 374 130 374 236 C356 198 330 180 298 176 C304 194 304 200 304 200 C272 182 236 190 216 210 C198 208 180 218 166 236 Z" fill={`url(#${g("hair")})`} />
+      )}
 
       {/* ---- brows (gentle raised arcs, well-separated) ---- */}
       <path d={`M206 ${203 - brow} q27 -11 53 -1`} fill="none" stroke={t.hair} strokeWidth="8" strokeLinecap="round" />
@@ -130,9 +154,16 @@ export const PremiumHost: React.FC<{ e?: HostExpr; theme?: HostTheme; id?: strin
       {/* ---- nose ---- */}
       <path d="M268 250 q-8 26 -14 34 q10 8 22 2" fill="none" stroke={t.skinShade} strokeWidth="5" strokeLinecap="round" opacity="0.9" />
 
-      {/* ---- cheeks ---- */}
-      <ellipse cx="212" cy="292" rx="20" ry="12" fill={t.lip} opacity="0.16" />
-      <ellipse cx="328" cy="292" rx="20" ry="12" fill={t.lip} opacity="0.16" />
+      {/* ---- cheeks / jaw ---- */}
+      <ellipse cx="212" cy="292" rx="20" ry="12" fill={t.lip} opacity={masc ? 0.05 : 0.16} />
+      <ellipse cx="328" cy="292" rx="20" ry="12" fill={t.lip} opacity={masc ? 0.05 : 0.16} />
+      {masc && (
+        <>
+          {/* stubble / squarer jaw shading */}
+          <ellipse cx="270" cy="322" rx="80" ry="46" fill="#39414f" opacity="0.10" />
+          <path d="M186 262 C196 330 230 360 270 360 C310 360 344 330 354 262" fill="none" stroke={t.skinShade} strokeWidth="6" strokeLinecap="round" opacity="0.35" />
+        </>
+      )}
 
       {/* ---- mouth ---- */}
       {mouth === "open" ? (
@@ -142,11 +173,11 @@ export const PremiumHost: React.FC<{ e?: HostExpr; theme?: HostTheme; id?: strin
           <path d="M244 316 q26 -8 52 0" fill="none" stroke={t.lip} strokeWidth="6" strokeLinecap="round" />
         </>
       ) : mouth === "soft" ? (
-        <path d="M246 314 q24 20 48 0" fill="none" stroke={t.lip} strokeWidth="9" strokeLinecap="round" />
+        <path d="M246 314 q24 20 48 0" fill="none" stroke={t.lip} strokeWidth={lipW} strokeLinecap="round" />
       ) : mouth === "flat" ? (
-        <path d="M248 316 l44 0" fill="none" stroke={t.lip} strokeWidth="9" strokeLinecap="round" />
+        <path d="M248 316 l44 0" fill="none" stroke={t.lip} strokeWidth={lipW} strokeLinecap="round" />
       ) : (
-        <path d="M248 314 q22 14 44 0" fill="none" stroke={t.lip} strokeWidth="9" strokeLinecap="round" />
+        <path d="M248 314 q22 14 44 0" fill="none" stroke={t.lip} strokeWidth={lipW} strokeLinecap="round" />
       )}
     </g>
   );
@@ -158,8 +189,8 @@ export const HostPreview: React.FC = () => {
   const busts: [string, HostExpr, HostTheme][] = [
     ["neutral", { mouth: "soft" }, HOST_ANCHOR],
     ["talking", { mouth: "open", brow: 3 }, HOST_ANCHOR],
-    ["blink", { blink: true, mouth: "rest" }, HOST_ANCHOR],
-    ["analyst", { mouth: "rest" }, HOST_ANALYST],
+    ["anchor-M (talk)", { mouth: "open", brow: 2 }, HOST_ANCHOR_M],
+    ["anchor-M", { mouth: "soft" }, HOST_ANCHOR_M],
   ];
   return (
     <AbsoluteFill style={{ background: "linear-gradient(160deg,#2b3040,#171a24)" }}>

@@ -41,16 +41,12 @@ export const DebtClock: React.FC<{
       {/* label + live dot */}
       <circle cx={padX + 4} cy={digitSize * 0.62} r={digitSize * 0.11} fill={blink ? "#ff4038" : "#5a1a17"} />
       <text x={padX + digitSize * 0.34} y={digitSize * 0.72} fontFamily={BODY} fontWeight="800" fontSize={digitSize * 0.34} letterSpacing="1.5" fill="#c98b86">{label}</text>
-      {/* glow copy */}
-      <g style={{ filter: `blur(${digitSize * 0.09}px)` }} opacity="0.85">
+      {/* single crisp layer with a symmetric glow (no offset ghost copy) */}
+      <g style={{ filter: `drop-shadow(0 0 ${digitSize * 0.16}px ${color})` }}>
         {cells.map((c, i) => (
-          <text key={i} x={startX + c.cx} y={rowY} textAnchor="middle" fontFamily={BODY} fontWeight="900" fontSize={digitSize} fill={color}>{c.ch}</text>
+          <text key={i} x={startX + c.cx} y={rowY} textAnchor="middle" fontFamily={BODY} fontWeight="900" fontSize={digitSize} fill={c.ch === "," ? "#a83a34" : color}>{c.ch}</text>
         ))}
       </g>
-      {/* crisp digits */}
-      {cells.map((c, i) => (
-        <text key={i} x={startX + c.cx} y={rowY} textAnchor="middle" fontFamily={BODY} fontWeight="900" fontSize={digitSize} fill={c.ch === "," ? "#8a2a25" : color}>{c.ch}</text>
-      ))}
     </g>
   );
 };

@@ -7,7 +7,7 @@
  */
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame, Sequence, Audio, staticFile } from "remotion";
-import { HOST_ANALYST } from "./toon/host";
+import { HOST_ANCHOR_M } from "./toon/host";
 import { NewsStudio } from "./toon/studio";
 import { FUN, BODY, PAL, Karaoke, Bug, Disclaimer, Chyron, BigFace, studioHost } from "./toon/reelkit";
 import { DebtClock } from "./toon/props";
@@ -156,7 +156,7 @@ const Studio: React.FC = () => {
   const wall = active === "d1" ? <HookWall f={f} /> : active === "d2" ? <StackWall f={f} from={ABS.d2} /> : active === "d3" ? <QWall f={f} /> : active === "d4" ? <BondWall f={f} /> : <HoldersWall f={f} />;
   return (
     <AbsoluteFill style={{ background: "#0a1017" }}>
-      <AbsoluteFill><NewsStudio host={studioHost(f, HOST_ANALYST)} screen={<ClockScreen f={f} />} screenLabel="● WORLD DEBT" ticker={TICK} accent={GREEN} skin={HOST_ANALYST.skin} f={f} wall={wall} /></AbsoluteFill>
+      <AbsoluteFill><NewsStudio host={studioHost(f, HOST_ANCHOR_M)} screen={<ClockScreen f={f} />} screenLabel="● WORLD DEBT" ticker={TICK} accent={GREEN} skin={HOST_ANCHOR_M.skin} f={f} wall={wall} /></AbsoluteFill>
       <Chyron f={f} tag="FOLLOW THE MONEY" text="WHO DOES THE WORLD OWE?" red={false} />
       <Karaoke caps={C} id={active} cue={acue} hot={HOT} max={6} reveal />
       <Bug /><Disclaimer text="Figures Aug 2026 · IIF · US Treasury · CRS · educational, not financial advice" />
@@ -203,7 +203,7 @@ const Cta: React.FC = () => {
         <g transform="translate(150 6)"><DebtClock f={f + ABS.d1} digitSize={40} label="STILL TICKING…" /></g>
       </svg>
       <svg width="1080" height="440" viewBox="0 0 1080 440">
-        <g transform="translate(270 8) scale(0.7)">{studioHost(f, HOST_ANALYST, false)}</g>
+        <g transform="translate(270 8) scale(0.7)">{studioHost(f, HOST_ANCHOR_M, false)}</g>
       </svg>
       <div style={{ textAlign: "center", padding: "0 56px", marginTop: -8 }}>
         <div style={{ fontFamily: FUN, fontSize: 60, color: GREEN, WebkitTextStroke: "4px #000", paintOrder: "stroke", lineHeight: 1.05 }}>A WORLD THAT OWES<br />ITSELF TRILLIONS</div>
