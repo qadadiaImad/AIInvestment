@@ -27,6 +27,35 @@ PUB = REPO / "remotion/public/characters/cast_ep1/poses"
 MANIFEST = REPO / "remotion/src/fixtures/cast_ep1/rig_parts.json"
 
 
+def order_by_arm(d: Path, pose: str, names: list) -> list:
+    """Sort variants along the arm's travel, low hand to high hand.
+
+    Each variant differs from the base only inside the body mask, so the
+    centroid of that difference IS the arm's position. Sorting by its height
+    lays the drawings out as a ladder, which is what lets three consecutive
+    picks read as one gesture instead of three unrelated poses.
+    """
+    import numpy as np
+    from PIL import Image
+
+    base_p = (REPO / "content/vector_char/cast/ep_fairmarket/renders"
+              / ("_%s_rgba.png" % pose))
+    if not base_p.exists():
+        return names
+    b = np.asarray(Image.open(base_p).convert("RGBA")).astype(float)
+    a = b[..., 3:4] / 255.0
+    base = b[..., :3] * a + 255 * (1 - a)
+    scored = []
+    for n in names:
+        g = np.asarray(Image.open(d / (n + ".png")).convert("RGB")).astype(float)
+        diff = np.abs(g - base).mean(axis=2)
+        ys, xs = np.nonzero(diff > 28)
+        # height of the changed region, inverted so index 0 is the LOWEST arm
+        scored.append((float(ys.mean()) if len(ys) else 1e9, n))
+    scored.sort(reverse=True)
+    return [n for _, n in scored]
+
+
 def main() -> None:
     m = json.loads(MANIFEST.read_text("utf-8"))
     PUB.mkdir(parents=True, exist_ok=True)
@@ -49,8 +78,18 @@ def main() -> None:
                 "characters/cast_ep1/poses/%s__%s.png" % (pose, png.stem))
             variants.append(png.stem)
             total += 1
+        # ORDER THEM BY ARM HEIGHT, which is the difference between a move and
+        # a shake. The renderer plays three drawings per action at offsets
+        # -1/+1/0 in this list; alphabetical order (armscross, armsdown,
+        # bothout, chinrub...) has nothing to do with where the arm IS, so
+        # consecutive drawings were unrelated poses and the hand teleported
+        # between them. Sorted by the centroid of what actually changed,
+        # neighbours are neighbouring arm positions and the same three
+        # offsets read as one continuous gesture.
+        variants = order_by_arm(d, pose, variants)
         rig["variants"] = variants
-        print("  %-16s %d variants" % (pose, len(variants)))
+        print("  %-16s %d variants  %s" % (pose, len(variants),
+                                           " -> ".join(variants[:4]) + " ..."))
 
     # EXPRESSIONS. Published with the eye box they were generated inside, so
     # the renderer can clip the overlay to exactly the region that changed.

@@ -813,8 +813,12 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   // drawings where the movement is — an anticipation held 3 frames, an
   // extreme held 5, then the settle carries the rest of the beat.
   const vars = rig?.variants ?? [];
+  // Step ONE rung per action, not three. The list is now ordered by arm
+  // height, so a step of one is a neighbouring arm position and the gesture
+  // carries across actions; stepping three threw the hand somewhere else
+  // every 38 frames, which is the shake.
   const vAt = (k: number) =>
-    vars.length ? "body__" + vars[((seg * 3 + pose.length + k) % vars.length
+    vars.length ? "body__" + vars[((seg + pose.length + k) % vars.length
       + vars.length) % vars.length] : "body";
   const bodyPart = !vars.length || seg === 0
     ? "body"
