@@ -1,5 +1,9 @@
-"""VO for the "World Owes $348T — to WHO?" debt/bonds explainer (edge-tts, Christopher,
-the analyst-detective voice) + karaoke word timings. Writes public/debt_*.mp3 + debt_captions.json.
+"""VO for the "World Owes $348T — to WHO?" debt/bonds explainer.
+
+Voice = "In a Nutshell" *style* (not a clone of the real narrator): a warm British male
+neural voice (en-GB-RyanNeural), measured pace, slightly lowered pitch, and short wondering
+sentences with '…' pause beats — the cadence that keeps it from sounding monotone.
+Writes public/debt_*.mp3 + debt_captions.json.
 
     python gen_debt_audio.py
 """
@@ -10,21 +14,21 @@ import pathlib
 import edge_tts
 
 PUB = pathlib.Path(__file__).resolve().parent / "public"
-VOICE, RATE = "en-US-ChristopherNeural", "+6%"
+VOICE, RATE, PITCH = "en-GB-RyanNeural", "-4%", "-2Hz"
 
 LINES = {
-    "d1": "The entire world is in debt. Three hundred forty-eight trillion dollars. So, dumb question nobody actually answers: in debt to who?",
-    "d2": "It's not one loan, it's everyone. Households owe sixty-four trillion. Companies, a hundred. Governments, another hundred and seven. Add the banks: three hundred forty-eight.",
-    "d3": "But every dollar you owe is a dollar someone else is owed. So if the whole planet is in the red, who's in the black?",
-    "d4": "The answer is a piece of paper called a bond. A government needs cash now, so it writes an I.O.U. Lend me a hundred, I'll pay you back with interest on a set date. Sell millions of them, and that pile of paper is the national debt.",
-    "d5": "So who buys them? Foreign countries, Japan, Britain, China, hold about a third. But the biggest lender to your government is you. Your pension, your bank, your retirement fund. The world doesn't owe some outsider. It mostly owes itself.",
-    "d6": "Here's the part that stings. Just the interest on America's debt hit nine hundred seventy billion last year. More than it spends on its entire military. Not paying it down, just renting it.",
-    "d7": "A planet that owes itself trillions, paying itself interest it has to borrow to afford. Genius, or a time bomb? Tell me below.",
+    "d1": "The entire world is in debt. Not one country. Not one company. The whole planet. Three hundred and forty-eight trillion dollars. Which raises a strange little question… in debt to whom?",
+    "d2": "Because this isn't one giant loan. It's all of us. Households owe sixty-four trillion. Companies, a hundred. Governments, another hundred and seven. Stack it all up, and you get three hundred and forty-eight.",
+    "d3": "But here's the strange thing about debt. Every dollar owed is a dollar someone else is owed. So if the entire planet is in the red… who on Earth is in the black?",
+    "d4": "The answer hides inside a single piece of paper. A bond. A government needs money today, so it writes a promise. Lend me a hundred, and I'll pay you back, with interest, later. Print millions of those promises, and that pile of paper becomes the national debt.",
+    "d5": "So who holds all these promises? Some are foreign. Japan, Britain, China, together about a third. But the biggest lender of all… is you. Your pension. Your bank. Your savings. The world doesn't owe some distant stranger. Mostly, it owes itself.",
+    "d6": "And yet, there's a catch. Last year, the interest alone on America's debt hit nine hundred and seventy billion dollars. More than it spends on its entire military. That isn't shrinking the debt. That's just… renting it.",
+    "d7": "A planet that owes itself trillions, and borrows just to pay the interest. Brilliant design? Or a slow motion time bomb? Tell me what you think, below.",
 }
 
 
 async def gen(key, text):
-    c = edge_tts.Communicate(text, VOICE, rate=RATE)
+    c = edge_tts.Communicate(text, VOICE, rate=RATE, pitch=PITCH)
     audio = bytearray()
     bounds = []
     async for ch in c.stream():

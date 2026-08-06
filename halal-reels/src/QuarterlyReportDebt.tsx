@@ -1,7 +1,7 @@
 /**
  * "The World Owes $348 Trillion — To WHO?" — debt & bonds explainer (long form, ~91s).
- * Question → mechanism (bonds) → reveal (the creditor is mostly us). Analyst-detective host
- * + Christopher voice. Debuts the DEBT CLOCK newsroom fixture (toon/props). All figures
+ * Question → mechanism (bonds) → reveal (the creditor is mostly us). Male anchor + a warm
+ * British "In a Nutshell"-style VO. Debuts the DEBT CLOCK newsroom fixture (toon/props). All figures
  * stamped 2026-08-06: IIF Global Debt Monitor (Q4'25 $348.3T), US Treasury / CRS holders,
  * CFRB/PGPF net-interest ($970B FY25 > $917B defense). Educational, not financial advice.
  */
@@ -14,9 +14,19 @@ import { DebtClock } from "./toon/props";
 import caps from "../public/debt_captions.json";
 
 const C = caps as Record<string, { words: { w: string; t0: number; t1: number }[]; dur: number }>;
-const A = 1995, Cn = 420, D = 330;
+// timeline derived from the actual VO durations (so a voice/script change re-times itself)
+const F = (id: string) => Math.round(C[id].dur * 30);
+const GAP = 16;
+const _d1 = 6;
+const _d2 = _d1 + F("d1") + GAP;
+const _d3 = _d2 + F("d2") + GAP;
+const _d4 = _d3 + F("d3") + GAP;
+const _d5 = _d4 + F("d4") + GAP;
+const A = _d5 + F("d5") + 50;   // studio scene (d1–d5)
+const Cn = F("d6") + 75;        // kicker (d6)
+const D = F("d7") + 80;         // cta (d7)
 export const QR_DEBT_BEATS = { total: A + Cn + D };
-const ABS = { d1: 6, d2: 320, d3: 746, d4: 981, d5: 1424, d6: A + 6, d7: A + Cn + 6 };
+const ABS = { d1: _d1, d2: _d2, d3: _d3, d4: _d4, d5: _d5, d6: A + 6, d7: A + Cn + 6 };
 const HOT = /[0-9]|trillion|billion|bond|who|itself|you|your|interest|military|red|black/i;
 const GREEN = "#7FE9C2";
 const TICK = "GLOBAL DEBT $348.3T (IIF, Q4'25)   ·   HOUSEHOLDS $64.6T · COMPANIES $100.6T · GOVERNMENTS $106.7T · BANKS $76.4T   ·   U.S. NET INTEREST $970B FY25 > DEFENSE $917B   ·   EDUCATIONAL, NOT ADVICE   ·   ";
@@ -78,8 +88,8 @@ const QWall: React.FC<{ f: number }> = ({ f }) => {
   );
 };
 
-const BondWall: React.FC<{ f: number }> = ({ f }) => {
-  const coin = interpolate((f - 981) % 90, [0, 90], [0, 1]);
+const BondWall: React.FC<{ f: number; from: number }> = ({ f, from }) => {
+  const coin = interpolate((f - from) % 90, [0, 90], [0, 1]);
   const box = (x: number, label: string, c: string) => (
     <g>
       <rect x={x - 76} y="180" width="152" height="74" rx="14" fill="#0e1a2c" stroke={c} strokeWidth="3" />
@@ -114,8 +124,8 @@ const HOLD = [
   { name: "Federal Reserve", pct: 13, c: PAL.gold, you: false },
   { name: "Foreign (Japan · UK · China…)", pct: 31, c: "#5b7089", you: false },
 ];
-const HoldersWall: React.FC<{ f: number }> = ({ f }) => {
-  const rise = interpolate(f, [1424, 1470], [0, 1], clamp);
+const HoldersWall: React.FC<{ f: number; from: number }> = ({ f, from }) => {
+  const rise = interpolate(f, [from, from + 46], [0, 1], clamp);
   const R = 118, T = 54, cx = 250, cy = 214, Circ = 2 * Math.PI * R;
   let off = 0;
   return (
@@ -153,7 +163,7 @@ const Studio: React.FC = () => {
   const f = useCurrentFrame();
   const active = f < ABS.d2 ? "d1" : f < ABS.d3 ? "d2" : f < ABS.d4 ? "d3" : f < ABS.d5 ? "d4" : "d5";
   const acue = ABS[active as keyof typeof ABS];
-  const wall = active === "d1" ? <HookWall f={f} /> : active === "d2" ? <StackWall f={f} from={ABS.d2} /> : active === "d3" ? <QWall f={f} /> : active === "d4" ? <BondWall f={f} /> : <HoldersWall f={f} />;
+  const wall = active === "d1" ? <HookWall f={f} /> : active === "d2" ? <StackWall f={f} from={ABS.d2} /> : active === "d3" ? <QWall f={f} /> : active === "d4" ? <BondWall f={f} from={ABS.d4} /> : <HoldersWall f={f} from={ABS.d5} />;
   return (
     <AbsoluteFill style={{ background: "#0a1017" }}>
       <AbsoluteFill><NewsStudio host={studioHost(f, HOST_ANCHOR_M)} screen={<ClockScreen f={f} />} screenLabel="● WORLD DEBT" ticker={TICK} accent={GREEN} skin={HOST_ANCHOR_M.skin} f={f} wall={wall} /></AbsoluteFill>
@@ -212,7 +222,7 @@ const Cta: React.FC = () => {
     <AbsoluteFill style={{ background: PAL.ink, alignItems: "center", justifyContent: "flex-start" }}>
       <MoneyMotif f={f} tint={PAL.mint} base={0.09} />
       <svg width="1000" height="150" viewBox="0 0 1000 150" style={{ marginTop: 92, transform: `scale(${pop})`, zIndex: 2 }}>
-        <g transform="translate(150 6)"><DebtClock f={f + ABS.d1} digitSize={40} label="STILL TICKING…" /></g>
+        <g transform="translate(150 6)"><DebtClock f={f + A + Cn} digitSize={40} label="STILL TICKING…" /></g>
       </svg>
       <svg width="1080" height="440" viewBox="0 0 1080 440" style={{ zIndex: 2 }}>
         <g transform="translate(270 8) scale(0.7)">{studioHost(f, HOST_ANCHOR_M, false)}</g>
