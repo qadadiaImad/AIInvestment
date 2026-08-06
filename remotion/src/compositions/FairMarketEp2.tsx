@@ -21,6 +21,8 @@ import anchors from "../fixtures/cast_ep1/pose_anchors.json";
 import mouthTracks from "../fixtures/cast_ep1/mouth_tracks_ep2.json";
 import visemes from "../fixtures/cast_ep1/visemes.json";
 import headFocus from "../fixtures/cast_ep1/head_focus.json";
+import rigParts from "../fixtures/cast_ep1/rig_parts.json";
+import {CharRig, type Rig, type RigPose} from "../motion/CharRig";
 
 type A = {w: number; h: number; ink_h: number; anchor: number[]; src: string; scale: number};
 const AN = anchors as unknown as Record<string, A>;
@@ -28,6 +30,8 @@ type V = Partial<Record<"closed" | "half" | "open" | "oh" | "blink", string>>;
 const VI = visemes as unknown as Record<string, V>;
 const TR = mouthTracks as unknown as Record<string, number[]>;
 const HF = headFocus as unknown as Record<string, {fx: number; fy: number}>;
+const RIG = rigParts as unknown as Record<string, Rig>;
+const RIG_OFF = false;   // flipped only by the A/B motion probe
 
 // A SHOT is a reframing of the staged actor, held from `from` (a frame
 // offset into the beat) until the next shot. Reframing is how one
@@ -45,6 +49,9 @@ const HF = headFocus as unknown as Record<string, {fx: number; fy: number}>;
 // interchangeable — i.e. a real cut to a different gesture.
 type Shot = {from: number; k?: number; tx?: number; ty?: number; only?: number;
              hideCard?: boolean; pose?: string;
+             // RIG CHANNELS — opt-in per shot; omitted, the derived acting
+             // system drives everything (same contract as Ep1)
+             walk?: number; turn?: number; point?: number; look?: number;
              // `show` is `only` for more than one actor — it lets a shot
              // hold two of three characters, which is what turns a cut-away
              // into the narrator PRESENTING someone.
@@ -183,19 +190,19 @@ const BEATS: Beat[] = [
    vo: "r1_sol_lasttime", speaker: "SOL",
    line: "Last time, I showed you a filing. Public. Legal. Forty-five days late."},
 
-  {at: 170, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681},
+  {at: 175, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681},
                      {poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08}],
    vo: "r2_rex_useless", speaker: "REX", line: "And useless if I tried to copy it."},
 
-  {at: 250, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+  {at: 259, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.0, kEnd: 1.07},
            {from: 120, k: 1.2, kEnd: 1.32, tx: 600, ty: 1190}],
    vo: "r3_sol_otherside", speaker: "SOL",
    line: "Late, kid. Not useless. Today I'll show you the other side of that — what it looks like when somebody isn't late at all."},
 
   // ═══ ACT 1 — THE CLOCK ═══════════════════════════════════════════════
-  {at: 480, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+  {at: 485, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
    shots: [{from: 0, k: 1.06, kEnd: 1.16, tx: 540, ty: 1190}],
    vo: "e1_sol_march", speaker: "SOL",
    line: "March twenty-third. Six forty-nine in the morning."},
@@ -205,14 +212,14 @@ const BEATS: Beat[] = [
   // episode never supplies a name, a face or an implication. The figure
   // on the monitor is a faceless silhouette for the same reason — that
   // is the state of the evidence, not a stylistic choice.
-  {at: 590, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+  {at: 594, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
                      {poses: ["rex_skeptic"], kind: "bust", x: 420, y: 1250, h: 850}],
    shots: [{from: 0, only: 0, tvPhoto: "trader_unknown", mood: "dark", k: 1.0, kEnd: 1.08},
            {from: 100, only: 1, mood: "dark", k: 1.0, kEnd: 1.08}],
    vo: "e2_sol_buys", speaker: "SOL",
    line: "Somebody buys five hundred and eighty million dollars of oil futures."},
 
-  {at: 740, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679,
+  {at: 748, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679,
                       turns: [{at: 12, tx: 830, ty: 1210}]},
                      {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1300, h: 596}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08},
@@ -220,7 +227,7 @@ const BEATS: Beat[] = [
    vo: "e3_rex_bullish", speaker: "REX",
    line: "Okay. Big trade. Somebody's feeling bullish.", energy: 1.1},
 
-  {at: 860, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
+  {at: 870, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.04, kEnd: 1.16, tx: 580, ty: 1190}],
    sfx: [{at: 8, name: "sfx_whip", vol: 0.4}],
    vo: "e4_sol_no", speaker: "SOL",
@@ -230,7 +237,7 @@ const BEATS: Beat[] = [
   // The order of events IS the claim, so the graphic draws it in order
   // and never gets ahead of itself: trade, then the wait, then the
   // announcement, and only then the price.
-  {at: 1000, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+  {at: 1012, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
                       {poses: ["rex_skeptic"], kind: "bust", x: 420, y: 1250, h: 850}],
    graphic: "countdown_16",
    shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.06},
@@ -238,7 +245,7 @@ const BEATS: Beat[] = [
    vo: "e5_sol_sixteen", speaker: "SOL",
    line: "Sixteen minutes later, the President posts that talks with Iran went well."},
 
-  {at: 1160, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+  {at: 1169, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
                       {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
    graphic: "countdown_16",
    shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.08},
@@ -246,37 +253,37 @@ const BEATS: Beat[] = [
    vo: "e6_sol_exactly", speaker: "SOL",
    line: "Oil falls. Stocks rise. Exactly the way that trade was pointed."},
 
-  {at: 1320, actors: [{poses: ["rex_shock"], kind: "full", x: 500, y: FLOOR_Y, h: 900}],
+  {at: 1337, actors: [{poses: ["rex_shock"], kind: "full", x: 500, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],
    holdMouth: true, fx: true,
    sfx: [{at: 6, name: "impact", vol: 0.5}],
    vo: "e7_rex_coincidence", speaker: "REX",
    line: "That's a coincidence. Boss. Tell me that's a coincidence.", energy: 1.4},
 
-  {at: 1460, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+  {at: 1477, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
    shots: [{from: 0, k: 1.08, kEnd: 1.18, tx: 540, ty: 1190}],
    vo: "e8_sol_once", speaker: "SOL", line: "Once is a coincidence, kid."},
 
   // ═══ ACT 3 — IT HAPPENED AGAIN ═══════════════════════════════════════
-  {at: 1540, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+  {at: 1555, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    graphic: "stack_26",
    shots: [{from: 0, k: 1.0, kEnd: 1.06},
            {from: 160, k: 1.16, kEnd: 1.26, tx: 600, ty: 1190, hideCard: true}],
    vo: "e9_sol_again", speaker: "SOL",
    line: "Two weeks later. Nine hundred and fifty million, betting oil falls. Hours before a ceasefire nobody had announced."},
 
-  {at: 1790, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
+  {at: 1813, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
    graphic: "stack_26",
    shots: [{from: 0, k: 1.0, kEnd: 1.07}],
    vo: "e10_sol_hormuz", speaker: "SOL",
    line: "And another one. Seven hundred and sixty million, minutes before the Hormuz announcement."},
 
-  {at: 1970, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681},
+  {at: 2002, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681},
                       {poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597}],
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],
    vo: "e11_rex_total", speaker: "REX", line: "How much is that all together?"},
 
-  {at: 2040, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+  {at: 2076, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
                       {poses: ["rex_skeptic"], kind: "bust", x: 420, y: 1250, h: 850}],
    graphic: "stack_26",
    shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.08},
@@ -284,13 +291,13 @@ const BEATS: Beat[] = [
    vo: "e12_sol_billions", speaker: "SOL",
    line: "The Justice Department and the CFTC are looking at about two point six billion."},
 
-  {at: 2210, actors: [{poses: ["rex_eager"], kind: "full", x: 500, y: FLOOR_Y, h: 900}],
+  {at: 2243, actors: [{poses: ["rex_eager"], kind: "full", x: 500, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.04, kEnd: 1.14}],
    vo: "e13_rex_caught", speaker: "REX", line: "So they caught them.", energy: 1.2},
 
   // THE SHORTEST LINE IN EITHER EPISODE, AND THE HARDEST. Half a second,
   // held wide, no graphic, no push — everything else gets out of its way.
-  {at: 2270, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+  {at: 2304, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
    shots: [{from: 0, k: 1.0, kEnd: 1.05}],
    vo: "e14_sol_nope", speaker: "SOL", line: "No."},
 
@@ -298,18 +305,18 @@ const BEATS: Beat[] = [
   // The podium and the shadow, cut against each other. The known faces
   // announced; an unknown figure traded. Nothing on screen connects them
   // because nothing in the evidence does — that gap is the whole act.
-  {at: 2340, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+  {at: 2365, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, tvPhoto: "podium_speaker", k: 1.0, kEnd: 1.06},
            {from: 80, tvPhoto: "podium_official_a", k: 1.0, kEnd: 1.06},
            {from: 150, tvPhoto: "trader_unknown", mood: "dark", k: 1.0, kEnd: 1.1}],
    vo: "e15_sol_sitwith", speaker: "SOL",
    line: "That's the part I need you to sit with. Not one charge. Not one name. The tape knew, and the tape doesn't sign its orders."},
 
-  {at: 2600, actors: [{poses: ["rex_listen"], kind: "full", x: 400, y: FLOOR_Y, h: 820}],
+  {at: 2620, actors: [{poses: ["rex_listen"], kind: "full", x: 400, y: FLOOR_Y, h: 820}],
    shots: [{from: 0, k: 1.06, kEnd: 1.16, tx: 520, ty: 1250}],
    vo: "e16_rex_someone", speaker: "REX", line: "Somebody has to know something."},
 
-  {at: 2680, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+  {at: 2699, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    card: {title: "WHO IS ASKING",
           lines: ["Sens. Warren, Whitehouse, Warnock —",
                   "letters to the CFTC.",
@@ -324,12 +331,12 @@ const BEATS: Beat[] = [
   // A REAL, CHARGED, UNSEALED CASE — and kept explicitly separate from
   // the oil probe. It proves the mechanism is prosecutable. It is not
   // evidence about these trades and the episode never blurs the two.
-  {at: 2900, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
+  {at: 2918, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.04, kEnd: 1.14, tx: 580, ty: 1190}],
    vo: "e18_sol_didcatch", speaker: "SOL",
    line: "Now. They did catch one. Different war, same idea."},
 
-  {at: 3040, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+  {at: 3057, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
                       {poses: ["rex_skeptic"], kind: "bust", x: 420, y: 1250, h: 850}],
    card: {title: "THE ONE THEY CHARGED",
           lines: ["A service member traded a prediction",
@@ -341,31 +348,31 @@ const BEATS: Beat[] = [
    vo: "e19_sol_soldier", speaker: "SOL",
    line: "A special forces soldier bet a prediction market on an operation he had been briefed on. Classified. Indicted."},
 
-  {at: 3250, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679},
+  {at: 3281, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679},
                       {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1300, h: 596}],
    shots: [{from: 0, only: 0, k: 1.1, kEnd: 1.2, tx: 520, ty: 1030}],
    vo: "e20_rex_provable", speaker: "REX", line: "So it is provable.", energy: 1.1},
 
-  {at: 3320, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+  {at: 3350, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
    shots: [{from: 0, k: 1.04, kEnd: 1.14, tx: 540, ty: 1190}],
    vo: "e21_sol_whentrail", speaker: "SOL", line: "When the trail leads somewhere. Yes."},
 
-  {at: 3420, actors: [{poses: ["rex_listen"], kind: "full", x: 400, y: FLOOR_Y, h: 820}],
+  {at: 3449, actors: [{poses: ["rex_listen"], kind: "full", x: 400, y: FLOOR_Y, h: 820}],
    shots: [{from: 0, k: 1.06, kEnd: 1.14, tx: 520, ty: 1250}],
    vo: "e22_rex_whennot", speaker: "REX", line: "And when it doesn't?"},
 
-  {at: 3480, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+  {at: 3508, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    graphic: "countdown_16",
    shots: [{from: 0, k: 1.0, kEnd: 1.08}],
    vo: "e23_sol_clock", speaker: "SOL", line: "Then all you have is the clock."},
 
   // ═══ ACT 6 — THE LESSON, AND THE CALLBACK ════════════════════════════
-  {at: 3560, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
+  {at: 3599, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.02, kEnd: 1.12, tx: 580, ty: 1190}],
    vo: "e24_sol_lastweek", speaker: "SOL",
    line: "Last week I told you public information isn't enough to find an edge."},
 
-  {at: 3700, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+  {at: 3743, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
                       {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
    graphic: "countdown_16",
    shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.1},
@@ -373,11 +380,11 @@ const BEATS: Beat[] = [
    vo: "e25_sol_thisweek", speaker: "SOL",
    line: "This week? Somebody had an edge sixteen minutes before the public had a headline."},
 
-  {at: 3870, actors: [{poses: ["rex_skeptic"], kind: "full", x: 470, y: FLOOR_Y, h: 960}],
+  {at: 3913, actors: [{poses: ["rex_skeptic"], kind: "full", x: 470, y: FLOOR_Y, h: 960}],
    shots: [{from: 0, k: 1.06, kEnd: 1.16, tx: 540, ty: 1120}],
    vo: "e26_rex_sowhat", speaker: "REX", line: "So what do I do with that?"},
 
-  {at: 3940, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+  {at: 3991, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
                       {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
    shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.08},
            {from: 120, only: 1, k: 1.0, kEnd: 1.08}],
@@ -385,12 +392,12 @@ const BEATS: Beat[] = [
    line: "You stop assuming the news moves the market. Sometimes the market moves first, and the news catches up."},
 
   // The signature close, same shape as ep.1 so the series has a shape.
-  {at: 4160, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+  {at: 4207, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
    shots: [{from: 0, k: 1.0, kEnd: 1.12, tx: 540, ty: 1200}],
    vo: "e28_sol_fair", speaker: "SOL",
    line: "Fair? No. But now you know what to watch."},
 
-  {at: 4290, title: ["MARKET LESSONS", "WITH SOL", ""], actors: []},
+  {at: 4333, title: ["MARKET LESSONS", "WITH SOL", ""], actors: []},
 ];
 
 const beatAt = (f: number) => {
@@ -433,29 +440,41 @@ const mouthStateFor = (beat: Beat, frame: number): {sol: number; rex: number} =>
   return out;
 };
 
-// Pick the drawing for this frame: the base pose art, or one of its
-// inpainted viseme variants. Blink only fires when the mouth is closed
-// (never fights a talk shape); sustained state-2 holds alternate
+// Returns the viseme KEY rather than a file path, so the same choice can
+// drive a whole-drawing swap (unrigged poses) or a rig head part (rigged
+// ones). Behaviour is unchanged: blink only fires when the mouth is closed
+// so it never fights a talk shape, and sustained state-2 alternates
 // open/oh every 7 frames so long vowels stay alive.
+const visemeKey = (pose: string, state: number, speaking: boolean,
+                   frame: number): string | null => {
+  const v = VI[pose];
+  if (!v) return null;
+  const seed = (pose.charCodeAt(0) * 31 + pose.length * 7) % 97;
+  const blinking = v.blink && ((frame + seed * 5) % (96 + (seed % 29))) < 3;
+  if (!speaking) return blinking ? "blink" : null;
+  if (state === 0) return blinking ? "blink" : (v.closed ? "closed" : null);
+  if (state === 1) return v.half ? "half" : (v.closed ? "closed" : null);
+  const alt = Math.floor(frame / 7) % 2 === 0;
+  const first = alt ? "open" : "oh";
+  const second = alt ? "oh" : "open";
+  return (v as Record<string, string | undefined>)[first] ? first
+    : (v as Record<string, string | undefined>)[second] ? second : null;
+};
+
 const visemeSrc = (pose: string, state: number, speaking: boolean,
                    frame: number): string => {
   const d = AN[pose];
-  const v = VI[pose];
-  if (!v) return d.src;
-  const seed = (pose.charCodeAt(0) * 31 + pose.length * 7) % 97;
-  const blinking = v.blink && ((frame + seed * 5) % (96 + (seed % 29))) < 3;
-  if (!speaking) return blinking ? v.blink! : d.src;
-  if (state === 0) return blinking ? v.blink! : (v.closed ?? d.src);
-  if (state === 1) return v.half ?? v.closed ?? d.src;
-  const alt = Math.floor(frame / 7) % 2 === 0;
-  return (alt ? v.open : v.oh) ?? v.open ?? v.oh ?? d.src;
+  const k = visemeKey(pose, state, speaking, frame);
+  const v = VI[pose] as unknown as Record<string, string | undefined>;
+  return (k && v?.[k]) || d.src;
 };
 
 const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
                       mouthState: number; shot?: Shot; shotSince: number;
-                      shotLen: number; holdMouth?: boolean}> =
+                      shotLen: number; holdMouth?: boolean; otherX?: number;
+                      beatLen?: number}> =
   ({a, since, frame, speaking, mouthState, shot, shotSince, shotLen,
-    holdMouth}) => {
+    holdMouth, otherX, beatLen}) => {
   const cycling = speaking && cycleAllowed(a.poses);
   const idx = cycling
     ? CYCLE[Math.floor(since / SWAP) % CYCLE.length] % a.poses.length
@@ -508,6 +527,148 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   const top = (shot?.ty ?? hy) - hf.fy * h;
   const src = holdMouth ? d.src : visemeSrc(pose, mouthState, speaking, frame);
   const panel = a.kind === "panel";
+  // THE RIG. It renders the same artwork, so at rest it is pixel-identical
+  // to the flat <Img> — the container keeps its own idle/hold/interact
+  // transforms and the rig's internal breath stays OFF, or the two would
+  // stack and double the motion. Channels only open when a shot asks.
+  const rig = RIG[pose];
+  const vk = holdMouth ? null : visemeKey(pose, mouthState, speaking, frame);
+  // ALWAYS ON. Gating the rig behind an explicit request meant 37 of 39
+  // beats rendered the flat drawing exactly as before, so the episode was
+  // 194 of its 196 seconds unchanged and the work was invisible. A rig that
+  // only runs where someone remembered to ask is not a rig.
+  const rigged = Boolean(rig) && !RIG_OFF;
+  const tt = frame / 30;
+  // a per-character phase offset, so two people never breathe in unison
+  const ph = (pose.charCodeAt(0) % 7) * 0.9;
+
+  // ACTING IS DERIVED, NOT AUTHORED. Everything below comes from data the
+  // beat already carries — who is speaking, who else is on screen, and where
+  // they stand — so every beat acts without 39 hand-written entries.
+
+  // Face whoever you are in the room with. The sign falls out of the
+  // staging: turn toward their x, away from your own.
+  const faceTurn = otherX !== undefined && a.kind === "full"
+    ? (otherX < a.x ? -1 : 1) * (speaking ? 0.55 : 0.40)
+    : 0;
+  // Speaking works the head: it drops slightly into stressed syllables
+  // (mouthState 2 is a wide vowel) over a slow drift, so it never ticks
+  // like a metronome. Listening is slower and mostly lateral.
+  // ACTIONS, NOT OSCILLATORS. The first two passes drove the head with sine
+  // waves and measured 1.02x and 1.26x the motion of the flat render. A sine
+  // never ARRIVES anywhere — it is perpetual drift, which the eye reads as
+  // wobble rather than intent. This repo's own house style says it plainly
+  // (CLAUDE.md 10.8): anticipation, then a fast arrival, then a HOLD.
+  //
+  // So the character fires a discrete action roughly once a second, chosen
+  // from a small vocabulary, seeded off the pose and the beat so it is
+  // deterministic, repeatable and different per character.
+  const PERIOD = 38;
+  const seg = Math.floor(shotSince / PERIOD);
+  const local = shotSince - seg * PERIOD;
+  const pick = (seg * 7 + pose.length * 3 + (speaking ? 0 : 5)) % 5;
+  // wind up the OPPOSITE way first, then arrive fast with a little overshoot,
+  // then sit still. The wind-up is the part everyone skips and the part that
+  // most reads as animation.
+  const env = (t: number) => {
+    if (t < 4) return -0.28 * (t / 4);
+    const u = Math.min(1, (t - 4) / 9);
+    return u * (1 + 0.24 * Math.sin(Math.PI * u) * (1 - u));
+  };
+  const e = env(local);
+  const toward = otherX !== undefined ? (otherX < a.x ? -1 : 1) : -1;
+
+  // the vocabulary. Speaking gets the big shapes; listening gets the
+  // reactions, which are smaller and slower but never nothing.
+  const A = speaking
+    ? [
+        {tilt: 11 * toward, look: 0.10, turn: 0.62 * toward, point: 0.20, lean: 0.15},
+        {tilt: -6 * toward, look: -0.55, turn: 0.20 * toward, point: 0.72, lean: 0.42},
+        {tilt: 8, look: 0.42, turn: 0.10 * toward, point: 0.15, lean: -0.28},
+        {tilt: -12 * toward, look: -0.30, turn: 0.48 * toward, point: 0.58, lean: 0.30},
+        {tilt: 5 * toward, look: 0.05, turn: 0.70 * toward, point: 0.35, lean: 0.05},
+      ][pick]
+    : [
+        {tilt: 7 * toward, look: -0.22, turn: 0.44 * toward, point: 0, lean: 0.10},
+        {tilt: -9, look: 0.30, turn: 0.30 * toward, point: 0, lean: -0.18},
+        {tilt: 4 * toward, look: -0.40, turn: 0.50 * toward, point: 0.10, lean: 0.06},
+        {tilt: -5 * toward, look: 0.12, turn: 0.36 * toward, point: 0, lean: -0.10},
+        {tilt: 10 * toward, look: -0.15, turn: 0.52 * toward, point: 0, lean: 0.14},
+      ][pick];
+
+  // the baseline the actions ride on: he is never completely still even
+  // between actions
+  const idleTilt = Math.sin(tt * 1.1 + ph) * 2.2;
+
+  // THE CUT. This is the part a rig cannot do: the drawing itself changes.
+  // Each variant is a real generated drawing with a different arm position -
+  // an elbow that bends, a hand that opens - which no transform of a flat
+  // cut-out can produce. Segment 0 always holds the approved base drawing so
+  // a beat opens on-model, and the cut lands on the same frame as the
+  // action's wind-up, so it reads as a decision rather than as a glitch.
+  // A SWEEP, NOT A MONTAGE. The owner's word for the previous cut was
+  // "montage", and that is what it was: independent drawings hard-cut with
+  // holds, each pick unrelated to the last frame shown. Drawn animation is
+  // smooth because it plays CONSECUTIVE drawings — the classic on-threes
+  // cadence — and the variant list is already sorted by arm height, so
+  // consecutive entries ARE consecutive arm positions.
+  //
+  // So the arm now rides a triangle wave over that ladder: one rung every 3
+  // frames for 24 frames — a genuine sweep, low to high and back — then a
+  // 14-frame hold at wherever it arrived. The step count accumulates across
+  // segments, so a new segment CONTINUES the ladder from where the last one
+  // stopped instead of teleporting; direction reverses only at the ladder's
+  // ends. Deterministic, per-character offset, no state.
+  const vars = rig?.variants ?? [];
+  const NL = vars.length;
+  const steps = seg * 8 + Math.min(8, Math.floor(local / 3)) + pose.length * 5;
+  const M = Math.max(1, 2 * (NL - 1));
+  const triw = ((steps % M) + M) % M;
+  const rung = triw < NL ? triw : M - triw;
+  const bodyPart = NL ? "body__" + vars[rung] : "body";
+  // EXPRESSION. Arm variants do nothing for a bust, and the busts are most
+  // of the episode - sol_smug_v1 alone is 12 of 39 beats and shows barely
+  // any body. On a bust the only thing that can act is the face, so the
+  // brows change with each action while the mouth stays viseme-driven.
+  // Speakers get the open, assertive shapes; listeners get the narrow,
+  // judging ones, which is what a reaction actually looks like.
+  const exprs = rig?.expressions ?? [];
+  const exprPool = speaking
+    ? exprs.filter((e) => e !== "squint" && e !== "side_eye")
+    : exprs.filter((e) => e !== "wide");
+  const pool = exprPool.length ? exprPool : exprs;
+  const exprPart = pool.length && seg > 0
+    ? "expr__" + pool[(seg * 2 + pose.length) % pool.length]
+    : undefined;
+
+  // No smear. It existed to hide teleports between unrelated drawings; a
+  // one-rung ladder step needs no hiding, and a constant smear on tiny
+  // steps was itself part of the "montage" smell.
+  const smear = 0;
+  const nod = 0;
+  const tilt = A.tilt * e + idleTilt;
+  const gest = Math.max(0, A.point * e);
+  const push = A.lean * e;
+  const faceTurnActive = a.kind === "full" ? A.turn * e : 0;
+
+  const rigPose: RigPose = {
+    breath: 1,
+    breathPhase: tt * 2.0 + ph,
+    sway: Math.sin(tt * 0.72 + ph) * (speaking ? 1.5 : 2.0)
+      + Math.sin(tt * 0.31 + ph) * 1.1,
+    stride: shot?.walk ?? 0,
+    walkPhase: tt * 6.6,
+    turn: shot?.turn ?? faceTurnActive,
+    pointAt: shot?.point ?? gest,
+    lookUp: shot?.look ?? A.look * e,
+    tilt,
+    lean: (shot?.walk ?? 0) * 0.25 + push,
+    gestureArm: "armL",
+    headPart: vk ? "head__" + vk : "head",
+    bodyPart,
+    exprPart,
+  };
+  void beatLen; void faceTurn; void nod;
   // Sol moves like a veteran, Rex like an over-eager junior — derived
   // from who the drawing is, so no beat has to carry it.
   const ix = interactXform(since, a.moves, a.turns,
@@ -518,14 +679,18 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
       top: top + idl.dy - drift * 0.35 * (hc - 0.68),
       width: w, height: h,
       transform: `translate(${ix.dx}px, ${ix.dy}px) `
-        + `scale(${pop * ix.sx * idl.sx * sq.sx}, ${pop * ix.sy * idl.sy * sq.sy}) `
+        + `scale(${pop * ix.sx * idl.sx * sq.sx * (1 + smear * 0.16)}, `
+        + `${pop * ix.sy * idl.sy * sq.sy * (1 - smear * 0.05)}) `
         + `rotate(${ix.rot + idl.rot + (panel ? -1.2 : 0)}deg)`,
       transformOrigin: a.kind === "full" ? `${d.anchor[0] * 100}% ${d.anchor[1] * 100}%` : "50% 60%",
       opacity: Math.min(1, since / 3) * ix.opacity,
-      ...(ix.blur > 0.05 ? {filter: `blur(${ix.blur}px)`} : {}),
+      ...(ix.blur + smear * 2.6 > 0.05
+        ? {filter: `blur(${ix.blur + smear * 2.6}px)`} : {}),
       ...(panel ? {border: "6px solid #111", borderRadius: 8, overflow: "hidden",
         boxShadow: "10px 12px 0 rgba(0,0,0,0.35)", background: "#F7F3E8"} : {})}}>
-      <Img src={staticFile(src)} style={{position: "absolute", inset: 0, width: "100%", height: "100%"}} />
+      {rigged
+        ? <CharRig rig={rig!} pose={rigPose} />
+        : <Img src={staticFile(src)} style={{position: "absolute", inset: 0, width: "100%", height: "100%"}} />}
     </div>
   );
 };
@@ -718,9 +883,15 @@ export const FairMarketEp2: React.FC = () => {
           if (!shot?.show && shot?.only !== undefined && shot.only !== i) return null;
           const isSol = a.poses[0].startsWith("sol");
           const speaking = activeSpeaker === (isSol ? "SOL" : "REX");
+          const visible = cur.actors
+            .map((o, j) => ({o, j}))
+            .filter(({j}) => (shot?.show ? shot.show.includes(j)
+              : shot?.only === undefined || shot.only === j));
+          const other = visible.find(({j}) => j !== i)?.o;
           return <Char key={i} a={a} since={since} frame={frame} speaking={speaking}
                        mouthState={isSol ? ms.sol : ms.rex}
                        shot={shot} shotSince={shotSince} shotLen={shotLen}
+                       otherX={other?.x} beatLen={hold}
                        holdMouth={cur.holdMouth} />;
         })}
         {(cur.flicks ?? []).map((f, i) => (
