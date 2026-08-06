@@ -50,6 +50,8 @@ import { RigCheck, rigCheckSchema } from "./compositions/RigCheck";
 import { AnaVectorPilot, ANA_PILOT_FRAMES } from "./compositions/AnaVectorPilot";
 import { FairMarketEp1, FAIRMARKET_FRAMES } from "./compositions/FairMarketEp1";
 import { FairMarketEp2, EP2_FRAMES } from "./compositions/FairMarketEp2";
+import { RigTest, RIGTEST_FRAMES } from "./compositions/RigTest";
+import { RigAnatomy, RIGANATOMY_FRAMES } from "./compositions/RigAnatomy";
 import memeReelFixture from "./fixtures/meme_reel/intc_failed_breakout.json";
 import tradeFailFixture from "./fixtures/btc_reel/trade_fail_reel.json";
 import { reelPropsSchema } from "./props";
@@ -93,6 +95,22 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1080}
         height={1920}
+      />
+      <Composition
+        id="RigAnatomy"
+        component={RigAnatomy}
+        durationInFrames={RIGANATOMY_FRAMES}
+        fps={30}
+        width={1900}
+        height={1080}
+      />
+      <Composition
+        id="RigTest"
+        component={RigTest}
+        durationInFrames={RIGTEST_FRAMES}
+        fps={30}
+        width={1600}
+        height={1000}
       />
       <Composition
         id="AnaVectorPilot"
