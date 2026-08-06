@@ -261,14 +261,11 @@
   "feetSplit": false,
   "neck": 0.48762000000000005,
   "variants": [
-   "armsdown",
-   "armscross",
-   "hiphand",
-   "presentL",
-   "countup",
-   "reachout",
-   "chinrub",
-   "bothout"
+   "arc1",
+   "arc2",
+   "arc4",
+   "arc3",
+   "arc0"
   ],
   "eyeBox": [
    0.29850000000000004,

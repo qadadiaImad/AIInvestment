@@ -170,7 +170,11 @@ def main() -> None:
         # would pop out of existence the moment the ladder starts. Only the
         # Sol point arcs hold one hand shape, real travel, and continuity.
         arc_d = d.parent.parent / "arcs" / pose
-        if pose in ("sol_point", "sol_point_v1") and arc_d.exists()                 and list(arc_d.glob("arc*.png")):
+        # rex_eager joined after a re-run whose every step names the tablet
+        # he holds, so it can no longer vanish; rex_skeptic stays on the
+        # vocabulary - his arc run produced clones, and arms-crossed suits
+        # the skeptic anyway.
+        if pose in ("sol_point", "sol_point_v1", "rex_eager")                 and arc_d.exists() and list(arc_d.glob("arc*.png")):
             d = arc_d
         variants = []
         for png in sorted(d.glob("*.png")):

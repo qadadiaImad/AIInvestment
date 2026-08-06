@@ -50,6 +50,22 @@ FIX = REPO / "remotion/src/fixtures/cast_ep1"
 # weight 1.4, the hand shape is named identically in every step, and the
 # base pose's own gesture ("pointing, index finger") is negated so the
 # model cannot just keep it.
+# Per-character arcs. Rex's first arc run scored HIGH on travel precisely
+# because the inpaint deleted the tablet he holds in the base drawing - an
+# object that would pop out of existence the moment the ladder starts. His
+# arc therefore names the tablet in every step: one hand keeps holding it,
+# the OTHER hand gestures. Sol keeps his signature point.
+ARC_REX = [
+    ("arc0", "(holding a dark tablet with both hands:1.3), looking at it"),
+    ("arc1", "(holding a dark tablet in one hand:1.3), other arm relaxed "
+             "down"),
+    ("arc2", "(holding a dark tablet in one hand:1.3), (other hand raised "
+             "at waist height, palm open:1.2)"),
+    ("arc3", "(holding a dark tablet in one hand:1.3), (other hand raised "
+             "at chest height, palm open:1.2)"),
+    ("arc4", "(holding a dark tablet in one hand:1.3), (other arm raised "
+             "high, pointing up:1.2)"),
+]
 ARC = [
     ("arc0", "(pointing his index finger downward:1.3), arm lowered"),
     ("arc1", "(arm low, pointing index finger forward at waist height:1.3)"),
@@ -95,8 +111,9 @@ def run(pose: str, client, denoise: float) -> int:
     ComfyClient.stage_input(stage / ("ga_%s_base.png" % pose))
     ComfyClient.stage_input(stage / ("ga_%s_mask.png" % pose))
 
+    arc = ARC_REX if pose.startswith("rex") else ARC
     man = []
-    for i, (name, desc) in enumerate(ARC):
+    for i, (name, desc) in enumerate(arc):
         t0 = time.monotonic()
         paths = client.generate(
             "sdxl_lora_inpaint", out, timeout=600,
@@ -118,7 +135,7 @@ def run(pose: str, client, denoise: float) -> int:
     (out / "manifest.json").write_text(json.dumps(man, indent=1), "utf-8")
 
     tiles = [("BASE", Image.fromarray(base))] + [
-        (n, Image.open(out / (n + ".png")).convert("RGB")) for n, _ in ARC]
+        (n, Image.open(out / (n + ".png")).convert("RGB")) for n, _ in arc]
     ht = 400
     wt = int(tiles[0][1].width * ht / tiles[0][1].height)
     sheet = Image.new("RGB", (wt * len(tiles), ht + 24), "white")
@@ -128,7 +145,7 @@ def run(pose: str, client, denoise: float) -> int:
         sheet.paste(im.resize((wt, ht)), (i * wt, 24))
         d.text((i * wt + 6, 6), n, fill=(0, 0, 0))
     sheet.save(out / "contact_sheet.png")
-    return len(ARC)
+    return len(arc)
 
 
 def main() -> None:
