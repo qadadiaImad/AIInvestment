@@ -37,21 +37,28 @@ Run: `$PYEMB -s -E gen_<ep>_chatterbox.py` (CPU inference; a few min for a full 
 
 ## The technique (what makes it sound human)
 
-1. **Split each line into sentences** (`re.findall(r"[^.?!…]+[.?!…]*", text)`).
-2. **Give each sentence its own inflection** via a `style(sentence, i)` → `(exaggeration, cfg_weight, pause)`:
+1. **Split each line into sentences on TRUE enders ONLY** — `. ? !`, **never on `…` or `,`**
+   (`re.findall(r"[^.?!]+[.?!]+|[^.?!]+$", text)`). This is critical: `…` is a *pause inside one
+   thought*, not a sentence break. Splitting on it renders "That's just… renting it." as two
+   disconnected fragments — the classic non-human artifact. Keep the clause whole.
+2. **Normalize for synthesis** — replace `…` with a comma (`tts_norm`): Chatterbox reads a comma as a
+   smooth in-clause pause, and the unicode `…` tends to be mishandled/over-clipped. Captions keep the
+   original `…`; only the audio input is normalized (word tokens still match 1:1).
+3. **Give each sentence its own inflection** via `style(sentence, i)` → `(exaggeration, cfg_weight, pause)`:
 
    | sentence type | exaggeration | cfg_weight | pause after |
    |---|---|---|---|
-   | ends `?` (question) | ~0.70 (rises) | 0.40 (expressive) | 0.34s |
-   | ends `…` (trailing thought) | ~0.52 (soft) | 0.42 | 0.44s (long) |
-   | contains a number / "trillion/billion/hundred" | ~0.64 (punch) | 0.45 | 0.30s |
-   | default | ~0.52 | 0.50 | 0.28s |
+   | ends `?` (question) | ~0.70 (rises) | 0.40 (expressive) | 0.30s |
+   | contains a number / "trillion/billion/hundred" | ~0.64 (punch) | 0.45 | 0.26s |
+   | default | ~0.52 | 0.50 | 0.24s |
 
    Add a **deterministic ±0.06 wiggle** (`((i*37)%7-3)*0.02`) so adjacent sentences never share a
    contour — that variation is the "someone talking" feel. Clamp to [0.4, 0.8].
-3. **Generate each sentence** with `model.generate(s, exaggeration=…, cfg_weight=…)`, **stitch** with
-   `torch.zeros(1, int(sr*pause))` silence between them, `torch.cat(…, dim=1)`, save one `.wav` per line.
-4. **Word timing:** Chatterbox emits no word boundaries → distribute each sentence's words
+4. **Generate, then smooth the join** — `model.generate(tts_norm(s), …)`, then **level** each clip
+   (peak-normalize to ~0.92 so stitched sentences don't jump in volume) and apply **8ms in/out fades**
+   (so joins don't click). Stitch with `torch.zeros(1, int(sr*pause))` silence, `torch.cat(…, dim=1)`,
+   save one `.wav` per line.
+5. **Word timing:** Chatterbox emits no word boundaries → distribute each sentence's words
    proportionally within its known [start,end] window in the stitched timeline. Write
    `<ep>_captions.json` ({text, words:[{w,t0,t1}], dur, frames}) for the karaoke captions.
 
