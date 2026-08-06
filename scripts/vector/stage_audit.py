@@ -38,7 +38,7 @@ COMP = REPO / "remotion" / "src" / "compositions" / f"FairMarketEp{EP}.tsx"
 
 W, H = 1080, 1920
 FLOOR_Y = 1730
-TOTAL_FRAMES = 5490 if EP == "1" else 4500
+TOTAL_FRAMES = {"1": 5880, "2": 4500, "3": 5010}[EP]
 VO_DELAY = 6
 VO_DIR = REPO / "remotion" / "public" / "audio" / ("fairmarket" if EP == "1" else f"fairmarket_ep{EP}")
 FFPROBE = (REPO / "remotion" / "node_modules" / "@remotion"

@@ -31,7 +31,7 @@ FFPROBE = (REPO / "remotion" / "node_modules" / "@remotion"
            / "compositor-win32-x64-msvc" / "ffprobe.exe")
 FPS = 30
 VO_DELAY = 6
-TOTAL = 5490 if EP == "1" else 4500          # 170s (2:50) — owner chose to run long rather than
+TOTAL = {"1": 5880, "2": 4500, "3": 5010}[EP]          # 170s (2:50) — owner chose to run long rather than
                       # trim the both-sides beats for the closing argument
 MIN_TAIL = 14          # never let a line end flush with the cut
 MIN_SILENT = 66        # a title/outro card with no dialogue still needs
