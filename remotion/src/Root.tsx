@@ -52,6 +52,7 @@ import { FairMarketEp1, FAIRMARKET_FRAMES } from "./compositions/FairMarketEp1";
 import { FairMarketEp2, EP2_FRAMES } from "./compositions/FairMarketEp2";
 import { RigTest, RIGTEST_FRAMES } from "./compositions/RigTest";
 import { RigAnatomy, RIGANATOMY_FRAMES } from "./compositions/RigAnatomy";
+import { RigParity, RIGPARITY_FRAMES } from "./compositions/RigParity";
 import memeReelFixture from "./fixtures/meme_reel/intc_failed_breakout.json";
 import tradeFailFixture from "./fixtures/btc_reel/trade_fail_reel.json";
 import { reelPropsSchema } from "./props";
@@ -95,6 +96,14 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1080}
         height={1920}
+      />
+      <Composition
+        id="RigParity"
+        component={RigParity}
+        durationInFrames={RIGPARITY_FRAMES}
+        fps={30}
+        width={1500}
+        height={1720}
       />
       <Composition
         id="RigAnatomy"

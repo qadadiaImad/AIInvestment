@@ -36,7 +36,10 @@
    "head": "characters/cast_ep1/parts/sol_point__head.svg",
    "body": "characters/cast_ep1/parts/sol_point__body.svg",
    "armL": "characters/cast_ep1/parts/sol_point__armL.svg",
-   "armR": "characters/cast_ep1/parts/sol_point__armR.svg"
+   "armR": "characters/cast_ep1/parts/sol_point__armR.svg",
+   "head__half": "characters/cast_ep1/parts/sol_point__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/sol_point__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/sol_point__v_open.svg"
   },
   "crotch": 0.9266609145815358,
   "legCut": 0.8816609145815357,
@@ -80,7 +83,12 @@
    "head": "characters/cast_ep1/parts/rex_determined__head.svg",
    "body": "characters/cast_ep1/parts/rex_determined__body.svg",
    "armL": "characters/cast_ep1/parts/rex_determined__armL.svg",
-   "armR": "characters/cast_ep1/parts/rex_determined__armR.svg"
+   "armR": "characters/cast_ep1/parts/rex_determined__armR.svg",
+   "head__blink": "characters/cast_ep1/parts/rex_determined__v_blink.svg",
+   "head__closed": "characters/cast_ep1/parts/rex_determined__v_closed.svg",
+   "head__half": "characters/cast_ep1/parts/rex_determined__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/rex_determined__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/rex_determined__v_open.svg"
   },
   "crotch": 0.93,
   "legCut": 0.885,
@@ -92,11 +100,11 @@
   "h": 1216,
   "pivots": {
    "head": [
-    0.5006786624203822,
-    1.0
+    0.5006788390724523,
+    0.6842105263157895
    ],
    "body": [
-    0.6516133757961784,
+    0.5006783439490445,
     1.0
    ],
    "armR": [
@@ -163,7 +171,12 @@
    "head": "characters/cast_ep1/parts/rex_eager__head.svg",
    "body": "characters/cast_ep1/parts/rex_eager__body.svg",
    "armL": "characters/cast_ep1/parts/rex_eager__armL.svg",
-   "armR": "characters/cast_ep1/parts/rex_eager__armR.svg"
+   "armR": "characters/cast_ep1/parts/rex_eager__armR.svg",
+   "head__blink": "characters/cast_ep1/parts/rex_eager__v_blink.svg",
+   "head__closed": "characters/cast_ep1/parts/rex_eager__v_closed.svg",
+   "head__half": "characters/cast_ep1/parts/rex_eager__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/rex_eager__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/rex_eager__v_open.svg"
   },
   "crotch": 0.93,
   "legCut": 0.885,
@@ -179,12 +192,12 @@
     0.45373842195540304
    ],
    "body": [
-    0.5149813988095238,
+    0.5008839285714286,
     0.9953224699828473
    ],
    "armR": [
-    0.01488095238095238,
-    0.008576329331046312
+    0.21261160714285715,
+    0.17058490566037735
    ],
    "torso": [
     0.09,
@@ -202,7 +215,12 @@
   "parts": {
    "head": "characters/cast_ep1/parts/rex_eager_v1__head.svg",
    "body": "characters/cast_ep1/parts/rex_eager_v1__body.svg",
-   "armR": "characters/cast_ep1/parts/rex_eager_v1__armR.svg"
+   "armR": "characters/cast_ep1/parts/rex_eager_v1__armR.svg",
+   "head__blink": "characters/cast_ep1/parts/rex_eager_v1__v_blink.svg",
+   "head__closed": "characters/cast_ep1/parts/rex_eager_v1__v_closed.svg",
+   "head__half": "characters/cast_ep1/parts/rex_eager_v1__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/rex_eager_v1__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/rex_eager_v1__v_open.svg"
   },
   "crotch": 0.93,
   "legCut": 0.885,
@@ -214,11 +232,11 @@
   "h": 1005,
   "pivots": {
    "head": [
-    0.5006603403141361,
-    0.9914796019900498
+    0.4109948257526178,
+    0.6796530472636816
    ],
    "body": [
-    0.5113795811518325,
+    0.5006603403141361,
     0.9915480099502488
    ],
    "armL": [
@@ -246,7 +264,11 @@
    "head": "characters/cast_ep1/parts/rex_listen__head.svg",
    "body": "characters/cast_ep1/parts/rex_listen__body.svg",
    "armL": "characters/cast_ep1/parts/rex_listen__armL.svg",
-   "armR": "characters/cast_ep1/parts/rex_listen__armR.svg"
+   "armR": "characters/cast_ep1/parts/rex_listen__armR.svg",
+   "head__closed": "characters/cast_ep1/parts/rex_listen__v_closed.svg",
+   "head__half": "characters/cast_ep1/parts/rex_listen__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/rex_listen__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/rex_listen__v_open.svg"
   },
   "crotch": 0.93,
   "legCut": 0.885,
@@ -258,12 +280,12 @@
   "h": 1152,
   "pivots": {
    "head": [
-    0.5000770219654909,
-    1.0000000836203495
+    0.4994235491071429,
+    0.6768647189670138
    ],
    "body": [
-    0.5005385044642857,
-    1.0
+    0.5003691471434598,
+    1.0000000836203495
    ],
    "armL": [
     0.3470982142857143,
@@ -290,7 +312,12 @@
    "head": "characters/cast_ep1/parts/rex_shock__head.svg",
    "body": "characters/cast_ep1/parts/rex_shock__body.svg",
    "armL": "characters/cast_ep1/parts/rex_shock__armL.svg",
-   "armR": "characters/cast_ep1/parts/rex_shock__armR.svg"
+   "armR": "characters/cast_ep1/parts/rex_shock__armR.svg",
+   "head__blink": "characters/cast_ep1/parts/rex_shock__v_blink.svg",
+   "head__closed": "characters/cast_ep1/parts/rex_shock__v_closed.svg",
+   "head__half": "characters/cast_ep1/parts/rex_shock__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/rex_shock__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/rex_shock__v_open.svg"
   },
   "crotch": 0.8055555555555556,
   "legCut": 0.7605555555555555,
@@ -302,11 +329,11 @@
   "h": 1152,
   "pivots": {
    "head": [
-    0.5009795654637273,
-    0.9999997028387152
+    0.5011188616071428,
+    0.6710069444444444
    ],
    "body": [
-    0.44644140625,
+    0.5002373779637274,
     1.001689236111111
    ],
    "armL": [
@@ -315,7 +342,7 @@
    ],
    "armR": [
     0.5636160714285714,
-    0.4288194444444444
+    0.4479166666666667
    ],
    "torso": [
     0.45,
@@ -334,7 +361,10 @@
    "head": "characters/cast_ep1/parts/rex_shock_v1__head.svg",
    "body": "characters/cast_ep1/parts/rex_shock_v1__body.svg",
    "armL": "characters/cast_ep1/parts/rex_shock_v1__armL.svg",
-   "armR": "characters/cast_ep1/parts/rex_shock_v1__armR.svg"
+   "armR": "characters/cast_ep1/parts/rex_shock_v1__armR.svg",
+   "head__half": "characters/cast_ep1/parts/rex_shock_v1__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/rex_shock_v1__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/rex_shock_v1__v_open.svg"
   },
   "crotch": 0.8871527777777778,
   "legCut": 0.8421527777777778,
@@ -346,11 +376,11 @@
   "h": 1151,
   "pivots": {
    "head": [
-    0.5279473964677223,
-    1.0000001900521285
+    0.5109621269792936,
+    0.6255430060816681
    ],
    "body": [
-    0.4805115712545676,
+    0.49574897228989034,
     1.0017437011294528
    ],
    "armL": [
@@ -378,7 +408,12 @@
    "head": "characters/cast_ep1/parts/rex_skeptic__head.svg",
    "body": "characters/cast_ep1/parts/rex_skeptic__body.svg",
    "armL": "characters/cast_ep1/parts/rex_skeptic__armL.svg",
-   "armR": "characters/cast_ep1/parts/rex_skeptic__armR.svg"
+   "armR": "characters/cast_ep1/parts/rex_skeptic__armR.svg",
+   "head__blink": "characters/cast_ep1/parts/rex_skeptic__v_blink.svg",
+   "head__closed": "characters/cast_ep1/parts/rex_skeptic__v_closed.svg",
+   "head__half": "characters/cast_ep1/parts/rex_skeptic__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/rex_skeptic__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/rex_skeptic__v_open.svg"
   },
   "crotch": 0.93,
   "legCut": 0.885,
@@ -422,7 +457,10 @@
    "head": "characters/cast_ep1/parts/sol_armswide__head.svg",
    "body": "characters/cast_ep1/parts/sol_armswide__body.svg",
    "armL": "characters/cast_ep1/parts/sol_armswide__armL.svg",
-   "armR": "characters/cast_ep1/parts/sol_armswide__armR.svg"
+   "armR": "characters/cast_ep1/parts/sol_armswide__armR.svg",
+   "head__half": "characters/cast_ep1/parts/sol_armswide__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/sol_armswide__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/sol_armswide__v_open.svg"
   },
   "crotch": 0.93,
   "legCut": 0.885,
@@ -434,8 +472,8 @@
   "h": 1159,
   "pivots": {
    "head": [
-    0.49422596153846154,
-    0.4516798964624677
+    0.49330168269230773,
+    0.39565314926660916
    ],
    "body": [
     0.49772716346153845,
@@ -466,7 +504,11 @@
    "head": "characters/cast_ep1/parts/sol_finger__head.svg",
    "body": "characters/cast_ep1/parts/sol_finger__body.svg",
    "armL": "characters/cast_ep1/parts/sol_finger__armL.svg",
-   "armR": "characters/cast_ep1/parts/sol_finger__armR.svg"
+   "armR": "characters/cast_ep1/parts/sol_finger__armR.svg",
+   "head__blink": "characters/cast_ep1/parts/sol_finger__v_blink.svg",
+   "head__half": "characters/cast_ep1/parts/sol_finger__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/sol_finger__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/sol_finger__v_open.svg"
   },
   "crotch": 0.9188955996548749,
   "legCut": 0.8738955996548748,
@@ -478,12 +520,12 @@
   "h": 1058,
   "pivots": {
    "head": [
-    0.5010157142857143,
-    0.9917339319470699
+    0.5171521428571428,
+    0.6266538501299622
    ],
    "body": [
-    0.5114284235491071,
-    0.9905482041587902
+    0.5010157142857143,
+    0.9917339319470699
    ],
    "armL": [
     0.6040714285714286,
@@ -510,7 +552,11 @@
    "head": "characters/cast_ep1/parts/sol_laugh__head.svg",
    "body": "characters/cast_ep1/parts/sol_laugh__body.svg",
    "armL": "characters/cast_ep1/parts/sol_laugh__armL.svg",
-   "armR": "characters/cast_ep1/parts/sol_laugh__armR.svg"
+   "armR": "characters/cast_ep1/parts/sol_laugh__armR.svg",
+   "head__closed": "characters/cast_ep1/parts/sol_laugh__v_closed.svg",
+   "head__half": "characters/cast_ep1/parts/sol_laugh__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/sol_laugh__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/sol_laugh__v_open.svg"
   },
   "crotch": 0.8676748582230623,
   "legCut": 0.8226748582230623,
@@ -522,11 +568,11 @@
   "h": 1211,
   "pivots": {
    "head": [
-    0.4941853701982652,
-    1.0000001548307185
+    0.493866790582404,
+    0.546626754748142
    ],
    "body": [
-    0.5238996282527881,
+    0.4941853701982652,
     1.0006531791907514
    ],
    "armL": [
@@ -567,7 +613,7 @@
   "pivots": {
    "head": [
     0.46256989924433245,
-    0.5535911347706033
+    0.49362786745964315
    ],
    "body": [
     0.4971498374650701,
@@ -598,7 +644,10 @@
    "head": "characters/cast_ep1/parts/sol_point_v1__head.svg",
    "body": "characters/cast_ep1/parts/sol_point_v1__body.svg",
    "armL": "characters/cast_ep1/parts/sol_point_v1__armL.svg",
-   "armR": "characters/cast_ep1/parts/sol_point_v1__armR.svg"
+   "armR": "characters/cast_ep1/parts/sol_point_v1__armR.svg",
+   "head__half": "characters/cast_ep1/parts/sol_point_v1__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/sol_point_v1__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/sol_point_v1__v_open.svg"
   },
   "crotch": 0.9260832625318607,
   "legCut": 0.8810832625318606,
@@ -610,8 +659,8 @@
   "h": 1216,
   "pivots": {
    "head": [
-    0.5005274868143292,
-    0.9999996786399891
+    0.4999044471153846,
+    0.5249161184210527
    ],
    "body": [
     0.5005354567307692,
@@ -654,12 +703,12 @@
   "h": 1122,
   "pivots": {
    "head": [
-    0.5083411016949152,
-    0.9925329768270945
+    0.4747916666666667,
+    0.5418894830659536
    ],
    "body": [
-    0.5143594632768361,
-    0.9055258467023173
+    0.5083411016949152,
+    0.9925329768270945
    ],
    "armL": [
     0.4930655455508475,
@@ -698,11 +747,11 @@
   "h": 1152,
   "pivots": {
    "head": [
-    0.4999679870690618,
-    0.9999998339282141
+    0.5101272321428572,
+    0.5248064236111111
    ],
    "body": [
-    0.5008507254464286,
+    0.4999679870690618,
     1.0011875
    ],
    "armL": [
@@ -730,7 +779,11 @@
    "head": "characters/cast_ep1/parts/sol_smug__head.svg",
    "body": "characters/cast_ep1/parts/sol_smug__body.svg",
    "armL": "characters/cast_ep1/parts/sol_smug__armL.svg",
-   "armR": "characters/cast_ep1/parts/sol_smug__armR.svg"
+   "armR": "characters/cast_ep1/parts/sol_smug__armR.svg",
+   "head__blink": "characters/cast_ep1/parts/sol_smug__v_blink.svg",
+   "head__half": "characters/cast_ep1/parts/sol_smug__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/sol_smug__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/sol_smug__v_open.svg"
   },
   "crotch": 0.93,
   "legCut": 0.885,
@@ -742,11 +795,11 @@
   "h": 1101,
   "pivots": {
    "head": [
-    0.5005768321513002,
-    0.9919491371480472
+    0.510216903073286,
+    0.6072434150772026
    ],
    "body": [
-    0.500895390070922,
+    0.5007003546099291,
     0.9920772025431427
    ],
    "armL": [
@@ -774,7 +827,11 @@
    "head": "characters/cast_ep1/parts/sol_smug_v1__head.svg",
    "body": "characters/cast_ep1/parts/sol_smug_v1__body.svg",
    "armL": "characters/cast_ep1/parts/sol_smug_v1__armL.svg",
-   "armR": "characters/cast_ep1/parts/sol_smug_v1__armR.svg"
+   "armR": "characters/cast_ep1/parts/sol_smug_v1__armR.svg",
+   "head__blink": "characters/cast_ep1/parts/sol_smug_v1__v_blink.svg",
+   "head__half": "characters/cast_ep1/parts/sol_smug_v1__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/sol_smug_v1__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/sol_smug_v1__v_open.svg"
   },
   "crotch": 0.93,
   "legCut": 0.885,
@@ -786,8 +843,8 @@
   "h": 1152,
   "pivots": {
    "head": [
-    0.49975167410714283,
-    1.0
+    0.49971651785714283,
+    0.7026875
    ],
    "body": [
     0.5003024379185268,
@@ -818,7 +875,10 @@
    "head": "characters/cast_ep1/parts/sol_smug_v2__head.svg",
    "body": "characters/cast_ep1/parts/sol_smug_v2__body.svg",
    "armL": "characters/cast_ep1/parts/sol_smug_v2__armL.svg",
-   "armR": "characters/cast_ep1/parts/sol_smug_v2__armR.svg"
+   "armR": "characters/cast_ep1/parts/sol_smug_v2__armR.svg",
+   "head__half": "characters/cast_ep1/parts/sol_smug_v2__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/sol_smug_v2__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/sol_smug_v2__v_open.svg"
   },
   "crotch": 0.93,
   "legCut": 0.885,
@@ -830,11 +890,11 @@
   "h": 1152,
   "pivots": {
    "head": [
-    0.4990027901785714,
-    1.0
+    0.4993761160714286,
+    0.5704449361165365
    ],
    "body": [
-    0.49956808035714284,
+    0.4990027901785714,
     1.0010711805555554
    ],
    "armL": [
@@ -874,11 +934,11 @@
   "h": 1152,
   "pivots": {
    "head": [
-    0.4993314732142857,
-    1.0
+    0.5,
+    0.5451388888888888
    ],
    "body": [
-    0.383677734375,
+    0.4991911272321429,
     1.0014010416666668
    ],
    "armL": [
@@ -886,8 +946,8 @@
     0.3758680555555556
    ],
    "armR": [
-    0.6583504464285715,
-    0.04079861111111111
+    0.6629464285714286,
+    0.4019097222222222
    ],
    "torso": [
     0.5,
@@ -950,7 +1010,10 @@
    "head": "characters/cast_ep1/parts/sol_wink__head.svg",
    "body": "characters/cast_ep1/parts/sol_wink__body.svg",
    "armL": "characters/cast_ep1/parts/sol_wink__armL.svg",
-   "armR": "characters/cast_ep1/parts/sol_wink__armR.svg"
+   "armR": "characters/cast_ep1/parts/sol_wink__armR.svg",
+   "head__half": "characters/cast_ep1/parts/sol_wink__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/sol_wink__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/sol_wink__v_open.svg"
   },
   "crotch": 0.9383680555555556,
   "legCut": 0.8933680555555555,
@@ -963,10 +1026,10 @@
   "pivots": {
    "head": [
     0.5001049107142858,
-    1.0
+    0.5590277777777778
    ],
    "body": [
-    0.43622042410714285,
+    0.4998367745535714,
     1.0014453125
    ],
    "armL": [
@@ -975,7 +1038,7 @@
    ],
    "armR": [
     0.5821104910714286,
-    0.36284765625
+    0.4947916666666667
    ],
    "torso": [
     0.4,
@@ -994,7 +1057,10 @@
    "head": "characters/cast_ep1/parts/sol_wink_v1__head.svg",
    "body": "characters/cast_ep1/parts/sol_wink_v1__body.svg",
    "armL": "characters/cast_ep1/parts/sol_wink_v1__armL.svg",
-   "armR": "characters/cast_ep1/parts/sol_wink_v1__armR.svg"
+   "armR": "characters/cast_ep1/parts/sol_wink_v1__armR.svg",
+   "head__half": "characters/cast_ep1/parts/sol_wink_v1__v_half.svg",
+   "head__oh": "characters/cast_ep1/parts/sol_wink_v1__v_oh.svg",
+   "head__open": "characters/cast_ep1/parts/sol_wink_v1__v_open.svg"
   },
   "crotch": 0.93,
   "legCut": 0.885,

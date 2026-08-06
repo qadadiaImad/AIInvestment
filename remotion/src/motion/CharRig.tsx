@@ -66,6 +66,10 @@ export type RigPose = {
   breathPhase?: number;
   /** slow standing weight shift, -1..1. */
   sway?: number;
+  /** which head artwork to draw — "head", or "head__open"/"head__oh"/... for
+   *  a viseme variant. The variants differ ONLY inside the mouth mask, so a
+   *  variant head registers exactly with the base body. */
+  headPart?: string;
 };
 
 const Part: React.FC<{
@@ -119,6 +123,7 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
     breath = 1,
     breathPhase = 0,
     sway = 0,
+    headPart = "head",
   } = pose;
 
   const W = rig.w;
@@ -210,7 +215,13 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
       pivot: name,
       // far arm goes behind the torso; a raised gesture goes above the head
       z: far && at > 0.12 ? 0 : isGesture && p > 0.5 ? 6 : far ? 3 : 4,
-      sx: far ? 1 - 0.34 * at : 1 + 0.06 * at,
+      // Arms take the TORSO's scale, not their own. They used to shrink
+      // (far) and swell (near) independently, which is the textbook
+      // silhouette cue — but this cast's line art is one shared path living
+      // in `body`, so an arm scaled differently from the torso pulls its
+      // fill off its own outline and leaves an arm-shaped void. Occlusion
+      // is the stronger cue anyway and costs nothing.
+      sx: torsoSx,
       dx:
         (far ? t * W * 0.055 : t * W * 0.012 + (isL ? -1 : 1) * W * 0.018 * at) +
         swayDx +
@@ -293,7 +304,7 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
       />
       <Part
         rig={rig}
-        src="head"
+        src={rig.parts[headPart] ? headPart : "head"}
         pivot="head"
         z={5}
         rot={headRot + lookRot + leanRot * 0.5 + rock * 0.8 + brLag * 0.5 + sway * 1.9}

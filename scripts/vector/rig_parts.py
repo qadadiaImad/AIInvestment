@@ -155,7 +155,16 @@ def main() -> None:
         x0, y0, x1, y1 = it["bbox"]
         cy = (y0 + y1) / 2
         cx = (x0 + x1) / 2
-        if cy < neck:
+        # A PATH THAT SPANS THE WHOLE FIGURE IS NOT A BODY PART. vtracer
+        # emits the character's line art as one enormous path — for sol_smug
+        # that is index 0, near-black, 1.03M px, the full drawing. Assigning
+        # it by centroid put it in `head`, which renders on top, so that one
+        # path painted over the entire body and every coloured garment came
+        # out black. sol_point escaped only because its neck line happens to
+        # fall just below the silhouette's centre. Size decides, not position.
+        if (y1 - y0) > h * 0.55 or (x1 - x0) * (y1 - y0) > w * h * 0.30:
+            groups["body"].append(it)
+        elif cy < neck:
             groups["head"].append(it)
         elif cy < hip_guess and cx < midx - w * 0.17:
             groups["armL"].append(it)
