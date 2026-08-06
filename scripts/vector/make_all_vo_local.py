@@ -44,15 +44,18 @@ sys.path.insert(0, str(REPO / "scripts" / "vector"))
 COMPS = {"1": REPO / "remotion/src/compositions/FairMarketEp1.tsx",
          "2": REPO / "remotion/src/compositions/FairMarketEp2.tsx",
          "3": REPO / "remotion/src/compositions/FairMarketEp3.tsx",
-         "4": REPO / "remotion/src/compositions/FairMarketEp4.tsx"}
+         "4": REPO / "remotion/src/compositions/FairMarketEp4.tsx",
+         "5": REPO / "remotion/src/compositions/FairMarketEp5.tsx"}
 VO_DIR = {"1": REPO / "remotion/public/audio/fairmarket",
           "2": REPO / "remotion/public/audio/fairmarket_ep2",
           "3": REPO / "remotion/public/audio/fairmarket_ep3",
-          "4": REPO / "remotion/public/audio/fairmarket_ep4"}
+          "4": REPO / "remotion/public/audio/fairmarket_ep4",
+          "5": REPO / "remotion/public/audio/fairmarket_ep5"}
 TRACKS = {"1": REPO / "remotion/src/fixtures/cast_ep1/mouth_tracks.json",
           "2": REPO / "remotion/src/fixtures/cast_ep1/mouth_tracks_ep2.json",
           "3": REPO / "remotion/src/fixtures/cast_ep1/mouth_tracks_ep3.json",
-          "4": REPO / "remotion/src/fixtures/cast_ep1/mouth_tracks_ep4.json"}
+          "4": REPO / "remotion/src/fixtures/cast_ep1/mouth_tracks_ep4.json",
+          "5": REPO / "remotion/src/fixtures/cast_ep1/mouth_tracks_ep5.json"}
 REFS = REPO / "remotion/public/audio/voice_refs"
 CANON_F = REPO / "remotion/src/fixtures/cast_ep1/voice_canon.json"
 FFMPEG = (REPO / "remotion/node_modules/@remotion/"

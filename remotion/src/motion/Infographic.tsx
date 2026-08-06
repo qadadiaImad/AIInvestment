@@ -833,3 +833,108 @@ export const CollapseExhibit: React.FC<{
     </div>
   );
 };
+
+/** An option's price as two stacked blocks — what it's worth now, and the
+ *  time left — with the time block draining away. "Cheap" is what remains
+ *  when the second block is gone: not a discount, the missing part. */
+export const SplitPriceExhibit: React.FC<{
+  since: number; w: number; h: number;
+  title: string; foot: string;
+}> = ({since, w, h, title, foot}) => {
+  const padX = 70;
+  const drain = ease(since, 60, 150);
+  const barW = w * 0.30;
+  const x = padX;
+  const baseY = h * 0.78;
+  const intrH = h * 0.18;
+  const timeH = h * 0.34 * (1 - drain);
+  return (
+    <div style={{position: 'absolute', inset: 0, background: PAPER,
+      fontFamily: 'Arial', color: INK}}>
+      <div style={{position: 'absolute', left: padX - 6, top: 16,
+        fontFamily: 'Impact, Arial', fontSize: 30, letterSpacing: 1,
+        opacity: ease(since, 0, 10)}}>{title}</div>
+      <div style={{position: 'absolute', left: x, top: baseY - intrH,
+        width: barW, height: intrH, background: BLUE, borderRadius: 6}} />
+      <div style={{position: 'absolute', left: x, top: baseY - intrH - Math.max(4, timeH),
+        width: barW, height: Math.max(4, timeH), background: RED,
+        borderRadius: 6, opacity: ease(since, 8, 22)}} />
+      <div style={{position: 'absolute', left: x + barW + 26, top: baseY - intrH - 8,
+        fontSize: 20, opacity: ease(since, 10, 24)}}>what it&#39;s worth now</div>
+      <div style={{position: 'absolute', left: x + barW + 26,
+        top: baseY - intrH - Math.max(4, timeH) - 12,
+        fontSize: 20, color: RED, opacity: ease(since, 14, 28) * (1 - drain)}}>
+        the time that&#39;s left</div>
+      <div style={{position: 'absolute', left: x + barW + 26,
+        top: baseY - intrH - 46, fontFamily: 'Impact, Arial', fontSize: 26,
+        color: RED, opacity: drain}}>the missing part</div>
+      <div style={{position: 'absolute', left: padX, bottom: 12, right: padX,
+        fontSize: 15, color: MUTED, opacity: ease(since, 56, 70)}}>{foot}</div>
+    </div>
+  );
+};
+
+/** THE graphic of ep.5: an option's value against the clock, decay
+ *  accelerating into the close. Drawn from either side — the buyer watches
+ *  the value drain; the seller collects the same area. No ticker, no P&L,
+ *  no symbol: the mechanism only. */
+export const DecayExhibit: React.FC<{
+  since: number; w: number; h: number;
+  side: 'buyer' | 'seller'; title: string; foot: string;
+}> = ({since, w, h, side, title, foot}) => {
+  const padX = 64;
+  const padTop = h * 0.24;
+  const plotW = w - padX * 2;
+  const plotH = h * 0.44;
+  const prog = ease(since, 14, 150);
+  // accelerating decay: value(t) = (1 - t)^2 — flat early, a cliff late
+  const N = 64;
+  const pts: string[] = [];
+  for (let i = 0; i <= N * prog; i++) {
+    const t = i / N;
+    const v = (1 - t) * (1 - t);
+    pts.push(`${padX + t * plotW},${padTop + (1 - v) * plotH}`);
+  }
+  const t = prog;
+  const v = (1 - t) * (1 - t);
+  const cx = padX + t * plotW;
+  const cy = padTop + (1 - v) * plotH;
+  const tone = side === 'buyer' ? RED : BLUE;
+  return (
+    <div style={{position: 'absolute', inset: 0, background: PAPER,
+      fontFamily: 'Arial', color: INK}}>
+      <div style={{position: 'absolute', left: padX - 6, top: 16,
+        fontFamily: 'Impact, Arial', fontSize: 30, letterSpacing: 1,
+        opacity: ease(since, 0, 10)}}>{title}</div>
+      <svg width={w} height={h} style={{position: 'absolute', inset: 0}}>
+        <line x1={padX} y1={padTop + plotH} x2={padX + plotW} y2={padTop + plotH}
+          stroke={INK} strokeWidth={2} />
+        <line x1={padX} y1={padTop} x2={padX} y2={padTop + plotH}
+          stroke={INK} strokeWidth={2} />
+        {side === 'seller' && pts.length > 1 ? (
+          <polygon points={`${padX},${padTop} ${pts.join(' ')} ${cx},${padTop}`}
+            fill={BLUE} opacity={0.18} />
+        ) : null}
+        {pts.length > 1 ? (
+          <polyline points={pts.join(' ')} fill="none" stroke={tone}
+            strokeWidth={5} strokeLinecap="round" />
+        ) : null}
+        <circle cx={cx} cy={cy} r={9} fill={tone} />
+      </svg>
+      <div style={{position: 'absolute', left: padX, top: padTop + plotH + 10,
+        fontSize: 17, color: MUTED}}>open</div>
+      <div style={{position: 'absolute', right: padX, top: padTop + plotH + 10,
+        fontSize: 17, color: MUTED}}>the close</div>
+      <div style={{position: 'absolute', left: padX - 40, top: padTop - 28,
+        fontSize: 17, color: MUTED, opacity: ease(since, 6, 18)}}>value</div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: h * 0.76,
+        textAlign: 'center', fontFamily: 'Impact, Arial', fontSize: 26,
+        color: tone, opacity: ease(since, 90, 110)}}>
+        {side === 'buyer'
+          ? 'it happens whether the market moves or not'
+          : 'the same curve, collected from the other side'}</div>
+      <div style={{position: 'absolute', left: padX, bottom: 12, right: padX,
+        fontSize: 15, color: MUTED, opacity: ease(since, 56, 70)}}>{foot}</div>
+    </div>
+  );
+};
