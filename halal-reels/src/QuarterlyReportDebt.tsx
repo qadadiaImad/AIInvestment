@@ -146,7 +146,7 @@ const HoldersWall: React.FC<{ f: number }> = ({ f }) => {
 /* ---------- scenes ---------- */
 
 const ClockScreen: React.FC<{ f: number }> = ({ f }) => (
-  <g transform="translate(83 96)"><DebtClock f={f} digitSize={20} label="TICKING UP EVERY SECOND" /></g>
+  <g transform="translate(28 92)"><DebtClock f={f} digitSize={28} label="+$919K / SECOND" /></g>
 );
 
 const Studio: React.FC = () => {
@@ -158,7 +158,7 @@ const Studio: React.FC = () => {
     <AbsoluteFill style={{ background: "#0a1017" }}>
       <AbsoluteFill><NewsStudio host={studioHost(f, HOST_ANALYST)} screen={<ClockScreen f={f} />} screenLabel="● WORLD DEBT" ticker={TICK} accent={GREEN} skin={HOST_ANALYST.skin} f={f} wall={wall} /></AbsoluteFill>
       <Chyron f={f} tag="FOLLOW THE MONEY" text="WHO DOES THE WORLD OWE?" red={false} />
-      <Karaoke caps={C} id={active} cue={acue} hot={HOT} max={6} />
+      <Karaoke caps={C} id={active} cue={acue} hot={HOT} max={6} reveal />
       <Bug /><Disclaimer text="Figures Aug 2026 · IIF · US Treasury · CRS · educational, not financial advice" />
     </AbsoluteFill>
   );
@@ -188,7 +188,7 @@ const Kicker: React.FC = () => {
         {bar(580, 917, 970, "DEFENSE", "#8593a6", false)}
       </svg>
       <div style={{ position: "absolute", bottom: 300, left: 0, right: 0, textAlign: "center", fontFamily: BODY, fontWeight: 800, fontSize: 26, color: "#c9b7b7" }}>U.S. net interest, FY2025 — paid, not paying it down</div>
-      <Karaoke caps={C} id="d6" cue={6} hot={HOT} max={6} />
+      <Karaoke caps={C} id="d6" cue={6} hot={HOT} max={6} reveal />
       <Bug /><Disclaimer text="Sources: CRFB · PGPF (FY2025) · educational, not financial advice" />
     </AbsoluteFill>
   );
@@ -210,7 +210,7 @@ const Cta: React.FC = () => {
         <div style={{ marginTop: 18, fontFamily: BODY, fontWeight: 900, fontSize: 38, color: PAL.mint }}>💬 Genius, or a time bomb?</div>
         <div style={{ marginTop: 14, fontFamily: BODY, fontWeight: 700, fontSize: 22, color: "#9AA6B2" }}>Figures Aug 2026 · IIF / US Treasury / CRFB · educational, not financial advice</div>
       </div>
-      <Karaoke caps={C} id="d7" cue={6} hot={HOT} max={6} />
+      <Karaoke caps={C} id="d7" cue={6} hot={HOT} max={6} reveal />
     </AbsoluteFill>
   );
 };

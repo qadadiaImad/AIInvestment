@@ -22,7 +22,9 @@ type Cap = { words: { w: string; t0: number; t1: number }[]; dur: number };
 // `max` chunks a long line into subtitle-sized groups (shows only the group around the
 // currently-spoken word) so multi-second VO lines don't bury the frame in text. Default
 // shows the whole line (short-beat episodes are unaffected).
-export const Karaoke: React.FC<{ caps: Record<string, Cap>; id: string; cue: number; bottom?: number; hot?: RegExp; max?: number }> = ({ caps, id, cue, bottom = 205, hot = /[0-9]/, max = 100 }) => {
+// `reveal` makes words pop in one-by-one as they're spoken (no pre-shown dim ghosts);
+// `max` chunks a long line into subtitle-sized groups so it never buries the frame.
+export const Karaoke: React.FC<{ caps: Record<string, Cap>; id: string; cue: number; bottom?: number; hot?: RegExp; max?: number; reveal?: boolean }> = ({ caps, id, cue, bottom = 205, hot = /[0-9]/, max = 100, reveal = false }) => {
   const f = useCurrentFrame();
   const cap = caps[id];
   if (!cap) return null;
@@ -39,10 +41,12 @@ export const Karaoke: React.FC<{ caps: Record<string, Cap>; id: string; cue: num
   return (
     <div style={{ position: "absolute", left: 50, right: 50, bottom, textAlign: "center", lineHeight: 1.16, zIndex: 4 }}>
       {shown.map((w, i) => {
+        if (reveal && tt < w.t0) return null; // not spoken yet → not on screen
         const active = tt >= w.t0 && tt < w.t1;
         const spoken = tt >= w.t1;
+        const pop = active && reveal ? interpolate(f - cue - w.t0 * 30, [0, 4], [0.6, 1.1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : active ? 1.1 : 1;
         const color = active ? (hot.test(w.w) ? PAL.gold : PAL.mint) : spoken ? PAL.paper : "rgba(255,246,233,0.5)";
-        return <span key={i} style={{ display: "inline-block", margin: "4px 10px", fontFamily: BODY, fontWeight: 900, fontSize: 54, color, WebkitTextStroke: `3px ${PAL.ink}`, paintOrder: "stroke", transform: `scale(${active ? 1.1 : 1})`, textShadow: "0 6px 16px rgba(0,0,0,.5)" }}>{w.w}</span>;
+        return <span key={i} style={{ display: "inline-block", margin: "4px 10px", fontFamily: BODY, fontWeight: 900, fontSize: 54, color, WebkitTextStroke: `3px ${PAL.ink}`, paintOrder: "stroke", transform: `scale(${pop})`, textShadow: "0 6px 16px rgba(0,0,0,.5)" }}>{w.w}</span>;
       })}
     </div>
   );
