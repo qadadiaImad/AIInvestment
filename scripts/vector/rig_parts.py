@@ -212,7 +212,7 @@ def main() -> None:
     partdir.mkdir(exist_ok=True)
     manifest = {"w": w, "h": h, "pivots": pivots, "parts": {},
                 "crotch": crotch, "legCut": leg_cut, "footMid": foot_mid,
-                "feetSplit": feet_split}
+                "feetSplit": feet_split, "neck": neck / h}
     print("%s  %dx%d  neck y=%.0f  legCut=%.3f  %d paths"
           % (pose, w, h, neck, leg_cut, len(items)))
     for name, lst in groups.items():

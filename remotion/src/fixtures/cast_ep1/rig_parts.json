@@ -44,7 +44,8 @@
   "crotch": 0.9266609145815358,
   "legCut": 0.8816609145815357,
   "footMid": 0.5019455252918288,
-  "feetSplit": true
+  "feetSplit": true,
+  "neck": 0.47952
  },
  "rex_determined": {
   "w": 732,
@@ -93,7 +94,8 @@
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
-  "feetSplit": false
+  "feetSplit": false,
+  "neck": 0.269892
  },
  "rex_determined_v1": {
   "w": 785,
@@ -132,7 +134,8 @@
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
-  "feetSplit": false
+  "feetSplit": false,
+  "neck": 0.5184000000000001
  },
  "rex_eager": {
   "w": 731,
@@ -181,7 +184,8 @@
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
-  "feetSplit": false
+  "feetSplit": false,
+  "neck": 0.48762000000000005
  },
  "rex_eager_v1": {
   "w": 672,
@@ -225,7 +229,8 @@
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
-  "feetSplit": false
+  "feetSplit": false,
+  "neck": 0.25191
  },
  "rex_listen": {
   "w": 764,
@@ -273,7 +278,8 @@
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
-  "feetSplit": false
+  "feetSplit": false,
+  "neck": 0.5184000000000001
  },
  "rex_shock": {
   "w": 896,
@@ -322,7 +328,8 @@
   "crotch": 0.8055555555555556,
   "legCut": 0.7605555555555555,
   "footMid": 0.5234375,
-  "feetSplit": true
+  "feetSplit": true,
+  "neck": 0.539784
  },
  "rex_shock_v1": {
   "w": 896,
@@ -369,7 +376,8 @@
   "crotch": 0.8871527777777778,
   "legCut": 0.8421527777777778,
   "footMid": 0.6199776785714286,
-  "feetSplit": true
+  "feetSplit": true,
+  "neck": 0.507546
  },
  "rex_skeptic": {
   "w": 821,
@@ -418,7 +426,8 @@
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
-  "feetSplit": false
+  "feetSplit": false,
+  "neck": 0.5184000000000001
  },
  "sol_armswide": {
   "w": 552,
@@ -465,7 +474,8 @@
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
-  "feetSplit": false
+  "feetSplit": false,
+  "neck": 0.292896
  },
  "sol_finger": {
   "w": 832,
@@ -513,7 +523,8 @@
   "crotch": 0.9188955996548749,
   "legCut": 0.8738955996548748,
   "footMid": 0.5294471153846154,
-  "feetSplit": true
+  "feetSplit": true,
+  "neck": 0.395604
  },
  "sol_laugh": {
   "w": 700,
@@ -561,7 +572,8 @@
   "crotch": 0.8676748582230623,
   "legCut": 0.8226748582230623,
   "footMid": 0.4342857142857143,
-  "feetSplit": true
+  "feetSplit": true,
+  "neck": 0.5184000000000001
  },
  "sol_laugh_v1": {
   "w": 807,
@@ -605,7 +617,8 @@
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
-  "feetSplit": false
+  "feetSplit": false,
+  "neck": 0.5184000000000001
  },
  "sol_point_v1": {
   "w": 794,
@@ -652,7 +665,8 @@
   "crotch": 0.9260832625318607,
   "legCut": 0.8810832625318606,
   "footMid": 0.5195214105793451,
-  "feetSplit": true
+  "feetSplit": true,
+  "neck": 0.4928040000000001
  },
  "sol_shrug": {
   "w": 832,
@@ -696,7 +710,8 @@
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
-  "feetSplit": false
+  "feetSplit": false,
+  "neck": 0.5184000000000001
  },
  "sol_shrug_v1": {
   "w": 708,
@@ -740,7 +755,8 @@
   "crotch": 0.9028520499108734,
   "legCut": 0.8578520499108734,
   "footMid": 0.509180790960452,
-  "feetSplit": true
+  "feetSplit": true,
+  "neck": 0.5184000000000001
  },
  "sol_smug": {
   "w": 896,
@@ -788,7 +804,8 @@
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
-  "feetSplit": false
+  "feetSplit": false,
+  "neck": 0.500904
  },
  "sol_smug_v1": {
   "w": 846,
@@ -836,7 +853,8 @@
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
-  "feetSplit": false
+  "feetSplit": false,
+  "neck": 0.62
  },
  "sol_smug_v2": {
   "w": 896,
@@ -883,7 +901,8 @@
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
-  "feetSplit": false
+  "feetSplit": false,
+  "neck": 0.62
  },
  "sol_whisper": {
   "w": 896,
@@ -927,7 +946,8 @@
   "crotch": 0.859375,
   "legCut": 0.814375,
   "footMid": 0.6110491071428571,
-  "feetSplit": true
+  "feetSplit": true,
+  "neck": 0.5184000000000001
  },
  "sol_whisper_v1": {
   "w": 896,
@@ -971,7 +991,8 @@
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
-  "feetSplit": false
+  "feetSplit": false,
+  "neck": 0.5184000000000001
  },
  "sol_wink": {
   "w": 896,
@@ -1018,7 +1039,8 @@
   "crotch": 0.9383680555555556,
   "legCut": 0.8933680555555555,
   "footMid": 0.5736607142857143,
-  "feetSplit": true
+  "feetSplit": true,
+  "neck": 0.49410000000000004
  },
  "sol_wink_v1": {
   "w": 896,
@@ -1065,6 +1087,7 @@
   "crotch": 0.93,
   "legCut": 0.885,
   "footMid": 0.5,
-  "feetSplit": false
+  "feetSplit": false,
+  "neck": 0.5418900000000001
  }
 }

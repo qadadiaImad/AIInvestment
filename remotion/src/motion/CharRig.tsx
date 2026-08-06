@@ -38,6 +38,9 @@ export type Rig = {
   legCut?: number;
   /** x of the gap between the two feet */
   footMid?: number;
+  /** the neck line — where the body silhouette is cut so its head region
+   *  can travel with the head part instead of staying behind it */
+  neck?: number;
   /** true only when a real gap between the feet was measured. Where it is
    *  false the feet are one connected blob and must move together — halving
    *  it and moving the halves apart tears the drawing. */
@@ -56,8 +59,11 @@ export type RigPose = {
   pointAt?: number;
   /** which arm carries the gesture — Sol points with his screen-left hand. */
   gestureArm?: "armL" | "armR";
-  /** 0 = level gaze, 1 = chin fully raised. */
+  /** 0 = level gaze, 1 = chin fully raised, negative = chin down (a nod). */
   lookUp?: number;
+  /** extra lateral head tilt in degrees — the channel that carries most of
+   *  what reads as "listening" or "making a point". */
+  tilt?: number;
   /** -1..1 lean from the ankles. */
   lean?: number;
   /** breath amplitude; 1 is the resting idle. */
@@ -119,6 +125,7 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
     pointAt = 0,
     gestureArm = "armL",
     lookUp = 0,
+    tilt = 0,
     lean = 0,
     breath = 1,
     breathPhase = 0,
@@ -201,7 +208,7 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
   const u = lookUp;
   const lookRot = -7.5 * u;
   const lookDy = -rig.h * 0.016 * u;
-  const lookSy = 1 + 0.02 * u;
+  const lookSy = 1 + 0.02 * Math.abs(u);
 
   // Per-arm resolution. The gesture lives on a NAMED arm, not on whichever
   // arm happens to be nearest — Sol's pointing hand is his screen-left one,
@@ -214,7 +221,7 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
       src: name,
       pivot: name,
       // far arm goes behind the torso; a raised gesture goes above the head
-      z: far && at > 0.12 ? 0 : isGesture && p > 0.5 ? 6 : far ? 3 : 4,
+      z: far && at > 0.12 ? 1 : isGesture && p > 0.5 ? 6 : far ? 3 : 4,
       // Arms take the TORSO's scale, not their own. They used to shrink
       // (far) and swell (near) independently, which is the textbook
       // silhouette cue — but this cast's line art is one shared path living
@@ -246,9 +253,20 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
   const clipFootL = `inset(${pc(cut)} ${pc(1 - fm)} 0% 0%)`;
   const clipFootR = `inset(${pc(cut)} 0% 0% ${pc(fm)})`;
   // overlap past the cut so the seam is buried under the torso
-  const clipTorso = `inset(0% 0% ${pc(1 - Math.min(1, cut + 0.075))} 0%)`;
+
   const clipFeet = `inset(${pc(cut)} 0% 0% 0%)`;
   const split = rig.feetSplit !== false;
+  // THE LINE ART FOLLOWS THE HEAD. vtracer traced this cast's whole outline
+  // as ONE closed contour — 759x1141 of a 771x1159 canvas, a single subpath,
+  // so it cannot be divided by geometry. Leaving it all in the torso meant
+  // the head could turn but its OUTLINE stayed put, which is why every
+  // amplitude had to be kept apologetically small. Cutting the silhouette
+  // at the neck and carrying the upper band on the head's own transform
+  // fixes that: the outline turns with the face. The head part draws over
+  // the cut, so the straight edge is never visible.
+  const neck = rig.neck ?? 0.48;
+  const clipHeadBand = `inset(0% 0% ${pc(1 - neck)} 0%)`;
+  const clipTorsoBand = `inset(${pc(neck)} 0% ${pc(1 - Math.min(1, cut + 0.075))} 0%)`;
 
   return (
     <>
@@ -294,7 +312,7 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
         rig={rig}
         src="body"
         pivot="torso"
-        clip={clipTorso}
+        clip={clipTorsoBand}
         z={2}
         rot={leanRot + walkLean + rock + sway * 0.6}
         dx={torsoDx + swayDx}
@@ -304,10 +322,22 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
       />
       <Part
         rig={rig}
+        src="body"
+        pivot="head"
+        clip={clipHeadBand}
+        z={0}
+        rot={headRot + lookRot + tilt + leanRot * 0.5 + rock * 0.8 + brLag * 0.5 + sway * 1.9}
+        dx={headDx + swayDx * 1.6}
+        dy={-brLag * 4.2 + lookDy + bob * 1.15}
+        sx={headSx * (1 + brLag * 0.003)}
+        sy={lookSy * (1 + brLag * 0.004)}
+      />
+      <Part
+        rig={rig}
         src={rig.parts[headPart] ? headPart : "head"}
         pivot="head"
         z={5}
-        rot={headRot + lookRot + leanRot * 0.5 + rock * 0.8 + brLag * 0.5 + sway * 1.9}
+        rot={headRot + lookRot + tilt + leanRot * 0.5 + rock * 0.8 + brLag * 0.5 + sway * 1.9}
         dx={headDx + swayDx * 1.6}
         dy={-brLag * 4.2 + lookDy + bob * 1.15}
         sx={headSx * (1 + brLag * 0.003)}

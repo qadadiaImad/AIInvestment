@@ -32,6 +32,7 @@ const VI = visemes as unknown as Record<string, V>;
 const TR = mouthTracks as unknown as Record<string, number[]>;
 const HF = headFocus as unknown as Record<string, {fx: number; fy: number}>;
 const RIG = rigParts as unknown as Record<string, Rig>;
+const RIG_OFF = false;   // flipped only by the A/B motion probe
 
 // A SHOT is a reframing of the staged actor, held from `from` (a frame
 // offset into the beat) until the next shot. Reframing is how one
@@ -671,9 +672,10 @@ const visemeSrc = (pose: string, state: number, speaking: boolean,
 
 const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
                       mouthState: number; shot?: Shot; shotSince: number;
-                      shotLen: number; holdMouth?: boolean}> =
+                      shotLen: number; holdMouth?: boolean; otherX?: number;
+                      beatLen?: number}> =
   ({a, since, frame, speaking, mouthState, shot, shotSince, shotLen,
-    holdMouth}) => {
+    holdMouth, otherX, beatLen}) => {
   const cycling = speaking && cycleAllowed(a.poses);
   const idx = cycling
     ? CYCLE[Math.floor(since / SWAP) % CYCLE.length] % a.poses.length
@@ -732,17 +734,94 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   // stack and double the motion. Channels only open when a shot asks.
   const rig = RIG[pose];
   const vk = holdMouth ? null : visemeKey(pose, mouthState, speaking, frame);
-  const rigged = rig && (shot?.walk || shot?.turn || shot?.point || shot?.look);
+  // ALWAYS ON. Gating the rig behind an explicit request meant 37 of 39
+  // beats rendered the flat drawing exactly as before, so the episode was
+  // 194 of its 196 seconds unchanged and the work was invisible. A rig that
+  // only runs where someone remembered to ask is not a rig.
+  const rigged = Boolean(rig) && !RIG_OFF;
+  const tt = frame / 30;
+  // a per-character phase offset, so two people never breathe in unison
+  const ph = (pose.charCodeAt(0) % 7) * 0.9;
+
+  // ACTING IS DERIVED, NOT AUTHORED. Everything below comes from data the
+  // beat already carries — who is speaking, who else is on screen, and where
+  // they stand — so every beat acts without 39 hand-written entries.
+
+  // Face whoever you are in the room with. The sign falls out of the
+  // staging: turn toward their x, away from your own.
+  const faceTurn = otherX !== undefined && a.kind === "full"
+    ? (otherX < a.x ? -1 : 1) * (speaking ? 0.55 : 0.40)
+    : 0;
+  // Speaking works the head: it drops slightly into stressed syllables
+  // (mouthState 2 is a wide vowel) over a slow drift, so it never ticks
+  // like a metronome. Listening is slower and mostly lateral.
+  // ACTIONS, NOT OSCILLATORS. The first two passes drove the head with sine
+  // waves and measured 1.02x and 1.26x the motion of the flat render. A sine
+  // never ARRIVES anywhere — it is perpetual drift, which the eye reads as
+  // wobble rather than intent. This repo's own house style says it plainly
+  // (CLAUDE.md 10.8): anticipation, then a fast arrival, then a HOLD.
+  //
+  // So the character fires a discrete action roughly once a second, chosen
+  // from a small vocabulary, seeded off the pose and the beat so it is
+  // deterministic, repeatable and different per character.
+  const PERIOD = 38;
+  const seg = Math.floor(shotSince / PERIOD);
+  const local = shotSince - seg * PERIOD;
+  const pick = (seg * 7 + pose.length * 3 + (speaking ? 0 : 5)) % 5;
+  // wind up the OPPOSITE way first, then arrive fast with a little overshoot,
+  // then sit still. The wind-up is the part everyone skips and the part that
+  // most reads as animation.
+  const env = (t: number) => {
+    if (t < 4) return -0.28 * (t / 4);
+    const u = Math.min(1, (t - 4) / 9);
+    return u * (1 + 0.24 * Math.sin(Math.PI * u) * (1 - u));
+  };
+  const e = env(local);
+  const toward = otherX !== undefined ? (otherX < a.x ? -1 : 1) : -1;
+
+  // the vocabulary. Speaking gets the big shapes; listening gets the
+  // reactions, which are smaller and slower but never nothing.
+  const A = speaking
+    ? [
+        {tilt: 11 * toward, look: 0.10, turn: 0.62 * toward, point: 0.20, lean: 0.15},
+        {tilt: -6 * toward, look: -0.55, turn: 0.20 * toward, point: 0.72, lean: 0.42},
+        {tilt: 8, look: 0.42, turn: 0.10 * toward, point: 0.15, lean: -0.28},
+        {tilt: -12 * toward, look: -0.30, turn: 0.48 * toward, point: 0.58, lean: 0.30},
+        {tilt: 5 * toward, look: 0.05, turn: 0.70 * toward, point: 0.35, lean: 0.05},
+      ][pick]
+    : [
+        {tilt: 7 * toward, look: -0.22, turn: 0.44 * toward, point: 0, lean: 0.10},
+        {tilt: -9, look: 0.30, turn: 0.30 * toward, point: 0, lean: -0.18},
+        {tilt: 4 * toward, look: -0.40, turn: 0.50 * toward, point: 0.10, lean: 0.06},
+        {tilt: -5 * toward, look: 0.12, turn: 0.36 * toward, point: 0, lean: -0.10},
+        {tilt: 10 * toward, look: -0.15, turn: 0.52 * toward, point: 0, lean: 0.14},
+      ][pick];
+
+  // the baseline the actions ride on: he is never completely still even
+  // between actions
+  const idleTilt = Math.sin(tt * 1.1 + ph) * 2.2;
+  const nod = 0;
+  const tilt = A.tilt * e + idleTilt;
+  const gest = Math.max(0, A.point * e);
+  const push = A.lean * e;
+  const faceTurnActive = a.kind === "full" ? A.turn * e : 0;
+
   const rigPose: RigPose = {
-    breath: 0,
+    breath: 1,
+    breathPhase: tt * 2.0 + ph,
+    sway: Math.sin(tt * 0.72 + ph) * (speaking ? 1.5 : 2.0)
+      + Math.sin(tt * 0.31 + ph) * 1.1,
     stride: shot?.walk ?? 0,
-    walkPhase: (frame / 30) * 6.6,
-    turn: shot?.turn ?? 0,
-    pointAt: shot?.point ?? 0,
-    lookUp: shot?.look ?? 0,
+    walkPhase: tt * 6.6,
+    turn: shot?.turn ?? faceTurnActive,
+    pointAt: shot?.point ?? gest,
+    lookUp: shot?.look ?? A.look * e,
+    tilt,
+    lean: (shot?.walk ?? 0) * 0.25 + push,
     gestureArm: "armL",
     headPart: vk ? "head__" + vk : "head",
   };
+  void beatLen; void faceTurn; void nod;
   // Sol moves like a veteran, Rex like an over-eager junior — derived
   // from who the drawing is, so no beat has to carry it.
   const ix = interactXform(since, a.moves, a.turns,
@@ -987,9 +1066,17 @@ export const FairMarketEp1: React.FC = () => {
           if (!shot?.show && shot?.only !== undefined && shot.only !== i) return null;
           const isSol = a.poses[0].startsWith("sol");
           const speaking = activeSpeaker === (isSol ? "SOL" : "REX");
+          // who else is actually ON SCREEN this shot — a character should
+          // not turn toward someone the shot has cut away from
+          const visible = cur.actors
+            .map((o, j) => ({o, j}))
+            .filter(({j}) => (shot?.show ? shot.show.includes(j)
+              : shot?.only === undefined || shot.only === j));
+          const other = visible.find(({j}) => j !== i)?.o;
           return <Char key={i} a={a} since={since} frame={frame} speaking={speaking}
                        mouthState={isSol ? ms.sol : ms.rex}
                        shot={shot} shotSince={shotSince} shotLen={shotLen}
+                       otherX={other?.x} beatLen={hold}
                        holdMouth={cur.holdMouth} />;
         })}
         {(cur.flicks ?? []).map((f, i) => (
