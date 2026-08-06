@@ -9,7 +9,7 @@ import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame, Sequence, Audio, staticFile } from "remotion";
 import { HOST_ANCHOR_M } from "./toon/host";
 import { NewsStudio } from "./toon/studio";
-import { FUN, BODY, PAL, Karaoke, Bug, Disclaimer, Chyron, BigFace, studioHost } from "./toon/reelkit";
+import { FUN, BODY, PAL, Karaoke, Bug, Disclaimer, Chyron, BigFace, studioHost, MoneyMotif, Chip } from "./toon/reelkit";
 import { DebtClock } from "./toon/props";
 import caps from "../public/debt_captions.json";
 
@@ -177,17 +177,27 @@ const Kicker: React.FC = () => {
       </g>
     );
   };
+  const c2 = interpolate(f, [60, 110], [0, 1], clamp);
   return (
     <AbsoluteFill style={{ background: "#1a0d0d" }}>
+      <MoneyMotif f={f} tint={PAL.gold} base={0.08} />
       <div style={{ position: "absolute", top: 120, left: 0, right: 0, textAlign: "center", zIndex: 3 }}>
         <div style={{ fontFamily: FUN, fontSize: 74, color: PAL.paper, WebkitTextStroke: "4px #000", paintOrder: "stroke" }}>THE PART THAT STINGS</div>
         <div style={{ fontFamily: BODY, fontWeight: 900, fontSize: 34, color: PAL.red, marginTop: 8 }}>just the INTEREST &gt; the whole military</div>
       </div>
-      <svg width="1080" height="820" viewBox="0 0 1080 820" style={{ position: "absolute", top: 300 }}>
+      <svg width="1080" height="820" viewBox="0 0 1080 820" style={{ position: "absolute", top: 300, zIndex: 2 }}>
         {bar(280, 970, 970, "INTEREST", PAL.red, true)}
         {bar(580, 917, 970, "DEFENSE", "#8593a6", false)}
       </svg>
-      <div style={{ position: "absolute", bottom: 300, left: 0, right: 0, textAlign: "center", fontFamily: BODY, fontWeight: 800, fontSize: 26, color: "#c9b7b7" }}>U.S. net interest, FY2025 — paid, not paying it down</div>
+      <div style={{ position: "absolute", top: 1044, left: 0, right: 0, zIndex: 3, opacity: c2, transform: `translateY(${(1 - c2) * 24}px)` }}>
+        <div style={{ textAlign: "center", fontFamily: BODY, fontWeight: 800, fontSize: 25, color: "#d8c3c3", marginBottom: 18 }}>that interest, broken down —</div>
+        <div style={{ display: "flex", justifyContent: "center", gap: 22 }}>
+          <Chip big="$2.66B" small="every day" tint={PAL.red} />
+          <Chip big="$111M" small="every hour" tint={PAL.gold} />
+          <Chip big="$30.7K" small="every second" tint={PAL.red} />
+        </div>
+      </div>
+      <div style={{ position: "absolute", bottom: 300, left: 0, right: 0, textAlign: "center", fontFamily: BODY, fontWeight: 800, fontSize: 26, color: "#c9b7b7", zIndex: 3 }}>U.S. net interest, FY2025 — paid, not paying it down</div>
       <Karaoke caps={C} id="d6" cue={6} hot={HOT} max={6} reveal />
       <Bug /><Disclaimer text="Sources: CRFB · PGPF (FY2025) · educational, not financial advice" />
     </AbsoluteFill>
@@ -197,18 +207,28 @@ const Kicker: React.FC = () => {
 const Cta: React.FC = () => {
   const f = useCurrentFrame();
   const pop = interpolate(f, [0, 12], [0.8, 1], { extrapolateRight: "clamp" });
+  const c2 = interpolate(f, [40, 90], [0, 1], clamp);
   return (
     <AbsoluteFill style={{ background: PAL.ink, alignItems: "center", justifyContent: "flex-start" }}>
-      <svg width="1000" height="150" viewBox="0 0 1000 150" style={{ marginTop: 92, transform: `scale(${pop})` }}>
+      <MoneyMotif f={f} tint={PAL.mint} base={0.09} />
+      <svg width="1000" height="150" viewBox="0 0 1000 150" style={{ marginTop: 92, transform: `scale(${pop})`, zIndex: 2 }}>
         <g transform="translate(150 6)"><DebtClock f={f + ABS.d1} digitSize={40} label="STILL TICKING…" /></g>
       </svg>
-      <svg width="1080" height="440" viewBox="0 0 1080 440">
+      <svg width="1080" height="440" viewBox="0 0 1080 440" style={{ zIndex: 2 }}>
         <g transform="translate(270 8) scale(0.7)">{studioHost(f, HOST_ANCHOR_M, false)}</g>
       </svg>
-      <div style={{ textAlign: "center", padding: "0 56px", marginTop: -8 }}>
+      <div style={{ textAlign: "center", padding: "0 56px", marginTop: -8, zIndex: 3 }}>
         <div style={{ fontFamily: FUN, fontSize: 60, color: GREEN, WebkitTextStroke: "4px #000", paintOrder: "stroke", lineHeight: 1.05 }}>A WORLD THAT OWES<br />ITSELF TRILLIONS</div>
         <div style={{ marginTop: 18, fontFamily: BODY, fontWeight: 900, fontSize: 38, color: PAL.mint }}>💬 Genius, or a time bomb?</div>
         <div style={{ marginTop: 14, fontFamily: BODY, fontWeight: 700, fontSize: 22, color: "#9AA6B2" }}>Figures Aug 2026 · IIF / US Treasury / CRFB · educational, not financial advice</div>
+      </div>
+      <div style={{ position: "absolute", top: 1140, left: 0, right: 0, zIndex: 3, opacity: c2, transform: `translateY(${(1 - c2) * 24}px)` }}>
+        <div style={{ textAlign: "center", fontFamily: BODY, fontWeight: 800, fontSize: 24, color: "#9AA6B2", marginBottom: 16 }}>the whole story in three numbers</div>
+        <div style={{ display: "flex", justifyContent: "center", gap: 20 }}>
+          <Chip big="$348T" small="the world owes" tint={PAL.mint} />
+          <Chip big="YOU" small="hold most of it" tint={GREEN} />
+          <Chip big="$970B" small="a year, just interest" tint={PAL.gold} />
+        </div>
       </div>
       <Karaoke caps={C} id="d7" cue={6} hot={HOT} max={6} reveal />
     </AbsoluteFill>

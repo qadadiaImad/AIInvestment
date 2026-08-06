@@ -55,6 +55,37 @@ export const Karaoke: React.FC<{ caps: Record<string, Cap>; id: string; cue: num
 export const Bug: React.FC = () => (
   <div style={{ position: "absolute", left: 40, top: 40, fontFamily: BODY, fontWeight: 800, fontSize: 26, color: PAL.paper, letterSpacing: 1, textShadow: "0 2px 8px #000", zIndex: 5 }}>V<span style={{ color: PAL.mint }}>&amp;</span>V · QUARTERLY REPORT</div>
 );
+
+// ambient drifting $/coins to fill empty full-bleed backgrounds (deterministic, no RNG)
+export const MoneyMotif: React.FC<{ f: number; tint?: string; count?: number; base?: number }> = ({ f, tint = PAL.mint, count = 18, base = 0.1 }) => (
+  <svg width="1080" height="1920" viewBox="0 0 1080 1920" style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }}>
+    {Array.from({ length: count }).map((_, i) => {
+      const x = 40 + ((i * 127) % 1000);
+      const speed = 0.25 + (i % 6) * 0.11;
+      const y = 1980 - (((f * speed) + i * 150) % 2100);
+      const sway = Math.sin(f / 42 + i * 1.3) * 24;
+      const size = 24 + (i % 5) * 13;
+      const rot = Math.sin(f / 55 + i) * 14;
+      const op = base * (0.45 + 0.55 * Math.abs(Math.sin(f / 48 + i * 0.7)));
+      return i % 4 === 3 ? (
+        <g key={i} opacity={op} transform={`translate(${x + sway} ${y}) rotate(${rot})`}>
+          <circle r={size * 0.46} fill="none" stroke={tint} strokeWidth="3" />
+          <text x="0" y={size * 0.2} textAnchor="middle" fontFamily={FUN} fontSize={size * 0.62} fill={tint}>$</text>
+        </g>
+      ) : (
+        <text key={i} x={x + sway} y={y} textAnchor="middle" fontFamily={FUN} fontSize={size} fill={tint} opacity={op} transform={`rotate(${rot} ${x + sway} ${y})`}>$</text>
+      );
+    })}
+  </svg>
+);
+
+// small stat chip used to fill space + reinforce a number
+export const Chip: React.FC<{ big: string; small: string; tint?: string }> = ({ big, small, tint = PAL.mint }) => (
+  <div style={{ background: "rgba(255,255,255,0.05)", border: `2px solid ${tint}`, borderRadius: 18, padding: "14px 22px", textAlign: "center", minWidth: 190 }}>
+    <div style={{ fontFamily: FUN, fontSize: 44, color: tint, lineHeight: 1 }}>{big}</div>
+    <div style={{ fontFamily: BODY, fontWeight: 800, fontSize: 20, color: "#cdd6e2", marginTop: 6 }}>{small}</div>
+  </div>
+);
 export const Disclaimer: React.FC<{ text: string }> = ({ text }) => (
   <div style={{ position: "absolute", left: 0, right: 0, bottom: 108, textAlign: "center", fontFamily: BODY, fontWeight: 700, fontSize: 21, color: "#DfE5Ec", textShadow: "0 1px 8px #000", zIndex: 6 }}>{text}</div>
 );
