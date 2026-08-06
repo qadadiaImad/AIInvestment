@@ -116,3 +116,71 @@ function rect() {
   return {left: TV_SCREEN.x, top: TV_SCREEN.y,
           width: TV_SCREEN.w, height: TV_SCREEN.h};
 }
+
+// ── PANEL STUDIO ─────────────────────────────────────────────────────────
+// The football-halftime layout the owner asked for: the panel sits at one
+// desk, the exhibits play on a GIANT wall behind them (mid-match analysis
+// scale, not a monitor above their heads), and all the variety comes from
+// the scene CAMERA — wide table shot, punch-in on the speaker — while the
+// characters themselves stay calm. Same studio, same palette; different
+// grammar.
+
+/** The video wall's picture area — stadium scale. */
+export const WALL = {x: 52, y: 150, w: 976, h: 740};
+
+/** Where a panelist's feet go in desk mode. The foreground desk (drawn
+ *  OVER the actors) hides everything below the waist, which is what makes
+ *  a standing drawing read as seated. */
+export const PANEL_FLOOR = 1958;
+
+/** Fixed seats — the panel does not wander. Rex stage-left, Sol stage-right. */
+export const SEATS: Record<'sol' | 'rex', {x: number; h: number}> = {
+  rex: {x: 292, h: 1010},
+  sol: {x: 782, h: 985},
+};
+
+export const WallFrame: React.FC<{glow?: boolean}> = ({glow = false}) => (
+  <>
+    <div style={{position: 'absolute',
+      left: WALL.x - 14, top: WALL.y - 14,
+      width: WALL.w + 28, height: WALL.h + 28,
+      background: '#0A0D14', borderRadius: 10,
+      boxShadow: '0 30px 80px rgba(0,0,0,0.6)',
+      border: '3px solid #1E2637'}} />
+    {glow ? (
+      <div style={{position: 'absolute',
+        left: WALL.x - 120, top: WALL.y - 90,
+        width: WALL.w + 240, height: WALL.h + 180,
+        pointerEvents: 'none', opacity: 0.45,
+        background: 'radial-gradient(ellipse, rgba(150,190,255,0.28) 0%, rgba(150,190,255,0) 68%)'}} />
+    ) : null}
+  </>
+);
+
+/** The desk the panel sits behind — drawn OVER the characters, which is
+ *  the entire trick: a standing drawing with its lower half occluded by a
+ *  branded desk IS a seated panelist. */
+export const DeskFront: React.FC<{dark?: boolean}> = ({dark = false}) => (
+  <>
+    {/* top slab, in perspective */}
+    <div style={{position: 'absolute', left: -80, top: 1555, width: W + 160, height: 52,
+      background: dark ? '#241A16' : '#3A2A22',
+      clipPath: 'polygon(5% 0, 95% 0, 100% 100%, 0 100%)'}} />
+    {/* edge highlight */}
+    <div style={{position: 'absolute', left: -80, top: 1555, width: W + 160, height: 6,
+      background: dark ? 'rgba(190,150,110,0.30)' : 'rgba(230,190,140,0.55)',
+      clipPath: 'polygon(5% 0, 95% 0, 95% 100%, 5% 100%)'}} />
+    {/* face */}
+    <div style={{position: 'absolute', left: -80, top: 1603, width: W + 160, height: H - 1603,
+      background: dark
+        ? 'linear-gradient(180deg, #171010 0%, #0D0908 100%)'
+        : 'linear-gradient(180deg, #271C17 0%, #150F0C 100%)'}} />
+    {/* the show badge — corner of the desk face, clear of the subtitles */}
+    <div style={{position: 'absolute', left: 70, top: 1615,
+      fontFamily: 'Impact, Arial', fontSize: 26, letterSpacing: 3,
+      color: 'rgba(255,216,96,0.8)'}}>
+      MARKET LESSONS <span style={{color: 'rgba(159,178,216,0.65)',
+        fontFamily: 'Arial', fontSize: 17, letterSpacing: 2}}>· THE DESK</span>
+    </div>
+  </>
+);

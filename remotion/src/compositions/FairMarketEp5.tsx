@@ -15,7 +15,7 @@ import {actionCurve, holdCurve, squash} from "../motion/toon";
 import {FlashCut, ShockFlicks, ShockRing, SpeedLines, kick} from "../motion/ToonFX";
 import {Grain, Vignette} from "../motion/Polish";
 import {Move, Turn, idle, interactXform} from "../motion/interact";
-import {FLOOR_Y, Room, TVFrame, TVGlass, TV_SCREEN, H as STAGE_H} from "../motion/Set";
+import {DeskFront, FLOOR_Y, PANEL_FLOOR, Room, SEATS, WALL, WallFrame, H as STAGE_H} from "../motion/Set";
 import {ColumnsExhibit, DecayExhibit, SplitPriceExhibit, TickerTape} from "../motion/Infographic";
 import anchors from "../fixtures/cast_ep1/pose_anchors.json";
 import mouthTracks from "../fixtures/cast_ep1/mouth_tracks_ep5.json";
@@ -729,7 +729,7 @@ const ExhibitCard: React.FC<{c: Card; since: number}> = ({c, since}) => {
 // (The review panel judged this cosmetic and refuted it 2-1; it is a
 // two-line change that removes a real text-on-text stack, so it is in.)
 const TVIdle: React.FC<{frame: number; bare?: boolean}> = ({frame, bare}) => (
-  <TickerTape frame={frame} w={TV_SCREEN.w} h={TV_SCREEN.h} bare={bare}
+  <TickerTape frame={frame} w={WALL.w} h={WALL.h} bare={bare}
     label="LAWMAKER TRADE TRACKER"
     sub="disclosed positions, rebuilt from filings" />
 );
@@ -765,6 +765,14 @@ export const FairMarketEp5: React.FC = () => {
   const activeSpeaker = sub2 ? cur.speaker2 : cur.speaker;
   const stress = stressFor(cur, frame);
   const {shot, shotSince, shotLen} = shotAt(cur.shots, since, hold);
+  // scene-camera values (panel format): reuse the authored punch-ins as
+  // lens moves centred on the active speaker's seat
+  const camK0 = Math.min(1.3, shot?.k ?? 1);
+  const camK1 = shot?.kEnd === undefined ? camK0 : Math.min(1.3, shot.kEnd);
+  const camK = camK0 + (camK1 - camK0) * Math.min(1, shotSince / Math.max(1, shotLen));
+  const camSeat = SEATS[(sub2 ? cur.speaker2 : cur.speaker) === "SOL" ? "sol" : "rex"];
+  const camX = shot?.tx ?? camSeat.x;
+  const camY = Math.min(1420, shot?.ty ?? 1240);
 
   return (
     <AbsoluteFill style={{background: "#101828", overflow: "hidden"}}>
@@ -787,18 +795,24 @@ export const FairMarketEp5: React.FC = () => {
           ))}
         </React.Fragment>
       ))}
+      {/* THE SCENE CAMERA. In the panel format the characters hold still
+          and the LENS does the work, like a match-analysis broadcast: the
+          per-beat k/kEnd that used to punch into a single drawing now
+          zooms the whole studio about the speaker's seat, desk and wall
+          included. Same authored shots, new grammar. */}
       <div style={{position: "absolute", inset: 0,
-        transform: `translate(${k.x}px, ${k.y * 0.4}px) scale(${1 + 0.03 * Math.max(0, 1 - since / 10) * nrg})`,
-        transformOrigin: "50% 45%"}}>
+        transform: `translate(${k.x}px, ${k.y * 0.4}px) `
+          + `scale(${(1 + 0.03 * Math.max(0, 1 - since / 10) * nrg) * camK})`,
+        transformOrigin: `${camX}px ${camY}px`}}>
         <Room dark={shot?.mood === "dark"} />
         {/* The monitor is FURNITURE — always in the room, never popping in
             and out at beat boundaries, and it fills the upper frame that
             was otherwise dead wall above the cast. */}
-        <TVFrame glow={(!!cur.card || !!cur.graphic || !!shot?.tvPhoto)
+        <WallFrame glow={(!!cur.card || !!cur.graphic || !!shot?.tvPhoto)
           && !shot?.hideCard} />
-        <div style={{position: "absolute", left: TV_SCREEN.x, top: TV_SCREEN.y,
-          width: TV_SCREEN.w, height: TV_SCREEN.h, overflow: "hidden",
-          borderRadius: 4}}>
+        <div style={{position: "absolute", left: WALL.x, top: WALL.y,
+          width: WALL.w, height: WALL.h, overflow: "hidden",
+          borderRadius: 6}}>
           {/* `hideCard` was a declared-but-never-read field. It is wired
               now, and it is what lets a beat push in close on a character
               WITHOUT hiding its own evidence: the exhibit is explicitly
@@ -815,19 +829,19 @@ export const FairMarketEp5: React.FC = () => {
                     opacity: Math.min(1, shotSince / 10)}} />
               </div>
             ) : cur.graphic === "split_price" ? (
-              <SplitPriceExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
+              <SplitPriceExhibit since={since} w={WALL.w} h={WALL.h}
                 title="WHAT AN OPTION&#39;S PRICE IS MADE OF"
                 foot="a mechanism, not a ticker · educational, not advice" />
             ) : cur.graphic === "decay_buyer" ? (
-              <DecayExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
+              <DecayExhibit since={since} w={WALL.w} h={WALL.h}
                 side="buyer" title="WHAT THE CLOCK DOES TO IT"
                 foot="same-day expiry · the decay is the schedule · educational, not advice" />
             ) : cur.graphic === "decay_seller" ? (
-              <DecayExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
+              <DecayExhibit since={since} w={WALL.w} h={WALL.h}
                 side="seller" title="THE OTHER SIDE OF THE SAME CURVE"
                 foot="a statement about market structure, not anybody’s conduct · not advice" />
             ) : cur.graphic === "share_0dte" ? (
-              <ColumnsExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
+              <ColumnsExhibit since={since} w={WALL.w} h={WALL.h}
                 title="WHO IS IN THESE TRADES"
                 cols={[{label: "of retail index-option trades: same-day",
                         sub: "~3/4", frac: 0.75},
@@ -837,7 +851,11 @@ export const FairMarketEp5: React.FC = () => {
             ) : cur.card ? <ExhibitCard c={cur.card} since={since} />
             : <TVIdle frame={frame} bare={!!cur.title} />}
         </div>
-        <TVGlass />
+        <div style={{position: "absolute", left: WALL.x, top: WALL.y,
+          width: WALL.w, height: WALL.h, pointerEvents: "none",
+          background: "linear-gradient(118deg, rgba(255,255,255,0.08) 0%,"
+            + " rgba(255,255,255,0.02) 26%, rgba(255,255,255,0) 46%)",
+          boxShadow: "inset 0 0 90px rgba(0,0,0,0.5)"}} />
         {/* DARK MOOD. Sits above the room and below the characters, so the
             figures stay readable while the space around them goes cold and
             closes in — a slow squeeze rather than a cut to black. */}
@@ -869,13 +887,26 @@ export const FairMarketEp5: React.FC = () => {
             .filter(({j}) => (shot?.show ? shot.show.includes(j)
               : shot?.only === undefined || shot.only === j));
           const other = visible.find(({j}) => j !== i)?.o;
-          return <Char key={i} a={a} since={since} frame={frame} speaking={speaking}
+          // THE PANEL. Seats are fixed per character - a desk show's talent
+          // does not wander - and the beat's authored staging is overridden
+          // wholesale. The foreground desk hides everything below the
+          // waist, which is what makes a standing drawing read as seated.
+          const seat = SEATS[isSol ? "sol" : "rex"];
+          const aSeat = {...a, kind: "full" as const, x: seat.x,
+                         y: PANEL_FLOOR, h: seat.h, moves: undefined,
+                         turns: undefined};
+          // the CAMERA zooms, the characters do not: strip the per-actor
+          // punch-in so the scene transform below is the only lens
+          const shotSeat = shot ? {...shot, k: 1, kEnd: undefined,
+                                   tx: undefined, ty: undefined} : shot;
+          return <Char key={i} a={aSeat} since={since} frame={frame} speaking={speaking}
                        mouthState={isSol ? ms.sol : ms.rex}
-                       shot={shot} shotSince={shotSince} shotLen={shotLen}
+                       shot={shotSeat} shotSince={shotSince} shotLen={shotLen}
                        otherX={other?.x} beatLen={hold}
                        stressN={stress.n} stressSince={stress.since}
                        holdMouth={cur.holdMouth} />;
         })}
+        <DeskFront dark={shot?.mood === "dark"} />
         {(cur.flicks ?? []).map((f, i) => (
           <ShockFlicks key={i} x={f.x} y={f.y} since={since - f.at} size={72} />
         ))}
