@@ -32,7 +32,11 @@ const VI = visemes as unknown as Record<string, V>;
 const TR = mouthTracks as unknown as Record<string, number[]>;
 const HF = headFocus as unknown as Record<string, {fx: number; fy: number}>;
 const RIG = rigParts as unknown as Record<string, Rig>;
-const RIG_OFF = false;   // flipped only by the A/B motion probe
+const RIG_OFF = true;    // OWNER CALL 2026-08-06: the rig acting (drawing
+// swaps, arm sweeps, turns, head accents) read as ugly extra body movement.
+// Reverted to the approved flat viseme rendering - breathing, holds, mouth
+// and blinks stay; the acting system stays in the code, dormant, should it
+// ever be wanted again.
 
 // A SHOT is a reframing of the staged actor, held from `from` (a frame
 // offset into the beat) until the next shot. Reframing is how one
