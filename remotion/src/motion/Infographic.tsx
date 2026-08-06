@@ -800,7 +800,12 @@ export const CollapseExhibit: React.FC<{
   since: number; w: number; h: number;
   title: string; fromPct: number; caption: string; foot: string;
 }> = ({since, w, h, title, fromPct, caption, foot}) => {
-  const t = ease(since, 16, 80);
+  // HOLD, then fall. The first render drained the number over frames
+  // 16-80, so by the time Sol finished SAYING "ninety-five percent" the
+  // screen already read 0% - the audience never met the number being
+  // mourned. Two full seconds at 95 first; the collapse is the second
+  // sentence, not the first.
+  const t = ease(since, 64, 170);
   const pct = Math.round(fromPct * (1 - t));
   const padX = 60;
   return (
