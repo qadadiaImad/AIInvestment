@@ -825,6 +825,21 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   // which is what stops a cut reading as a glitch and starts it reading as
   // speed. Sized by nothing clever — these changes are all roughly the same
   // magnitude — but gated so it only ever fires on the frames that changed.
+  // EXPRESSION. Arm variants do nothing for a bust, and the busts are most
+  // of the episode - sol_smug_v1 alone is 12 of 39 beats and shows barely
+  // any body. On a bust the only thing that can act is the face, so the
+  // brows change with each action while the mouth stays viseme-driven.
+  // Speakers get the open, assertive shapes; listeners get the narrow,
+  // judging ones, which is what a reaction actually looks like.
+  const exprs = rig?.expressions ?? [];
+  const exprPool = speaking
+    ? exprs.filter((e) => e !== "squint" && e !== "side_eye")
+    : exprs.filter((e) => e !== "wide");
+  const pool = exprPool.length ? exprPool : exprs;
+  const exprPart = pool.length && seg > 0
+    ? "expr__" + pool[(seg * 2 + pose.length) % pool.length]
+    : undefined;
+
   const cutAt = local === 0 || local === 3 || local === 8;
   const cutJust = local === 1 || local === 4 || local === 9;
   const smear = seg > 0 && vars.length ? (cutAt ? 1 : cutJust ? 0.5 : 0) : 0;
@@ -849,6 +864,7 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
     gestureArm: "armL",
     headPart: vk ? "head__" + vk : "head",
     bodyPart,
+    exprPart,
   };
   void beatLen; void faceTurn; void nod;
   // Sol moves like a veteran, Rex like an over-eager junior — derived

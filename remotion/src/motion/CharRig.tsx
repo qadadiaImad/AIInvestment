@@ -38,6 +38,10 @@ export type Rig = {
   legCut?: number;
   /** generated arm-pose variants available for this pose */
   variants?: string[];
+  /** generated brow/eye expressions available for this pose */
+  expressions?: string[];
+  /** normalized [x0,y0,x1,y1] of the region an expression changed */
+  eyeBox?: number[];
   /** x of the gap between the two feet */
   footMid?: number;
   /** the neck line — where the body silhouette is cut so its head region
@@ -82,6 +86,10 @@ export type RigPose = {
    *  pose cycling was that independent generations changed Sol's haircut
    *  mid-sentence, and an inpaint physically cannot. */
   bodyPart?: string;
+  /** which brow/eye expression to overlay — "expr__squint" etc. Drawn on
+   *  the head's own transform and clipped to eyeBox, so it travels with the
+   *  head and touches nothing the visemes own. */
+  exprPart?: string;
   /** which head artwork to draw — "head", or "head__open"/"head__oh"/... for
    *  a viseme variant. The variants differ ONLY inside the mouth mask, so a
    *  variant head registers exactly with the base body. */
@@ -142,6 +150,7 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
     sway = 0,
     headPart = "head",
     bodyPart = "body",
+    exprPart,
   } = pose;
 
   const BODY = rig.parts[bodyPart] ? bodyPart : "body";
@@ -279,7 +288,16 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
   // the cut, so the straight edge is never visible.
   const neck = rig.neck ?? 0.48;
   const clipHeadBand = `inset(0% 0% ${pc(1 - neck)} 0%)`;
-  const clipTorsoBand = `inset(${pc(neck)} 0% ${pc(1 - Math.min(1, cut + 0.075))} 0%)`;
+  // THE TORSO BAND UNDERLAPS THE NECK, and this is not a nicety. The head
+  // band's straight bottom edge rotates WITH the head; the torso band's top
+  // edge does not. Butt them together and every degree of head tilt opens a
+  // wedge where nothing is drawn — which on a bust framing is a tear right
+  // across the jaw, and is exactly what shipped in the last render. Starting
+  // the torso band well above the neck means the body always fills that
+  // wedge; the head part draws over the overlap, so nothing shows.
+  const clipTorsoBand =
+    `inset(${pc(Math.max(0, neck - 0.14))} 0% ` +
+    `${pc(1 - Math.min(1, cut + 0.075))} 0%)`;
 
   return (
     <>
@@ -345,6 +363,22 @@ export const CharRig: React.FC<{rig: Rig; pose: RigPose}> = ({rig, pose}) => {
         sx={headSx * (1 + brLag * 0.003)}
         sy={lookSy * (1 + brLag * 0.004)}
       />
+      {exprPart && rig.parts[exprPart] && rig.eyeBox ? (
+        <Part
+          rig={rig}
+          src={exprPart}
+          pivot="head"
+          clip={`inset(${pc(rig.eyeBox[1])} ${pc(1 - rig.eyeBox[2])} ` +
+                `${pc(1 - rig.eyeBox[3])} ${pc(rig.eyeBox[0])})`}
+          z={6}
+          rot={headRot + lookRot + tilt + leanRot * 0.5 + rock * 0.8
+               + brLag * 0.5 + sway * 1.9}
+          dx={headDx + swayDx * 1.6}
+          dy={-brLag * 4.2 + lookDy + bob * 1.15}
+          sx={headSx * (1 + brLag * 0.003)}
+          sy={lookSy * (1 + brLag * 0.004)}
+        />
+      ) : null}
       <Part
         rig={rig}
         src={rig.parts[headPart] ? headPart : "head"}
