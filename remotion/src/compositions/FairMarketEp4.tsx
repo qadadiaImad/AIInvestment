@@ -15,7 +15,7 @@ import {actionCurve, holdCurve, squash} from "../motion/toon";
 import {FlashCut, ShockFlicks, ShockRing, SpeedLines, kick} from "../motion/ToonFX";
 import {Grain, Vignette} from "../motion/Polish";
 import {Move, Turn, idle, interactXform} from "../motion/interact";
-import {FLOOR_Y, Room, TVFrame, TVGlass, TV_SCREEN, H as STAGE_H} from "../motion/Set";
+import {FLOOR_Y, NewsBand, PANEL_FLOOR, Room, RoundDesk, SEATS, WALL, WallFrame, H as STAGE_H} from "../motion/Set";
 import {BigNumberExhibit, CollapseExhibit, ColumnsExhibit, TickerTape} from "../motion/Infographic";
 import anchors from "../fixtures/cast_ep1/pose_anchors.json";
 import mouthTracks from "../fixtures/cast_ep1/mouth_tracks_ep4.json";
@@ -725,7 +725,7 @@ const ExhibitCard: React.FC<{c: Card; since: number}> = ({c, since}) => {
 // (The review panel judged this cosmetic and refuted it 2-1; it is a
 // two-line change that removes a real text-on-text stack, so it is in.)
 const TVIdle: React.FC<{frame: number; bare?: boolean}> = ({frame, bare}) => (
-  <TickerTape frame={frame} w={TV_SCREEN.w} h={TV_SCREEN.h} bare={bare}
+  <TickerTape frame={frame} w={WALL.w} h={WALL.h} bare={bare}
     label="LAWMAKER TRADE TRACKER"
     sub="disclosed positions, rebuilt from filings" />
 );
@@ -738,7 +738,15 @@ const TVIdle: React.FC<{frame: number; bare?: boolean}> = ({frame, bare}) => (
 
 
 const Subtitle: React.FC<{speaker: string; line: string}> = ({speaker, line}) => (
-  <div style={{position: "absolute", left: 60, right: 60, bottom: 90, textAlign: "center"}}>
+  <>
+    {/* SCRIM. The desk's rim is a curve, so it crosses the caption
+        zone at the wings no matter where the text sits. */}
+    <div style={{position: "absolute", left: 0, right: 0, bottom: 150,
+      height: 300, pointerEvents: "none",
+      background: "linear-gradient(180deg, rgba(6,10,18,0) 0%,"
+        + " rgba(6,10,18,0.55) 34%, rgba(6,10,18,0.72) 70%,"
+        + " rgba(6,10,18,0.55) 100%)"}} />
+  <div style={{position: "absolute", left: 60, right: 60, bottom: 196, textAlign: "center"}}>
     <div style={{fontFamily: "Impact, Arial", fontSize: 30, letterSpacing: 2,
       color: speaker === "SOL" ? "#E8A54B" : "#FF8A50", marginBottom: 6,
       textShadow: "2px 2px 0 #000"}}>{speaker}</div>
@@ -748,6 +756,7 @@ const Subtitle: React.FC<{speaker: string; line: string}> = ({speaker, line}) =>
       {line}
     </div>
   </div>
+  </>
 );
 
 export const FairMarketEp4: React.FC = () => {
@@ -761,6 +770,16 @@ export const FairMarketEp4: React.FC = () => {
   const activeSpeaker = sub2 ? cur.speaker2 : cur.speaker;
   const stress = stressFor(cur, frame);
   const {shot, shotSince, shotLen} = shotAt(cur.shots, since, hold);
+  // scene-camera values: the authored punch-ins become lens moves
+  // centred on the active speaker's seat
+  const camK0 = Math.min(1.3, shot?.k ?? 1);
+  const camK1 = shot?.kEnd === undefined ? camK0 : Math.min(1.3, shot.kEnd);
+  const camK = camK0 + (camK1 - camK0)
+    * Math.min(1, shotSince / Math.max(1, shotLen));
+  const camSeat = SEATS[(sub2 ? cur.speaker2 : cur.speaker) === "SOL"
+    ? "sol" : "rex"];
+  const camX = shot?.tx ?? camSeat.x;
+  const camY = Math.min(1420, shot?.ty ?? 1240);
 
   return (
     <AbsoluteFill style={{background: "#101828", overflow: "hidden"}}>
@@ -783,18 +802,31 @@ export const FairMarketEp4: React.FC = () => {
           ))}
         </React.Fragment>
       ))}
+      {/* THE SCENE CAMERA. The panel holds still and the LENS does the
+          work, like a match-analysis broadcast: the per-beat k/kEnd
+          that used to punch into one drawing now zooms the whole
+          studio about the speaker's seat, desk and wall included. */}
       <div style={{position: "absolute", inset: 0,
-        transform: `translate(${k.x}px, ${k.y * 0.4}px) scale(${1 + 0.03 * Math.max(0, 1 - since / 10) * nrg})`,
-        transformOrigin: "50% 45%"}}>
+        transform: `translate(${k.x}px, ${k.y * 0.4}px) `
+          + `scale(${(1 + 0.03 * Math.max(0, 1 - since / 10) * nrg) * camK})`,
+        transformOrigin: `${camX}px ${camY}px`}}>
         <Room dark={shot?.mood === "dark"} />
+        {/* the painted studio plate over the flat room: generated anime
+            background (provenance beside the file), cover-fit and dimmed so
+            the drawn wall, cast and table sit ON it */}
+        <Img src={staticFile("characters/cast_ep1/studio_bg.png")}
+          style={{position: "absolute", inset: 0, width: "100%",
+            height: "100%", objectFit: "cover",
+            opacity: shot?.mood === "dark" ? 0.35 : 0.55,
+            filter: "saturate(0.9) brightness(0.75)"}} />
         {/* The monitor is FURNITURE — always in the room, never popping in
             and out at beat boundaries, and it fills the upper frame that
             was otherwise dead wall above the cast. */}
-        <TVFrame glow={(!!cur.card || !!cur.graphic || !!shot?.tvPhoto)
+        <WallFrame glow={(!!cur.card || !!cur.graphic || !!shot?.tvPhoto)
           && !shot?.hideCard} />
-        <div style={{position: "absolute", left: TV_SCREEN.x, top: TV_SCREEN.y,
-          width: TV_SCREEN.w, height: TV_SCREEN.h, overflow: "hidden",
-          borderRadius: 4}}>
+        <div style={{position: "absolute", left: WALL.x, top: WALL.y,
+          width: WALL.w, height: WALL.h, overflow: "hidden",
+          borderRadius: 6}}>
           {/* `hideCard` was a declared-but-never-read field. It is wired
               now, and it is what lets a beat push in close on a character
               WITHOUT hiding its own evidence: the exhibit is explicitly
@@ -811,26 +843,26 @@ export const FairMarketEp4: React.FC = () => {
                     opacity: Math.min(1, shotSince / 10)}} />
               </div>
             ) : cur.graphic === "lic_10b" ? (
-              <BigNumberExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
+              <BigNumberExhibit since={since} w={WALL.w} h={WALL.h}
                 kicker="EXPORT LICENCES — APPROVED"
                 value="$10B+"
                 caption="approved is a licence category — not a sale"
                 foot="as reported · U.S. export licences for China-bound chips" />
             ) : cur.graphic === "gap_bars" ? (
-              <ColumnsExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
+              <ColumnsExhibit since={since} w={WALL.w} h={WALL.h}
                 title="APPROVED vs SHIPPED"
                 cols={[{label: "APPROVED", sub: "$10B+", frac: 1.0},
                        {label: "SHIPPED", sub: '"very few"', frac: 0.06,
                         tone: "red"}]}
                 foot={'"very few" — the Commerce Department’s words to Congress · as reported'} />
             ) : cur.graphic === "collapse_95" ? (
-              <CollapseExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
+              <CollapseExhibit since={since} w={WALL.w} h={WALL.h}
                 title="THE CHINA DATA-CENTER MARKET"
                 fromPct={95}
                 caption={'from ~95% share and $17B of revenue to "effectively foreclosed" — the company’s own filing’s words'}
                 foot="share, revenue and filing language as reported · categories as named" />
             ) : cur.graphic === "three_nouns" ? (
-              <ColumnsExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
+              <ColumnsExhibit since={since} w={WALL.w} h={WALL.h}
                 title="THREE NOUNS, THREE NUMBERS"
                 cols={[{label: "APPROVED", sub: "$10B+", frac: 1.0},
                        {label: "SHIPPED", sub: '"very few"', frac: 0.06,
@@ -841,7 +873,11 @@ export const FairMarketEp4: React.FC = () => {
             ) : cur.card ? <ExhibitCard c={cur.card} since={since} />
             : <TVIdle frame={frame} bare={!!cur.title} />}
         </div>
-        <TVGlass />
+        <div style={{position: "absolute", left: WALL.x, top: WALL.y,
+          width: WALL.w, height: WALL.h, pointerEvents: "none",
+          background: "linear-gradient(118deg, rgba(255,255,255,0.08) 0%,"
+            + " rgba(255,255,255,0.02) 26%, rgba(255,255,255,0) 46%)",
+          boxShadow: "inset 0 0 90px rgba(0,0,0,0.5)"}} />
         {/* DARK MOOD. Sits above the room and below the characters, so the
             figures stay readable while the space around them goes cold and
             closes in — a slow squeeze rather than a cut to black. */}
@@ -873,13 +909,26 @@ export const FairMarketEp4: React.FC = () => {
             .filter(({j}) => (shot?.show ? shot.show.includes(j)
               : shot?.only === undefined || shot.only === j));
           const other = visible.find(({j}) => j !== i)?.o;
-          return <Char key={i} a={a} since={since} frame={frame} speaking={speaking}
+          // THE PANEL. Seats are fixed per character - a desk show's
+          // talent does not wander - and the beat's authored staging is
+          // overridden wholesale. The table, drawn over the actors,
+          // hides everything below the chest, which is what makes a
+          // standing drawing read as seated.
+          const seat = SEATS[isSol ? "sol" : "rex"];
+          const aSeat = {...a, kind: "full" as const, x: seat.x,
+                         y: PANEL_FLOOR, h: seat.h, moves: undefined,
+                         turns: undefined};
+          // the CAMERA zooms, the characters do not
+          const shotSeat = shot ? {...shot, k: 1, kEnd: undefined,
+                                   tx: undefined, ty: undefined} : shot;
+          return <Char key={i} a={aSeat} since={since} frame={frame} speaking={speaking}
                        mouthState={isSol ? ms.sol : ms.rex}
-                       shot={shot} shotSince={shotSince} shotLen={shotLen}
+                       shot={shotSeat} shotSince={shotSince} shotLen={shotLen}
                        otherX={other?.x} beatLen={hold}
                        stressN={stress.n} stressSince={stress.since}
                        holdMouth={cur.holdMouth} />;
         })}
+        <RoundDesk dark={shot?.mood === "dark"} />
         {(cur.flicks ?? []).map((f, i) => (
           <ShockFlicks key={i} x={f.x} y={f.y} since={since - f.at} size={72} />
         ))}
@@ -917,11 +966,12 @@ export const FairMarketEp4: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div style={{position: "absolute", left: 0, right: 0, bottom: 20, textAlign: "center",
-          fontFamily: "Arial", fontSize: 22, color: "#6C7FA6"}}>
+        <div style={{position: "absolute", left: 0, right: 0, bottom: 6, textAlign: "center",
+          fontFamily: "Arial", fontSize: 20, color: "#6C7FA6"}}>
           parody · public record · educational, not advice
         </div>
       )}
+      <NewsBand frame={frame} dark={shot?.mood === "dark"} />
       <Vignette strength={0.28} />
       <Grain opacity={0.03} />
     </AbsoluteFill>

@@ -43,16 +43,20 @@ def panelize(ep: str) -> None:
         'WALL, WallFrame, H as STAGE_H} from "../motion/Set";',
         "imports")
 
-    # 2 ── the monitor becomes the video wall
-    sub('        <TVFrame glow={(!!cur.card || !!shot?.tvPose) && !shot?.hideCard} />\n'
-        '        <div style={{position: "absolute", left: TV_SCREEN.x, top: TV_SCREEN.y,\n'
+    # 2 ── the monitor becomes the video wall. The glow condition differs per
+    # episode (ep.1 keys on tvPose, the rest on graphic/tvPhoto), so swap the
+    # component name in place and retarget the picture rect separately rather
+    # than matching one episode's exact expression.
+    if "<TVFrame glow=" not in s:
+        raise SystemExit(f"ep{ep}: MISS wall frame")
+    s = s.replace("<TVFrame glow=", "<WallFrame glow=", 1)
+    sub('        <div style={{position: "absolute", left: TV_SCREEN.x, top: TV_SCREEN.y,\n'
         '          width: TV_SCREEN.w, height: TV_SCREEN.h, overflow: "hidden",\n'
         '          borderRadius: 4}}>',
-        '        <WallFrame glow={(!!cur.card || !!shot?.tvPose) && !shot?.hideCard} />\n'
         '        <div style={{position: "absolute", left: WALL.x, top: WALL.y,\n'
         '          width: WALL.w, height: WALL.h, overflow: "hidden",\n'
         '          borderRadius: 6}}>',
-        "wall frame")
+        "wall rect")
     s = s.replace("TV_SCREEN.w", "WALL.w").replace("TV_SCREEN.h", "WALL.h")
 
     # 3 ── glass over the wall
