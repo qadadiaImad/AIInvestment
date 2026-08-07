@@ -210,9 +210,11 @@ const BEATS: Beat[] = [
    line: "Ah. The ones with no tomorrow."},
 
   // ═══ ACT 1 — why they're cheap ═══════════════════════════════════════
-  {at: 440, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+  {at: 440, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+                      {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
    graphic: "split_price",
-   shots: [{from: 0, k: 1.0, kEnd: 1.07}],
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.07},
+           {from: 124, only: 1, k: 1.02, kEnd: 1.1, tx: 322, ty: 1240}],
    vo: "g5_sol_twothings", speaker: "SOL",
    line: "An option has two things in it. What it's worth now, and how much time is left."},
 
@@ -227,8 +229,10 @@ const BEATS: Beat[] = [
    shots: [{from: 0, k: 1.04, kEnd: 1.12, tx: 540, ty: 1120}],
    vo: "g7_rex_lessforless", speaker: "REX", line: "So I'm paying less for less."},
 
-  {at: 970, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
-   shots: [{from: 0, k: 1.02, kEnd: 1.12, tx: 580, ty: 1190}],
+  {at: 970, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900},
+                      {poses: ["rex_skeptic"], kind: "bust", x: 400, y: 1270, h: 820}],
+   shots: [{from: 0, only: 0, k: 1.02, kEnd: 1.12, tx: 580, ty: 1190},
+           {from: 124, only: 1, k: 1.02, kEnd: 1.1, tx: 322, ty: 1240}],
    vo: "g8_sol_zerohours", speaker: "SOL",
    line: "You're paying less for a bet that has to be right in the next few hours. Or it's zero."},
 
@@ -239,9 +243,11 @@ const BEATS: Beat[] = [
    shots: [{from: 0, k: 1.0, kEnd: 1.06}],
    vo: "g9_sol_watchclock", speaker: "SOL", line: "Watch what the clock does to it."},
 
-  {at: 1300, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930}],
+  {at: 1300, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+                      {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
    graphic: "decay_buyer",
-   shots: [{from: 0, k: 1.0, kEnd: 1.07}],
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.07},
+           {from: 136, only: 1, k: 1.02, kEnd: 1.1, tx: 322, ty: 1240}],
    vo: "g10_sol_schedule", speaker: "SOL",
    line: "That decay isn't a risk. It's the schedule. It happens whether the market moves or not."},
 
@@ -249,8 +255,9 @@ const BEATS: Beat[] = [
    shots: [{from: 0, k: 1.02, kEnd: 1.1}],
    vo: "g11_rex_ifright", speaker: "REX", line: "And if I'm right?"},
 
-  {at: 1610, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
-   shots: [{from: 0, k: 1.02, kEnd: 1.1, tx: 540, ty: 1200}],
+  {at: 1610, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880},
+                      {poses: ["rex_skeptic"], kind: "bust", x: 400, y: 1270, h: 820}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.05, tx: 541, ty: 1250}],
    vo: "g12_sol_beforeclose", speaker: "SOL",
    line: "Then you're right before the close, or you were wrong."},
 
@@ -267,21 +274,27 @@ const BEATS: Beat[] = [
    shots: [{from: 0, k: 1.04, kEnd: 1.12, tx: 540, ty: 1120}],
    vo: "g15_rex_whoselling", speaker: "REX", line: "So who's selling them to me?"},
 
-  {at: 2090, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+  {at: 2090, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+                      {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
    graphic: "decay_seller",
-   shots: [{from: 0, k: 1.0, kEnd: 1.07}],
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.07},
+           {from: 111, only: 1, k: 1.02, kEnd: 1.1, tx: 322, ty: 1240}],
    vo: "g16_sol_wantsdecay", speaker: "SOL",
    line: "Somebody who wants that decay. It's their whole position."},
 
-  {at: 2270, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930}],
+  {at: 2270, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+                      {poses: ["rex_skeptic"], kind: "bust", x: 400, y: 1270, h: 820}],
    graphic: "share_0dte",
-   shots: [{from: 0, k: 1.0, kEnd: 1.07}],
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.07},
+           {from: 111, only: 1, k: 1.02, kEnd: 1.1, tx: 322, ty: 1240}],
    vo: "g17_sol_threequarters", speaker: "SOL",
    line: "Three quarters of retail's index-options trading is now same-day."},
 
-  {at: 2450, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1215, h: 830}],
+  {at: 2450, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1215, h: 830},
+                      {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
    graphic: "share_0dte",
-   shots: [{from: 0, k: 1.0, kEnd: 1.06, tx: 540, ty: 1210}],
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.06, tx: 540, ty: 1210},
+           {from: 93, only: 1, k: 1.02, kEnd: 1.1, tx: 322, ty: 1240}],
    vo: "g18_sol_halfvolume", speaker: "SOL",
    line: "Half the volume in them, more or less, is retail."},
 
@@ -289,8 +302,9 @@ const BEATS: Beat[] = [
    shots: [{from: 0, k: 1.06, kEnd: 1.14, tx: 520, ty: 1250}],
    vo: "g19_rex_otherhalf", speaker: "REX", line: "And the other half?"},
 
-  {at: 2690, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
-   shots: [{from: 0, k: 1.02, kEnd: 1.12, tx: 580, ty: 1190}],
+  {at: 2690, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900},
+                      {poses: ["rex_skeptic"], kind: "bust", x: 400, y: 1270, h: 820}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.05, tx: 541, ty: 1250}],
    vo: "g20_sol_forliving", speaker: "SOL",
    line: "People who do this for a living, collecting the thing you're paying."},
 
@@ -307,8 +321,10 @@ const BEATS: Beat[] = [
    vo: "g22_sol_samescreen", speaker: "SOL",
    line: "You are. Same screen, same prices, same everything."},
 
-  {at: 3150, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930}],
-   shots: [{from: 0, k: 1.0, kEnd: 1.08}],
+  {at: 3150, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+                      {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.08},
+           {from: 124, only: 1, k: 1.02, kEnd: 1.1, tx: 322, ty: 1240}],
    vo: "g23_sol_sitwith", speaker: "SOL",
    line: "That's what I want you to sit with. There's no secret here. No filing, nobody's phone."},
 
@@ -324,8 +340,10 @@ const BEATS: Beat[] = [
    shots: [{from: 0, k: 1.04, kEnd: 1.12, tx: 540, ty: 1120}],
    vo: "g25_rex_whatdo", speaker: "REX", line: "So what do I do with that?"},
 
-  {at: 3660, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
-   shots: [{from: 0, k: 1.02, kEnd: 1.1, tx: 540, ty: 1200}],
+  {at: 3660, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880},
+                      {poses: ["rex_skeptic"], kind: "bust", x: 400, y: 1270, h: 820}],
+   shots: [{from: 0, only: 0, k: 1.02, kEnd: 1.1, tx: 540, ty: 1200},
+           {from: 111, only: 1, k: 1.02, kEnd: 1.1, tx: 322, ty: 1240}],
    vo: "g26_sol_stopcalling", speaker: "SOL",
    line: "You stop calling it cheap. Cheap is a price. That was never the price."},
 

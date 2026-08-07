@@ -198,9 +198,11 @@ const BEATS: Beat[] = [
    shots: [{from: 0, k: 1.0, kEnd: 1.08, tx: 540, ty: 1200}],
    vo: "c2_sol_what", speaker: "SOL", line: "Banned what, kid."},
 
-  {at: 160, actors: [{poses: ["rex_eager"], kind: "full", x: 500, y: FLOOR_Y, h: 900}],
+  {at: 160, actors: [{poses: ["rex_eager"], kind: "full", x: 500, y: FLOOR_Y, h: 900},
+                      {poses: ["sol_smug_v1"], kind: "bust", x: 800, y: 1270, h: 840}],
    graphic: "vote_232",
-   shots: [{from: 0, k: 1.0, kEnd: 1.08}],
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.08},
+           {from: 99, only: 1, k: 1.02, kEnd: 1.1, tx: 760, ty: 1240}],
    vo: "c3_rex_passed", speaker: "REX",
    line: "The trading! Congress! It passed — two thirty-two to one ninety-eight!",
    energy: 1.3},
@@ -210,9 +212,11 @@ const BEATS: Beat[] = [
    vo: "c4_sol_readit", speaker: "SOL", line: "Read it to me."},
 
   // ═══ ACT 1 — what it actually says ═══════════════════════════════════
-  {at: 400, actors: [{poses: ["rex_skeptic"], kind: "full", x: 470, y: FLOOR_Y, h: 960}],
+  {at: 400, actors: [{poses: ["rex_skeptic"], kind: "full", x: 470, y: FLOOR_Y, h: 960},
+                      {poses: ["sol_finger"], kind: "bust", x: 800, y: 1270, h: 840}],
    graphic: "scope_ban",
-   shots: [{from: 0, k: 1.0, kEnd: 1.08}],
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.08},
+           {from: 80, only: 1, k: 1.02, kEnd: 1.1, tx: 760, ty: 1240}],
    vo: "e1_rex_reads", speaker: "REX",
    line: "\"Members may not... purchase... new stock.\""},
 
@@ -232,9 +236,11 @@ const BEATS: Beat[] = [
    vo: "e4_sol_alreadyown", speaker: "SOL",
    line: "So what happens to everything they already own?"},
 
-  {at: 810, actors: [{poses: ["rex_listen"], kind: "full", x: 400, y: FLOOR_Y, h: 820}],
+  {at: 810, actors: [{poses: ["rex_listen"], kind: "full", x: 400, y: FLOOR_Y, h: 820},
+                      {poses: ["sol_smug_v1"], kind: "bust", x: 800, y: 1270, h: 840}],
    graphic: "scope_ban",
-   shots: [{from: 0, k: 1.04, kEnd: 1.14, tx: 520, ty: 1250}],
+   shots: [{from: 0, only: 0, k: 1.04, kEnd: 1.14, tx: 520, ty: 1250},
+           {from: 93, only: 1, k: 1.02, kEnd: 1.1, tx: 760, ty: 1240}],
    vo: "e5_rex_keepit", speaker: "REX",
    line: "...they keep it. They just give notice before they sell."},
 
@@ -263,9 +269,11 @@ const BEATS: Beat[] = [
    shots: [{from: 0, k: 1.04, kEnd: 1.12, tx: 540, ty: 1200}],
    vo: "e9_sol_slower", speaker: "SOL", line: "Say it slower."},
 
-  {at: 1360, actors: [{poses: ["rex_listen"], kind: "full", x: 400, y: FLOOR_Y, h: 820}],
+  {at: 1360, actors: [{poses: ["rex_listen"], kind: "full", x: 400, y: FLOOR_Y, h: 820},
+                      {poses: ["sol_finger"], kind: "bust", x: 800, y: 1270, h: 840}],
    graphic: "scope_exempt",
-   shots: [{from: 0, k: 1.04, kEnd: 1.14, tx: 520, ty: 1250}],
+   shots: [{from: 0, only: 0, k: 1.04, kEnd: 1.14, tx: 520, ty: 1250},
+           {from: 105, only: 1, k: 1.02, kEnd: 1.1, tx: 760, ty: 1240}],
    vo: "e10_rex_slower", speaker: "REX",
    line: "The ban on the executive branch... exempts the executive branch."},
 
@@ -312,8 +320,9 @@ const BEATS: Beat[] = [
    vo: "e16_rex_something", speaker: "REX",
    line: "Okay. But it passed. That's something."},
 
-  {at: 2440, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930}],
-   shots: [{from: 0, k: 1.0, kEnd: 1.08}],
+  {at: 2440, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+                      {poses: ["rex_skeptic"], kind: "bust", x: 400, y: 1270, h: 820}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.05, tx: 541, ty: 1250}],
    vo: "e17_sol_oldlaw", speaker: "SOL",
    line: "The old law already said they had to disclose inside forty-five days. Remember?"},
 
@@ -331,9 +340,11 @@ const BEATS: Beat[] = [
    vo: "e20_rex_howmuch", speaker: "REX", line: "...how much."},
 
   // THE NUMBER. Alone on screen, held, nothing competing with it.
-  {at: 2860, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+  {at: 2860, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+                      {poses: ["rex_skeptic"], kind: "bust", x: 400, y: 1270, h: 820}],
    graphic: "fine_200",
-   shots: [{from: 0, k: 1.0, kEnd: 1.06}],
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.06},
+           {from: 80, only: 1, k: 1.02, kEnd: 1.1, tx: 322, ty: 1240}],
    vo: "e21_sol_200", speaker: "SOL", line: "Two hundred dollars."},
 
   {at: 2990, actors: [{poses: ["rex_shock"], kind: "full", x: 500, y: FLOOR_Y, h: 900}],
@@ -343,8 +354,10 @@ const BEATS: Beat[] = [
    sfx: [{at: 6, name: "impact", vol: 0.5}],
    vo: "e22_rex_200", speaker: "REX", line: "Two hundred?", energy: 1.4},
 
-  {at: 3090, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
-   shots: [{from: 0, k: 1.02, kEnd: 1.12, tx: 580, ty: 1190}],
+  {at: 3090, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900},
+                      {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
+   shots: [{from: 0, only: 0, k: 1.02, kEnd: 1.12, tx: 580, ty: 1190},
+           {from: 130, only: 1, k: 1.02, kEnd: 1.1, tx: 322, ty: 1240}],
    vo: "e23_sol_guessmany", speaker: "SOL",
    line: "And guess how many members have been prosecuted under that law since two thousand twelve."},
 
@@ -353,9 +366,10 @@ const BEATS: Beat[] = [
    vo: "e24_rex_howmany", speaker: "REX", line: "How many."},
 
   // The other number. Fourteen years, zero.
-  {at: 3360, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1215, h: 830}],
+  {at: 3360, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1215, h: 830},
+                      {poses: ["rex_skeptic"], kind: "bust", x: 400, y: 1270, h: 820}],
    graphic: "zero_prosecutions",
-   shots: [{from: 0, k: 1.0, kEnd: 1.06, tx: 540, ty: 1210}],
+   shots: [{from: 0, k: 1.0, kEnd: 1.05, tx: 541, ty: 1250}],
    vo: "e25_sol_none", speaker: "SOL",
    line: "None. Not one, in fourteen years."},
 
@@ -390,13 +404,17 @@ const BEATS: Beat[] = [
   // NOT cynicism. The episode refuses the cheap read - a first step with
   // a hole in it is still a first step, and saying otherwise would be
   // the same laziness the show keeps arguing against.
-  {at: 4060, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
-   shots: [{from: 0, k: 1.02, kEnd: 1.12, tx: 580, ty: 1190}],
+  {at: 4060, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900},
+                      {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
+   shots: [{from: 0, only: 0, k: 1.02, kEnd: 1.12, tx: 580, ty: 1190},
+           {from: 105, only: 1, k: 1.02, kEnd: 1.1, tx: 322, ty: 1240}],
    vo: "e29_sol_notheatre", speaker: "SOL",
    line: "No. It's a first step with a hole in it. That's not the same thing."},
 
-  {at: 4230, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
-   shots: [{from: 0, k: 1.0, kEnd: 1.1, tx: 540, ty: 1200}],
+  {at: 4230, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880},
+                      {poses: ["rex_skeptic"], kind: "bust", x: 400, y: 1270, h: 820}],
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.1, tx: 540, ty: 1200},
+           {from: 105, only: 1, k: 1.02, kEnd: 1.1, tx: 322, ty: 1240}],
    vo: "e30_sol_suggestion", speaker: "SOL",
    line: "But a law you can't be punished for breaking isn't a rule, kid. It's a suggestion."},
 
@@ -416,8 +434,10 @@ const BEATS: Beat[] = [
    vo: "e32_sol_watch", speaker: "SOL",
    line: "The Senate. And the penalty. A ban with no penalty is a press release."},
 
-  {at: 4700, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
-   shots: [{from: 0, k: 1.0, kEnd: 1.12, tx: 540, ty: 1200}],
+  {at: 4700, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880},
+                      {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
+   shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.12, tx: 540, ty: 1200},
+           {from: 80, only: 1, k: 1.02, kEnd: 1.1, tx: 322, ty: 1240}],
    vo: "e33_sol_fair", speaker: "SOL",
    line: "Fair? No. But now you know what to read."},
 
