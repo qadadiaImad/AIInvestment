@@ -290,42 +290,70 @@ export const DeskHands: React.FC<{hands: HandSpec[]}> = ({hands}) => (
   </svg>
 );
 
-/** The crawl along the desk face — the band a market channel runs, in the
- *  space the table was otherwise wasting. Two copies tile so the loop is
- *  seamless, and the illustrative-data rail rides INSIDE the crawl so the
- *  fictional tape can never be mistaken for a quote feed. */
+/** The crawl along the desk face — CURVED, on the same arc the table is.
+ *  A straight bar under a curved desk reads as a sticker laid on top; a
+ *  strip that follows the curve reads as an LED panel built into the
+ *  furniture, which is what a broadcast desk actually has.
+ *
+ *  Text rides an SVG textPath, so the glyphs themselves bend with the
+ *  table. The scroll never wraps: the string is repeated far past the
+ *  longest episode's travel and simply moves left forever, which removes
+ *  the seam a modulo loop would leave at the reset. Glyphs that fall off
+ *  either end of the path are not rendered, so the cost is the visible
+ *  strip regardless of how long the string is.
+ */
 export const NewsBand: React.FC<{frame: number; dark?: boolean}> = ({
   frame, dark = false,
 }) => {
   const ITEMS = [
     'MARKET LESSONS · THE DESK',
     'ILLUSTRATIVE TAPE · NOT REAL PRICES',
-    'LTX  111.13  ▲ 0.42%',
-    'VOLQ  24.80  ▼ 1.10%',
-    'CRUDE  63.40  ▲ 0.88%',
+    'LTX 111.13 ▲0.42%',
+    'VOLQ 24.80 ▼1.10%',
+    'CRUDE 63.40 ▲0.88%',
     'EDUCATIONAL · NOT ADVICE',
-    'BONDS  4.12%  ▼ 3bp',
-    'MEGA-CAP  ▲ 0.31%',
+    'BONDS 4.12% ▼3bp',
+    'MEGA-CAP ▲0.31%',
   ];
-  const line = ITEMS.join('     ·     ') + '     ·     ';
-  const SPEED = 78; // px per second
-  const CYCLE = 2600; // approx px of one copy at this font size
-  const dx = -((frame / 30) * SPEED) % CYCLE;
-  const bg = dark ? '#0A0E17' : '#0D1322';
+  const one = ITEMS.join('     ·     ') + '     ·     ';
+  // ~16k px of travel on the longest episode; 10 copies is comfortably past it
+  const line = one.repeat(10);
+  const SPEED = 78;               // px per second along the curve
+  const dx = -(frame / 30) * SPEED;
+  const bg = dark ? '#080C14' : '#0B1020';
+  const rim = dark ? 'rgba(190,150,110,0.32)' : 'rgba(230,190,140,0.5)';
+  // the strip's centre line: the desk's own curvature, softened just enough
+  // that the deepest point stays on frame
+  const mid = 'M -80 1772 Q 540 1912 1160 1772';
+  const top = 'M -80 1741 Q 540 1881 1160 1741';
+  const bot = 'M -80 1803 Q 540 1943 1160 1803';
+  const base = 'M -80 1781 Q 540 1921 1160 1781';   // text baseline
   return (
-    <div style={{position: 'absolute', left: 0, right: 0, top: 1792, height: 62,
-      background: bg, borderTop: '2px solid rgba(230,190,140,0.45)',
-      borderBottom: '2px solid rgba(0,0,0,0.5)', overflow: 'hidden'}}>
-      <div style={{position: 'absolute', left: 0, top: 0, height: 62,
-        whiteSpace: 'nowrap', transform: `translateX(${dx}px)`,
-        fontFamily: 'Arial', fontWeight: 700, fontSize: 27, lineHeight: '62px',
-        letterSpacing: 1.5, color: '#9FE8C0'}}>
-        {line}{line}
-      </div>
-      {/* soft edges so items enter and leave rather than pop */}
-      <div style={{position: 'absolute', inset: 0, pointerEvents: 'none',
-        background: `linear-gradient(90deg, ${bg} 0%, rgba(0,0,0,0) 7%,`
-          + ` rgba(0,0,0,0) 93%, ${bg} 100%)`}} />
-    </div>
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}
+      style={{position: 'absolute', inset: 0, pointerEvents: 'none'}}>
+      <defs>
+        <path id="nb-base" d={base} fill="none" />
+        <linearGradient id="nb-fade" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#fff" stopOpacity="0" />
+          <stop offset="7%" stopColor="#fff" stopOpacity="1" />
+          <stop offset="93%" stopColor="#fff" stopOpacity="1" />
+          <stop offset="100%" stopColor="#fff" stopOpacity="0" />
+        </linearGradient>
+        <mask id="nb-mask">
+          <rect x="0" y="1700" width={W} height="260" fill="url(#nb-fade)" />
+        </mask>
+      </defs>
+      {/* the panel itself, stroked along the curve */}
+      <path d={mid} fill="none" stroke={bg} strokeWidth={62} />
+      <path d={top} fill="none" stroke={rim} strokeWidth={3} />
+      <path d={bot} fill="none" stroke="rgba(0,0,0,0.55)" strokeWidth={3} />
+      {/* the crawl, bending with the table */}
+      <g mask="url(#nb-mask)">
+        <text fontFamily="Consolas, 'Courier New', monospace" fontSize={26}
+          fontWeight={700} fill="#9FE8C0" letterSpacing={1}>
+          <textPath href="#nb-base" startOffset={dx}>{line}</textPath>
+        </text>
+      </g>
+    </svg>
   );
 };
