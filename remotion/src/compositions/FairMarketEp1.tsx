@@ -15,7 +15,7 @@ import {actionCurve, holdCurve, squash} from "../motion/toon";
 import {FlashCut, ShockFlicks, ShockRing, SpeedLines, kick} from "../motion/ToonFX";
 import {Grain, Vignette} from "../motion/Polish";
 import {Move, Turn, idle, interactXform} from "../motion/interact";
-import {FLOOR_Y, Room, TVFrame, TVGlass, TV_SCREEN, H as STAGE_H} from "../motion/Set";
+import {FLOOR_Y, NewsBand, PANEL_FLOOR, Room, RoundDesk, SEATS, WALL, WallFrame, H as STAGE_H} from "../motion/Set";
 import {CounterExhibit, PerformanceExhibit, TickerTape,
         TimelineExhibit} from "../motion/Infographic";
 import anchors from "../fixtures/cast_ep1/pose_anchors.json";
@@ -990,7 +990,7 @@ const ExhibitCard: React.FC<{c: Card; since: number}> = ({c, since}) => {
 // (The review panel judged this cosmetic and refuted it 2-1; it is a
 // two-line change that removes a real text-on-text stack, so it is in.)
 const TVIdle: React.FC<{frame: number; bare?: boolean}> = ({frame, bare}) => (
-  <TickerTape frame={frame} w={TV_SCREEN.w} h={TV_SCREEN.h} bare={bare}
+  <TickerTape frame={frame} w={WALL.w} h={WALL.h} bare={bare}
     label="LAWMAKER TRADE TRACKER"
     sub="disclosed positions, rebuilt from filings" />
 );
@@ -1003,7 +1003,7 @@ const TVPose: React.FC<{pose: string; since: number}> = ({pose, since}) => {
   if (!d) return null;
   // Framed like an interview insert, not a full-length portrait.
   //
-  // Scaling by HEIGHT (the old `TV_SCREEN.h * 1.85 / d.h`) sizes a
+  // Scaling by HEIGHT (the old `WALL.h * 1.85 / d.h`) sizes a
   // portrait-shaped drawing by its long axis, so on an 864x486 screen it
   // came out 611px wide and sat in 250px of black bars — a small dark
   // picture inside a large dark rectangle, which is exactly the "she
@@ -1011,7 +1011,7 @@ const TVPose: React.FC<{pose: string; since: number}> = ({pose, since}) => {
   // form. Scale by WIDTH so she fills the screen edge to edge, and take
   // the crop off the BOTTOM: the head and hands are the performance, the
   // legs were never in the shot anyway.
-  const s = (TV_SCREEN.w * 0.92) / d.w;
+  const s = (WALL.w * 0.92) / d.w;
   const w = d.w * s, h = d.h * s;
   const rise = Math.min(1, since / 12);
   // slow drift down over the hold, so a 5-second insert is never a still
@@ -1024,15 +1024,23 @@ const TVPose: React.FC<{pose: string; since: number}> = ({pose, since}) => {
       background: "linear-gradient(180deg,#1B2438 0%,#0E1422 100%)"}}>
       <Img src={staticFile(d.src)}
         style={{position: "absolute", width: w, height: h,
-          left: TV_SCREEN.w / 2 - w / 2,
-          top: TV_SCREEN.h / 2 - h * 0.29 - drift + (1 - rise) * 30,
+          left: WALL.w / 2 - w / 2,
+          top: WALL.h / 2 - h * 0.29 - drift + (1 - rise) * 30,
           opacity: rise}} />
     </div>
   );
 };
 
 const Subtitle: React.FC<{speaker: string; line: string}> = ({speaker, line}) => (
-  <div style={{position: "absolute", left: 60, right: 60, bottom: 90, textAlign: "center"}}>
+  <>
+    {/* SCRIM. The desk's rim is a curve, so it crosses the caption
+        zone at the wings no matter where the text sits. */}
+    <div style={{position: "absolute", left: 0, right: 0, bottom: 150,
+      height: 300, pointerEvents: "none",
+      background: "linear-gradient(180deg, rgba(6,10,18,0) 0%,"
+        + " rgba(6,10,18,0.55) 34%, rgba(6,10,18,0.72) 70%,"
+        + " rgba(6,10,18,0.55) 100%)"}} />
+  <div style={{position: "absolute", left: 60, right: 60, bottom: 196, textAlign: "center"}}>
     <div style={{fontFamily: "Impact, Arial", fontSize: 30, letterSpacing: 2,
       color: speaker === "SOL" ? "#E8A54B" : "#FF8A50", marginBottom: 6,
       textShadow: "2px 2px 0 #000"}}>{speaker}</div>
@@ -1042,6 +1050,7 @@ const Subtitle: React.FC<{speaker: string; line: string}> = ({speaker, line}) =>
       {line}
     </div>
   </div>
+  </>
 );
 
 export const FairMarketEp1: React.FC = () => {
@@ -1055,6 +1064,16 @@ export const FairMarketEp1: React.FC = () => {
   const activeSpeaker = sub2 ? cur.speaker2 : cur.speaker;
   const stress = stressFor(cur, frame);
   const {shot, shotSince, shotLen} = shotAt(cur.shots, since, hold);
+  // scene-camera values: the authored punch-ins become lens moves
+  // centred on the active speaker's seat
+  const camK0 = Math.min(1.3, shot?.k ?? 1);
+  const camK1 = shot?.kEnd === undefined ? camK0 : Math.min(1.3, shot.kEnd);
+  const camK = camK0 + (camK1 - camK0)
+    * Math.min(1, shotSince / Math.max(1, shotLen));
+  const camSeat = SEATS[(sub2 ? cur.speaker2 : cur.speaker) === "SOL"
+    ? "sol" : "rex"];
+  const camX = shot?.tx ?? camSeat.x;
+  const camY = Math.min(1420, shot?.ty ?? 1240);
 
   return (
     <AbsoluteFill style={{background: "#101828", overflow: "hidden"}}>
@@ -1077,17 +1096,30 @@ export const FairMarketEp1: React.FC = () => {
           ))}
         </React.Fragment>
       ))}
+      {/* THE SCENE CAMERA. The panel holds still and the LENS does the
+          work, like a match-analysis broadcast: the per-beat k/kEnd
+          that used to punch into one drawing now zooms the whole
+          studio about the speaker's seat, desk and wall included. */}
       <div style={{position: "absolute", inset: 0,
-        transform: `translate(${k.x}px, ${k.y * 0.4}px) scale(${1 + 0.03 * Math.max(0, 1 - since / 10) * nrg})`,
-        transformOrigin: "50% 45%"}}>
+        transform: `translate(${k.x}px, ${k.y * 0.4}px) `
+          + `scale(${(1 + 0.03 * Math.max(0, 1 - since / 10) * nrg) * camK})`,
+        transformOrigin: `${camX}px ${camY}px`}}>
         <Room dark={shot?.mood === "dark"} />
+        {/* the painted studio plate over the flat room: generated anime
+            background (provenance beside the file), cover-fit and dimmed so
+            the drawn wall, cast and table sit ON it */}
+        <Img src={staticFile("characters/cast_ep1/studio_bg.png")}
+          style={{position: "absolute", inset: 0, width: "100%",
+            height: "100%", objectFit: "cover",
+            opacity: shot?.mood === "dark" ? 0.35 : 0.55,
+            filter: "saturate(0.9) brightness(0.75)"}} />
         {/* The monitor is FURNITURE — always in the room, never popping in
             and out at beat boundaries, and it fills the upper frame that
             was otherwise dead wall above the cast. */}
-        <TVFrame glow={(!!cur.card || !!shot?.tvPose) && !shot?.hideCard} />
-        <div style={{position: "absolute", left: TV_SCREEN.x, top: TV_SCREEN.y,
-          width: TV_SCREEN.w, height: TV_SCREEN.h, overflow: "hidden",
-          borderRadius: 4}}>
+        <WallFrame glow={(!!cur.card || !!shot?.tvPose) && !shot?.hideCard} />
+        <div style={{position: "absolute", left: WALL.x, top: WALL.y,
+          width: WALL.w, height: WALL.h, overflow: "hidden",
+          borderRadius: 6}}>
           {/* `hideCard` was a declared-but-never-read field. It is wired
               now, and it is what lets a beat push in close on a character
               WITHOUT hiding its own evidence: the exhibit is explicitly
@@ -1097,7 +1129,7 @@ export const FairMarketEp1: React.FC = () => {
           {shot?.hideCard ? <TVIdle frame={frame} bare={!!cur.title} />
             : shot?.tvPose ? <TVPose pose={shot.tvPose} since={shotSince} />
             : cur.graphic === "timeline_nvidia" ? (
-              <TimelineExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
+              <TimelineExhibit since={since} w={WALL.w} h={WALL.h}
                 title="JULY 2022 · PUBLIC FILING"
                 left={{date: "JUL 2022", label: "household sells\n25,000 NVIDIA shares"}}
                 right={{date: "AUG 2022", label: "Congress passes\nchip subsidies"}}
@@ -1105,27 +1137,31 @@ export const FairMarketEp1: React.FC = () => {
                 counter={{to: 25000, label: "shares disclosed"}}
                 foot="STOCK Act disclosure · widely reported" />
             ) : cur.graphic === "perf_2024" ? (
-              <PerformanceExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
+              <PerformanceExhibit since={since} w={WALL.w} h={WALL.h}
                 title="REPORTED RETURN" year="2024"
                 rows={[{label: "A TRACKED LAWMAKER HOUSEHOLD", pct: 70.9, tone: "red"},
                        {label: "S&P 500", pct: 24.9, tone: "blue"}]}
                 foot="as reported by Unusual Whales' 2024 congressional trading report - disclosed trades, public record" />
             ) : cur.graphic === "lag_cost" ? (
-              <PerformanceExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
+              <PerformanceExhibit since={since} w={WALL.w} h={WALL.h}
                 title="WHAT THE 45-DAY LAG COSTS" year="2024"
                 rows={[{label: "THE DISCLOSED PORTFOLIO", pct: 70.9, tone: "red"},
                        {label: "A FUND COPYING IT, 45 DAYS LATE", pct: 26.8, tone: "grey"},
                        {label: "S&P 500", pct: 24.9, tone: "blue"}]}
                 foot="portfolio: Unusual Whales 2024 report - fund: NANC 2024 total return - the edge survives the delay, most of it does not" />
             ) : cur.graphic === "counter_45days" ? (
-              <CounterExhibit since={since} w={TV_SCREEN.w} h={TV_SCREEN.h}
+              <CounterExhibit since={since} w={WALL.w} h={WALL.h}
                 title="WHY COPYING FAILS" to={45} unit="days"
                 caption="The reporting window can run this long. By the time a trade is public, the move already happened."
                 foot="STOCK Act reporting window" />
             ) : cur.card ? <ExhibitCard c={cur.card} since={since} />
             : <TVIdle frame={frame} bare={!!cur.title} />}
         </div>
-        <TVGlass />
+        <div style={{position: "absolute", left: WALL.x, top: WALL.y,
+          width: WALL.w, height: WALL.h, pointerEvents: "none",
+          background: "linear-gradient(118deg, rgba(255,255,255,0.08) 0%,"
+            + " rgba(255,255,255,0.02) 26%, rgba(255,255,255,0) 46%)",
+          boxShadow: "inset 0 0 90px rgba(0,0,0,0.5)"}} />
         {/* DARK MOOD. Sits above the room and below the characters, so the
             figures stay readable while the space around them goes cold and
             closes in — a slow squeeze rather than a cut to black. */}
@@ -1159,13 +1195,26 @@ export const FairMarketEp1: React.FC = () => {
             .filter(({j}) => (shot?.show ? shot.show.includes(j)
               : shot?.only === undefined || shot.only === j));
           const other = visible.find(({j}) => j !== i)?.o;
-          return <Char key={i} a={a} since={since} frame={frame} speaking={speaking}
+          // THE PANEL. Seats are fixed per character - a desk show's
+          // talent does not wander - and the beat's authored staging is
+          // overridden wholesale. The table, drawn over the actors,
+          // hides everything below the chest, which is what makes a
+          // standing drawing read as seated.
+          const seat = SEATS[isSol ? "sol" : "rex"];
+          const aSeat = {...a, kind: "full" as const, x: seat.x,
+                         y: PANEL_FLOOR, h: seat.h, moves: undefined,
+                         turns: undefined};
+          // the CAMERA zooms, the characters do not
+          const shotSeat = shot ? {...shot, k: 1, kEnd: undefined,
+                                   tx: undefined, ty: undefined} : shot;
+          return <Char key={i} a={aSeat} since={since} frame={frame} speaking={speaking}
                        mouthState={isSol ? ms.sol : ms.rex}
-                       shot={shot} shotSince={shotSince} shotLen={shotLen}
+                       shot={shotSeat} shotSince={shotSince} shotLen={shotLen}
                        otherX={other?.x} beatLen={hold}
                        stressN={stress.n} stressSince={stress.since}
                        holdMouth={cur.holdMouth} />;
         })}
+        <RoundDesk dark={shot?.mood === "dark"} />
         {(cur.flicks ?? []).map((f, i) => (
           <ShockFlicks key={i} x={f.x} y={f.y} since={since - f.at} size={72} />
         ))}
@@ -1203,11 +1252,12 @@ export const FairMarketEp1: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div style={{position: "absolute", left: 0, right: 0, bottom: 20, textAlign: "center",
-          fontFamily: "Arial", fontSize: 22, color: "#6C7FA6"}}>
+        <div style={{position: "absolute", left: 0, right: 0, bottom: 6, textAlign: "center",
+          fontFamily: "Arial", fontSize: 20, color: "#6C7FA6"}}>
           parody · public record · educational, not advice
         </div>
       )}
+      <NewsBand frame={frame} dark={shot?.mood === "dark"} />
       <Vignette strength={0.28} />
       <Grain opacity={0.03} />
     </AbsoluteFill>
