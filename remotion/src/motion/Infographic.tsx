@@ -281,7 +281,13 @@ export const TickerTape: React.FC<{
   const lo = Math.floor(wLo / step) * step - step * 0.25;
   const hi = Math.ceil(wHi / step) * step + step * 0.25;
 
-  const padR = 96, padB = 34, top = bare ? 18 : 62;
+  // padB carries TWO rows below the plot, not one: the dated x-axis
+  // (baseline at bot + 20) and the ILLUSTRATIVE disclaimer pinned to the
+  // container's bottom edge. At the original 34 the two sat in the same
+  // 12px band and the disclaimer struck through the date labels on every
+  // chart in every episode. 54 gives the axis its row and leaves the
+  // disclaimer its own underneath.
+  const padR = 96, padB = 54, top = bare ? 18 : 62;
   const plotW = w - padR, bot = h - padB;
   const yOf = (v: number) => bot - ((v - lo) / (hi - lo)) * (bot - top);
 
