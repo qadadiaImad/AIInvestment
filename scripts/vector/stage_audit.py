@@ -157,10 +157,42 @@ def parse_beats(src: str) -> list[dict]:
     return out
 
 
-def box(actor: dict, k: float, anchors: dict) -> tuple[float, float, float, float]:
+# ── PANEL AWARENESS ────────────────────────────────────────────────────
+# In the panel format the composition DISCARDS the authored x/y/h/kind and
+# seats each character at a fixed place, then draws the table over them.
+# Auditing the authored coordinates therefore measures a layout that is
+# never rendered - it reported 4 occlusions and up to 4 off-frames per
+# episode against two-shots that are visibly clean in the render. Mirror
+# the override, and clip each figure at the table edge, because ink hidden
+# behind the desk cannot occlude anything.
+PANEL = "const seat = SEATS[" in COMP.read_text("utf-8")
+SEATS = {"sol": {"x": 760, "h": 772}, "rex": {"x": 322, "h": 792}}
+PANEL_FLOOR = 1826
+
+
+def desk_top_at(x: float) -> float:
+    """The table's top edge, mirroring RoundDesk's arcTop bezier in Set.tsx."""
+    t = max(0.0, min(1.0, (x + 80) / 1240))
+    return (1 - t) ** 2 * 1506 + 2 * t * (1 - t) * 1712 + t * t * 1506
+
+
+def seat_of(pose: str) -> dict:
+    return SEATS["sol" if pose.startswith("sol") else "rex"]
+
+
+def box(actor: dict, k: float, anchors: dict,
+        clip: bool = True) -> tuple[float, float, float, float]:
     """On-screen INK box for an actor at reframe factor k, using the same
     maths the composition uses (scale by ink height for `full`, by canvas
-    height otherwise; reframe about the head focus point)."""
+    height otherwise; reframe about the head focus point).
+
+    clip=False returns the box BEFORE the table crops it - the head point is
+    a fraction of the full figure, so deriving it from a clipped box would
+    walk the face down into the chest."""
+    if PANEL:
+        s = seat_of(actor["pose"])
+        actor = {**actor, "kind": "full", "x": s["x"], "y": PANEL_FLOOR,
+                 "h": s["h"]}
     d = anchors[actor["pose"]]
     kind, h = actor["kind"], actor["h"]
     scale = (h / d["ink_h"]) if kind == "full" else (h / d["h"])
@@ -174,8 +206,50 @@ def box(actor: dict, k: float, anchors: dict) -> tuple[float, float, float, floa
     hx, hy = left0 + hf["fx"] * w0, top0 + hf["fy"] * h0
     left, top = hx - hf["fx"] * w0 * k, hy - hf["fy"] * h0 * k
     il, it, ir, ib = ink_box(actor["pose"])
+    bottom = top + ib * h0 * k
+    if PANEL and clip:
+        # everything below the table edge is painted over by the desk
+        bottom = min(bottom, desk_top_at(actor["x"]))
     return (left + il * w0 * k, top + it * h0 * k,
-            left + ir * w0 * k, top + ib * h0 * k)
+            left + ir * w0 * k, bottom)
+
+
+def head_of(actor: dict, k: float, anchors: dict) -> tuple[float, float]:
+    """Where the FACE lands on screen, from the unclipped figure."""
+    bx = box(actor, k, anchors, clip=False)
+    hf = HF.get(actor["pose"], {"fx": 0.5, "fy": 0.32})
+    il, _, ir, _ = ink_box(actor["pose"])
+    hx = bx[0] + (hf["fx"] - il) * (bx[2] - bx[0]) / max(1e-6, ir - il)
+    hy = bx[1] + hf["fy"] * (bx[3] - bx[1])
+    return hx, hy
+
+
+def head_rect(actor: dict, k: float, anchors: dict) -> tuple:
+    """A rectangle around the face."""
+    bx = box(actor, k, anchors, clip=False)
+    hx, hy = head_of(actor, k, anchors)
+    w = (bx[2] - bx[0]) * 0.31
+    h = (bx[3] - bx[1]) * 0.13
+    return (hx - w, hy - h, hx + w, hy + h)
+
+
+# CALIBRATED AGAINST THE RENDERS, AND HONEST ABOUT WHAT IT CANNOT DO.
+#
+# The first attempt used 0.15, on the strength of one pose pair measuring
+# rex_listen 22% / rex_skeptic 0%. Checked against the actual frames that
+# threshold flagged SIX beats in ep.1 - the episode the owner confirmed -
+# at 29-43% coverage, and all six read perfectly: both faces clear.
+#
+# So head-rect coverage does not correlate with looking wrong. The known-bad
+# rex_listen case scored LOWER (22%) than four confirmed-good ep.1 beats.
+# What actually made rex_listen worse was the lean and the height, which
+# this geometry does not model.
+#
+# The check is therefore kept only as a CATASTROPHE guard - a face almost
+# entirely behind another body - set above everything the confirmed
+# episodes do. It will NOT catch crowding. Two-shots still have to be
+# looked at; there is no substitute yet.
+FACE_COVER_MAX = 0.60
 
 
 def overlaps(a, b) -> float:
@@ -211,6 +285,26 @@ def main() -> None:
                 boxes = [(a["pose"], box(a, k, anchors)) for a in vis]
                 for i in range(len(boxes)):
                     for j in range(i + 1, len(boxes)):
+                        if PANEL:
+                            # AT A DESK the cast sits shoulder to shoulder, so
+                            # a silhouette overlap is normal and wanted - ep.1's
+                            # two confirmed two-shots both overlap and read
+                            # perfectly. The defect is a BURIED FACE: rex_listen
+                            # is drawn leaning in profile, which walked his head
+                            # under Sol's. Actors paint in array order, so only
+                            # a later actor can bury an earlier one.
+                            hr = head_rect(vis[i], k, anchors)
+                            bj = boxes[j][1]
+                            ox = min(hr[2], bj[2]) - max(hr[0], bj[0])
+                            oy = min(hr[3], bj[3]) - max(hr[1], bj[1])
+                            area = (hr[2] - hr[0]) * (hr[3] - hr[1])
+                            cov = (ox * oy / area) if ox > 0 and oy > 0 else 0.0
+                            if cov > FACE_COVER_MAX:
+                                bad_pair += 1
+                                print(f"  FACE BURIED beat {b['at']:4d} shot "
+                                      f"{si} k={k:.2f}  {boxes[i][0]}'s face "
+                                      f"{100 * cov:.0f}% under {boxes[j][0]}")
+                            continue
                         ov = overlaps(boxes[i][1], boxes[j][1])
                         if ov > 0:
                             bad_pair += 1
@@ -225,13 +319,7 @@ def main() -> None:
                 # solo shot is on the head point, not the silhouette.
                 solo = len(boxes) == 1
                 if solo:
-                    a = vis[0]
-                    hf = HF.get(a["pose"], {"fx": 0.5, "fy": 0.32})
-                    bx = boxes[0][1]
-                    hx = bx[0] + (hf["fx"] - ink_box(a["pose"])[0]) * (
-                        bx[2] - bx[0]) / max(1e-6, ink_box(a["pose"])[2]
-                                             - ink_box(a["pose"])[0])
-                    hy = bx[1] + hf["fy"] * (bx[3] - bx[1])
+                    hx, hy = head_of(vis[0], k, anchors)
                     if not (60 <= hx <= W - 60 and 40 <= hy <= H * 0.85):
                         bad_edge += 1
                         print(f"  FACE OUT   beat {b['at']:4d} shot {si} "
