@@ -9,10 +9,25 @@ negative-prompt token could have: the requested pose - low angle, fist
 thrust at the viewer - IS the Stardust Crusaders cover composition. The
 leak was structural, not lexical.
 
-ROUTING is per card, decided by the authors: people go to Illustrious
-(a character checkpoint - it draws figures well and objects badly, proven
-here when six of eight object prompts came back unusable), objects go to
-Z-Image. Jobs are ordered so the model family switches exactly once, since
+ROUTING: everything goes to Z-Image. The first pass split people to
+Illustrious-XL and objects to Z-Image on the theory that a character
+checkpoint draws figures better. All eight Illustrious cards came back
+unusable - blob subjects, the palette collapsed to sepia, and two carried
+garbled fake-Japanese lettering baked across the frame despite a negative
+prompt forbidding text. All four Z-Image cards came back clean first try.
+
+The deeper reason the reroute alone was not enough: the two models want
+different PROMPT GRAMMAR. Illustrious is SDXL and eats danbooru tag soup
+("1man, solo, dark navy suit, ..."); Z-Image Turbo is driven by a
+Qwen-3-4B text encoder and wants flowing prose. The cards were rewritten
+accordingly (see prompt_illustrious_orig on each card for what failed).
+
+Note also that zimage_t2i samples at cfg=1, so there is no
+classifier-free guidance and the negative prompt has NO effect. Every
+constraint - no text, restrained palette, full bleed - has to be stated
+positively inside the prose.
+
+Jobs are still ordered so the model family switches at most once, since
 switching families inside one ComfyUI process is a known VRAM-eviction
 corruption risk in this repo.
 
@@ -76,7 +91,16 @@ def main() -> None:
         print("  %-18s %-11s %5.1fs" % (c["name"], c["route"], secs),
               flush=True)
 
-    (OUT / "provenance.json").write_text(json.dumps(rows, indent=1), "utf-8")
+    # MERGE, never overwrite: a partial run (the usual case - regenerating
+    # the few that failed) must not delete the provenance of the exhibits
+    # it did not touch.
+    prov = OUT / "provenance.json"
+    old = json.loads(prov.read_text("utf-8")) if prov.exists() else []
+    merged = {r["name"]: r for r in old}
+    merged.update({r["name"]: r for r in rows})
+    prov.write_text(json.dumps(sorted(merged.values(),
+                                      key=lambda r: r["name"]), indent=1),
+                    "utf-8")
     print("-> " + str(OUT))
 
 

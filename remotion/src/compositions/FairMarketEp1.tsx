@@ -325,8 +325,11 @@ const BEATS: Beat[] = [
   {at: 1301,
    exhibit: "committee_room",
    sfx: [{at: 0, name: "v_whoosh", vol: 0.26}], actors: [{poses: ["sol_finger"], kind: "full", x: 760, y: FLOOR_Y, h: 900}],
+   // Opens on the second caricature, then cuts to the exhibit at 104. Both
+   // shots used to carry `tvPose`, which meant the wired `committee_room`
+   // exhibit had nowhere to land and never appeared at all.
    shots: [{from: 0, mood: "dark", tvPose: "congress2_scheme", k: 1.0, kEnd: 1.07},
-           {from: 104, mood: "dark", tvPose: "congress2_scheme",
+           {from: 104, mood: "dark",
             k: 1.2, kEnd: 1.32, tx: 600, ty: 1210}],
    vo: "a3_sol_others", speaker: "SOL",
    line: "And it's not one person, or one party. Other politicians get tracked exactly the same way."},
@@ -1098,6 +1101,16 @@ export const FairMarketEp1: React.FC = () => {
     ? "sol" : "rex"];
   const camX = shot?.tx ?? camSeat.x;
   const camY = Math.min(1420, shot?.ty ?? 1240);
+  // A beat may open on the caricature and cut to its exhibit part-way
+  // through. The plate's clock starts at THAT cut, not at the beat, or it
+  // enters already half-animated.
+  const exhibitFrom = cur.exhibit
+    ? (cur.shots ?? []).find((s) => !s.tvPose && !s.hideCard)?.from ?? 0
+    : 0;
+  // Beat-scoped, so the halo can't blink off at a mid-beat cut away from
+  // `tvPose` on a beat that goes on to show an exhibit.
+  const wallLit = (!!cur.card || (cur.shots ?? []).some((s) => !!s.tvPose))
+    && !shot?.hideCard;
 
   return (
     <AbsoluteFill style={{background: "#101828", overflow: "hidden"}}>
@@ -1140,7 +1153,7 @@ export const FairMarketEp1: React.FC = () => {
         {/* The monitor is FURNITURE — always in the room, never popping in
             and out at beat boundaries, and it fills the upper frame that
             was otherwise dead wall above the cast. */}
-        <WallFrame glow={(!!cur.card || !!shot?.tvPose) && !shot?.hideCard} />
+        <WallFrame glow={wallLit} />
         <div style={{position: "absolute", left: WALL.x, top: WALL.y,
           width: WALL.w, height: WALL.h, overflow: "hidden",
           borderRadius: 6}}>
@@ -1153,7 +1166,7 @@ export const FairMarketEp1: React.FC = () => {
           {shot?.hideCard ? <TVIdle frame={frame} bare={!!cur.title} />
             : shot?.tvPose ? <TVPose pose={shot.tvPose} since={shotSince} />
             : cur.exhibit ? (
-              <ExhibitPlate name={cur.exhibit} since={since}
+              <ExhibitPlate name={cur.exhibit} since={since - exhibitFrom}
                 w={WALL.w} h={WALL.h} callout={cur.callout}
                 dir={(cur.at / 90) % 2 < 1 ? 1 : -1} />
             ) : cur.graphic === "timeline_nvidia" ? (

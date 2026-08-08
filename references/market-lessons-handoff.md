@@ -57,23 +57,36 @@ it). Never push media to git.
 
 ## 3. Open defects, in priority order
 
-1. **Two ep.1 exhibits never appear.** At 46s and 68s the wall shows a
-   politician photo instead of `committee_room` / `two_podiums`. Those
-   beats carry a `tvPose`, and the wall's content chain in
-   `FairMarketEp1.tsx` tests `shot?.tvPose` **before** `cur.exhibit`, so
-   the photo wins. The wiring is correct; the branch order defeats it.
-   Fix: move the `cur.exhibit` test above `tvPose`, or drop `tvPose` on
-   those two beats.
+1. ~~**Two ep.1 exhibits never appear.**~~ **FIXED 2026-08-08.** Both
+   beats declared an `exhibit` *and* a `tvPose`, and the wall's content
+   chain tested `tvPose` first, so the caricature won and the exhibit had
+   nowhere to land. The obvious fix — reorder the branches so `exhibit`
+   wins — was **rejected**: `congress2_*` appears on these two beats and
+   nowhere else in the episode, so making the exhibit authoritative would
+   have deleted the second politician caricature outright, and the beat's
+   own comment says that archetype is why the line is worded as it is.
+   Instead each beat now **opens on the caricature and cuts to its
+   exhibit**: beat 1301's second shot dropped its `tvPose`, and the plate's
+   clock starts at that cut (`exhibitFrom` in `FairMarketEp1.tsx`) so it
+   does not enter half-animated. `WallFrame`'s glow was made beat-scoped at
+   the same time, or it would blink off at the cut.
 
-2. **The "45 DAYS" callout is unreadable** at ep.1 77s — teal text on the
-   cream calendar. Needs a dark plate behind the label in
-   `motion/ExhibitPlate.tsx`.
+2. ~~**The "45 DAYS" callout is unreadable.**~~ **FIXED 2026-08-08.** The
+   label was bare SVG `<text>` in pale mint with nothing behind it. It is
+   now an HTML element on a dark plate with an accent border — HTML rather
+   than `<text>` so the plate sizes itself to the string instead of
+   guessing Impact's metrics, and it flips below the ring if there is no
+   room above. Same fix covers "THE DEAL" on `deal_handshake`.
 
-3. **Eight wall exhibits need regenerating** — see §4.
+3. ~~**Eight wall exhibits need regenerating.**~~ **DONE 2026-08-08**, and
+   the art direction changed while doing it — see §4.
 
 4. *(cosmetic, pre-existing, owner already approved the episode)* ep.1
    beat 123 reports one marginal off-frame in the staging audit: Rex's
    shoulder crops 32px at k=1.14.
+
+5. **`chip_gavel` is wired to no beat.** It is the twelfth card and no
+   composition references it. Either give it a beat or drop it.
 
 ---
 
@@ -100,23 +113,129 @@ at `remotion/public/characters/cast_ep1/exhibits/_cards.json` and are
 earlier flat-vector set that IS in the shipped ep.1 render was overwritten.
 Regenerate before re-rendering ep.1, or the wall will show the failures.
 
-### The routing rule to apply next
+### The routing rule — applied 2026-08-08, and what it actually took
 
-Send **everything on the wall to Z-Image**. The hypothesis that
-"Illustrious draws people well" is only half true: it draws a *portrait*
-well and a *specific readable action* badly, and heavy manga style tags
-push it toward abstract composition plus fake lettering. Get the JoJo feel
-from the code layer instead — floating words, halftone overlay, hard rim
-light — where it is controllable and legible.
+Everything now goes to **Z-Image**. Rerouting alone was **not enough**: the
+two models want different *prompt grammar*. Illustrious is SDXL and eats
+danbooru tag soup (`1man, solo, dark navy suit, ...`); Z-Image Turbo is
+driven by a **Qwen-3-4B text encoder** and wants flowing prose. The eight
+cards were rewritten as prose (the tag versions are kept on each card as
+`prompt_illustrious_orig`), which fixed the mush.
 
-Note the gate could not have caught this: it reviewed **prompts**, not
-**images**. Any future art pass needs a *visual* gate on the output, which
-is what the viseme pipeline already does (sonnet agents reading the
-generated sheets).
+That produced a second, sharper failure, and it is the important one.
+A visual gate on the actual pixels returned **5 fail / 2 borderline /
+1 pass**, and **four of the five failures were the same defect: the figure
+had become a recognisable Jotaro Kujo** — pompadour, popped gakuran
+collar, peaked cap, star earring.
+
+The cause is structural. "JoJo's Bizarre Adventure" is load-bearing for
+the style and cannot be dropped. But an **unnamed "generic adult man"
+leaves an identity vacuum**, and the style tag fills it with the
+franchise's most famous character. Piling on negative tokens does not
+help. Every human figure needs an identity of its own:
+
+- a **named real politician**, drawn as caricature (see §4a); or
+- an ordinary person pinned down by concrete, un-JoJo specifics — "short
+  neatly combed hair", "an ordinary flat shirt collar"; or
+- **no face at all** — a back-turned silhouette, with an *object* as the
+  subject. Z-Image draws symbolic still life extremely well, and the two
+  strongest exhibits in the set (`capitol_ticker`, `options_leverage`) are
+  both object-forward with a tiny figure for scale.
+
+The prompt-only gate could not have caught any of this: it reviewed
+**prompts**, not **images**. `scripts/vector/contact_sheet.py` +
+a sonnet fan-out reading the PNGs is now the required last step of any art
+pass. It is worth its cost — it caught the Jotaro drift, a legible
+numeral, and a white matte border that all read as "fine" in the prompt.
+
+**Do not obey that gate blindly, though.** On the second run it started
+enforcing prompt-literalism and rules the owner has since overridden: it
+failed `deal_handshake` for "naturalistic colour" when a recognisable
+Trump *requires* a red tie and skin tones, and failed `watching_chart`
+because the bars did not rise monotonically — which for a price chart is
+correct and desirable. Treat it as a very good reviewer with no editorial
+authority.
 
 ---
 
+## 4a. Real politicians (owner decision, 2026-08-08)
+
+The owner's instruction: *"it should be caricatures of real politicians in
+jojo style."* This **supersedes** the older rail written into
+`scripts/vector/gen_congress.py`, which deliberately said the figures were
+"a generic senior-lawmaker ARCHETYPE … not a likeness of any named
+individual". That older rail is now wrong for new work; the docstring
+should be corrected the next time that file is touched.
+
+What stays: caricature (never a likeness presented as a photograph), **no
+on-screen name**, no accusation, and the parody / public-record /
+educational footer on every frame. The ranking exhibit is staged as
+"people watch these disclosures", never as a claim about whose returns
+were best.
+
+Casting used in ep.1: **Trump** on `deal_handshake` (the owner's original
+brief — "politicians and big corpo shaking hands"), **Pelosi** on
+`leaderboard_suits` (the episode's own "Speaker's household" line).
+`committee_room` was deliberately **left as a faceless authority figure**:
+it passed its gate, and a president behind a *congressional committee*
+dais is a factual mismatch the script explicitly guards against.
+
+## 4b. The arcade-fighter direction (open, owner asked)
+
+Looking at the politician probes, the owner noted they read like **arcade
+games** rather than JoJo, and asked whether that could be used
+deliberately — arcade movement to land jokes and opinions. Three probes
+are in `exhibits/_probe/` (`arc_select`, `arc_versus`, `arc_stance`) via
+`scripts/vector/arcade_probe.py`. It is a genuinely strong fit and solves
+three things this repo keeps paying for:
+
+- **Numbers.** An arcade HUD — health bar, timer, score, combo counter, VS
+  plate — is a *code layer by nature*. The art becomes stage and fighters;
+  Remotion draws the whole interface on top, sharp and correct. That is
+  the house rule rather than a workaround for it.
+- **IP leak.** "1990s arcade fighting game" is a **genre, not one
+  rights-holder's character**, so the style anchor does not arrive with a
+  person attached. This is the direct cure for the Jotaro drift above.
+- **Motion.** The house animation rules in §10.8 of `CLAUDE.md` already
+  *are* sprite rules — anticipation, volume-preserving squash/stretch,
+  2-frame smears, three-beat holds. Arcade sprites are a handful of
+  extreme poses held hard and cut between.
+
+`arc_stance` is isolated on a plain stage, which is exactly what the
+existing Z-Image → vtracer → SVG rig pipeline wants. Recommendation: run
+it as a **distinct recurring segment** (a VS screen, a health-bar gag) and
+leave the wall exhibits on the current direction — two art directions
+fighting for the same wall would read as incoherent.
+
 ## 5. Things proven by measurement — do not re-derive
+
+**Z-Image prompt grammar, measured this session.** Four rules, each paid
+for with a failed image:
+
+1. **Name first, describe barely.** At fixed seed, "Nancy Pelosi" plus
+   "distinctive dark bob, angular face" returned a generic glamorous woman
+   who is not her; "Nancy Pelosi, former Speaker of the House" with *no*
+   physical description returned a clean likeness. A description that
+   contradicts the real face **overrides the name**. Biden, Obama and
+   Clinton all resolve name-only too. Only add a feature if it is true.
+2. **Negation does not work — twice over.** `zimage_t2i` samples at
+   **cfg=1**, so there is no classifier-free guidance and the negative
+   prompt is **inert** (stated in `scripts/comfy/templates.py`). Worse,
+   writing "no hat, no cap, no fedora" inside the *positive* prose just
+   feeds the model the concept: that exact card came back wearing a peaked
+   cap. State the positive instead — "bare-headed, short hair swept back".
+3. **Never use a domain term with a literal homonym.** "An abstract
+   candlestick chart rendered as glowing bars and **wicks**" produced a man
+   standing among lit **wax candles**, no chart at all. Two candle words
+   beat the finance sense. Describe the geometry: narrow vertical bars,
+   each crossed by a thin line running above and below it.
+4. **Watch for iconography that drags numerals in.** A card saying "no
+   numbers" still printed **1 / 2 / 3**, because "three-tier winner's
+   podium" summons the Olympic podium whole. Say "three plain rectangular
+   pedestal blocks of different heights, front faces smooth and unmarked".
+   Same class of bug: asking for a tape "printed with plain rectangles and
+   small arrows" produced a legible **7**. A prop that must carry nothing
+   should be described as *completely blank*, not as blank-ish marks.
 
 **Illustrious-XL is a character checkpoint.** Six of eight object prompts
 came back unusable (`calendar_late` a blank grey canvas). It cannot draw
@@ -175,20 +294,30 @@ escaping four separate times this session.
 
 ## 6. Suggested order of work
 
-1. Regenerate the 8 failed exhibits through **Z-Image**, using the gated
-   cards already in `_cards.json`. Gate the results **visually**.
-2. Fix the two branch-order beats and the "45 DAYS" label (§3).
-3. Re-render ep.1, verify frames + audio, deliver.
-4. Build the **code-drawn floating words** (`DEAL`, `FORTUNE`, ゴゴゴゴ) in
+1. ~~Regenerate the 8 failed exhibits through Z-Image.~~ **DONE** — and
+   twice, because the first Z-Image pass drifted into Jotaro (§4). Seven
+   are regenerated, `committee_room` was left alone because it passed, and
+   `chip_gavel` was skipped because no beat uses it.
+2. ~~Fix the two branch-order beats and the "45 DAYS" label.~~ **DONE**
+   (§3).
+3. ~~Re-render ep.1, verify, deliver.~~ **DONE** →
+   `content/probe/ep1_panel_v2.mp4`.
+4. **Next: get the owner's call on the arcade direction (§4b)** before
+   building more wall art. It changes what step 5 should contain.
+5. Build the **code-drawn floating words** (`DEAL`, `FORTUNE`, ゴゴゴゴ) in
    a `MangaWords` layer over `ExhibitPlate`, keyed to beat frames so each
    lands on its syllable. Generated lettering is garbage — this must be
-   code, and it is also the house rule.
-5. Apply the same exhibit + SFX treatment to ep.2, deliver both for the
+   code, and it is also the house rule. *(If the arcade direction is
+   taken, this layer becomes the arcade HUD instead, which is the same
+   idea with a better excuse.)*
+6. Apply the same exhibit + SFX treatment to ep.2, deliver both for the
    owner's approval of the recipe.
-6. Only then: rewrite ep.3–5 scripts to ep.1/ep.2 density, regenerate
+7. Only then: rewrite ep.3–5 scripts to ep.1/ep.2 density, regenerate
    their VO, re-time, apply the recipe, render.
-7. Separately, when asked: build the **recurring caricature figure** by
-   inpainting from one approved base.
+8. Separately, when asked: build the **recurring caricature figure** by
+   inpainting from one approved base. Note this is now *less* urgent for
+   politicians specifically — Z-Image resolves named figures well enough
+   name-only (§5) that consistency is the only remaining reason for it.
 
 ---
 

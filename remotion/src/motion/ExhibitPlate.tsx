@@ -93,15 +93,34 @@ export const ExhibitPlate: React.FC<{
             strokeDasharray={2 * Math.PI * R}
             strokeDashoffset={(1 - calT) * 2 * Math.PI * R}
             opacity={0.9} />
-          {callout!.label ? (
-            <text x={callout!.x * w} y={callout!.y * h - R - 14}
-              textAnchor="middle" fill="#B8F0CE" fontFamily="Impact, Arial"
-              fontSize={30} opacity={calT}>
-              {callout!.label}
-            </text>
-          ) : null}
         </svg>
       ) : null}
+
+      {/* CALLOUT LABEL, on its own dark plate. It used to be bare SVG text
+          in pale mint, which is invisible the moment the artwork behind it
+          is light — "45 DAYS" over the cream calendar was unreadable. It is
+          HTML rather than <text> so the plate sizes itself to the string
+          instead of guessing Impact's metrics, and it flips below the ring
+          when there is no room above it. */}
+      {cal && callout!.label ? (() => {
+        const above = callout!.y * h - R - 14;
+        const below = callout!.y * h + R + 14;
+        const flip = above < 46;
+        return (
+          <div style={{position: "absolute",
+            left: callout!.x * w, top: flip ? below : above,
+            transform: `translate(-50%, ${flip ? "0%" : "-100%"})`,
+            padding: "3px 12px 5px", borderRadius: 4,
+            background: "rgba(6,10,18,0.9)",
+            border: "2px solid rgba(124,224,162,0.85)",
+            boxShadow: "0 6px 18px rgba(0,0,0,0.5)",
+            color: "#CFF6DF", fontFamily: "Impact, Arial",
+            fontSize: 30, lineHeight: 1.05, letterSpacing: 0.5,
+            whiteSpace: "nowrap", opacity: calT}}>
+            {callout!.label}
+          </div>
+        );
+      })() : null}
 
       {/* a soft vignette so the plate sits INSIDE the wall rather than
           looking like a browser window pasted onto it */}
