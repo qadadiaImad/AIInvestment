@@ -352,9 +352,14 @@ const BEATS: Beat[] = [
   {at: 2379,
    exhibit: "ep2_empty_docket",
    actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+   // The first two archive plates are the "not one NAME" half of the line
+   // and they stay. The third used to be another anonymous portrait, which
+   // meant the wired `ep2_empty_docket` had nowhere to land — the same
+   // collision that hid two of ep.1's exhibits. It now cuts to the empty
+   // cage for the closing clause, so the beat runs faces, faces, nothing.
    shots: [{from: 0, tvPhoto: "podium_speaker", k: 1.0, kEnd: 1.06},
            {from: 80, tvPhoto: "podium_official_a", k: 1.0, kEnd: 1.06},
-           {from: 150, tvPhoto: "trader_unknown", mood: "dark", k: 1.0, kEnd: 1.1}],
+           {from: 150, mood: "dark", k: 1.0, kEnd: 1.1}],
    vo: "e15_sol_sitwith", speaker: "SOL",
    line: "That's the part I need you to sit with. Not one charge. Not one name. The tape knew, and the tape doesn't sign its orders."},
 
