@@ -121,13 +121,13 @@
   "file": "ep2_empty_docket.png",
   "route": "zimage",
   "template": "zimage_t2i",
-  "seed": 3174,
-  "seconds": 8.2,
+  "seed": 3100,
+  "seconds": 8.1,
   "gate_clean": false,
   "gate_fixes": 0,
   "source": "local ComfyUI zimage_t2i",
   "source_class": "local-gen",
-  "retrieved_at": "2026-08-08T20:11:12Z"
+  "retrieved_at": "2026-08-08T21:28:49Z"
  },
  {
   "name": "ep2_inverted_bet",
@@ -290,13 +290,13 @@
   "file": "ep2_what_to_watch.png",
   "route": "zimage",
   "template": "zimage_t2i",
-  "seed": 3655,
+  "seed": 3137,
   "seconds": 8.1,
   "gate_clean": false,
   "gate_fixes": 0,
   "source": "local ComfyUI zimage_t2i",
   "source_class": "local-gen",
-  "retrieved_at": "2026-08-08T20:13:02Z"
+  "retrieved_at": "2026-08-08T21:26:42Z"
  },
  {
   "name": "filing_stacks",
