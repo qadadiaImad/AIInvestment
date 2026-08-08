@@ -121,6 +121,62 @@ SAY_AS = [
 ]
 
 
+# ── DELIVERY, PER VOICE ────────────────────────────────────────────────
+# Until now every line shipped at Chatterbox's defaults (exaggeration 0.5,
+# cfg_weight 0.5, temperature 0.8) because generate() was called with text
+# and a reference and nothing else.
+#
+# The owner hears Rex as "too high, like a child - make him a teenager".
+# Measured, that is NOT pitch: his reference clip is 112.8 Hz against Sol's
+# 132.2, so he is already the deeper of the two, and their brightness is
+# within 3%. What differs is delivery - his lines average 1.9-2.8s against
+# Sol's 4.3s and mostly end in "!" or "?!", and on short exclamatory text
+# the default intensity reads as yelping. Confirmed by rex_voice_probe:
+# calming the delivery also drops his pitch (120.7 -> 112.9 Hz avg), which
+# is what you would expect if the shouting was pushing it up.
+#
+# Setting "B" chosen by the owner from a four-way A/B. Sol stays at the
+# defaults he was approved on - changing him was never asked for.
+DELIVERY = {
+    "rex": dict(exaggeration=0.35, cfg_weight=0.4, temperature=0.7),
+    "sol": dict(exaggeration=0.5, cfg_weight=0.5, temperature=0.8),
+}
+
+# ── PERFORMANCE TAGS ───────────────────────────────────────────────────
+# Chatterbox's tokenizer carries bracket tokens that had never been used
+# here. vo_tag_probe generated each one twice, with and without, same seed:
+#
+#   [sigh] +0.7s   [clear_throat] +1.2s   [whisper] +1.3s   renders
+#   [gasp] -0.5s   changes the delivery
+#   [laughter] +0.2s   [UM] -0.1s   no audible change - NOT USED
+#
+# Keyed by VO stem so each placement is deliberate and auditable, and
+# applied only to the text fed to the model. The subtitle is read from the
+# composition separately, so a tag can never appear on screen.
+PERFORM = {
+    # ep.1 - Sol is the weary one; the tag does the work the caps used to
+    "v1_sol_intro": "[sigh] ",
+    "v8_sol_legal": "[clear_throat] ",
+    "a4_sol_thin": "[sigh] ",
+    "a6_sol_thesis": "[whisper] ",
+    "a5_sol_fair": "[sigh] ",
+    "a7_sol_ownepisode": "[clear_throat] ",
+    "v5_rex_what": "[gasp] ",
+    "v7_rex_index": "[gasp] ",
+    # ep.2
+    "e14_sol_nope": "[sigh] ",
+    "e15_sol_sitwith": "[clear_throat] ",
+    "e23_sol_clock": "[whisper] ",
+    "e28_sol_fair": "[sigh] ",
+    "e7_rex_coincidence": "[gasp] ",
+}
+
+
+def perform(stem: str, text: str) -> str:
+    """Prefix the spoken text with its performance tag, if it has one."""
+    return PERFORM.get(stem, "") + text
+
+
 def say_as(text: str) -> str:
     """Rewrite a line the way it should be SPOKEN.
 
@@ -203,8 +259,9 @@ def main() -> None:
                 torch.cuda.manual_seed_all(SEED)
             np.random.seed(SEED)
             wav = model.generate(
-                say_as(text),
-                audio_prompt_path=str(REFS / ("voice_ref_" + voice + ".wav")))
+                perform(stem, say_as(text)),
+                audio_prompt_path=str(REFS / ("voice_ref_" + voice + ".wav")),
+                **DELIVERY[voice])
             raw = VO_DIR[ep] / ("_" + stem + "_raw.wav")
             torchaudio.save(str(raw), wav, model.sr)
             out = VO_DIR[ep] / (stem + ".wav")
