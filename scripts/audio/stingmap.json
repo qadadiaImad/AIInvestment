@@ -1,0 +1,141 @@
+{
+ "keyword": "stingmap",
+ "density_rule": "≤3 scored stings per minute of runtime. At this show's 4-5s beat length that means roughly one beat in two carries a sound and the other lands in silence — never two consecutive beats both scored, and every \"none\" entry in this taxonomy (cold open, reaction dialogue, named-person facts, the one-word denial) counts toward holding that ratio, not against it.",
+ "never_rules": [
+  "Never score a sting on a line that states a real, named person's specific disclosed trade or timing — silence only; this is the compliance rail against reading as an accusation soundtrack.",
+  "Never score the one-word denial / \"sit with\" gravity beat — the silence is the instruction the line itself gives, not an absence of design.",
+  "Never use a sound register that implies celebration of a profit, an achievable return, or a trading call — no \"win\"-coded sting on any dollar figure framed as a gain.",
+  "Never exceed 0.34 volume or drop a scored beat below 0.24 — the house band is fixed, not a suggestion.",
+  "Never fire more than one sting inside a single 4-5s beat, and never sting both a setup line and its punchline in the same breath.",
+  "Never let a sting's timing land before the word it's marking finishes speaking — it both clips intelligibility and telegraphs the beat before it lands (the audio equivalent of the video house rule against leaking the answer).",
+  "Never spend `core` (the top-of-band \"most important statement\" sound) on anything but the act-1 thesis and the money line — spending it on ordinary emphasis erodes the one escalation the episode has."
+ ],
+ "taxonomy": [
+  {
+   "id": "reaction-and-setup-silence",
+   "when": "Pure tone-setting or character reaction with no new fact on the table — the cold open, naive assertions, shocked pushback, wrong conclusions.",
+   "sound": "none",
+   "at": 0,
+   "vol": 0,
+   "why": "All three lenses converge here independently. A sting on Sol's opening line spends the show's first surprise before it's earned; a sting on Rex's naive claims or pushback tips the audience toward a verdict before the escalation has proven it. Reserve the ten-sound kit for beats where a fact newly lands.",
+   "example_line": "Boss! It's all fundamentals, right?!"
+  },
+  {
+   "id": "named-fact-restraint",
+   "when": "A beat stating a real, identifiable person's specific disclosed trade, or reciting the legal mechanics of that disclosure regime.",
+   "sound": "none",
+   "at": 0,
+   "vol": 0,
+   "why": "Where lenses conflicted (one proposed a restrained 'core' chyron-drop on the dated NVIDIA line; two others said silence, one on compliance grounds explicitly), silence wins because it's the only reading that survives the 'never reads as an accusation soundtrack' test in every case, not just most. A sting under a real person's named conduct — however restrained — the show's own footer can't undo.",
+   "example_line": "July 2022. The Speaker's household sold NVIDIA - days before..."
+  },
+  {
+   "id": "gravity-pause",
+   "when": "The one-word denial and the line asking the audience to sit with the pattern.",
+   "sound": "none",
+   "at": 0,
+   "vol": 0,
+   "why": "Unanimous across all three lenses: the line's own content is an instruction to sit in silence, so scoring it would contradict what the character is saying. This is restraint at its most load-bearing, surrounded by the episode's tensest material.",
+   "example_line": "That's the part I need you to sit with."
+  },
+  {
+   "id": "derision-sting",
+   "when": "Sol's mocking laugh landing right after Rex's naive claim, before the real thesis arrives.",
+   "sound": "faah",
+   "at": 15,
+   "vol": 0.28,
+   "why": "Two of three lenses wanted sound here (one proposed vine_boom, one faah); sound wins 2-1. faah — the kit's purpose-built vocal-accent punchline — fits a mocking exhale better than a comedic-statement boom, and it's aimed at Rex's naivety, not any real person's conduct, so the compliance rail is clear.",
+   "example_line": "HA! ...Fundamentals."
+  },
+  {
+   "id": "thesis-lands",
+   "when": "The show's central claim stated for the first time, mid cold-open.",
+   "sound": "core",
+   "at": 20,
+   "vol": 0.3,
+   "why": "Unanimous across all three lenses: core, fired on the emphasized word after the ellipsis, mid-band volume. This is the pivot the cold open exists to reach, but it isn't evidence yet (no name, no date), so it gets the plain 'important statement' sound, kept quieter than the money-line's core later.",
+   "example_line": "Sometimes... it trades on POLITICS."
+  },
+  {
+   "id": "shock-take",
+   "when": "Rex's single-exclamation physical reaction take, immediately after the thesis lands.",
+   "sound": "vine_boom_bass",
+   "at": 0,
+   "vol": 0.3,
+   "why": "One lens filed this under generic reaction silence, but the other two invoke the show's own animation rule (10.8): a take that holds without an anchored hit reads as static, and sound/drawing/smear/camera-kick must land on the same frame or it reads as dubbed. That house-style rule overrides generic reaction-silence here — this is a drawn take, not spoken dialogue.",
+   "example_line": "WHAT?!"
+  },
+  {
+   "id": "absurd-reveal",
+   "when": "The escalation's punchline — disclosures turning out to be a tracked, tradeable structure rather than a one-off.",
+   "sound": "among_us",
+   "at": 6,
+   "vol": 0.3,
+   "why": "Unanimous on the sound across all three lenses; only exact volume/frame varied (0.26-0.32, frame 0-60). Fired early enough it doesn't collide with the word 'INDEX' needing to be heard, at a mid volume rather than the loudest proposal. Safe to be a loud reveal because the joke is a structural fact (a leaderboard becoming an index), not mockery of a person's conduct.",
+   "example_line": "They made it an INDEX?!"
+  },
+  {
+   "id": "naive-plan-comic",
+   "when": "Rex proposing his naive copy-trading scheme, right before Sol punctures it.",
+   "sound": "vine_boom",
+   "at": 15,
+   "vol": 0.24,
+   "why": "Two lenses wanted sound here (one proposed faah, one vine_boom); vine_boom wins because faah is already spent on the derision-sting beat and reusing it back-to-back flattens the kit's variety. Kept at the floor of the house band: loud enough to register as a joke, never loud enough to read as endorsing the plan.",
+   "example_line": "Then I'll just copy them! Buy what they buy!"
+  },
+  {
+   "id": "trap-springs",
+   "when": "Sol's rhetorical gotcha turning Rex's plan back on itself in the same breath.",
+   "sound": "whoosh_fire",
+   "at": 0,
+   "vol": 0.3,
+   "why": "Three-way split across the lenses (vine_boom_bass / whoosh_fire / core_tiktok) resolved by elimination: vine_boom_bass is spent on the shock-take and core_tiktok is reserved for the later scale-reveal so the kit doesn't repeat. whoosh_fire — 'this changes direction,' heavier than a plain cut — fires on frame 0 so the sound arrives with the rug-pull instead of trailing it.",
+   "example_line": "Copy them. With a filing from six weeks ago?"
+  },
+  {
+   "id": "money-line",
+   "when": "The single sentence the episode is built to deliver.",
+   "sound": "core",
+   "at": 20,
+   "vol": 0.33,
+   "why": "Two of three lenses land on core (one proposed core_tiktok, reserved instead for the scale-reveal beat). Volume sits near the top of the 0.24-0.34 house band, distinctly louder than the act-1 thesis's core so the two hits read as different weight classes, with the trap-springs cut left dry immediately before it so nothing competes for the room.",
+   "example_line": "The trade is public. The edge is not."
+  },
+  {
+   "id": "scale-reveal",
+   "when": "A dollar figure that is itself the entire content of the beat, ahead of a timing-gap payoff.",
+   "sound": "core_tiktok",
+   "at": 12,
+   "vol": 0.3,
+   "why": "Only one lens scored this beat explicitly, but its reasoning is sound and non-conflicting: reserving core_tiktok for a number-is-the-evidence beat keeps it distinct from the plain core (thesis/money-line) and whoosh_fire (trap-springs). Fired as the number is spoken so the sting doesn't step on digits that have to be heard cleanly.",
+   "example_line": "Somebody buys five hundred and eighty million of oil futures."
+  },
+  {
+   "id": "timing-gap-suspense",
+   "when": "The specific timestamped action bridging a scale reveal into the next beat's pattern-recognition moment — a named public figure's timing, not his profit.",
+   "sound": "riser_suspense",
+   "at": 0,
+   "vol": 0.24,
+   "why": "Two lenses agree here, both citing the same compliance logic: because a real public figure is involved, the sound has to build dread about a coincidence in timing, never celebrate a trade. Used as a low bed across the line rather than a hit, at the floor of the house band so the numbers and timestamp stay intelligible over it.",
+   "example_line": "Sixteen minutes later, the President posts..."
+  },
+  {
+   "id": "riser-metallic-pivot",
+   "when": "A quiet narrative pivot with no shock component — building toward a reveal, correcting a wrong conclusion, or easing into the closing image before sign-off.",
+   "sound": "riser_metallic",
+   "at": 5,
+   "vol": 0.26,
+   "why": "Merges three separate single-lens proposals (an escalation-build, a correction-pivot, and an outro-ease, each scored by only one lens) that share one function and one sound choice: riser_metallic's smoother character reframes or downshifts a scene without detonating a reveal. Kept in the quiet half of the band across all three uses so it never competes with among_us or core for 'big moment' status.",
+   "example_line": "People track these disclosures like a leaderboard."
+  },
+  {
+   "id": "sign-off-cut",
+   "when": "The final line of the episode, cutting to the end card / disclaimer.",
+   "sound": "whoosh",
+   "at": 90,
+   "vol": 0.27,
+   "why": "Every lens that addressed this beat agrees on whoosh specifically, not the heavier whoosh_fire used on trap-springs: it's 'the cut itself,' a clean segment boundary, not a punchline. A comedic or reveal sound here would undercut the 'educational, not advice' footer landing on the same frame.",
+   "example_line": "Fair? No. But now you know what to watch."
+  }
+ ]
+}
