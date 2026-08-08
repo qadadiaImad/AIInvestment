@@ -194,12 +194,12 @@ const BEATS: Beat[] = [
    vo: "r1_sol_lasttime", speaker: "SOL",
    line: "Last time, I showed you a filing. Public. Legal. Forty-five days late."},
 
-  {at: 175, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681},
+  {at: 173, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681},
                      {poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08}],
    vo: "r2_rex_useless", speaker: "REX", line: "And useless if I tried to copy it."},
 
-  {at: 259,
+  {at: 256,
    // RECAP ON THE MONITOR. Sol says "the other side of THAT" — the card
    // shows what "that" was, so the callback lands for anyone who missed
    // ep.1 and the thesis flip is visible, not just spoken.
@@ -217,7 +217,7 @@ const BEATS: Beat[] = [
    line: "Late, kid. Not useless. Today I'll show you the other side of that — what it looks like when somebody isn't late at all."},
 
   // ═══ ACT 1 — THE CLOCK ═══════════════════════════════════════════════
-  {at: 485, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+  {at: 479, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
    shots: [{from: 0, k: 1.06, kEnd: 1.16, tx: 540, ty: 1190}],
    vo: "e1_sol_march", speaker: "SOL",
    line: "March twenty-third. Six forty-nine in the morning."},
@@ -227,14 +227,14 @@ const BEATS: Beat[] = [
   // episode never supplies a name, a face or an implication. The figure
   // on the monitor is a faceless silhouette for the same reason — that
   // is the state of the evidence, not a stylistic choice.
-  {at: 594, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+  {at: 596, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
                      {poses: ["rex_skeptic"], kind: "bust", x: 420, y: 1250, h: 850}],
    shots: [{from: 0, only: 0, tvPhoto: "trader_unknown", mood: "dark", k: 1.0, kEnd: 1.08},
            {from: 100, only: 1, mood: "dark", k: 1.0, kEnd: 1.08}],
    vo: "e2_sol_buys", speaker: "SOL",
    line: "Somebody buys five hundred and eighty million dollars of oil futures."},
 
-  {at: 748, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679,
+  {at: 749, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679,
                       turns: [{at: 12, tx: 830, ty: 1210}]},
                      {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1300, h: 596}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08},
@@ -242,7 +242,7 @@ const BEATS: Beat[] = [
    vo: "e3_rex_bullish", speaker: "REX",
    line: "Okay. Big trade. Somebody's feeling bullish.", energy: 1.1},
 
-  {at: 870, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
+  {at: 886, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.04, kEnd: 1.16, tx: 580, ty: 1190}],
    sfx: [{at: 8, name: "sfx_whip", vol: 0.4}],
    vo: "e4_sol_no", speaker: "SOL",
@@ -252,7 +252,7 @@ const BEATS: Beat[] = [
   // The order of events IS the claim, so the graphic draws it in order
   // and never gets ahead of itself: trade, then the wait, then the
   // announcement, and only then the price.
-  {at: 1012, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+  {at: 1037, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
                       {poses: ["rex_skeptic"], kind: "bust", x: 420, y: 1250, h: 850}],
    graphic: "countdown_16",
    shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.06},
@@ -260,7 +260,7 @@ const BEATS: Beat[] = [
    vo: "e5_sol_sixteen", speaker: "SOL",
    line: "Sixteen minutes later, the President posts that talks with Iran went well."},
 
-  {at: 1169, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+  {at: 1192, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
                       {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
    graphic: "countdown_16",
    shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.08},
@@ -268,37 +268,37 @@ const BEATS: Beat[] = [
    vo: "e6_sol_exactly", speaker: "SOL",
    line: "Oil falls. Stocks rise. Exactly the way that trade was pointed."},
 
-  {at: 1337, actors: [{poses: ["rex_shock"], kind: "full", x: 500, y: FLOOR_Y, h: 900}],
+  {at: 1356, actors: [{poses: ["rex_shock"], kind: "full", x: 500, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],
    holdMouth: true, fx: true,
    sfx: [{at: 6, name: "impact", vol: 0.5}],
    vo: "e7_rex_coincidence", speaker: "REX",
    line: "That's a coincidence. Boss. Tell me that's a coincidence.", energy: 1.4},
 
-  {at: 1477, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+  {at: 1495, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
    shots: [{from: 0, k: 1.08, kEnd: 1.18, tx: 540, ty: 1190}],
    vo: "e8_sol_once", speaker: "SOL", line: "Once is a coincidence, kid."},
 
   // ═══ ACT 3 — IT HAPPENED AGAIN ═══════════════════════════════════════
-  {at: 1555, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+  {at: 1572, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    graphic: "stack_26",
    shots: [{from: 0, k: 1.0, kEnd: 1.06},
            {from: 160, k: 1.16, kEnd: 1.26, tx: 600, ty: 1190, hideCard: true}],
    vo: "e9_sol_again", speaker: "SOL",
    line: "Two weeks later. Nine hundred and fifty million, betting oil falls. Hours before a ceasefire nobody had announced."},
 
-  {at: 1813, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
+  {at: 1829, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
    graphic: "stack_26",
    shots: [{from: 0, k: 1.0, kEnd: 1.07}],
    vo: "e10_sol_hormuz", speaker: "SOL",
    line: "And another one. Seven hundred and sixty million, minutes before the Hormuz announcement."},
 
-  {at: 2002, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681},
+  {at: 2017, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681},
                       {poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597}],
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],
    vo: "e11_rex_total", speaker: "REX", line: "How much is that all together?"},
 
-  {at: 2076, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+  {at: 2090, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
                       {poses: ["rex_skeptic"], kind: "bust", x: 420, y: 1250, h: 850}],
    graphic: "stack_26",
    shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.08},
@@ -306,13 +306,13 @@ const BEATS: Beat[] = [
    vo: "e12_sol_billions", speaker: "SOL",
    line: "The Justice Department and the CFTC are looking at about two point six billion."},
 
-  {at: 2243, actors: [{poses: ["rex_eager"], kind: "full", x: 500, y: FLOOR_Y, h: 900}],
+  {at: 2260, actors: [{poses: ["rex_eager"], kind: "full", x: 500, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.04, kEnd: 1.14}],
    vo: "e13_rex_caught", speaker: "REX", line: "So they caught them.", energy: 1.2},
 
   // THE SHORTEST LINE IN EITHER EPISODE, AND THE HARDEST. Half a second,
   // held wide, no graphic, no push — everything else gets out of its way.
-  {at: 2304, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+  {at: 2321, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
    shots: [{from: 0, k: 1.0, kEnd: 1.05}],
    vo: "e14_sol_nope", speaker: "SOL", line: "No."},
 
@@ -320,18 +320,18 @@ const BEATS: Beat[] = [
   // The podium and the shadow, cut against each other. The known faces
   // announced; an unknown figure traded. Nothing on screen connects them
   // because nothing in the evidence does — that gap is the whole act.
-  {at: 2365, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+  {at: 2379, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, tvPhoto: "podium_speaker", k: 1.0, kEnd: 1.06},
            {from: 80, tvPhoto: "podium_official_a", k: 1.0, kEnd: 1.06},
            {from: 150, tvPhoto: "trader_unknown", mood: "dark", k: 1.0, kEnd: 1.1}],
    vo: "e15_sol_sitwith", speaker: "SOL",
    line: "That's the part I need you to sit with. Not one charge. Not one name. The tape knew, and the tape doesn't sign its orders."},
 
-  {at: 2620, actors: [{poses: ["rex_listen"], kind: "full", x: 400, y: FLOOR_Y, h: 820}],
+  {at: 2633, actors: [{poses: ["rex_listen"], kind: "full", x: 400, y: FLOOR_Y, h: 820}],
    shots: [{from: 0, k: 1.06, kEnd: 1.16, tx: 520, ty: 1250}],
    vo: "e16_rex_someone", speaker: "REX", line: "Somebody has to know something."},
 
-  {at: 2699, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+  {at: 2711, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    card: {title: "WHO IS ASKING",
           lines: ["Sens. Warren, Whitehouse, Warnock —",
                   "letters to the CFTC.",
@@ -346,12 +346,12 @@ const BEATS: Beat[] = [
   // A REAL, CHARGED, UNSEALED CASE — and kept explicitly separate from
   // the oil probe. It proves the mechanism is prosecutable. It is not
   // evidence about these trades and the episode never blurs the two.
-  {at: 2918, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
+  {at: 2930, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.04, kEnd: 1.14, tx: 580, ty: 1190}],
    vo: "e18_sol_didcatch", speaker: "SOL",
    line: "Now. They did catch one. Different war, same idea."},
 
-  {at: 3057, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+  {at: 3070, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
                       {poses: ["rex_skeptic"], kind: "bust", x: 420, y: 1250, h: 850}],
    card: {title: "THE ONE THEY CHARGED",
           lines: ["A service member traded a prediction",
@@ -363,26 +363,26 @@ const BEATS: Beat[] = [
    vo: "e19_sol_soldier", speaker: "SOL",
    line: "A special forces soldier bet a prediction market on an operation he had been briefed on. Classified. Indicted."},
 
-  {at: 3281, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679},
+  {at: 3291, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679},
                       {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1300, h: 596}],
    shots: [{from: 0, only: 0, k: 1.1, kEnd: 1.2, tx: 520, ty: 1030}],
    vo: "e20_rex_provable", speaker: "REX", line: "So it is provable.", energy: 1.1},
 
-  {at: 3350, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+  {at: 3374, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
    shots: [{from: 0, k: 1.04, kEnd: 1.14, tx: 540, ty: 1190}],
    vo: "e21_sol_whentrail", speaker: "SOL", line: "When the trail leads somewhere. Yes."},
 
-  {at: 3449, actors: [{poses: ["rex_listen"], kind: "full", x: 400, y: FLOOR_Y, h: 820}],
+  {at: 3471, actors: [{poses: ["rex_listen"], kind: "full", x: 400, y: FLOOR_Y, h: 820}],
    shots: [{from: 0, k: 1.06, kEnd: 1.14, tx: 520, ty: 1250}],
    vo: "e22_rex_whennot", speaker: "REX", line: "And when it doesn't?"},
 
-  {at: 3508, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+  {at: 3529, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    graphic: "countdown_16",
    shots: [{from: 0, k: 1.0, kEnd: 1.08}],
    vo: "e23_sol_clock", speaker: "SOL", line: "Then all you have is the clock."},
 
   // ═══ ACT 6 — THE LESSON, AND THE CALLBACK ════════════════════════════
-  {at: 3599,
+  {at: 3619,
    // THE THESIS BEAT. The episode's whole point is the juxtaposition of the
    // two lessons, and it was delivered over an idle ticker. Not a
    // restatement of the line — the card carries the CONTRAST, which the
@@ -396,7 +396,7 @@ const BEATS: Beat[] = [
    vo: "e24_sol_lastweek", speaker: "SOL",
    line: "Last week I told you public information isn't enough to find an edge."},
 
-  {at: 3743, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+  {at: 3762, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
                       {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
    graphic: "countdown_16",
    shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.1},
@@ -404,11 +404,11 @@ const BEATS: Beat[] = [
    vo: "e25_sol_thisweek", speaker: "SOL",
    line: "This week? Somebody had an edge sixteen minutes before the public had a headline."},
 
-  {at: 3913, actors: [{poses: ["rex_skeptic"], kind: "full", x: 470, y: FLOOR_Y, h: 960}],
+  {at: 3931, actors: [{poses: ["rex_skeptic"], kind: "full", x: 470, y: FLOOR_Y, h: 960}],
    shots: [{from: 0, k: 1.06, kEnd: 1.16, tx: 540, ty: 1120}],
    vo: "e26_rex_sowhat", speaker: "REX", line: "So what do I do with that?"},
 
-  {at: 3991, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+  {at: 4007, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
                       {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
    shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.08},
            {from: 120, only: 1, k: 1.0, kEnd: 1.08}],
@@ -416,12 +416,12 @@ const BEATS: Beat[] = [
    line: "You stop assuming the news moves the market. Sometimes the market moves first, and the news catches up."},
 
   // The signature close, same shape as ep.1 so the series has a shape.
-  {at: 4207, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+  {at: 4221, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
    shots: [{from: 0, k: 1.0, kEnd: 1.12, tx: 540, ty: 1200}],
    vo: "e28_sol_fair", speaker: "SOL",
    line: "Fair? No. But now you know what to watch."},
 
-  {at: 4333, title: ["MARKET LESSONS", "WITH SOL", ""], actors: []},
+  {at: 4346, title: ["MARKET LESSONS", "WITH SOL", ""], actors: []},
 ];
 
 const beatAt = (f: number) => {
