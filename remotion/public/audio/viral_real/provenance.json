@@ -1,0 +1,102 @@
+[
+ {
+  "name": "vine_boom",
+  "file": "vine_boom.mp3",
+  "purpose": "statement \u00b7 more comedic",
+  "seconds": 1.31,
+  "kbps": 130,
+  "source": "https://www.myinstants.com/media/sounds/vine-boom.mp3",
+  "source_class": "web-download",
+  "licence": "meme/UGC, no clean chain - non-commercial use only"
+ },
+ {
+  "name": "vine_boom_bass",
+  "file": "vine_boom_bass.mp3",
+  "purpose": "statement \u00b7 more comedic, heavier",
+  "seconds": 3.48,
+  "kbps": 128,
+  "source": "https://www.myinstants.com/media/sounds/vine-boom-bass-boost-sound-effect.mp3",
+  "source_class": "web-download",
+  "licence": "meme/UGC, no clean chain - non-commercial use only"
+ },
+ {
+  "name": "among_us",
+  "file": "among_us.mp3",
+  "purpose": "reveal \u00b7 unexpected",
+  "seconds": 4.62,
+  "kbps": 172,
+  "source": "https://www.myinstants.com/media/sounds/among-us-role-reveal-sound.mp3",
+  "source_class": "web-download",
+  "licence": "meme/UGC, no clean chain - non-commercial use only"
+ },
+ {
+  "name": "faah",
+  "file": "faah.mp3",
+  "purpose": "vocal accent \u00b7 punchline",
+  "seconds": 1.78,
+  "kbps": 130,
+  "source": "https://www.myinstants.com/media/sounds/faahhhhhh.mp3",
+  "source_class": "web-download",
+  "licence": "meme/UGC, no clean chain - non-commercial use only"
+ },
+ {
+  "name": "riser_metallic",
+  "file": "riser_metallic.mp3",
+  "purpose": "transition \u00b7 feel smoother",
+  "seconds": 2.8,
+  "kbps": 129,
+  "source": "https://www.myinstants.com/media/sounds/popular-riser-metallic-sound-effect.mp3",
+  "source_class": "web-download",
+  "licence": "meme/UGC, no clean chain - non-commercial use only"
+ },
+ {
+  "name": "riser_suspense",
+  "file": "riser_suspense.mp3",
+  "purpose": "transition \u00b7 build tension",
+  "seconds": 10.11,
+  "kbps": 128,
+  "source": "https://www.myinstants.com/media/sounds/cinematic-suspense-riser.mp3",
+  "source_class": "web-download",
+  "licence": "meme/UGC, no clean chain - non-commercial use only"
+ },
+ {
+  "name": "whoosh",
+  "file": "whoosh.mp3",
+  "purpose": "transition \u00b7 the cut itself",
+  "seconds": 1.02,
+  "kbps": 197,
+  "source": "https://www.myinstants.com/media/sounds/whoosh-sfx.mp3",
+  "source_class": "web-download",
+  "licence": "meme/UGC, no clean chain - non-commercial use only"
+ },
+ {
+  "name": "whoosh_fire",
+  "file": "whoosh_fire.mp3",
+  "purpose": "transition \u00b7 heavier cut",
+  "seconds": 0.89,
+  "kbps": 128,
+  "source": "https://www.myinstants.com/media/sounds/fire-whoosh.mp3",
+  "source_class": "web-download",
+  "licence": "meme/UGC, no clean chain - non-commercial use only"
+ },
+ {
+  "name": "core",
+  "file": "core.mp3",
+  "purpose": "statement \u00b7 more important",
+  "seconds": 0.73,
+  "kbps": 200,
+  "source": "https://www.myinstants.com/media/sounds/core-sound-effect.mp3",
+  "source_class": "web-download",
+  "licence": "meme/UGC, no clean chain - non-commercial use only"
+ },
+ {
+  "name": "core_tiktok",
+  "file": "core_tiktok.mp3",
+  "purpose": "statement \u00b7 more important, trending mix",
+  "seconds": 0.67,
+  "kbps": 130,
+  "source": "https://www.myinstants.com/media/sounds/tiktok-core-sound-effect.mp3",
+  "source_class": "web-download",
+  "licence": "meme/UGC, no clean chain - non-commercial use only"
+ }
+]
