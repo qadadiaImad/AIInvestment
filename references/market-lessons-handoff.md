@@ -46,6 +46,35 @@ it). Never push media to git.
   character body-motion worse than stillness. Do not re-enable unasked.
 - **Content is non-commercial**, which is what permits the meme SFX below.
 
+### The stingmap is the authority on sound (2026-08-08)
+
+`scripts/audio/stingmap.json` is canonical for every sting in the series.
+It caps density at **≤3 scored stings per minute**, fixes the volume band
+at **0.24–0.34**, allows **one sting per beat**, and names three kinds of
+beat that must be **silent** — including, on compliance grounds, any line
+stating a real named person's specific disclosed trade or timing.
+
+This session learned the hard way that it outranks a passing instruction.
+Asked for "more transition audio", an earlier pass put a transition on
+nearly every beat: ~12 stings/min, hold beats at 0.15 (below the floor),
+two sounds on one beat, and a sting on *"July 2022. The Speaker's
+household sold NVIDIA…"* — the exact line the map names as silence-only.
+`scripts/audio/score_from_stingmap.py` now scores the episode from the map
+and is the only thing that should place a sting. Ep.1 sits at 10 stings,
+3.06/min, zero violations.
+
+Two frictions worth knowing:
+
+- **The spec contradicts itself slightly.** Its taxonomy explicitly
+  assigns stings to beats 299/393 and 2537, which are consecutive, and
+  10 entries over a 3.27-minute runtime is 3.06/min against a stated cap
+  of 3. The taxonomy entries are specific and reasoned, so they were
+  followed and the overage flagged rather than silently dropping a sting
+  the spec asks for. **Owner call needed** if the cap is meant to be hard.
+- **Motion foley is not a sting.** `sfx_whip` on a head turn, `sfx_poof`
+  on a vanish and `sfx_pop` are anchored to drawings under §10.8 and are
+  deliberately left alone by the scorer.
+
 ### Still waiting on the owner
 
 - **Music bed** — built for all five, demoed on ep.2, never approved and

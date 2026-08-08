@@ -228,5 +228,137 @@
   ],
   "prompt": "A massive oil tanker filmed from a low, dramatic angle as it threads through a very narrow strait between two towering dark rocky headlands, rendered in the bold ink-manga style of Araki Hirohiko's JoJo's Bizarre Adventure: heavy black linework, hard angular cel-shaded shadows across the water and cliffs, a fine halftone screentone texture over the sky, strong dramatic rim lighting outlining the tanker's hull against the dark channel, tense and ominous atmosphere. Above the tanker, a glowing amber price chart with a sharp spiking arrow and a small cluster of oil-barrel icons hover like a market omen, signalling a huge bet placed moments before the strait narrows. Restrained, moody color palette: deep navy-blue water and sky, warm amber highlights on the tanker hull and chart, muted burgundy in the clouds, touches of muted teal in the deep shadows, all set against a near-black background \u2014 no neon, no bright pink or magenta, nothing garish or rainbow-colored. Wide cinematic composition filling the entire frame edge to edge, high-contrast dramatic manga lighting, detailed crosshatched ink shadow work, an empty seascape framed only by the ship and the cliffs.",
   "negative": "neon colors, magenta, hot pink, garish colors, rainbow, psychedelic, oversaturated colors, jotaro, dio, stardust crusaders, named anime characters, human figure, person, crew, sailors, figures on deck, hat, cap, school uniform, anime logo, title text, cover art, text, words, letters, watermark, signature, caption, white border, picture frame, matte, letterbox, black bars, margin, blurry, low quality, distorted, deformed anatomy, photorealistic photo, 3d render, plain empty background"
+ },
+ {
+  "name": "fundamentals_ledger",
+  "route": "zimage",
+  "beat": 122,
+  "prompt": "A reverent manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, a symbolic still life rather than a portrait. An enormous, ornate leather-bound ledger book rests open atop a tall stone altar at frame center, shot from one slightly elevated three-quarter angle that looks down across the open pages while still taking in the altar's towering height, like a shrine. A downward beam of warm amber light falls onto the pages, ruled with fine, completely blank horizontal lines and blank vertical dividing rules, in bold black ink outlines with hard cel-shaded shadows and fine halftone screentone. Beside the ledger a brass balance scale holds perfectly level, its two pans empty and polished, with two neat stacks of smooth, completely blank coins at its base. A small, flat, back-turned silhouette kneels at the altar's foot, hands pressed together in worship, dwarfed by the towering book. The backdrop is a flat, deep navy void fading to black, with heavy rim lighting on the altar's silhouette. Palette held to deep navy, warm amber, burgundy, and muted teal on a dark ground, filling the full frame edge to edge.",
+  "negative": "",
+  "reads_as": "A giant ledger book is worshipped like sacred scripture on an altar, with a balance scale and coins beside it \u2014 the naive faith that pure accounting fundamentals are the market's holy truth.",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "v1 explanatory - object-forward, authored 2026-08-08"
+ },
+ {
+  "name": "single_domino",
+  "route": "zimage",
+  "beat": 692,
+  "prompt": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, built as a symbolic still-life rather than a portrait, shot from a single fixed low eye-level camera. One black domino tile stands upright alone at the center of a vast, flat, dark floor, its face left completely blank and smooth. A tight beam of warm amber spotlight falls straight down on it from above, throwing a long hard-edged shadow across the floor, rendered in bold black ink outlines, hard angular cel-shaded shadows, and fine halftone screentone texture. The floor stretches away from the domino into the distance, bare, completely smooth and unmarked, fading from deep navy into black at the edges. Far off at the very edge of the frame, a small flat back-turned silhouette of a figure stands dwarfed by the empty distance, giving a sense of scale. Heavy rim lighting traces the domino's edge. The palette stays restrained to deep navy, warm amber, burgundy and muted teal on a dark ground, filling the full wide frame edge to edge as one continuous scene.",
+  "negative": "",
+  "reads_as": "A single lit domino standing utterly alone on an empty, unbroken stretch of floor makes it obvious at a glance: one data point isn't a chain, isn't a pattern.",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "v1 explanatory - object-forward, authored 2026-08-08"
+ },
+ {
+  "name": "filing_stacks",
+  "route": "zimage",
+  "beat": 985,
+  "prompt": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, applied to a symbolic still-life scene rather than a portrait: an immense tower of stacked paper document folders rises from floor to the top of the frame at dead center, each folder rendered as a flat rectangular block with a completely blank, unmarked cover and bound with a smooth, unmarked ribbon tie, the stack leaning very slightly as it climbs, built from hundreds of individually inked layers so the sheer height reads as accumulation over many years. The tower is lit from low camera height looking up along its full length, exaggerating the vertical sweep into the distance. Deep navy folders alternate with warm amber and burgundy ones near the base, fading into hazy muted teal silhouette near the top where the stack vanishes into shadow, every surface carrying fine halftone screentone texture and hard angular cel-shaded creases along each folder's edge, every cover left bare and smooth with no text, tabs, or numerals anywhere on the tower. At the very bottom of the tower, small and back-turned for scale, one flat silhouetted figure tilts its head far back to look all the way up the stack, one arm braced against the lowest folder. The backdrop is a flat deep navy void fading to black at the edges. Heavy rim lighting traces the stack's every edge, building an overwhelming, vertiginous sense of scale. Restrained colour palette limited to deep navy, warm amber, burgundy, and muted teal against the dark ground, filling the full wide frame edge to edge as one continuous scene.",
+  "negative": "",
+  "reads_as": "A single impossibly tall tower of bound document folders dwarfing a tiny onlooker instantly reads as \"years of accumulated disclosures piled into a mountain.\"",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "v1 explanatory - object-forward, authored 2026-08-08"
+ },
+ {
+  "name": "obvious_idea",
+  "route": "zimage",
+  "beat": 1796,
+  "prompt": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, applied to a symbolic still-life rather than a portrait: a heavy wooden desk fills the lower half of the frame, its surface scattered with a loose fan of official filing sheets, each one left completely blank and smooth. From the topmost sheet a sudden starburst of warm amber light bursts upward and outward, rendered as hard-edged converging rays against the dark air, marking the instant an idea strikes. Beside it sits a neat row of identical closed folders, each flap pressed shut by a small round disc of hardened wax left bare and unmarked, lined up like copies waiting to be made. A small back-turned flat silhouette figure leans over the desk from the right edge of frame, one hand reaching toward the glowing sheet, head and shoulders turned fully away from the viewer. The camera holds a single eye-level angle looking down the length of the desk. Every surface carries bold black ink outlines, hard angular cel-shaded shadows, and fine halftone screentone, with heavy rim lighting on the folders and the figure's silhouette against a flat deep navy void fading to black at the edges, the illustration filling the frame edge to edge. Palette restrained to deep navy, warm amber, burgundy, and muted teal.",
+  "negative": "",
+  "reads_as": "A blank filing sheet on a desk suddenly bursts with light while a row of identical sealed folders waits beside it and a figure reaches for it -- the instant a lightbulb idea turns public filings into something copied and packaged.",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "v1 explanatory - object-forward, authored 2026-08-08"
+ },
+ {
+  "name": "fund_machine",
+  "route": "zimage",
+  "beat": 2921,
+  "prompt": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, a symbolic still-life rather than a portrait: a massive industrial stamping machine dominates the frame, shot from a low side angle so its full length reads left to right. On the left, a funnel-hopper drinks in a tumbling cascade of loose paper sheets and folded documents, every sheet completely blank and smooth, lit by a cold muted-teal glow. The papers vanish into the machine's riveted iron body, wrapped in pipes and gears, rendered in bold black ink outlines, hard cel-shaded shadows, and fine halftone screentone. On the right, the output chute deposits a woven wicker basket holding a tiered stack of smooth round polished discs of varying heights, each disc completely blank and smooth, glowing warm amber as if newly cast. A small flat silhouette of a person, seen only from behind, stands dwarfed at the machine's base, hand raised toward the paper cascade. Heavy rim lighting traces the machine against a flat deep navy void fading to black. Palette limited to deep navy, warm amber, burgundy, and muted teal, filling the frame edge to edge.",
+  "negative": "",
+  "reads_as": "A viewer instantly reads: the same raw public paperwork that feeds a person also feeds a giant machine, which mechanically turns it into a ready-made basket of holdings \u2014 the fund is just an automated version of the same process.",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "v1 explanatory - object-forward, authored 2026-08-08"
+ },
+ {
+  "name": "paper_conveyor",
+  "route": "zimage",
+  "beat": 3100,
+  "prompt": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, a symbolic still-life rather than a portrait: a single narrow iron rail recedes in a straight line toward a distant vanishing point, shot from one low angle looking straight down its length. Riding the rail, exactly centered, is one small wooden cart carrying a thick sealed paper envelope, its wax seal pressed smooth and completely blank. The rail passes beneath an unbroken row of identical stone archways spaced evenly into the distance, each glowing with warm amber torchlight. The cart is the only thing in motion, gripped tightly by the rail, heavy motion-streak linework trailing behind it to show a slow, fixed, unhurried crawl. Far in the background a small flat back-turned silhouette stands beside the track, dwarfed by the archways, watching it pass. Bold black ink contours, hard angular cel-shaded shadows, fine halftone screentone, and heavy rim light trace the rail and archways against a flat, deep navy void fading to black. Palette: deep navy, warm amber, burgundy, muted teal, filling the frame edge to edge as one continuous scene.",
+  "negative": "",
+  "reads_as": "A single sealed letter crawls down one fixed track through identical checkpoints at an even, unhurried pace -- there's no side lane, no shortcut, everyone's paperwork rides the same slow rail.",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "v1 explanatory - object-forward, authored 2026-08-08"
+ },
+ {
+  "name": "melting_edge",
+  "route": "zimage",
+  "beat": 3532,
+  "prompt": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, applied to a symbolic still-life scene: one long, gleaming blade stands upright, embedded point-down in a low stone block, centered in frame, shot from a low angle looking straight up along its length. Only the top third keeps its razor-thin, hard-edged silhouette, rendered in crisp bold black ink contours with fine halftone screentone catching the light. Below that line the metal turns liquid, sagging into soft heavy folds that ribbon down the blade and pool at its base into a wide, still puddle mirroring the blade above it. The melting metal glows warm amber where it liquefies, cooling into burgundy and muted teal shadow lower down, while the intact tip at the very top throws a sharp, cold rim light against a flat deep navy void fading to black at the frame's edges. Hard angular cel-shaded shadows fall across the stone block beneath the puddle. Restrained palette of deep navy, warm amber, burgundy, and muted teal against a dark ground, filling the whole wide frame edge to edge as one continuous scene.",
+  "negative": "",
+  "reads_as": "A once-sharp blade is dissolving from a hard, gleaming edge into liquid metal pooling below it -- an advantage visibly wearing away until only a sliver of its original sharpness survives.",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "v1 explanatory - object-forward, authored 2026-08-08"
+ },
+ {
+  "name": "volume_dial",
+  "route": "zimage",
+  "beat": 4007,
+  "prompt": "A dramatic illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki: an enormous brass amplifier volume dial fills the frame's center, mounted on a dark riveted panel whose surface is completely blank and smooth. Bold black manga ink outlines, hard angular cel-shaded highlights, and fine halftone screentone cover the dial's knurled rim and blank face alike. A single pointer needle is swung all the way clockwise to the top of its arc, glowing hot amber at the tip. Etched into the panel behind the dial sits one completely blank, smooth microchip shape, wired to the dial's spindle by a single glowing line. From that chip, concentric rings of warm amber light radiate outward, each ring wider and brighter than the last, against a flat burgundy-and-teal gradient fading to black. A small, flat, back-turned silhouette figure stands at the panel's base for scale, one arm raised toward the dial, dwarfed by it. Heavy rim lighting traces the dial's rim and the outer rings. Palette held to deep navy, warm amber, burgundy, and muted teal on a dark ground, filling the frame edge to edge.",
+  "negative": "",
+  "reads_as": "A tech stock's ordinary signal is being amplified to the max \u2014 a chip's small pulse cranked by an oversized volume dial into an enormous outward blast, not sorcery, just the same signal turned way up.",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "v1 explanatory - object-forward, authored 2026-08-08"
+ },
+ {
+  "name": "redacted_filing",
+  "route": "zimage",
+  "beat": 4326,
+  "prompt": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, built as a symbolic still life: one blank, smooth document sheet, lit by a narrow cone of warm amber spotlight, rests flat atop a towering column of countless identical closed case folders, each a plain smooth rectangle of bare, unmarked deep burgundy leather, drawn with bold black manga ink outlines, hard angular cel-shaded edges, and fine halftone screentone across every surface. The column rises up out of frame from a floor lost in muted teal shadow, so the lit sheet at the top is dwarfed by the sheer unseen mass beneath it. The camera holds one low angle, looking straight up the column from the floor. Far below at the base, one small flat back-turned silhouette figure stands looking up, tiny against the column's height, giving scale. The backdrop is a flat deep navy void swallowing the upper folders into blackness. Heavy rim lighting traces the stack's silhouette in warm amber and muted teal against deep navy and burgundy, filling the full wide frame edge to edge as one continuous scene.",
+  "negative": "",
+  "reads_as": "One lit page balanced on top of an enormous, unmarked stack of hidden folders sinking into darkness \u2014 the filing is the tiny visible tip of a vastly larger unseen record.",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "v1 explanatory - object-forward, authored 2026-08-08"
+ },
+ {
+  "name": "attention_map",
+  "route": "zimage",
+  "beat": 4626,
+  "prompt": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, rendered as a symbolic still-life rather than a portrait: a vast, dark, completely blank and smooth tabletop surface fills the frame, shot from a single high angle looking down past the shoulder of a small back-turned flat silhouette figure leaning over it from the near edge. Scattered across the bare surface are many small carved wooden game pieces of differing shapes, rendered in bold black ink outlines with hard angular cel-shaded facets and fine halftone screentone. Around the rim stand several tall narrow watchtower beacons, each casting a thin cone of light onto the surface; most beams stay faint over empty table, but a cluster bends and converges into one bright pool of warm amber light on a single piece near the center, marking where every beam points. The unlit pieces sit in cool muted teal shadow, the surrounding void fades to flat deep navy black, and heavy rim light traces every tower and piece edge. Restrained palette of deep navy, warm amber, burgundy, and muted teal, filling the full frame edge to edge as one continuous scene.",
+  "negative": "",
+  "reads_as": "A dark map covered in small objects, with several searchlight beams from surrounding towers converging into one bright pool of light on a single object \u2014 attention pointing somewhere, not a ranked winner on a podium.",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "v1 explanatory - object-forward, authored 2026-08-08"
+ },
+ {
+  "name": "read_it_yourself",
+  "route": "zimage",
+  "beat": 5189,
+  "prompt": "A wide manga illustration in the bold ink style of JoJo's Bizarre Adventure by Hirohiko Araki, rendered as symbolic still life: at the center of the frame, one large hardbound ledger book lies open flat atop a plain stone pedestal, its two open pages catching a warm amber shaft of light pouring down from directly above in hard-edged rays through the dark. The open pages are smooth blank paper marked only with fine horizontal rule lines, glowing faintly as though lit from within. The book's cover and spine are deep burgundy leather with bold black ink linework and hard angular cel-shaded creases; a thin muted-teal ribbon bookmark trails off the pedestal's edge. Fine halftone screentone covers the stone pedestal and the surrounding dark navy void, fading to black at the frame edges. Behind the pedestal, small and back-turned for scale, one flat silhouetted figure stands with a hand raised to shield its eyes from the glow, a simple dark cutout traced in heavy teal rim light. Heavy rim lighting on every edge, restrained palette of deep navy, warm amber, burgundy and muted teal against the dark ground, illustration filling the full wide frame edge to edge.",
+  "negative": "",
+  "reads_as": "A glowing open ledger under a beam of light, with a small awed figure looking on, says the record is out in the open for anyone to read.",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "v1 explanatory - object-forward, authored 2026-08-08"
+ },
+ {
+  "name": "outro_plate",
+  "route": "zimage",
+  "beat": 5697,
+  "prompt": "A calm illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, a quiet still-life rather than a portrait. A single wide wooden desk sits centered in frame, its surface bare and polished, catching a soft rim of warm amber light along its edge. On the desk rests a closed leather-bound ledger, its cover completely blank and smooth, beside a slim closed pen at a diagonal. Behind the desk, mounted on the dark navy wall, hangs one large circular record disc in matte burgundy, its grooves rendered as fine concentric halftone rings, its upper curve catching a rim of muted teal light. A tall narrow window at the back left fades from deep navy to black, evening settling outside. Bold black ink outlines define every edge, hard angular cel-shaded shadows pool beneath the desk, and fine halftone screentone washes over the wall and floor. The camera holds one calm, level, straight-on wide shot, still and settled. The palette stays restrained to deep navy, warm amber, burgundy, and muted teal against the dark ground, the illustration filling the full wide frame edge to edge as one continuous scene.",
+  "negative": "",
+  "reads_as": "A calm, settled close-of-day tableau \u2014 an empty desk and a still record on the wall \u2014 signaling the episode is over and inviting the viewer to return next time.",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "v1 explanatory - object-forward, authored 2026-08-08"
  }
 ]

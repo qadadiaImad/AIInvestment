@@ -55,6 +55,7 @@ import { FairMarketEp3, EP3_FRAMES } from "./compositions/FairMarketEp3";
 import { FairMarketEp4, EP4_FRAMES } from "./compositions/FairMarketEp4";
 import { FairMarketEp5, EP5_FRAMES } from "./compositions/FairMarketEp5";
 import { RigAnatomy, RIGANATOMY_FRAMES } from "./compositions/RigAnatomy";
+import { ArcadeVersus, ARCADE_FRAMES } from "./compositions/ArcadeVersus";
 import { RigParity, RIGPARITY_FRAMES } from "./compositions/RigParity";
 import memeReelFixture from "./fixtures/meme_reel/intc_failed_breakout.json";
 import tradeFailFixture from "./fixtures/btc_reel/trade_fail_reel.json";
@@ -139,6 +140,14 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1900}
         height={1080}
+      />
+      <Composition
+        id="ArcadeVersus"
+        component={ArcadeVersus}
+        durationInFrames={ARCADE_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
       />
       <Composition
         id="RigTest"

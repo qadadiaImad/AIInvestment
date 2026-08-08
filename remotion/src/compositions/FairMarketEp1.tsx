@@ -125,6 +125,12 @@ type Beat = {
   shout?: string; card?: Card; title?: string[]; energy?: number;
   // a generated caricature plate on the wall (motion/ExhibitPlate)
   exhibit?: string;
+  // Force the live candlestick tape back onto the wall. A beat with no
+  // wall content of its own now HOLDS the exhibit it is reacting to
+  // instead of cutting back to the tape - 23 of 39 beats used to fall
+  // through to it, so the same chart was on screen for 59% of the
+  // episode. Exactly one beat carries `wall: "chart"`.
+  wall?: "chart";
   callout?: {x: number; y: number; at?: number; label?: string};
   shots?: Shot[];
   // drawn "!!" flicks beside a head — the reaction accent on a turn
@@ -185,8 +191,7 @@ type Beat = {
 const BEATS: Beat[] = [
   // ═══ ACT 1 — THE CLAIM ═══════════════════════════════════════════════
   {at: 0,
-   exhibit: "capitol_ticker",
-   sfx: [{at: 0, name: "v_whoosh", vol: 0.30}], title: ["MARKET LESSONS", "WITH SOL", "ep.1 — the 'fair' market"],
+   exhibit: "capitol_ticker", title: ["MARKET LESSONS", "WITH SOL", "ep.1 — the 'fair' market"],
    actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 660, y: 1170, h: 1010}],
    shots: [{from: 0, k: 1.0, kEnd: 1.05},
            {from: 62, k: 1.34, kEnd: 1.48, tx: 540, ty: 1080}],
@@ -197,7 +202,9 @@ const BEATS: Beat[] = [
   // standing figure plants on FLOOR_Y, and Rex is the TALLER of the two:
   // he is the young one, Sol is a short round old man. These pair heights
   // are scripts/vector/overlap_audit.py output, not eyeballed.
-  {at: 122, actors: [{poses: ["rex_eager"], kind: "full", x: 327, y: FLOOR_Y, h: 717,
+  {at: 122,
+   exhibit: "fundamentals_ledger",
+   actors: [{poses: ["rex_eager"], kind: "full", x: 327, y: FLOOR_Y, h: 717,
                       turns: [{at: 10, tx: 860, ty: 1180}]},
                      {poses: ["sol_point_v1"], kind: "full", x: 831, y: FLOOR_Y, h: 629}],
    shots: [{from: 0, k: 1.0, kEnd: 1.14}],
@@ -213,7 +220,7 @@ const BEATS: Beat[] = [
                      {poses: ["rex_skeptic"], kind: "full", x: 309, y: FLOOR_Y, h: 710,
                       turns: [{at: 14, tx: -260, ty: 1650}]}],
    shots: [{from: 0, k: 1.0, kEnd: 1.12}],
-   sfx: [{at: 18, name: "sfx_whip", vol: 0.38}],
+   sfx: [{at: 15, name: "faah", vol: 0.28}, {at: 18, name: "sfx_whip", vol: 0.38}],
    vo: "v3_sol_ha", speaker: "SOL", line: "HA! …Fundamentals.", energy: 1.1},
 
   // EYELINE. rex_listen is drawn in profile facing RIGHT, so Rex stands
@@ -226,7 +233,7 @@ const BEATS: Beat[] = [
                       moves: [{at: 0, kind: "inR"}]}],
    shots: [{from: 0, k: 1.0, kEnd: 1.06},
            {from: 32, only: 1, k: 1.42, kEnd: 1.56, tx: 560, ty: 900}],
-   sfx: [{at: 4, name: "sfx_whoosh", vol: 0.45}],
+   sfx: [{at: 20, name: "core", vol: 0.3}, {at: 4, name: "sfx_whoosh", vol: 0.45}],
    vo: "v4_sol_politics", speaker: "SOL", line: "Sometimes… it trades on POLITICS."},
 
   // THE TAKE — and it stays IN THE ROOM, at a size where the room is
@@ -242,12 +249,12 @@ const BEATS: Beat[] = [
   // grounded full figure at 1080px — a medium shot. Even at the top of
   // the push the room and the top two thirds of the monitor stay visible
   // behind him, so the take reads as a boy reacting IN a place.
-  {at: 393, actors: [{poses: ["rex_shock"], kind: "full", x: 520, y: FLOOR_Y, h: 900}],
+  {at: 393,
+   sfx: [{at: 0, name: "vine_boom_bass", vol: 0.3}], actors: [{poses: ["rex_shock"], kind: "full", x: 520, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.0, kEnd: 1.10}],
    // The scream lasts 27 frames and the take holds 55, so the mouth would
    // fall back to "closed" mid-shout without this.
    holdMouth: true, fx: true,
-   sfx: [{at: 6, name: "impact", vol: 0.55}],
    vo: "v5_rex_what", speaker: "REX", line: "WHAT?!", energy: 1.5},
 
   // ═══ ACT 2 — THE EVIDENCE ════════════════════════════════════════════
@@ -277,7 +284,9 @@ const BEATS: Beat[] = [
   // captioning itself. This act is the ramp that EARNS that reaction:
   // one filing -> people track these portfolios like a leaderboard ->
   // here are the ones they watch -> somebody wrapped it in a fund.
-  {at: 692, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681,
+  {at: 692,
+   exhibit: "single_domino",
+   actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681,
                       turns: [{at: 12, tx: 860, ty: 1200}]},
                      {poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08},
@@ -286,8 +295,8 @@ const BEATS: Beat[] = [
    line: "One trade. One person. That's a coincidence, boss, not a strategy."},
 
   {at: 859,
-   exhibit: "leaderboard_suits",
-   sfx: [{at: 0, name: "v_whoosh", vol: 0.28}], actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1120, h: 1040}],
+   sfx: [{at: 5, name: "riser_metallic", vol: 0.26}],
+   exhibit: "leaderboard_suits", actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1120, h: 1040}],
    shots: [{from: 0, k: 1.0, kEnd: 1.09},
            {from: 60, k: 1.2, kEnd: 1.34, tx: 540, ty: 1010}],
    vo: "a3_sol_leaderboard", speaker: "SOL",
@@ -296,7 +305,9 @@ const BEATS: Beat[] = [
   // THE TAPE IS THE POINT of this beat, so Sol is staged clear of it and
   // the monitor runs its default state: candles printing, the newest one
   // live and wandering inside its own range. See motion/Infographic.tsx.
-  {at: 985, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+  {at: 985,
+   exhibit: "filing_stacks",
+   actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.0, kEnd: 1.06, look: 0.55},
            {from: 92, k: 1.16, kEnd: 1.26, tx: 620, ty: 1180, look: 0.3}],
    vo: "a3_sol_portfolios", speaker: "SOL",
@@ -323,8 +334,7 @@ const BEATS: Beat[] = [
   // track", never "congress investors". Caricature, no on-screen name, no
   // accusation; the footer carries the parody / public-record rail.
   {at: 1301,
-   exhibit: "committee_room",
-   sfx: [{at: 0, name: "v_whoosh", vol: 0.26}], actors: [{poses: ["sol_finger"], kind: "full", x: 760, y: FLOOR_Y, h: 900}],
+   exhibit: "committee_room", actors: [{poses: ["sol_finger"], kind: "full", x: 760, y: FLOOR_Y, h: 900}],
    // Opens on the second caricature, then cuts to the exhibit at 104. Both
    // shots used to carry `tvPose`, which meant the wired `committee_room`
    // exhibit had nowhere to land and never appeared at all.
@@ -337,7 +347,6 @@ const BEATS: Beat[] = [
   {at: 1496, actors: [{poses: ["rex_shock"], kind: "full", x: 500, y: FLOOR_Y, h: 880}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08}],
    holdMouth: true, fx: true,
-   sfx: [{at: 6, name: "impact", vol: 0.5}],
    vo: "a3_rex_score", speaker: "REX", line: "Somebody's keeping score? Like a fantasy league?", energy: 1.4},
 
   // THE NUMBER, on the beat that claims it. Sol says the trackers
@@ -352,12 +361,15 @@ const BEATS: Beat[] = [
    vo: "a3_sol_beating", speaker: "SOL",
    line: "Some years, the trackers reported those portfolios beating the market. That's why people watch."},
 
-  {at: 1796, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1120, h: 1040}],
+  {at: 1796,
+   exhibit: "obvious_idea",
+   actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1120, h: 1040}],
    shots: [{from: 0, k: 1.12, kEnd: 1.28, tx: 540, ty: 1030}],
    vo: "a3_sol_obvious", speaker: "SOL", line: "And then somebody did the obvious thing."},
 
   // ...which is what Rex is now reacting TO, instead of announcing.
   {at: 1892,
+   sfx: [{at: 6, name: "among_us", vol: 0.3}],
    exhibit: "index_basket", actors: [{poses: ["rex_eager"], kind: "full", x: 560, y: FLOOR_Y, h: 930}],
    card: {title: "FEB 2023 · IT BECAME A PRODUCT",
           lines: ["An ETF now copies Democratic lawmakers'",
@@ -365,13 +377,11 @@ const BEATS: Beat[] = [
           big: "NANC", foot: "public filings in · portfolio out"},
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],
    fx: true,
-   sfx: [{at: 6, name: "impact", vol: 0.5}],
    vo: "v7_rex_index", speaker: "REX", line: "They made it an INDEX?!",
    energy: 1.3},
 
   {at: 1970,
-   exhibit: "two_podiums",
-   sfx: [{at: 0, name: "v_whoosh", vol: 0.28}], actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+   exhibit: "two_podiums", actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, mood: "dark", tvPose: "congress2_smug", k: 1.0, kEnd: 1.08},
            {from: 88, k: 1.18, kEnd: 1.3, tx: 600, ty: 1200}],
    vo: "v11_sol_bothsides", speaker: "SOL",
@@ -391,8 +401,7 @@ const BEATS: Beat[] = [
   // reach the monitor or the other actor.
   {at: 2240,
    exhibit: "calendar_late",
-   callout: {x: 0.52, y: 0.6, at: 34, label: "45 DAYS"},
-   sfx: [{at: 0, name: "v_whoosh", vol: 0.28}, {at: 32, name: "v_core", vol: 0.30}], actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
+   callout: {x: 0.52, y: 0.6, at: 34, label: "45 DAYS"}, actors: [{poses: ["sol_point_v1"], kind: "full", x: 745, y: FLOOR_Y, h: 930},
                       {poses: ["rex_skeptic"], kind: "bust", x: 400, y: 1250, h: 860}],
    card: {title: "WHAT THE FILING ACTUALLY SAYS",
           lines: ["A range, not an amount.",
@@ -420,15 +429,16 @@ const BEATS: Beat[] = [
   // ordinary-eyed rex_skeptic / rex_listen through the rest of the act.
   // The owner's note about the eyes, answered by the writing.
   {at: 2417,
-   exhibit: "copy_homework",
-   sfx: [{at: 4, name: "v_boom", vol: 0.30}], actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679},
+   sfx: [{at: 15, name: "vine_boom", vol: 0.24}],
+   exhibit: "copy_homework", actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679},
                       {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1290, h: 596}],
    shots: [{from: 0, k: 1.0, kEnd: 1.07},
            {from: 54, only: 0, k: 1.42, kEnd: 1.56, tx: 520, ty: 1040}],
    vo: "a2_rex_copy", speaker: "REX",
    line: "Then I'll just copy them! Buy what they buy!", energy: 1.3},
 
-  {at: 2537, actors: [{poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597},
+  {at: 2537,
+   sfx: [{at: 0, name: "whoosh_fire", vol: 0.3}], actors: [{poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597},
                       {poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681}],
    shots: [{from: 0, k: 1.0, kEnd: 1.06},
            {from: 46, only: 0, k: 1.38, kEnd: 1.52, tx: 560, ty: 990}],
@@ -444,7 +454,8 @@ const BEATS: Beat[] = [
    shots: [{from: 0, k: 1.06, kEnd: 1.16, tx: 540, ty: 1120}],
    vo: "a2_rex_six", speaker: "REX", line: "Six weeks?"},
 
-  {at: 2722, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+  {at: 2722,
+   sfx: [{at: 20, name: "core", vol: 0.33}], actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
                       {poses: ["rex_skeptic"], kind: "bust", x: 430, y: 1250, h: 880}],
    graphic: "counter_45days",
    shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.07},
@@ -462,7 +473,9 @@ const BEATS: Beat[] = [
   // Rex gets to catch him, which is also the only time in the episode the
   // junior wins a point. Sol concedes rather than squashing him, and the
   // concession happens to be the most interesting fact in the piece.
-  {at: 2921, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681,
+  {at: 2921,
+   exhibit: "fund_machine",
+   actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681,
                        turns: [{at: 10, tx: 860, ty: 1200}]},
                       {poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08},
@@ -471,7 +484,9 @@ const BEATS: Beat[] = [
    vo: "a4_rex_butthefund", speaker: "REX",
    line: "Hold on. Then how does the fund work? It's reading the same late filings I am."},
 
-  {at: 3100, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+  {at: 3100,
+   exhibit: "paper_conveyor",
+   actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
    // pulled back: a 1040px bust at k=1.16 is a face filling the frame,
    // which is the one framing the owner has ruled out twice
    shots: [{from: 0, k: 1.0, kEnd: 1.08, tx: 540, ty: 1200}],
@@ -489,7 +504,9 @@ const BEATS: Beat[] = [
    vo: "a4_sol_survives", speaker: "SOL",
    line: "Seventy-one percent on the disclosed portfolio. Twenty-seven for the fund copying it late. The market did twenty-five."},
 
-  {at: 3532, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
+  {at: 3532,
+   exhibit: "melting_edge",
+   actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.08, kEnd: 1.2, tx: 580, ty: 1180}],
    vo: "a4_sol_thin", speaker: "SOL",
    line: "So the edge does survive the wait, kid. Most of it doesn't."},
@@ -511,8 +528,7 @@ const BEATS: Beat[] = [
   // accusation: a disclosure records what was bought, and cannot record
   // what was known. That is a fact about the paperwork.
   {at: 3664,
-   exhibit: "options_leverage",
-   sfx: [{at: 0, name: "v_riser", vol: 0.24}], actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+   exhibit: "options_leverage", actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
                       {poses: ["rex_skeptic"], kind: "bust", x: 430, y: 1250, h: 860}],
    card: {title: "WHAT A FILING DOESN'T SHOW",
           lines: ["The name — yes.",
@@ -525,7 +541,9 @@ const BEATS: Beat[] = [
    vo: "a6_sol_leverage", speaker: "SOL",
    line: "And look closer. Those weren't only shares. Call options. Leverage, on a handful of chip and software names, in the biggest technology rally in years."},
 
-  {at: 4007, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679,
+  {at: 4007,
+   exhibit: "volume_dial",
+   actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679,
                        turns: [{at: 14, tx: 830, ty: 1210}]},
                       {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1300, h: 596}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08},
@@ -534,7 +552,9 @@ const BEATS: Beat[] = [
    line: "So it's not magic. It's a big tech bet with the volume turned up.", energy: 1.1},
 
   // the tilt cuts both ways, and the tape behind him is doing exactly that
-  {at: 4175, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
+  {at: 4175,
+   wall: "chart",
+   actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.04, kEnd: 1.16, tx: 580, ty: 1200}],
    vo: "a6_sol_cutsboth", speaker: "SOL",
    line: "Mostly. And this year, that same bet is losing to the market."},
@@ -542,7 +562,9 @@ const BEATS: Beat[] = [
   // THE LINE THE EPISODE EXISTS FOR. Direct to camera, held, no graphic
   // competing with it — the only moment in the piece where the monitor
   // is deliberately just the market and the man says the thing.
-  {at: 4326, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 900}],
+  {at: 4326,
+   exhibit: "redacted_filing",
+   actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 900}],
    shots: [{from: 0, k: 1.0, kEnd: 1.12, tx: 540, ty: 1200}],
    vo: "a6_sol_thesis", speaker: "SOL",
    line: "The filing tells you what they bought. It never tells you what they knew, or when. That's the part you can't copy."},
@@ -553,7 +575,9 @@ const BEATS: Beat[] = [
 
   // Sol's reframe — and then he's gone, which is what makes his answer on
   // the next-but-one beat an answer from somewhere he wasn't.
-  {at: 4626, actors: [{poses: ["sol_finger"], kind: "full", x: 840, y: FLOOR_Y, h: 578,
+  {at: 4626,
+   exhibit: "attention_map",
+   actors: [{poses: ["sol_finger"], kind: "full", x: 840, y: FLOOR_Y, h: 578,
                        moves: [{at: 140, kind: "vanish"}]},
                       {poses: ["rex_listen"], kind: "full", x: 236, y: FLOOR_Y, h: 659}],
    shots: [{from: 0, k: 1.0, kEnd: 1.06},
@@ -581,8 +605,7 @@ const BEATS: Beat[] = [
    shots: [{from: 0, k: 1.0, kEnd: 1.08},
            {from: 74, only: 1, k: 1.3, kEnd: 1.42, tx: 560, ty: 1080}],
    flicks: [{at: 21, x: 560, y: 1130}],
-   sfx: [{at: 14, name: "sfx_pop", vol: 0.6},
-         {at: 24, name: "sfx_whip", vol: 0.42}],
+   sfx: [{at: 14, name: "sfx_pop", vol: 0.6}, {at: 24, name: "sfx_whip", vol: 0.42}],
    vo: "a5_sol_homework", speaker: "SOL",
    line: "Watch what they sit near. Committees. Hearings. Then do your own homework."},
 
@@ -596,7 +619,10 @@ const BEATS: Beat[] = [
   // THE THESIS, CLOSED. The cold open promised to explain the "fair"
   // market and the 60-second cut never came back to the word. Sol answers
   // it to camera, and the answer is the honest one: not fair — legible.
-  {at: 5189, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1120, h: 1040}],
+  {at: 5189,
+   sfx: [{at: 90, name: "whoosh", vol: 0.27}],
+   exhibit: "read_it_yourself",
+   actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1120, h: 1040}],
    shots: [{from: 0, k: 1.06, kEnd: 1.2, tx: 540, ty: 1040}],
    vo: "a5_sol_fair", speaker: "SOL", line: "Fair? No. But now you can read it."},
 
@@ -613,7 +639,7 @@ const BEATS: Beat[] = [
    shots: [{from: 0, k: 1.0, kEnd: 1.08},
            {from: 96, only: 0, k: 1.28, kEnd: 1.4, tx: 520, ty: 1020}],
    flicks: [{at: 14, x: 560, y: 1140}],
-   sfx: [{at: 12, name: "sfx_whip", vol: 0.42}],
+   sfx: [{at: 12, name: "core_tiktok", vol: 0.3}, {at: 12, name: "sfx_whip", vol: 0.42}],
    vo: "a7_rex_oilthing", speaker: "REX",
    line: "Wait, boss. What about the oil thing? Five hundred million dollars, sixteen minutes before the announcement?",
    energy: 1.2},
@@ -625,15 +651,35 @@ const BEATS: Beat[] = [
    vo: "a7_sol_ownepisode", speaker: "SOL",
    line: "Ah. That one doesn't fit in a footnote, kid. That one gets its own episode."},
 
-  {at: 5697, title: ["MARKET LESSONS", "WITH SOL", "ep.2 — sixteen minutes"], actors: []},
+  {at: 5697,
+   exhibit: "outro_plate",
+   title: ["MARKET LESSONS", "WITH SOL", "ep.2 — sixteen minutes"], actors: []},
 ];
+
+// Frame, relative to a beat's start, at which its exhibit becomes visible.
+const exhibitFromOf = (b: Beat) =>
+  (b.shots ?? []).find((s) => !s.tvPose && !s.hideCard)?.from ?? 0;
+
+// What the wall shows on a beat that sets no wall content of its own: the
+// exhibit it is REACTING to, still up, rather than a cut back to the tape.
+// Hold only an image plate - the code-drawn graphics animate off their own
+// beat clock and cannot be held past it.
+const heldExhibitAt = (i: number): {name: string; start: number} | null => {
+  for (let k = i; k >= 0; k--) {
+    const b = BEATS[k];
+    if (b.exhibit) return {name: b.exhibit, start: b.at + exhibitFromOf(b)};
+    if (b.wall === "chart" || b.graphic || b.card || b.title) return null;
+  }
+  return null;
+};
 
 const beatAt = (f: number) => {
   let i = 0;
   for (let k = 0; k < BEATS.length; k++) if (f >= BEATS[k].at) i = k;
   const cur = BEATS[i];
   const next = BEATS[i + 1];
-  return {cur, since: f - cur.at, hold: (next ? next.at : FAIRMARKET_FRAMES) - cur.at};
+  return {cur, idx: i, since: f - cur.at,
+    hold: (next ? next.at : FAIRMARKET_FRAMES) - cur.at};
 };
 
 const CYCLE = [0, 1, 0, 2];
@@ -1082,7 +1128,7 @@ const Subtitle: React.FC<{speaker: string; line: string}> = ({speaker, line}) =>
 
 export const FairMarketEp1: React.FC = () => {
   const frame = useCurrentFrame();
-  const {cur, since, hold} = beatAt(frame);
+  const {cur, idx, since, hold} = beatAt(frame);
   const outro = cur.at === 1685;
   const nrg = cur.energy ?? 0.7;
   const k = kick(since, 10 * nrg, 14);
@@ -1104,9 +1150,10 @@ export const FairMarketEp1: React.FC = () => {
   // A beat may open on the caricature and cut to its exhibit part-way
   // through. The plate's clock starts at THAT cut, not at the beat, or it
   // enters already half-animated.
-  const exhibitFrom = cur.exhibit
-    ? (cur.shots ?? []).find((s) => !s.tvPose && !s.hideCard)?.from ?? 0
-    : 0;
+  const wallEx = cur.exhibit
+    ? {name: cur.exhibit, start: cur.at + exhibitFromOf(cur)}
+    : cur.wall === "chart" ? null
+    : heldExhibitAt(idx);
   // Beat-scoped, so the halo can't blink off at a mid-beat cut away from
   // `tvPose` on a beat that goes on to show an exhibit.
   const wallLit = (!!cur.card || (cur.shots ?? []).some((s) => !!s.tvPose))
@@ -1165,10 +1212,11 @@ export const FairMarketEp1: React.FC = () => {
               line is about. */}
           {shot?.hideCard ? <TVIdle frame={frame} bare={!!cur.title} />
             : shot?.tvPose ? <TVPose pose={shot.tvPose} since={shotSince} />
-            : cur.exhibit ? (
-              <ExhibitPlate name={cur.exhibit} since={since - exhibitFrom}
-                w={WALL.w} h={WALL.h} callout={cur.callout}
-                dir={(cur.at / 90) % 2 < 1 ? 1 : -1} />
+            : wallEx ? (
+              <ExhibitPlate name={wallEx.name} since={frame - wallEx.start}
+                w={WALL.w} h={WALL.h}
+                callout={cur.exhibit ? cur.callout : undefined}
+                dir={(wallEx.start / 90) % 2 < 1 ? 1 : -1} />
             ) : cur.graphic === "timeline_nvidia" ? (
               <TimelineExhibit since={since} w={WALL.w} h={WALL.h}
                 title="JULY 2022 · PUBLIC FILING"

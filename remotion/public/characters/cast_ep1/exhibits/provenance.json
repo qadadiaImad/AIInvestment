@@ -1,5 +1,18 @@
 [
  {
+  "name": "attention_map",
+  "file": "attention_map.png",
+  "route": "zimage",
+  "template": "zimage_t2i",
+  "seed": 3100,
+  "seconds": 8.1,
+  "gate_clean": false,
+  "gate_fixes": 0,
+  "source": "local ComfyUI zimage_t2i",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-08T19:09:11Z"
+ },
+ {
   "name": "calendar_late",
   "file": "calendar_late.png",
   "route": "zimage",
@@ -78,6 +91,45 @@
   "retrieved_at": "2026-08-08T18:33:40Z"
  },
  {
+  "name": "filing_stacks",
+  "file": "filing_stacks.png",
+  "route": "zimage",
+  "template": "zimage_t2i",
+  "seed": 3137,
+  "seconds": 8.0,
+  "gate_clean": false,
+  "gate_fixes": 0,
+  "source": "local ComfyUI zimage_t2i",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-08T19:09:19Z"
+ },
+ {
+  "name": "fund_machine",
+  "file": "fund_machine.png",
+  "route": "zimage",
+  "template": "zimage_t2i",
+  "seed": 3174,
+  "seconds": 8.1,
+  "gate_clean": false,
+  "gate_fixes": 0,
+  "source": "local ComfyUI zimage_t2i",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-08T19:09:27Z"
+ },
+ {
+  "name": "fundamentals_ledger",
+  "file": "fundamentals_ledger.png",
+  "route": "zimage",
+  "template": "zimage_t2i",
+  "seed": 3211,
+  "seconds": 8.1,
+  "gate_clean": false,
+  "gate_fixes": 0,
+  "source": "local ComfyUI zimage_t2i",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-08T19:09:35Z"
+ },
+ {
   "name": "index_basket",
   "file": "index_basket.png",
   "route": "zimage",
@@ -102,6 +154,32 @@
   "source": "local ComfyUI zimage_t2i",
   "source_class": "local-gen",
   "retrieved_at": "2026-08-08T18:31:29Z"
+ },
+ {
+  "name": "melting_edge",
+  "file": "melting_edge.png",
+  "route": "zimage",
+  "template": "zimage_t2i",
+  "seed": 3248,
+  "seconds": 8.1,
+  "gate_clean": false,
+  "gate_fixes": 0,
+  "source": "local ComfyUI zimage_t2i",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-08T19:09:43Z"
+ },
+ {
+  "name": "obvious_idea",
+  "file": "obvious_idea.png",
+  "route": "zimage",
+  "template": "zimage_t2i",
+  "seed": 3285,
+  "seconds": 8.1,
+  "gate_clean": false,
+  "gate_fixes": 0,
+  "source": "local ComfyUI zimage_t2i",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-08T19:09:51Z"
  },
  {
   "name": "oil_tanker_strait",
@@ -130,6 +208,71 @@
   "retrieved_at": "2026-08-08T18:31:37Z"
  },
  {
+  "name": "outro_plate",
+  "file": "outro_plate.png",
+  "route": "zimage",
+  "template": "zimage_t2i",
+  "seed": 3322,
+  "seconds": 8.1,
+  "gate_clean": false,
+  "gate_fixes": 0,
+  "source": "local ComfyUI zimage_t2i",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-08T19:09:59Z"
+ },
+ {
+  "name": "paper_conveyor",
+  "file": "paper_conveyor.png",
+  "route": "zimage",
+  "template": "zimage_t2i",
+  "seed": 3359,
+  "seconds": 8.1,
+  "gate_clean": false,
+  "gate_fixes": 0,
+  "source": "local ComfyUI zimage_t2i",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-08T19:10:07Z"
+ },
+ {
+  "name": "read_it_yourself",
+  "file": "read_it_yourself.png",
+  "route": "zimage",
+  "template": "zimage_t2i",
+  "seed": 3396,
+  "seconds": 8.0,
+  "gate_clean": false,
+  "gate_fixes": 0,
+  "source": "local ComfyUI zimage_t2i",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-08T19:10:15Z"
+ },
+ {
+  "name": "redacted_filing",
+  "file": "redacted_filing.png",
+  "route": "zimage",
+  "template": "zimage_t2i",
+  "seed": 3433,
+  "seconds": 8.1,
+  "gate_clean": false,
+  "gate_fixes": 0,
+  "source": "local ComfyUI zimage_t2i",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-08T19:10:23Z"
+ },
+ {
+  "name": "single_domino",
+  "file": "single_domino.png",
+  "route": "zimage",
+  "template": "zimage_t2i",
+  "seed": 3470,
+  "seconds": 8.1,
+  "gate_clean": false,
+  "gate_fixes": 0,
+  "source": "local ComfyUI zimage_t2i",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-08T19:10:31Z"
+ },
+ {
   "name": "two_podiums",
   "file": "two_podiums.png",
   "route": "zimage",
@@ -141,6 +284,19 @@
   "source": "local ComfyUI zimage_t2i",
   "source_class": "local-gen",
   "retrieved_at": "2026-08-08T17:59:44Z"
+ },
+ {
+  "name": "volume_dial",
+  "file": "volume_dial.png",
+  "route": "zimage",
+  "template": "zimage_t2i",
+  "seed": 3507,
+  "seconds": 8.0,
+  "gate_clean": false,
+  "gate_fixes": 0,
+  "source": "local ComfyUI zimage_t2i",
+  "source_class": "local-gen",
+  "retrieved_at": "2026-08-08T19:10:39Z"
  },
  {
   "name": "watching_chart",
