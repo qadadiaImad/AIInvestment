@@ -957,8 +957,15 @@ export const FairMarketEp2: React.FC = () => {
               <Audio src={staticFile(`audio/fairmarket_ep2/${b.vo2}.wav`)} />
             </Sequence>
           ) : null}
+          {/* 320, not 22. A <Sequence> TRUNCATES its audio, and 22 frames is
+              0.73s — which silently chopped every sting longer than that.
+              riser_suspense is 10.08s and the stingmap asks for it as "a low
+              bed across the line"; it was being cut to a seventh of a second.
+              riser_metallic (2.76s) and whoosh (0.98s) were cut too. A
+              generous window costs nothing: <Audio> stops when the file ends,
+              so the sound plays its natural length and no further. */}
           {(b.sfx ?? []).map((s, i) => (
-            <Sequence key={`s${i}`} from={b.at + s.at} durationInFrames={22}>
+            <Sequence key={`s${i}`} from={b.at + s.at} durationInFrames={320}>
               <Audio src={staticFile(`audio/${s.name}.wav`)} volume={s.vol ?? 0.5} />
             </Sequence>
           ))}
