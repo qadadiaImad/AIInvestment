@@ -15,6 +15,7 @@ import {actionCurve, holdCurve, squash} from "../motion/toon";
 import {FlashCut, ShockFlicks, ShockRing, SpeedLines, kick} from "../motion/ToonFX";
 import {Grain, Vignette} from "../motion/Polish";
 import {Move, Turn, idle, interactXform} from "../motion/interact";
+import {ExhibitPlate} from "../motion/ExhibitPlate";
 import {FLOOR_Y, NewsBand, PANEL_FLOOR, Room, RoundDesk, SEATS, WALL, WallFrame, H as STAGE_H} from "../motion/Set";
 import {CountdownExhibit, StackExhibit, TickerTape} from "../motion/Infographic";
 import anchors from "../fixtures/cast_ep1/pose_anchors.json";
@@ -143,6 +144,15 @@ type Beat = {
   // A code-drawn exhibit for the monitor, instead of a text card. The
   // card restated the spoken line; a graphic shows the mechanism.
   graphic?: "countdown_16" | "stack_26";
+  // A generated caricature plate on the wall (motion/ExhibitPlate), same
+  // contract as ep.1.
+  exhibit?: string;
+  // Force the live candlestick tape back onto the wall. A beat with no
+  // wall content of its own HOLDS the exhibit it is reacting to instead
+  // of cutting back to the tape — 19 of ep.2's 32 beats used to fall
+  // through to it. Exactly one beat carries `wall: "chart"`: the one
+  // where the market moving before the news IS the line.
+  wall?: "chart";
   // Impact FX (speed lines + shock ring) used to be gated on `shout`
   // existing, so deleting a shout graphic silently deleted the beat's
   // punch as well. They are independent now; defaults to whether there
@@ -187,14 +197,18 @@ const BEATS: Beat[] = [
   // inverse: what it looks like when somebody is NOT late. Rex delivers
   // the callback himself, which is the joke — being late is the exact
   // mistake he made last episode.
-  {at: 0, title: ["MARKET LESSONS", "WITH SOL", "ep.2 — sixteen minutes"],
+  {at: 0,
+   exhibit: "ep2_recap_filing",
+   title: ["MARKET LESSONS", "WITH SOL", "ep.2 — sixteen minutes"],
    actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 640, y: 1180, h: 940}],
    shots: [{from: 0, k: 1.0, kEnd: 1.06},
            {from: 70, k: 1.24, kEnd: 1.36, tx: 540, ty: 1140}],
    vo: "r1_sol_lasttime", speaker: "SOL",
    line: "Last time, I showed you a filing. Public. Legal. Forty-five days late."},
 
-  {at: 173, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681},
+  {at: 173,
+   exhibit: "ep2_late_useless",
+   actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681},
                      {poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08}],
    vo: "r2_rex_useless", speaker: "REX", line: "And useless if I tried to copy it."},
@@ -217,7 +231,9 @@ const BEATS: Beat[] = [
    line: "Late, kid. Not useless. Today I'll show you the other side of that — what it looks like when somebody isn't late at all."},
 
   // ═══ ACT 1 — THE CLOCK ═══════════════════════════════════════════════
-  {at: 479, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+  {at: 479,
+   exhibit: "ep2_dawn_clock",
+   actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
    shots: [{from: 0, k: 1.06, kEnd: 1.16, tx: 540, ty: 1190}],
    vo: "e1_sol_march", speaker: "SOL",
    line: "March twenty-third. Six forty-nine in the morning."},
@@ -227,7 +243,10 @@ const BEATS: Beat[] = [
   // episode never supplies a name, a face or an implication. The figure
   // on the monitor is a faceless silhouette for the same reason — that
   // is the state of the evidence, not a stylistic choice.
-  {at: 596, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+  {at: 596,
+   sfx: [{at: 12, name: "core_tiktok", vol: 0.3}],
+   exhibit: "ep2_oil_position",
+   actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
                      {poses: ["rex_skeptic"], kind: "bust", x: 420, y: 1250, h: 850}],
    shots: [{from: 0, only: 0, tvPhoto: "trader_unknown", mood: "dark", k: 1.0, kEnd: 1.08},
            {from: 100, only: 1, mood: "dark", k: 1.0, kEnd: 1.08}],
@@ -242,7 +261,9 @@ const BEATS: Beat[] = [
    vo: "e3_rex_bullish", speaker: "REX",
    line: "Okay. Big trade. Somebody's feeling bullish.", energy: 1.1},
 
-  {at: 886, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
+  {at: 886,
+   exhibit: "ep2_inverted_bet",
+   actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.04, kEnd: 1.16, tx: 580, ty: 1190}],
    sfx: [{at: 8, name: "sfx_whip", vol: 0.4}],
    vo: "e4_sol_no", speaker: "SOL",
@@ -252,7 +273,8 @@ const BEATS: Beat[] = [
   // The order of events IS the claim, so the graphic draws it in order
   // and never gets ahead of itself: trade, then the wait, then the
   // announcement, and only then the price.
-  {at: 1037, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+  {at: 1037,
+   sfx: [{at: 0, name: "riser_suspense", vol: 0.24}], actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
                       {poses: ["rex_skeptic"], kind: "bust", x: 420, y: 1250, h: 850}],
    graphic: "countdown_16",
    shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.06},
@@ -268,14 +290,17 @@ const BEATS: Beat[] = [
    vo: "e6_sol_exactly", speaker: "SOL",
    line: "Oil falls. Stocks rise. Exactly the way that trade was pointed."},
 
-  {at: 1356, actors: [{poses: ["rex_shock"], kind: "full", x: 500, y: FLOOR_Y, h: 900}],
+  {at: 1356,
+   exhibit: "ep2_tell_me_coincidence",
+   actors: [{poses: ["rex_shock"], kind: "full", x: 500, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],
    holdMouth: true, fx: true,
-   sfx: [{at: 6, name: "impact", vol: 0.5}],
    vo: "e7_rex_coincidence", speaker: "REX",
    line: "That's a coincidence. Boss. Tell me that's a coincidence.", energy: 1.4},
 
-  {at: 1495, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+  {at: 1495,
+   exhibit: "ep2_once_twice",
+   actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
    shots: [{from: 0, k: 1.08, kEnd: 1.18, tx: 540, ty: 1190}],
    vo: "e8_sol_once", speaker: "SOL", line: "Once is a coincidence, kid."},
 
@@ -293,7 +318,9 @@ const BEATS: Beat[] = [
    vo: "e10_sol_hormuz", speaker: "SOL",
    line: "And another one. Seven hundred and sixty million, minutes before the Hormuz announcement."},
 
-  {at: 2017, actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681},
+  {at: 2017,
+   exhibit: "ep2_running_total",
+   actors: [{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 681},
                       {poses: ["sol_finger"], kind: "full", x: 834, y: FLOOR_Y, h: 597}],
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],
    vo: "e11_rex_total", speaker: "REX", line: "How much is that all together?"},
@@ -306,7 +333,9 @@ const BEATS: Beat[] = [
    vo: "e12_sol_billions", speaker: "SOL",
    line: "The Justice Department and the CFTC are looking at about two point six billion."},
 
-  {at: 2260, actors: [{poses: ["rex_eager"], kind: "full", x: 500, y: FLOOR_Y, h: 900}],
+  {at: 2260,
+   exhibit: "ep2_so_caught",
+   actors: [{poses: ["rex_eager"], kind: "full", x: 500, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.04, kEnd: 1.14}],
    vo: "e13_rex_caught", speaker: "REX", line: "So they caught them.", energy: 1.2},
 
@@ -320,7 +349,9 @@ const BEATS: Beat[] = [
   // The podium and the shadow, cut against each other. The known faces
   // announced; an unknown figure traded. Nothing on screen connects them
   // because nothing in the evidence does — that gap is the whole act.
-  {at: 2379, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+  {at: 2379,
+   exhibit: "ep2_empty_docket",
+   actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, tvPhoto: "podium_speaker", k: 1.0, kEnd: 1.06},
            {from: 80, tvPhoto: "podium_official_a", k: 1.0, kEnd: 1.06},
            {from: 150, tvPhoto: "trader_unknown", mood: "dark", k: 1.0, kEnd: 1.1}],
@@ -346,7 +377,10 @@ const BEATS: Beat[] = [
   // A REAL, CHARGED, UNSEALED CASE — and kept explicitly separate from
   // the oil probe. It proves the mechanism is prosecutable. It is not
   // evidence about these trades and the episode never blurs the two.
-  {at: 2930, actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
+  {at: 2930,
+   sfx: [{at: 5, name: "riser_metallic", vol: 0.26}],
+   exhibit: "ep2_caught_one",
+   actors: [{poses: ["sol_finger"], kind: "full", x: 800, y: FLOOR_Y, h: 900}],
    shots: [{from: 0, k: 1.04, kEnd: 1.14, tx: 580, ty: 1190}],
    vo: "e18_sol_didcatch", speaker: "SOL",
    line: "Now. They did catch one. Different war, same idea."},
@@ -363,12 +397,16 @@ const BEATS: Beat[] = [
    vo: "e19_sol_soldier", speaker: "SOL",
    line: "A special forces soldier bet a prediction market on an operation he had been briefed on. Classified. Indicted."},
 
-  {at: 3291, actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679},
+  {at: 3291,
+   exhibit: "ep2_provable",
+   actors: [{poses: ["rex_eager"], kind: "full", x: 312, y: FLOOR_Y, h: 679},
                       {poses: ["sol_smug_v1"], kind: "bust", x: 812, y: 1300, h: 596}],
    shots: [{from: 0, only: 0, k: 1.1, kEnd: 1.2, tx: 520, ty: 1030}],
    vo: "e20_rex_provable", speaker: "REX", line: "So it is provable.", energy: 1.1},
 
-  {at: 3374, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+  {at: 3374,
+   exhibit: "ep2_trail_leads",
+   actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
    shots: [{from: 0, k: 1.04, kEnd: 1.14, tx: 540, ty: 1190}],
    vo: "e21_sol_whentrail", speaker: "SOL", line: "When the trail leads somewhere. Yes."},
 
@@ -404,11 +442,16 @@ const BEATS: Beat[] = [
    vo: "e25_sol_thisweek", speaker: "SOL",
    line: "This week? Somebody had an edge sixteen minutes before the public had a headline."},
 
-  {at: 3931, actors: [{poses: ["rex_skeptic"], kind: "full", x: 470, y: FLOOR_Y, h: 960}],
+  {at: 3931,
+   exhibit: "ep2_what_do_i_do",
+   actors: [{poses: ["rex_skeptic"], kind: "full", x: 470, y: FLOOR_Y, h: 960}],
    shots: [{from: 0, k: 1.06, kEnd: 1.16, tx: 540, ty: 1120}],
    vo: "e26_rex_sowhat", speaker: "REX", line: "So what do I do with that?"},
 
-  {at: 4007, actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
+  {at: 4007,
+   sfx: [{at: 20, name: "core", vol: 0.33}],
+   wall: "chart",
+   actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930},
                       {poses: ["rex_listen"], kind: "bust", x: 400, y: 1270, h: 820}],
    shots: [{from: 0, only: 0, k: 1.0, kEnd: 1.08},
            {from: 120, only: 1, k: 1.0, kEnd: 1.08}],
@@ -416,20 +459,44 @@ const BEATS: Beat[] = [
    line: "You stop assuming the news moves the market. Sometimes the market moves first, and the news catches up."},
 
   // The signature close, same shape as ep.1 so the series has a shape.
-  {at: 4221, actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
+  {at: 4221,
+   sfx: [{at: 90, name: "whoosh", vol: 0.27}],
+   exhibit: "ep2_what_to_watch",
+   actors: [{poses: ["sol_smug_v1"], kind: "bust", x: 560, y: 1180, h: 880}],
    shots: [{from: 0, k: 1.0, kEnd: 1.12, tx: 540, ty: 1200}],
    vo: "e28_sol_fair", speaker: "SOL",
    line: "Fair? No. But now you know what to watch."},
 
-  {at: 4346, title: ["MARKET LESSONS", "WITH SOL", ""], actors: []},
+  {at: 4346,
+   exhibit: "ep2_outro_plate",
+   title: ["MARKET LESSONS", "WITH SOL", ""], actors: []},
 ];
+
+// Frame, relative to a beat's start, at which its exhibit becomes visible.
+// A beat may open on an archive photo (`tvPhoto`) and cut to its exhibit.
+const exhibitFromOf = (b: Beat) =>
+  (b.shots ?? []).find((s) => !s.tvPhoto && !s.hideCard)?.from ?? 0;
+
+// What the wall shows on a beat that sets no wall content of its own: the
+// exhibit it is REACTING to, still up, rather than a cut back to the tape.
+// Hold only an image plate — the code-drawn graphics and the text cards
+// animate off their own beat clock and cannot be held past it.
+const heldExhibitAt = (i: number): {name: string; start: number} | null => {
+  for (let k = i; k >= 0; k--) {
+    const b = BEATS[k];
+    if (b.exhibit) return {name: b.exhibit, start: b.at + exhibitFromOf(b)};
+    if (b.wall === "chart" || b.graphic || b.card || b.title) return null;
+  }
+  return null;
+};
 
 const beatAt = (f: number) => {
   let i = 0;
   for (let k = 0; k < BEATS.length; k++) if (f >= BEATS[k].at) i = k;
   const cur = BEATS[i];
   const next = BEATS[i + 1];
-  return {cur, since: f - cur.at, hold: (next ? next.at : EP2_FRAMES) - cur.at};
+  return {cur, idx: i, since: f - cur.at,
+    hold: (next ? next.at : EP2_FRAMES) - cur.at};
 };
 
 const CYCLE = [0, 1, 0, 2];
@@ -845,7 +912,13 @@ const Subtitle: React.FC<{speaker: string; line: string}> = ({speaker, line}) =>
 
 export const FairMarketEp2: React.FC = () => {
   const frame = useCurrentFrame();
-  const {cur, since, hold} = beatAt(frame);
+  const {cur, idx, since, hold} = beatAt(frame);
+  // What the wall is showing: the beat's own exhibit, or the one it is
+  // reacting to, held. `wall: "chart"` opts back into the tape.
+  const wallEx = cur.exhibit
+    ? {name: cur.exhibit, start: cur.at + exhibitFromOf(cur)}
+    : cur.wall === "chart" ? null
+    : heldExhibitAt(idx);
   const outro = cur.at === 1685;
   const nrg = cur.energy ?? 0.7;
   const k = kick(since, 10 * nrg, 14);
@@ -906,19 +979,19 @@ export const FairMarketEp2: React.FC = () => {
         {/* The monitor is FURNITURE — always in the room, never popping in
             and out at beat boundaries, and it fills the upper frame that
             was otherwise dead wall above the cast. */}
-        <WallFrame glow={(!!cur.card || !!cur.graphic || !!shot?.tvPhoto)
-          && !shot?.hideCard} />
+        {/* Beat-scoped, so the halo cannot blink off at a mid-beat cut. */}
+        <WallFrame glow={(!!cur.card || !!cur.graphic
+          || (cur.shots ?? []).some((s) => !!s.tvPhoto)) && !shot?.hideCard} />
         <div style={{position: "absolute", left: WALL.x, top: WALL.y,
           width: WALL.w, height: WALL.h, overflow: "hidden",
-          borderRadius: 6}}>
-          {/* `hideCard` was a declared-but-never-read field. It is wired
-              now, and it is what lets a beat push in close on a character
-              WITHOUT hiding its own evidence: the exhibit is explicitly
-              stood down for that shot and the monitor falls back to the
-              tape, rather than a head silently covering the graphic the
-              line is about. */}
-          {shot?.hideCard ? <TVIdle frame={frame} bare={!!cur.title} />
-            : shot?.tvPhoto ? (
+          borderRadius: 6,
+          // `hideCard` STANDS THE WALL DOWN; it does not swap it for the
+          // tape. Cutting to the candlestick idle on a tight push-in was
+          // the largest remaining source of chart repetition in ep.1 and
+          // ep.2 has eight of these shots. Dimming yields the frame to the
+          // close-up while keeping the beat's own content up.
+          opacity: shot?.hideCard ? 0.34 : 1}}>
+          {shot?.tvPhoto ? (
               <div style={{position: "absolute", inset: 0, overflow: "hidden",
                 background: "#0B1220"}}>
                 <Img src={staticFile(`characters/cast_ep1/ep2/${shot.tvPhoto}.png`)}
@@ -926,6 +999,12 @@ export const FairMarketEp2: React.FC = () => {
                     left: 0, top: `${-6 - Math.min(1, shotSince / 150) * 5}%`,
                     opacity: Math.min(1, shotSince / 10)}} />
               </div>
+            ) : wallEx ? (
+              /* `callout` only on the beat that authored the exhibit — a
+                 held plate must not re-fire the previous beat's ring. */
+              <ExhibitPlate name={wallEx.name} since={frame - wallEx.start}
+                w={WALL.w} h={WALL.h}
+                dir={(wallEx.start / 90) % 2 < 1 ? 1 : -1} />
             ) : cur.graphic === "countdown_16" ? (
               <CountdownExhibit since={since} w={WALL.w} h={WALL.h}
                 title="MARCH 23 — THE ORDER OF EVENTS"

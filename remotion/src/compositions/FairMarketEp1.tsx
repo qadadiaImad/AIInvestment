@@ -1203,15 +1203,18 @@ export const FairMarketEp1: React.FC = () => {
         <WallFrame glow={wallLit} />
         <div style={{position: "absolute", left: WALL.x, top: WALL.y,
           width: WALL.w, height: WALL.h, overflow: "hidden",
-          borderRadius: 6}}>
-          {/* `hideCard` was a declared-but-never-read field. It is wired
-              now, and it is what lets a beat push in close on a character
-              WITHOUT hiding its own evidence: the exhibit is explicitly
-              stood down for that shot and the monitor falls back to the
-              tape, rather than a head silently covering the graphic the
-              line is about. */}
-          {shot?.hideCard ? <TVIdle frame={frame} bare={!!cur.title} />
-            : shot?.tvPose ? <TVPose pose={shot.tvPose} since={shotSince} />
+          borderRadius: 6,
+          // `hideCard` STANDS THE WALL DOWN; it no longer swaps it for the
+          // tape. It fires when a shot pushes in tight on a character, and
+          // cutting to the candlestick idle there was quietly the single
+          // biggest source of chart repetition left in the episode — nine
+          // shots across six beats, every one of them landing on a beat
+          // that had perfectly good animated content of its own. Dimming
+          // keeps that content up and still yields the frame to the
+          // close-up, which is all the flag was ever for.
+          opacity: shot?.hideCard ? 0.34 : 1,
+          transition: "none"}}>
+          {shot?.tvPose ? <TVPose pose={shot.tvPose} since={shotSince} />
             : wallEx ? (
               <ExhibitPlate name={wallEx.name} since={frame - wallEx.start}
                 w={WALL.w} h={WALL.h}

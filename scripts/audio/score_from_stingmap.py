@@ -37,16 +37,17 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-EP1 = REPO / "remotion/src/compositions/FairMarketEp1.tsx"
 MAP = REPO / "scripts/audio/stingmap.json"
-
 FPS = 30
-RUNTIME_S = 5880 / FPS
 
-# taxonomy id -> ep.1 beat frame. Matched by the taxonomy's own
+# taxonomy id -> beat frame, per episode. Matched by the taxonomy's own
 # `example_line` against the beat's `line`; recorded explicitly here so the
 # mapping is reviewable rather than fuzzy-matched at runtime.
-BEAT_OF = {
+#
+# The map was authored across BOTH episodes - its scale-reveal,
+# timing-gap-suspense, gravity-pause and sign-off-cut example lines are all
+# ep.2 dialogue - so the same taxonomy scores both.
+EP1_BEAT_OF = {
     "derision-sting":        217,    # "HA! ...Fundamentals."
     "thesis-lands":          299,    # "Sometimes... it trades on POLITICS."
     "shock-take":            393,    # "WHAT?!"
@@ -60,7 +61,33 @@ BEAT_OF = {
 }
 # Explicit silences the map names, kept here so they are visible as a
 # decision rather than as an absence.
-SILENT = {122: "reaction-and-setup-silence", 436: "named-fact-restraint"}
+EP1_SILENT = {122: "reaction-and-setup-silence", 436: "named-fact-restraint"}
+
+# EPISODE 2. Deliberately sparser: 6 stings over 150s = 2.4/min, inside the
+# cap with room to spare, because ep.2's subject is conduct under
+# investigation and the kit's comedic sounds would read as mockery of it.
+# `among_us` in particular is NOT used here - the map only clears it because
+# ep.1's joke is a structural fact, which is not what ep.2 is about.
+EP2_BEAT_OF = {
+    "scale-reveal":          596,   # "...five hundred and eighty million"
+    "timing-gap-suspense":  1037,   # "Sixteen minutes later, the President posts"
+    "riser-metallic-pivot": 2930,   # "Now. They did catch one." - correction pivot
+    "money-line":           4007,   # "Sometimes the market moves first."
+    "sign-off-cut":         4221,   # "Fair? No. But now you know what to watch."
+}
+EP2_SILENT = {
+    2321: "gravity-pause (the one-word denial)",
+    2379: "gravity-pause (sit with it)",
+    1356: "reaction-and-setup-silence",
+    2260: "reaction-and-setup-silence",
+}
+
+EPISODES = {
+    "ep1": ("remotion/src/compositions/FairMarketEp1.tsx", 5880,
+            EP1_BEAT_OF, EP1_SILENT),
+    "ep2": ("remotion/src/compositions/FairMarketEp2.tsx", 4500,
+            EP2_BEAT_OF, EP2_SILENT),
+}
 
 # Every sound in the emphasis kit. Any of these found on a beat is stripped
 # before the map is applied; motion foley is deliberately absent from this
@@ -74,9 +101,14 @@ ENTRY = re.compile(r"\{at: (\d+), name: \"([a-z_0-9]+)\"(?:, vol: ([0-9.]+))?\}"
 
 
 def main() -> None:
+    ep = next((a for a in sys.argv[1:] if a in EPISODES), "ep1")
+    rel, frames, BEAT_OF, SILENT = EPISODES[ep]
+    target = REPO / rel
+    runtime_s = frames / FPS
     spec = json.loads(MAP.read_text("utf-8"))
     tax = {t["id"]: t for t in spec["taxonomy"]}
-    src = EP1.read_text("utf-8")
+    src = target.read_text("utf-8")
+    print("scoring %s (%s, %.1fs)" % (ep, target.name, runtime_s))
 
     # ---- 1. strip every emphasis sting, leave motion foley alone -------
     # The character class is `[^\]]*`, NOT `.*?`. An sfx array contains no
@@ -129,9 +161,9 @@ def main() -> None:
     for at, tid in sorted(SILENT.items()):
         print("  %-22s beat %-5d SILENT (per the map)" % (tid, at))
 
-    per_min = scored / (RUNTIME_S / 60)
+    per_min = scored / (runtime_s / 60)
     print("\n%d stings over %.1fs = %.2f per minute (cap is 3)"
-          % (scored, RUNTIME_S, per_min))
+          % (scored, runtime_s, per_min))
     if per_min > 3:
         print("  NOTE: marginally over. The taxonomy explicitly assigns "
               "every one of these;\n  the overage is the spec's own "
@@ -140,8 +172,8 @@ def main() -> None:
     if "--check" in sys.argv:
         print("check only, not written")
         return
-    EP1.write_text(src, "utf-8")
-    print("-> %s" % EP1.name)
+    target.write_text(src, "utf-8")
+    print("-> %s" % target.name)
 
 
 if __name__ == "__main__":
