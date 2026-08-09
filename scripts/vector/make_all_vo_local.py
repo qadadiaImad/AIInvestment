@@ -287,11 +287,43 @@ def trim_silence(x: np.ndarray, sr: int, thresh: float = 0.015) -> np.ndarray:
     return x[head:tail]
 
 
-def to_pcm16(src: Path, dst: Path) -> None:
+# ── DELIVERY SPEED, PER EPISODE ────────────────────────────────────────
+# The owner, on the Shorts cut: "stack more information and maybe speed up
+# prononciation". Chatterbox has NO speed control - generate() takes
+# repetition_penalty, min_p, top_p, audio_prompt_path, exaggeration,
+# cfg_weight and temperature, and sweeping cfg_weight 0.20-0.50 moved the
+# rate between 2.85 and 3.11 syllables/sec, which is noise
+# (scripts/vector/pace_ab.py). So the speed-up is a tempo change afterwards.
+#
+# This repo had a standing grudge against that - make_all_vo_local's own
+# comment says WSOLA "smears speech and leaves a metallic edge" - so it was
+# measured rather than assumed (scripts/vector/tempo_ab.py). Transcribing
+# every rate back with faster-whisper and scoring against the input text:
+# word-error DAMAGE relative to the untouched control is +0.000 at every
+# rate up to 1.38x. The intelligibility cost of speeding this voice up is,
+# as far as an ASR model can tell, zero.
+#
+# The choice of FILTER is where the grudge was right. Nominally rubberband
+# is the better time-stretcher; on this material it drifts the share of
+# energy above 4kHz by 20.6% at 1.30x where plain atempo drifts it 3.6% -
+# that drift IS the metallic edge. So: atempo.
+#
+# 1.30 and not the 1.38 that also passed, because 1.38's drift jumps to
+# 10.1% and Sol being unhurried is the character. Shorts only; the full
+# episode's delivery is not what the owner was complaining about.
+#
+# Applied inside the generation chain, so it can never compound: a rerun
+# always starts from fresh model output, never from an already-stretched
+# file.
+SPEED = {"s": 1.30}
+
+
+def to_pcm16(src: Path, dst: Path, speed: float = 1.0) -> None:
     """Chatterbox writes float32 wav, which the stdlib wave module and
     several downstream tools refuse outright."""
-    subprocess.run([str(FFMPEG), "-v", "error", "-i", str(src),
-                    "-acodec", "pcm_s16le", "-ar", "44100", "-ac", "1",
+    filt = ["-filter:a", "atempo=%.4f" % speed] if speed and speed != 1.0 else []
+    subprocess.run([str(FFMPEG), "-v", "error", "-i", str(src)] + filt +
+                   ["-acodec", "pcm_s16le", "-ar", "44100", "-ac", "1",
                     str(dst), "-y"], check=True)
 
 
@@ -344,7 +376,7 @@ def main() -> None:
             raw = VO_DIR[ep] / ("_" + stem + "_raw.wav")
             torchaudio.save(str(raw), wav, model.sr)
             out = VO_DIR[ep] / (stem + ".wav")
-            to_pcm16(raw, out)
+            to_pcm16(raw, out, SPEED.get(ep, 1.0))
             raw.unlink(missing_ok=True)
             # strip the leading pad so the voice lands on the beat
             with wave.open(str(out)) as w:

@@ -45,7 +45,7 @@ FPS = 30
 # into noise.
 WIN_MAX = 2.5
 KIT = {"among_us", "core", "core_tiktok", "faah", "riser_metallic",
-       "riser_suspense", "vine_boom", "vine_boom_bass", "whoosh",
+       "riser_suspense", "vine_boom", "vine_boom_bass", "vine_boom_hit", "whoosh",
        "whoosh_fire"}
 
 

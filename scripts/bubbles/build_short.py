@@ -49,7 +49,7 @@ from beats_v2 import SHORT as B
 # it. s2 is the shock-take: a drawn single-exclamation reaction, which is
 # the taxonomy entry that overrides reaction-silence (house rule 10.8 -
 # a take with no anchored hit reads as static).
-SFX = {"s2_rex_fifteen": ("vine_boom_bass", 0.30, 0)}
+SFX = {"s2_rex_fifteen": ("vine_boom_hit", 0.26, 0)}
 
 
 def sfx_for(stem: str) -> str:

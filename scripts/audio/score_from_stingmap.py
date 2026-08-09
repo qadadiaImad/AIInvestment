@@ -175,7 +175,8 @@ def audit(name: str) -> int:
 # before the map is applied; motion foley is deliberately absent from this
 # list and therefore survives.
 STING_KIT = {"among_us", "core", "core_tiktok", "faah", "riser_metallic",
-             "riser_suspense", "vine_boom", "vine_boom_bass", "whoosh",
+             "riser_suspense", "vine_boom", "vine_boom_bass", "vine_boom_hit",
+             "whoosh",
              "whoosh_fire", "v_whoosh", "v_core", "v_boom", "v_riser",
              "v_reveal", "impact"}
 

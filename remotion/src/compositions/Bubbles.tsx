@@ -242,7 +242,7 @@ const BEATS: Beat[] = [
    line: "September 2008. Lehman Brothers files for bankruptcy."},
 
   {at: 530,
-   sfx: [{at: 0, name: "vine_boom_bass", vol: 0.3}],
+   sfx: [{at: 0, name: "vine_boom_hit", vol: 0.26}],
    actors: [{poses: ["rex_shock"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08}],
    vo: "b05_rex_what", speaker: "REX",
@@ -504,7 +504,7 @@ const BEATS: Beat[] = [
    line: "Dot-com fell SEVENTY-SEVEN percent."},
 
   {at: 4592,
-   sfx: [{at: 0, name: "vine_boom_bass", vol: 0.3}],
+   sfx: [{at: 0, name: "vine_boom_hit", vol: 0.26}],
    actors: [{poses: ["rex_shock"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08}],
    vo: "b47_rex_what2", speaker: "REX",

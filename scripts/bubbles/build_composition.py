@@ -104,14 +104,25 @@ import patch_hold
 # `after` means the sting fires once the line has finished speaking, which
 # is the map's rule against telegraphing a beat before it lands. The two
 # takes fire at 0, because there the sound IS the drawing's impact frame.
+#
+# THE TAKES USE `vine_boom_hit`, NOT `vine_boom_bass`. Owner, on the shock
+# take: "there is a background mp3 that i find toooo much". That is a
+# description of the source file, not of the mix - vine_boom_bass.wav is
+# 3.46s at RMS 0.71 and does NOT decay (a flat plateau above half-peak for
+# 2.9s, then a cliff), so at "WHAT?!" it ran 1.9 seconds of sustained low end
+# underneath the following dialogue. Every other sound in the kit is 0.6-1.0s
+# with a real tail. scripts/audio/make_boom_hit.py shapes it into one: 0.78s,
+# RMS 0.20, attack-then-decay. The original file is untouched because ep.1
+# uses it and ep.1 is signed off. Volume also comes down 0.30 -> 0.26, which
+# is inside the map's fixed 0.24-0.34 band.
 SFX = {
     "b03_sol_rent":      ("faah",           0.28, "after"),
-    "b05_rex_what":      ("vine_boom_bass", 0.30, 0),
+    "b05_rex_what":      ("vine_boom_hit",  0.26, 0),
     "b09_sol_nomame":    ("core",           0.30, "after"),
     "b23_sol_controlsyou": ("whoosh_fire",  0.30, "after"),
     "b33_sol_everyone":  ("core",           0.33, "after"),
     "b39_sol_trillion":  ("core_tiktok",    0.30, "after"),
-    "b47_rex_what2":     ("vine_boom_bass", 0.30, 0),
+    "b47_rex_what2":     ("vine_boom_hit",  0.26, 0),
     "b52_sol_time":      ("whoosh",         0.27, "after"),
 }
 VO_DIR = REPO / "remotion/public/audio/fairmarket_bubbles"

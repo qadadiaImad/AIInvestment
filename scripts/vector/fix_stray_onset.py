@@ -50,9 +50,14 @@ def lines_index(ep: str) -> dict[str, tuple[str, str]]:
     return {stem: (voice, text) for stem, voice, text in V.lines_for(ep)}
 
 
-def post(raw: Path, out: Path) -> None:
-    """The pipeline's own post-chain, so the probe judges what ships."""
-    V.to_pcm16(raw, out)
+def post(raw: Path, out: Path, ep: str) -> None:
+    """The pipeline's own post-chain, so the probe judges what ships.
+
+    The episode's delivery SPEED has to come along too: without it a repaired
+    line on the Shorts cut would come back at 1.00x while its 13 neighbours
+    are at 1.30x, and nothing downstream would notice.
+    """
+    V.to_pcm16(raw, out, V.SPEED.get(ep, 1.0))
     raw.unlink(missing_ok=True)
     with wave.open(str(out)) as w:
         sr, n = w.getframerate(), w.getnframes()
@@ -103,7 +108,7 @@ def main() -> None:
                 **V.DELIVERY[voice])
             raw = vo_dir / ("_" + stem + "_try.wav")
             torchaudio.save(str(raw), wav, model.sr)
-            post(raw, out)
+            post(raw, out, ep)
             bad, why = stray(head_env(out))
             with wave.open(str(out)) as w:
                 dur = w.getnframes() / w.getframerate()
