@@ -46,17 +46,27 @@ export const SeriesExhibit: React.FC<{
   const s = {...raw,
     points: raw.points.map((p) => [String(p[0]), Number(p[1])] as Pt)};
 
-  const PAD = {l: 78, r: 34, t: 74, b: 62};
+  // the span bracket lives above the plot, so a series carrying one needs
+  // its own strip of ceiling — otherwise the bracket's end ticks land on
+  // exactly the two peak labels it is bracketing.
+  // The ceiling is not just frame padding: a peak's callout is drawn ABOVE
+  // the peak, and at 74 that callout landed across the title. The plot
+  // starts below the title band, and lower again when a span bracket has
+  // to fit between the two.
+  const PAD = {l: 78, r: 34, t: s.span ? 112 : 100, b: 62};
   const iw = w - PAD.l - PAD.r, ih = h - PAD.t - PAD.b;
   const xs = s.points.map((p) => Date.parse(p[0]));
   const ys = s.points.map((p) => p[1]);
   const x0 = Math.min(...xs), x1 = Math.max(...xs);
   const lo = Math.min(...ys), hi = Math.max(...ys);
-  // a flat 6% of range as headroom, so a peak never touches the frame edge
-  const pad = (hi - lo) * 0.06 || 1;
+  // Headroom is ASYMMETRIC on purpose. Every trough here is annotated, a
+  // trough label reads best under the point, and 6% of range is not enough
+  // floor to put one there — it lands on the baseline instead.
+  const rng = (hi - lo) || 1;
+  const padHi = rng * 0.06, padLo = rng * 0.14;
   const px = (t: number) => PAD.l + ((t - x0) / (x1 - x0 || 1)) * iw;
   const py = (v: number) =>
-    PAD.t + ih - ((v - (lo - pad)) / ((hi + pad) - (lo - pad))) * ih;
+    PAD.t + ih - ((v - (lo - padLo)) / ((hi + padHi) - (lo - padLo))) * ih;
 
   const t = ease(since / draw);
   const shown = Math.max(2, Math.round(t * s.points.length));
@@ -66,8 +76,12 @@ export const SeriesExhibit: React.FC<{
   const path = pts.map((p, i) =>
     `${i ? "L" : "M"}${px(Date.parse(p[0])).toFixed(1)},${py(p[1]).toFixed(1)}`
   ).join(" ");
-  // the post-peak leg, drawn in burgundy so the fall reads as the event
-  const fall = fallTone && shown > peakI + 1
+  // The post-peak leg, drawn in burgundy so the fall reads as the event —
+  // but only when there IS a fall. On the dot-com chart the high is the
+  // 2015 recovery itself, and colouring its last two points burgundy put a
+  // red "decline" tick on the exact frame that says it got back to even.
+  const hasFall = ys.length - peakI > ys.length * 0.12;
+  const fall = fallTone && hasFall && shown > peakI + 1
     ? s.points.slice(peakI, shown).map((p, i) =>
         `${i ? "L" : "M"}${px(Date.parse(p[0])).toFixed(1)},${py(p[1]).toFixed(1)}`
       ).join(" ")
@@ -115,16 +129,55 @@ export const SeriesExhibit: React.FC<{
           const reached = pts.length > 0 &&
             Date.parse(pts[pts.length - 1][0]) >= Date.parse(m.at);
           if (!reached) return null;
-          const mx = px(Date.parse(m.at)), my = py(m.v);
-          const below = my < PAD.t + ih * 0.45;
+          const at = Date.parse(m.at);
+          const mx = px(at), my = py(m.v);
+
+          // Which side the label goes is a question about the SHAPE of the
+          // line here, not about where the point sits in the frame. The old
+          // rule ("high in the plot -> label below") put every trough label
+          // inside the V it was annotating. Compare the marked value with
+          // its neighbours instead: a trough gets its label underneath, a
+          // peak gets it on top, and neither crosses the line.
+          let near = 0;
+          for (let i = 1; i < s.points.length; i++) {
+            if (Math.abs(Date.parse(s.points[i][0]) - at) <
+                Math.abs(Date.parse(s.points[near][0]) - at)) near = i;
+          }
+          const win = s.points.slice(Math.max(0, near - 3), near + 4);
+          const mean = win.reduce((a, p) => a + p[1], 0) / (win.length || 1);
+          const trough = m.v <= mean;
+
+          // never into the title band, and never into the span bracket
+          const topLim = s.span ? PAD.t - 12 : 78;
+          const botLim = PAD.t + ih - 6;
+          let ly = trough ? my + 44 : my - 22;
+          if (ly > botLim) ly = my - 22;
+          if (ly < topLim) ly = my + 44;
+
+          // Keep the whole label inside the plot. Clamping the CENTRE (what
+          // this did before) only works if the label is narrower than the
+          // guess; "BACK TO EVEN" is not, and ran off the panel. Switching
+          // the anchor at the edge bounds it whatever the estimate says.
+          const FS = 31;
+          const halfW = m.label.length * FS * 0.26;
+          const lft = PAD.l + 4, rgt = w - PAD.r - 4;
+          const anchor = mx + halfW > rgt ? "end"
+            : mx - halfW < lft ? "start" : "middle";
+          const lx = anchor === "end" ? rgt : anchor === "start" ? lft : mx;
+
           return (
             <g key={m.at}>
               <circle cx={mx} cy={my} r={8} fill={PAPER}
                 stroke={BURG} strokeWidth={4} />
-              <text x={Math.min(w - 96, Math.max(PAD.l, mx))}
-                y={below ? my + 40 : my - 20}
-                textAnchor="middle" fill={INK} fontFamily="Impact, Arial"
-                fontSize={31}>{m.label}</text>
+              {/* a paper halo, so where a label must sit near the line the
+                  line gives way to the words rather than running through
+                  them */}
+              <text x={lx} y={ly} textAnchor={anchor} fill={INK}
+                fontFamily="Impact, Arial" fontSize={FS}
+                stroke={PAPER} strokeWidth={9} strokeLinejoin="round"
+                paintOrder="stroke">{m.label}</text>
+              <text x={lx} y={ly} textAnchor={anchor} fill={INK}
+                fontFamily="Impact, Arial" fontSize={FS}>{m.label}</text>
             </g>
           );
         })}
@@ -132,7 +185,7 @@ export const SeriesExhibit: React.FC<{
         {/* the span bracket: how long it took to get back to even */}
         {s.span && t > 0.92 ? (() => {
           const a = px(Date.parse(s.span!.a)), b = px(Date.parse(s.span!.b));
-          const y = PAD.t + 18;
+          const y = PAD.t - 46;
           const o = Math.min(1, (t - 0.92) / 0.08);
           return (
             <g opacity={o}>

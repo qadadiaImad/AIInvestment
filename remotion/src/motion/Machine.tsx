@@ -61,8 +61,23 @@ export const MachineParts: React.FC<{
   since: number; w: number; h: number;
 }> = ({since, w, h}) => {
   const cw = w / 4;
-  // each part arrives 16 frames after the last; all four then pulse together
-  const together = clamp01((since - 4 * 16 - 26) / 24);
+  // Each part arrives 16 frames after the last; all four then pulse
+  // together. The convergence used to start at frame 90 and take 24, which
+  // the FIRST appearance (134 frames) reached and the second (102) did not
+  // - so the reprise showed a half-faded conclusion. The last part is fully
+  // in at 66, so the turn begins there.
+  const together = clamp01((since - 70) / 18);
+  // The belt sat at 60% of the panel and nothing lived under it, so the
+  // graphic spent two fifths of the wall on empty paper. The stems below
+  // it are not decoration filling that space: the episode's whole claim is
+  // that four ordinary parts only matter when they point the same way at
+  // once, and until now the graphic said "here are four parts" and left
+  // the "at once" to the footer in 15px grey.
+  const yBelt = h * 0.56;
+  const yRail = yBelt + 68;
+  const yJoin = yRail + 66;
+  const hot = together > 0.3;
+  const arrived = PARTS.filter((_, i) => ease((since - i * 16) / 18) > 0.5).length;
   return (
     <div style={{position: "absolute", inset: 0, background: PAPER,
       overflow: "hidden"}}>
@@ -71,9 +86,51 @@ export const MachineParts: React.FC<{
         color: INK}}>EVERY BUBBLE, THE SAME FOUR PARTS</div>
 
       {/* the belt they sit on, drawn left to right as the parts arrive */}
-      <div style={{position: "absolute", left: 0, top: h * 0.60,
+      <div style={{position: "absolute", left: 0, top: yBelt,
         height: 6, background: "#D8D2C0",
         width: w * ease(Math.min(1, since / 70))}} />
+
+      <svg width={w} height={h} style={{position: "absolute", inset: 0,
+        pointerEvents: "none"}}>
+        {/* Each part feeds a common rail. Two earlier shapes were wrong for
+            the same reason - they were ambiguous. Four curves ending in
+            mid-air read as stray swooshes; four VERTICAL drops onto a rail
+            read as a table, because the belt above and the rail below close
+            them into boxes. Slanting them makes it a funnel, and a funnel
+            is the claim: these four go to one place. */}
+        {PARTS.map((p, i) => {
+          const t = ease((since - i * 16) / 18);
+          if (t <= 0) return null;
+          const xi = (i + 0.5) * cw;
+          const xe = w / 2 + (xi - w / 2) * 0.22;
+          return (
+            <line key={p.label} x1={xi} y1={yBelt + 8}
+              x2={xi + (xe - xi) * t} y2={yBelt + 8 + (yRail - yBelt - 8) * t}
+              opacity={0.9} stroke={hot ? BURG : "#9AA3B4"}
+              strokeWidth={hot ? 5 : 3} strokeLinecap="round" />
+          );
+        })}
+        {arrived > 1 ? (
+          <line y1={yRail} y2={yRail}
+            x1={w / 2 + (0.5 * cw - w / 2) * 0.22}
+            x2={w / 2 + ((arrived - 0.5) * cw - w / 2) * 0.22}
+            stroke={hot ? BURG : "#9AA3B4"} strokeWidth={hot ? 5 : 3}
+            strokeLinecap="round" />
+        ) : null}
+        {together > 0.1 ? (
+          <g opacity={clamp01((together - 0.1) / 0.25)}>
+            <line x1={w / 2} x2={w / 2} y1={yRail} y2={yJoin}
+              stroke={BURG} strokeWidth={6} strokeLinecap="round" />
+            <path d={`M${w / 2 - 16},${yJoin - 16} l16,16 16,-16`} fill="none"
+              stroke={BURG} strokeWidth={6} strokeLinecap="round"
+              strokeLinejoin="round" />
+            <text x={w / 2} y={yJoin + 62} textAnchor="middle" fill={BURG}
+              fontFamily="Impact, Arial" fontSize={46} letterSpacing={2}>
+              ALL FOUR, AT ONCE
+            </text>
+          </g>
+        ) : null}
+      </svg>
 
       {PARTS.map((p, i) => {
         const t = ease((since - i * 16) / 18);
@@ -81,14 +138,14 @@ export const MachineParts: React.FC<{
         const pulse = together > 0 ? 1 + Math.sin(since / 5 + i) * 0.03 * together : 1;
         return (
           <div key={p.label} style={{position: "absolute", left: i * cw,
-            top: h * 0.22, width: cw, textAlign: "center",
+            top: h * 0.17, width: cw, textAlign: "center",
             opacity: t, transform:
               `translateY(${(1 - t) * 26}px) scale(${pulse})`}}>
             <div style={{display: "flex", justifyContent: "center"}}>
-              <Icon i={i} s={96} on={t} />
+              <Icon i={i} s={112} on={t} />
             </div>
             <div style={{fontFamily: "Impact, Arial", fontSize: 30,
-              color: together > 0.4 ? BURG : INK, marginTop: 8,
+              color: hot ? BURG : INK, marginTop: 8,
               letterSpacing: 0.5}}>{p.label}</div>
             <div style={{fontFamily: "Arial", fontSize: 16, color: "#6B7488",
               marginTop: 6, padding: "0 16px", lineHeight: 1.3}}>{p.sub}</div>

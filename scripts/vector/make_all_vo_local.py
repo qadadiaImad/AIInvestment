@@ -166,6 +166,13 @@ DELIVERY = {
 # Keyed by VO stem so each placement is deliberate and auditable, and
 # applied only to the text fed to the model. The subtitle is read from the
 # composition separately, so a tag can never appear on screen.
+# MEASURED 2026-08-09, controlled A/B at fixed seed (scripts/vector/tag_ab.py):
+# [gasp] and [whisper] render as a clean single onset straight into the
+# speech. [sigh] and [clear_throat] render as a short burst, then a GAP,
+# then the line - a vocalised artefact sitting in FRONT of the words, which
+# is what the owner heard as a stray "T" at the start of sentences.
+# [clear_throat] alone adds a full second of it. Both are therefore unused
+# on ep.3; ep.1 and ep.2 keep theirs so their approved audio is unchanged.
 PERFORM = {
     # ep.1 - Sol is the weary one; the tag does the work the caps used to
     "v1_sol_intro": "[sigh] ",
@@ -185,21 +192,18 @@ PERFORM = {
     # ep.3 "The Machine". v1 shipped with ZERO tags across 41 lines and
     # the owner heard it immediately: "boring, not funny, something is
     # missing". Every line was generated flat. These are placed per beat.
-    "b01_sol_machine": "[sigh] ",
-    "b02_rex_badbanks": "[gasp] ",
+    "s7_sol_nobody": "[whisper] ",
+    # ep.3 - gasp/whisper only, see beats_v2.PERFORM_TAGS
     "b05_rex_what": "[gasp] ",
     "b14_rex_free": "[gasp] ",
     "b27_rex_banks": "[gasp] ",
-    "b29_sol_bottomblock": "[clear_throat] ",
-    "b31_sol_broker": "[sigh] ",
     "b37_rex_half": "[gasp] ",
-    "b44_sol_runback": "[whisper] ",
     "b47_rex_what2": "[gasp] ",
-    "b50_sol_fifteen": "[sigh] ",
+    "b44_sol_runback": "[whisper] ",
     "b52_sol_time": "[whisper] ",
     "s2_rex_fifteen": "[gasp] ",
-    "s4_sol_time": "[sigh] ",
     "s7_sol_nobody": "[whisper] ",
+
 }
 
 

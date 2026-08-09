@@ -28,7 +28,12 @@ from vector.visemes_ep1 import (VIS, SOL_LOCK, REX_LOCK, SUFFIX, NEG,
                                 flatten_white, load_base, load_anchors,
                                 now_utc)
 
-POSES = ["sol_point", "rex_shock_v1", "sol_laugh", "sol_wink"]
+# The three poses the EPISODES actually use that still have no blink.
+# sol_point alone is 13 of ep.3's 53 actor slots and 6 of ep.1's 54, so for
+# roughly a quarter of each episode the character physically cannot blink
+# whatever the mouth track says. sol_point was already in this list and the
+# file was never produced - the script existed, the asset did not.
+POSES = ["sol_point", "sol_point_v1", "rex_listen"]
 PHRASES = ["sleeping face, eye closed, curved closed eyelid",
            "eye shut, closed eyelid line, no pupil"]
 NEG_EYE = (NEG + ", open eye, pupil, iris, sclera, eyeball"

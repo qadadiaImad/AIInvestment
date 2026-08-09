@@ -221,20 +221,20 @@ const BEATS: Beat[] = [
    vo: "s1_sol_fifteen", speaker: "SOL",
    line: "The last bubble took fifteen years to get back to even."},
 
-  {at: 157,
+  {at: 159,
    actors: [{poses: ["rex_shock"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.05, kEnd: 1.14}],
    vo: "s2_rex_fifteen", speaker: "REX",
    line: "Fifteen YEARS?!"},
 
-  {at: 216,
+  {at: 218,
    exhibit: "b_machine",
    actors: [{poses: ["sol_smug_v1"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],
    vo: "s3_sol_ha", speaker: "SOL",
    line: "HA! ...Fifteen years."},
 
-  {at: 273,
+  {at: 275,
    actors: [{poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.05, kEnd: 1.14}],
    vo: "s4_sol_time", speaker: "SOL",

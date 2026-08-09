@@ -1,0 +1,14 @@
+{
+ "rex": {
+  "f0": 151.0344827586207,
+  "rolloff": 4579.924337957124,
+  "from": "owner-selected by ear from the A/B test: ep2 e3_rex_bullish",
+  "n": 1
+ },
+ "sal": {
+  "f0": 151.5463917525773,
+  "rolloff": 7529.53915890204,
+  "from": "owner-selected by ear from the A/B test: ep1 v1_sol_intro",
+  "n": 1
+ }
+}

@@ -33,30 +33,30 @@ from __future__ import annotations
 # (speaker, vo, line, wall_kind, wall, pose, two_shot)
 #   wall_kind: E=exhibit  G=graphic  H=hold
 B = [
- ("SOL","b01_sol_machine","Kid... let me show you the machine behind every crash.","E","b_machine",0,0),
- ("REX","b02_rex_badbanks","Boss! It's all just bad banks, right?!","H","",0,1),
- ("SOL","b03_sol_ha","HA! ...Bad banks.","H","",3,0),
- ("SOL","b04_sol_math","Sometimes... it's just MATH.","H","",1,0),
- ("REX","b05_rex_what","WHAT?!","H","",3,0),
- ("SOL","b06_sol_fourparts","Four parts. No villain. Every single time.","G","machine_parts",0,0),
- ("REX","b07_rex_name","Give me a name, boss. I'll write it down.","E","b_empty_chair",0,0),
+ ("SOL","b01_sol_bubble","Kid... let me show you how a bubble gets built.","E","b_machine",0,0),
+ ("REX","b02_rex_bath","Boss! Bubbles - like bath bubbles? Should I bring the duck?","H","",0,1),
+ ("SOL","b03_sol_rent","Not that kind. This kind takes your RENT.","H","",3,0),
+ ("SOL","b04_sol_lehman","September 2008. Lehman Brothers files for bankruptcy.","H","",1,0),
+ ("REX","b05_rex_what","The whole BANK?!","H","",3,0),
+ ("SOL","b06_sol_notcause","The whole bank. And it wasn't even the cause.","G","machine_parts",0,0),
+ ("REX","b07_rex_name","Then who's the villain? Give me a name, boss.","E","b_empty_chair",0,0),
  ("SOL","b08_sol_aname","A name?","H","",3,0),
- ("SOL","b09_sol_partone","Part one. Money gets cheap.","H","",1,0),
+ ("SOL","b09_sol_nomame","There isn't one. Just a machine. Four moving parts.","H","",1,0),
+ ("SOL","b11_sol_cheap","It starts when money gets cheap. ...Stupid cheap.","G","fedfunds",0,0),
  ("REX","b10_rex_discount","Cheap like a discount?","H","",2,0),
- ("SOL","b11_sol_cheap","Cheap. ...Like the loan you couldn't afford - suddenly you can.","G","fedfunds",0,0),
  ("SOL","b12_sol_onepercent","Fed funds fell under ONE percent.","H","",1,0),
  ("SOL","b13_sol_months","Under one and a half... for TWENTY-TWO months.","H","",0,0),
  ("REX","b14_rex_free","Twenty-two months of free money?!","H","",0,0),
- ("SOL","b15_sol_parttwo","Part two. A story shows up.","E","b_corkboard",1,0),
+ ("SOL","b15_sol_parttwo","Cheap money needs a STORY. Something to excuse the price.","E","b_corkboard",1,0),
  ("REX","b16_rex_true","In '08 the story was - houses always go up. That's just TRUE.","H","",1,0),
  ("SOL","b17_sol_only","True. Until it's the only reason anyone gives for the price.","G","caseshiller",0,0),
  ("REX","b18_rex_excuse","So it's not a reason. It's an EXCUSE.","H","",0,0),
  ("SOL","b19_sol_learning","Excuse? ...Now you're learning, kid.","H","",3,0),
- ("SOL","b20_sol_partthree","Part three. Leverage.","E","b_block_tower",1,0),
+ ("SOL","b20_sol_partthree","Then somebody borrows against the story.","E","b_block_tower",1,0),
  ("REX","b21_rex_crowbar","Leverage - like a crowbar? More leverage means more power, right?","H","",0,0),
  ("SOL","b22_sol_youcontrol","Crowbar? ...With one, YOU control the wobble.","H","",1,0),
  ("SOL","b23_sol_controlsyou","Borrowed money... the wobble controls YOU.","H","",0,0),
- ("SOL","b24_sol_partfour","Part four. Someone has to sell.","E","b_falling_card",1,0),
+ ("SOL","b24_sol_partfour","And sooner or later... somebody HAS to sell.","E","b_falling_card",1,0),
  ("REX","b25_rex_margin","Forced? Like a margin call?","H","",1,0),
  ("SOL","b26_sol_forced","Forced. The lender wants cash you don't have.","G","machine_loop",0,0),
  ("REX","b27_rex_banks","Okay - so the BANKS. They're the villain. They went first.","E","b_cracked_facade",0,0),
@@ -72,8 +72,6 @@ B = [
  ("REX","b37_rex_half","More than HALF?!","H","",3,0),
  ("SOL","b38_sol_jobs","Unemployment. Four point four... to TEN.","G","unrate",1,0),
  ("SOL","b39_sol_trillion","Eleven and a half TRILLION. Gone.","G","wealth",0,0),
- ("REX","b40_rex_witht","Trillion? With a T?","H","",2,0),
- ("SOL","b41_sol_witht","With a T, kid.","H","",3,0),
  ("REX","b42_rex_once","Okay but - that's the big one. That's ONCE.","E","b_two_machines",0,0),
  ("SOL","b43_sol_once","Once?","H","",3,0),
  ("SOL","b44_sol_runback","Run it back eight years.","H","",1,0),
@@ -92,17 +90,17 @@ B = [
 # lines that should drop to almost nothing, [clear_throat] before a
 # correction.
 PERFORM_TAGS = {
-    "b01_sol_machine": "sigh",
-    "b02_rex_badbanks": "gasp",
+    # ONLY [gasp] and [whisper]. Measured 2026-08-09 by controlled A/B at
+    # fixed seed (scripts/vector/tag_ab.py): those two render as a clean
+    # onset straight into the words, while [sigh] and [clear_throat] render
+    # a burst, then a GAP, then the line - a vocalised fragment sitting in
+    # front of the speech, which is what the owner heard as a stray "T".
     "b05_rex_what": "gasp",
     "b14_rex_free": "gasp",
     "b27_rex_banks": "gasp",
-    "b29_sol_bottomblock": "clear_throat",
-    "b31_sol_broker": "sigh",
     "b37_rex_half": "gasp",
-    "b44_sol_runback": "whisper",
     "b47_rex_what2": "gasp",
-    "b50_sol_fifteen": "sigh",
+    "b44_sol_runback": "whisper",
     "b52_sol_time": "whisper",
 }
 
@@ -122,7 +120,5 @@ SHORT = [
 
 SHORT_TAGS = {
     "s2_rex_fifteen": "gasp",
-    "s3_sol_ha": "",
-    "s4_sol_time": "sigh",
     "s7_sol_nobody": "whisper",
 }
