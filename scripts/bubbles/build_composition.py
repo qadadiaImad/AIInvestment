@@ -34,7 +34,9 @@ DST = REPO / "remotion/src/compositions/Bubbles.tsx"
 
 FPS = 30
 WPS = 2.25          # slower than raw speech: PERFORM tags add up to 1.3s a line
-GAP = 14            # frames of air between beats
+GAP = 8             # frames of air between beats. With FLOOR below this
+                    # sets the TIGHTEST possible hold at 14 frames (0.47s),
+                    # which is exactly ep.1's floor - measured, not chosen.
 LEAD = 6            # VO_DELAY already accounts for the rest
 
 # speaker -> staging. Single-speaker beats dominate; the two-shots are
@@ -86,9 +88,18 @@ import patch_hold
 # Lehman line (b04 - a named real-world failure gets the same restraint as a
 # named person's trade), and b28 "No.", which is the gravity-pause verbatim.
 #
-# Nine stings over 181s is 2.98/minute, just inside the map's cap of 3.
-# Ep.1 sits at 3.06 and its own scorer calls that marginally over, so this
-# does not follow ep.1 past the line.
+# Eight stings over 169s is 2.84/minute, inside the map's cap of 3. Ep.1
+# sits at 3.06 and its own scorer calls that marginally over, so this does
+# not follow ep.1 past the line.
+#
+# It was NINE until the holds were tightened. Cutting 12 seconds of dead air
+# raised the density to 3.19/min without touching a single sting, which is
+# the kind of thing a per-minute cap exists to catch. The one dropped is
+# b18's riser_metallic, chosen on the map's own evidence rather than taste:
+# the taxonomy describes that entry as a merge of three separate SINGLE-lens
+# proposals, the weakest provenance of anything in the kit, and it was also
+# the only sting the render A/B could barely see (+14% over its own length
+# at 0.26). Rex landing on "it's an EXCUSE" now plays dry.
 #
 # `after` means the sting fires once the line has finished speaking, which
 # is the map's rule against telegraphing a beat before it lands. The two
@@ -97,14 +108,6 @@ SFX = {
     "b03_sol_rent":      ("faah",           0.28, "after"),
     "b05_rex_what":      ("vine_boom_bass", 0.30, 0),
     "b09_sol_nomame":    ("core",           0.30, "after"),
-    # The riser fires EARLY, not after the line, and it is the one exception
-    # to the rule below for a reason: it is not marking a word. It is a
-    # 2.8-second build that does not get loud until 1.3s in and peaks at
-    # 1.7s, so placed after the line it peaks over the NEXT beat's dialogue
-    # and does nothing for the pivot it exists to carry. At 5 it builds
-    # under Rex working it out and resolves as he lands on "EXCUSE". This is
-    # also the taxonomy's own offset for the entry.
-    "b18_rex_excuse":    ("riser_metallic", 0.26, 5),
     "b23_sol_controlsyou": ("whoosh_fire",  0.30, "after"),
     "b33_sol_everyone":  ("core",           0.33, "after"),
     "b39_sol_trillion":  ("core_tiktok",    0.30, "after"),
@@ -133,9 +136,32 @@ def sfx_for(stem: str) -> str:
     return '   sfx: [{at: %d, name: "%s", vol: %s}],\n' % (at, name, vol)
 
 
-def dur(line: str) -> int:
+# How much of the word-count estimate's SLACK to keep. retime_beats.py
+# re-derives every start from the measured audio but lands on the total the
+# estimate set, and it hands each beat its existing share of the slack - so
+# the estimate silently decides how long the show sits in silence after
+# each line, and an over-generous WPS becomes real dead air on all 50 beats.
+#
+# Measured: ep.1, which the owner calls perfect, holds a median 0.73s after
+# a line ends (p90 1.33s). This episode was holding 1.03s (p90 1.67s) - 41%
+# more, everywhere. That is not one slow beat, it is the whole cut sagging,
+# and it is the most literal reading of "no pace" available.
+#
+# 0.72 lands the median at 0.74s. It scales the slack rather than replacing
+# it with a flat number, so whatever relative shape the estimate has is
+# preserved; the floor keeps a quarter-second of air on the tightest beat.
+SLACK = 0.72
+FLOOR = 6
+
+
+def dur(line: str, vo: str = "") -> int:
     words = len(line.split())
-    return max(48, int(round(words / WPS * FPS)) + LEAD)
+    est = max(48, int(round(words / WPS * FPS)) + LEAD)
+    a = vo_frames(vo)
+    if not a:
+        return est
+    need = 6 + a                       # VO_DELAY + the line itself
+    return max(need + FLOOR, need + int(round((est - need) * SLACK)))
 
 
 def build_beats() -> tuple[str, int]:
@@ -157,7 +183,7 @@ def build_beats() -> tuple[str, int]:
             "   shots: [{from: 0, k: %s, kEnd: %s}],\n"
             '   vo: "%s", speaker: "%s",\n   line: "%s"},'
             % (at, key, sfx_for(vo), actors, k0, k1, vo, spk, esc))
-        at += dur(line) + GAP
+        at += dur(line, vo) + GAP
     return "\n\n".join(out), at
 
 

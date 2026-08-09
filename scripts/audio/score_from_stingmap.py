@@ -98,17 +98,21 @@ EPISODES = {
 # scripts/bubbles/build_composition.py (which also means they survive a
 # regeneration of the composition, unlike anything written in here), and
 # this checks the result against the map instead of authoring it.
+# Frame counts are READ from each composition, not written here. Tightening
+# the holds changed the runtime by 12 seconds and a hardcoded total would
+# have quietly gone on reporting the old density.
 AUDIT = {
-    "bubbles": ("remotion/src/compositions/Bubbles.tsx", 5434),
-    "bshort": ("remotion/src/compositions/BubblesShort.tsx", 717),
+    "bubbles": ("remotion/src/compositions/Bubbles.tsx", "BUBBLES_FRAMES"),
+    "bshort": ("remotion/src/compositions/BubblesShort.tsx", "BUBBLES_SHORT_FRAMES"),
 }
 
 
 def audit(name: str) -> int:
     """Check an already-scored composition against the map's hard rules."""
-    rel, frames = AUDIT[name]
+    rel, const = AUDIT[name]
     target = REPO / rel
     src = target.read_text("utf-8")
+    frames = int(re.search(r"%s = (\d+)" % const, src).group(1))
     runtime_s = frames / FPS
     spec = json.loads(MAP.read_text("utf-8"))
     lo, hi = 0.24, 0.34
