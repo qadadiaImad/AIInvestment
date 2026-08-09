@@ -56,6 +56,8 @@ import { FairMarketEp4, EP4_FRAMES } from "./compositions/FairMarketEp4";
 import { FairMarketEp5, EP5_FRAMES } from "./compositions/FairMarketEp5";
 import { RigAnatomy, RIGANATOMY_FRAMES } from "./compositions/RigAnatomy";
 import { ArcadeVersus, ARCADE_FRAMES } from "./compositions/ArcadeVersus";
+import { Bubbles, BUBBLES_FRAMES } from "./compositions/Bubbles";
+import { BubblesShort, BUBBLES_SHORT_FRAMES } from "./compositions/BubblesShort";
 import { RigParity, RIGPARITY_FRAMES } from "./compositions/RigParity";
 import memeReelFixture from "./fixtures/meme_reel/intc_failed_breakout.json";
 import tradeFailFixture from "./fixtures/btc_reel/trade_fail_reel.json";
@@ -140,6 +142,22 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1900}
         height={1080}
+      />
+      <Composition
+        id="BubblesShort"
+        component={BubblesShort}
+        durationInFrames={BUBBLES_SHORT_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="Bubbles"
+        component={Bubbles}
+        durationInFrames={BUBBLES_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
       />
       <Composition
         id="ArcadeVersus"

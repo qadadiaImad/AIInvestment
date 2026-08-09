@@ -25,13 +25,23 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 import os
 EP = os.environ.get("EP", "1")
-COMP = REPO / "remotion" / "src" / "compositions" / f"FairMarketEp{EP}.tsx"
-VO = REPO / "remotion" / "public" / "audio" / ("fairmarket" if EP == "1" else f"fairmarket_ep{EP}")
+# EP is a numbered episode, or "b"/"s" for the bubbles feature and its
+# Shorts cut, which live in their own compositions rather than the
+# FairMarketEpN series.
+_ALT = {"b": ("Bubbles", "fairmarket_bubbles"),
+        "s": ("BubblesShort", "fairmarket_bshort")}
+_name, _vo = _ALT.get(EP, (f"FairMarketEp{EP}",
+                           "fairmarket" if EP == "1" else f"fairmarket_ep{EP}"))
+COMP = REPO / "remotion" / "src" / "compositions" / f"{_name}.tsx"
+VO = REPO / "remotion" / "public" / "audio" / _vo
 FFPROBE = (REPO / "remotion" / "node_modules" / "@remotion"
            / "compositor-win32-x64-msvc" / "ffprobe.exe")
 FPS = 30
 VO_DELAY = 6
-TOTAL = {"1": 5880, "2": 4500, "3": 5010, "4": 4200, "5": 4260}[EP]          # 170s (2:50) — owner chose to run long rather than
+# Read the target length out of the composition itself rather than a
+# table here. A second copy of the number is a second thing to forget.
+TOTAL = int(re.search(r"export const \w*FRAMES = (\d+)",
+                      COMP.read_text("utf-8")).group(1))          # 170s (2:50) — owner chose to run long rather than
                       # trim the both-sides beats for the closing argument
 MIN_TAIL = 14          # never let a line end flush with the cut
 MIN_SILENT = 66        # a title/outro card with no dialogue still needs

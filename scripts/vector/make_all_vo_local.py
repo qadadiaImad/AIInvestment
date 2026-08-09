@@ -41,17 +41,23 @@ import numpy as np
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "scripts" / "vector"))
 
-COMPS = {"1": REPO / "remotion/src/compositions/FairMarketEp1.tsx",
+COMPS = {"s": REPO / "remotion/src/compositions/BubblesShort.tsx",
+         "b": REPO / "remotion/src/compositions/Bubbles.tsx",
+         "1": REPO / "remotion/src/compositions/FairMarketEp1.tsx",
          "2": REPO / "remotion/src/compositions/FairMarketEp2.tsx",
          "3": REPO / "remotion/src/compositions/FairMarketEp3.tsx",
          "4": REPO / "remotion/src/compositions/FairMarketEp4.tsx",
          "5": REPO / "remotion/src/compositions/FairMarketEp5.tsx"}
-VO_DIR = {"1": REPO / "remotion/public/audio/fairmarket",
+VO_DIR = {"s": REPO / "remotion/public/audio/fairmarket_bshort",
+          "b": REPO / "remotion/public/audio/fairmarket_bubbles",
+          "1": REPO / "remotion/public/audio/fairmarket",
           "2": REPO / "remotion/public/audio/fairmarket_ep2",
           "3": REPO / "remotion/public/audio/fairmarket_ep3",
           "4": REPO / "remotion/public/audio/fairmarket_ep4",
           "5": REPO / "remotion/public/audio/fairmarket_ep5"}
-TRACKS = {"1": REPO / "remotion/src/fixtures/cast_ep1/mouth_tracks.json",
+TRACKS = {"s": REPO / "remotion/src/fixtures/cast_ep1/mouth_tracks_bshort.json",
+          "b": REPO / "remotion/src/fixtures/cast_ep1/mouth_tracks_bubbles.json",
+          "1": REPO / "remotion/src/fixtures/cast_ep1/mouth_tracks.json",
           "2": REPO / "remotion/src/fixtures/cast_ep1/mouth_tracks_ep2.json",
           "3": REPO / "remotion/src/fixtures/cast_ep1/mouth_tracks_ep3.json",
           "4": REPO / "remotion/src/fixtures/cast_ep1/mouth_tracks_ep4.json",

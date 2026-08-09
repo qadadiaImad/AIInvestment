@@ -1,0 +1,97 @@
+"""Generate the 20-second Shorts cut as its own composition.
+
+WHY ITS OWN COMPOSITION rather than a trim of the full episode: the short
+is not an excerpt, it is a different edit with different lines. A trim of a
+190-second explainer opens on a greeting and loses the viewer in a second
+and a half.
+
+THE HOOK CHANGED FROM THE DRAFT. The workflow opened on "Lehman didn't
+break the market" with Rex answering "biggest bankruptcy ever". That
+superlative is almost certainly true and I could not verify it this
+session, and an unsourced superlative in the first two seconds of the most
+widely seen asset is the worst possible place to put one. So the hook is
+now the strongest thing that IS verified: the NASDAQ took until 23 April
+2015 to regain its March 2000 peak. Fifteen years. That is a better hook
+anyway - a number nobody expects beats a name everybody recognises.
+
+  python scripts/bubbles/build_short.py
+"""
+from __future__ import annotations
+
+import json
+import re
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[2]
+SRC = REPO / "remotion/src/compositions/Bubbles.tsx"
+DST = REPO / "remotion/src/compositions/BubblesShort.tsx"
+
+FPS = 30
+WPS = 2.75
+GAP = 10
+TAIL = 52          # a beat of held image at the end so the loop can breathe
+
+SOLO = {
+    "SOL": '[{poses: ["%s"], kind: "full", x: 790, y: FLOOR_Y, h: 930}]',
+    "REX": '[{poses: ["%s"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}]',
+}
+SOL_POSE = ["sol_point", "sol_finger", "sol_point_v1", "sol_smug_v1"]
+REX_POSE = ["rex_eager", "rex_skeptic", "rex_listen", "rex_shock"]
+
+# (speaker, vo, line, wall_kind, wall, pose)
+B = [
+ ("SOL","s1_sol_fifteen","The last bubble took fifteen years to get back to even.","G","dotcom",0),
+ ("REX","s2_rex_fifteen","Fifteen YEARS?!","H","",3),
+ ("SOL","s3_sol_clock","It isn't the crash that costs you. It's the clock.","E","b_machine",1),
+ ("SOL","s4_sol_parts","Cheap money. A story. Leverage. Forced selling.","G","machine_parts",0),
+ ("REX","s5_rex_villain","So who's the villain?","H","",1),
+ ("SOL","s6_sol_nobody","Nobody. Every hand on the belt touched it.","E","b_conveyor",1),
+ ("SOL","s8_sol_watch","Watch the machine.","E","b_machine_lit",1),
+]
+
+
+def dur(line: str) -> int:
+    return max(40, int(round(len(line.split()) / WPS * FPS)) + 6)
+
+
+def main() -> None:
+    src = SRC.read_text("utf-8")
+    at, out = 0, []
+    for i, (spk, vo, line, kind, val, pose) in enumerate(B):
+        poses = SOL_POSE if spk == "SOL" else REX_POSE
+        key = ""
+        if kind == "E":
+            key = '   exhibit: "%s",\n' % val
+        elif kind == "G":
+            key = '   graphic: "%s",\n' % val
+        k0, k1 = (1.0, 1.10) if i % 2 == 0 else (1.05, 1.14)
+        out.append(
+            "  {at: %d,\n%s   actors: %s,\n"
+            "   shots: [{from: 0, k: %s, kEnd: %s}],\n"
+            '   vo: "%s", speaker: "%s",\n   line: "%s"},'
+            % (at, key, SOLO[spk] % poses[pose % len(poses)], k0, k1,
+               vo, spk, line.replace('"', '\\"')))
+        at += dur(line) + GAP
+    total = at + TAIL
+
+    a = src.index("const BEATS: Beat[] = [")
+    b = src.index("\n];", a)
+    src = src[:a] + "const BEATS: Beat[] = [\n" + "\n\n".join(out) + src[b:]
+    src = src.replace("BUBBLES_FRAMES", "BUBBLES_SHORT_FRAMES")
+    src = src.replace("export const Bubbles:", "export const BubblesShort:")
+    src = src.replace("audio/fairmarket_bubbles/", "audio/fairmarket_bshort/")
+    src = re.sub(r"export const BUBBLES_SHORT_FRAMES = \d+;.*",
+                 "export const BUBBLES_SHORT_FRAMES = %d;   // %.1fs"
+                 % (total, total / FPS), src, count=1)
+
+    DST.write_text(src, "utf-8")
+    print("%d beats, %d frames (%.1fs) -> %s"
+          % (len(B), total, total / FPS, DST.name))
+    for s, v, l, *_ in B:
+        print("  %-16s %-4s %s" % (v, s, l))
+    json.dump([dict(vo=v, speaker=s, line=l) for s, v, l, *_ in B],
+              open(REPO / "data/bubbles/short_lines.json", "w"), indent=1)
+
+
+if __name__ == "__main__":
+    main()

@@ -558,5 +558,104 @@
   "passed_clean": false,
   "problems": [],
   "revision": "ep2 explanatory - object-forward, authored 2026-08-08"
+ },
+ {
+  "name": "b_machine",
+  "route": "zimage",
+  "episode": "bubbles",
+  "prompt": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, applied to a symbolic still-life scene: a heavy brass mechanism stands at rest on a dark wooden tabletop, lit by a single overhead warm amber spotlight against a deep navy void behind. The mechanism has four distinct interlocking parts in a tight circular cluster \u2014 a squat brass cylinder etched with spiral grooves, a many-toothed cog wheel beside it, a coiled brass spring wound tight between two posts, and a heavy round counterweight on a short chain above the tabletop \u2014 all four bolted into one apparatus, joined by a single long brass lever jutting to the right, lowered and still. Every surface carries bold black manga ink outlines, hard angular cel-shaded shadows, and fine halftone screentone, with heavy rim lighting on the brass edges and a long still shadow across the tabletop's wood grain. Mood is quiet, coiled, purposeful \u2014 a thing waiting to be set in motion. Colour is held to deep navy, warm amber, brass gold, burgundy, and muted teal against the dark ground, filling the full wide frame edge to edge.",
+  "negative": "",
+  "reads_as": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, applied to a symbolic still-life scene rather than a portrait: a heavy brass mechanism s",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "bubbles ep3 - authored 2026-08-09"
+ },
+ {
+  "name": "b_machine_lit",
+  "route": "zimage",
+  "episode": "bubbles",
+  "prompt": "A manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki: a symbolic still-life machine study filling the wide frame edge to edge. A heavy brass mechanism with four distinct interlocking parts stands on a dark wooden tabletop, one long lever pulled all the way down. A wide flywheel spins in blurred motion lines at the top; a ribbed bellows chamber beside it breathes open and closed, glowing amber within; a tightly coiled brass spring pulses with visible tension at its core; and at the base a hinged brass chute tips open, pouring polished brass spheres onto the tabletop. Glowing amber energy traces every pipe and joint, linking the four parts into one unbroken circuit, in bold black manga ink outlines, hard angular cel-shaded shadows, and fine halftone screentone. A single overhead warm amber spotlight fans down in hard-edged rays against a flat, deep navy void fading to black, heavy rim light tracing every brass edge. The mood is confident and commanding: a machine fully understood, running exactly as built. Palette held to deep navy, warm amber, brass gold, burgundy, and muted teal.",
+  "negative": "",
+  "reads_as": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, applied to a symbolic still-life scene rather than a portrait: a heavy brass mechanism w",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "bubbles ep3 - authored 2026-08-09"
+ },
+ {
+  "name": "b_empty_chair",
+  "route": "zimage",
+  "episode": "bubbles",
+  "prompt": "An illustration in the style of JoJo's Bizarre Adventure by Hirohiko Araki, with bold black ink contours, hard angular cel-shaded shadows, fine halftone screentone and heavy rim light. A single high-backed wooden chair stands empty at a bare dark wooden table, pushed back at an angle as though whoever last sat there has already left, its polished wood seat and armrests catching a single warm amber spotlight that falls straight down from above and pools on the empty seat while the rest of the room dissolves into deep navy shadow. A long dramatic shadow stretches from the chair across the floor toward the viewer. Further back, more chairs at the same table recede into darkness, each one also unoccupied, their edges caught only faintly by brass-gold and burgundy rim light. Fine halftone screentone textures every shadow and the dark ground beneath. The palette stays rich, saturated and dark throughout: deep navy, warm amber, brass gold, burgundy and muted teal held against inky black shadow. The composition is a single wide eye-level shot centered on the lit empty chair, filling the whole wide horizontal frame edge to edge.",
+  "negative": "",
+  "reads_as": "Final prompt text",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "bubbles ep3 - authored 2026-08-09"
+ },
+ {
+  "name": "b_corkboard",
+  "route": "zimage",
+  "episode": "bubbles",
+  "prompt": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, applied to a symbolic still-life scene: a large cork board mounted on a warm wood-paneled wall, lit by a single cone of amber lamplight from outside the frame. Pinned to the board, a tidy arrangement of domestic objects fixed with brass tacks is joined by taut lengths of warm red string that converge on one blank white index card at the board's center, its face completely bare and smooth. Around it: a small wooden house model, a coil of white picket fence, a brass door key on a ribbon, a plump piggy bank, a rolled blueprint tied shut with twine, and a bird's nest cradling one smooth egg. Every object and string is rendered in bold black ink contours, hard angular cel-shaded shadows, fine halftone screentone, and heavy rim light. The framing is dead-on and symmetrical, uncannily neat. Palette held to deep navy shadow, warm amber glow, brass gold, burgundy string, and muted teal accents on the dark wood ground, filling the whole wide horizontal frame edge to edge.",
+  "negative": "",
+  "reads_as": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, applied to a symbolic still-life scene rather than a portrait: a large cork board mounte",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "bubbles ep3 - authored 2026-08-09"
+ },
+ {
+  "name": "b_block_tower",
+  "route": "zimage",
+  "episode": "bubbles",
+  "prompt": "An illustration in the style of JoJo's Bizarre Adventure by Hirohiko Araki, bold black ink contours, hard angular cel-shaded shadows, fine halftone screentone, heavy rim light. A towering stack of plain, smooth, unmarked rectangular wooden blocks rises through the center of a wide horizontal frame, each block resting slightly off-center on the one beneath it, the whole leaning at a precarious angle as if one nudge would topple it. Near the base, a shorter stack of brass-gold ingot-shaped blocks forms the foundation the tower balances on, one borrowed weight propping up another. A single small silhouette, seen from behind and flattened in scale, stands at the tower's foot, one hand braced against the lowest block, dwarfed by the height above. Deep amber light rakes across the blocks from one side, throwing long angular shadows over a burgundy floor and a deep navy void behind. The palette stays within deep navy, warm amber, brass gold, burgundy and muted teal on a dark ground, fully saturated and never washed to white. The camera holds a single low, wide angle from ground level, taking in the entire leaning tower at once, edge to edge across the frame.",
+  "negative": "",
+  "reads_as": "A single English-prose image-generation prompt, ~190 words, ready to paste into the Z-Image Turbo pipeline for the b_block_tower exhibit.",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "bubbles ep3 - authored 2026-08-09"
+ },
+ {
+  "name": "b_falling_card",
+  "route": "zimage",
+  "episode": "bubbles",
+  "prompt": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, applied to a symbolic still-life rather than a portrait: a tall tower of blank ivory-white cards, stacked tier on tier, stands at the center of a dark wooden tabletop, rendered in bold black manga ink outlines, hard angular cel-shaded shadows, and fine halftone screentone across every plain, smooth card face. A bare forearm and open hand enters the frame from the lower right, gripping one card at the base of the tower and drawing it outward mid-slide, its edge just clearing the tier above. The structure has begun to lean in response, upper tiers tilted a few degrees off true, caught in the instant before the fall rather than the fall itself. An overhead beam of warm amber spotlight rakes across the cards, throwing long hard shadows forward, while heavy rim light traces the tower's silhouette against a flat, deep navy void fading to black at the edges. Restrained palette of deep navy, warm amber, brass gold, burgundy, and muted teal, illustration filling the whole wide horizontal frame edge to edge.",
+  "negative": "",
+  "reads_as": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, applied to a symbolic still-life rather than a portrait: a tall precarious tower of blan",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "bubbles ep3 - authored 2026-08-09"
+ },
+ {
+  "name": "b_cracked_facade",
+  "route": "zimage",
+  "episode": "bubbles",
+  "prompt": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, applied to a symbolic architectural still life: an immense classical bank facade fills the frame, towering fluted stone columns rising into shadow, bold black ink outlines, hard angular cel-shaded shadows, and fine halftone screentone across every carved surface. Down the tallest column runs one jagged crack, a hairline at the top widening into a dark fissure near the base, loose stone chips and dust frozen mid-fall in amber light. A beam of warm amber spotlight rakes across the columns from low on one side, throwing long hard-edged shadows, the crack reading as a black gash against brass-gold stone. Far below, one small flat back-turned silhouette figure stands dwarfed by the building's scale, faceless, giving only a sense of proportion. The backdrop fades into a flat deep navy void. Heavy rim light traces the crack's edge and the column's contour, the mood one of sheer scale giving way under its own weight. Palette held to deep navy, warm amber, brass gold, burgundy, and muted teal, filling the full wide frame edge to edge.",
+  "negative": "",
+  "reads_as": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, applied to a symbolic still-life scene rather than a portrait: an immense classical bank",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "bubbles ep3 - authored 2026-08-09"
+ },
+ {
+  "name": "b_conveyor",
+  "route": "zimage",
+  "episode": "bubbles",
+  "prompt": "A manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, applied to a symbolic mechanical still life: an industrial conveyor belt runs left to right, shot from a low, close side angle filling the frame's middle. A single wrapped rectangular parcel, bound with taut cord, its surface completely blank and smooth, rides the belt. Above it, evenly spaced, hang four squat metal stamping arms, each a rounded mechanical head with a circular pad, angled downward like a row of descending gate arms. The nearest strikes the parcel's blank top amid impact lines and screentone dust; the next hangs mid-descent; two more wait raised behind, receding into navy haze. Bold black ink outlines, hard angular cel-shaded shadows, and halftone screentone cover every metal surface, rimmed in warm amber light. A single overhead spotlight in amber and brass gold rakes the scene against a flat dark void, with one burgundy glow beneath the belt's struts. The illustration fills the wide horizontal frame edge to edge, held to deep navy, amber, brass gold, burgundy and muted teal, with no neon and nothing blown out to white.</revised_prompt>\n</invoke>",
+  "negative": "",
+  "reads_as": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, applied to a symbolic still-life scene rather than a portrait: a long industrial conveyo",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "bubbles ep3 - authored 2026-08-09"
+ },
+ {
+  "name": "b_two_machines",
+  "route": "zimage",
+  "episode": "bubbles",
+  "prompt": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, applied to a symbolic still-life scene: two identical heavy brass mechanisms stand side by side on the same long dark wooden tabletop, each built from four distinct interlocking gear-like parts and one long lever, viewed from a single level, straight-on camera so both read at matching scale. The left machine looks freshly forged, its brass polished to a warm gleam, every surface crisp and clean. The right machine is the same construction down to the last part, but coated in a thick pale layer of dust and cobweb, its brass dulled and greenish with age, one corner draped in a loose cloth. Both sit beneath a single overhead beam of warm amber spotlight fanning down in hard-edged rays, casting twin angular shadows across the wood, against a flat deep navy void fading to black at the edges. Bold black ink contours, hard angular cel-shaded shadows, fine halftone screentone, heavy rim light. Palette restrained to deep navy, warm amber, brass gold, burgundy, and muted teal, filling the wide frame edge to edge.",
+  "negative": "",
+  "reads_as": "A dramatic manga illustration in the bold ink and halftone style of JoJo's Bizarre Adventure by Hirohiko Araki, applied to a symbolic still-life scene: two identical heavy brass mechanisms stand side ",
+  "passed_clean": false,
+  "problems": [],
+  "revision": "bubbles ep3 - authored 2026-08-09"
  }
 ]
