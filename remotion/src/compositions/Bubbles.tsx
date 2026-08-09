@@ -557,14 +557,29 @@ type Held =
   | {kind: "graphic"; name: string; start: number};
 
 // Holds GRAPHICS as well as exhibits - see scripts/bubbles/patch_hold.py
-// for why the exhibit-only version was a bug.
+// for why the exhibit-only version was a bug, and why the RUN below is the
+// second one.
 const heldAt = (i: number): Held | null => {
   for (let k = i; k >= 0; k--) {
     const b = BEATS[k];
     if (b.exhibit)
       return {kind: "exhibit", name: b.exhibit, start: b.at + exhibitFromOf(b)};
-    if (b.graphic)
-      return {kind: "graphic", name: b.graphic, start: b.at};
+    if (b.graphic) {
+      // Walk back over an UNBROKEN RUN of the same graphic and report the
+      // start of the run, not of this beat. Two consecutive beats naming
+      // the same chart are one continuous shot of that chart; restarting
+      // its clock wipes a line the viewer just watched draw and draws it
+      // again from nothing.
+      let j = k;
+      while (j > 0) {
+        const p = BEATS[j - 1];
+        if (p.graphic === b.graphic) { j--; continue; }
+        if (!p.graphic && !p.exhibit && p.wall !== "chart" && !p.card
+            && !p.title) { j--; continue; }
+        break;
+      }
+      return {kind: "graphic", name: b.graphic, start: BEATS[j].at};
+    }
     if (b.wall === "chart" || b.card || b.title) return null;
   }
   return null;
@@ -1003,11 +1018,12 @@ export const Bubbles: React.FC = () => {
   const wallEx = cur.exhibit
     ? {name: cur.exhibit, start: cur.at + exhibitFromOf(cur)}
     : held && held.kind === "exhibit" ? held : null;
-  // the graphic actually on the wall, and the clock it runs on
-  const gName = cur.graphic
-    ?? (held && held.kind === "graphic" ? held.name : undefined);
-  const gSince = cur.graphic ? since
-    : held && held.kind === "graphic" ? frame - held.start : 0;
+  // The graphic actually on the wall, and the clock it runs on. BOTH come
+  // from heldAt, which already covers this beat - the earlier version used
+  // `cur.graphic ? since` here, so a beat that re-declared the graphic
+  // already on screen reset it to frame zero.
+  const gName = held && held.kind === "graphic" ? held.name : undefined;
+  const gSince = held && held.kind === "graphic" ? frame - held.start : 0;
   const outro = cur.at === 1685;
   const nrg = cur.energy ?? 0.7;
   const k = kick(since, 10 * nrg, 14);
