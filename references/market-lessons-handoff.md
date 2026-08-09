@@ -21,7 +21,7 @@ behind, cast seated, curved news crawl over the table). All render clean.
 | 5 | 2:22 | panel format + reaction cuts · **script rejected** |
 
 **"The Machine" (bubbles / 2008) is a SIXTH piece, not ep.3.** It ships as
-its own pair of compositions — `Bubbles` (3:01) and `BubblesShort` (0:24)
+its own pair of compositions — `Bubbles` (2:49) and `BubblesShort` (0:24)
 — because the `FairMarketEp3` slot holds the congressional-ban-vote
 episode, which has its own recorded VO on disk and whose script being
 rejected is not a reason to destroy it. On screen "The Machine" is titled
@@ -355,6 +355,23 @@ recovery, so colouring everything after the peak burgundy put a red
 "decline" tick on the exact frame that says it got back to even. Require
 the post-peak leg to be a real fraction of the series before styling it as
 a fall.
+
+**"Pace" is the hold after a line, and it is measurable.** Ep.1 sits in
+silence for a median **0.73s** after a line ends (p10 0.47, p90 1.31).
+"The Machine" was sitting for 1.03s — 41% longer, on all fifty beats,
+12 seconds of runtime. Compare the distribution against ep.1 before
+concluding a script is slow; it may be the schedule, not the writing.
+
+The trap underneath it: `retime_beats.py` derives each start from measured
+audio but lands on the **total the word-count estimate set**, and hands
+each beat its existing share of the slack. So `WPS` in
+`build_composition.py` — a knob that looks like it only affects a throwaway
+estimate — silently decides how much silence the episode contains.
+
+**Tightening the runtime can break the sting cap on its own.** Cutting
+those 12 seconds took density from 2.98 to 3.19/min without touching a
+single sting. Re-run `score_from_stingmap.py <ep>` after any timing change,
+and never hardcode a runtime in it.
 
 **Naming "JoJo" is load-bearing and dangerous.** Remove it and the style
 collapses into abstract colour noise (tested twice). Keep it and it drags
