@@ -67,7 +67,14 @@ B = [
  ("REX","b32_rex_nobody","So nobody's responsible?","H","",1,0),
  ("SOL","b33_sol_everyone","Everyone's responsible. Nobody's the villain.","G","machine_parts",0,0),
  ("SOL","b34_sol_houses","House prices fell TWENTY-SEVEN percent.","G","caseshiller",1,0),
- ("REX","b35_rex_third","A THIRD of a house, gone?","H","",0,0),
+ # WAS: "A THIRD of a house, gone?" - wrong twice over, and my own writing
+ # guide cites this exact line as its FAIL example (show-writing-guide.md
+ # Rule 4.3) while it was still in the shipped cut. Wrong on the number: the
+ # fall is 27.4%, a third is 33.3%, so "a third" overstates it by six points.
+ # Wrong on craft: it was the first of three identical big-stat-then-exclaim
+ # reactions, and the guide's hard ban is two. Deadpan and accurate fixes
+ # both - it stops being the third gasp, so b37 and b47 are now exactly two.
+ ("REX","b35_rex_quarter","Just over a quarter of a house.","H","",0,0),
  ("SOL","b36_sol_market","The market fell FIFTY-FIVE percent.","G","drawdown2008",0,0),
  ("REX","b37_rex_half","More than HALF?!","H","",3,0),
  ("SOL","b38_sol_jobs","Unemployment. Four point four... to TEN.","G","unrate",1,0),
@@ -104,21 +111,48 @@ PERFORM_TAGS = {
     "b52_sol_time": "whisper",
 }
 
-# ---- the 22s Shorts cut, same voice ------------------------------------
-# Leads on the verified fifteen-years fact, runs the echo move once
-# ("Fifteen YEARS?!" -> "HA! ...Fifteen years."), and closes so the last
-# frame hands back to the first.
+# ---- the Shorts cut, v2 -------------------------------------------------
+# The owner: "short needs to be enhanced ... stack more information and
+# maybe speed up prononciation". v1 was seven beats carrying two ideas
+# (fifteen years, four parts). This is thirteen beats carrying FIVE verified
+# figures, spoken 1.30x faster (see SPEED in make_all_vo_local.py, and
+# tempo_ab.py for why that rate is free).
+#
+# Written by a four-angle / three-judge / two-adversary workflow, then cut
+# down by what the adversaries found. Three of their five findings changed
+# the script and are worth keeping written down:
+#
+#   * "Almost a THIRD, gone?" was the same overstatement as the full
+#     episode's b35 AND the third firing of the same reaction shape. It also
+#     failed the delete-test - cut it and the two lines either side read
+#     unchanged. So it is simply gone.
+#   * "Every time. Eleven and a half TRILLION, gone." generalised a
+#     2008-only figure to every bubble. facts.json has no dot-com
+#     net-worth number, so the claim had one data point. Scoped to 2008.
+#   * "So the banks? They're the villain." arrived straight after the
+#     DOT-COM numbers, and banks are the 2008 association - a non-sequitur
+#     at listening speed, which is the same "ambiguous" note the owner gave
+#     on the last script.
+#
+# Bookend: s1 ends on "Gone", s13 answers Rex with it and closes.
 SHORT = [
- ("SOL","s1_sol_fifteen","The last bubble took fifteen years to get back to even.","G","dotcom",0),
- ("REX","s2_rex_fifteen","Fifteen YEARS?!","H","",3),
- ("SOL","s3_sol_ha","HA! ...Fifteen years.","E","b_machine",3),
- ("SOL","s4_sol_time","It doesn't cost you money, kid. It costs you TIME.","H","",1),
- ("SOL","s5_sol_four","Four parts. No villain. Every single time.","G","machine_parts",0),
- ("REX","s6_rex_villain","So who's the villain?","H","",1),
- ("SOL","s7_sol_nobody","...Nobody. Watch the machine.","E","b_machine_lit",1),
+ ("SOL","s1_sol_dotcom","Dot-com fell SEVENTY-SEVEN percent. Gone.","G","dotcom",0),
+ ("REX","s2_rex_howfast","Seventy-seven percent - how fast?","H","",1),
+ ("SOL","s3_sol_months","Thirty-one months to hit bottom.","G","dotcom",1),
+ ("REX","s4_rex_villain","So there's a villain, right?","E","b_cracked_facade",0),
+ ("SOL","s5_sol_novillain","No villain. Just a machine. Four parts.","E","b_machine",3),
+ ("REX","s6_rex_which","Which four?","H","",2),
+ ("SOL","s7_sol_fourparts","Cheap money, a story, leverage, a forced sale.","G","machine_parts",0),
+ ("SOL","s8_sol_market","Same machine. 2008. Down FIFTY-FIVE percent.","G","drawdown2008",1),
+ ("REX","s9_rex_houses","Fifty-five percent - and houses?","H","",1),
+ ("SOL","s10_sol_houses","Down TWENTY-SEVEN percent.","G","caseshiller",0),
+ ("SOL","s11_sol_trillion","Eleven and a half TRILLION in household wealth.","G","wealth",1),
+ ("REX","s12_rex_comesback","That comes back, right?","H","",3),
+ ("SOL","s13_sol_watch","Gone. Watch the machine, not the number.","E","b_machine_lit",1),
 ]
 
 SHORT_TAGS = {
-    "s2_rex_fifteen": "gasp",
-    "s7_sol_nobody": "whisper",
+    "s4_rex_villain": "gasp",
+    "s12_rex_comesback": "gasp",
+    "s13_sol_watch": "whisper",
 }

@@ -38,6 +38,8 @@ from pathlib import Path
 
 import numpy as np
 
+import asr_gate
+
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "scripts" / "vector"))
 
@@ -192,7 +194,6 @@ PERFORM = {
     # ep.3 "The Machine". v1 shipped with ZERO tags across 41 lines and
     # the owner heard it immediately: "boring, not funny, something is
     # missing". Every line was generated flat. These are placed per beat.
-    "s7_sol_nobody": "[whisper] ",
     # ep.3 - gasp/whisper only, see beats_v2.PERFORM_TAGS
     "b05_rex_what": "[gasp] ",
     "b14_rex_free": "[gasp] ",
@@ -201,9 +202,12 @@ PERFORM = {
     "b47_rex_what2": "[gasp] ",
     "b44_sol_runback": "[whisper] ",
     "b52_sol_time": "[whisper] ",
-    "s2_rex_fifteen": "[gasp] ",
-    "s7_sol_nobody": "[whisper] ",
-
+    # Shorts cut v2 - v1's stems (s2_rex_fifteen, s7_sol_nobody) no longer
+    # exist; a tag keyed to a stem that is gone is silently a no-op, which is
+    # how ep.3 shipped its first cut with zero tags.
+    "s4_rex_villain": "[gasp] ",
+    "s12_rex_comesback": "[gasp] ",
+    "s13_sol_watch": "[whisper] ",
 }
 
 
@@ -317,6 +321,18 @@ def trim_silence(x: np.ndarray, sr: int, thresh: float = 0.015) -> np.ndarray:
 # file.
 SPEED = {"s": 1.30}
 
+# Lines that are NOT generated at the default seed, and why. fix_stray_onset.py
+# resamples a line until the burst-then-gap probe calls it clean and keeps the
+# winning seed - but it only wrote the WAV. A later full regeneration at SEED
+# would have silently reinstated the take the probe rejected, with nothing to
+# notice it. The seed is part of the recipe, so it lives here.
+ASR_TRIES = 5        # resamples allowed before a line is reported broken
+SEED_OVERRIDE = {
+    "b21_rex_crowbar": 1335,     # stray onset: burst 100ms, gap 80ms
+    "b49_rex_fifteen": 1436,     # stray onset: burst 90ms, gap 360ms
+    "s12_rex_comesback": 1537,   # stray onset: burst 110ms, gap 60ms
+}
+
 
 def to_pcm16(src: Path, dst: Path, speed: float = 1.0) -> None:
     """Chatterbox writes float32 wav, which the stdlib wave module and
@@ -353,6 +369,8 @@ def main() -> None:
         eps = [sys.argv[sys.argv.index("--only") + 1].replace("ep", "")]
     limit = (int(sys.argv[sys.argv.index("--limit") + 1])
              if "--limit" in sys.argv else None)
+    only_stems = (set(sys.argv[sys.argv.index("--stems") + 1].split(","))
+                  if "--stems" in sys.argv else None)
 
     dev = "cuda" if torch.cuda.is_available() else "cpu"
     print("device " + dev + ", seed " + str(SEED))
@@ -362,22 +380,51 @@ def main() -> None:
         lines = lines_for(ep)
         if limit:
             lines = lines[:limit]
+        if only_stems:
+            lines = [l for l in lines if l[0] in only_stems]
         print("\n=== EPISODE " + ep + ": " + str(len(lines)) + " lines ===")
         tracks = {}
+        keep_tracks = json.loads(TRACKS[ep].read_text("utf-8")) if (
+            only_stems and TRACKS[ep].exists()) else {}
         for k, (stem, voice, text) in enumerate(lines, 1):
-            torch.manual_seed(SEED)
+            seed = SEED_OVERRIDE.get(stem, SEED)
+            torch.manual_seed(seed)
             if dev == "cuda":
-                torch.cuda.manual_seed_all(SEED)
-            np.random.seed(SEED)
-            wav = model.generate(
-                perform(stem, say(stem, say_as(text))),
-                audio_prompt_path=str(REFS / ("voice_ref_" + voice + ".wav")),
-                **DELIVERY[voice])
-            raw = VO_DIR[ep] / ("_" + stem + "_raw.wav")
-            torchaudio.save(str(raw), wav, model.sr)
+                torch.cuda.manual_seed_all(seed)
+            np.random.seed(seed)
+            prompt = perform(stem, say(stem, say_as(text)))
             out = VO_DIR[ep] / (stem + ".wav")
-            to_pcm16(raw, out, SPEED.get(ep, 1.0))
-            raw.unlink(missing_ok=True)
+            raw = VO_DIR[ep] / ("_" + stem + "_raw.wav")
+
+            # THE ASR GATE. Chatterbox does not always say what it was given.
+            # This episode's closing line came back as "W. W. W. S. R. W. S.
+            # R. W. 5. W. S. R. Not the number." - 6.37 seconds of letters,
+            # on the last beat of the Shorts cut - and nothing else in the
+            # pipeline could see it. Durations only know it is long; the
+            # mouth tracks are built FROM the audio so they matched the
+            # garbage perfectly. So every line is transcribed back and
+            # resampled at a fresh seed until it IS the line.
+            asr = ""
+            for attempt in range(ASR_TRIES):
+                if attempt:
+                    torch.manual_seed(seed + attempt * 977)
+                    if dev == "cuda":
+                        torch.cuda.manual_seed_all(seed + attempt * 977)
+                    np.random.seed(seed + attempt * 977)
+                wav = model.generate(
+                    prompt,
+                    audio_prompt_path=str(REFS / ("voice_ref_" + voice + ".wav")),
+                    **DELIVERY[voice])
+                torchaudio.save(str(raw), wav, model.sr)
+                to_pcm16(raw, out, SPEED.get(ep, 1.0))
+                raw.unlink(missing_ok=True)
+                e, hyp, ok = asr_gate.check(out, text)
+                if ok:
+                    asr = "" if attempt == 0 else "  [reseeded x%d]" % attempt
+                    break
+                print("      ASR REJECT (wer %.2f) seed %d: %r"
+                      % (e, seed + attempt * 977, hyp[:60]), flush=True)
+                asr = "  [ASR FAILED %d tries]" % ASR_TRIES
             # strip the leading pad so the voice lands on the beat
             with wave.open(str(out)) as w:
                 sr0, n0 = w.getframerate(), w.getnframes()
@@ -401,8 +448,8 @@ def main() -> None:
                 with wave.open(str(out)) as w:
                     dur = w.getnframes() / w.getframerate()
                 tracks[stem] = amp_track(out)
-                print("  [%2d/%d] %-22s %-3s %5.2fs  raw     %s"
-                      % (k, len(lines), stem, voice, dur, text[:38]),
+                print("  [%2d/%d] %-22s %-3s %5.2fs  raw     %s%s"
+                      % (k, len(lines), stem, voice, dur, text[:38], asr),
                       flush=True)
                 continue
             x, sr = read(out)
@@ -428,8 +475,17 @@ def main() -> None:
             print("  [%2d/%d] %-22s %-3s %5.2fs %s  %s"
                   % (k, len(lines), stem, voice, dur, note, text[:38]),
                   flush=True)
-        TRACKS[ep].write_text(json.dumps(tracks), "utf-8")
-        print("  episode " + ep + ": " + str(len(tracks)) + " tracks rebuilt")
+        # A --stems run rebuilds tracks for the stems it touched and MERGES
+        # them over the rest. Writing `tracks` straight out would leave the
+        # episode with a mouth-track file describing one line, which is the
+        # same class of bug as importing the wrong episode's tracks - the
+        # viseme machinery would keep working perfectly on data that does not
+        # describe the episode, and every other mouth would stay shut.
+        merged = {**keep_tracks, **tracks}
+        TRACKS[ep].write_text(json.dumps(merged), "utf-8")
+        print("  episode %s: %d tracks rebuilt%s"
+              % (ep, len(tracks),
+                 " (merged into %d)" % len(merged) if keep_tracks else ""))
 
     print("\nnow: EP=1 and EP=2 retime_beats.py --write, then render")
 

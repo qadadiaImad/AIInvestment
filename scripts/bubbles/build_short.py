@@ -1,18 +1,19 @@
-"""Generate the 20-second Shorts cut as its own composition.
+"""Generate the Shorts cut as its own composition.
 
 WHY ITS OWN COMPOSITION rather than a trim of the full episode: the short
 is not an excerpt, it is a different edit with different lines. A trim of a
-190-second explainer opens on a greeting and loses the viewer in a second
+170-second explainer opens on a greeting and loses the viewer in a second
 and a half.
 
-THE HOOK CHANGED FROM THE DRAFT. The workflow opened on "Lehman didn't
-break the market" with Rex answering "biggest bankruptcy ever". That
-superlative is almost certainly true and I could not verify it this
-session, and an unsourced superlative in the first two seconds of the most
-widely seen asset is the worst possible place to put one. So the hook is
-now the strongest thing that IS verified: the NASDAQ took until 23 April
-2015 to regain its March 2000 peak. Fifteen years. That is a better hook
-anyway - a number nobody expects beats a name everybody recognises.
+V2, and it is longer on purpose. The owner: "short needs to be enhanced ...
+stack more information and maybe speed up prononciation". v1 was 7 beats
+carrying two ideas in 24s. This is 13 beats carrying FIVE verified figures
+in ~35s, spoken 1.30x faster. The trade is deliberate and worth saying out
+loud: it is half again as long, for two and a half times the content and a
+faster read. Still well inside what Shorts accepts.
+
+Every number is a facts.json slot. The beat list and the reasoning behind
+its ordering live in beats_v2.SHORT.
 
   python scripts/bubbles/build_short.py
 """
@@ -31,7 +32,7 @@ DST = REPO / "remotion/src/compositions/BubblesShort.tsx"
 
 FPS = 30
 WPS = 2.25          # slower than raw speech: PERFORM tags add up to 1.3s a line
-GAP = 10
+GAP = 6
 TAIL = 52          # a beat of held image at the end so the loop can breathe
 
 SOLO = {
@@ -44,23 +45,57 @@ REX_POSE = ["rex_eager", "rex_skeptic", "rex_listen", "rex_shock"]
 from beats_v2 import SHORT as B
 
 
-# ONE sting, and one only. 24s at the stingmap's cap of 3/minute buys 1.2,
-# and a Shorts cut is exactly where the temptation is to spray the kit at
-# it. s2 is the shock-take: a drawn single-exclamation reaction, which is
-# the taxonomy entry that overrides reaction-silence (house rule 10.8 -
-# a take with no anchored hit reads as static).
-SFX = {"s2_rex_fifteen": ("vine_boom_hit", 0.26, 0)}
+# ONE sting, and one only. ~25s at the stingmap's cap of 3/minute buys 1.2,
+# and a Shorts cut is exactly where the temptation is to spray the kit at it.
+#
+# v1 put it on the shock-take, but v2 has no single-exclamation take to hang
+# it on - and a sting keyed to a stem that no longer exists is silently
+# nothing, which is precisely how this episode once shipped with none at
+# all. So it moves to the taxonomy's `thesis-lands`: "No villain. Just a
+# machine. Four parts." is the turn the whole cut exists to reach, and core
+# is the sound the map reserves for exactly that.
+SFX = {"s5_sol_novillain": ("core", 0.30, "after")}
+VO_DIR = REPO / "remotion/public/audio/fairmarket_bshort"
+
+
+def vo_frames(stem: str) -> int:
+    import wave
+    p = VO_DIR / (stem + ".wav")
+    if not p.exists():
+        return 0
+    with wave.open(str(p)) as w:
+        return int(round(w.getnframes() / w.getframerate() * FPS))
 
 
 def sfx_for(stem: str) -> str:
     if stem not in SFX:
         return ""
-    name, vol, at = SFX[stem]
+    name, vol, when = SFX[stem]
+    at = when if isinstance(when, int) else 6 + vo_frames(stem) - 2
     return '   sfx: [{at: %d, name: "%s", vol: %s}],\n' % (at, name, vol)
 
 
-def dur(line: str) -> int:
-    return max(40, int(round(len(line.split()) / WPS * FPS)) + 6)
+# Same trap as the full episode, worse here. The schedule was estimated from
+# WORD COUNT, and retime_beats lands on whatever total that estimate set - so
+# 24 seconds of actual speech was being scheduled into 40 seconds of runtime.
+# On a Shorts cut that is not a pacing nuance, it is most of the video being
+# silence.
+#
+# Measured lengths, then a hold scaled off the estimate's slack, exactly as
+# build_composition.py does it - but tighter, because this is a Shorts cut.
+# The full episode's floor is ep.1's 14 frames; here it is 10 (0.33s), which
+# is the shortest hold that still leaves a subtitle readable.
+SLACK = 0.50
+FLOOR = 4
+
+
+def dur(line: str, vo: str = "") -> int:
+    est = max(40, int(round(len(line.split()) / WPS * FPS)) + 6)
+    a = vo_frames(vo)
+    if not a:
+        return est
+    need = 6 + a
+    return max(need + FLOOR, need + int(round((est - need) * SLACK)))
 
 
 def main() -> None:
@@ -80,7 +115,7 @@ def main() -> None:
             '   vo: "%s", speaker: "%s",\n   line: "%s"},'
             % (at, key, sfx_for(vo), SOLO[spk] % poses[pose % len(poses)],
                k0, k1, vo, spk, line.replace('"', '\\"')))
-        at += dur(line) + GAP
+        at += dur(line, vo) + GAP
     total = at + TAIL
 
     a = src.index("const BEATS: Beat[] = [")

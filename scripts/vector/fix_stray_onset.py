@@ -40,6 +40,7 @@ sys.path.insert(0, str(REPO / "scripts" / "vector"))
 
 import make_all_vo_local as V          # noqa: E402  the pipeline itself
 from leading_burst import head_env, stray   # noqa: E402  the detector itself
+import asr_gate                             # noqa: E402  and the other one
 
 TRIES = 8
 REFS = REPO / "remotion/public/audio/voice_refs"
@@ -110,10 +111,19 @@ def main() -> None:
             torchaudio.save(str(raw), wav, model.sr)
             post(raw, out, ep)
             bad, why = stray(head_env(out))
+            # BOTH gates, not just the onset one. A reseed drawn to fix a
+            # stray consonant is a completely fresh sample and can just as
+            # easily be a hallucination - which is exactly the failure the
+            # generation gate was added for. Fixing one defect by shipping
+            # a worse one is not a repair.
+            e, hyp, said_it = asr_gate.check(out, text)
             with wave.open(str(out)) as w:
                 dur = w.getnframes() / w.getframerate()
-            print("   seed %-6d %5.2fs  %s" % (seed, dur, why or "clean"))
-            if not bad:
+            print("   seed %-6d %5.2fs  onset:%-38s asr:%.2f"
+                  % (seed, dur, why or "clean", e))
+            if not said_it:
+                print("      ASR REJECT: %r" % hyp[:60])
+            if not bad and said_it:
                 won = seed
                 break
 
