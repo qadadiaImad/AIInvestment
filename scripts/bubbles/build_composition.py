@@ -94,6 +94,12 @@ def main() -> None:
     src = src.replace("EP2_FRAMES", "BUBBLES_FRAMES")
     src = src.replace("FairMarketEp2", "Bubbles")
     src = src.replace("audio/fairmarket_ep2/", "audio/fairmarket_bubbles/")
+    # THE MOUTH TRACKS. Missing this is what killed the lip-sync and the
+    # blinks in the first three cuts: the composition kept importing ep.2's
+    # track file, whose keys are ep.2's VO stems, so NONE of this episode's
+    # 52 stems matched and every mouth stayed shut. The viseme machinery was
+    # working perfectly on data that did not describe this episode.
+    src = src.replace("mouth_tracks_ep2.json", "mouth_tracks_bubbles.json")
     src = re.sub(r"export const BUBBLES_FRAMES = \d+;.*",
                  "export const BUBBLES_FRAMES = %d;   // %.0fs"
                  % (total, total / FPS), src, count=1)

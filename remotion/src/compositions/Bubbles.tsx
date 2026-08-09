@@ -21,7 +21,7 @@ import {BigNumberExhibit, TickerTape} from "../motion/Infographic";
 import {SeriesExhibit} from "../motion/Series";
 import {MachineParts, MachineLoop} from "../motion/Machine";
 import anchors from "../fixtures/cast_ep1/pose_anchors.json";
-import mouthTracks from "../fixtures/cast_ep1/mouth_tracks_ep2.json";
+import mouthTracks from "../fixtures/cast_ep1/mouth_tracks_bubbles.json";
 import visemes from "../fixtures/cast_ep1/visemes.json";
 import headFocus from "../fixtures/cast_ep1/head_focus.json";
 import rigParts from "../fixtures/cast_ep1/rig_parts.json";

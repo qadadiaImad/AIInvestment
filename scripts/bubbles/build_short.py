@@ -74,6 +74,7 @@ def main() -> None:
     src = src.replace("BUBBLES_FRAMES", "BUBBLES_SHORT_FRAMES")
     src = src.replace("export const Bubbles:", "export const BubblesShort:")
     src = src.replace("audio/fairmarket_bubbles/", "audio/fairmarket_bshort/")
+    src = src.replace("mouth_tracks_bubbles.json", "mouth_tracks_bshort.json")
     src = re.sub(r"export const BUBBLES_SHORT_FRAMES = \d+;.*",
                  "export const BUBBLES_SHORT_FRAMES = %d;   // %.1fs"
                  % (total, total / FPS), src, count=1)
