@@ -387,6 +387,50 @@ those 12 seconds took density from 2.98 to 3.19/min without touching a
 single sting. Re-run `score_from_stingmap.py <ep>` after any timing change,
 and never hardcode a runtime in it.
 
+**The TTS sometimes does not say the line, and only ASR can tell you.**
+"Gone. Watch the machine, not the number." came back as *"W. W. W. S. R. W.
+S. R. W. 5. W. S. R. Not the number."* — 6.37s of letters, on the closing
+beat of the Shorts cut. **Nothing else in the pipeline can see this**: the
+duration probes only know a line is long for its word count and a pause
+explains that equally well, and the mouth tracks are built *from* the audio
+so they match the garbage perfectly. `scripts/vector/asr_gate.py` now
+transcribes every generated line back and resamples until it matches.
+
+**A gate has to be tested against real pairs before you trust it.** Three of
+the four rejects on the gate's first run were the *comparator*: Whisper
+writes "fifteen" as "15" and "fifty-five" as "55", and mapping number words
+one at a time turns "fifty-five" into `50 5`. `scripts/tests/test_asr_gate.py`
+pins it to the exact observed pairs — the false rejects must pass, the real
+garble must fail. The same mistake bit the tempo gate (it failed the
+untouched 1.00× control) and the sting gate (it compared unaligned frames
+and reported a sting with *less* energy after being added). Three gates,
+three times the first version measured its own bug.
+
+**Chatterbox has no speed control, and a tempo change afterwards is free.**
+`generate()` takes repetition_penalty, min_p, top_p, audio_prompt_path,
+exaggeration, cfg_weight, temperature — nothing else. Sweeping cfg_weight
+0.20→0.50 moves the rate between 2.85 and 3.11 syl/s, which is noise
+(`pace_ab.py`). Post-hoc: word-error damage relative to the untouched
+control is **+0.000 at every rate up to 1.38×** (`tempo_ab.py`). The repo's
+standing grudge against time-stretching was right about the *filter*, not
+the operation — `rubberband` drifts energy above 4 kHz by 20.6% at 1.30×
+where plain `atempo` drifts it 3.6%. That drift is the "metallic edge".
+Shorts run at **atempo 1.30×** via `SPEED` in `make_all_vo_local.py`.
+
+**A sound's ENVELOPE matters more than its volume.** The owner heard "a
+background mp3 that i find toooo much" under the shock take. That was the
+asset: `vine_boom_bass.wav` is 3.46s at RMS 0.71 with **no decay** — a flat
+plateau above half-peak for 2.9s — so it ran 1.9s of sustained low end under
+the next beat's dialogue. Everything else in the kit is 0.6–1.0s with a real
+tail. `make_boom_hit.py` shapes it to 0.78s. Check the envelope of any new
+sting before blaming the mix.
+
+**A repaired line's SEED is part of the recipe.** `fix_stray_onset.py`
+resamples until a probe passes, but it only wrote the wav — a later full
+regeneration at the default seed would silently reinstate the rejected take.
+They live in `SEED_OVERRIDE` now. Use `--stems` to regenerate one line
+without touching the other forty-nine.
+
 **Naming "JoJo" is load-bearing and dangerous.** Remove it and the style
 collapses into abstract colour noise (tested twice). Keep it and it drags
 in the IP — Jotaro's hat, a Stardust Crusaders cover logo. The workflow's
