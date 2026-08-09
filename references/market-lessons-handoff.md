@@ -431,6 +431,21 @@ regeneration at the default seed would silently reinstate the rejected take.
 They live in `SEED_OVERRIDE` now. Use `--stems` to regenerate one line
 without touching the other forty-nine.
 
+**Count the reaction shapes; do not assert them.** Rule 4.3 of the writing
+guide bans the same reaction shape firing more than twice, and the guide's
+own FAIL example — *"A THIRD of a house, gone?"* — was still in the shipped
+episode when the guide was written. It was also factually wrong (27.4% is
+not a third). Both were found by a script counting, not by reading. The
+episode now runs two short CAPS-stat exclaims (b05, b47); `b14` and `b49`
+are longer question-exclaims and `b49` **stays on purpose** — it is the
+setup for "Fifteen years, kid.", the show's signature echo-and-drop.
+
+**The Shorts cut is v2 and it is longer on purpose.** 13 beats, five
+verified figures, ~35s, spoken at 1.30×; v1 was 7 beats and two ideas in
+24s. Half again the runtime for two and a half times the content. Same
+word-count trap as the full episode, but worse: 24s of speech had been
+scheduled into 40s of runtime before the durations were measured.
+
 **Naming "JoJo" is load-bearing and dangerous.** Remove it and the style
 collapses into abstract colour noise (tested twice). Keep it and it drags
 in the IP — Jotaro's hat, a Stardust Crusaders cover logo. The workflow's
