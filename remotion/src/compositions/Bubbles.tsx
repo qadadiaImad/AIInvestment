@@ -94,7 +94,7 @@ const shotAt = (shots: Shot[] | undefined, since: number, hold: number) => {
           shotLen: Math.max(1, end - cur.from)};
 };
 
-export const BUBBLES_FRAMES = 5086;   // 170s
+export const BUBBLES_FRAMES = 5083;   // 169s
 
 // Hard ceiling on how far a shot may push in. A drawing scaled until the
 // face fills the frame throws away the set and has nowhere left to go —
@@ -451,19 +451,19 @@ const BEATS: Beat[] = [
    line: "The market fell FIFTY-FIVE percent."},
 
   {at: 3872,
-   actors: [{poses: ["rex_shock"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
+   actors: [{poses: ["rex_skeptic"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08}],
    vo: "b37_rex_half", speaker: "REX",
-   line: "More than HALF?!"},
+   line: "...Half."},
 
-  {at: 3924,
+  {at: 3921,
    graphic: "unrate",
    actors: [{poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.04, kEnd: 1.12}],
    vo: "b38_sol_jobs", speaker: "SOL",
    line: "Unemployment. Four point four... to TEN."},
 
-  {at: 4021,
+  {at: 4018,
    graphic: "wealth",
    sfx: [{at: 71, name: "core_tiktok", vol: 0.3}],
    actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
@@ -471,71 +471,71 @@ const BEATS: Beat[] = [
    vo: "b39_sol_trillion", speaker: "SOL",
    line: "Eleven and a half TRILLION. Gone."},
 
-  {at: 4111,
+  {at: 4108,
    exhibit: "b_two_machines",
    actors: [{poses: ["rex_eager"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.04, kEnd: 1.12}],
    vo: "b42_rex_once", speaker: "REX",
    line: "Okay but - that's the big one. That's ONCE."},
 
-  {at: 4239,
+  {at: 4236,
    actors: [{poses: ["sol_smug_v1"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08}],
    vo: "b43_sol_once", speaker: "SOL",
    line: "Once?"},
 
-  {at: 4288,
+  {at: 4285,
    actors: [{poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.04, kEnd: 1.12}],
    vo: "b44_sol_runback", speaker: "SOL",
    line: "Run it back eight years."},
 
-  {at: 4374,
+  {at: 4371,
    actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08}],
    vo: "b45_sol_internet", speaker: "SOL",
    line: "Same four parts. Different story. This time... the internet."},
 
-  {at: 4514,
+  {at: 4511,
    graphic: "dotcom",
    actors: [{poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.04, kEnd: 1.12}],
    vo: "b46_sol_seventyseven", speaker: "SOL",
    line: "Dot-com fell SEVENTY-SEVEN percent."},
 
-  {at: 4602,
+  {at: 4599,
    sfx: [{at: 0, name: "vine_boom_hit", vol: 0.26}],
    actors: [{poses: ["rex_shock"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08}],
    vo: "b47_rex_what2", speaker: "REX",
    line: "WHAT?!"},
 
-  {at: 4650,
+  {at: 4647,
    actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.04, kEnd: 1.12}],
    vo: "b48_sol_backtoeven", speaker: "SOL",
    line: "Took until twenty-fifteen to get back to even."},
 
-  {at: 4767,
+  {at: 4764,
    actors: [{poses: ["rex_eager"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08}],
    vo: "b49_rex_fifteen", speaker: "REX",
    line: "Fifteen years?!"},
 
-  {at: 4820,
+  {at: 4817,
    actors: [{poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.04, kEnd: 1.12}],
    vo: "b50_sol_fifteen", speaker: "SOL",
    line: "Fifteen years, kid."},
 
-  {at: 4892,
+  {at: 4889,
    exhibit: "b_machine_lit",
    actors: [{poses: ["rex_skeptic"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.0, kEnd: 1.08}],
    vo: "b51_rex_notmoney", speaker: "REX",
    line: "So the bubble didn't cost you money?"},
 
-  {at: 4986,
+  {at: 4983,
    sfx: [{at: 84, name: "whoosh", vol: 0.27}],
    actors: [{poses: ["sol_smug_v1"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.04, kEnd: 1.12}],

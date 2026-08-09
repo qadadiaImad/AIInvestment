@@ -71,12 +71,19 @@ B = [
  # guide cites this exact line as its FAIL example (show-writing-guide.md
  # Rule 4.3) while it was still in the shipped cut. Wrong on the number: the
  # fall is 27.4%, a third is 33.3%, so "a third" overstates it by six points.
- # Wrong on craft: it was the first of three identical big-stat-then-exclaim
- # reactions, and the guide's hard ban is two. Deadpan and accurate fixes
- # both - it stops being the third gasp, so b37 and b47 are now exactly two.
+ # Wrong on craft: it was one of several identical big-stat-then-exclaim
+ # reactions. Deadpan fixes both. (I first claimed this alone brought the
+ # episode inside Rule 4.3 and then counted: it did not - b05, b37 and b47
+ # were still three. b37 changed too, and NOW it is two.)
  ("REX","b35_rex_quarter","Just over a quarter of a house.","H","",0,0),
  ("SOL","b36_sol_market","The market fell FIFTY-FIVE percent.","G","drawdown2008",0,0),
- ("REX","b37_rex_half","More than HALF?!","H","",3,0),
+ # WAS: "More than HALF?!" with a [gasp]. That made THREE big-stat-exclaim
+ # reactions in one episode (b05, this, b47) and Rule 4.3 of the writing
+ # guide hard-bans more than two - "the third repetition reads as a tic, not
+ # a punchline". Dropping it to a one-word dazed echo also gives the run of
+ # four number beats some dynamics, which it badly needed: b34, b36, b38 and
+ # b39 are all Sol reciting figures.
+ ("REX","b37_rex_half","...Half.","H","",1,0),
  ("SOL","b38_sol_jobs","Unemployment. Four point four... to TEN.","G","unrate",1,0),
  ("SOL","b39_sol_trillion","Eleven and a half TRILLION. Gone.","G","wealth",0,0),
  ("REX","b42_rex_once","Okay but - that's the big one. That's ONCE.","E","b_two_machines",0,0),
@@ -105,7 +112,6 @@ PERFORM_TAGS = {
     "b05_rex_what": "gasp",
     "b14_rex_free": "gasp",
     "b27_rex_banks": "gasp",
-    "b37_rex_half": "gasp",
     "b47_rex_what2": "gasp",
     "b44_sol_runback": "whisper",
     "b52_sol_time": "whisper",

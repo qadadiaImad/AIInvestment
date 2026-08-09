@@ -198,7 +198,6 @@ PERFORM = {
     "b05_rex_what": "[gasp] ",
     "b14_rex_free": "[gasp] ",
     "b27_rex_banks": "[gasp] ",
-    "b37_rex_half": "[gasp] ",
     "b47_rex_what2": "[gasp] ",
     "b44_sol_runback": "[whisper] ",
     "b52_sol_time": "[whisper] ",
@@ -231,7 +230,6 @@ PERFORM = {
 SPOKEN = {
     "b03_sol_ha": "Hah! ...Bad banks.",
     "s3_sol_ha": "Hah! ...Fifteen years.",
-    "b37_rex_half": "More than half?!",
 }
 
 # EVERY remaining ALL-CAPS token is title-cased for the model, not just the
