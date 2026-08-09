@@ -132,13 +132,27 @@ Two frictions worth knowing:
    Not fixed unilaterally because it changes audio the owner has signed
    off — it needs his call.
 
-7. **Three poses still cannot blink.** `sol_point`, `sol_point_v1` and
-   `rex_listen` have no blink viseme, so coverage sits at 72%. Four
-   generation rounds failed and the candidates were never judged;
-   `scripts/vector/blink_pick.py` crops them to the eye so they can be.
-   Ep.1 ships with the same gap, so this is not a regression. A code-drawn
-   eyelid would fix it outright but is **unasked-for motion**, and the
-   owner has already called one of those "ugly extra movement".
+7. **Three poses cannot blink, and the 88 saved candidates cannot fix it.**
+   `sol_point`, `sol_point_v1` and `rex_listen` have no blink viseme —
+   **32% of "The Machine" (55s) has nobody on screen who can blink**, and
+   the owner has asked about blinks by name.
+
+   **Judged 2026-08-09, so do not re-judge them.** Of eleven `sol_point`
+   candidates, exactly one (`c0`) has closed eyes at all. It is also a
+   **different canvas size** (771×1159 against the base's 832×1216) and
+   **91% of its changed pixels are outside the eye box** — these are
+   whole-drawing regenerations, not eyelid variants, so swapping one in for
+   two frames jumps the entire character instead of blinking him.
+   Compositing just the eye region was tried and smears, because the two
+   faces do not share geometry (`visemes/_try_sol_point_strip.png` is the
+   evidence).
+
+   So the only real options are: regenerate with the eyes **masked** so
+   nothing else can move (the `arm_mask_probe.py` result says narrow masks
+   do isolate parts), or draw the eyelid in code. The second is
+   **unasked-for motion** and the owner has already called one of those
+   "ugly extra movement", so it needs asking first. Ep.1 ships with the
+   same gap, so this is not a regression — but it is not fixed either.
 
 ---
 
