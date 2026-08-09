@@ -327,7 +327,7 @@ const BEATS: Beat[] = [
    line: "True. Until it's the only reason anyone gives for the price."},
 
   {at: 2108,
-   sfx: [{at: 84, name: "riser_metallic", vol: 0.26}],
+   sfx: [{at: 5, name: "riser_metallic", vol: 0.26}],
    actors: [{poses: ["rex_eager"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.04, kEnd: 1.12}],
    vo: "b18_rex_excuse", speaker: "REX",

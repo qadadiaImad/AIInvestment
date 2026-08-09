@@ -97,7 +97,14 @@ SFX = {
     "b03_sol_rent":      ("faah",           0.28, "after"),
     "b05_rex_what":      ("vine_boom_bass", 0.30, 0),
     "b09_sol_nomame":    ("core",           0.30, "after"),
-    "b18_rex_excuse":    ("riser_metallic", 0.26, "after"),
+    # The riser fires EARLY, not after the line, and it is the one exception
+    # to the rule below for a reason: it is not marking a word. It is a
+    # 2.8-second build that does not get loud until 1.3s in and peaks at
+    # 1.7s, so placed after the line it peaks over the NEXT beat's dialogue
+    # and does nothing for the pivot it exists to carry. At 5 it builds
+    # under Rex working it out and resolves as he lands on "EXCUSE". This is
+    # also the taxonomy's own offset for the entry.
+    "b18_rex_excuse":    ("riser_metallic", 0.26, 5),
     "b23_sol_controlsyou": ("whoosh_fire",  0.30, "after"),
     "b33_sol_everyone":  ("core",           0.33, "after"),
     "b39_sol_trillion":  ("core_tiktok",    0.30, "after"),
