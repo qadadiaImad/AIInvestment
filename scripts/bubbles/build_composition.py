@@ -53,6 +53,79 @@ from beats_v2 import B   # the v2 voice pass; see that file for why
 import patch_hold
 
 
+# ── THE STINGS ─────────────────────────────────────────────────────────
+# Ep.3 shipped four cuts with ZERO emphasis sounds while ep.1 - the one the
+# owner called perfect - carries ten. "No pace, something is missing" is
+# partly this: the kit that punctuates ep.1's beats was simply never wired
+# into this episode.
+#
+# Every entry below is an id from scripts/audio/stingmap.json, which is the
+# authority here and outranks anything I might think sounds good. What the
+# map decides, and why each of these is the entry it is:
+#
+#   b03  derision-sting        faah            Sol puncturing Rex's bath-bubble
+#                                              joke - aimed at Rex, not at any
+#                                              real person's conduct
+#   b05  shock-take            vine_boom_bass  a drawn take; house rule 10.8
+#                                              overrides reaction-silence
+#   b09  thesis-lands          core            "Just a machine. Four moving
+#                                              parts." - the act-1 thesis
+#   b18  riser-metallic-pivot  riser_metallic  Rex correcting his own wrong
+#                                              conclusion ("it's an EXCUSE")
+#   b23  trap-springs          whoosh_fire     the crowbar turning around on him
+#   b33  money-line            core   0.33     "Everyone's responsible. Nobody's
+#                                              the villain." - the sentence the
+#                                              episode exists to deliver
+#   b39  scale-reveal          core_tiktok     a number that IS the beat, and a
+#                                              loss, so no win-coded sting
+#   b47  shock-take            vine_boom_bass  the second drawn take
+#   b52  sign-off-cut          whoosh          the cut to the end card
+#
+# Deliberately SILENT, each matching a taxonomy "none" entry: the cold open
+# (b01), Rex's naive claims and wrong conclusions (b02, b07, b27), the
+# Lehman line (b04 - a named real-world failure gets the same restraint as a
+# named person's trade), and b28 "No.", which is the gravity-pause verbatim.
+#
+# Nine stings over 181s is 2.98/minute, just inside the map's cap of 3.
+# Ep.1 sits at 3.06 and its own scorer calls that marginally over, so this
+# does not follow ep.1 past the line.
+#
+# `after` means the sting fires once the line has finished speaking, which
+# is the map's rule against telegraphing a beat before it lands. The two
+# takes fire at 0, because there the sound IS the drawing's impact frame.
+SFX = {
+    "b03_sol_rent":      ("faah",           0.28, "after"),
+    "b05_rex_what":      ("vine_boom_bass", 0.30, 0),
+    "b09_sol_nomame":    ("core",           0.30, "after"),
+    "b18_rex_excuse":    ("riser_metallic", 0.26, "after"),
+    "b23_sol_controlsyou": ("whoosh_fire",  0.30, "after"),
+    "b33_sol_everyone":  ("core",           0.33, "after"),
+    "b39_sol_trillion":  ("core_tiktok",    0.30, "after"),
+    "b47_rex_what2":     ("vine_boom_bass", 0.30, 0),
+    "b52_sol_time":      ("whoosh",         0.27, "after"),
+}
+VO_DIR = REPO / "remotion/public/audio/fairmarket_bubbles"
+
+
+def vo_frames(stem: str) -> int:
+    """Length of a recorded line, in frames. 0 if it isn't on disk yet."""
+    import wave
+    p = VO_DIR / (stem + ".wav")
+    if not p.exists():
+        return 0
+    with wave.open(str(p)) as w:
+        return int(round(w.getnframes() / w.getframerate() * FPS))
+
+
+def sfx_for(stem: str) -> str:
+    """The `sfx:` line for a beat, or "" if the map leaves it silent."""
+    if stem not in SFX:
+        return ""
+    name, vol, when = SFX[stem]
+    at = when if isinstance(when, int) else 6 + vo_frames(stem) - 2
+    return '   sfx: [{at: %d, name: "%s", vol: %s}],\n' % (at, name, vol)
+
+
 def dur(line: str) -> int:
     words = len(line.split())
     return max(48, int(round(words / WPS * FPS)) + LEAD)
@@ -73,10 +146,10 @@ def build_beats() -> tuple[str, int]:
         k0, k1 = (1.0, 1.08) if i % 2 == 0 else (1.04, 1.12)
         esc = line.replace('"', '\\"')
         out.append(
-            "  {at: %d,\n%s   actors: %s,\n"
+            "  {at: %d,\n%s%s   actors: %s,\n"
             "   shots: [{from: 0, k: %s, kEnd: %s}],\n"
             '   vo: "%s", speaker: "%s",\n   line: "%s"},'
-            % (at, key, actors, k0, k1, vo, spk, esc))
+            % (at, key, sfx_for(vo), actors, k0, k1, vo, spk, esc))
         at += dur(line) + GAP
     return "\n\n".join(out), at
 

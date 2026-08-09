@@ -222,6 +222,7 @@ const BEATS: Beat[] = [
    line: "The last bubble took fifteen years to get back to even."},
 
   {at: 159,
+   sfx: [{at: 0, name: "vine_boom_bass", vol: 0.3}],
    actors: [{poses: ["rex_shock"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.05, kEnd: 1.14}],
    vo: "s2_rex_fifteen", speaker: "REX",

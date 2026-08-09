@@ -89,6 +89,84 @@ EPISODES = {
             EP2_BEAT_OF, EP2_SILENT),
 }
 
+# EPISODE 3 and its Shorts cut are AUDITED, not scored, and the difference
+# is deliberate. This tool places a sting at the taxonomy's own frame
+# offset, which was derived from ep.1's lines; ep.3's lines are shorter and
+# a fixed offset lands several of them mid-word, breaking the map's own
+# rule against a sting arriving before the word it marks has finished. So
+# ep.3's placements are computed from the MEASURED line length in
+# scripts/bubbles/build_composition.py (which also means they survive a
+# regeneration of the composition, unlike anything written in here), and
+# this checks the result against the map instead of authoring it.
+AUDIT = {
+    "bubbles": ("remotion/src/compositions/Bubbles.tsx", 5434),
+    "bshort": ("remotion/src/compositions/BubblesShort.tsx", 717),
+}
+
+
+def audit(name: str) -> int:
+    """Check an already-scored composition against the map's hard rules."""
+    rel, frames = AUDIT[name]
+    target = REPO / rel
+    src = target.read_text("utf-8")
+    runtime_s = frames / FPS
+    spec = json.loads(MAP.read_text("utf-8"))
+    lo, hi = 0.24, 0.34
+
+    beats = [(int(m.group(1)), m.start())
+             for m in re.finditer(r"\n  \{at: (\d+),", src)]
+    beats.sort()
+    found = []
+    for i, (at, pos) in enumerate(beats):
+        end = beats[i + 1][1] if i + 1 < len(beats) else len(src)
+        for e in ENTRY.finditer(src[pos:end]):
+            if e.group(2) in STING_KIT:
+                found.append((at, i, e.group(2), int(e.group(1)),
+                              float(e.group(3) or 0.5)))
+
+    print("auditing %s (%s, %.1fs, %d beats)"
+          % (name, target.name, runtime_s, len(beats)))
+    fails = []
+    for at, i, snd, off, vol in found:
+        print("  beat %-5d #%-3d %-16s @%-4d %.2f" % (at, i, snd, off, vol))
+        if not (lo <= vol <= hi):
+            fails.append("beat %d: vol %.2f outside %.2f-%.2f" % (at, vol, lo, hi))
+
+    per_beat = {}
+    for at, i, snd, off, vol in found:
+        per_beat[i] = per_beat.get(i, 0) + 1
+    for i, n in per_beat.items():
+        if n > 1:
+            fails.append("beat index %d carries %d stings (cap 1)" % (i, n))
+    idxs = sorted(per_beat)
+    for a, b in zip(idxs, idxs[1:]):
+        if b - a == 1:
+            fails.append("beats %d and %d are consecutive and both scored"
+                         % (beats[a][0], beats[b][0]))
+
+    cores = [f for f in found if f[2] == "core"]
+    if len(cores) > 2:
+        fails.append("`core` spent %d times; the map reserves it for the "
+                     "act-1 thesis and the money line" % len(cores))
+
+    # the cap lives in the map's own prose; read it rather than retyping it
+    cap = float(re.search(r"(\d+) scored stings per minute",
+                          spec["density_rule"]).group(1))
+    per_min = len(found) / (runtime_s / 60)
+    print("\n%d stings over %.1fs = %.2f per minute (cap is %.0f)"
+          % (len(found), runtime_s, per_min, cap))
+    if per_min > cap:
+        fails.append("density %.2f/min over the cap of %.0f" % (per_min, cap))
+
+    if fails:
+        print("\nFAIL")
+        for f in fails:
+            print("  - " + f)
+        return 1
+    print("PASS - inside the band, one per beat, none consecutive, "
+          "core spent twice at most")
+    return 0
+
 # Every sound in the emphasis kit. Any of these found on a beat is stripped
 # before the map is applied; motion foley is deliberately absent from this
 # list and therefore survives.
@@ -101,6 +179,9 @@ ENTRY = re.compile(r"\{at: (\d+), name: \"([a-z_0-9]+)\"(?:, vol: ([0-9.]+))?\}"
 
 
 def main() -> None:
+    a = next((a for a in sys.argv[1:] if a in AUDIT), None)
+    if a:
+        raise SystemExit(audit(a))
     ep = next((a for a in sys.argv[1:] if a in EPISODES), "ep1")
     rel, frames, BEAT_OF, SILENT = EPISODES[ep]
     target = REPO / rel

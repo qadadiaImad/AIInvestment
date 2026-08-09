@@ -44,6 +44,21 @@ REX_POSE = ["rex_eager", "rex_skeptic", "rex_listen", "rex_shock"]
 from beats_v2 import SHORT as B
 
 
+# ONE sting, and one only. 24s at the stingmap's cap of 3/minute buys 1.2,
+# and a Shorts cut is exactly where the temptation is to spray the kit at
+# it. s2 is the shock-take: a drawn single-exclamation reaction, which is
+# the taxonomy entry that overrides reaction-silence (house rule 10.8 -
+# a take with no anchored hit reads as static).
+SFX = {"s2_rex_fifteen": ("vine_boom_bass", 0.30, 0)}
+
+
+def sfx_for(stem: str) -> str:
+    if stem not in SFX:
+        return ""
+    name, vol, at = SFX[stem]
+    return '   sfx: [{at: %d, name: "%s", vol: %s}],\n' % (at, name, vol)
+
+
 def dur(line: str) -> int:
     return max(40, int(round(len(line.split()) / WPS * FPS)) + 6)
 
@@ -60,11 +75,11 @@ def main() -> None:
             key = '   graphic: "%s",\n' % val
         k0, k1 = (1.0, 1.10) if i % 2 == 0 else (1.05, 1.14)
         out.append(
-            "  {at: %d,\n%s   actors: %s,\n"
+            "  {at: %d,\n%s%s   actors: %s,\n"
             "   shots: [{from: 0, k: %s, kEnd: %s}],\n"
             '   vo: "%s", speaker: "%s",\n   line: "%s"},'
-            % (at, key, SOLO[spk] % poses[pose % len(poses)], k0, k1,
-               vo, spk, line.replace('"', '\\"')))
+            % (at, key, sfx_for(vo), SOLO[spk] % poses[pose % len(poses)],
+               k0, k1, vo, spk, line.replace('"', '\\"')))
         at += dur(line) + GAP
     total = at + TAIL
 
