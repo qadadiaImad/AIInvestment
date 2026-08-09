@@ -94,7 +94,7 @@ const shotAt = (shots: Shot[] | undefined, since: number, hold: number) => {
           shotLen: Math.max(1, end - cur.from)};
 };
 
-export const BUBBLES_SHORT_FRAMES = 668;   // 22.3s
+export const BUBBLES_SHORT_FRAMES = 717;   // 23.9s
 
 // Hard ceiling on how far a shot may push in. A drawing scaled until the
 // face fills the frame throws away the set and has nowhere left to go —
@@ -221,45 +221,44 @@ const BEATS: Beat[] = [
    vo: "s1_sol_fifteen", speaker: "SOL",
    line: "The last bubble took fifteen years to get back to even."},
 
-  {at: 114,
+  {at: 116,
    actors: [{poses: ["rex_shock"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.05, kEnd: 1.14}],
    vo: "s2_rex_fifteen", speaker: "REX",
    line: "Fifteen YEARS?!"},
 
-  {at: 182,
+  {at: 195,
    exhibit: "b_machine",
-   actors: [{poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+   actors: [{poses: ["sol_smug_v1"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],
-   vo: "s3_sol_clock", speaker: "SOL",
-   line: "It isn't the crash that costs you. It's the clock."},
+   vo: "s3_sol_ha", speaker: "SOL",
+   line: "HA! ...Fifteen years."},
 
-  {at: 297,
+  {at: 272,
+   actors: [{poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
+   shots: [{from: 0, k: 1.05, kEnd: 1.14}],
+   vo: "s4_sol_time", speaker: "SOL",
+   line: "It doesn't cost you money, kid. It costs you TIME."},
+
+  {at: 438,
    graphic: "machine_parts",
    actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
-   shots: [{from: 0, k: 1.05, kEnd: 1.14}],
-   vo: "s4_sol_parts", speaker: "SOL",
-   line: "Cheap money. A story. Leverage. Forced selling."},
-
-  {at: 435,
-   actors: [{poses: ["rex_skeptic"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],
-   vo: "s5_rex_villain", speaker: "REX",
+   vo: "s5_sol_four", speaker: "SOL",
+   line: "Four parts. No villain. Every single time."},
+
+  {at: 547,
+   actors: [{poses: ["rex_skeptic"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
+   shots: [{from: 0, k: 1.05, kEnd: 1.14}],
+   vo: "s6_rex_villain", speaker: "REX",
    line: "So who's the villain?"},
 
-  {at: 500,
-   exhibit: "b_conveyor",
-   actors: [{poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
-   shots: [{from: 0, k: 1.05, kEnd: 1.14}],
-   vo: "s6_sol_nobody", speaker: "SOL",
-   line: "Nobody. Every hand on the belt touched it."},
-
-  {at: 603,
+  {at: 613,
    exhibit: "b_machine_lit",
    actors: [{poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],
-   vo: "s8_sol_watch", speaker: "SOL",
-   line: "Watch the machine."},
+   vo: "s7_sol_nobody", speaker: "SOL",
+   line: "...Nobody. Watch the machine."},
 ];
 
 // Frame, relative to a beat's start, at which its exhibit becomes visible.
@@ -275,17 +274,8 @@ type Held =
   | {kind: "exhibit"; name: string; start: number}
   | {kind: "graphic"; name: string; start: number};
 
-// What the wall shows on a beat that sets no wall content of its own: the
-// thing it is REACTING to, still up.
-//
-// This holds GRAPHICS as well as exhibits, which the earlier version did
-// not, and that omission was visible: in the first cut of the short, both
-// "Fifteen YEARS?!" and "So who's the villain?" followed a data panel, so
-// both fell straight through to the candlestick tape - reintroducing
-// exactly the repetition this series spent two episodes removing. A
-// code-drawn panel animates off a clock, so holding one only means letting
-// its clock keep running past the beat that started it; every panel here
-// settles rather than loops, so it simply stays on its final state.
+// Holds GRAPHICS as well as exhibits - see scripts/bubbles/patch_hold.py
+// for why the exhibit-only version was a bug.
 const heldAt = (i: number): Held | null => {
   for (let k = i; k >= 0; k--) {
     const b = BEATS[k];

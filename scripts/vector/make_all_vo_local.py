@@ -175,6 +175,24 @@ PERFORM = {
     "e23_sol_clock": "[whisper] ",
     "e28_sol_fair": "[sigh] ",
     "e7_rex_coincidence": "[gasp] ",
+    # ep.3 "The Machine". v1 shipped with ZERO tags across 41 lines and
+    # the owner heard it immediately: "boring, not funny, something is
+    # missing". Every line was generated flat. These are placed per beat.
+    "b01_sol_machine": "[sigh] ",
+    "b02_rex_badbanks": "[gasp] ",
+    "b05_rex_what": "[gasp] ",
+    "b14_rex_free": "[gasp] ",
+    "b27_rex_banks": "[gasp] ",
+    "b29_sol_bottomblock": "[clear_throat] ",
+    "b31_sol_broker": "[sigh] ",
+    "b37_rex_half": "[gasp] ",
+    "b44_sol_runback": "[whisper] ",
+    "b47_rex_what2": "[gasp] ",
+    "b50_sol_fifteen": "[sigh] ",
+    "b52_sol_time": "[whisper] ",
+    "s2_rex_fifteen": "[gasp] ",
+    "s4_sol_time": "[sigh] ",
+    "s7_sol_nobody": "[whisper] ",
 }
 
 

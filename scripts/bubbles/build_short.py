@@ -20,14 +20,17 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 REPO = Path(__file__).resolve().parents[2]
 SRC = REPO / "remotion/src/compositions/Bubbles.tsx"
 DST = REPO / "remotion/src/compositions/BubblesShort.tsx"
 
 FPS = 30
-WPS = 2.75
+WPS = 2.25          # slower than raw speech: PERFORM tags add up to 1.3s a line
 GAP = 10
 TAIL = 52          # a beat of held image at the end so the loop can breathe
 
@@ -38,16 +41,7 @@ SOLO = {
 SOL_POSE = ["sol_point", "sol_finger", "sol_point_v1", "sol_smug_v1"]
 REX_POSE = ["rex_eager", "rex_skeptic", "rex_listen", "rex_shock"]
 
-# (speaker, vo, line, wall_kind, wall, pose)
-B = [
- ("SOL","s1_sol_fifteen","The last bubble took fifteen years to get back to even.","G","dotcom",0),
- ("REX","s2_rex_fifteen","Fifteen YEARS?!","H","",3),
- ("SOL","s3_sol_clock","It isn't the crash that costs you. It's the clock.","E","b_machine",1),
- ("SOL","s4_sol_parts","Cheap money. A story. Leverage. Forced selling.","G","machine_parts",0),
- ("REX","s5_rex_villain","So who's the villain?","H","",1),
- ("SOL","s6_sol_nobody","Nobody. Every hand on the belt touched it.","E","b_conveyor",1),
- ("SOL","s8_sol_watch","Watch the machine.","E","b_machine_lit",1),
-]
+from beats_v2 import SHORT as B
 
 
 def dur(line: str) -> int:

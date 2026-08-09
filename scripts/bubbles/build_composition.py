@@ -23,14 +23,17 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 REPO = Path(__file__).resolve().parents[2]
 SRC = REPO / "remotion/src/compositions/FairMarketEp2.tsx"
 DST = REPO / "remotion/src/compositions/Bubbles.tsx"
 
 FPS = 30
-WPS = 2.75          # measured delivery pace of the shipped episodes
+WPS = 2.25          # slower than raw speech: PERFORM tags add up to 1.3s a line
 GAP = 14            # frames of air between beats
 LEAD = 6            # VO_DELAY already accounts for the rest
 
@@ -46,51 +49,8 @@ TWO = ('[{poses: ["rex_skeptic"], kind: "full", x: 298, y: FLOOR_Y, h: 1000},\n'
 SOL_POSE = ["sol_point", "sol_finger", "sol_point_v1", "sol_smug_v1"]
 REX_POSE = ["rex_eager", "rex_skeptic", "rex_listen", "rex_shock"]
 
-# (speaker, vo, line, wall_kind, wall_value, pose_hint, two_shot)
-#   wall_kind: E=exhibit  G=graphic  H=hold (no key emitted)
-B = [
- ("SOL","b01_sol_machine","Kid... before we do 2008, I want to show you the machine.","E","b_machine",0,0),
- ("REX","b02_rex_what","The machine?! I thought we were doing the housing crash - the banks, ALL of it!","H","",0,1),
- ("SOL","b03_sol_running","We are. The housing crash is just this thing running one more time.","H","",1,0),
- ("REX","b04_rex_name","So who breaks it? Give me a name - I'll write it down.","E","b_empty_chair",1,0),
- ("SOL","b05_sol_four","HA! ...Nobody breaks it alone. Four parts run it. Every time.","G","machine_parts",3,0),
- ("SOL","b06_sol_cheap","Part one. Money gets cheap.","G","fedfunds",0,0),
- ("REX","b07_rex_onsale","Cheap like... on sale?","H","",2,0),
- ("SOL","b08_sol_loan","Cheap like the loan that cost you a lot now costs you a little.","H","",1,0),
- ("SOL","b09_sol_months","It sat under one and a half percent for twenty-two months.","H","",0,0),
- ("SOL","b10_sol_story","Part two. A story shows up that explains why the price makes sense.","E","b_corkboard",1,0),
- ("REX","b11_rex_true","In '08 the story was - houses always go up. That's just true, isn't it?","H","",1,0),
- ("SOL","b12_sol_only","It was true. Right up until it was the only reason anyone gave for the price.","G","caseshiller",0,0),
- ("SOL","b13_sol_leverage","Part three. Leverage. Borrowed money, stacked on borrowed money.","E","b_block_tower",1,0),
- ("REX","b14_rex_crowbar","Leverage, like a crowbar? More leverage means more power - that's GOOD, right?","H","",0,0),
- ("SOL","b15_sol_wobble","More leverage means a small wobble at the bottom becomes a collapse at the top.","H","",1,0),
- ("SOL","b16_sol_sell","Part four. Someone has to sell.","E","b_falling_card",0,0),
- ("REX","b17_rex_margin","Forced? Like margin calls?","H","",1,0),
- ("SOL","b18_sol_borrow","Borrow to buy. The price drops.","H","",1,0),
- ("SOL","b19_sol_cash","The lender wants cash you haven't got - so you sell into a falling market.","G","machine_loop",0,0),
- ("SOL","b20_sol_loop","That closes the loop. Now watch it run.","H","",1,0),
- ("REX","b21_rex_banks","Finally. So - the investment banks. That's the villain. They went first.","E","b_cracked_facade",0,0),
- ("SOL","b22_sol_no","No.","H","",3,0),
- ("SOL","b23_sol_tower","That's the tower losing its bottom block. Not the hand that built it.","H","",1,0),
- ("REX","b24_rex_brokers","Then it's the brokers who wrote the bad loans! Or the agencies that graded them safe!","E","b_conveyor",0,1),
- ("SOL","b25_sol_broker","Every hand on this belt touched the loan. The broker who wrote it.","H","",1,0),
- ("SOL","b26_sol_bundled","The bank that bundled it. The agency that graded it.","H","",0,0),
- ("SOL","b27_sol_grade","The fund that bought the grade - not the house.","H","",1,0),
- ("SOL","b28_sol_owner","And the homeowner who refinanced, because the story said the price only goes up.","H","",0,0),
- ("SOL","b29_sol_sitwith","That's the part I need you to sit with. Not one desk. Not one signature.","H","",1,0),
- ("REX","b30_rex_dodge","So nobody's responsible? That feels like a dodge.","H","",2,0),
- ("SOL","b31_sol_choices","Different question. People made choices, and some were bad ones.","H","",0,0),
- ("SOL","b32_sol_fourparts","But it didn't need one villain pulling one lever. It needed four ordinary parts pointed the same way at once.","G","machine_parts",1,0),
- ("SOL","b33_sol_notstay","And when the fourth part hit, it didn't stay inside mortgages.","H","",0,0),
- ("SOL","b34_sol_market","The market fell fifty-five percent.","G","drawdown2008",1,0),
- ("SOL","b35_sol_jobs","Unemployment went from four point four, to ten percent.","G","unrate",0,0),
- ("SOL","b36_sol_wealth","And eleven and a half trillion dollars of household wealth stopped existing.","G","wealth",1,0),
- ("REX","b37_rex_once","Okay but that's the big one. That's once.","E","b_two_machines",1,0),
- ("SOL","b38_sol_backeight","Run it back eight years. Same four parts, different story - this time the story was the internet.","G","dotcom",0,0),
- ("SOL","b39_sol_seventyeight","That one fell seventy-eight percent. And it took until twenty-fifteen to get back to even.","H","",1,0),
- ("REX","b40_rex_fifteen","Fifteen years?!","H","",3,0),
- ("SOL","b41_sol_time","A bubble doesn't cost you money, kid. It costs you time. Watch for cheap money, a story, leverage - and someone who has to sell. You'll see it turning long before the headline does.","E","b_machine_lit",1,0),
-]
+from beats_v2 import B   # the v2 voice pass; see that file for why
+import patch_hold
 
 
 def dur(line: str) -> int:
@@ -165,6 +125,11 @@ def main() -> None:
               <SeriesExhibit name={cur.graphic as never}
                 since={since} w={WALL.w} h={WALL.h} />
 """ + src[b:]
+
+    # graphics must be holdable too, or reaction beats after a data
+    # panel fall through to the tape. A build step, not a hand edit -
+    # it was lost once already to a regeneration.
+    src = patch_hold.apply(src)
 
     DST.write_text(src, "utf-8")
     print("%d beats, %d frames (%.1fs) -> %s"
