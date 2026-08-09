@@ -310,14 +310,28 @@ def trim_silence(x: np.ndarray, sr: int, thresh: float = 0.015) -> np.ndarray:
 # energy above 4kHz by 20.6% at 1.30x where plain atempo drifts it 3.6% -
 # that drift IS the metallic edge. So: atempo.
 #
-# 1.30 and not the 1.38 that also passed, because 1.38's drift jumps to
-# 10.1% and Sol being unhurried is the character. Shorts only; the full
-# episode's delivery is not what the owner was complaining about.
+# 1.30 SHIPPED AND WAS WRONG. The owner heard it and said "artificial", and
+# he was right - the WER gate had answered a different question. An ASR model
+# does not care whether speech sounds synthetic, only whether it is
+# decodable, so "+0.000 word-error damage at 1.38x" was true and irrelevant.
+#
+# scripts/vector/stretch_artefact.py asks the question that was actually
+# being complained about, by measuring spectral flux on voiced frames - the
+# accumulating splice discontinuities that overlap-add leaves on sustained
+# sound, which is what "processed" sounds like. Against an unstretched
+# baseline: +1.9% at 1.08x, +6.6% at 1.15x, +13.7% at 1.30x. The knee is
+# just above 1.08.
+#
+# 1.10 also lands the cut on the rate the owner has ALREADY approved: the
+# short's natural rate is 3.57 syl/s, ep.1 (which he called perfect) sits at
+# 3.89, and 1.10x puts the short at 3.93. Still faster than the full episode
+# (3.52), which is what "speed up prononciation" asked for - just not faster
+# than anything he has ever signed off, which is what 1.30x was.
 #
 # Applied inside the generation chain, so it can never compound: a rerun
 # always starts from fresh model output, never from an already-stretched
 # file.
-SPEED = {"s": 1.30}
+SPEED = {"s": 1.10}
 
 # Lines that are NOT generated at the default seed, and why. fix_stray_onset.py
 # resamples a line until the burst-then-gap probe calls it clean and keeps the
@@ -329,6 +343,9 @@ SEED_OVERRIDE = {
     "b21_rex_crowbar": 1335,     # stray onset: burst 100ms, gap 80ms
     "b49_rex_fifteen": 1436,     # stray onset: burst 90ms, gap 360ms
     "s12_rex_comesback": 1537,   # stray onset: burst 110ms, gap 60ms
+    "s13_sol_watch": 2211,       # seed 1234 hallucinates letters, reproducibly
+    "s6_rex_which": 1537,        # stray onset
+    "s9_rex_houses": 1537,       # stray onset
 }
 
 

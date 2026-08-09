@@ -94,7 +94,7 @@ const shotAt = (shots: Shot[] | undefined, since: number, hold: number) => {
           shotLen: Math.max(1, end - cur.from)};
 };
 
-export const BUBBLES_SHORT_FRAMES = 1064;   // 35.5s
+export const BUBBLES_SHORT_FRAMES = 1271;   // 42.4s
 
 // Hard ceiling on how far a shot may push in. A drawing scaled until the
 // face fills the frame throws away the set and has nowhere left to go —
@@ -221,81 +221,81 @@ const BEATS: Beat[] = [
    vo: "s1_sol_dotcom", speaker: "SOL",
    line: "Dot-com fell SEVENTY-SEVEN percent. Gone."},
 
-  {at: 94,
+  {at: 118,
    actors: [{poses: ["rex_skeptic"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.05, kEnd: 1.14}],
    vo: "s2_rex_howfast", speaker: "REX",
    line: "Seventy-seven percent - how fast?"},
 
-  {at: 171,
+  {at: 206,
    graphic: "dotcom",
    actors: [{poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],
    vo: "s3_sol_months", speaker: "SOL",
    line: "Thirty-one months to hit bottom."},
 
-  {at: 234,
+  {at: 280,
    exhibit: "b_cracked_facade",
    actors: [{poses: ["rex_eager"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.05, kEnd: 1.14}],
    vo: "s4_rex_villain", speaker: "REX",
    line: "So there's a villain, right?"},
 
-  {at: 304,
+  {at: 370,
    exhibit: "b_machine",
-   sfx: [{at: 72, name: "core", vol: 0.3}],
+   sfx: [{at: 84, name: "core", vol: 0.3}],
    actors: [{poses: ["sol_smug_v1"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],
    vo: "s5_sol_novillain", speaker: "SOL",
    line: "No villain. Just a machine. Four parts."},
 
-  {at: 395,
+  {at: 482,
    actors: [{poses: ["rex_listen"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.05, kEnd: 1.14}],
    vo: "s6_rex_which", speaker: "REX",
    line: "Which four?"},
 
-  {at: 433,
+  {at: 521,
    graphic: "machine_parts",
    actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],
    vo: "s7_sol_fourparts", speaker: "SOL",
    line: "Cheap money, a story, leverage, a forced sale."},
 
-  {at: 543,
+  {at: 657,
    graphic: "drawdown2008",
    actors: [{poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.05, kEnd: 1.14}],
    vo: "s8_sol_market", speaker: "SOL",
    line: "Same machine. 2008. Down FIFTY-FIVE percent."},
 
-  {at: 653,
+  {at: 795,
    actors: [{poses: ["rex_skeptic"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],
    vo: "s9_rex_houses", speaker: "REX",
    line: "Fifty-five percent - and houses?"},
 
-  {at: 724,
+  {at: 876,
    graphic: "caseshiller",
    actors: [{poses: ["sol_point"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.05, kEnd: 1.14}],
    vo: "s10_sol_houses", speaker: "SOL",
    line: "Down TWENTY-SEVEN percent."},
 
-  {at: 787,
+  {at: 958,
    graphic: "wealth",
    actors: [{poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],
    vo: "s11_sol_trillion", speaker: "SOL",
    line: "Eleven and a half TRILLION in household wealth."},
 
-  {at: 880,
+  {at: 1060,
    actors: [{poses: ["rex_shock"], kind: "full", x: 330, y: FLOOR_Y, h: 1000}],
    shots: [{from: 0, k: 1.05, kEnd: 1.14}],
    vo: "s12_rex_comesback", speaker: "REX",
    line: "That comes back, right?"},
 
-  {at: 934,
+  {at: 1118,
    exhibit: "b_machine_lit",
    actors: [{poses: ["sol_finger"], kind: "full", x: 790, y: FLOOR_Y, h: 930}],
    shots: [{from: 0, k: 1.0, kEnd: 1.1}],

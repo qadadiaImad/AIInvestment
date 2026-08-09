@@ -32,7 +32,7 @@ DST = REPO / "remotion/src/compositions/BubblesShort.tsx"
 
 FPS = 30
 WPS = 2.25          # slower than raw speech: PERFORM tags add up to 1.3s a line
-GAP = 6
+GAP = 0             # folded into the per-beat hold below
 TAIL = 52          # a beat of held image at the end so the loop can breathe
 
 SOLO = {
@@ -75,27 +75,36 @@ def sfx_for(stem: str) -> str:
     return '   sfx: [{at: %d, name: "%s", vol: %s}],\n' % (at, name, vol)
 
 
-# Same trap as the full episode, worse here. The schedule was estimated from
-# WORD COUNT, and retime_beats lands on whatever total that estimate set - so
-# 24 seconds of actual speech was being scheduled into 40 seconds of runtime.
-# On a Shorts cut that is not a pacing nuance, it is most of the video being
-# silence.
+# ── THE HOLD AFTER EACH LINE ───────────────────────────────────────────
+# Owner, on the shipped cut: "feels a lot truncated and artificial".
+# Measured against ep.1, which he calls perfect:
 #
-# Measured lengths, then a hold scaled off the estimate's slack, exactly as
-# build_composition.py does it - but tighter, because this is a Shorts cut.
-# The full episode's floor is ep.1's 14 frames; here it is 10 (0.33s), which
-# is the shortest hold that still leaves a subtitle readable.
-SLACK = 0.50
-FLOOR = 4
+#                    speech rate      hold after a line
+#   ep.1 APPROVED    3.89 syl/s       med 0.78s, range 14-40 frames
+#   short (shipped)  4.64 syl/s       med 0.50s, range 14-15 frames
+#
+# Two separate faults, and both were mine. The rate is fixed in
+# make_all_vo_local (1.30x -> 1.10x). This is the other one, and it is not
+# simply "too tight" - it is too tight AND perfectly regular. Scaling the
+# word-count estimate's slack stopped working once the lines got longer at
+# 1.10x: `est - need` went to nothing, every beat fell to the floor, and
+# every cut landed the same distance after every line. ep.1's holds run 14
+# to 40 frames and correlate with line length not at all (r = 0.09) - the
+# variety is editorial, not arithmetic.
+#
+# So the hold is chosen by what the beat DOES. A beat that puts something
+# new on the wall has to be read, and gets a full second. A reaction over a
+# held wall is a cut-in, and gets half of that. Mean lands at 23 frames,
+# which is ep.1's median exactly.
+HOLD_NEW = 26        # E or G: new wall content the viewer has to take in
+HOLD_REACT = 15      # H: a reaction over the wall that is already there
 
 
-def dur(line: str, vo: str = "") -> int:
-    est = max(40, int(round(len(line.split()) / WPS * FPS)) + 6)
+def dur(vo: str, kind: str) -> int:
     a = vo_frames(vo)
     if not a:
-        return est
-    need = 6 + a
-    return max(need + FLOOR, need + int(round((est - need) * SLACK)))
+        return max(40, 6 + 30)
+    return 6 + a + (HOLD_REACT if kind == "H" else HOLD_NEW)
 
 
 def main() -> None:
@@ -115,7 +124,7 @@ def main() -> None:
             '   vo: "%s", speaker: "%s",\n   line: "%s"},'
             % (at, key, sfx_for(vo), SOLO[spk] % poses[pose % len(poses)],
                k0, k1, vo, spk, line.replace('"', '\\"')))
-        at += dur(line, vo) + GAP
+        at += dur(vo, kind)
     total = at + TAIL
 
     a = src.index("const BEATS: Beat[] = [")
