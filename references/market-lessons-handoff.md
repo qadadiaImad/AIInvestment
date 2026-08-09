@@ -20,6 +20,15 @@ behind, cast seated, curved news crawl over the table). All render clean.
 | 4 | 2:20 | panel format + reaction cuts · **script rejected** |
 | 5 | 2:22 | panel format + reaction cuts · **script rejected** |
 
+**"The Machine" (bubbles / 2008) is a SIXTH piece, not ep.3.** It ships as
+its own pair of compositions — `Bubbles` (3:01) and `BubblesShort` (0:24)
+— because the `FairMarketEp3` slot holds the congressional-ban-vote
+episode, which has its own recorded VO on disk and whose script being
+rejected is not a reason to destroy it. On screen "The Machine" is titled
+ep.3. Sources: `scripts/bubbles/` (beats → composition → short → series
+data), rendered by `scripts/bubbles/render_episode.ps1 -Version vN`, which
+is the only thing that should write `content/probe/bubbles_*`.
+
 Masters: `content/probe/ep{1..5}_panel.mp4` (CRF 19), previews alongside
 as `_preview.mp4` (720×1280, CRF 27, under the 30 MB chat cap).
 
@@ -116,6 +125,20 @@ Two frictions worth knowing:
 
 5. **`chip_gavel` is wired to no beat.** It is the twelfth card and no
    composition references it. Either give it a beat or drop it.
+
+6. **Ep.1's SFX are truncated at 22 frames.** `FairMarketEp1.tsx` wraps
+   each sting in `<Sequence durationInFrames={22}>`, which cuts every sound
+   longer than 0.73s. Ep.2 and the bubbles pair use 320 and are fine.
+   Not fixed unilaterally because it changes audio the owner has signed
+   off — it needs his call.
+
+7. **Three poses still cannot blink.** `sol_point`, `sol_point_v1` and
+   `rex_listen` have no blink viseme, so coverage sits at 72%. Four
+   generation rounds failed and the candidates were never judged;
+   `scripts/vector/blink_pick.py` crops them to the eye so they can be.
+   Ep.1 ships with the same gap, so this is not a regression. A code-drawn
+   eyelid would fix it outright but is **unasked-for motion**, and the
+   owner has already called one of those "ugly extra movement".
 
 ---
 
@@ -236,6 +259,30 @@ it as a **distinct recurring segment** (a VS screen, a health-bar gag) and
 leave the wall exhibits on the current direction — two art directions
 fighting for the same wall would read as incoherent.
 
+## 4c. What "The Machine" cost, and what it taught (2026-08-09)
+
+Four cuts were rejected before this one, and every rejection was a
+different cause with the same symptom. Written down because the symptom is
+useless and the causes are not.
+
+| Owner said | Actual cause |
+|---|---|
+| "boring, not funny, no pace" | zero PERFORM tags across 41 lines, no comedy engine, and lines nearly twice ep.1's length |
+| "HA! pronounced letter by letter" | `SAY_AS` was exact-string matches on **ep.1's sentences**; ep.3's new lines matched nothing. Chatterbox reads a short ALL-CAPS token as an initialism, which in English it usually is |
+| "no facial motion, no blinks" | the composition imported `mouth_tracks_ep2.json`; **0 of 52 stems matched**, so every mouth stayed shut. The viseme machinery was working perfectly on data that did not describe the episode |
+| "still hearing some T at the start" | `[sigh]` and `[clear_throat]` render as burst-gap-speech. See §5 |
+| "the script is ambiguous" | the word "bubble" appeared at beat 9; the topic was never named up front |
+
+The pattern worth keeping: **none of these were found by listening or
+watching harder.** Each needed an instrument — `tag_ab.py`,
+`onset_probe.py`, `leading_burst.py`, a mouth-track key intersection, a
+word-count histogram against ep.1. Build the instrument first.
+
+The one that should sting: on the round before last, **my own judge flagged
+the flat script and I shipped anyway.** A gate you overrule is not a gate.
+
+---
+
 ## 5. Things proven by measurement — do not re-derive
 
 **Z-Image prompt grammar, measured this session.** Four rules, each paid
@@ -270,6 +317,44 @@ for with a failed image:
 came back unusable (`calendar_late` a blank grey canvas). It cannot draw
 symbolic still life or architecture. Z-Image, same machine, drew all of
 them cleanly first try.
+
+**Two of the four PERFORM tags are vocalised, two are not** (2026-08-09,
+`scripts/vector/tag_ab.py`, fixed seed, same line, tag toggled). `[sigh]`
+and `[clear_throat]` render as a short burst, then a **gap**, then the
+line — a vocalised fragment sitting in front of the words, which is what
+the owner heard as a stray "T" at the start of sentences. `[gasp]` and
+`[whisper]` render as a clean single onset straight into the speech. Ep.3
+uses only the clean two; ep.1 and ep.2 keep theirs, because their audio is
+signed off and changing it re-opens a closed question.
+
+The earlier aggregate version of the same test found nothing, because it
+lumped all four tags into one "tagged" bucket and **averaged a real effect
+together with a null one**. Test per-tag, not per-bucket.
+
+**The detector is not the fix, and the fix is not a trim.** After the tags
+came out, two *untagged* lines still showed burst-gap-speech, so the cause
+there is the sampler. `scripts/vector/fix_stray_onset.py` resamples at
+successive seeds and keeps the first take the probe calls clean. It
+deliberately does **not** cut the head off: if the burst were genuinely the
+first consonant, cutting turns "Fifteen years" into "ifteen years", and the
+probe cannot tell those two apart — which is precisely why it reports a gap
+rather than a burst.
+
+**Chart callouts: shape decides the side, not frame position.** Placing a
+mark's label by where the point sits in the frame ("high in the plot →
+label below") puts every trough label inside the V it is annotating. Read
+the line's local shape instead. Two more, each paid for by a rendered
+frame: clamping a label's **centre** against a fixed half-width guess does
+not bound it (`BACK TO EVEN` ran off the panel — switch the text anchor at
+the edge instead), and a peak's callout will cross the chart **title**
+unless the plot area starts below the title band. All three in
+`remotion/src/motion/Series.tsx`.
+
+**A `fallTone` needs a fall.** The dot-com chart's maximum *is* its 2015
+recovery, so colouring everything after the peak burgundy put a red
+"decline" tick on the exact frame that says it got back to even. Require
+the post-peak leg to be a real fraction of the series before styling it as
+a fall.
 
 **Naming "JoJo" is load-bearing and dangerous.** Remove it and the style
 collapses into abstract colour noise (tested twice). Keep it and it drags
@@ -378,7 +463,27 @@ scripts/audio/make_desk_bed.py         music bed generator
 scripts/audio/mux_bed.py               lay bed on a master, no re-render
 scripts/audio/fetch_viral_sfx.py       download the real meme SFX
 scripts/audio/make_viral_sfx.py        synthesised, rights-clean fallback
+
+scripts/bubbles/beats_v2.py            "The Machine": the beat table + tags
+scripts/bubbles/build_composition.py   beats -> Bubbles.tsx, incl. the stings
+scripts/bubbles/build_short.py         Bubbles.tsx -> BubblesShort.tsx
+scripts/bubbles/build_series.py        pulls 5 FRED series -> fixtures
+scripts/bubbles/patch_hold.py          holdable graphics, as a BUILD step
+scripts/bubbles/render_episode.ps1     -Version vN; masters + CRF-27 previews
+
+scripts/vector/tag_ab.py               per-tag controlled A/B at fixed seed
+scripts/vector/leading_burst.py        finds burst-gap-speech line heads
+scripts/vector/fix_stray_onset.py      resamples the ones it finds
+scripts/vector/onset_probe.py          counts vowel onsets (spelled-out words)
+scripts/audio/score_from_stingmap.py   scores ep1/ep2; --audit for bubbles
+scripts/audio/check_stings_landed.py   A/B a render against a sting-free cut
 ```
+
+**Regeneration eats hand edits.** `Bubbles.tsx` and `BubblesShort.tsx` are
+GENERATED. Anything that must survive belongs in the build scripts — the
+held-graphic patch was lost to this once and became `patch_hold.py`, and
+the sting table is in `build_composition.py` for the same reason rather
+than being written into the composition by the scorer.
 
 **Licence note:** the meme SFX (`viral_real/`) have no clean rights chain —
 Among Us is InnerSloth's audio, Vine Boom is a sample of unclear origin,
