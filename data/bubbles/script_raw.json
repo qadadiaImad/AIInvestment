@@ -1,0 +1,393 @@
+{
+ "ranking": [
+  {
+   "angle": "Every bubble runs the same four-part machine \u2014 cheap money, a story that excuses the price, leverage stacked on top, and someone who eventually has to sell whether they want to or not \u2014 and 2008 is the clearest worked example because you can point to a real institution at each stage instead of reaching for a single villain.",
+   "total": 41.5,
+   "problems": [
+    "Rhythm violates the show's core rule: several Sol lines pack 2-4 ideas into one beat instead of one idea per short line \u2014 worst offender: 'Every one of those hands touched the loan. The one who wrote it, the bank that bundled it, the agency that graded it, the fund that bought it, the homeowner who refinanced because the story said the price only goes up.' That's a paragraph, not a beat.",
+    "Missing the reference's vocal texture entirely \u2014 no ALL-CAPS emphasis, no ellipses-as-pause, no 'HA!'-style interjection from Sol. The dialogue reads as clean expository narration rather than two people talking; it's the weakest link relative to the two episodes that shipped.",
+    "'still the largest bankruptcy filing in U.S. history' is asserted as bare fact directly in Sol's dialogue with no slot \u2014 everywhere else the script correctly routes verifiable claims through {{slots}}, so this superlative is the one place the discipline slips and an unverified claim could reach air unchecked.",
+    "Three consecutive HOLD beats in the accountability sequence (stilled conveyor belt, again stilled, then stilled once more before the icons beat) risk a static stretch in a piece meant to be roughly one cut per second \u2014 the wall stops carrying new information for ~15-20 seconds in a row."
+   ]
+  },
+  {
+   "angle": "Nobody in the 2008 chain had to lie. Six separate, individually rational incentives \u2014 a broker's origination fee, a bank's sale fee, an issuer-paid rating grade, a mandated buyer's charter, a bank's leverage, an insurer's mispriced premium \u2014 link together into a catastrophe with no liar required anywhere in it; Rex wants a name, and Sol makes him trade the hunt for a villain for a map of the mechanism.",
+   "total": 8.1,
+   "problems": [
+    "Several Sol lines run three sentences deep (e.g. the Bear Stearns/Lehman/AIG timeline beat) \u2014 likely over the stated 2-8 second, one-idea-per-line budget, and it reads like a script that forgot it's spoken.",
+    "Tone skews toward documentary-lecture rather than the manic, interruption-heavy banter of the shipped episodes \u2014 no ALL-CAPS eruptions (\"HA!\", \"WHAT?!\"), so it sounds more like Sol narrating at Rex than the two-hander sparring the show is known for.",
+    "Too many Rex lines are correct restatements Sol merely extends rather than corrects (\"So the risk just moves down the line,\" \"More borrowed money, more profit while it's rising\") \u2014 this dilutes the 'Rex jumps to the wrong conclusion, Sol corrects' engine that makes him work as a character; only two beats in ~39 use the actual wrong-guess/flat-denial pattern."
+   ]
+  },
+  {
+   "angle": "The 2008 warning signs were published, not buried \u2014 housing was a magazine cover story in 2005, subprime's growth was in trade press every quarter, a subprime lender's bankruptcy and a Fed-adjacent statement of confidence both made the front page in real time, and the market still climbed to a record high two months after a major bank froze funds over unpriceable mortgage assets. Public information was never the missing ingredient; the nerve and the runway to act on it while being wrong for months first was.",
+   "total": 7.6,
+   "problems": [
+    "This teaches the psychology of ignored warnings, not how a housing bubble actually works \u2014 leverage, teaser-rate ARMs, securitization, and why AAA-rated tranches enabled more bad lending are gestured at (rate gauge, subprime share bar, AAA donut) but never wired together into a mechanism a beginner could restate. A viewer finishes knowing warnings existed, not why the system was fragile.",
+    "The slot list requests a verbatim, sourced 'bernanke_2005_housing_statement' but no beat's wall or line actually carries a {{bernanke_2005_housing_statement}} token \u2014 the line just paraphrases ('Washington's own economists... a nationwide housing bust wasn't likely') without displaying or citing the statement, so the slot is dead weight and the claim itself is effectively unverified in the script as written.",
+    "The closer, 'Obvious? No. Never, standing inside it. But now you know where to look,' is structurally almost a search-and-replace of the shipped 'Fair? No. But now you know what to watch' \u2014 it satisfies 'no word-for-word repeat' technically but reads as the same template reskinned rather than a new way of landing the thought, which will show if multiple episodes lean on it.",
+    "Roughly eight consecutive beats ride variations of one evolving timeline GRAPHIC (markers lighting up left to right); it's evidentially disciplined but visually static for a third of a 190-second reel with no cutaway texture in between."
+   ]
+  }
+ ],
+ "full": {
+  "angle": "Every bubble runs the same four-part machine \u2014 cheap money, a story that excuses the price, leverage stacked on top, and someone who eventually has to sell whether they want to or not \u2014 and 2008 is the clearest worked example because you can point to a real institution at each stage instead of reaching for a single villain.",
+  "logline": "Sol walks Rex through the four-part machine behind every market bubble \u2014 cheap money, an excusing story, stacked leverage, forced selling \u2014 then runs it live through Bear Stearns and Lehman Brothers to show a crash needs no single villain, just four ordinary parts pointed the same direction at once.",
+  "slots_needed": [
+   {
+    "slot": "fed_funds_rate_2001_2004",
+    "what": "U.S. federal funds rate path/values from 2001 to 2004, showing the decline used for the opening rate chart"
+   },
+   {
+    "slot": "case_shiller_2000_2006",
+    "what": "S&P/Case-Shiller U.S. National Home Price Index values 2000-2006, showing the rise with the slope flattening near 2006"
+   },
+   {
+    "slot": "ib_leverage_ratios_2007",
+    "what": "Leverage ratios (assets per dollar of capital) of major Wall Street investment banks circa 2007, for the comparison bar chart"
+   },
+   {
+    "slot": "bear_stearns_sale_year",
+    "what": "The exact year Bear Stearns was sold to JPMorgan Chase (spoken as 'March ___')"
+   },
+   {
+    "slot": "bear_stearns_sale_price_per_share",
+    "what": "The actual per-share price JPMorgan Chase paid to acquire Bear Stearns"
+   },
+   {
+    "slot": "bear_stearns_price_collapse",
+    "what": "Bear Stearns' prior 52-week/prior-year high share price versus the JPMorgan acquisition price, the two data points for the step chart"
+   },
+   {
+    "slot": "lehman_bankruptcy_date",
+    "what": "The exact date Lehman Brothers filed for bankruptcy (September 2008)"
+   },
+   {
+    "slot": "lehman_bankruptcy_assets",
+    "what": "Lehman Brothers' total assets figure at the time of its bankruptcy filing"
+   },
+   {
+    "slot": "largest_us_bankruptcies_by_assets_ranked",
+    "what": "A verified ranked list of the largest U.S. corporate bankruptcy filings by total assets, confirming where Lehman's 2008 filing ranks, with real comparison figures for the next-largest filings for the bar chart"
+   },
+   {
+    "slot": "sp500_peaktotrough_2007_2009",
+    "what": "The S&P 500's percentage decline from its 2007 peak to its 2009 trough"
+   },
+   {
+    "slot": "us_unemployment_peak_2009",
+    "what": "The peak U.S. unemployment rate reached in 2009"
+   },
+   {
+    "slot": "us_bank_failures_2008_2010",
+    "what": "The number of FDIC-recorded U.S. bank failures across 2008-2010"
+   },
+   {
+    "slot": "tarp_size",
+    "what": "The total authorized/disbursed dollar size of the Troubled Asset Relief Program (TARP), 2008"
+   }
+  ],
+  "beats": [
+   {
+    "speaker": "SOL",
+    "line": "Kid... before we do 2008, I want to show you the machine.",
+    "wall_kind": "EXHIBIT",
+    "wall": "An old brass mechanical apparatus on a dark tabletop \u2014 interlocking gears and a single long lever, warm spotlight from above, nothing else in frame, no text anywhere."
+   },
+   {
+    "speaker": "REX",
+    "line": "The machine?! I thought we were doing the housing crash \u2014 the banks, ALL of it!",
+    "wall_kind": "HOLD",
+    "wall": "Same brass apparatus; Rex leans into frame studying it."
+   },
+   {
+    "speaker": "SOL",
+    "line": "We are. The housing crash is just this thing running one more time.",
+    "wall_kind": "HOLD",
+    "wall": "Same brass apparatus, unchanged."
+   },
+   {
+    "speaker": "REX",
+    "line": "So who breaks the machine? Give me a name \u2014 I'll write it down.",
+    "wall_kind": "EXHIBIT",
+    "wall": "A single empty chair under a tight spotlight in an otherwise pitch-dark room \u2014 symbolic of an absent villain, no figure seated, no text."
+   },
+   {
+    "speaker": "SOL",
+    "line": "HA! ...Nobody breaks it alone. Four parts run it \u2014 every single time.",
+    "wall_kind": "GRAPHIC",
+    "wall": "Animated four-step assembly-line diagram: four icon slots light up left to right in sequence \u2014 a coin, a speech bubble, a stack of blocks, a downward arrow \u2014 no numbers, no labels, just the sequence forming."
+   },
+   {
+    "speaker": "SOL",
+    "line": "Part one. Money gets cheap.",
+    "wall_kind": "GRAPHIC",
+    "wall": "Line chart, U.S. federal funds rate {{fed_funds_rate_2001_2004}} declining from 2001 into 2004 \u2014 single green line dropping, y-axis in percent, x-axis in years."
+   },
+   {
+    "speaker": "REX",
+    "line": "Cheap like... on sale?",
+    "wall_kind": "HOLD",
+    "wall": "Same declining rate line, unchanged."
+   },
+   {
+    "speaker": "SOL",
+    "line": "Cheap like the loan that used to cost you a lot now costs you a little. Suddenly everybody can borrow.",
+    "wall_kind": "HOLD",
+    "wall": "Same declining rate line, unchanged."
+   },
+   {
+    "speaker": "SOL",
+    "line": "Part two. A story shows up that explains why the price makes sense.",
+    "wall_kind": "EXHIBIT",
+    "wall": "A rolled flyer pinned to a corkboard beside a small wooden house-shaped block, warm domestic still-life lighting, no text or numbers legible on the paper."
+   },
+   {
+    "speaker": "REX",
+    "line": "In '08, the story was \u2014 houses always go up. That's just true, isn't it?",
+    "wall_kind": "HOLD",
+    "wall": "Same corkboard still life, unchanged."
+   },
+   {
+    "speaker": "SOL",
+    "line": "It was true. Right up until it was the only reason anyone gave for the price.",
+    "wall_kind": "GRAPHIC",
+    "wall": "Line chart, S&P/Case-Shiller U.S. National Home Price Index {{case_shiller_2000_2006}} rising smoothly from 2000 to 2006, the slope visibly flattening at the far right edge \u2014 single line chart, no other markings."
+   },
+   {
+    "speaker": "SOL",
+    "line": "Part three. Leverage \u2014 borrowed money, stacked on borrowed money.",
+    "wall_kind": "EXHIBIT",
+    "wall": "A tall, precarious tower of wooden blocks balanced on one thin base block, dramatic raking side light, deep shadow, no numbers or labels."
+   },
+   {
+    "speaker": "REX",
+    "line": "Leverage, like a crowbar? More leverage means more power \u2014 that's GOOD, right?",
+    "wall_kind": "HOLD",
+    "wall": "Same leaning block tower, unchanged."
+   },
+   {
+    "speaker": "SOL",
+    "line": "More leverage means a small wobble at the bottom becomes a collapse at the top.",
+    "wall_kind": "GRAPHIC",
+    "wall": "Animated horizontal bar chart comparing leverage ratios of major Wall Street investment banks circa 2007 {{ib_leverage_ratios_2007}} \u2014 bars extending far to the right, axis labeled 'assets per dollar of capital'."
+   },
+   {
+    "speaker": "SOL",
+    "line": "Part four. Someone has to sell.",
+    "wall_kind": "EXHIBIT",
+    "wall": "A hand releasing a single playing card in mid-air above an already-leaning card tower, frozen mid-motion, no text."
+   },
+   {
+    "speaker": "REX",
+    "line": "Forced? Like \u2014 margin calls? I've heard that word thrown around.",
+    "wall_kind": "HOLD",
+    "wall": "Same falling-card image, unchanged."
+   },
+   {
+    "speaker": "SOL",
+    "line": "Exactly that. Borrow to buy, the price drops, the lender wants cash you don't have \u2014 you sell into a falling market. That closes the loop.",
+    "wall_kind": "GRAPHIC",
+    "wall": "Simple circular flow diagram: coin icon to speech-bubble icon to block-tower icon to downward-arrow icon, arrow curling back to the coin, completing a loop, icons only, no numbers."
+   },
+   {
+    "speaker": "SOL",
+    "line": "Now watch the machine run in 2008.",
+    "wall_kind": "HOLD",
+    "wall": "Same completed loop diagram, unchanged."
+   },
+   {
+    "speaker": "REX",
+    "line": "Finally. So \u2014 Bear Stearns. That's the villain, right? They went FIRST.",
+    "wall_kind": "EXHIBIT",
+    "wall": "A distressed classical stone office building facade under a stormy sky, hairline cracks at the base of the columns, no signage or name visible anywhere on the building."
+   },
+   {
+    "speaker": "SOL",
+    "line": "No.",
+    "wall_kind": "HOLD",
+    "wall": "Same cracking facade, unchanged."
+   },
+   {
+    "speaker": "SOL",
+    "line": "Bear Stearns is the tower losing its bottom block. In March {{bear_stearns_sale_year}}, it was sold for {{bear_stearns_sale_price_per_share}} a share \u2014 a firm that had traded far higher months before.",
+    "wall_kind": "GRAPHIC",
+    "wall": "Two-point step chart: Bear Stearns' prior-year high share price versus the JPMorgan Chase acquisition price {{bear_stearns_price_collapse}}, one steep step down in red, plainly labeled axis, no other detail."
+   },
+   {
+    "speaker": "REX",
+    "line": "Okay then it's Lehman Brothers. EVERYBODY says Lehman.",
+    "wall_kind": "EXHIBIT",
+    "wall": "Cardboard boxes stacked outside a glass office-tower entrance under grey overcast light, no logos or text visible, symbolic of a firm closing its doors."
+   },
+   {
+    "speaker": "SOL",
+    "line": "Lehman filed for bankruptcy on {{lehman_bankruptcy_date}} \u2014 {{lehman_bankruptcy_assets}} in assets.",
+    "wall_kind": "GRAPHIC",
+    "wall": "Large single counter animating upward to the Lehman assets figure {{lehman_bankruptcy_assets}}, labeled plainly 'Lehman Brothers \u2014 filed for bankruptcy', filing date stamped underneath."
+   },
+   {
+    "speaker": "SOL",
+    "line": "By that measure, still the largest filing in American history. But Lehman didn't cause the machine \u2014 it's what the machine looks like when it finishes running.",
+    "wall_kind": "GRAPHIC",
+    "wall": "Ranked horizontal bar chart of the largest U.S. corporate bankruptcy filings by total assets {{largest_us_bankruptcies_by_assets_ranked}}, Lehman's bar tallest at the top with real comparison bars beneath it for scale, plainly labeled axis, no invented figures."
+   },
+   {
+    "speaker": "REX",
+    "line": "Then it's the bankers who sold the bad loans! Or the rating agencies who called them safe! ONE of those has to be it!",
+    "wall_kind": "EXHIBIT",
+    "wall": "A conveyor belt carrying a single house-shaped wooden block through several unmarked hand-shaped stamping stations, industrial and mechanical framing, no faces, no text anywhere."
+   },
+   {
+    "speaker": "SOL",
+    "line": "No. Every hand on this belt touched the loan \u2014 the broker who wrote it, the bank that bundled it.",
+    "wall_kind": "HOLD",
+    "wall": "Same conveyor belt; the first two stamping stations glow as the block passes each in turn, the rest still dim."
+   },
+   {
+    "speaker": "SOL",
+    "line": "The agency that graded it. The fund that bought the grade \u2014 not the house.",
+    "wall_kind": "HOLD",
+    "wall": "Same conveyor belt; the third and fourth stamping stations now glow as the block passes them, the first two dimming behind it."
+   },
+   {
+    "speaker": "SOL",
+    "line": "And the homeowner who refinanced, because the story said the price only goes up.",
+    "wall_kind": "HOLD",
+    "wall": "Same conveyor belt; the block reaches the final stamping station, all five stations now lit behind it in a glowing row."
+   },
+   {
+    "speaker": "SOL",
+    "line": "That's the part I need you to sit with. Not one desk. Not one signature.",
+    "wall_kind": "HOLD",
+    "wall": "Conveyor belt now stilled, the block frozen at the final stamping station, all five stations lit and static behind it."
+   },
+   {
+    "speaker": "REX",
+    "line": "So nobody's responsible? That feels like a dodge.",
+    "wall_kind": "HOLD",
+    "wall": "Same stilled conveyor belt, Rex leaning into frame skeptically."
+   },
+   {
+    "speaker": "SOL",
+    "line": "Different question. People made choices \u2014 some of them bad ones.",
+    "wall_kind": "HOLD",
+    "wall": "The stilled conveyor belt begins to dim as the four-icon assembly-line diagram fades up faintly beside it, foreshadowing the next graphic."
+   },
+   {
+    "speaker": "SOL",
+    "line": "The crash didn't need one villain pulling one lever. It needed four ordinary parts, lined up in the same direction, at the same time.",
+    "wall_kind": "GRAPHIC",
+    "wall": "The conveyor belt has faded out; the four-icon assembly-line diagram now fully up, all four icons \u2014 coin, speech bubble, block tower, downward arrow \u2014 lit simultaneously and pulsing together in sync, showing alignment rather than sequence."
+   },
+   {
+    "speaker": "SOL",
+    "line": "When the fourth part hit \u2014 the forced selling \u2014 it didn't stay inside mortgages.",
+    "wall_kind": "HOLD",
+    "wall": "Same four pulsing icons, unchanged."
+   },
+   {
+    "speaker": "SOL",
+    "line": "The S&P 500 fell {{sp500_peaktotrough_2007_2009}} peak to trough. Unemployment climbed to {{us_unemployment_peak_2009}}. Regulators counted {{us_bank_failures_2008_2010}} bank failures over three years.",
+    "wall_kind": "GRAPHIC",
+    "wall": "Three-panel small-multiples dashboard, each a plainly labeled mini-chart: S&P 500 drawdown line, unemployment-rate climbing line, bank-failure count as a bar per year \u2014 synced, minimal, no decoration."
+   },
+   {
+    "speaker": "REX",
+    "line": "So the government just fixed it after, with the bailout money?",
+    "wall_kind": "EXHIBIT",
+    "wall": "A fire hose spraying water onto a burning wooden structure, shot from a distance, dramatic but restrained, no labels or text."
+   },
+   {
+    "speaker": "SOL",
+    "line": "{{tarp_size}} in relief, under a program called TARP. It slowed the fire \u2014 it didn't rebuild the house differently.",
+    "wall_kind": "GRAPHIC",
+    "wall": "Counter climbing to the TARP total {{tarp_size}}, labeled plainly 'Troubled Asset Relief Program, 2008', no other decoration."
+   },
+   {
+    "speaker": "REX",
+    "line": "So what do I actually watch for next time?",
+    "wall_kind": "EXHIBIT",
+    "wall": "Return to the brass mechanical apparatus from the opening, now with all four gears visibly engaged and turning together, same warm spotlight, no text."
+   },
+   {
+    "speaker": "SOL",
+    "line": "Money getting cheap. A story that explains away the price.",
+    "wall_kind": "HOLD",
+    "wall": "Gears turning; the coin-shaped gear glows brighter first, then the story/speech-bubble-shaped gear glows as the second phrase lands."
+   },
+   {
+    "speaker": "SOL",
+    "line": "Leverage, stacking quietly underneath it. And somewhere \u2014 someone who has to sell, whether they want to or not.",
+    "wall_kind": "HOLD",
+    "wall": "Gears turning; the block-stack gear glows next, then the falling-arrow gear \u2014 all four gears now visibly glowing together."
+   },
+   {
+    "speaker": "SOL",
+    "line": "Fair fight? No. It's a machine.",
+    "wall_kind": "HOLD",
+    "wall": "All four gears fully lit and turning in sync, camera beginning a slow push-in."
+   },
+   {
+    "speaker": "SOL",
+    "line": "But now you know its four parts \u2014 and you'll see them turning long before the headline does.",
+    "wall_kind": "HOLD",
+    "wall": "Push-in continues, gears turning faster, no text, fade to black."
+   }
+  ]
+ },
+ "short": {
+  "beats": [
+   {
+    "t": 0,
+    "speaker": "SOL",
+    "line": "Lehman didn't break the market.",
+    "wall": "EXHIBIT: the brass mechanical apparatus from the full episode \u2014 dark tabletop, warm spotlight, gears mostly still, one small gear just beginning to tick over. No text anywhere."
+   },
+   {
+    "t": 1.8,
+    "speaker": "REX",
+    "line": "Biggest bankruptcy ever \u2014 and it didn't cause it?!",
+    "wall": "HOLD: same brass apparatus, a second gear engages and starts turning; Rex leans into frame, startled."
+   },
+   {
+    "t": 4,
+    "speaker": "SOL",
+    "line": "It's just what the machine looks like when it finishes.",
+    "wall": "HOLD: same apparatus, a third gear engages, ticking faster, tension building."
+   },
+   {
+    "t": 7,
+    "speaker": "SOL",
+    "line": "Cheap money. A story. Leverage. Then someone has to sell.",
+    "wall": "GRAPHIC: four-icon assembly-line diagram lighting up left to right in sequence as each phrase lands \u2014 a coin, a speech bubble, a stack of blocks, a downward arrow. Icons only, no numbers, no labels."
+   },
+   {
+    "t": 10.5,
+    "speaker": "REX",
+    "line": "So who's the villain?",
+    "wall": "HOLD: same four icons, now all glowing together at once instead of in sequence."
+   },
+   {
+    "t": 12,
+    "speaker": "SOL",
+    "line": "Nobody. Every hand on the belt touched it.",
+    "wall": "EXHIBIT: a conveyor belt carrying a single house-shaped wooden block past five unmarked hand-shaped stamping stations, all five lit in a glowing row. No faces, no text."
+   },
+   {
+    "t": 15,
+    "speaker": "SOL",
+    "line": "Four ordinary parts, same direction, same time.",
+    "wall": "HOLD: the conveyor belt stilled, the block frozen at the final station, all five stations lit and static behind it."
+   },
+   {
+    "t": 18,
+    "speaker": "SOL",
+    "line": "Watch the machine.",
+    "wall": "EXHIBIT: cut back to the brass apparatus, now with all four gears fully lit and turning together, camera pushing in slowly \u2014 same object and framing as the opening shot, just further along in its cycle."
+   }
+  ],
+  "hook_line": "Lehman didn't break the market.",
+  "loop_note": "The closing shot is the same brass apparatus, same tabletop, same spotlight, same camera framing as the opening shot \u2014 only further along in its wind-up (fully lit and spinning vs. one gear just ticking over). Cutting straight from beat 8 back to beat 1 reads as the machine resetting to idle and starting its cycle again, not as a hard restart, so the loop is seamless. Audio should end on the gear-ticking sound bed rather than a hard stop, so it bleeds into beat 1's opening tick."
+ }
+}

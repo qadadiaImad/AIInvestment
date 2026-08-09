@@ -99,6 +99,26 @@ export const EP2_FRAMES = 4500;   // 150s (2:30)
 // owner rule, after a static full-zoom face-only frame. Any reframe is
 // clamped so the room stays readable behind the character.
 const MAX_K = 1.9;
+
+// ---------------------------------------------------------------- FRAMING
+// The staging was authored phone-first, where sitting close to the desk
+// reads as intimate. On a YouTube page the same framing reads as crowded:
+// the cast fills the frame and the studio around them disappears.
+//
+// Two independent dials, deliberately separate because they fix different
+// halves of that complaint:
+//
+//   CAM_PULL  scales how far each authored push-in travels. The camera
+//             still moves exactly where the beat says, it just moves less
+//             far. 1.0 is the original; 0.45 turns a 1.30x push into 1.135.
+//             It cannot usefully go below 1.0 at rest - the room is drawn
+//             to fill the frame exactly, so zooming past that reveals the
+//             canvas edge.
+//   CAST      scales every actor's staged height. Feet stay planted on
+//             FLOOR_Y, so the figures shrink downward into the set instead
+//             of floating, and the wall above them gains room.
+const CAM_PULL = 0.45;
+const CAST = 0.88;
 const VO_DELAY = 6;
 
 // kind: "full"  — figure standing in frame, scaled by ink height, placed
@@ -610,7 +630,7 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   // reads as a zoom.
   const act = actionCurve(cycling ? swapSince : shotSince, 2, 5, 8);
   const pop = 0.955 + 0.045 * Math.min(1, Math.max(0, act));
-  const amp = a.kind === "closeup" ? STAGE_H * 0.5 : a.h;
+  const amp = a.kind === "closeup" ? STAGE_H * 0.5 : a.h * CAST;
   // No boil. Its 2-frame random offset read as the picture vibrating on
   // these large clean vectors; idle() breathes and shifts weight instead.
   // temper is derived from WHO the drawing is, so no beat has to carry it
@@ -627,12 +647,16 @@ const Char: React.FC<{a: Actor; since: number; frame: number; speaking: boolean;
   const hc = holdCurve(shotSince, Math.max(1, shotLen));
   const drift = a.kind === "closeup" ? 0 : amp * 0.010;
   const sq = squash((hc - 0.68) * 0.012);
-  const scale = a.kind === "full" ? a.h / d.ink_h
+  // CAST pulls every staged height at one point, so the beats keep their
+  // authored relative sizes (Rex taller than Sol, busts bigger than fulls)
+  // and only the overall occupancy of the frame changes.
+  const ah = a.h * CAST;
+  const scale = a.kind === "full" ? ah / d.ink_h
     : a.kind === "closeup"
     // cover the frame: no canvas edge can fall inside it. 1.04 pads the
     // boil/bob/pop jitter so a wobble can't reveal a corner.
     ? 1.04 * Math.max(W / d.w, H / d.h)
-    : a.h / d.h;
+    : ah / d.h;
   const w0 = d.w * scale, h0 = d.h * scale;
   const left0 = a.kind === "full" ? a.x - d.anchor[0] * w0 : a.x - w0 / 2;
   const top0 = a.kind === "full" ? a.y - d.anchor[1] * h0 : a.y - h0 / 2;
@@ -934,8 +958,9 @@ export const FairMarketEp2: React.FC = () => {
   const {shot, shotSince, shotLen} = shotAt(cur.shots, since, hold);
   // scene-camera values: the authored punch-ins become lens moves
   // centred on the active speaker's seat
-  const camK0 = Math.min(1.3, shot?.k ?? 1);
-  const camK1 = shot?.kEnd === undefined ? camK0 : Math.min(1.3, shot.kEnd);
+  const pull = (k: number) => 1 + (Math.min(1.3, k) - 1) * CAM_PULL;
+  const camK0 = pull(shot?.k ?? 1);
+  const camK1 = shot?.kEnd === undefined ? camK0 : pull(shot.kEnd);
   const camK = camK0 + (camK1 - camK0)
     * Math.min(1, shotSince / Math.max(1, shotLen));
   const camSeat = SEATS[(sub2 ? cur.speaker2 : cur.speaker) === "SOL"

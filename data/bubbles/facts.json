@@ -1,0 +1,74 @@
+[
+ {
+  "slot": "nasdaq_dotcom_drawdown",
+  "value": "-77.9%",
+  "detail": "NASDAQ Composite 5048.62 (2000-03-10) -> 1114.11 (2002-10-09)",
+  "series": "NASDAQCOM",
+  "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQCOM",
+  "source_class": "api",
+  "retrieved_at": "2026-08-09T07:28:34Z"
+ },
+ {
+  "slot": "nasdaq_dotcom_months",
+  "value": "31 months",
+  "detail": "peak to trough",
+  "series": "NASDAQCOM",
+  "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQCOM",
+  "source_class": "api",
+  "retrieved_at": "2026-08-09T07:28:34Z"
+ },
+ {
+  "slot": "nasdaq_recovery_date",
+  "value": "2015-04-23",
+  "detail": "first close back at or above the 2000-03-10 peak - 15 years",
+  "series": "NASDAQCOM",
+  "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQCOM",
+  "source_class": "api",
+  "retrieved_at": "2026-08-09T07:28:34Z"
+ },
+ {
+  "slot": "nasdaq_2008_drawdown",
+  "value": "-55.6%",
+  "detail": "2859.12 (2007-10-31) -> 1268.64 (2009-03-09)",
+  "series": "NASDAQCOM",
+  "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQCOM",
+  "source_class": "api",
+  "retrieved_at": "2026-08-09T07:28:34Z"
+ },
+ {
+  "slot": "house_price_drawdown",
+  "value": "-27.4%",
+  "detail": "Case-Shiller US National 184.61 (2006-07) -> 133.99 (2012-02), 67 months",
+  "series": "CSUSHPINSA",
+  "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CSUSHPINSA",
+  "source_class": "api",
+  "retrieved_at": "2026-08-09T07:28:34Z"
+ },
+ {
+  "slot": "unemployment_low",
+  "value": "4.4%",
+  "detail": "Oct 2006",
+  "series": "UNRATE",
+  "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=UNRATE",
+  "source_class": "api",
+  "retrieved_at": "2026-08-09T07:28:34Z"
+ },
+ {
+  "slot": "unemployment_peak",
+  "value": "10.0%",
+  "detail": "Oct 2009",
+  "series": "UNRATE",
+  "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=UNRATE",
+  "source_class": "api",
+  "retrieved_at": "2026-08-09T07:28:34Z"
+ },
+ {
+  "slot": "net_worth_destroyed",
+  "value": "$11.5 trillion",
+  "detail": "households+nonprofits $70.72T (2007Q3) -> $59.21T (2009Q1), -16.3%",
+  "series": "TNWBSHNO",
+  "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=TNWBSHNO",
+  "source_class": "api",
+  "retrieved_at": "2026-08-09T07:28:34Z"
+ }
+]
