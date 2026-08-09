@@ -118,6 +118,13 @@ def lines_for(ep: str):
 SAY_AS = [
     # ALL-CAPS reads as emphasis-shouting or gets spelled letter by letter.
     # Sentence case with an exclamation mark gets the same read, correctly.
+    #
+    # THIS TABLE IS EXACT-STRING MATCHES ON EPISODE 1'S SENTENCES, and that
+    # is exactly how episode 3 broke. Ep.3 wrote new lines, matched none of
+    # these, and shipped with "HA!" spelled out as "aitch-ay" - measured at
+    # 0.555 s/syllable against a 0.302 median. The entries stay so ep.1 and
+    # ep.2 regenerate byte-identically, but they are no longer the defence:
+    # `say()` below applies the same protection as a RULE, to any line.
     ("HA! ...Fundamentals.", "Hah! ... Fundamentals."),
     ("POLITICS", "politics"),
     ("WHAT?!", "What?!"),
@@ -194,6 +201,50 @@ PERFORM = {
     "s4_sol_time": "[sigh] ",
     "s7_sol_nobody": "[whisper] ",
 }
+
+
+# ── SPOKEN-TEXT OVERRIDES ──────────────────────────────────────────────
+# The subtitle is read from the composition and the spoken text is derived
+# from it, so normally they are the same string. These break that link for
+# specific lines, in the same one-way direction as PERFORM: the screen
+# keeps what the writer wrote, the model gets something it can pronounce.
+#
+# WHY. The owner: "still get HA! pronounced letter by letter - disgusting
+# audio". Measured: ep.1 says "HA! ...Fundamentals." - five syllables - in
+# 1.22s; ep.3 said "HA! ...Bad banks." - three syllables - in 1.67s. Longer
+# audio for fewer syllables is what an initialism sounds like, because
+# "aitch-ay" is three syllables where "hah" is one.
+#
+# Chatterbox reads a short ALL-CAPS token as an initialism, which in written
+# English it usually is (US, CEO, FBI). Ep.1 survived on luck: it had only
+# four capitalised words and all were long real words. The v2 voice pass
+# took capitals from 4 to 19 - which fixed the flatness and walked straight
+# into this.
+SPOKEN = {
+    "b03_sol_ha": "Hah! ...Bad banks.",
+    "s3_sol_ha": "Hah! ...Fifteen years.",
+    "b37_rex_half": "More than half?!",
+}
+
+# EVERY remaining ALL-CAPS token is title-cased for the model, not just the
+# short ones. That is what ep.1 actually does - look at the table above:
+# POLITICS -> politics, INDEX?! -> index?!, SCORE -> score. The capitals are
+# for the WRITER and the screen; the model has never been given them and
+# has never needed them. Emphasis in the delivery comes from the sentence
+# shape, the ellipses and the DELIVERY settings, not from shouting.
+#
+# "I" and "A" are left alone - ordinary sentence words, not emphasis.
+CAPS_TOKEN = re.compile(r"\b([A-Z]{2,})\b")
+_KEEP = {"I", "A", "OK"}
+
+
+def say(stem: str, text: str) -> str:
+    """The text the MODEL hears. Never what the viewer reads."""
+    if stem in SPOKEN:
+        return SPOKEN[stem]
+    return CAPS_TOKEN.sub(
+        lambda m: m.group(1) if m.group(1) in _KEEP else m.group(1).title(),
+        text)
 
 
 def perform(stem: str, text: str) -> str:
@@ -283,7 +334,7 @@ def main() -> None:
                 torch.cuda.manual_seed_all(SEED)
             np.random.seed(SEED)
             wav = model.generate(
-                perform(stem, say_as(text)),
+                perform(stem, say(stem, say_as(text))),
                 audio_prompt_path=str(REFS / ("voice_ref_" + voice + ".wav")),
                 **DELIVERY[voice])
             raw = VO_DIR[ep] / ("_" + stem + "_raw.wav")
