@@ -219,13 +219,20 @@ def _emit_fixture(src, bars, idx, want):
         "answer": card["answer"],
         "answerLine": card["answerLine"],
         "ruleTitle": "The setup",
+        # No strike rate on screen. The one this card carries (1 of 6) counts
+        # 3 trades that were still OPEN at the horizon as failures alongside 2
+        # real stop-outs, so it reads as five losses when there were two - it
+        # understated the setup rather than qualifying it. Owner call
+        # 2026-08-12: cite no frequency claim. The reel instead makes no claim
+        # about how often this works, and says the thing that is true of every
+        # instance - the stop is decided before the entry.
         "ruleText": (
             "A rounded base that reclaims its rim, then a shallow handle that "
             "holds it. The rim is the trade because it is the level the whole "
             f"base was built against - here it had been tested {n_touch} times "
-            f"since {_mon(pl['touches'][0]['date'])}. Across every occurrence "
-            f"in this series the formation resolved {card['sampleWins']} times "
-            f"out of {card['sampleN']}."
+            f"since {_mon(pl['touches'][0]['date'])}. The stop is chosen before "
+            "the entry, so the cost of being wrong is known before the trade "
+            "is on."
         ),
         "revealFrom": reveal_from,
         "patternSpan": max(2, card["revealFrom"] // 3),

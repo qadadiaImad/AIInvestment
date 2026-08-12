@@ -8,7 +8,7 @@
   "answer": "BUY",
   "answerLine": "+3.7% banked in 12 sessions (1:2).",
   "ruleTitle": "The setup",
-  "ruleText": "A rounded base that reclaims its rim, then a shallow handle that holds it. The rim is the trade because it is the level the whole base was built against - here it had been tested 10 times since AUG 2021. Across every occurrence in this series the formation resolved 1 times out of 6.",
+  "ruleText": "A rounded base that reclaims its rim, then a shallow handle that holds it. The rim is the trade because it is the level the whole base was built against - here it had been tested 10 times since AUG 2021. The stop is chosen before the entry, so the cost of being wrong is known before the trade is on.",
   "revealFrom": 575,
   "patternSpan": 8,
   "ticker": "SPY",
@@ -83,8 +83,8 @@
       "REVEAL": 1528,
       "REVEAL_SPAN": 131,
       "RULE": 1659,
-      "ENDCARD": 1879,
-      "TOTAL": 1944,
+      "ENDCARD": 1834,
+      "TOTAL": 1899,
       "tape": 40,
       "fastFrom": 163,
       "fastTo": 250,
@@ -3634,7 +3634,7 @@
       "c": 459.1
     }
   ],
-  "durationInFrames": 1944,
+  "durationInFrames": 1899,
   "_provenance": {
     "symbol": "SPY",
     "source": "Interactive Brokers via brokerage MCP get_price_history (period=FIVE_YEARS, step=ONE_DAY, outside_rth=false)",

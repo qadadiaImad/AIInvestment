@@ -245,6 +245,15 @@ There are now **two kinds of fixture**, and the rails differ:
 
 Both kinds:
 - Frame patterns as education, not calls. `ruleText` describes the setup and its
-  confirmation condition, and carries the honest hit rate when one is known —
-  the drawn instance is a winner by construction, so without it the reel reads
-  as a 100% strike rate.
+  confirmation condition.
+- **Do not put a strike rate on screen** (owner call 2026-08-12). The one the
+  gallery cards carry is not the number it looks like: `sampleWins/sampleN`
+  counts trades *still open at the horizon* as failures, so the cup and handle's
+  "1 of 6" is 1 target filled, **3 still open**, and only **2 actual stop-outs**.
+  Printed bare it claims five losses where there were two — it understated the
+  setup rather than qualifying it, which is the opposite of the honesty it was
+  added for.
+- What replaces it is a statement true of *every* instance rather than a
+  frequency claim: the stop is chosen before the entry, so the cost of being
+  wrong is known before the trade is on. That keeps the reel from implying a
+  100% strike rate without asserting a rate at all.
