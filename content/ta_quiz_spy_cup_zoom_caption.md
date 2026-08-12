@@ -10,29 +10,56 @@ survive being the last one someone reads.
 
 ---
 
-## A — the flex (default)
+## A — the flex (SHIPPING THIS)
 
-> 437.
+Emoji as punctuation, not decoration: one per beat, none inside a sentence.
+The terseness is what makes this caption work — an emoji on every line would
+bury the one-line rhythm that does the actual job.
+
+> 📍 **437.**
 >
 > Not a magic number. Not a prediction.
 > Just the price the market refused to let go of.
 >
-> Ten times. Two years.
+> 🔁 Ten times. Two years.
 >
-> Zoom in: it's a cup and handle. Cute.
-> Zoom out: it's a battlefield.
+> 🔍 Zoom in: it's a cup and handle. Cute.
+> 🗺️ Zoom out: it's a battlefield.
 >
-> S&P 500 closes back above it.
-> Entry on the reclaim.
-> Stop under the handle — 8.08 to be wrong.
-> Target 2× that, set before anyone knew the ending.
+> 📈 S&P 500 closes back above it.
 >
-> 12 sessions later. Done.
+> 🟢 Entry on the reclaim.
+> 🛑 Stop under the handle — 8.08 to be wrong.
+> 🎯 Target 2× that, set before anyone knew the ending.
+>
+> ⏱️ 12 sessions later. Done.
 >
 > Everybody finds the pattern.
 > Almost nobody sets the exit first.
 >
-> That's the whole thing.
+> 🧠 That's the whole thing.
+>
+> 📊 Real SPY daily bars · educational only, not financial advice
+
+### Restrained alt (if the above reads busy in-feed)
+
+> **437.**
+>
+> Not a magic number. Not a prediction.
+> Just the price the market refused to let go of.
+>
+> Ten times. Two years. 🔁
+>
+> Zoom in: it's a cup and handle. Cute.
+> Zoom out: it's a battlefield. 🗺️
+>
+> S&P 500 closes back above it.
+> 🟢 in on the reclaim · 🛑 8.08 to be wrong · 🎯 2× that
+>
+> 12 sessions later. Done. ⏱️
+>
+> Everybody finds the pattern.
+> Almost nobody sets the exit first.
 >
 > Real SPY daily bars · educational only, not financial advice
 
