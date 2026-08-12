@@ -141,6 +141,25 @@ sub-agents.
 
 The per-source classification lives in [`providers/README.md`](providers/README.md).
 
+### 3.1 More than one session runs on this machine
+
+The contract above assumes one orchestrator owns the browser. That assumption
+breaks when a second Claude session is open, and on 2026-08-12 it was: a session
+held the Playwright MCP browser (Chrome on the `mcp-chrome-8b00336` profile)
+while another rendered a reel. Nothing collided only because the reel needed no
+browser — a gated-source rotation would have called `browser_close` and killed
+the other session's browser with no signal to either side.
+
+**Read [`.claude/session-claims.md`](.claude/session-claims.md) before taking a
+single-instance resource, and claim your row in it.** Those resources are the
+Playwright MCP browser, a Remotion render, and the GPU/ComfyUI backend. Each
+entry in that file carries the command that proves whether the thing is actually
+free, because a stale claim should lose to a live process — verify, then claim.
+
+Two other standing facts: this repo has one worktree, so two sessions committing
+interleave on the same branch (take `git worktree add` instead of sharing the
+checkout); and grok-cli and Higgsfield are shared quota, so record what you spent.
+
 ---
 
 ## 4. Anti-gating doctrine (what we learned from GuruTrade, and what we fixed)
