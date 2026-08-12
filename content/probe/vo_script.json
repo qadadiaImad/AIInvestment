@@ -1,0 +1,73 @@
+{
+  "_note": "Voiceover for the TradingQuiz SPY cup-and-handle zoom reel. The FIRST cut of this script ran 74.7s against a 36s reel, so the picture is now derived from the measured audio instead of the other way round: synthesise, measure, then size each act to what was actually said. Keep lines short — every extra clause costs a second of reel.",
+  "voice": "atlas",
+  "fps": 30,
+  "_pipeline": "python scripts/ta_quiz/build_narrated_cut.py",
+  "segments": [
+    {
+      "id": "01_tape",
+      "act": "tape",
+      "text": "Real S P Y daily bars, printing live."
+    },
+    {
+      "id": "02_zoomout",
+      "act": "widen",
+      "text": "Watch what happens when we pull back."
+    },
+    {
+      "id": "03_deep",
+      "act": "deep",
+      "text": "Two years of history."
+    },
+    {
+      "id": "04_justify",
+      "act": "justify",
+      "text": "Ten tests of that same line. That is what makes it a level."
+    },
+    {
+      "id": "05_countdown",
+      "act": "countdown",
+      "text": "And price just closed back above it. Five seconds. What happens next?"
+    },
+    {
+      "id": "06_entry",
+      "act": "entry",
+      "text": "Buy. Entry is the close that reclaimed the rim."
+    },
+    {
+      "id": "07_stop",
+      "act": "stop",
+      "text": "The stop goes under the handle. If price drops back into the cup, the setup failed. That is eight dollars of risk."
+    },
+    {
+      "id": "08_target",
+      "act": "target",
+      "text": "The target comes from the risk, not from hope. One to two means you aim sixteen for the eight you put up."
+    },
+    {
+      "id": "09_run",
+      "act": "zones",
+      "text": "Range set. Let it run."
+    },
+    {
+      "id": "10_reveal",
+      "act": "reveal",
+      "text": "Twelve sessions later."
+    },
+    {
+      "id": "11_hit",
+      "act": "hit",
+      "text": "Target hit. Plus three point seven percent."
+    },
+    {
+      "id": "12_rule",
+      "act": "rule",
+      "text": "Only one in six of these ever got there. A reason, not a promise."
+    },
+    {
+      "id": "13_end",
+      "act": "end",
+      "text": "Like and follow for more setups."
+    }
+  ]
+}

@@ -197,7 +197,12 @@ def _emit_fixture(src, bars, idx, want):
 
     d0, end = pl["deep0"], pl["window_end"]
     window = bars[d0:end + 1]
-    reveal_from = st + card["revealFrom"] - d0
+    # The quiz must end on the SIGNAL, not on the bar before it. The detected
+    # card puts revealFrom ON the breakout, which hid the green close above the
+    # rim and left the viewer guessing from the red bar underneath it - the
+    # setup looked like a failure at the moment they were asked to call it.
+    # +1 so the breakout candle is the last thing shown before the countdown.
+    reveal_from = st + card["revealFrom"] - d0 + 1
     n_touch = len(pl["touches"])
 
     fixture = {
@@ -241,7 +246,7 @@ def _emit_fixture(src, bars, idx, want):
         "target": card["target"],
         "rrLabel": f"1:{card['rr']:g}",
         "candles": [{"o": b["o"], "h": b["h"], "l": b["l"], "c": b["c"]} for b in window],
-        "durationInFrames": 900,
+        "durationInFrames": 1080,
         "_provenance": {
             "symbol": src["symbol"],
             "source": src.get("source"),

@@ -91,6 +91,23 @@ export const tradingQuizSchema = z.object({
       ),
       /** Headline for the justify act, e.g. "TESTED 10x SINCE AUG 2021". */
       historyLabel: z.string(),
+      /** Beat overrides in absolute frames. Present when a narrated cut needs
+       * the picture to follow the VOICE: the script is synthesised first, each
+       * segment measured, and the acts sized to what was actually said. Sizing
+       * the acts first and then writing to fit produced 75 seconds of narration
+       * for a 36 second reel. */
+      beats: z
+        .object({
+          LEVEL: z.number(), PATTERN: z.number(), ARROWS: z.number(),
+          COUNT: z.number(), ANSWER: z.number(),
+          RR: z.number(), RR_STOP: z.number(), RR_TARGET: z.number(), RR_ZONES: z.number(),
+          REVEAL: z.number(), REVEAL_SPAN: z.number(),
+          RULE: z.number(), ENDCARD: z.number(), TOTAL: z.number(),
+          tape: z.number(), fastFrom: z.number(), fastTo: z.number(),
+          deepTo: z.number(), justifyTo: z.number(),
+          touchIn: z.number(), touchStep: z.number(),
+        })
+        .optional(),
     })
     .optional(),
   /** Chrome-bar identity. Real-data reels name the instrument here; the mark is
@@ -226,52 +243,57 @@ const RULE_IN = RR_IN + 92;                         // 594
 /** Minimum duration the timeline needs; fixtures should meet or exceed it. */
 export const TRADING_QUIZ_MIN_FRAMES = RULE_IN + 88; // -> 682
 
-// ------------------------------------------------------- zoom timeline
-/** The two-act zoom prologue buys 218 frames in front of the classic timeline,
- * which lands the whole reel on exactly 900 frames / 30s. Every act from the
- * level draw onward simply shifts by this amount — the countdown, answer,
- * reveal and risk/reward beats keep their relative spacing, so the back half
- * cannot desync from the front. The shifted landing points happen to be right
- * where the choreography wants them: the level pens itself in at 336 (as the
- * camera reaches full pull-back), the pattern name at 376 (mid-justify), the
- * BUY/SELL fork at 414 (during the return), the countdown at 450. */
-const ZOOM_SHIFT = 218;
-export const TRADING_QUIZ_ZOOM_FRAMES = TRADING_QUIZ_MIN_FRAMES + ZOOM_SHIFT; // -> 900
-/** Act boundaries of the prologue, in absolute frames. */
-const Z = {
-  /** tape opens: a scrolling window playing forward in real time */
-  tape: DRAW_START,      // 40
-  /** tape accelerates and the window starts widening */
-  fastFrom: 190,
-  /** playback done — the breakout bar is the last thing the tape prints */
-  fastTo: 265,
-  /** camera keeps pulling back; NOTHING prints, history is already settled */
-  deepTo: 340,
-  /** hold wide while the level's prior tests light up one by one */
-  justifyTo: 405,
-  /** return to the decision zone */
-  backTo: 450,
+// ------------------------------------------------------- beat tables
+/** Two orderings, not one timeline with an offset. The classic reel reveals
+ * the outcome and THEN prices the trade; the zoom reel prices the trade FIRST
+ * -- stop, target, then the range -- and only then lets the curve run, so the
+ * viewer is committed to a level of risk before they find out whether it paid.
+ * An offset could express the shift but not the reordering, which is why the
+ * earlier ZOOM_SHIFT approach was replaced. */
+type Beats = {
+  LEVEL: number; PATTERN: number; ARROWS: number;
+  COUNT: number; ANSWER: number;
+  /** entry / stop / target draw as three separate explained beats */
+  RR: number; RR_STOP: number; RR_TARGET: number; RR_ZONES: number;
+  REVEAL: number; REVEAL_SPAN: number;
+  RULE: number; ENDCARD: number; TOTAL: number;
 };
-/** Bars on screen at each stop. The opening 24 is what makes a bar read as a
- * bar; the deep stop is whatever the fixture's history needs. */
+const CLASSIC: Beats = {
+  LEVEL: LEVEL_IN, PATTERN: PATTERN_IN, ARROWS: ARROWS_IN,
+  COUNT: COUNT_START, ANSWER: ANSWER_IN,
+  RR: RR_IN, RR_STOP: RR_IN, RR_TARGET: RR_IN, RR_ZONES: RR_ZONES_IN,
+  REVEAL: REVEAL_START, REVEAL_SPAN,
+  RULE: RULE_IN, ENDCARD: -1, TOTAL: TRADING_QUIZ_MIN_FRAMES,
+};
+const ZOOM: Beats = {
+  LEVEL: 290, PATTERN: 330, ARROWS: 380,
+  COUNT: 410, ANSWER: 560,
+  RR: 600, RR_STOP: 665, RR_TARGET: 735, RR_ZONES: 800,
+  REVEAL: 830, REVEAL_SPAN: 120,
+  RULE: 960, ENDCARD: 1020, TOTAL: 1080,
+};
+export const TRADING_QUIZ_ZOOM_FRAMES = ZOOM.TOTAL; // -> 1080 / 36s
+/** Act boundaries of the zoom prologue, in absolute frames. */
+const Z_ACTS = {
+  tape: DRAW_START,   // 40
+  fastFrom: 170,
+  fastTo: 240,
+  deepTo: 310,
+  justifyTo: 370,
+  backTo: ZOOM.COUNT, // 410
+};
 const Z_TIGHT = 24;
-/** Bars the real-time tape prints before it accelerates. 22 bars over 150
- * frames is ~6.8 frames each — slow enough that a bar reads as a bar trading
- * rather than a frame of an animation. */
+/** Bars the real-time tape prints before it accelerates. */
 const Z_TAPE_BARS = 22;
-/** Bars on screen for the countdown, answer and reveal — the decision zone. */
+/** Bars on screen for the countdown, answer, trade frame and reveal. */
 const Z_DECISION = 46;
 /** Below this many px per bar a candle is a smudge, so the series cross-fades
- * to a close-line silhouette — the same substitution PatternCard makes for its
- * mini cells. At the deep stop this reel runs ~1.2px/bar, so it is required. */
+ * to a close-line silhouette -- the same substitution PatternCard makes for
+ * its mini cells. At the deep stop this reel runs ~1.2px/bar. */
 const SILHOUETTE_PX = 3.5;
-/** The justify act: prior tests of the level light one at a time. Watching the
- * count accumulate is the argument; printing "10" would just be a number. */
-const TOUCH_IN = 344;
-const TOUCH_STEP = 6;
-/** Tickers with a real mark committed at remotion/public/logos/<T>.svg. Listed
- * rather than probed because staticFile cannot be existence-checked at render
- * time, and a broken <img> in the chrome is worse than a typographic tile. */
+/** The justify act: prior tests of the level light one at a time. */
+const TOUCH_IN_DEF = 314;
+const TOUCH_STEP_DEF = 5;
 const LOGO_TICKERS = ['AMD', 'DUOL', 'INTC', 'INTU', 'QBTS', 'SMCI'];
 
 // ---------------------------------------------------------------- geometry
@@ -293,13 +315,24 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const reveal = p.candles.slice(p.revealFrom);
 
   // ------------------------------------------------------------- timeline
-  // Every act from the level draw onward reads `tl`, never `frame`. In zoom
+  // Every act from the level draw onward reads `frame`, never `frame`. In zoom
   // mode that shifts the entire back half by the prologue's length in ONE
   // place, so the countdown / answer / reveal / risk-reward beats keep their
-  // relative spacing and cannot drift apart. Legacy: tl === frame exactly.
+  // relative spacing and cannot drift apart. Legacy: frame === frame exactly.
   const zm = p.zoom;
-  const SH = zm ? ZOOM_SHIFT : 0;
-  const tl = frame - SH;
+  const B: Beats = zm ? {...ZOOM, ...(zm.beats ?? {})} : CLASSIC;
+  // Prologue boundaries follow the same override, so a narrated cut can
+  // stretch the tape or the pull-back without touching the composition.
+  const ZB = {
+    tape: zm?.beats?.tape ?? Z_ACTS.tape,
+    fastFrom: zm?.beats?.fastFrom ?? Z_ACTS.fastFrom,
+    fastTo: zm?.beats?.fastTo ?? Z_ACTS.fastTo,
+    deepTo: zm?.beats?.deepTo ?? Z_ACTS.deepTo,
+    justifyTo: zm?.beats?.justifyTo ?? Z_ACTS.justifyTo,
+    backTo: B.COUNT,
+  };
+  const touchIn = zm?.beats?.touchIn ?? TOUCH_IN_DEF;
+  const touchStep = zm?.beats?.touchStep ?? TOUCH_STEP_DEF;
 
   // ------------------------------------------------------------- viewport
   // The time axis. Legacy: the whole array, fixed, for the whole reel — which
@@ -320,7 +353,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
    * upstream in scripts/ta_quiz/find_anchored_level.py. */
   const playFrom = zm ? Math.min(live0 + Z_TIGHT, lastSetup) : 0;
 
-  const zStops = [Z.tape, Z.fastFrom, Z.fastTo, Z.deepTo, Z.justifyTo, Z.backTo];
+  const zStops = [ZB.tape, ZB.fastFrom, ZB.fastTo, ZB.deepTo, ZB.justifyTo, ZB.backTo];
   const zEase = {easing: EASE.cruise, extrapolateLeft: 'clamp' as const, extrapolateRight: 'clamp' as const};
   // Right edge follows the newest printed bar, then holds with room to its
   // right for the reveal to print into.
@@ -339,16 +372,16 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   // tape while the window is tight, then a fast-forward as it widens. The
   // acceleration is not decoration — 126 bars at tape speed is 14 seconds we
   // do not have, and speeding up IS what "time is passing" looks like.
-  const REVEAL_PER = Math.max(1, REVEAL_SPAN / Math.max(1, reveal.length));
+  const REVEAL_PER = Math.max(1, B.REVEAL_SPAN / Math.max(1, reveal.length));
   const DRAW_PER = Math.max(1, (DRAW_END - DRAW_START) / Math.max(1, setup.length));
   const ffBars = Math.max(1, lastSetup - playFrom - Z_TAPE_BARS + 1);
   const appearOf = (i: number): number => {
-    if (i >= p.revealFrom) return SH + REVEAL_START + (i - p.revealFrom) * REVEAL_PER;
+    if (i >= p.revealFrom) return B.REVEAL + (i - p.revealFrom) * REVEAL_PER;
     if (!zm) return DRAW_START + i * DRAW_PER;
     if (i < playFrom) return -1e6;                     // settled: never prints
     if (i <= playFrom + Z_TAPE_BARS)
-      return Z.tape + (i - playFrom) * ((Z.fastFrom - Z.tape) / Z_TAPE_BARS);
-    return Z.fastFrom + (i - playFrom - Z_TAPE_BARS) * ((Z.fastTo - Z.fastFrom) / ffBars);
+      return ZB.tape + (i - playFrom) * ((ZB.fastFrom - ZB.tape) / Z_TAPE_BARS);
+    return ZB.fastFrom + (i - playFrom - Z_TAPE_BARS) * ((ZB.fastTo - ZB.fastFrom) / ffBars);
   };
   const CANDLE_FORM = Math.max(CANDLE_FORM_MIN, Math.round(DRAW_PER));
   const formOf = (i: number): number => {
@@ -382,7 +415,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const fSrc = zm ? p.candles.slice(Math.max(0, nAll - Z_DECISION)) : p.candles;
   const fLo = Math.min(...fSrc.map((k) => k.l)) - PAD.lo;
   const fHi = Math.max(...fSrc.map((k) => k.h)) + PAD.hi;
-  const zoomOut = interpolate(tl, [REVEAL_START - 4, REVEAL_START + 24], [0, 1], {
+  const zoomOut = interpolate(frame, [B.REVEAL - 4, B.REVEAL + 24], [0, 1], {
     easing: EASE.cruise,
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
@@ -433,28 +466,28 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   // covered for any s >= 1. The focus constants are tuned against this layout
   // so the level labels, fork arrows and lower-band text all survive the tight
   // phase — move them and re-check those collisions frame by frame.
-  const legacyZoom = cameraPushIn(frame, p.durationInFrames, {base: 0.035, hitFrame: ANSWER_IN + SH, hitAmount: 0.02});
+  const legacyZoom = cameraPushIn(frame, p.durationInFrames, {base: 0.035, hitFrame: B.ANSWER, hitAmount: 0.02});
   // In zoom mode the viewport IS the camera; a transform scale on top of it
   // would fight the bar-index window and magnify strokes the viewport just
   // resized. Fixtures that zoom leave fluidCamera off.
   const fluid = p.fluidCamera === true;
   const camS = fluid
     ? interpolate(
-        tl,
-        [0, DRAW_END, PATTERN_IN, ARROWS_IN + 16, ANSWER_IN, ANSWER_IN + 44, REVEAL_END + 6, RULE_IN, p.durationInFrames - SH],
+        frame,
+        [0, DRAW_END, B.PATTERN, B.ARROWS + 16, B.ANSWER, B.ANSWER + 44, (B.REVEAL + B.REVEAL_SPAN) + 6, B.RULE, p.durationInFrames],
         [1.0, 1.045, 1.045, 1.18, 1.19, 1.02, 1.06, 1.03, 1.045],
         {easing: EASE.cruise, extrapolateRight: 'clamp'}
       )
     : 1;
   const camFx = fluid
-    ? interpolate(tl, [PATTERN_IN, ARROWS_IN + 16, ANSWER_IN, ANSWER_IN + 44], [540, 220, 220, 540], {
+    ? interpolate(frame, [B.PATTERN, B.ARROWS + 16, B.ANSWER, B.ANSWER + 44], [540, 220, 220, 540], {
         easing: EASE.cruise,
         extrapolateLeft: 'clamp',
         extrapolateRight: 'clamp',
       })
     : 540;
   const camFy = fluid
-    ? interpolate(tl, [PATTERN_IN, ARROWS_IN + 16, ANSWER_IN, ANSWER_IN + 44], [960, 1010, 1010, 960], {
+    ? interpolate(frame, [B.PATTERN, B.ARROWS + 16, B.ANSWER, B.ANSWER + 44], [960, 1010, 1010, 960], {
         easing: EASE.cruise,
         extrapolateLeft: 'clamp',
         extrapolateRight: 'clamp',
@@ -490,7 +523,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const gridLines = Array.from({length: 6}, (_, i) => lo + step * i);
 
   // The price axis hands the right gutter over to the BUY/SELL fork.
-  const axisOut = interpolate(tl, [ARROWS_IN - 12, ARROWS_IN + 2], [1, 0.12], {
+  const axisOut = interpolate(frame, [B.ARROWS - 12, B.ARROWS + 2], [1, 0.12], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -499,9 +532,9 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   // One reference line, or the previous-day pair. The second line draws a beat
   // after the first so they read as two decisions, not one stamp.
   const levels = [
-    {price: p.levelPrice, label: p.levelLabel, at: LEVEL_IN},
+    {price: p.levelPrice, label: p.levelLabel, at: B.LEVEL},
     ...(p.level2Price !== undefined
-      ? [{price: p.level2Price, label: p.level2Label ?? '', at: LEVEL_IN + 10}]
+      ? [{price: p.level2Price, label: p.level2Label ?? '', at: B.LEVEL + 10}]
       : []),
   ];
   // Once the trade frame draws, the reference line has done its job and its
@@ -510,7 +543,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   // two-line reel the lines ARE the lesson — so they stay lit.
   const levelOut =
     p.entry !== undefined && p.stop !== undefined && p.target !== undefined
-      ? interpolate(tl, [RR_IN - 4, RR_IN + 16], [1, 0.18], {
+      ? interpolate(frame, [B.RR - 4, B.RR + 16], [1, 0.18], {
           extrapolateLeft: 'clamp',
           extrapolateRight: 'clamp',
         })
@@ -521,40 +554,41 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   // back half. In and out inside the deep + justify acts.
   const historyP = interpolate(
     frame,
-    [Z.deepTo - 44, Z.deepTo - 20, Z.justifyTo + 6, Z.justifyTo + 26],
+    [ZB.deepTo - 44, ZB.deepTo - 20, ZB.justifyTo + 6, ZB.justifyTo + 26],
     [0, 1, 1, 0],
     {easing: EASE.cruise, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}
   );
 
   // -------------------------------------------------------- pattern frame
-  const patP = spring({frame: tl - PATTERN_IN, fps, config: SPRINGS.pop});
-  const patPulse = 1 + Math.sin(Math.max(0, tl - PATTERN_IN) / 7) * 0.03;
+  const patP = spring({frame: frame - B.PATTERN, fps, config: SPRINGS.pop});
+  const patPulse = 1 + Math.sin(Math.max(0, frame - B.PATTERN) / 7) * 0.03;
 
   // ------------------------------------------------------------- arrows
-  const arrowsP = spring({frame: tl - ARROWS_IN, fps, config: SPRINGS.pop});
-  const arrowsOut = interpolate(tl, [ANSWER_IN, ANSWER_IN + 14], [1, 0], {
+  const arrowsP = spring({frame: frame - B.ARROWS, fps, config: SPRINGS.pop});
+  const arrowsOut = interpolate(frame, [B.ANSWER, B.ANSWER + 14], [1, 0], {
     easing: EASE.exit,
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const winnerOut = interpolate(tl, [REVEAL_START - 6, REVEAL_START + 8], [1, 0], {
+  const winnerOut = interpolate(frame, [B.REVEAL - 6, B.REVEAL + 8], [1, 0], {
     easing: EASE.exit,
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
   // ----------------------------------------------------------- countdown
-  const countIdx = Math.floor((tl - COUNT_START) / COUNT_PER);
-  const countActive = tl >= COUNT_START && tl < ANSWER_IN;
+  const countIdx = Math.floor((frame - B.COUNT) / COUNT_PER);
+  const countActive = frame >= B.COUNT && frame < B.ANSWER;
   const countDigit = COUNT_N - countIdx;
-  const countLocal = (tl - COUNT_START) % COUNT_PER;
+  const countLocal = (frame - B.COUNT) % COUNT_PER;
   const countP = spring({frame: countLocal, fps, config: SPRINGS.hero});
   // Ring drains over the whole 5s window, not per digit — reads as one timer.
-  const countFrac = Math.min(1, Math.max(0, (tl - COUNT_START) / (COUNT_PER * COUNT_N)));
+  const countFrac = Math.min(1, Math.max(0, (frame - B.COUNT) / (COUNT_PER * COUNT_N)));
 
   // ------------------------------------------------------------- answer
-  const answerP = spring({frame: tl - ANSWER_IN, fps, config: SPRINGS.hero});
-  const ruleP = spring({frame: tl - RULE_IN, fps, config: SPRINGS.heavy});
+  const answerP = spring({frame: frame - B.ANSWER, fps, config: SPRINGS.hero});
+  const ruleP = spring({frame: frame - B.RULE, fps, config: SPRINGS.heavy});
+
 
   // ------------------------------------------------- live price tag
   // Tracks the last bar printed so far. Hands off to the BUY/SELL fork when
@@ -563,7 +597,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   // there are two rates and a settled prefix that never prints at all.
   const revealedCount = Math.min(
     reveal.length,
-    Math.max(0, Math.floor((tl - REVEAL_START) / REVEAL_PER) + 1)
+    Math.max(0, Math.floor((frame - B.REVEAL) / REVEAL_PER) + 1)
   );
   let drawnLast = -1;
   for (let i = lastSetup; i >= 0; i--) {
@@ -572,7 +606,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
       break;
     }
   }
-  const lastIdx = tl >= REVEAL_START && revealedCount > 0
+  const lastIdx = frame >= B.REVEAL && revealedCount > 0
     ? p.revealFrom + revealedCount - 1
     : Math.max(0, drawnLast);
   const lastK = p.candles[lastIdx];
@@ -596,8 +630,8 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   // "last bar" to pin it to, and it would sit on a smear.
   const tagOpacity =
     (interpolate(frame, [DRAW_START + 6, DRAW_START + 20], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) *
-      interpolate(tl, [ARROWS_IN - 10, ARROWS_IN + 4], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) +
-      interpolate(tl, [REVEAL_START, REVEAL_START + 10], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})) *
+      interpolate(frame, [B.ARROWS - 10, B.ARROWS + 4], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) +
+      interpolate(frame, [B.REVEAL, B.REVEAL + 10], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})) *
     (1 - silh);
 
   // A bar prints the way a live one actually does, not the way an animation
@@ -682,15 +716,74 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const tpBar = hasRR
     ? reveal.findIndex((k) => k.h >= (p.target as number))
     : -1;
-  const rrP = spring({frame: tl - RR_IN, fps, config: SPRINGS.heavy});
-  const zonesP = interpolate(tl, [RR_ZONES_IN, RR_ZONES_IN + 22], [0, 1], {
+  // ------------------------------------------- building the trade, in words
+  // Numbers here are FORMATTED from the fixture, never restated by hand — the
+  // risk and the reward have to stay arithmetically tied to entry/stop/target
+  // or the caption can drift away from the lines drawn beside it.
+  const riskAmt = hasRR ? (p.entry as number) - (p.stop as number) : 0;
+  const rewardAmt = hasRR ? (p.target as number) - (p.entry as number) : 0;
+  const setupCaps = hasRR
+    ? [
+        {
+          at: B.RR,
+          col: '#D8E6DE',
+          head: `ENTRY ${(p.entry as number).toFixed(2)}`,
+          body: 'Buy the close that reclaimed the rim. The level the whole base was built against is now underneath price.',
+        },
+        {
+          at: B.RR_STOP,
+          col: T.down,
+          head: `STOP ${(p.stop as number).toFixed(2)}`,
+          body: `Under the handle's low. If price falls back into the cup the setup never happened — so that is where you admit it. Being wrong costs ${riskAmt.toFixed(2)}.`,
+        },
+        {
+          at: B.RR_TARGET,
+          col: T.up,
+          head: `TARGET ${(p.target as number).toFixed(2)}`,
+          body: `Risk appetite sets this, not hope: ${p.rrLabel ?? '1:2'} means aim ${rewardAmt.toFixed(2)} for the ${riskAmt.toFixed(2)} at stake. Chosen before the outcome is known.`,
+        },
+        {
+          at: B.RR_ZONES,
+          col: T.ice,
+          head: 'RANGE SET',
+          body: 'Both ends are on the chart. Now let it run.',
+        },
+      ]
+    : [];
+  const capIdx = setupCaps.reduce((acc, c, i) => (frame >= c.at ? i : acc), -1);
+  const setupCap =
+    capIdx >= 0 && frame < B.REVEAL
+      ? {
+          ...setupCaps[capIdx],
+          op:
+            interpolate(frame, [setupCaps[capIdx].at, setupCaps[capIdx].at + 12], [0, 1], {
+              extrapolateLeft: 'clamp',
+              extrapolateRight: 'clamp',
+            }) *
+            interpolate(frame, [B.REVEAL - 18, B.REVEAL - 2], [1, 0], {
+              extrapolateLeft: 'clamp',
+              extrapolateRight: 'clamp',
+            }),
+        }
+      : null;
+
+  const rrP = spring({frame: frame - B.RR, fps, config: SPRINGS.heavy});
+  const zonesP = interpolate(frame, [B.RR_ZONES, B.RR_ZONES + 22], [0, 1], {
     easing: EASE.enter,
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
   // The payoff lands when the zone fill sweeps past the winning bar.
-  const payoutAt = RR_ZONES_IN + 26;
-  const coinT = tl - payoutAt;
+  // The tick fires on the frame the winning bar PRINTS, not on a fixed beat.
+  // Anchoring it to a constant would let it land before or after the bar that
+  // earned it, which is the same defect as a sound arriving two frames late.
+  const payoutAt = tpBar >= 0 ? B.REVEAL + tpBar * REVEAL_PER : B.RR_ZONES + 26;
+  const checkT = frame - payoutAt;
+  const checkS = spring({frame: checkT, fps, config: SPRINGS.pop});
+  const checkO = interpolate(checkT, [0, 5], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
 
   const oX = cx(p.revealFrom - 1) + slot * 0.8;
   const oY = priceToY(p.candles[p.revealFrom - 1].c);
@@ -889,7 +982,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
         ) : null}
 
         {/* --------------------------------------------------- 4. answer */}
-        {tl >= ANSWER_IN ? (
+        {frame >= B.ANSWER ? (
           <div
             style={{
               position: 'absolute',
@@ -921,9 +1014,13 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
 
         {/* The one-liner that justifies the answer. It lives in the lower band,
          * not under the badge — under the badge it sits at y≈376, exactly where
-         * the screen panel starts, and was painted over on every render. Here it
-         * also fills the gap between the answer landing and the rule card. */}
-        {tl >= ANSWER_IN ? (
+         * the screen panel starts, and was painted over on every render.
+         *
+         * On a zoom reel it must wait for the REVEAL. It states the outcome
+         * ("+3.7% banked in 12 sessions"), so showing it while the trade is
+         * still being priced both collides with the setup captions AND hands
+         * the viewer the result before a single reveal bar has printed. */}
+        {frame >= (zm ? B.REVEAL : B.ANSWER) ? (
           <div
             style={{
               position: 'absolute',
@@ -932,8 +1029,8 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               right: 70,
               textAlign: 'center',
               opacity:
-                fadeOf(answerP) *
-                interpolate(tl, [RULE_IN - 16, RULE_IN - 2], [1, 0], {
+                fadeOf(zm ? spring({frame: frame - B.REVEAL, fps, config: SPRINGS.hero}) : answerP) *
+                interpolate(frame, [B.RULE - 16, B.RULE - 2], [1, 0], {
                   extrapolateLeft: 'clamp',
                   extrapolateRight: 'clamp',
                 }),
@@ -1139,7 +1236,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
             * something the viewer watches accumulate rather than reads. */}
           {zm && silh > 0.02
             ? zm.touches.map((t, j) => {
-                const at = TOUCH_IN + j * TOUCH_STEP;
+                const at = touchIn + j * touchStep;
                 const tp = interpolate(frame, [at, at + 12], [0, 1], {
                   easing: EASE.enter,
                   extrapolateLeft: 'clamp',
@@ -1328,47 +1425,61 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
                 height={Math.max(1, priceToY(p.entry as number) - priceToY(p.target as number))}
                 fill={`${T.up}1c`}
               />
+              {/* Entry, stop and target draw as three SEPARATE beats, each with
+                * its own reason. Drawing all three at once states a trade;
+                * drawing them in order argues one — this is the level, this is
+                * where being wrong is admitted, and only then is the target,
+                * because the target is a multiple of the risk and cannot be
+                * chosen before the risk exists. */}
               {[
-                {v: p.target as number, col: T.up, tag: `TARGET  ${p.rrLabel ?? '2R'}`},
-                {v: p.entry as number, col: '#D8E6DE', tag: 'ENTRY'},
-                {v: p.stop as number, col: T.down, tag: 'STOP'},
-              ].map((row) => (
-                <g key={row.tag}>
-                  <line
-                    x1={CHART.x0 - 6}
-                    x2={CHART.x0 - 6 + (CHART.x1 + 100 - (CHART.x0 - 6)) * Math.min(1, rrP * 1.2)}
-                    y1={priceToY(row.v)}
-                    y2={priceToY(row.v)}
-                    stroke={row.col}
-                    strokeWidth={2.5}
-                    strokeDasharray={row.tag === 'ENTRY' ? '2 6' : '14 8'}
-                    style={{filter: `drop-shadow(0 0 7px ${row.col}bb)`}}
-                  />
-                  <rect
-                    x={CHART.x0 - 4}
-                    y={priceToY(row.v) - 30}
-                    width={row.tag.length * 12 + 22}
-                    height={26}
-                    rx={6}
-                    fill="rgba(2,10,7,.88)"
-                    stroke={row.col}
-                    strokeWidth={1.2}
-                    opacity={zonesP}
-                  />
-                  <text
-                    x={CHART.x0 + 7}
-                    y={priceToY(row.v) - 11}
-                    fill={row.col}
-                    fontFamily={FONT.mono}
-                    fontWeight={700}
-                    fontSize={17}
-                    letterSpacing={1.4}
-                    opacity={zonesP}
-                  >
-                    {row.tag}
-                  </text>
-                </g>
-              ))}
+                {v: p.entry as number, col: '#D8E6DE', tag: `ENTRY ${(p.entry as number).toFixed(2)}`, at: B.RR, dash: '2 6'},
+                {v: p.stop as number, col: T.down, tag: `STOP ${(p.stop as number).toFixed(2)}`, at: B.RR_STOP, dash: '14 8'},
+                {v: p.target as number, col: T.up, tag: `TARGET ${(p.target as number).toFixed(2)}  ${p.rrLabel ?? '2R'}`, at: B.RR_TARGET, dash: '14 8'},
+              ].map((row) => {
+                const rowP = interpolate(frame, [row.at, row.at + 20], [0, 1], {
+                  easing: EASE.enter,
+                  extrapolateLeft: 'clamp',
+                  extrapolateRight: 'clamp',
+                });
+                if (rowP <= 0.01) return null;
+                return (
+                  <g key={row.tag}>
+                    <line
+                      x1={CHART.x0 - 6}
+                      x2={CHART.x0 - 6 + (CHART.x1 + 100 - (CHART.x0 - 6)) * rowP}
+                      y1={priceToY(row.v)}
+                      y2={priceToY(row.v)}
+                      stroke={row.col}
+                      strokeWidth={2.5}
+                      strokeDasharray={row.dash}
+                      style={{filter: `drop-shadow(0 0 7px ${row.col}bb)`}}
+                    />
+                    <rect
+                      x={CHART.x0 - 4}
+                      y={priceToY(row.v) - 30}
+                      width={row.tag.length * 12 + 22}
+                      height={26}
+                      rx={6}
+                      fill="rgba(2,10,7,.88)"
+                      stroke={row.col}
+                      strokeWidth={1.2}
+                      opacity={rowP}
+                    />
+                    <text
+                      x={CHART.x0 + 7}
+                      y={priceToY(row.v) - 11}
+                      fill={row.col}
+                      fontFamily={FONT.mono}
+                      fontWeight={700}
+                      fontSize={17}
+                      letterSpacing={1.4}
+                      opacity={rowP}
+                    >
+                      {row.tag}
+                    </text>
+                  </g>
+                );
+              })}
             </g>
           ) : null}
 
@@ -1381,48 +1492,74 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
           ) : null}
         </svg>
 
-        {/* ------------------------------------------- 6b. the payoff
-       * Coins pour out of the candle that actually reached the target. The bar
-       * index is derived from the price data, so if no reveal bar ever gets
-       * there nothing fires — the celebration cannot run on a trade that did
-       * not pay. */}
-      {hasRR && tpBar >= 0 && coinT > 0 ? (
+        {/* ------------------------------------------- 6b. target reached
+       * A check mark on the bar that ACTUALLY reached the target, on the frame
+       * that bar prints. `tpBar` is derived from the price data, so nothing
+       * fires on a trade that never got there - no bar, no tick.
+       *
+       * This replaced a coin fountain. Money raining out of a chart sells an
+       * outcome; a check mark says a level was reached, which is what happened. */}
+      {hasRR && tpBar >= 0 && checkT > 0 ? (
         <AbsoluteFill style={{pointerEvents: 'none'}}>
-          {Array.from({length: 22}, (_, i) => {
-            const born = i * 2.2;
-            const age = coinT - born;
-            if (age < 0) return null;
-            // A fountain out of the winning bar, not a hover: they burst up,
-            // spread, then fall past it. Gravity is scaled per coin so the
-            // cluster breaks up instead of moving as one sheet.
-            const spreadX = (random(`cx${i}`) - 0.5) * 460;
-            const vy = 2.6 + random(`cv${i}`) * 2.4;
-            const x = cx(p.revealFrom + tpBar) + spreadX * Math.min(1, age / 30);
-            const y =
-              priceToY(reveal[tpBar].h) - 14 - age * 4.0 + 0.085 * age * age * vy * 0.32;
-            const spin = age * (5 + random(`cs${i}`) * 7);
-            const life = interpolate(age, [0, 7, 74, 96], [0, 1, 1, 0], {
-              extrapolateLeft: 'clamp',
-              extrapolateRight: 'clamp',
-            });
-            if (life <= 0) return null;
-            return (
-              <div
-                key={i}
-                style={{
-                  position: 'absolute',
-                  left: x,
-                  top: y,
-                  fontSize: 26 + random(`cz${i}`) * 18,
-                  opacity: life,
-                  transform: `translate(-50%,-50%) rotate(${spin}deg)`,
-                  filter: 'drop-shadow(0 0 10px rgba(255,196,60,.7))',
-                }}
-              >
-                {i % 3 === 0 ? '\uD83D\uDCB0' : i % 3 === 1 ? '\uD83E\uDE99' : '\uD83D\uDCB5'}
-              </div>
-            );
-          })}
+          {checkT < 40 ? (
+            <div
+              style={{
+                position: 'absolute',
+                left: cx(p.revealFrom + tpBar),
+                top: priceToY(reveal[tpBar].h) - 66,
+                width: 104 + checkT * 6,
+                height: 104 + checkT * 6,
+                marginLeft: -(104 + checkT * 6) / 2,
+                marginTop: -(104 + checkT * 6) / 2,
+                borderRadius: 999,
+                border: `3px solid ${T.up}`,
+                opacity: Math.max(0, 0.75 - checkT / 40),
+              }}
+            />
+          ) : null}
+          <div
+            style={{
+              position: 'absolute',
+              left: cx(p.revealFrom + tpBar),
+              top: priceToY(reveal[tpBar].h) - 66,
+              width: 104,
+              height: 104,
+              marginLeft: -52,
+              marginTop: -52,
+              borderRadius: 999,
+              background: T.up,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 60,
+              transform: `scale(${checkS})`,
+              opacity: checkO,
+              boxShadow: `0 0 46px ${T.up}cc`,
+            }}
+          >
+            {'✅'}
+          </div>
+          {/* Beside the badge, not above it. The winning bar sits near the top
+            * of the plot, so a label stacked over the mark collided with both
+            * the mark and the panel's chrome edge. */}
+          <div
+            style={{
+              position: 'absolute',
+              left: cx(p.revealFrom + tpBar) - 82,
+              top: priceToY(reveal[tpBar].h) - 66,
+              transform: 'translate(-100%, -50%)',
+              fontFamily: FONT.mono,
+              fontWeight: 800,
+              fontSize: 27,
+              letterSpacing: 2,
+              color: T.up,
+              opacity: checkO,
+              textShadow: `0 0 18px ${T.up}`,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            TARGET HIT
+          </div>
         </AbsoluteFill>
       ) : null}
       </AbsoluteFill>
@@ -1433,7 +1570,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
         {/* Fills the band under the screen while the viewer is deciding —
          * without it the lower third sits empty for most of the reel. Hands
          * straight over to the rule card once the answer lands. */}
-        {tl >= ARROWS_IN && tl < ANSWER_IN + 10 ? (
+        {frame >= B.ARROWS && frame < B.ANSWER + 10 ? (
           <div
             style={{
               position: 'absolute',
@@ -1442,8 +1579,8 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               right: 0,
               textAlign: 'center',
               opacity:
-                fadeOf(spring({frame: tl - ARROWS_IN, fps, config: SPRINGS.pop})) *
-                interpolate(tl, [ANSWER_IN - 12, ANSWER_IN + 2], [1, 0], {
+                fadeOf(spring({frame: frame - B.ARROWS, fps, config: SPRINGS.pop})) *
+                interpolate(frame, [B.ANSWER - 12, B.ANSWER + 2], [1, 0], {
                   extrapolateLeft: 'clamp',
                   extrapolateRight: 'clamp',
                 }),
@@ -1474,8 +1611,44 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
           </div>
         ) : null}
 
+        {/* ------------------------------------- 7b. building the trade
+          * One caption per beat, in the empty band under the screen, while the
+          * matching line draws on the chart. The order is the argument: the
+          * stop comes before the target because the target is a MULTIPLE of the
+          * risk — you cannot size a reward before you have priced being wrong.
+          * Deliberately not narration-dependent; the reel reads silently. */}
+        {zm && setupCap ? (
+          <div
+            style={{
+              position: 'absolute',
+              top: 1400,
+              left: 52,
+              right: 52,
+              opacity: setupCap.op,
+              transform: `translateY(${(1 - setupCap.op) * 18}px)`,
+            }}
+          >
+            <div
+              style={{
+                fontFamily: FONT.mono,
+                fontWeight: 800,
+                fontSize: 30,
+                letterSpacing: 3,
+                color: setupCap.col,
+                marginBottom: 14,
+                textShadow: `0 0 20px ${setupCap.col}66`,
+              }}
+            >
+              {setupCap.head}
+            </div>
+            <div style={{fontFamily: FONT.body, fontWeight: 500, fontSize: 35, lineHeight: 1.28, color: C.ink}}>
+              {setupCap.body}
+            </div>
+          </div>
+        ) : null}
+
         {/* ----------------------------------------------------- 7. rule */}
-        {ruleP > 0 ? (
+        {ruleP > 0 && (B.ENDCARD < 0 || frame < B.ENDCARD) ? (
           <div
             style={{
               position: 'absolute',
@@ -1509,6 +1682,89 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
           </div>
         ) : null}
       </AbsoluteFill>
+
+      {/* ------------------------------------------------- 7c. end card
+       * Two seconds, full-bleed over the chart. It is the last thing on screen
+       * and it asks for exactly one thing — a reel that ends on a rule card
+       * ends on homework, and nobody follows homework. */}
+      {B.ENDCARD > 0 && frame >= B.ENDCARD ? (
+        <AbsoluteFill
+          style={{
+            background: `radial-gradient(120% 70% at 50% 42%, ${T.panelTop} 0%, ${T.bg} 72%)`,
+            opacity: interpolate(frame, [B.ENDCARD, B.ENDCARD + 9], [0, 1], {
+              extrapolateLeft: 'clamp',
+              extrapolateRight: 'clamp',
+            }),
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 30,
+            zIndex: 5,
+          }}
+        >
+          {(() => {
+            const eP = spring({frame: frame - B.ENDCARD - 4, fps, config: SPRINGS.hero});
+            return (
+              <>
+                <div
+                  style={{
+                    fontSize: 110,
+                    transform: `scale(${interpolate(eP, [0, 1], [0.5, 1])}) rotate(${interpolate(eP, [0, 1], [-24, 0])}deg)`,
+                    filter: `drop-shadow(0 0 34px ${T.up}aa)`,
+                  }}
+                >
+                  {'❤️'}
+                </div>
+                <div
+                  style={{
+                    fontFamily: FONT.display,
+                    fontWeight: 700,
+                    fontSize: 88,
+                    lineHeight: 1.05,
+                    color: C.ink,
+                    textAlign: 'center',
+                    letterSpacing: -1,
+                    opacity: fadeOf(eP),
+                    transform: `translateY(${interpolate(eP, [0, 1], [26, 0])}px)`,
+                  }}
+                >
+                  LIKE <span style={{color: T.ice}}>&</span> FOLLOW
+                </div>
+                <div
+                  style={{
+                    fontFamily: FONT.mono,
+                    fontSize: 34,
+                    letterSpacing: 6,
+                    color: T.steel,
+                    opacity: fadeOf(eP),
+                  }}
+                >
+                  FOR MORE SETUPS
+                </div>
+                <div
+                  style={{
+                    marginTop: 16,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 13,
+                    padding: '11px 24px',
+                    border: `1px solid ${T.edge}`,
+                    borderRadius: 999,
+                    fontFamily: FONT.mono,
+                    fontSize: 24,
+                    letterSpacing: 3,
+                    color: T.ice,
+                    opacity: fadeOf(eP) * 0.9,
+                  }}
+                >
+                  {p.ticker ? `${p.ticker.toUpperCase()} · ${p.patternName}` : p.patternName}
+                </div>
+              </>
+            );
+          })()}
+        </AbsoluteFill>
+      ) : null}
 
       {/* --------------------------------------------------- 8. footer
        * Split on the middle dot into a ruled row, like the reference boards'
@@ -1551,10 +1807,10 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
       {/* ------------------------------------------- 10. the ticking clock
        * One escapement per countdown second, alternating tick/tock so five in a
        * row read as a clock rather than a metronome. Placed on the same
-       * COUNT_START/COUNT_PER constants the digits use, so the sound cannot
+       * B.COUNT/COUNT_PER constants the digits use, so the sound cannot
        * drift from the number on screen. */}
       {Array.from({length: COUNT_N}, (_, i) => (
-        <Sequence key={i} from={SH + COUNT_START + i * COUNT_PER} durationInFrames={COUNT_PER}>
+        <Sequence key={i} from={B.COUNT + i * COUNT_PER} durationInFrames={COUNT_PER}>
           <Audio src={staticFile(i % 2 === 0 ? 'audio/tick.wav' : 'audio/tock.wav')} volume={0.55} />
         </Sequence>
       ))}
@@ -1566,18 +1822,18 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
        * rather than like more events happening. */}
       {zm ? (
         <>
-          <Sequence from={Z.fastFrom - 4} durationInFrames={46}>
+          <Sequence from={ZB.fastFrom - 4} durationInFrames={46}>
             <Audio src={staticFile('audio/whoosh_out.wav')} volume={0.34} />
           </Sequence>
-          <Sequence from={Z.fastTo - 6} durationInFrames={70}>
+          <Sequence from={ZB.fastTo - 6} durationInFrames={70}>
             <Audio src={staticFile('audio/whoosh_out.wav')} volume={0.5} />
           </Sequence>
-          <Sequence from={Z.justifyTo - 2} durationInFrames={54}>
+          <Sequence from={ZB.justifyTo - 2} durationInFrames={54}>
             <Audio src={staticFile('audio/whoosh_in.wav')} volume={0.42} />
           </Sequence>
           {/* one click per prior test as it lights — the count made audible */}
           {zm.touches.map((t, j) => (
-            <Sequence key={`tc${t.i}`} from={TOUCH_IN + j * TOUCH_STEP} durationInFrames={TOUCH_STEP}>
+            <Sequence key={`tc${t.i}`} from={touchIn + j * touchStep} durationInFrames={touchStep}>
               <Audio src={staticFile('audio/key_click.wav')} volume={0.3} />
             </Sequence>
           ))}
@@ -1591,7 +1847,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
       {reveal.map((k, i) => (
         <Sequence
           key={`rs${i}`}
-          from={Math.round(SH + REVEAL_START + i * REVEAL_PER)}
+          from={Math.round(B.REVEAL + i * REVEAL_PER)}
           durationInFrames={Math.max(3, Math.round(REVEAL_PER))}
         >
           <Audio
@@ -1601,10 +1857,28 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
         </Sequence>
       ))}
 
-      {/* The coin chime, on the frame the coins start pouring. */}
+      {/* The chime lands on the frame the winning bar prints — the same frame
+       * the check mark scales in. Anchored to payoutAt, which is derived from
+       * the bar index, so it cannot drift away from the mark it belongs to. */}
       {hasRR && tpBar >= 0 ? (
-        <Sequence from={SH + RR_ZONES_IN + 26} durationInFrames={40}>
-          <Audio src={staticFile('audio/coin.wav')} volume={0.75} />
+        <Sequence from={Math.round(payoutAt)} durationInFrames={40}>
+          <Audio src={staticFile('audio/coin.wav')} volume={0.7} />
+        </Sequence>
+      ) : null}
+
+      {/* one soft click per trade-frame line as it draws */}
+      {zm && hasRR
+        ? [B.RR, B.RR_STOP, B.RR_TARGET].map((at) => (
+            <Sequence key={`sc${at}`} from={at} durationInFrames={14}>
+              <Audio src={staticFile('audio/key_click.wav')} volume={0.36} />
+            </Sequence>
+          ))
+        : null}
+
+      {/* end card sting */}
+      {B.ENDCARD > 0 ? (
+        <Sequence from={B.ENDCARD} durationInFrames={50}>
+          <Audio src={staticFile('audio/sfx_pop.wav')} volume={0.5} />
         </Sequence>
       ) : null}
 
