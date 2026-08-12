@@ -7,12 +7,12 @@
     {
       "id": "01_tape",
       "act": "tape",
-      "text": "Real S P Y daily bars, printing live."
+      "text": "This is the S and P five hundred. Real daily bars."
     },
     {
       "id": "02_zoomout",
       "act": "widen",
-      "text": "Watch what happens when we pull back."
+      "text": "Now watch what happens when we pull the camera back."
     },
     {
       "id": "03_deep",
@@ -22,37 +22,37 @@
     {
       "id": "04_justify",
       "act": "justify",
-      "text": "Ten tests of that same line. That is what makes it a level."
+      "text": "That same line, again and again. Ten tests since twenty twenty one. That is what turns a drawn line into a level."
     },
     {
       "id": "05_countdown",
       "act": "countdown",
-      "text": "And price just closed back above it. Five seconds. What happens next?"
+      "text": "And price just closed back above it, on a cup and handle. Five seconds. Call it."
     },
     {
       "id": "06_entry",
       "act": "entry",
-      "text": "Buy. Entry is the close that reclaimed the rim."
+      "text": "Buy. Your entry is the close that reclaimed the rim. Four forty point six one."
     },
     {
       "id": "07_stop",
       "act": "stop",
-      "text": "The stop goes under the handle. If price drops back into the cup, the setup failed. That is eight dollars of risk."
+      "text": "Now the stop. Under the handle, because if price falls back into the cup, the setup never happened. Being wrong costs eight dollars and eight cents."
     },
     {
       "id": "08_target",
       "act": "target",
-      "text": "The target comes from the risk, not from hope. One to two means you aim sixteen for the eight you put up."
+      "text": "The target is arithmetic, not hope. One to two risk appetite. You risked eight, so you aim sixteen. Four fifty six point seven six."
     },
     {
       "id": "09_run",
       "act": "zones",
-      "text": "Range set. Let it run."
+      "text": "Both ends set. Let it run."
     },
     {
       "id": "10_reveal",
       "act": "reveal",
-      "text": "Twelve sessions later."
+      "text": "Twelve sessions."
     },
     {
       "id": "11_hit",
@@ -62,12 +62,14 @@
     {
       "id": "12_rule",
       "act": "rule",
-      "text": "Only one in six of these ever got there. A reason, not a promise."
+      "text": "But here is the honest part. Only one in six of these ever reached target. A setup is a reason, never a promise."
     },
     {
       "id": "13_end",
       "act": "end",
       "text": "Like and follow for more setups."
     }
-  ]
+  ],
+  "speed": 1.15,
+  "_speed_note": "atempo 1.15x. The rate is chosen from a syllable target, not by ear: ep.1 was approved at 3.89 syl/s and a short was rejected at 4.64 as 'truncated and artificial' (commit 2b0aa60). Raw narration here runs 3.49, so 1.15x lands 4.02 - above the approved register for pace, well under the rejected one. atempo, never rubberband: measured word-error damage is +0.000 up to 1.38x, while rubberband drifts >4kHz energy 20.6% at 1.30x and that drift IS the metallic edge."
 }

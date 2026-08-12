@@ -230,7 +230,11 @@ def _emit_fixture(src, bars, idx, want):
         "revealFrom": reveal_from,
         "patternSpan": max(2, card["revealFrom"] // 3),
         "ticker": src["symbol"],
-        "timeframe": "DAILY",
+        # SPY is the instrument, the S&P 500 is what it tracks. Both are on
+        # screen because the narration says "S and P five hundred" - a viewer
+        # hearing the index and reading only the ETF ticker has to reconcile
+        # them; showing both removes the question.
+        "timeframe": "S&P 500 · DAILY",
         "dateRange": f"{_mon(window[0]['date'])} → {_mon(window[-1]['date'])}",
         "zoom": {
             "live0": pl["live0"] - d0,
