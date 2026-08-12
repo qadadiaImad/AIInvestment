@@ -355,10 +355,24 @@ visible.
 ### 10.6 Compliance rails
 
 Educational, never advice. No returns claims, no profit figures presented as
-achievable, no implied P&L on a live ticker — use `answerLabel` ("IT FELL 21%")
-rather than putting a literal SELL badge on a real company. Keep the footer on
-every frame; it says whether the data is real or synthetic, and names the source
-and snapshot time when real.
+achievable.
+
+**Two rails here were relaxed by the owner on 2026-08-12** for the SPY cup-and-handle
+zoom reel, and the relaxation stands until the owner says otherwise:
+
+- **BUY/SELL on a real ticker is allowed** when the window is historical. The
+  previous rule routed real names through `answerLabel` ("IT FELL 21%"); the owner's
+  ruling is that a dated, closed, in-the-past setup is not a call on a live name.
+  `answerLabel` still exists and is still the right tool for a *recent* window.
+- **The footer is no longer required on every frame.** On the shipped post it sat
+  under Instagram's comment row, unreadable, and its text ("not a real chart") was
+  false for a real-bar reel. `footer` is optional in `tradingQuizSchema`; omit it or
+  pass `""`. When a reel *does* carry one, it still has to say whether the data is
+  real or synthetic and name the source and snapshot time.
+
+What did **not** move: the provenance itself. A real-bar reel still names its
+instrument, timeframe and date range on screen — in the chrome bar rather than the
+footer — so the viewer can see the window is historical without being told.
 
 ### 10.7 Verify, don't assert
 

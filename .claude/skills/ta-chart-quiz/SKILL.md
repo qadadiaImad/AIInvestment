@@ -175,6 +175,41 @@ frames / 22.7s at 30fps. Fixtures must carry `durationInFrames: 682` — that's
 `TRADING_QUIZ_MIN_FRAMES`, exported from the composition (the risk/reward act
 extended it; older docs saying 546 are stale).
 
+**Zoom fixtures run 900 frames / 30s** (`TRADING_QUIZ_ZOOM_FRAMES`). A fixture
+carrying a `zoom` prop gets a 218-frame prologue in front of the classic
+timeline, and every act from the level draw onward shifts by that one constant —
+so the back half keeps its relative spacing and cannot desync. Inside the
+component the shifted clock is `tl`; the real clock is `frame`. **Anything
+timed off a post-countdown constant must read `tl`.** Three sites reading
+`frame` shipped once and put the risk/reward act seven seconds early, while its
+audio — placed off `SH + RR_ZONES_IN` — stayed correct, so the coins poured
+before the chime.
+
+## Time-axis zoom
+
+`scripts/ta_quiz/find_anchored_level.py` finds a level's prior tests across a
+long series and decides how much of that history may be **played** versus merely
+**revealed**:
+
+- playback is hard-capped at **126 bars / 6 months** — older tape is exposed by
+  the camera widening, never printed bar by bar, because watching three years
+  print is dead screen time;
+- the tape runs **forward** out of the past, so the window may only ever widen
+  to expose older bars. Printing a recent bar and then revealing an older one is
+  a tape running backwards;
+- below 3 distinct prior visits, or under 6 months of history behind the oldest,
+  it reports **UNMATCHED**. On the SPY five-year series it refuses 8 of the 11
+  detected formations, which is the rail working, not a bug.
+
+Below ~3.5px per bar the candles cross-fade to a close-line silhouette. At the
+deep stop this reel runs 1.2px/bar, so that substitution is required for
+legibility, not decoration.
+
+```bash
+python scripts/ta_quiz/find_anchored_level.py --list      # which formations qualify
+python scripts/ta_quiz/find_anchored_level.py --fixture   # emit the zoom fixture
+```
+
 ## Adding a host (Maya)
 
 `QuizWithHost` composites a rendered quiz with a generated talking-head clip as
@@ -191,9 +226,25 @@ cd remotion && npx remotion render src/index.ts QuizWithHost ...
 
 ## Rails
 
-- The OHLC is **synthetic** — built to demonstrate the pattern. The footer says
-  so on every frame. Never present it as a real chart of a real asset, and never
-  attach a ticker or timeframe to it.
-- Frame patterns as education, not calls: no entry, no target, no "this will
-  drop". `ruleText` describes the setup and its confirmation condition.
-- Keep the disclaimer footer. It's the compliance rail on a silent reel.
+There are now **two kinds of fixture**, and the rails differ:
+
+**Synthetic-library fixtures** (`make_fixture.py`)
+- The OHLC is built to demonstrate the pattern. Say so on screen, never present
+  it as a real chart of a real asset, and never attach a ticker or timeframe.
+- Keep the disclaimer footer. On a synthetic reel it is the only thing telling
+  the viewer the candles were drawn rather than traded.
+
+**Real-bar fixtures** (`find_real_pattern.py`, `find_anchored_level.py`)
+- The ticker, timeframe and date range go in the **chrome bar**, which is what
+  makes the window self-evidently historical.
+- A literal BUY/SELL badge is permitted (owner ruling 2026-08-12) because the
+  window is closed and dated. `answerLabel` remains correct for recent windows.
+- The footer is optional. Pass `""` — and note that Remotion merges `--props`
+  *over* `defaultProps`, so **omitting** the key leaves the previous fixture's
+  footer on screen rather than removing it.
+
+Both kinds:
+- Frame patterns as education, not calls. `ruleText` describes the setup and its
+  confirmation condition, and carries the honest hit rate when one is known —
+  the drawn instance is a winner by construction, so without it the reel reads
+  as a 100% strike rate.

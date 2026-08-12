@@ -65,10 +65,39 @@ export const tradingQuizSchema = z.object({
   answerLine: z.string(),
   ruleTitle: z.string(),
   ruleText: z.string(),
-  footer: z.string(),
+  /** Compliance strip under the chart. Optional since 2026-08-12 (owner
+   * ruling): on the shipped post it sat under Instagram's comment row and was
+   * unreadable, so it cost screen and delivered nothing. Absent -> not drawn. */
+  footer: z.string().optional(),
   /** Index of the first candle that belongs to the REVEAL (everything before
    * it is the visible setup the viewer is quizzed on). */
   revealFrom: z.number(),
+  /** Time-axis zoom. Present -> the reel runs the 900-frame two-act timeline:
+   * open tight on a scrolling window playing forward in real time, widen as
+   * time advances, pull back to the level's whole history, then return to the
+   * decision zone. Absent -> the original 682-frame timeline, untouched.
+   *
+   * Indices are into THIS fixture's `candles` array, already rebased.
+   * `live0` is the first bar the tape is allowed to PLAY; everything before it
+   * is settled history that the camera reveals but never prints. The 6-month
+   * cap on live0 is enforced by scripts/ta_quiz/find_anchored_level.py, because
+   * watching three years of tape print is dead screen time. */
+  zoom: z
+    .object({
+      live0: z.number(),
+      breakout: z.number(),
+      touches: z.array(
+        z.object({i: z.number(), date: z.string(), inLive: z.boolean()})
+      ),
+      /** Headline for the justify act, e.g. "TESTED 10x SINCE AUG 2021". */
+      historyLabel: z.string(),
+    })
+    .optional(),
+  /** Chrome-bar identity. Real-data reels name the instrument here; the mark is
+   * looked up at public/logos/<TICKER>.svg and falls back to a mono tile. */
+  ticker: z.string().optional(),
+  timeframe: z.string().optional(),
+  dateRange: z.string().optional(),
   /** How many candles the highlight box encloses, counting back from the last
    * setup candle. A doji is 1, an engulfing is 2, a morning star is 3 —
    * boxing the wrong count visually mislabels the pattern. Multi-bar chart
@@ -115,6 +144,10 @@ const T = {
   edge: 'rgba(0,224,130,0.20)',
   up: '#00E676',
   down: '#FF3B30',
+  /** Amber, matching the reference boards' level colour. Reserved for
+   * structure — the line and its prior tests — so it never competes with the
+   * up/down semantics of the tape. */
+  level: '#E0A23B',
 };
 
 // Coarse landmass mask, drawn as a dot matrix behind the frame. Deliberately
@@ -193,6 +226,54 @@ const RULE_IN = RR_IN + 92;                         // 594
 /** Minimum duration the timeline needs; fixtures should meet or exceed it. */
 export const TRADING_QUIZ_MIN_FRAMES = RULE_IN + 88; // -> 682
 
+// ------------------------------------------------------- zoom timeline
+/** The two-act zoom prologue buys 218 frames in front of the classic timeline,
+ * which lands the whole reel on exactly 900 frames / 30s. Every act from the
+ * level draw onward simply shifts by this amount — the countdown, answer,
+ * reveal and risk/reward beats keep their relative spacing, so the back half
+ * cannot desync from the front. The shifted landing points happen to be right
+ * where the choreography wants them: the level pens itself in at 336 (as the
+ * camera reaches full pull-back), the pattern name at 376 (mid-justify), the
+ * BUY/SELL fork at 414 (during the return), the countdown at 450. */
+const ZOOM_SHIFT = 218;
+export const TRADING_QUIZ_ZOOM_FRAMES = TRADING_QUIZ_MIN_FRAMES + ZOOM_SHIFT; // -> 900
+/** Act boundaries of the prologue, in absolute frames. */
+const Z = {
+  /** tape opens: a scrolling window playing forward in real time */
+  tape: DRAW_START,      // 40
+  /** tape accelerates and the window starts widening */
+  fastFrom: 190,
+  /** playback done — the breakout bar is the last thing the tape prints */
+  fastTo: 265,
+  /** camera keeps pulling back; NOTHING prints, history is already settled */
+  deepTo: 340,
+  /** hold wide while the level's prior tests light up one by one */
+  justifyTo: 405,
+  /** return to the decision zone */
+  backTo: 450,
+};
+/** Bars on screen at each stop. The opening 24 is what makes a bar read as a
+ * bar; the deep stop is whatever the fixture's history needs. */
+const Z_TIGHT = 24;
+/** Bars the real-time tape prints before it accelerates. 22 bars over 150
+ * frames is ~6.8 frames each — slow enough that a bar reads as a bar trading
+ * rather than a frame of an animation. */
+const Z_TAPE_BARS = 22;
+/** Bars on screen for the countdown, answer and reveal — the decision zone. */
+const Z_DECISION = 46;
+/** Below this many px per bar a candle is a smudge, so the series cross-fades
+ * to a close-line silhouette — the same substitution PatternCard makes for its
+ * mini cells. At the deep stop this reel runs ~1.2px/bar, so it is required. */
+const SILHOUETTE_PX = 3.5;
+/** The justify act: prior tests of the level light one at a time. Watching the
+ * count accumulate is the argument; printing "10" would just be a number. */
+const TOUCH_IN = 344;
+const TOUCH_STEP = 6;
+/** Tickers with a real mark committed at remotion/public/logos/<T>.svg. Listed
+ * rather than probed because staticFile cannot be existence-checked at render
+ * time, and a broken <img> in the chrome is worse than a typographic tile. */
+const LOGO_TICKERS = ['AMD', 'DUOL', 'INTC', 'INTU', 'QBTS', 'SMCI'];
+
 // ---------------------------------------------------------------- geometry
 /** The physical screen the chart lives on. */
 const SCREEN = {x: 34, y: 384, w: 1012, h: 958};
@@ -211,6 +292,71 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const setup = p.candles.slice(0, p.revealFrom);
   const reveal = p.candles.slice(p.revealFrom);
 
+  // ------------------------------------------------------------- timeline
+  // Every act from the level draw onward reads `tl`, never `frame`. In zoom
+  // mode that shifts the entire back half by the prologue's length in ONE
+  // place, so the countdown / answer / reveal / risk-reward beats keep their
+  // relative spacing and cannot drift apart. Legacy: tl === frame exactly.
+  const zm = p.zoom;
+  const SH = zm ? ZOOM_SHIFT : 0;
+  const tl = frame - SH;
+
+  // ------------------------------------------------------------- viewport
+  // The time axis. Legacy: the whole array, fixed, for the whole reel — which
+  // is why only price could ever move. Zoom: a bar-index window [v0,v1] that
+  // opens tight on the oldest playable bars, scrolls forward with the tape,
+  // widens as time advances, pulls back across the level's whole history, then
+  // returns to the decision zone.
+  //
+  // Chronology is the constraint that shapes this. The tape plays FORWARD out
+  // of the past, so the window may only ever widen to expose OLDER bars. It can
+  // never print a recent bar and then reveal an older one — that is a tape
+  // running backwards, and it is the thing that made the first sketch wrong.
+  const nAll = p.candles.length;
+  const lastSetup = p.revealFrom - 1;
+  const live0 = zm ? Math.max(0, Math.min(zm.live0, lastSetup)) : 0;
+  /** First bar the tape is allowed to print. Everything before it is settled
+   * history the camera reveals but never plays — the 6-month rule, enforced
+   * upstream in scripts/ta_quiz/find_anchored_level.py. */
+  const playFrom = zm ? Math.min(live0 + Z_TIGHT, lastSetup) : 0;
+
+  const zStops = [Z.tape, Z.fastFrom, Z.fastTo, Z.deepTo, Z.justifyTo, Z.backTo];
+  const zEase = {easing: EASE.cruise, extrapolateLeft: 'clamp' as const, extrapolateRight: 'clamp' as const};
+  // Right edge follows the newest printed bar, then holds with room to its
+  // right for the reveal to print into.
+  const v1 = zm
+    ? interpolate(frame, zStops,
+        [playFrom, playFrom + Z_TAPE_BARS, lastSetup + 1, lastSetup + 1, lastSetup + 1, nAll], zEase)
+    : nAll;
+  const vW = zm
+    ? interpolate(frame, zStops,
+        [Z_TIGHT, Z_TIGHT, lastSetup + 1 - live0, lastSetup + 1, lastSetup + 1, Z_DECISION], zEase)
+    : nAll;
+  const v0 = zm ? v1 - vW : 0;
+
+  // ------------------------------------------------------- print schedule
+  // Absolute frame at which bar `i` opens. Two rates in zoom mode: a real-time
+  // tape while the window is tight, then a fast-forward as it widens. The
+  // acceleration is not decoration — 126 bars at tape speed is 14 seconds we
+  // do not have, and speeding up IS what "time is passing" looks like.
+  const REVEAL_PER = Math.max(1, REVEAL_SPAN / Math.max(1, reveal.length));
+  const DRAW_PER = Math.max(1, (DRAW_END - DRAW_START) / Math.max(1, setup.length));
+  const ffBars = Math.max(1, lastSetup - playFrom - Z_TAPE_BARS + 1);
+  const appearOf = (i: number): number => {
+    if (i >= p.revealFrom) return SH + REVEAL_START + (i - p.revealFrom) * REVEAL_PER;
+    if (!zm) return DRAW_START + i * DRAW_PER;
+    if (i < playFrom) return -1e6;                     // settled: never prints
+    if (i <= playFrom + Z_TAPE_BARS)
+      return Z.tape + (i - playFrom) * ((Z.fastFrom - Z.tape) / Z_TAPE_BARS);
+    return Z.fastFrom + (i - playFrom - Z_TAPE_BARS) * ((Z.fastTo - Z.fastFrom) / ffBars);
+  };
+  const CANDLE_FORM = Math.max(CANDLE_FORM_MIN, Math.round(DRAW_PER));
+  const formOf = (i: number): number => {
+    if (i >= p.revealFrom) return Math.max(CANDLE_FORM_MIN, Math.round(REVEAL_PER));
+    if (!zm) return CANDLE_FORM;
+    return Math.max(CANDLE_FORM_MIN, Math.round(appearOf(i + 1) - appearOf(i)));
+  };
+
   // The y-scale must NOT span the reveal while the viewer is still guessing.
   // Scaling to every candle up front leaves empty headroom on whichever side
   // price is about to travel, and that empty space telegraphs the answer just
@@ -218,12 +364,25 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   // SYMMETRIC padding until the reveal starts, then ease out to the full range
   // as the new bars print — which is what a real chart does when price leaves
   // the visible window anyway.
-  const sLo = Math.min(...setup.map((k) => k.l));
-  const sHi = Math.max(...setup.map((k) => k.h));
+  // In zoom mode the frame is fitted to the bars actually ON SCREEN AND ALREADY
+  // PRINTED. Both halves of that matter: fitting to off-screen bars would make
+  // a 5-year pull-back unreadable, and fitting to bars that have not printed
+  // yet would let a future bar move the axis — the same leak the symmetric
+  // padding below exists to prevent.
+  const yBars = zm
+    ? p.candles.filter((_, i) => i >= Math.floor(v0) && i <= Math.ceil(v1) && appearOf(i) <= frame)
+    : setup;
+  const ySrc = yBars.length ? yBars : setup.slice(0, 1);
+  const sLo = Math.min(...ySrc.map((k) => k.l));
+  const sHi = Math.max(...ySrc.map((k) => k.h));
   const sPad = (sHi - sLo) * 0.16;
-  const fLo = Math.min(...p.candles.map((k) => k.l)) - PAD.lo;
-  const fHi = Math.max(...p.candles.map((k) => k.h)) + PAD.hi;
-  const zoomOut = interpolate(frame, [REVEAL_START - 4, REVEAL_START + 24], [0, 1], {
+  // The reveal eases out to the DECISION ZONE's range, not the whole array —
+  // in zoom mode the array carries five years of history whose extremes have
+  // nothing to do with the trade being revealed.
+  const fSrc = zm ? p.candles.slice(Math.max(0, nAll - Z_DECISION)) : p.candles;
+  const fLo = Math.min(...fSrc.map((k) => k.l)) - PAD.lo;
+  const fHi = Math.max(...fSrc.map((k) => k.h)) + PAD.hi;
+  const zoomOut = interpolate(tl, [REVEAL_START - 4, REVEAL_START + 24], [0, 1], {
     easing: EASE.cruise,
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
@@ -249,17 +408,18 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const hi = p.level2Price !== undefined ? mid + half : hi1;
   const priceToY = (v: number) => CHART.y1 - ((v - lo) / (hi - lo)) * (CHART.y1 - CHART.y0);
 
-  // Draw rates scale to the bar count so a 24-bar illustration and a 74-bar
-  // real window both finish printing on the same beat.
-  const DRAW_PER = Math.max(1, (DRAW_END - DRAW_START) / Math.max(1, setup.length));
-  const CANDLE_FORM = Math.max(CANDLE_FORM_MIN, Math.round(DRAW_PER));
-  const REVEAL_PER = Math.max(1, REVEAL_SPAN / Math.max(1, reveal.length));
-
-  const slot = (CHART.x1 - CHART.x0) / p.candles.length;
+  const slot = (CHART.x1 - CHART.x0) / Math.max(1, v1 - v0);
   const bodyW = Math.min(24, Math.max(2.5, slot * 0.62));
   // Wick weight tracks body width — a 2.5px wick on a 5px body reads as a blob.
   const wickW = Math.min(2.5, Math.max(1.1, bodyW * 0.3));
-  const cx = (i: number) => CHART.x0 + slot * i + slot / 2;
+  const cx = (i: number) => CHART.x0 + (i - v0 + 0.5) * slot;
+  /** 0 = candles, 1 = close-line silhouette. Below SILHOUETTE_PX a candle is
+   * fewer pixels wide than its own glow and the field reads as a green smear;
+   * the silhouette is what a chart at that scale is actually for. */
+  const silh = interpolate(slot, [SILHOUETTE_PX, SILHOUETTE_PX * 2.2], [1, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
 
   const isDown = p.answer === 'SELL';
   const answerColor = isDown ? T.down : T.up;
@@ -273,25 +433,28 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   // covered for any s >= 1. The focus constants are tuned against this layout
   // so the level labels, fork arrows and lower-band text all survive the tight
   // phase — move them and re-check those collisions frame by frame.
-  const legacyZoom = cameraPushIn(frame, p.durationInFrames, {base: 0.035, hitFrame: ANSWER_IN, hitAmount: 0.02});
+  const legacyZoom = cameraPushIn(frame, p.durationInFrames, {base: 0.035, hitFrame: ANSWER_IN + SH, hitAmount: 0.02});
+  // In zoom mode the viewport IS the camera; a transform scale on top of it
+  // would fight the bar-index window and magnify strokes the viewport just
+  // resized. Fixtures that zoom leave fluidCamera off.
   const fluid = p.fluidCamera === true;
   const camS = fluid
     ? interpolate(
-        frame,
-        [0, DRAW_END, PATTERN_IN, ARROWS_IN + 16, ANSWER_IN, ANSWER_IN + 44, REVEAL_END + 6, RULE_IN, p.durationInFrames],
+        tl,
+        [0, DRAW_END, PATTERN_IN, ARROWS_IN + 16, ANSWER_IN, ANSWER_IN + 44, REVEAL_END + 6, RULE_IN, p.durationInFrames - SH],
         [1.0, 1.045, 1.045, 1.18, 1.19, 1.02, 1.06, 1.03, 1.045],
         {easing: EASE.cruise, extrapolateRight: 'clamp'}
       )
     : 1;
   const camFx = fluid
-    ? interpolate(frame, [PATTERN_IN, ARROWS_IN + 16, ANSWER_IN, ANSWER_IN + 44], [540, 220, 220, 540], {
+    ? interpolate(tl, [PATTERN_IN, ARROWS_IN + 16, ANSWER_IN, ANSWER_IN + 44], [540, 220, 220, 540], {
         easing: EASE.cruise,
         extrapolateLeft: 'clamp',
         extrapolateRight: 'clamp',
       })
     : 540;
   const camFy = fluid
-    ? interpolate(frame, [PATTERN_IN, ARROWS_IN + 16, ANSWER_IN, ANSWER_IN + 44], [960, 1010, 1010, 960], {
+    ? interpolate(tl, [PATTERN_IN, ARROWS_IN + 16, ANSWER_IN, ANSWER_IN + 44], [960, 1010, 1010, 960], {
         easing: EASE.cruise,
         extrapolateLeft: 'clamp',
         extrapolateRight: 'clamp',
@@ -327,7 +490,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const gridLines = Array.from({length: 6}, (_, i) => lo + step * i);
 
   // The price axis hands the right gutter over to the BUY/SELL fork.
-  const axisOut = interpolate(frame, [ARROWS_IN - 12, ARROWS_IN + 2], [1, 0.12], {
+  const axisOut = interpolate(tl, [ARROWS_IN - 12, ARROWS_IN + 2], [1, 0.12], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -347,66 +510,77 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   // two-line reel the lines ARE the lesson — so they stay lit.
   const levelOut =
     p.entry !== undefined && p.stop !== undefined && p.target !== undefined
-      ? interpolate(frame, [RR_IN - 4, RR_IN + 16], [1, 0.18], {
+      ? interpolate(tl, [RR_IN - 4, RR_IN + 16], [1, 0.18], {
           extrapolateLeft: 'clamp',
           extrapolateRight: 'clamp',
         })
       : 1;
 
+  // --------------------------------------------------- justify headline
+  // Rides the real frame: it belongs to the prologue, not to the shifted
+  // back half. In and out inside the deep + justify acts.
+  const historyP = interpolate(
+    frame,
+    [Z.deepTo - 44, Z.deepTo - 20, Z.justifyTo + 6, Z.justifyTo + 26],
+    [0, 1, 1, 0],
+    {easing: EASE.cruise, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}
+  );
+
   // -------------------------------------------------------- pattern frame
-  const patP = spring({frame: frame - PATTERN_IN, fps, config: SPRINGS.pop});
-  const patPulse = 1 + Math.sin(Math.max(0, frame - PATTERN_IN) / 7) * 0.03;
+  const patP = spring({frame: tl - PATTERN_IN, fps, config: SPRINGS.pop});
+  const patPulse = 1 + Math.sin(Math.max(0, tl - PATTERN_IN) / 7) * 0.03;
 
   // ------------------------------------------------------------- arrows
-  const arrowsP = spring({frame: frame - ARROWS_IN, fps, config: SPRINGS.pop});
-  const arrowsOut = interpolate(frame, [ANSWER_IN, ANSWER_IN + 14], [1, 0], {
+  const arrowsP = spring({frame: tl - ARROWS_IN, fps, config: SPRINGS.pop});
+  const arrowsOut = interpolate(tl, [ANSWER_IN, ANSWER_IN + 14], [1, 0], {
     easing: EASE.exit,
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const winnerOut = interpolate(frame, [REVEAL_START - 6, REVEAL_START + 8], [1, 0], {
+  const winnerOut = interpolate(tl, [REVEAL_START - 6, REVEAL_START + 8], [1, 0], {
     easing: EASE.exit,
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
   // ----------------------------------------------------------- countdown
-  const countIdx = Math.floor((frame - COUNT_START) / COUNT_PER);
-  const countActive = frame >= COUNT_START && frame < ANSWER_IN;
+  const countIdx = Math.floor((tl - COUNT_START) / COUNT_PER);
+  const countActive = tl >= COUNT_START && tl < ANSWER_IN;
   const countDigit = COUNT_N - countIdx;
-  const countLocal = (frame - COUNT_START) % COUNT_PER;
+  const countLocal = (tl - COUNT_START) % COUNT_PER;
   const countP = spring({frame: countLocal, fps, config: SPRINGS.hero});
   // Ring drains over the whole 5s window, not per digit — reads as one timer.
-  const countFrac = Math.min(1, Math.max(0, (frame - COUNT_START) / (COUNT_PER * COUNT_N)));
+  const countFrac = Math.min(1, Math.max(0, (tl - COUNT_START) / (COUNT_PER * COUNT_N)));
 
   // ------------------------------------------------------------- answer
-  const answerP = spring({frame: frame - ANSWER_IN, fps, config: SPRINGS.hero});
-  const ruleP = spring({frame: frame - RULE_IN, fps, config: SPRINGS.heavy});
+  const answerP = spring({frame: tl - ANSWER_IN, fps, config: SPRINGS.hero});
+  const ruleP = spring({frame: tl - RULE_IN, fps, config: SPRINGS.heavy});
 
   // ------------------------------------------------- live price tag
   // Tracks the last bar printed so far. Hands off to the BUY/SELL fork when
-  // the fork appears — they'd otherwise fight for the same gutter.
-  const drawnCount = Math.min(
-    setup.length,
-    Math.max(0, Math.floor((frame - DRAW_START) / DRAW_PER) + 1)
-  );
+  // the fork appears — they'd otherwise fight for the same gutter. Derived by
+  // walking the schedule rather than dividing by a rate, because in zoom mode
+  // there are two rates and a settled prefix that never prints at all.
   const revealedCount = Math.min(
     reveal.length,
-    Math.max(0, Math.floor((frame - REVEAL_START) / REVEAL_PER) + 1)
+    Math.max(0, Math.floor((tl - REVEAL_START) / REVEAL_PER) + 1)
   );
-  const lastIdx = frame >= REVEAL_START && revealedCount > 0
+  let drawnLast = -1;
+  for (let i = lastSetup; i >= 0; i--) {
+    if (appearOf(i) <= frame) {
+      drawnLast = i;
+      break;
+    }
+  }
+  const lastIdx = tl >= REVEAL_START && revealedCount > 0
     ? p.revealFrom + revealedCount - 1
-    : Math.max(0, drawnCount - 1);
+    : Math.max(0, drawnLast);
   const lastK = p.candles[lastIdx];
   // Same tick maths the bar itself uses, so the tag reads the live print rather
   // than jumping straight to a close that hasn't happened yet.
   const liveClose = (() => {
     if (!lastK) return 0;
-    const appearAt =
-      lastIdx >= p.revealFrom
-        ? REVEAL_START + (lastIdx - p.revealFrom) * REVEAL_PER
-        : DRAW_START + lastIdx * DRAW_PER;
-    const raw = (frame - appearAt) / CANDLE_FORM;
+    const raw = (frame - appearOf(lastIdx)) / formOf(lastIdx);
     const step = Math.min(CANDLE_TICKS, Math.ceil(Math.min(1, Math.max(0, raw)) * CANDLE_TICKS));
     if (step >= CANDLE_TICKS) return lastK.c;
     const f = step / CANDLE_TICKS;
@@ -416,18 +590,23 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
     return Math.max(lN, Math.min(hN, lastK.o + (lastK.c - lastK.o) * f + drift));
   })();
   const liveUp = liveClose >= (lastK?.o ?? 0);
+  // Fade-in rides the real frame (the tape starts at DRAW_START either way);
+  // the hand-off and the reveal ride the shifted timeline. The price tag is
+  // also hidden while the field is a silhouette — at 1.2px/bar there is no
+  // "last bar" to pin it to, and it would sit on a smear.
   const tagOpacity =
-    interpolate(frame, [DRAW_START + 6, DRAW_START + 20], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) *
-    interpolate(frame, [ARROWS_IN - 10, ARROWS_IN + 4], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) +
-    interpolate(frame, [REVEAL_START, REVEAL_START + 10], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+    (interpolate(frame, [DRAW_START + 6, DRAW_START + 20], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) *
+      interpolate(tl, [ARROWS_IN - 10, ARROWS_IN + 4], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) +
+      interpolate(tl, [REVEAL_START, REVEAL_START + 10], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})) *
+    (1 - silh);
 
   // A bar prints the way a live one actually does, not the way an animation
   // does: it opens, ticks in hard discrete jumps, wanders inside its own range,
   // flips colour when the last trade crosses the open, and only snaps to the
   // real close on the final tick. No easing, no fade-in — those are what made
   // the old version read as a diagram assembling itself.
-  const renderCandle = (k: z.infer<typeof candleSchema>, i: number, appearAt: number) => {
-    const raw = (frame - appearAt) / CANDLE_FORM;
+  const renderCandle = (k: z.infer<typeof candleSchema>, i: number) => {
+    const raw = (frame - appearOf(i)) / formOf(i);
     if (raw <= 0) return null;
     const step = Math.min(CANDLE_TICKS, Math.ceil(Math.min(1, raw) * CANDLE_TICKS));
     const settled = step >= CANDLE_TICKS;
@@ -451,12 +630,36 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
     const yTop = priceToY(Math.max(k.o, cNow));
     const yBot = priceToY(Math.min(k.o, cNow));
     return (
-      <g key={i} style={{filter: `drop-shadow(0 0 ${settled ? 6 : 11}px ${col}${settled ? '77' : 'cc'})`}}>
+      <g
+        key={i}
+        opacity={candleOp}
+        style={{filter: `drop-shadow(0 0 ${settled ? 6 : 11}px ${col}${settled ? '77' : 'cc'})`}}
+      >
         <line x1={x} x2={x} y1={priceToY(hNow)} y2={priceToY(lNow)} stroke={col} strokeWidth={wickW} />
         <rect x={x - bodyW / 2} y={yTop} width={bodyW} height={Math.max(2, yBot - yTop)} rx={2} fill={col} />
       </g>
     );
   };
+
+  // ------------------------------------------------- what is on screen now
+  // Only bars inside the window are built. At the deep stop the array holds
+  // 589 bars; rendering all of them with drop-shadow filters every frame is
+  // minutes of render time for pixels nobody sees.
+  const visFrom = Math.max(0, Math.floor(v0) - 1);
+  const visTo = Math.min(nAll - 1, Math.ceil(v1) + 1);
+  const candleOp = 1 - silh;
+  /** The wide-zoom stand-in: one polyline through the closes of every printed
+   * bar in view. This is what a chart at 1.2px/bar is for — the SHAPE, which
+   * is the whole argument the pull-back is making. */
+  const silhouette =
+    silh > 0.02
+      ? p.candles
+          .slice(visFrom, visTo + 1)
+          .map((k, j) => ({i: visFrom + j, k}))
+          .filter(({i}) => appearOf(i) <= frame)
+          .map(({i, k}) => `${cx(i).toFixed(1)},${priceToY(k.c).toFixed(1)}`)
+          .join(' ')
+      : '';
 
   // The candles that form the pattern, counting back from the last setup bar.
   const span = Math.max(1, Math.min(p.patternSpan ?? 2, p.revealFrom));
@@ -479,15 +682,15 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
   const tpBar = hasRR
     ? reveal.findIndex((k) => k.h >= (p.target as number))
     : -1;
-  const rrP = spring({frame: frame - RR_IN, fps, config: SPRINGS.heavy});
-  const zonesP = interpolate(frame, [RR_ZONES_IN, RR_ZONES_IN + 22], [0, 1], {
+  const rrP = spring({frame: tl - RR_IN, fps, config: SPRINGS.heavy});
+  const zonesP = interpolate(tl, [RR_ZONES_IN, RR_ZONES_IN + 22], [0, 1], {
     easing: EASE.enter,
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
   // The payoff lands when the zone fill sweeps past the winning bar.
   const payoutAt = RR_ZONES_IN + 26;
-  const coinT = frame - payoutAt;
+  const coinT = tl - payoutAt;
 
   const oX = cx(p.revealFrom - 1) + slot * 0.8;
   const oY = priceToY(p.candles[p.revealFrom - 1].c);
@@ -624,7 +827,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
             }}
           >
             {p.indexLabel ? <span style={{color: T.steel}}>{p.indexLabel}</span> : null}
-            MAYA LAB
+            {p.ticker ? `${p.ticker.toUpperCase()} · ${p.timeframe ?? ''}`.trim() : 'MAYA LAB'}
           </div>
           <div style={{fontFamily: FONT.display, fontWeight: 700, fontSize: 76, color: C.ink, letterSpacing: -1}}>
             {p.kick.split(' ')[0]}{' '}
@@ -686,7 +889,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
         ) : null}
 
         {/* --------------------------------------------------- 4. answer */}
-        {frame >= ANSWER_IN ? (
+        {tl >= ANSWER_IN ? (
           <div
             style={{
               position: 'absolute',
@@ -720,7 +923,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
          * not under the badge — under the badge it sits at y≈376, exactly where
          * the screen panel starts, and was painted over on every render. Here it
          * also fills the gap between the answer landing and the rule card. */}
-        {frame >= ANSWER_IN ? (
+        {tl >= ANSWER_IN ? (
           <div
             style={{
               position: 'absolute',
@@ -730,7 +933,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               textAlign: 'center',
               opacity:
                 fadeOf(answerP) *
-                interpolate(frame, [RULE_IN - 16, RULE_IN - 2], [1, 0], {
+                interpolate(tl, [RULE_IN - 16, RULE_IN - 2], [1, 0], {
                   extrapolateLeft: 'clamp',
                   extrapolateRight: 'clamp',
                 }),
@@ -776,20 +979,56 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               background: 'rgba(0,224,130,.045)',
             }}
           >
-            {[T.down, '#E0A23B', T.up].map((col) => (
+            {[T.down, T.level, T.up].map((col) => (
               <div key={col} style={{width: 11, height: 11, borderRadius: 999, background: col, opacity: 0.62}} />
             ))}
-            <div
-              style={{
-                marginLeft: 12,
-                fontFamily: FONT.mono,
-                fontSize: 19,
-                letterSpacing: 2,
-                color: T.steel,
-              }}
-            >
-              MAYA LAB — {p.subject ?? p.patternName}
-            </div>
+            {/* Instrument identity. A real ticker gets its mark when one exists
+              * at public/logos/<TICKER>.svg, and a typographic tile when it does
+              * not — which is most of them, and reads as a terminal either way.
+              * Without a ticker this falls back to the original lab label. */}
+            {p.ticker ? (
+              <div style={{marginLeft: 12, display: 'flex', alignItems: 'center', gap: 11}}>
+                {LOGO_TICKERS.includes(p.ticker.toUpperCase()) ? (
+                  <img
+                    src={staticFile(`logos/${p.ticker.toUpperCase()}.svg`)}
+                    width={30}
+                    height={30}
+                    style={{display: 'block', borderRadius: 6}}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      padding: '3px 9px',
+                      border: `1px solid ${T.edge}`,
+                      borderRadius: 7,
+                      background: 'rgba(0,224,130,.07)',
+                      fontFamily: FONT.mono,
+                      fontWeight: 800,
+                      fontSize: 19,
+                      letterSpacing: 1,
+                      color: T.ice,
+                    }}
+                  >
+                    {p.ticker.toUpperCase()}
+                  </div>
+                )}
+                <div style={{fontFamily: FONT.mono, fontSize: 19, letterSpacing: 2, color: T.steel}}>
+                  {[p.ticker.toUpperCase(), p.timeframe, p.dateRange].filter(Boolean).join(' · ')}
+                </div>
+              </div>
+            ) : (
+              <div
+                style={{
+                  marginLeft: 12,
+                  fontFamily: FONT.mono,
+                  fontSize: 19,
+                  letterSpacing: 2,
+                  color: T.steel,
+                }}
+              >
+                MAYA LAB — {p.subject ?? p.patternName}
+              </div>
+            )}
             <div style={{marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8}}>
               <div
                 style={{
@@ -875,8 +1114,61 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
             );
           })}
 
-          {setup.map((k, i) => renderCandle(k, i, DRAW_START + i * DRAW_PER))}
-          {reveal.map((k, i) => renderCandle(k, p.revealFrom + i, REVEAL_START + i * REVEAL_PER))}
+          {/* the tape — only what is inside the window */}
+          {candleOp > 0.02
+            ? p.candles
+                .slice(visFrom, visTo + 1)
+                .map((k, j) => renderCandle(k, visFrom + j))
+            : null}
+          {/* wide-zoom silhouette: the shape the pull-back exists to show */}
+          {silhouette ? (
+            <polyline
+              points={silhouette}
+              fill="none"
+              stroke={T.ice}
+              strokeWidth={2.4}
+              strokeLinejoin="round"
+              opacity={silh * 0.92}
+              style={{filter: `drop-shadow(0 0 9px ${T.ice}88)`}}
+            />
+          ) : null}
+
+          {/* prior tests of the level — the justify act's whole argument.
+            * Each tick sits ON the line at a bar the scanner actually found
+            * price touching it, and lights in sequence so the count is
+            * something the viewer watches accumulate rather than reads. */}
+          {zm && silh > 0.02
+            ? zm.touches.map((t, j) => {
+                const at = TOUCH_IN + j * TOUCH_STEP;
+                const tp = interpolate(frame, [at, at + 12], [0, 1], {
+                  easing: EASE.enter,
+                  extrapolateLeft: 'clamp',
+                  extrapolateRight: 'clamp',
+                });
+                if (tp <= 0 || t.i < visFrom || t.i > visTo) return null;
+                const tx = cx(t.i);
+                const ty = priceToY(p.levelPrice);
+                return (
+                  // Deliberately small. Three of these tests fall inside seven
+                  // weeks of 2021, which at 1.15px/bar puts them 14px apart —
+                  // a 7px ring made them one amber smudge. The cluster is the
+                  // truth (price really did camp there), so the marks shrink
+                  // to keep it legible rather than the count being thinned.
+                  <g key={`t${t.i}`} opacity={tp * silh}>
+                    <circle
+                      cx={tx}
+                      cy={ty}
+                      r={4.5 + (1 - tp) * 9}
+                      fill="none"
+                      stroke={T.level}
+                      strokeWidth={1.8}
+                      style={{filter: `drop-shadow(0 0 7px ${T.level})`}}
+                    />
+                    <circle cx={tx} cy={ty} r={2.2} fill={T.level} />
+                  </g>
+                );
+              })
+            : null}
 
           {/* live price tag — pinned at the right of the candle field */}
           {tagOpacity > 0.01 && lastK ? (
@@ -948,6 +1240,35 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               </g>
             );
           })}
+
+          {/* the justify act's headline — what the pull-back just proved.
+            * Sits in the plot's upper band, backed so the silhouette cannot
+            * run through the letterforms, and clears out before the pattern
+            * name lands in the lower band. */}
+          {zm && historyP > 0.01 ? (
+            <g opacity={historyP}>
+              <rect
+                x={CHART.x0 - 10}
+                y={CHART.y0 + 8}
+                width={zm.historyLabel.length * 19.2 + 28}
+                height={46}
+                rx={9}
+                fill={T.panelTop}
+                opacity={0.93}
+              />
+              <text
+                x={CHART.x0 + 4}
+                y={CHART.y0 + 40}
+                fill={T.level}
+                fontFamily={FONT.mono}
+                fontWeight={800}
+                fontSize={28}
+                letterSpacing={2}
+              >
+                {zm.historyLabel}
+              </text>
+            </g>
+          ) : null}
 
           {/* pattern highlight */}
           {patP > 0 ? (
@@ -1112,7 +1433,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
         {/* Fills the band under the screen while the viewer is deciding —
          * without it the lower third sits empty for most of the reel. Hands
          * straight over to the rule card once the answer lands. */}
-        {frame >= ARROWS_IN && frame < ANSWER_IN + 10 ? (
+        {tl >= ARROWS_IN && tl < ANSWER_IN + 10 ? (
           <div
             style={{
               position: 'absolute',
@@ -1121,8 +1442,8 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
               right: 0,
               textAlign: 'center',
               opacity:
-                fadeOf(spring({frame: frame - ARROWS_IN, fps, config: SPRINGS.pop})) *
-                interpolate(frame, [ANSWER_IN - 12, ANSWER_IN + 2], [1, 0], {
+                fadeOf(spring({frame: tl - ARROWS_IN, fps, config: SPRINGS.pop})) *
+                interpolate(tl, [ANSWER_IN - 12, ANSWER_IN + 2], [1, 0], {
                   extrapolateLeft: 'clamp',
                   extrapolateRight: 'clamp',
                 }),
@@ -1198,14 +1519,14 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
           bottom: 68,
           left: 46,
           right: 46,
-          display: 'flex',
+          display: p.footer ? 'flex' : 'none',
           alignItems: 'stretch',
           justifyContent: 'center',
           borderTop: `1px solid ${T.edge}`,
           paddingTop: 18,
         }}
       >
-        {p.footer.split('·').map((cell, i, all) => (
+        {(p.footer ?? '').split('·').map((cell, i, all) => (
           <div
             key={cell}
             style={{
@@ -1233,10 +1554,35 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
        * COUNT_START/COUNT_PER constants the digits use, so the sound cannot
        * drift from the number on screen. */}
       {Array.from({length: COUNT_N}, (_, i) => (
-        <Sequence key={i} from={COUNT_START + i * COUNT_PER} durationInFrames={COUNT_PER}>
+        <Sequence key={i} from={SH + COUNT_START + i * COUNT_PER} durationInFrames={COUNT_PER}>
           <Audio src={staticFile(i % 2 === 0 ? 'audio/tick.wav' : 'audio/tock.wav')} volume={0.55} />
         </Sequence>
       ))}
+
+      {/* ------------------------------------------ the two pull-backs
+       * One whoosh per zoom-out. The deep one is the only sound over that
+       * whole act — 500 bars of settled history cannot each take a hit, and
+       * silence under a moving camera is what makes the move feel like scale
+       * rather than like more events happening. */}
+      {zm ? (
+        <>
+          <Sequence from={Z.fastFrom - 4} durationInFrames={46}>
+            <Audio src={staticFile('audio/whoosh_out.wav')} volume={0.34} />
+          </Sequence>
+          <Sequence from={Z.fastTo - 6} durationInFrames={70}>
+            <Audio src={staticFile('audio/whoosh_out.wav')} volume={0.5} />
+          </Sequence>
+          <Sequence from={Z.justifyTo - 2} durationInFrames={54}>
+            <Audio src={staticFile('audio/whoosh_in.wav')} volume={0.42} />
+          </Sequence>
+          {/* one click per prior test as it lights — the count made audible */}
+          {zm.touches.map((t, j) => (
+            <Sequence key={`tc${t.i}`} from={TOUCH_IN + j * TOUCH_STEP} durationInFrames={TOUCH_STEP}>
+              <Audio src={staticFile('audio/key_click.wav')} volume={0.3} />
+            </Sequence>
+          ))}
+        </>
+      ) : null}
 
       {/* One tone per REVEAL candle, pitched by direction — up-bars glide up,
        * down-bars glide down. Only the reveal is scored: the setup prints 62
@@ -1245,7 +1591,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
       {reveal.map((k, i) => (
         <Sequence
           key={`rs${i}`}
-          from={Math.round(REVEAL_START + i * REVEAL_PER)}
+          from={Math.round(SH + REVEAL_START + i * REVEAL_PER)}
           durationInFrames={Math.max(3, Math.round(REVEAL_PER))}
         >
           <Audio
@@ -1257,7 +1603,7 @@ export const TradingQuiz: React.FC<TradingQuizProps> = (p) => {
 
       {/* The coin chime, on the frame the coins start pouring. */}
       {hasRR && tpBar >= 0 ? (
-        <Sequence from={RR_ZONES_IN + 26} durationInFrames={40}>
+        <Sequence from={SH + RR_ZONES_IN + 26} durationInFrames={40}>
           <Audio src={staticFile('audio/coin.wav')} volume={0.75} />
         </Sequence>
       ) : null}
