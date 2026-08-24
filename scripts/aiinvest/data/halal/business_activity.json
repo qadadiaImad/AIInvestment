@@ -353,6 +353,17 @@
     "last_reviewed": "2026-07-21"
   },
   {
+    "ticker": "BE",
+    "status": "clean",
+    "categories": [],
+    "impermissible_revenue_pct": null,
+    "evidence": null,
+    "methodology_notes": {},
+    "note": null,
+    "confidence": "high",
+    "last_reviewed": "2026-08-24"
+  },
+  {
     "ticker": "BTQ",
     "status": "questionable",
     "categories": [

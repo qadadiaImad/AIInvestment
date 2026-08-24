@@ -17,6 +17,7 @@ LAYERS = {
         "NYSE:SMR", "NYSE:OKLO", "NASDAQ:NNE", "NYSE:LEU", "NYSE:CCJ", "NYSE:BWXT",
         "NYSE:WMB", "NYSE:KMI", "NYSE:ET", "NYSE:OKE", "NYSE:TRGP", "NYSE:LNG",
         "AMEX:UEC", "AMEX:UUUU",  # uranium fuel
+        "NYSE:BE",  # fuel cells — behind-the-meter DC power (the AEP→AMZN edge runs 228 of its units)
     ],
     # L1 — Chips & semis: compute, foundry/equipment, EDA, memory, optical/interconnect
     "L1-chips": [

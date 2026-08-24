@@ -273,6 +273,14 @@
       "note": ""
     },
     {
+      "id": "BE",
+      "name": "BE",
+      "type": "public",
+      "ticker": "NYSE:BE",
+      "layer": "L0-energy",
+      "note": ""
+    },
+    {
       "id": "NVDA",
       "name": "NVDA",
       "type": "public",
