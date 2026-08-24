@@ -92,3 +92,17 @@ example.mp4
 content/vector_char/cast/**/*.mp4
 content/vector_char/cast/**/frames_*/
 content/probe/**/*.mp4
+
+# ---------------------------------------------------------------------------
+# BROKERAGE / IBKR ACCOUNT DATA — see CLAUDE.md §11. Never committed, ever.
+# "data/*" above already ignores these, but they are spelled out so that a
+# future "!data/<something>" negation can never accidentally re-include them.
+# Do NOT add a negation under this block.
+data/private/
+data/private/**
+data/portfolio/positions.json
+**/ibkr_*.json
+**/ibkr_*.html
+**/portfolio_*.html
+**/*_holdings.json
+**/*_positions.json

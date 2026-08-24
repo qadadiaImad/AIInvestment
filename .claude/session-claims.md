@@ -15,12 +15,14 @@ when done.
 
 | Resource | Held by | Since | Until | Notes |
 |---|---|---|---|---|
-| _(none currently held by this session)_ | | | | |
 
 ## Recently released
 
 | Resource | Session | Released | Notes |
 |---|---|---|---|
+| Playwright MCP browser | dashboard-refresh | 2026-08-14 10:07Z | Mode B GuruFocus harvest, 429 symbols in 9 paced in-page fetch batches off one authenticated NVDA page. 424×200, 5×404, **zero 403/429 — the gate never fired, so no rotation was needed**. Closed after. A second profile `mcp-chrome-2a6ce6e` (up since 07:47Z) was alive throughout and belongs to another server — untouched. |
+| git branch `feat/multi-sector-research-platform` | full-refresh-0824 | 2026-08-24 15:12Z | Full data refresh committed + deployed. 3 remotion/src files left untouched (another session's in-flight reel work). |
+| Playwright MCP browser | full-refresh-0824 | 2026-08-24 14:50Z | Mode B GuruFocus harvest, **450 symbols in 9 in-page fetch chunks off ONE `browser_navigate`** (NVDA valuation). **445×200, 5×404, zero 402/403/429 — gate never fired, no rotation, no `browser_close`.** Chart API version string drifted to **`v=1.8.90`** (was 1.8.86 on 08-14). Tab returned to about:blank; browser left running as found. |
 | Remotion render + ffmpeg | reel/trading-quiz | 2026-08-12 17:37Z | SPY cup-and-handle zoom reel, v3 shipped |
 | git branch `feat/multi-sector-research-platform` | reel/trading-quiz | 2026-08-12 17:37Z | commits `1bee89c`, `e0c548b` |
 | grok-cli TTS | reel/trading-quiz | 2026-08-12 17:33Z | 26 syntheses (2 script passes × 13 segments) |

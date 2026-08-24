@@ -449,3 +449,60 @@ Branch `claude/refresh-data-import-stock-story-svya0l`, commit and push each
 deliverable, and **show every rendered media file in the chat**. Higgsfield and
 anything needing interactive auth is a laptop task; write a paste-ready prompt
 into `references/` instead of attempting it in the container.
+
+---
+
+## 11. IBKR / brokerage account data — HARD RULE (owner, 2026-08-14)
+
+The owner connected their **real Interactive Brokers account** to this session. Everything
+that flows from it is private financial data about a specific person. This section overrides
+every other rule in this file, including §10.1's provenance-stamping habit and §10.10's
+"commit and push each deliverable".
+
+### 11.1 The rule
+
+**Nothing derived from the brokerage account is ever published, committed, or deployed.**
+
+*Publish* means all of: `git add`/commit, a Vercel deploy, `web/public/**`, an Artifact
+(artifacts are hosted on claude.ai — that is publishing, private-by-default or not), a
+Higgsfield upload, a CloudFront link, social copy, a rendered reel, a carousel, a chat
+paste of raw holdings, or any file under a directory that is not gitignored.
+
+Banned payloads — the output of every `mcp__claude_ai_Interactive_Brokers_IBKR__*` tool that
+touches the account: `get_account_balances`, `get_account_positions`, `get_account_summary`,
+`get_account_orders`, `get_account_trades`, `get_pa_allocation`,
+`get_pa_performance_all_periods`, `get_watchlists` / `get_watchlist`, `get_alerts` /
+`get_alert`, `get_order_instructions`. Also banned: anything computed from them — position
+sizes, cost basis, P&L, account value, allocation weights, concentration, broker account
+numbers, and any chart or table plotting them.
+
+**No order ever gets placed.** `create_order_instruction` / `delete_order_instruction` and
+the alert-mutating tools are not to be called. This repo reads; it does not trade.
+
+### 11.2 Where account work is allowed to live
+
+**Localhost only.** If a solution is needed, it runs on the owner's machine and stays there:
+
+- Output goes to `data/private/` — gitignored with no negation, never served, never copied
+  into `web/public/`. `web/data/portfolio.json` (§2b) stays server-only and is already
+  gitignored; do not relax that.
+- To *view* something, write a plain local HTML file under `data/private/` and open it from
+  the filesystem, or serve it on `127.0.0.1`. Never an Artifact, never a deploy.
+- Never paste holdings into chat. Reference them by shape ("the largest position",
+  "the L1-chips sleeve") when discussing, and put the numbers in the local file.
+
+### 11.3 The broker is not a named source in published output
+
+Separate from the account data: **do not credit "Interactive Brokers" / "IBKR" on anything
+that ships.** Market bars used in a reel are fine to use; the broker's name in an on-screen
+credit, caption, or social post is not. Say "real market data" and name the instrument,
+timeframe and date range (§10.6's provenance requirement is satisfied without the vendor).
+
+This section supersedes §10.1's instruction to stamp `source` with the brokerage MCP for
+anything published. Keep the stamp in the local `data/prices/*.json` record; strip the
+vendor name from the rendered surface.
+
+### 11.4 If a rule and a request collide
+
+Do not resolve it by publishing. Say what the rule blocks, deliver the localhost version,
+and let the owner decide.

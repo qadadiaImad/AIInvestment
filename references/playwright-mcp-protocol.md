@@ -93,10 +93,20 @@ Run **alone**. No other tabs active. No parallel agents on the browser.
 series* comes from the chart endpoint
 `https://www.gurufocus.com/reader/_api/chart/{SYM}/valuation?v=1.8.70`.
 
-> **The `v=` version string drifts** (was `1.8.61`; observed **`1.8.70` on 2026-06-20`**).
-> It is NOT used by production code — only here and in the playbook. Before a batch, read
-> the page's own chart request via `browser_network_requests(filter="reader/_api/chart")`
-> and copy whatever `v=` it used; a stale version still tends to return 200 but don't rely on it.
+> **The `v=` version string drifts** (was `1.8.61`; `1.8.70` on 2026-06-20; observed
+> **`1.8.86` on 2026-08-14**, **`1.8.90` on 2026-08-24**). It is NOT used by production code — only here and in the
+> playbook. Before a batch, read the page's own chart request via
+> `browser_network_requests(filter="reader/_api/chart")` and copy whatever `v=` it used;
+> a stale version still tends to return 200 but don't rely on it.
+
+> **Batch scale, measured 2026-08-14.** One `browser_navigate` to a single valuation page
+> authenticates the session; **429 symbols** were then harvested through
+> `page.evaluate` same-origin `fetch` in 9 chunks of ~50, paced 220–480 ms between
+> fetches. Result: **424×200, 5×404, zero 402/403/429** — the free-view gate counts
+> *navigations*, not same-origin XHR, so the ≤2-hits-per-instance budget applies to
+> `browser_navigate` and **no rotation was needed for the whole universe**. Save each
+> chunk with `browser_evaluate`'s `filename` argument (lands at repo root) rather than
+> returning payloads into the agent's context — the 429-symbol harvest is ~32 MB.
 
 - **Local headless python-playwright** (`scripts/fundamental_fetch.py`, fresh clean profile,
   single IP) → this endpoint returns **HTTP 403 for EVERY ticker** (including NVDA, which
