@@ -12,6 +12,8 @@ import LayerChip from "@/components/LayerChip";
 type SectorRow = ScreenerRow & {
   sector?: string | null;
   sectors?: string[] | null;
+  // Foreign listings (Physical-AI bundle) quote price in local currency.
+  currency?: string | null;
 };
 
 // Normalize a row to the set of sectors it belongs to (deduped, order-stable).
@@ -26,9 +28,9 @@ function rowSectors(r: SectorRow): string[] {
   return out;
 }
 
-type SectorFilter = "All" | "AI" | "Quantum" | "Congress";
+type SectorFilter = "All" | "AI" | "Quantum" | "PhysicalAI" | "Congress";
 
-const SECTOR_FILTERS: SectorFilter[] = ["All", "AI", "Quantum", "Congress"];
+const SECTOR_FILTERS: SectorFilter[] = ["All", "AI", "Quantum", "PhysicalAI", "Congress"];
 
 function SectorChip({ sectors }: { sectors: string[] }) {
   if (sectors.length === 0) return <span className="text-term-muted">{DASH}</span>;
@@ -36,7 +38,7 @@ function SectorChip({ sectors }: { sectors: string[] }) {
     <span className="inline-flex gap-1 align-middle">
       {sectors.map((s) => {
         const color =
-          s === "Quantum" ? "#a855f7" : s === "Congress" ? "#f59e0b" : "#22d3ee";
+          s === "Quantum" ? "#a855f7" : s === "PhysicalAI" ? "#22e07e" : s === "Congress" ? "#f59e0b" : "#22d3ee";
         return (
           <span
             key={s}
@@ -275,7 +277,12 @@ export default function ScreenerTable({
                 <td>
                   <LayerChip layer={r.layer} />
                 </td>
-                <td className="numcell tnum">{fmtPrice(r.price)}</td>
+                <td className="numcell tnum">
+                  {fmtPrice(r.price)}
+                  {(r as SectorRow).currency && (r as SectorRow).currency !== "USD" ? (
+                    <span className="text-term-muted text-[9px] ml-1">{(r as SectorRow).currency}</span>
+                  ) : null}
+                </td>
                 <td className="numcell tnum">{ratio(r.pe, 1)}</td>
                 <td className="numcell tnum">{pct(r.net_margin)}</td>
                 <td className="numcell tnum">{pct(r.roe)}</td>

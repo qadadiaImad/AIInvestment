@@ -267,6 +267,10 @@ export function getSiteData(): SiteData {
   // by src+dst+type); layers union (AI L* + quantum Q* keys coexist).
   mergeQuantum(parsed);
 
+  // Merge the Physical-AI / rare-earth-magnet chain (web/public/data/physical_ai.json)
+  // the same way: disjoint stocks, sector-tagged screener rows, graph union.
+  mergeSectorBundle(parsed, "physical_ai.json", "PhysicalAI");
+
   // Merge the Congress sector (web/public/data/congress_stocks.json) if present.
   // Absent → unchanged. Same stock schema as quantum.json but sector "Congress"
   // and empty capital_web. Stocks are disjoint from AI/quantum by construction
@@ -289,7 +293,11 @@ function edgeKey(e: GraphEdge): string {
 }
 
 function mergeQuantum(parsed: SiteData): void {
-  const file = path.join(process.cwd(), "public", "data", "quantum.json");
+  mergeSectorBundle(parsed, "quantum.json", "Quantum");
+}
+
+function mergeSectorBundle(parsed: SiteData, fileName: string, sector: string): void {
+  const file = path.join(process.cwd(), "public", "data", fileName);
   if (!fs.existsSync(file)) return;
   let quantum: SiteData;
   try {
@@ -302,14 +310,14 @@ function mergeQuantum(parsed: SiteData): void {
   // Stocks: disjoint union. Each quantum stock carries sector "Quantum".
   for (const sym of Object.keys(quantum.stocks ?? {})) {
     const stock = quantum.stocks[sym];
-    stock.sectors = ["Quantum"];
+    stock.sectors = [sector];
     parsed.stocks[sym] = stock;
   }
 
   // Screener: concat; each quantum row carries sector "Quantum".
   for (const row of quantum.screener ?? []) {
-    row.sector = "Quantum";
-    row.sectors = ["Quantum"];
+    row.sector = sector;
+    row.sectors = [sector];
     // Enrich fundamental-value fields from the merged stock, mirroring AI rows.
     const v = parsed.stocks[row.symbol]?.valuation;
     if (v) {
@@ -326,10 +334,10 @@ function mergeQuantum(parsed: SiteData): void {
   for (const qnode of quantum.capital_web?.nodes ?? []) {
     const existing = nodeById.get(qnode.id);
     if (existing) {
-      const merged = new Set([...(existing.sectors ?? []), "Quantum"]);
+      const merged = new Set([...(existing.sectors ?? []), sector]);
       existing.sectors = [...merged];
     } else {
-      qnode.sectors = ["Quantum"];
+      qnode.sectors = [sector];
       nodeById.set(qnode.id, qnode);
       parsed.capital_web.nodes.push(qnode);
     }

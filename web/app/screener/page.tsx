@@ -28,7 +28,15 @@ export default function ScreenerPage() {
       (Array.isArray(row.sectors) && row.sectors.includes("Quantum"))
     );
   });
-  const scopeLabel = hasQuantum ? "AI + Quantum" : "AI";
+  const hasPhysical = data.screener.some((r) => {
+    const row = r as typeof r & { sector?: string | null; sectors?: string[] | null };
+    return (
+      row.sector === "PhysicalAI" ||
+      (Array.isArray(row.sectors) && row.sectors.includes("PhysicalAI"))
+    );
+  });
+  const scopeLabel =
+    "AI" + (hasQuantum ? " + Quantum" : "") + (hasPhysical ? " + Physical AI" : "");
 
   return (
     <div className="flex flex-col px-3 py-3 gap-2">

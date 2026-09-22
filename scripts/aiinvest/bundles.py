@@ -102,6 +102,8 @@ BUNDLES: dict[str, Bundle] = {
                max_age_h=_DAILY, min_bytes=400_000),
         Bundle("quantum.json", PUBLIC, "export_quantum.py", driver=DRV_DAILY,
                max_age_h=_DAILY, min_bytes=30_000),
+        Bundle("physical_ai.json", PUBLIC, "export_physical_ai.py", driver=DRV_DAILY,
+               max_age_h=_DAILY, min_bytes=30_000),
         Bundle("news.json", PUBLIC, "pull_news.py", driver=DRV_DAILY,
                max_age_h=_DAILY, min_bytes=150_000),
         Bundle("macro.json", PUBLIC, "pull_macro.py", driver=DRV_DAILY,
