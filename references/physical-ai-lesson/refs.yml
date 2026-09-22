@@ -1,0 +1,421 @@
+# Hayagriva bibliography for the physical-AI magnet lesson.
+# Every entry was verified on 2026-09-22 via the Crossref API (DOI records), a publisher
+# page, or the open-access text itself. Nothing here is cited from memory.
+
+sagawa1984:
+  type: article
+  title: "New material for permanent magnets on a base of Nd and Fe (invited)"
+  author: ["Sagawa, M.", "Fujimura, S.", "Togawa, N.", "Yamamoto, H.", "Matsuura, Y."]
+  date: 1984
+  page-range: 2083-2087
+  serial-number: { doi: "10.1063/1.333572" }
+  parent: { type: periodical, title: "Journal of Applied Physics", volume: 55, issue: 6 }
+
+croat1984:
+  type: article
+  title: "Pr-Fe and Nd-Fe-based materials: A new class of high-performance permanent magnets (invited)"
+  author: ["Croat, J. J.", "Herbst, J. F.", "Lee, R. W.", "Pinkerton, F. E."]
+  date: 1984
+  page-range: 2078-2082
+  serial-number: { doi: "10.1063/1.333571" }
+  parent: { type: periodical, title: "Journal of Applied Physics", volume: 55, issue: 6 }
+
+yamamoto1984:
+  type: article
+  title: "Magnetocrystalline anisotropy of R2Fe14B tetragonal compounds"
+  author: ["Yamamoto, H.", "Matsuura, Y.", "Fujimura, S.", "Sagawa, M."]
+  date: 1984
+  page-range: 1141-1143
+  serial-number: { doi: "10.1063/1.95015" }
+  parent: { type: periodical, title: "Applied Physics Letters", volume: 45 }
+
+hirosawa1986:
+  type: article
+  title: "Magnetization and magnetic anisotropy of R2Fe14B measured on single crystals"
+  author: ["Hirosawa, S.", "Matsuura, Y.", "Yamamoto, H.", "Fujimura, S.", "Sagawa, M.", "Yamauchi, H."]
+  date: 1986
+  page-range: 873-879
+  serial-number: { doi: "10.1063/1.336611" }
+  parent: { type: periodical, title: "Journal of Applied Physics", volume: 59 }
+
+grossinger1986:
+  type: article
+  title: "Temperature dependence of anisotropy fields and initial susceptibilities in R2Fe14B compounds"
+  author: ["Grössinger, R.", "Sun, X. K.", "Eibler, R.", "Buschow, K. H. J.", "Kirchmayr, H. R."]
+  date: 1986
+  page-range: 55-60
+  serial-number: { doi: "10.1016/0304-8853(86)90122-8" }
+  parent: { type: periodical, title: "Journal of Magnetism and Magnetic Materials", volume: 58 }
+
+sagawa1987:
+  type: article
+  title: "Dependence of coercivity on the anisotropy field in the Nd2Fe14B-type sintered magnets"
+  author: ["Sagawa, M.", "Hirosawa, S.", "Tokuhara, K.", "Yamamoto, H.", "Fujimura, S.", "Tsubokawa, Y.", "Shimizu, R."]
+  date: 1987
+  page-range: 3559-3561
+  serial-number: { doi: "10.1063/1.338725" }
+  parent: { type: periodical, title: "Journal of Applied Physics", volume: 61, issue: 8 }
+
+herbst1991:
+  type: article
+  title: "R2Fe14B materials: Intrinsic properties and technological aspects"
+  author: ["Herbst, J. F."]
+  date: 1991
+  page-range: 819-898
+  serial-number: { doi: "10.1103/RevModPhys.63.819" }
+  parent: { type: periodical, title: "Reviews of Modern Physics", volume: 63, issue: 4 }
+
+kronmuller1987:
+  type: article
+  title: "Theory of nucleation fields in inhomogeneous ferromagnets"
+  author: ["Kronmüller, H."]
+  date: 1987
+  page-range: 385-396
+  serial-number: { doi: "10.1002/pssb.2221440134" }
+  parent: { type: periodical, title: "physica status solidi (b)", volume: 144, issue: 1 }
+
+kronmuller1988:
+  type: article
+  title: "Analysis of the magnetic hardening mechanism in RE-FeB permanent magnets"
+  author: ["Kronmüller, H.", "Durst, K.-D.", "Sagawa, M."]
+  date: 1988
+  page-range: 291-302
+  serial-number: { doi: "10.1016/0304-8853(88)90202-8" }
+  parent: { type: periodical, title: "Journal of Magnetism and Magnetic Materials", volume: 74, issue: 3 }
+
+stoner1948:
+  type: article
+  title: "A mechanism of magnetic hysteresis in heterogeneous alloys"
+  author: ["Stoner, E. C.", "Wohlfarth, E. P."]
+  date: 1948
+  page-range: 599-642
+  serial-number: { doi: "10.1098/rsta.1948.0007" }
+  parent: { type: periodical, title: "Philosophical Transactions of the Royal Society of London. Series A", volume: 240 }
+
+brown1945:
+  type: article
+  title: "Virtues and weaknesses of the domain concept"
+  author: ["Brown, W. F."]
+  date: 1945
+  page-range: 15-19
+  serial-number: { doi: "10.1103/RevModPhys.17.15" }
+  parent: { type: periodical, title: "Reviews of Modern Physics", volume: 17 }
+
+skomski1993:
+  type: article
+  title: "Giant energy product in nanostructured two-phase magnets"
+  author: ["Skomski, R.", "Coey, J. M. D."]
+  date: 1993
+  page-range: 15812-15816
+  serial-number: { doi: "10.1103/PhysRevB.48.15812" }
+  parent: { type: periodical, title: "Physical Review B", volume: 48 }
+
+gutfleisch2011:
+  type: article
+  title: "Magnetic materials and devices for the 21st century: Stronger, lighter, and more energy efficient"
+  author: ["Gutfleisch, O.", "Willard, M. A.", "Brück, E.", "Chen, C. H.", "Sankar, S. G.", "Liu, J. P."]
+  date: 2011
+  page-range: 821-842
+  serial-number: { doi: "10.1002/adma.201002180" }
+  parent: { type: periodical, title: "Advanced Materials", volume: 23 }
+
+coey2012:
+  type: article
+  title: "Permanent magnets: Plugging the gap"
+  author: ["Coey, J. M. D."]
+  date: 2012
+  page-range: 524-529
+  serial-number: { doi: "10.1016/j.scriptamat.2012.04.036" }
+  parent: { type: periodical, title: "Scripta Materialia", volume: 67, issue: 6 }
+
+hono2012:
+  type: article
+  title: "Strategy for high-coercivity Nd-Fe-B magnets"
+  author: ["Hono, K.", "Sepehri-Amin, H."]
+  date: 2012
+  page-range: 530-535
+  serial-number: { doi: "10.1016/j.scriptamat.2012.06.038" }
+  parent: { type: periodical, title: "Scripta Materialia", volume: 67 }
+
+sepehriamin2012:
+  type: article
+  title: "Grain boundary and interface chemistry of an Nd-Fe-B-based sintered magnet"
+  author: ["Sepehri-Amin, H.", "Ohkubo, T.", "Shima, T.", "Hono, K."]
+  date: 2012
+  page-range: 819-830
+  serial-number: { doi: "10.1016/j.actamat.2011.10.043" }
+  parent: { type: periodical, title: "Acta Materialia", volume: 60, issue: 3 }
+
+nakamura2005:
+  type: article
+  title: "Magnetic properties of extremely small Nd-Fe-B sintered magnets"
+  author: ["Nakamura, H.", "Hirota, K.", "Shimao, M.", "Minowa, T.", "Honshima, M."]
+  date: 2005
+  page-range: 3844-3846
+  serial-number: { doi: "10.1109/TMAG.2005.854874" }
+  parent: { type: periodical, title: "IEEE Transactions on Magnetics", volume: 41, issue: 10 }
+
+oono2011:
+  type: article
+  title: "Production of thick high-performance sintered neodymium magnets by grain boundary diffusion treatment with dysprosium-nickel-aluminum alloy"
+  author: ["Oono, N.", "Sagawa, M.", "Kasada, R.", "Matsui, H.", "Kimura, A."]
+  date: 2011
+  page-range: 297-300
+  serial-number: { doi: "10.1016/j.jmmm.2010.09.021" }
+  parent: { type: periodical, title: "Journal of Magnetism and Magnetic Materials", volume: 323 }
+
+lu2019:
+  type: article
+  title: "Nd-Fe-B magnets: The gradient change of microstructures and the diffusion principle after grain boundary diffusion process"
+  author: ["Lu, Yaojun", "Zhong, Shuwei", "Yang, Munan", "Wang, Chunming", "Yang, Liuyimei", "Li, Longgui", "Yang, Bin"]
+  date: 2019
+  page-range: 3881
+  serial-number: { doi: "10.3390/ma12233881" }
+  parent: { type: periodical, title: "Materials", volume: 12, issue: 23 }
+
+haider2021:
+  type: article
+  title: "Determination of Dy substitution site in Nd2-xDyxFe14B by HAADF-STEM and illustration of magnetic anisotropy of g and f sites, before and after substitution"
+  author: ["Haider, Syed Kamran", "Kang, Min-Chul", "Hong, Jisang", "Kang, Young Soo", "Yang, Cheol-Woong", "Kim, Dongsoo"]
+  date: 2021
+  page-range: 6347
+  serial-number: { doi: "10.1038/s41598-021-85713-5" }
+  parent: { type: periodical, title: "Scientific Reports", volume: 11 }
+
+hirosawa2017:
+  type: article
+  title: "Perspectives for high-performance permanent magnets: applications, coercivity, and new materials"
+  author: ["Hirosawa, S.", "Nishino, M.", "Miyashita, S."]
+  date: 2017
+  page-range: 013002
+  serial-number: { doi: "10.1088/2043-6254/aa597c" }
+  parent: { type: periodical, title: "Advances in Natural Sciences: Nanoscience and Nanotechnology", volume: 8 }
+
+susner2015:
+  type: article
+  title: "Growth and characterization of Ce-substituted Nd2Fe14B single crystals"
+  author: ["Susner, M. A.", "Conner, B. S.", "Saparov, B. I.", "McGuire, M. A.", "Crumlin, E. J.", "Veith, G. M.", "Cao, H. B.", "Shanavas, K. V.", "Parker, D. S.", "Chakoumakos, B. C.", "Sales, B. C."]
+  date: 2015
+  serial-number: { doi: "10.48550/arXiv.1508.07792" }
+  parent: { type: repository, title: "arXiv" }
+
+kostyuchenko2020:
+  type: article
+  title: "High-field magnetization study of (Nd,Dy)2Fe14B: Intrinsic properties and promising compositions"
+  author: ["Kostyuchenko, N. V.", "Tereshina, I. S.", "Gorbunov, D. I.", "Tereshina-Chitrova, E. A.", "Rogacki, K.", "Andreev, A. V.", "Doerr, M.", "Politova, G. A.", "Zvezdin, A. K."]
+  date: 2020
+  page-range: 106840
+  serial-number: { doi: "10.1016/j.intermet.2020.106840" }
+  parent: { type: periodical, title: "Intermetallics", volume: 124 }
+
+xie2014:
+  type: article
+  title: "A critical review on solvent extraction of rare earths from aqueous solutions"
+  author: ["Xie, F.", "Zhang, T. A.", "Dreisinger, D.", "Doyle, F."]
+  date: 2014
+  page-range: 10-28
+  serial-number: { doi: "10.1016/j.mineng.2013.10.021" }
+  parent: { type: periodical, title: "Minerals Engineering", volume: 56 }
+
+ismail2019:
+  type: article
+  title: "Selection of extractant in rare earth solvent extraction system: A review"
+  author: ["Ismail, N. A.", "Abd Aziz, M. A.", "Mohd Yunus, M. Y.", "Hisyam, A."]
+  date: 2019
+  page-range: 728-743
+  url: { value: "https://www.ijrte.org/wp-content/uploads/papers/v8i1/F2887037619.pdf", date: 2026-09-22 }
+  parent: { type: periodical, title: "International Journal of Recent Technology and Engineering", volume: 8, issue: 1 }
+
+arellano2020:
+  type: article
+  title: "Environmentally friendly comprehensive hydrometallurgical method development for neodymium recovery from mixed rare earth aqueous solutions using organo-phosphorus derivatives"
+  author: ["Arellano Ruiz, Verónica Cristina", "Kuchi, Rambabu", "Parhi, Pankaj Kumar", "Lee, Jin-Young", "Jyothi, Rajesh Kumar"]
+  date: 2020
+  page-range: 16911
+  serial-number: { doi: "10.1038/s41598-020-74041-9" }
+  parent: { type: periodical, title: "Scientific Reports", volume: 10 }
+
+fenske1932:
+  type: article
+  title: "Fractionation of straight-run Pennsylvania gasoline"
+  author: ["Fenske, M. R."]
+  date: 1932
+  page-range: 482-485
+  serial-number: { doi: "10.1021/ie50269a003" }
+  parent: { type: periodical, title: "Industrial & Engineering Chemistry", volume: 24, issue: 5 }
+
+binnemans2013:
+  type: article
+  title: "Recycling of rare earths: a critical review"
+  author: ["Binnemans, K.", "Jones, P. T.", "Blanpain, B.", "Van Gerven, T.", "Yang, Y.", "Walton, A.", "Buchert, M."]
+  date: 2013
+  page-range: 1-22
+  serial-number: { doi: "10.1016/j.jclepro.2012.12.037" }
+  parent: { type: periodical, title: "Journal of Cleaner Production", volume: 51 }
+
+widmer2015:
+  type: article
+  title: "Electric vehicle traction motors without rare earth magnets"
+  author: ["Widmer, J. D.", "Martin, R.", "Kimiabeigi, M."]
+  date: 2015
+  page-range: 7-13
+  serial-number: { doi: "10.1016/j.susmat.2015.02.001" }
+  parent: { type: periodical, title: "Sustainable Materials and Technologies", volume: 3 }
+
+wensing2017:
+  type: article
+  title: "Proprioceptive actuator design in the MIT Cheetah: Impact mitigation and high-bandwidth physical interaction for dynamic legged robots"
+  author: ["Wensing, P. M.", "Wang, A.", "Seok, S.", "Otten, D.", "Lang, J.", "Kim, S."]
+  date: 2017
+  page-range: 509-522
+  serial-number: { doi: "10.1109/TRO.2016.2640183" }
+  parent: { type: periodical, title: "IEEE Transactions on Robotics", volume: 33, issue: 3 }
+
+coey2010:
+  type: book
+  title: "Magnetism and Magnetic Materials"
+  author: ["Coey, J. M. D."]
+  date: 2010
+  publisher: "Cambridge University Press"
+  serial-number: { isbn: "9780521816144" }
+
+cullity2009:
+  type: book
+  title: "Introduction to Magnetic Materials"
+  author: ["Cullity, B. D.", "Graham, C. D."]
+  date: 2009
+  edition: 2
+  publisher: "Wiley"
+  serial-number: { isbn: "9780471477419" }
+
+hendershot2010:
+  type: book
+  title: "Design of Brushless Permanent-Magnet Machines"
+  author: ["Hendershot, J. R.", "Miller, T. J. E."]
+  date: 2010
+  publisher: "Motor Design Books"
+  serial-number: { isbn: "9780984068708" }
+
+crank1975:
+  type: book
+  title: "The Mathematics of Diffusion"
+  author: ["Crank, J."]
+  date: 1975
+  edition: 2
+  publisher: "Oxford University Press"
+
+wiki-ndfeb:
+  type: web
+  title: "Neodymium magnet"
+  author: "Wikipedia contributors"
+  url: { value: "https://en.wikipedia.org/wiki/Neodymium_magnet", date: 2026-09-22 }
+
+wiki-bhmax:
+  type: web
+  title: "Maximum energy product"
+  author: "Wikipedia contributors"
+  url: { value: "https://en.wikipedia.org/wiki/Maximum_energy_product", date: 2026-09-22 }
+
+wiki-sw:
+  type: web
+  title: "Stoner-Wohlfarth model"
+  author: "Wikipedia contributors"
+  url: { value: "https://en.wikipedia.org/wiki/Stoner%E2%80%93Wohlfarth_model", date: 2026-09-22 }
+
+wiki-demag:
+  type: web
+  title: "Demagnetizing field"
+  author: "Wikipedia contributors"
+  url: { value: "https://en.wikipedia.org/wiki/Demagnetizing_field", date: 2026-09-22 }
+
+wiki-ree:
+  type: web
+  title: "Rare-earth element"
+  author: "Wikipedia contributors"
+  url: { value: "https://en.wikipedia.org/wiki/Rare-earth_element", date: 2026-09-22 }
+
+radial:
+  type: web
+  title: "Neodymium magnet temperature classes: N, M, H, SH, UH, EH explained"
+  author: "Radial Magnets"
+  url: { value: "https://radialmagnet.com/neodymium-magnet-temperature-classes/", date: 2026-09-22 }
+
+bunting:
+  type: web
+  title: "Temperature coefficients of magnet materials"
+  author: "Bunting Magnetics"
+  url: { value: "https://www.magnetapplications.com/blog/temperature-coefficients-of-magnets", date: 2026-09-22 }
+
+stanford:
+  type: web
+  title: "The complete guide to high-temperature neodymium magnets"
+  author: "Stanford Magnets"
+  url: { value: "https://www.stanfordmagnets.com/complete-guide-to-high-temperature-neodymium-magnets.html", date: 2026-09-22 }
+
+fai2026:
+  type: web
+  title: "The robot boom has a magnet problem"
+  author: "Foundation for American Innovation"
+  date: 2026
+  url: { value: "https://www.thefai.org/posts/the-robot-boom-has-a-magnet-problem", date: 2026-09-22 }
+
+iea2025:
+  type: web
+  title: "Rare earth elements: executive summary"
+  author: "International Energy Agency"
+  url: { value: "https://www.iea.org/reports/rare-earth-elements/executive-summary", date: 2026-09-22 }
+
+csis2026:
+  type: web
+  title: "Rare earth export restrictions one year later"
+  author: "Center for Strategic and International Studies"
+  date: 2026
+  url: { value: "https://www.csis.org/analysis/rare-earth-export-restrictions-one-year-later", date: 2026-09-22 }
+
+chinabriefing:
+  type: web
+  title: "China's rare earth export controls: impact on businesses and industries"
+  author: "China Briefing"
+  url: { value: "https://www.china-briefing.com/news/chinas-rare-earth-export-controls-impacts-on-businesses/", date: 2026-09-22 }
+
+energyfuels2025:
+  type: web
+  title: "Energy Fuels' US-produced heavy rare earth oxide successfully qualified for use in permanent magnets"
+  author: "Energy Fuels Inc."
+  date: 2025-12-19
+  url: { value: "https://investors.energyfuels.com/2025-12-19-Energy-Fuels-US-Produced-Heavy-Rare-Earth-Oxide-Successfully-Qualified-for-Use-in-Permanent-Magnets", date: 2026-09-22 }
+
+rex98:
+  type: web
+  title: "Heavy rare earths: the 98% refining problem no one can ignore"
+  author: "Rare Earth Exchanges"
+  url: { value: "https://rareearthexchanges.com/news/heavy-rare-earths-the-98-refining-problem-no-one-can-ignore/", date: 2026-09-22 }
+
+mp2025:
+  type: web
+  title: "MP Materials announces transformational public-private partnership with the Department of Defense"
+  author: "MP Materials"
+  date: 2025-07-10
+  url: { value: "https://mpmaterials.com/news/mp-materials-announces-transformational-public-private-partnership-with-the-department-of-defense-to-accelerate-u-s-rare-earth-magnet-independence/", date: 2026-09-22 }
+
+da-energyfuels:
+  type: web
+  title: "Energy Fuels White Mesa Mill expansion: what you need to know"
+  author: "Discovery Alert"
+  date: 2026
+  url: { value: "https://discoveryalert.com/energy-fuels-white-mesa-heavy-rare-earth-expansion-2026/", date: 2026-09-22 }
+
+haskel2005:
+  type: article
+  title: "Atomic origin of magnetocrystalline anisotropy in Nd2Fe14B"
+  author: ["Haskel, D.", "Lang, J. C.", "Islam, Z.", "Cady, A.", "Srajer, G.", "van Veenendaal, M.", "Canfield, P. C."]
+  date: 2005
+  parent: { type: periodical, title: "Physical Review Letters", volume: 95 }
+  url: { value: "https://www3.aps.anl.gov/haskel/PS/ndfeb.pdf", date: 2026-09-22 }
+
+lynas2025:
+  type: web
+  title: "Lynas achieves first terbium production in Malaysia"
+  author: "Mining.com.au"
+  date: 2025
+  url: { value: "https://mining.com.au/lynas-achieves-first-terbium-production-in-malaysia/", date: 2026-09-22 }
