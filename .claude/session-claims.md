@@ -15,6 +15,7 @@ when done.
 
 | Resource | Held by | Since | Until | Notes |
 |---|---|---|---|---|
+| grok-cli TTS | bumper-explainer | 2026-09-25 21:50Z | ~2026-09-25 23:30Z | RELEASED 2026-09-25 22:05Z — narrated bumper explainer: 11 TTS syntheses (voice atlas, ~4.5 min of audio), no retries |
 
 ## Recently released
 

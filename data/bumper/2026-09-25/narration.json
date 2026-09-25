@@ -1,0 +1,57 @@
+[
+ {
+  "id": "01_intro",
+  "chart": "title",
+  "text": "Can you spot the next sector leader before the market does? The names that ran in twenty twenty, Nebius, IonQ, all looked like long shots first. This is what the data says about finding the next ones."
+ },
+ {
+  "id": "02_cohort",
+  "chart": "r01",
+  "text": "We took every US-listed stock that multiplied at least five times over five years, or three times over three, and is worth at least one billion dollars today. That is 336 winners. Against them, 300 look-alikes from the same industries that went nowhere. Most of the runs started in 2023: the sector wave sets the clock more than any single company."
+ },
+ {
+  "id": "03_paths",
+  "chart": "r04",
+  "text": "Here is the shape of a bumper. For two years before the run, the winners in green are indistinguishable from the look-alikes in grey. Flat, often drifting down. Then the twelve-month window where they at least double and a half. The question is whether anything in the filings, three months before that moment, told them apart."
+ },
+ {
+  "id": "04_auc",
+  "chart": "r02",
+  "text": "The answer is no. This chart scores each feature from zero to one; a half means a coin flip. Revenue growth, point five one. Research spending relative to revenue, point four eight. Cash runway, point five zero. Nothing above point six. The features that do separate are upside down: gross margin at point two eight and cash flow at point three five mean the future winners were the lower-margin, cash-burning names."
+ },
+ {
+  "id": "05_dist",
+  "chart": "r03",
+  "text": "Look at research intensity, the hypothesis behind IonQ and QUBT. Winners and look-alikes have the same shape. Spending heavily on R&D is what every one of these companies does; it cannot be the signal. What winners did do a little more of was raise equity. They financed the build before the market believed in it."
+ },
+ {
+  "id": "06_families",
+  "chart": "r05",
+  "text": "So where was the early information? We rebuilt 18 winners from the filings of the time: Nvidia in twenty fifteen, Enphase, Palantir, Super Micro, Nebius, IonQ, Rigetti. The signals were text and relationships, not ratios. A named anchor customer or binding contract, about 9 months ahead. Capacity being built, about 8 months ahead. Insiders and strategics putting money in, 10 months ahead. A new story stated in a mandatory filing. All free, all public."
+ },
+ {
+  "id": "07_graveyard",
+  "chart": "graveyard",
+  "text": "But here is the trap. Every one of those signals also shows up in the graveyard. Nikola had General Motors. Lordstown had Foxconn. Canoo had Walmart. Arrival had a UPS letter of intent with no deposit and no cancellation penalty. What separated the collapses from the survivors was a short list of checkable facts: binding contracts with delivered units, a disclosed runway number and how fast it shrank, share count growth, customers that were also financiers, going-concern language, executives leaving over a funding gap, and exchange compliance notices."
+ },
+ {
+  "id": "08_base",
+  "chart": "r06",
+  "text": "And the base rate is brutal. Of more than nine thousand US IPOs, thirty-eight percent lost half their value within three years. Only one point seven percent returned more than five hundred percent. Unprofitable issuers do worse than average, and SPAC mergers worst of all. The bumper is the thin right tail, and attention, hype and retail crowding predict the wrong tail."
+ },
+ {
+  "id": "09_funnel",
+  "chart": "r07",
+  "text": "So the detector that survives scrutiny is not a probability oracle. It disqualifies first, on the graveyard facts. It promotes only on delivered evidence: an announced contract counts when a later filing shows revenue or units. Supporting signals are capped. And a judge agent narrates a band with three cited reasons, checked by a devil's advocate, and never overrides the number."
+ },
+ {
+  "id": "10_today",
+  "chart": "r08",
+  "text": "This is today's screen: quantum, physical AI and AI infrastructure names on research intensity against cash runway. IonQ, Rigetti and QUBT sit high on research with years of runway; Serve and SoundHound sit under the two-year gate; CoreWeave burns far below it but is funded by debt against contracts, which is exactly the case a ratio cannot judge."
+ },
+ {
+  "id": "11_outro",
+  "chart": "title",
+  "text": "The information is in the filings and the relationships, not the ratios. Read the contract, not the press release. Educational research only, not investment advice. Full report and code in the AI Investment repository."
+ }
+]
