@@ -29,17 +29,25 @@ export default function Header({ generatedAt }: { generatedAt: string }) {
             would otherwise collide with the wordmark on narrow phones.
             Each link is ≥44px tall for a comfortable touch target; the row
             grows to match rather than clipping them. */}
-        <nav className="flex items-center gap-3 text-[11px] overflow-x-auto whitespace-nowrap min-w-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          {NAV.map((n) => (
-            <Link
-              key={n.href}
-              href={n.href}
-              className="flex items-center min-h-[44px] text-term-muted hover:text-emerald-400 transition-colors shrink-0"
-            >
-              {n.label}
-            </Link>
-          ))}
-        </nav>
+        {/* The scrollbar is hidden, so on a phone the strip clips mid-word
+            with nothing saying "more". The trailing fade is that cue. */}
+        <div className="relative min-w-0 flex-1">
+          <nav className="flex items-center gap-3 text-[11px] overflow-x-auto whitespace-nowrap min-w-0 pr-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            {NAV.map((n) => (
+              <Link
+                key={n.href}
+                href={n.href}
+                className="flex items-center min-h-[44px] text-term-muted hover:text-emerald-400 transition-colors shrink-0"
+              >
+                {n.label}
+              </Link>
+            ))}
+          </nav>
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-[#0b0f17] to-transparent lg:hidden"
+          />
+        </div>
         <span className="hidden lg:inline text-[10.5px] text-term-muted truncate ml-auto shrink-0">
           Energy · Chips · Infra · Models · Apps
         </span>
