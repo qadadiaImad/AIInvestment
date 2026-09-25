@@ -9,6 +9,7 @@ import {
   getHalalData,
   type PeerMetric,
 } from "@/lib/data";
+import PhonePanel from "@/components/PhonePanel";
 import HalalCard from "@/components/HalalCard";
 import LayerChip from "@/components/LayerChip";
 import Sparkline from "@/components/Sparkline";
@@ -337,9 +338,9 @@ export default async function StockPage({
       </Panel>
 
       {/* Interactive TradingView chart */}
-      <Panel title="Interactive chart (TradingView)">
+      <PhonePanel lazy title="Interactive chart (TradingView)">
         <TradingViewChart tvSymbol={s.tv_symbol} />
-      </Panel>
+      </PhonePanel>
 
       {/* Fundamentals grid */}
       <Panel title="Fundamentals">
@@ -363,9 +364,9 @@ export default async function StockPage({
           isn't in it (same degradation pattern as every other optional
           section on this page). */}
       {archetype && (
-        <Panel title="Investor archetype scorecards">
+        <PhonePanel title="Investor archetype scorecards">
           <ArchetypePanel record={archetype} />
-        </Panel>
+        </PhonePanel>
       )}
 
       {/* 2-stage FCF DCF — graceful absence: base FCF/share can't be
@@ -374,13 +375,13 @@ export default async function StockPage({
           rather than showing an empty shell. Same degradation pattern as
           every other optional section on this page. */}
       {dcfDefaults.baseFcf.value != null && (
-        <Panel title="DCF — fair value estimate (toy model)">
+        <PhonePanel title="DCF — fair value estimate (toy model)">
           <DcfPanel symbol={s.symbol} defaults={dcfDefaults} />
-        </Panel>
+        </PhonePanel>
       )}
 
       {/* History sparklines */}
-      <Panel title="History — annual (oldest → newest)">
+      <PhonePanel title="History — annual (oldest → newest)">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3">
           {histories.map((h) => (
             <div key={h.key} className="flex items-center justify-between gap-3">
@@ -391,11 +392,11 @@ export default async function StockPage({
             </div>
           ))}
         </div>
-      </Panel>
+      </PhonePanel>
 
       {/* Peer comparison */}
       {peerKeys.length > 0 && (
-        <Panel title="Peer comparison — value vs cohort median (percentile)">
+        <PhonePanel title="Peer comparison — value vs cohort median (percentile)">
           <div className="overflow-x-auto">
             <table className="term">
               <thead>
@@ -435,7 +436,7 @@ export default async function StockPage({
               </tbody>
             </table>
           </div>
-        </Panel>
+        </PhonePanel>
       )}
 
       {/* The one bottleneck */}
@@ -458,7 +459,7 @@ export default async function StockPage({
 
       {/* Catalysts */}
       {catalysts.length > 0 && (
-        <Panel title="Catalysts">
+        <PhonePanel title="Catalysts">
           <div className="overflow-x-auto">
             <table className="term">
               <thead>
@@ -487,7 +488,7 @@ export default async function StockPage({
               </tbody>
             </table>
           </div>
-        </Panel>
+        </PhonePanel>
       )}
 
       {/* Related news */}
@@ -497,7 +498,7 @@ export default async function StockPage({
 
       {/* Relationships */}
       {(counterparties.length > 0 || labExposure.length > 0) && (
-        <Panel title="Relationships">
+        <PhonePanel title="Relationships">
           {counterparties.length > 0 && (
             <div className="overflow-x-auto">
               <table className="term">
@@ -559,12 +560,12 @@ export default async function StockPage({
               </div>
             </div>
           )}
-        </Panel>
+        </PhonePanel>
       )}
 
       {/* Narrative */}
       {hasNarrative && (
-        <Panel title="Narrative">
+        <PhonePanel title="Narrative">
           <div className="flex flex-col gap-4 text-[12.5px] leading-relaxed text-zinc-300">
             {n.valuation_take && (
               <NarrSection title="Valuation take" body={n.valuation_take} />
@@ -608,7 +609,7 @@ export default async function StockPage({
               <NarrSection title="Synthesis" body={n.synthesis} />
             )}
           </div>
-        </Panel>
+        </PhonePanel>
       )}
 
       {/* Halal verdict card — renders only when halal.json has been generated */}

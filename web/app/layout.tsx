@@ -3,6 +3,7 @@ import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import MobileTabBar from "@/components/MobileTabBar";
 import { getSiteData } from "@/lib/data";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -30,7 +31,7 @@ export default function RootLayout({
   const generatedAt = data.generated_at;
   return (
     <html lang="en" className={`${jetbrainsMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-[#0b0f17] text-[#e5e7eb]">
+      <body className="min-h-full flex flex-col bg-[#0b0f17] text-[#e5e7eb] pb-14 sm:pb-0">
         <Header generatedAt={generatedAt} />
         <main className="flex-1 flex flex-col">{children}</main>
         <Footer
@@ -38,6 +39,7 @@ export default function RootLayout({
           sources={data.sources}
           generatedAt={generatedAt}
         />
+        <MobileTabBar />
       </body>
     </html>
   );

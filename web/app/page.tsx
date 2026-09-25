@@ -108,6 +108,7 @@ export default function Home() {
         <ScreenerTable
           rows={preview}
           caption={`Top ${preview.length} AI-stack names by 1-year performance`}
+          compact
         />
         <Link
           href="/screener"

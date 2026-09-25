@@ -6,6 +6,15 @@ import type { ScreenerRow } from "@/lib/data";
 import type { HalalOverall } from "@/lib/halal";
 import { overallLabel, overallTone } from "@/lib/halal";
 import LayerChip from "@/components/LayerChip";
+import {
+  price as fmtPrice,
+  ratio,
+  pct,
+  signedPct,
+  dateOnly,
+  DASH,
+  LAYER_ORDER,
+} from "@/lib/format";
 
 // Optional sector tagging added by the merged AI + Quantum loader. AI-only data
 // carries neither field, so both are optional and the UI degrades gracefully.
@@ -32,13 +41,16 @@ type SectorFilter = "All" | "AI" | "Quantum" | "PhysicalAI" | "Congress";
 
 const SECTOR_FILTERS: SectorFilter[] = ["All", "AI", "Quantum", "PhysicalAI", "Congress"];
 
+function sectorColor(s: string): string {
+  return s === "Quantum" ? "#a855f7" : s === "PhysicalAI" ? "#22e07e" : s === "Congress" ? "#f59e0b" : "#22d3ee";
+}
+
 function SectorChip({ sectors }: { sectors: string[] }) {
   if (sectors.length === 0) return <span className="text-term-muted">{DASH}</span>;
   return (
     <span className="inline-flex gap-1 align-middle">
       {sectors.map((s) => {
-        const color =
-          s === "Quantum" ? "#a855f7" : s === "PhysicalAI" ? "#22e07e" : s === "Congress" ? "#f59e0b" : "#22d3ee";
+        const color = sectorColor(s);
         return (
           <span
             key={s}
@@ -56,15 +68,6 @@ function SectorChip({ sectors }: { sectors: string[] }) {
     </span>
   );
 }
-import {
-  price as fmtPrice,
-  ratio,
-  pct,
-  signedPct,
-  dateOnly,
-  DASH,
-  LAYER_ORDER,
-} from "@/lib/format";
 
 type SortKey =
   | "symbol"
@@ -99,6 +102,9 @@ const COLS: { key: SortKey; label: string; num: boolean }[] = [
   { key: "next_catalyst", label: "Next catalyst", num: false },
 ];
 
+// Phone card list: rows revealed in pages of this size (mobile audit, 2026-09-25).
+const PHONE_PAGE = 25;
+
 function cmp(a: ScreenerRow, b: ScreenerRow, key: SortKey): number {
   if (key === "symbol") return a.symbol.localeCompare(b.symbol);
   if (key === "layer") {
@@ -127,22 +133,113 @@ const HALAL_TONE_COLOR: Record<string, string> = {
   muted: "#71717a",  // zinc-500    — insufficient_data
 };
 
-function HalalBadge({ symbol, overall }: { symbol: string; overall: HalalOverall }) {
+function HalalBadge({
+  symbol,
+  overall,
+  asLink = true,
+}: {
+  symbol: string;
+  overall: HalalOverall;
+  asLink?: boolean;
+}) {
   const tone = overallTone(overall);
   const color = HALAL_TONE_COLOR[tone] ?? HALAL_TONE_COLOR.muted;
+  const cls = "inline-block px-1.5 py-px text-[9.5px] font-semibold uppercase tracking-wider rounded-sm no-underline";
+  const style = { color, border: `1px solid ${color}`, backgroundColor: `${color}1a` };
+  // Inside the phone card (itself a link) a nested anchor is invalid HTML, so the
+  // badge degrades to a span there.
+  if (!asLink) {
+    return (
+      <span className={cls} style={style}>
+        {overallLabel(overall)}
+      </span>
+    );
+  }
   return (
     <Link
       href="/halal"
       title={`${symbol} halal screening — ${overallLabel(overall)}`}
-      className="inline-block px-1.5 py-px text-[9.5px] font-semibold uppercase tracking-wider rounded-sm no-underline"
-      style={{
-        color,
-        border: `1px solid ${color}`,
-        backgroundColor: `${color}1a`,
-      }}
+      className={cls}
+      style={style}
     >
       {overallLabel(overall)}
     </Link>
+  );
+}
+
+function priceCell(r: SectorRow) {
+  const ccy = r.currency && r.currency !== "USD" ? r.currency : null;
+  return (
+    <>
+      {fmtPrice(r.price)}
+      {ccy ? <span className="text-term-muted text-[9px] ml-1">{ccy}</span> : null}
+    </>
+  );
+}
+
+// One screener row as a phone card: identity on top, the two numbers a reader
+// opens the screener for (price, 1-year move) large, four secondary metrics in
+// a 2x2 grid. The whole card is the link to the stock sheet.
+function RowCard({
+  r,
+  hasSectors,
+  halal,
+}: {
+  r: SectorRow;
+  hasSectors: boolean;
+  halal?: Record<string, HalalOverall>;
+}) {
+  const p1y = signedPct(r.perf_1y);
+  const rev = signedPct(r.rev_growth_yoy);
+  const fdisc = signedPct(r.fundamental_discount_pct);
+  const hasFdisc =
+    typeof r.fundamental_discount_pct === "number" && Number.isFinite(r.fundamental_discount_pct);
+  return (
+    <li>
+      <Link
+        href={`/stocks/${r.symbol}`}
+        className="block px-3 py-3 border-b border-term-border active:bg-[#11192680]"
+      >
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="text-[15px] font-bold text-emerald-400">{r.symbol}</span>
+          <LayerChip layer={r.layer} />
+          {hasSectors && <SectorChip sectors={rowSectors(r)} />}
+          {halal && halal[r.symbol] ? (
+            <HalalBadge symbol={r.symbol} overall={halal[r.symbol]} asLink={false} />
+          ) : null}
+          <span className="ml-auto text-term-muted text-[12px]">›</span>
+        </div>
+        <div className="mt-1.5 flex items-baseline justify-between gap-3">
+          <span className="text-[17px] font-semibold tnum">{priceCell(r)}</span>
+          <span className={`text-[15px] font-semibold tnum ${p1y.cls}`}>
+            {p1y.text} <span className="text-[10px] font-normal text-term-muted">1Y</span>
+          </span>
+        </div>
+        <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-[12px]">
+          <div className="flex justify-between">
+            <dt className="text-term-muted">P/E</dt>
+            <dd className="tnum">{ratio(r.pe, 1)}</dd>
+          </div>
+          <div className="flex justify-between">
+            <dt className="text-term-muted">vs value</dt>
+            <dd className={`tnum ${hasFdisc ? fdisc.cls : ""}`}>{hasFdisc ? fdisc.text : DASH}</dd>
+          </div>
+          <div className="flex justify-between">
+            <dt className="text-term-muted">Net margin</dt>
+            <dd className="tnum">{pct(r.net_margin)}</dd>
+          </div>
+          <div className="flex justify-between">
+            <dt className="text-term-muted">Rev YoY</dt>
+            <dd className={`tnum ${rev.cls}`}>{rev.text}</dd>
+          </div>
+        </dl>
+        {r.next_catalyst ? (
+          <div className="mt-1.5 text-[11px] text-term-muted">
+            Next catalyst {dateOnly(r.next_catalyst)}
+          </div>
+        ) : null}
+      </Link>
+    </li>
   );
 }
 
@@ -150,14 +247,18 @@ export default function ScreenerTable({
   rows,
   caption,
   halal,
+  compact = false,
 }: {
   rows: ScreenerRow[];
   caption?: string;
   halal?: Record<string, HalalOverall>;
+  // Preview mode (home page): no sector filter, no phone sort control.
+  compact?: boolean;
 }) {
   const [sortKey, setSortKey] = useState<SortKey>("perf_1y");
   const [dir, setDir] = useState<Dir>("desc");
   const [sectorFilter, setSectorFilter] = useState<SectorFilter>("All");
+  const [phoneShown, setPhoneShown] = useState(PHONE_PAGE);
 
   // Sector tagging only exists once Quantum data is merged in. If no row carries
   // a sector, hide the filter control and the chip column entirely.
@@ -190,24 +291,36 @@ export default function ScreenerTable({
     }
   }
 
+  function selectSort(key: SortKey) {
+    setSortKey(key);
+    const col = COLS.find((c) => c.key === key);
+    setDir(col?.num ? "desc" : "asc");
+    setPhoneShown(PHONE_PAGE);
+  }
+
   const arrow = (key: SortKey) =>
     key === sortKey ? (dir === "asc" ? " ▲" : " ▼") : "";
 
+  const phoneRows = sorted.slice(0, phoneShown);
+
   return (
     <div className="flex flex-col gap-2">
-      {hasSectors && (
-        <div className="flex items-center gap-1.5">
+      {hasSectors && !compact && (
+        <div className="flex flex-wrap items-center gap-1.5">
           <span className="text-[10px] uppercase tracking-wider text-term-muted">
             Sector
           </span>
-          <div className="inline-flex border border-term-border rounded-sm overflow-hidden">
+          <div className="inline-flex flex-wrap border border-term-border rounded-sm overflow-hidden">
             {SECTOR_FILTERS.map((s) => (
               <button
                 key={s}
                 type="button"
-                onClick={() => setSectorFilter(s)}
+                onClick={() => {
+                  setSectorFilter(s);
+                  setPhoneShown(PHONE_PAGE);
+                }}
                 aria-pressed={sectorFilter === s}
-                className={`px-2 py-px text-[10.5px] font-semibold uppercase tracking-wider ${
+                className={`px-2 py-px max-sm:min-h-[40px] max-sm:px-3 text-[10.5px] font-semibold uppercase tracking-wider ${
                   sectorFilter === s
                     ? "bg-emerald-500/20 text-emerald-300"
                     : "text-term-muted hover:text-zinc-200"
@@ -222,17 +335,65 @@ export default function ScreenerTable({
           </span>
         </div>
       )}
-      <div className="overflow-x-auto border border-term-border rounded-sm">
+
+      {/* Phone: sort control + card list. The table below is hidden under sm. */}
+      <div className="sm:hidden flex flex-col gap-2">
+        {!compact && (
+        <div className="flex items-center gap-2">
+          <label className="text-[10px] uppercase tracking-wider text-term-muted" htmlFor="screener-sort">
+            Sort
+          </label>
+          <select
+            id="screener-sort"
+            value={sortKey}
+            onChange={(e) => selectSort(e.target.value as SortKey)}
+            className="min-h-[44px] flex-1 bg-term-panel border border-term-border rounded-sm px-2 text-[12px] text-zinc-200"
+          >
+            {COLS.map((c) => (
+              <option key={c.key} value={c.key}>
+                {c.label}
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            onClick={() => setDir((d) => (d === "asc" ? "desc" : "asc"))}
+            aria-label={dir === "asc" ? "Sorted ascending, tap for descending" : "Sorted descending, tap for ascending"}
+            className="min-h-[44px] min-w-[44px] border border-term-border rounded-sm text-emerald-400 text-[14px]"
+          >
+            {dir === "asc" ? "▲" : "▼"}
+          </button>
+        </div>
+        )}
+        <ul className="border border-term-border rounded-sm">
+          {phoneRows.map((r) => (
+            <RowCard key={r.symbol} r={r as SectorRow} hasSectors={hasSectors} halal={halal} />
+          ))}
+        </ul>
+        {sorted.length > phoneShown ? (
+          <button
+            type="button"
+            onClick={() => setPhoneShown((n) => n + PHONE_PAGE)}
+            className="min-h-[44px] border border-term-border rounded-sm text-[11px] uppercase tracking-wider text-term-muted"
+          >
+            Show {Math.min(PHONE_PAGE, sorted.length - phoneShown)} more · {sorted.length - phoneShown} left
+          </button>
+        ) : null}
+      </div>
+
+      {/* Desktop: the dense sortable table. First column stays put while the
+          rest scrolls sideways on narrow desktops/tablets. */}
+      <div className="hidden sm:block overflow-x-auto border border-term-border rounded-sm">
       <table className="term">
         {caption && <caption className="sr-only">{caption}</caption>}
         <thead className="bg-[#0e131d] sticky top-0 z-10">
           <tr>
-            {COLS.map((c) => (
+            {COLS.map((c, i) => (
               <th
                 key={c.key}
                 className={`cursor-pointer hover:text-zinc-200 ${
                   c.num ? "numcell" : ""
-                }`}
+                } ${i === 0 ? "sticky left-0 z-20 bg-[#0e131d]" : ""}`}
                 onClick={() => onSort(c.key)}
                 aria-sort={
                   c.key === sortKey
@@ -266,7 +427,7 @@ export default function ScreenerTable({
               Number.isFinite(r.fundamental_discount_pct);
             return (
               <tr key={r.symbol}>
-                <td>
+                <td className="sticky left-0 bg-[#0b0f17]">
                   <Link
                     href={`/stocks/${r.symbol}`}
                     className="font-semibold text-emerald-400 hover:text-emerald-300"
@@ -277,12 +438,7 @@ export default function ScreenerTable({
                 <td>
                   <LayerChip layer={r.layer} />
                 </td>
-                <td className="numcell tnum">
-                  {fmtPrice(r.price)}
-                  {(r as SectorRow).currency && (r as SectorRow).currency !== "USD" ? (
-                    <span className="text-term-muted text-[9px] ml-1">{(r as SectorRow).currency}</span>
-                  ) : null}
-                </td>
+                <td className="numcell tnum">{priceCell(r as SectorRow)}</td>
                 <td className="numcell tnum">{ratio(r.pe, 1)}</td>
                 <td className="numcell tnum">{pct(r.net_margin)}</td>
                 <td className="numcell tnum">{pct(r.roe)}</td>

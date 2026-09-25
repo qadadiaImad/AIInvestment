@@ -96,6 +96,12 @@ export function signedPct(v: number | null | undefined, dp = 1): {
 
 export function dateOnly(v: string | null | undefined): string {
   if (!v) return DASH;
+  // some feeds hand us a unix timestamp (seconds or ms) as a string
+  if (/^\d{9,13}$/.test(v)) {
+    const n = Number(v);
+    const d = new Date(v.length >= 12 ? n : n * 1000);
+    return Number.isNaN(d.getTime()) ? v : d.toISOString().slice(0, 10);
+  }
   // already date-like or ISO datetime
   return v.length >= 10 ? v.slice(0, 10) : v;
 }

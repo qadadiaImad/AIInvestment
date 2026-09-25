@@ -15,6 +15,9 @@ export default function TradingViewChart({
     if (!tvSymbol) return;
     const container = containerRef.current;
     if (!container) return;
+    // 540px was a screen and a half on a phone; 360 keeps the chart usable.
+    const height = window.matchMedia("(max-width: 639px)").matches ? 360 : 520;
+    container.style.height = `${height + 20}px`;
 
     // Reset (handles symbol changes / re-renders).
     container.innerHTML = "";
@@ -32,7 +35,7 @@ export default function TradingViewChart({
     script.innerHTML = JSON.stringify({
       // Explicit width/height: autosize rendered a collapsed ~150px iframe.
       width: "100%",
-      height: 520,
+      height,
       symbol: tvSymbol,
       interval: "D",
       timezone: "Etc/UTC",

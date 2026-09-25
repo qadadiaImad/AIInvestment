@@ -31,7 +31,7 @@ export default function Header({ generatedAt }: { generatedAt: string }) {
             grows to match rather than clipping them. */}
         {/* The scrollbar is hidden, so on a phone the strip clips mid-word
             with nothing saying "more". The trailing fade is that cue. */}
-        <div className="relative min-w-0 flex-1">
+        <div className="relative min-w-0 flex-1 hidden sm:block">
           <nav className="flex items-center gap-3 text-[11px] overflow-x-auto whitespace-nowrap min-w-0 pr-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             {NAV.map((n) => (
               <Link

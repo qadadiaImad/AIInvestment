@@ -312,7 +312,7 @@ export default function MapExplorer({
 
       {/* graph (or company value chain) + detail panel */}
       <div className="flex flex-col lg:flex-row flex-1 min-h-0">
-        <div className="relative flex-1 min-h-[55vh] lg:min-h-0 bg-[#0b0f17]">
+        <div className="relative h-[60vh] shrink-0 lg:shrink lg:flex-1 lg:h-auto lg:min-h-0 bg-[#0b0f17]">
           {companyMode ? (
             <CompanyValueChain
               web={web}

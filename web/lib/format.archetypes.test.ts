@@ -109,3 +109,13 @@ describe("archetype static metadata", () => {
     expect(ARCHETYPE_DISCLAIMER).toContain("not investment advice");
   });
 });
+
+import { dateOnly } from "./format";
+
+describe("dateOnly", () => {
+  it("passes ISO strings through and converts epoch-second strings", () => {
+    expect(dateOnly("2026-06-24T00:00:00Z")).toBe("2026-06-24");
+    expect(dateOnly("1793880000")).toBe("2026-11-05");
+    expect(dateOnly(null)).toBe("—");
+  });
+});
