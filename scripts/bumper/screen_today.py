@@ -18,6 +18,7 @@ from __future__ import annotations
 import datetime as dt
 import json
 import pathlib
+import re
 import sys
 
 import requests
@@ -59,7 +60,7 @@ def fetch(tickers):
     return rows
 
 
-def efts_hits(cik, q, forms, days=365):
+def efts_hits(cik, q, forms, days=365, body_only=False):
     end = dt.date.today()
     start = end - dt.timedelta(days=days)
     params = {"q": q, "ciks": f"{cik:010d}", "forms": ",".join(forms), "dateRange": "custom",
@@ -70,8 +71,9 @@ def efts_hits(cik, q, forms, days=365):
         return None, []
     j = r.json()
     hits = j.get("hits", {}).get("hits", [])
-    docs = [{"form": h["_source"].get("form"), "filed": h["_source"].get("file_date"), "id": h["_id"]} for h in hits[:5]]
-    return j.get("hits", {}).get("total", {}).get("value", len(hits)), docs
+    docs = [{"form": h["_source"].get("form"), "filed": h["_source"].get("file_date"), "id": h["_id"]} for h in hits
+            if not body_only or not re.search(r"ex\d", h["_id"].split(":")[-1].lower())]
+    return len(docs), docs[:5]
 
 
 def main():
@@ -104,7 +106,7 @@ def main():
     for rec in out:
         if rec.get("stage") != "in universe":
             continue
-        reasons = []
+        reasons, flags = [], []
         if rec["runway_years"] is not None and rec["runway_years"] < 2:
             reasons.append(f"runway {rec['runway_years']:.1f}y < 2y")
         cik = S.cik_for(rec["ticker"].split(":")[-1])
@@ -113,16 +115,16 @@ def main():
             n, docs = efts_hits(cik, '"substantial doubt" "going concern"', ["10-K", "10-Q", "20-F"])
             rec["going_concern_hits"], rec["going_concern_docs"] = n, docs
             if n:
-                reasons.append(f"going-concern language in {n} filing(s) last 12m")
-            n2, docs2 = efts_hits(cik, '"minimum bid price" OR "Listing Rule 5550" OR "Listing Rule 5450" OR "notice of noncompliance"', ["8-K"])
+                flags.append(f"going-concern language in {n} filing(s) last 12m (read: explicit statement or boilerplate?)")
+            n2, docs2 = efts_hits(cik, '"minimum bid price" OR "Listing Rule 5550" OR "Listing Rule 5450" OR "notice of noncompliance"', ["8-K"], body_only=True)
             rec["listing_notice_hits"], rec["listing_notice_docs"] = n2, docs2
             if n2:
                 reasons.append(f"exchange listing notice in {n2} 8-K(s) last 12m")
         else:
             rec["going_concern_hits"] = rec["listing_notice_hits"] = None
             reasons.append("no CIK found (text gates not run)")
-        rec["stage"] = "DISQUALIFIED" if reasons else "not disqualified (numeric + text gates)"
-        rec["why"] = "; ".join(reasons) if reasons else "runway >= 2y, no going-concern language, no listing notice"
+        rec["stage"] = "DISQUALIFIED" if reasons else ("FLAGGED (read the filing)" if flags else "not disqualified (numeric + text gates)")
+        rec["why"] = "; ".join(reasons + flags) if (reasons or flags) else "runway >= 2y, no going-concern language, no listing notice"
         rec["binding_demand"] = "UNVERIFIED"
     (D / "screen_today.json").write_text(json.dumps({"generated_at": stamp, "gates_run": ["universe", "runway", "going_concern", "listing_notice"],
                                                      "gates_not_run": ["binding_demand", "dilution_buyer", "13D", "governance", "5.02_departures", "judge"],
@@ -130,7 +132,7 @@ def main():
     # stdout table
     def f(x, nd=1, mult=1, suf=""):
         return "-" if x is None else f"{x * mult:.{nd}f}{suf}"
-    for stage in ["not disqualified (numeric + text gates)", "DISQUALIFIED"]:
+    for stage in ["not disqualified (numeric + text gates)", "FLAGGED (read the filing)", "DISQUALIFIED"]:
         print(f"\n## {stage}")
         print("| ticker | sector | cap $B | runway y | R&D/rev | rev growth | 1y perf | why |\n|---|---|---|---|---|---|---|---|")
         for r in sorted([r for r in out if r.get("stage") == stage], key=lambda r: r["market_cap_usd"] or 0, reverse=True):
@@ -138,7 +140,7 @@ def main():
                   f"{f(r['rev_growth_yoy'], 0, 1, '%')} | {f(r['perf_1y'], 0, 1, '%')} | {r['why']} |")
     n_out = sum(r.get("stage") == "outside universe" for r in out)
     print(f"\nuniverse {len(out)} names: {n_out} outside ($50M-$3B pre-profit), "
-          f"{sum(r.get('stage') == 'DISQUALIFIED' for r in out)} disqualified, "
+          f"{sum(r.get('stage') == 'DISQUALIFIED' for r in out)} disqualified, {sum(r.get('stage', '').startswith('FLAGGED') for r in out)} flagged, "
           f"{sum(r.get('stage', '').startswith('not disq') for r in out)} not disqualified, {sum(r.get('stage') == 'no data' for r in out)} no data")
 
 
