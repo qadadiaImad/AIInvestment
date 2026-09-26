@@ -1,0 +1,233 @@
+{
+  "rows": [
+    {
+      "ticker": "UMAC",
+      "band": "watch-favourable-unvalidated",
+      "binding_demand": "Real, partly delivered demand: a $2.1M Teal Drones/Red Cat order (related party) was delivered with $2.2M of related-party revenue recognized in H1-2026; PDW ($3.75M) and an unnamed defense order ($2.1M) are firm POs not individually confirmed delivered.",
+      "last_raise": "$60M ATM (2026-05-29) at market price with no discount or warrants; a preceding $150M offering (2026-03-20) priced at roughly an 8.6% discount; shares outstanding nearly tripled in 17 months on repeated ATM draws.",
+      "related_parties": "Customer-as-financier link is governance-only, not capital: director Jeffrey Thompson is Red Cat's CEO, but Red Cat itself holds 0% equity; ~8.9% of H1-2026 revenue came from this related-party customer.",
+      "gates": "None triggered: no going concern, no listing notice, no funding-tied 5.02 departure (all three are compensatory), and a prior material weakness is stated remediated; an undisclosed $52M unaudited-target merger and an auditor change were found but are not disqualifying.",
+      "reasons": [
+        "A $2.1M Teal Drones/Red Cat order was delivered and $2.2M of related-party revenue was recognized in H1-2026, with total quarterly revenue up 687% year over year (10-Q, 2026-08-06).",
+        "No graveyard gate is present: zero going-concern hits, a previously disclosed material weakness stated remediated, and all three trailing-12-month Item 5.02 8-Ks are compensatory rather than departures (10-K, 2026-03-12).",
+        "Roughly 8.9% of H1-2026 revenue is a related-party order from a board member's other company, and the sampled Form 4s show only insider sales with zero purchases against shares outstanding nearly tripling (10-Q, 2026-08-06)."
+      ],
+      "disagreement_with_investigator": ""
+    },
+    {
+      "ticker": "LPTH",
+      "band": "watch-favourable-unvalidated",
+      "binding_demand": "Firm backlog ($110.9M, +197% YoY, $85.6M due within a year) and already-recognized revenue (top customer 24% of FY2026 revenue) exist, but growth is largely acquisition-driven (G5 Infrared, AML) and every named counterparty is undisclosed.",
+      "last_raise": "$50M registered-direct/secondary offering (June 2026) at $14.00, no warrants, half primary/half sold by existing holder North Run; preceded by a $60.1M underwritten offering (Dec 2025) at $7.75.",
+      "related_parties": "Board-affiliated financier North Run (funded the G5 Infrared deal via Series G preferred) sold down from 18.9% to 9.6% of the company between January and June 2026 while a management-affiliated buyer purchased a subsidiary back from the company on seller financing.",
+      "gates": "None triggered: no going concern, no listing deficiency, no material weakness, and the sole Item 5.02 filing was a board appointment; a stale 10-months-old going-concern paragraph and two omitted >5% holders were found but do not survive as a current gate.",
+      "reasons": [
+        "Binding demand exists as firm backlog/contracts ($110.9M total, $85.6M due within a year) and already-recognized revenue, with the top customer at 24% of FY2026 revenue (10-K, 2026-09-11).",
+        "No graveyard gate is present in substance: no going-concern, delisting, or material-weakness disclosure, and the sole Item 5.02 filing in the window was a board appointment, not a departure (8-K, 2025-10-14).",
+        "93% revenue growth is management-attributed mainly to two acquisitions, shares outstanding grew about 57% in a year, and board-affiliated financier North Run sold down from 18.9% to 9.6% of the company between January and June 2026 (10-K, 2026-09-11)."
+      ],
+      "disagreement_with_investigator": ""
+    },
+    {
+      "ticker": "DPRO",
+      "band": "watch-thin",
+      "binding_demand": "No named, binding customer contract exists; the AIF discloses no material contracts outside the ordinary course and no customer reached 15% of revenue, so real revenue growth (+17.8% FY2025) is not tied to any disclosed contract.",
+      "last_raise": "A ~US$50M underwritten public offering closed 2026-02-27 at US$7.00 with no warrants, on top of ~US$42M of warrant-bearing 2025 unit offerings; shares outstanding grew from 23.3M to 37.1M in under a year; no ATM Sales Agreement found.",
+      "related_parties": "No customer-as-financier overlap; CEO-controlled entities (Business Instincts Group, 1502372 Alberta) were paid roughly $1.04M combined in FY2025 for consulting/services, not disclosed as product customers.",
+      "gates": "The current FY2025 audit opinion carries no going-concern paragraph and no listing/material-weakness/litigation gate was found, but an explicit 'substantial doubt' going-concern statement existed in interim financials 10 months earlier, and at least two >5% institutional 13G holders were entirely omitted from the report.",
+      "reasons": [
+        "No customer reached 15% of FY2025 or FY2024 revenue and the AIF discloses no material contracts outside the ordinary course, so real revenue growth ($7.73M FY2025, +17.8% YoY) is not tied to any named, binding contract (40-F AIF, 2026-03-24).",
+        "The balance sheet was rebuilt through heavy dilution rather than operating cash flow: a ~US$50M underwritten offering (Feb 2026) plus three 2025 unit offerings took shares outstanding from 23.3M to 37.1M with no ATM facility identified (6-K, 2026-03-02).",
+        "An explicit 'substantial doubt' going-concern statement appeared in interim financials just 10 months before the clean FY2025 audit opinion, and the claim of zero 13G filings in the trailing 12 months is contradicted by at least two >5% holders (CVI/Heights, SIG) (6-K, 2025-11-12)."
+      ],
+      "disagreement_with_investigator": ""
+    },
+    {
+      "ticker": "RR",
+      "band": "avoid-pattern",
+      "binding_demand": "The single strongest 'binding demand' data point — $44.1M in Automotive-MSA payments received — is arithmetically irreconcilable with the same 10-K/A's audited cash-flow statement (FY2025 operating cash flow of negative $8.9M) and $248K of total deferred revenue; a Retailer MSA shows a real new 200-unit SOW, but the JV behind a third named customer (Boyu, ~$4.2M contract) was deregistered/dissolved with no follow-up disclosure.",
+      "last_raise": "A $1 billion ATM authorized 2025-09-23 (the third ATM agreement in FY2025 alone) funds continuous market-price dilution; total shares outstanding rose about 15.7% in under a year, sold to ordinary market participants rather than a named strategic buyer.",
+      "related_parties": "None disclosed (Item 13 states 'None'); no customer is identified as a financier.",
+      "gates": "A full FY2024-2025 financial restatement (Item 4.02) plus a still-unremediated, previously-misreported-as-fixed material weakness is explicit and current; a genuine Nasdaq Listing Rule 5250(c)(1) deficiency notice (2026-05-22, late 10-Q) falls inside the trailing 12 months.",
+      "reasons": [
+        "The single strongest 'binding demand' evidence -- $44.1M in customer payments received on the Automotive MSA -- cannot be reconciled with the same 10-K/A's own audited cash-flow statement, which shows FY2025 operating cash flow of negative $8.9M and total company-wide deferred revenue of only $248K (10-K/A, 2026-08-07).",
+        "A full FY2024-2025 financial restatement (Item 4.02) and an admitted, still-unremediated material weakness over 'complex and non-routine transactions' are explicit and current, and Nasdaq issued a Listing Rule 5250(c)(1) deficiency notice on 2026-05-22 for a late 10-Q filing (8-K, 2026-06-12; 8-K, 2026-05-28).",
+        "The joint-venture entity behind a third named customer relationship (Boyu, ~$4.2M Kaiwu Tongchuang contract) was deregistered/dissolved on 2026-04-03, disclosed only in an explanatory note with no follow-up in the subsequent 10-Q (10-K/A, 2026-08-07)."
+      ],
+      "disagreement_with_investigator": "Investigator called this watch-thin; judged avoid-pattern instead. The devil's-advocate audit found the investigator's best evidence of binding demand ($44.1M received on the Automotive MSA) is arithmetically impossible given the same filing's audited operating cash flow (-$8.9M) and $248K total deferred revenue -- exactly the kind of unreliable headline number an admittedly unremediated control weakness over 'complex and non-routine transactions' would produce. Combined with a real, confirmed Nasdaq listing deficiency notice inside the window (the investigator overcounted it as 'twice,' but one genuine instance stands) and an undisclosed JV dissolution behind another named customer, this trips both the fabricated/unreliable-orders and listing-notice avoid-pattern gates that the investigator's clean-gate framing missed."
+    },
+    {
+      "ticker": "CARL",
+      "band": "watch-thin",
+      "binding_demand": "No named customer or contract exists at all; filings affirmatively state no single customer exceeded 10% of revenue in FY2025 or H1 2026, so growing revenue and cash cannot be validated against any specific counterparty.",
+      "last_raise": "A clean IPO (July 2025) priced at the offering price with no discount or warrants to new money; VC insiders (B Capital, USVP) bought in at the same public price; a venture-debt facility with Customers Bank has $17.5M of its $50M capacity gated behind unhit revenue milestones and a $20M minimum-cash covenant.",
+      "related_parties": "No customer is also a financier; the only financiers are a venture lender (Customers Bank) and two VC/board-affiliated equity investors (B Capital, USVP), neither disclosed as a customer.",
+      "gates": "None triggered: no going concern, no listing notice, no material weakness, no departure-driven Item 5.02, no pending litigation; the only defects found were that cited VC ownership stakes understate the filings' own broader fund-family aggregates.",
+      "reasons": [
+        "No explicit graveyard gate is present across the 10-K, 10-Q, 8-Ks and S-3 reviewed: no going-concern language, no listing/compliance notice, no disclosed material weakness, and no pending litigation (10-Q, 2026-08-05).",
+        "Filings affirmatively state no single customer exceeded 10% of revenue in FY2025 or H1 2026, so growing revenue cannot be validated against any named binding contract or counterparty (10-K, 2026-02-25).",
+        "The Customers Bank term loan has $17.5M of its $50M capacity gated behind unhit revenue milestones and a $20M minimum-cash covenant, and the cited VC ownership stakes (B Capital 27.8%, USVP 16.2%) are narrower than the filings' own combined fund-family figures (31.3% and 21.2%) (SC 13G, 2025-11-14; 8-K, 2025-10-30)."
+      ],
+      "disagreement_with_investigator": ""
+    },
+    {
+      "ticker": "SES",
+      "band": "avoid-pattern",
+      "binding_demand": "No named customer exists; FY2025 top-3 customers were 48%/15%/12% of revenue but Q2 2026 shows no significant concentration after a China-based acquisition began contributing product revenue, and roughly 90% of H1-2026 revenue now originates outside the United States.",
+      "last_raise": "No cash was actually raised in the trailing 18 months; a $150M ATM (effective 2026-05-05) remains entirely undrawn.",
+      "related_parties": "Only historical -- GM/Teal was a JDA partner and related party via a board seat until terminated in October 2024; no current customer is a related party.",
+      "gates": "Two explicit, unresolved NYSE listing deficiencies (a minimum-price notice and a warrant-delisting/Form 25-NSE action) plus an active, unresolved federal securities class action filed 2026-04-27; insider Form 4s show zero open-market purchases in the trailing 12 months.",
+      "reasons": [
+        "NYSE issued a Section 802.01C minimum-average-price deficiency notice on 2026-07-17 and moved to suspend trading and delist the company's public warrants under Section 802.01D on 2026-08-13, with a Form 25-NSE removal notice filed 2026-08-31 (8-K, 2026-07-20; 8-K, 2026-08-14).",
+        "A putative federal securities class action alleging false statements or omissions about business prospects was filed 2026-04-27 in the District of Massachusetts and remains unresolved (10-K/A, 2026-04-30).",
+        "Insider Form 4 activity over the trailing 12 months shows zero open-market purchases, only tax-withholding dispositions and a few cashless option-exercise-then-sell transactions, while roughly 90% of H1-2026 revenue now originates outside the United States (10-Q, 2026-08-11)."
+      ],
+      "disagreement_with_investigator": ""
+    },
+    {
+      "ticker": "LIDR",
+      "band": "watch-thin",
+      "binding_demand": "Revenue is de minimis ($233K FY2025) with zero customer-letter continuity year over year; the one new demand signal (a Lunar Outpost lidar 'contract award,' announced 2026-09-01) discloses no dollar value, delivery date, or minimum-purchase term, and the company's own risk factor hedges that it may not result in revenue at all.",
+      "last_raise": "A new $50M ATM opened 2026-09-15, replacing a $125M ATM that was about 56% drawn; shares outstanding grew roughly 17% year over year; no named PIPE or registered-direct investor in the last 18 months.",
+      "related_parties": "None disclosed for FY2025 or FY2024; the unnamed institutional investor funding a manufacturing partner's dedicated production line is not identified as a customer, lender, or shareholder.",
+      "gates": "No going concern, no current listing deficiency, no material weakness, no securities litigation or short-seller report beyond one disputed $3.3M vendor arbitration; one Item 5.02 departure (General Counsel, May 2026) is unrelated to funding.",
+      "reasons": [
+        "FY2025's top four named-by-letter customers (27%/15%/12%/10% of $233K total revenue) share no overlap with FY2024's concentrated buyers, and the company's own risk factor states the new Lunar Outpost 'contract award' may not result in revenue at all (10-K, 2026-03-18; 8-K, 2026-09-01).",
+        "No going-concern doubt or open Nasdaq listing deficiency exists today, but the company just replaced its entire ATM facility with a new $50M one and continues to fund itself almost entirely by selling stock into the market (10-Q, 2026-08-06; 8-K, 2026-09-15).",
+        "Net insider activity on the open market was selling (42,350 shares) versus buying (10,350 shares) over the trailing 12 months, alongside heavy new dilutive equity-compensation issuance to management (Form 4, 2025-11-12; Form 4, 2025-12-12)."
+      ],
+      "disagreement_with_investigator": ""
+    },
+    {
+      "ticker": "AMBQ",
+      "band": "watch-thin",
+      "binding_demand": "Revenue is real and recognized but structurally non-binding -- end customers have no minimum or binding purchase obligations and orders may be cancelled or rescheduled without penalty -- and severely concentrated (single customer 35.6% of FY2025 sales; top three about 78-84.6%).",
+      "last_raise": "A $156M underwritten follow-on (June 2026) priced at $78.00, a roughly 2.2% discount to the last trade with no warrants; a January 2026 follow-on preceded it; no ATM facility is in place.",
+      "related_parties": "No customer is a disclosed financier; the only related-party transaction is a director's consulting-services warrant exercise (about $3.0M cash to the company, Feb 2026), unconnected to any customer.",
+      "gates": "No going concern, no listing notice (the company instead added a secondary SGX listing), no departure-driven Item 5.02, and the sole disclosed material weakness was fully remediated as of Dec 31, 2025; every Form 4 in the trailing 12 months was a sale with zero open-market purchases.",
+      "reasons": [
+        "End customers 'do not have any minimum or binding purchase obligations... orders may be cancelled, reduced or rescheduled with little or no notice and without penalty,' and the single largest customer was 35.6% of FY2025 net sales (424B4, 2026-06-25; 10-K, 2026-03-05).",
+        "No explicit graveyard gate is present -- no going-concern doubt, no listing deficiency, no distress-linked departure, and the sole disclosed material weakness was fully remediated as of Dec 31, 2025 -- but every Form 4 in the trailing 12 months was a sale, with zero open-market insider purchases (10-K, 2026-03-05).",
+        "The top three end customers collectively represented approximately 78% of net sales in Q2 2026, and the June 2026 follow-on priced at a roughly 2.2% discount is the second large dilutive raise within six months (10-Q, 2026-08-11)."
+      ],
+      "disagreement_with_investigator": ""
+    },
+    {
+      "ticker": "ENVX",
+      "band": "watch-favourable-unvalidated",
+      "binding_demand": "Real, recognized revenue is extremely concentrated in two unnamed customers (a South Korea defense subcontractor at ~64-65%, a second at ~13-15%); the lead smart-eyewear customer has taken delivery of over 1,000 battery packs under a supply agreement, while higher-value smartphone-OEM relationships remain in pre-commercial qualification/testing.",
+      "last_raise": "$360M 4.75% convertible notes (Sept 2025) at a 22.5% conversion premium, no discount or warrants; but the dilution comparison omitted an earlier, larger Q3-2025 warrant-exercise raise (~$232M gross, 26.5M shares, ~13.7% dilution).",
+      "related_parties": "Chairman T.J. Rodgers is both a $10M related-party lender (Affiliate Notes) and the company's largest insider shareholder, and became Executive Chairman the day after the CEO's resignation.",
+      "gates": "No going concern, no listing notice, no current material weakness; a securities class action over 2021-2023 disclosures remains technically open but has been substantially narrowed; two C-suite departures occurred in the window, not the one the report counted.",
+      "reasons": [
+        "Recognized revenue came almost entirely from two unnamed customers -- a South Korea defense subcontractor (~64-65%) and a second customer (~13-15%) -- while higher-value smartphone-OEM relationships remain in pre-commercial testing, not yet delivering revenue (10-Q, 2026-08-12).",
+        "Two C-suite departures occurred within the trailing 12 months -- a COO's retirement in January 2026 and the CEO's resignation in August 2026 -- with Chairman T.J. Rodgers, an existing $10M related-party lender, appointed Executive Chairman the very next day (8-K, 2026-01-20; 8-K, 2026-08-17).",
+        "A Q3-2025 warrant-exercise event raised roughly $232M gross (26.5M shares, ~13.7% dilution) that the dilution comparison excluded by starting its window after it, understating trailing-period dilution by roughly an order of magnitude (10-K, 2026-02-25)."
+      ],
+      "disagreement_with_investigator": ""
+    },
+    {
+      "ticker": "GILT",
+      "band": "watch-favourable-unvalidated",
+      "binding_demand": "Multiple 2026 orders (Nelco/India, three U.S. Department of War orders, an unnamed satellite operator, an unnamed in-flight connectivity provider, a Peru government agreement) are described as signed orders rather than LOIs, and a 20-F table shows real recognized revenue from anonymized customers, but none of the 2026 orders has yet shown delivery or recognized revenue in a later filing.",
+      "last_raise": "$100M convertible notes (Sept 2026) priced at par with a 60% conversion premium to Israeli institutional investors, no discount or warrants; preceded by two 2025 private placements at $9.35 and $11.25; shares outstanding up about 32% year over year.",
+      "related_parties": "None disclosed for FY2025/FY2024; the Israeli institutional buyer base (Clal, Harel/Migdal, Yelin Lapidot) overlaps with capital-raise buyers but not with any disclosed customer.",
+      "gates": "No going concern, no listing notice, no material weakness, no departure, zero 'short seller' EDGAR hits; a credit facility presented as live was actually fully repaid before the filing date, and one holder citation conflates two different Israeli insurers.",
+      "reasons": [
+        "Multiple 2026 filings describe signed orders (not LOIs) from Nelco/India, the U.S. Department of War, and a Peru government agreement, alongside a 20-F customer-concentration table showing recognized revenue from anonymized customers at 24%/20%/14% of FY2025 revenue (20-F, 2026-03-16; 6-K, 2026-05-05).",
+        "No graveyard gate is explicit in the last 12 months: no going-concern doubt, no material weakness, no Nasdaq listing-deficiency notice, no executive-departure disclosure, and zero EDGAR hits for 'short seller' (20-F, 2026-03-16).",
+        "A capital-web edge describing an active $100M bank credit facility omits that the $60M drawn under it was fully repaid on December 30, 2025, more than two and a half months before the 20-F was filed, and a holder citation misattributes a 10.66% insurer stake to a different, smaller 5.2% holder (20-F, 2026-03-16)."
+      ],
+      "disagreement_with_investigator": ""
+    },
+    {
+      "ticker": "LAES",
+      "band": "watch-thin",
+      "binding_demand": "No named customer with a binding contract exists; disclosed concentration (30% of H1-2026 revenue) is to two anonymized entities, and the widely-cited '>$225M active business pipeline through 2029' is explicitly labeled a management estimate subject to conversion/validation risk, not booked orders.",
+      "last_raise": "A $125M registered direct offering (March 2026) plus Class E warrants; shares outstanding roughly doubled (104.5M to 222.8M) in 12 months; two SEC filings from the same company give conflicting lead-investor names for the identical transaction.",
+      "related_parties": "Controlling parent WISeKey International Holding (51.33% of voting power via super-voting shares, only 2.69% of ordinary shares) is simultaneously the company's financing source and management-services provider -- a financier relationship, not a customer one.",
+      "gates": "No going concern (large positive working capital affirmed), no listing notice, one unrelated director departure, no material weakness, no active litigation; every Form 4 in the trailing 12 months is an option-exercise-then-sell with zero open-market purchases.",
+      "reasons": [
+        "No named customer with a binding contract was found in any filing reviewed; the two 10%+ revenue customers are anonymized, and the '>$225M active business pipeline through 2029' is explicitly labeled a management estimate, not booked orders (6-K, 2026-09-11).",
+        "Two SEC filings from the same company give conflicting lead-investor names for the identical $125M March-2026 registered direct offering, an unresolved discrepancy (20-F, 2026-03-31; 6-K, 2026-09-11).",
+        "Shares outstanding roughly doubled from 104.5 million to 222.8 million in 12 months via ATM sales and the $125M offering, while every Form 4 in the trailing 12 months shows option exercises at a $0.01 strike immediately sold, with zero open-market purchases (20-F, 2026-03-31)."
+      ],
+      "disagreement_with_investigator": ""
+    },
+    {
+      "ticker": "RCAT",
+      "band": "avoid-pattern",
+      "binding_demand": "Real, delivered demand is explicitly tied to scaling U.S. Army SRR deliveries (51-73% of revenue in one customer) plus newly commenced Japan Ground Self-Defense Force deliveries, but is heavily concentrated and sits alongside a serious governance and litigation picture.",
+      "last_raise": "A $225M underwritten offering (May 2026) was actually about $258.75M once the fully-exercised underwriters' option is included, following a year-long toxic convertible note with death-spiral pricing mechanics and four other dilutive raises in 13 months.",
+      "related_parties": "UMAC is a related-party supplier (not customer) -- RCAT's CEO sits on UMAC's board; about $2.4M of inventory was purchased in H1-2026.",
+      "gates": "A current, unremediated material weakness confirmed as of the most recent 10-Q; an active securities class action plus two stayed derivative suits alleging insider trading; a for-cause CRO termination now in litigation; a failed say-on-pay vote at the June 2026 annual meeting.",
+      "reasons": [
+        "A current, unremediated material weakness in internal controls is explicit as of the most recent quarter: management concluded disclosure controls were 'not effective' as of June 30, 2026 due to insufficient resources and segregation of duties (10-Q, 2026-08-06).",
+        "Active, unresolved securities and derivative litigation -- a shareholder class action with two stayed derivative suits alleging insider trading, plus a for-cause CRO termination that produced its own wrongful-termination suit -- sits alongside a failed say-on-pay vote (58% against) at the June 2026 annual meeting (10-Q, 2026-08-06; 8-K, 2026-06-25).",
+        "The May 2026 capital raise was understated by about 15% (actual gross proceeds roughly $258.75M once the underwriters' option is included), and it followed a year-long toxic convertible note with death-spiral pricing mechanics never mentioned alongside it (8-K, 2026-05-18; 10-Q, 2026-08-06)."
+      ],
+      "disagreement_with_investigator": ""
+    },
+    {
+      "ticker": "BLDP",
+      "band": "watch-favourable-unvalidated",
+      "binding_demand": "Multiple named customers (NFI Group, Solaris, CPKC) hold signed long-term supply agreements with firm purchase orders and later filings confirm actual unit deliveries, but the company's own MD&A flags its Order Backlog and 12-month Order Book -- the same named customers -- as subject to cancellation and performance-condition risk.",
+      "last_raise": "No cash raise occurred in the trailing 18 months; the only capital event was the GeoPura acquisition (Aug 2026), stock-and-cash M&A consideration to a private seller causing roughly 14-17% share dilution, not a public raise.",
+      "related_parties": "Weichai Power was simultaneously a 51% JV co-owner/licensee-customer and a direct shareholder with board-nominee rights until it sold down below the 15% threshold in May 2026, losing its board seats; GeoPura was a customer before being acquired outright.",
+      "gates": "No going concern (unqualified audit opinion, no emphasis paragraph), no listing notice, no material weakness, no departure tied to funding, no litigation or short-seller hits.",
+      "reasons": [
+        "Signed long-term supply agreements with NFI Group, Solaris, and CPKC show actual confirmed unit deliveries -- for example, CPKC's 98-engine agreement had 65 delivered in 2025 with the remaining 33 expected in 2026 (40-F AIF, 2026-03-12).",
+        "No graveyard gate is explicit: an unqualified audit opinion covers both the FY2025 financial statements and internal controls, with no going-concern paragraph, no material weakness, and no listing notice or funding-tied departure found in the trailing 12 months (40-F, 2026-03-12).",
+        "The company's own MD&A flags its Order Backlog and 12-month Order Book -- the same named customers credited with delivered demand -- as subject to cancellation, delay, and performance-condition risk (6-K, 2026-07-31)."
+      ],
+      "disagreement_with_investigator": ""
+    },
+    {
+      "ticker": "QUBT",
+      "band": "avoid-pattern",
+      "binding_demand": "Reported revenue growth is almost entirely acquisition-driven, not organic customer demand -- H1-2026 revenue rose from $100K to $9.2M, but management's own reconciliation shows organic revenue up only $0.6M year over year; the acquired subsidiary's 'established customer base' was bought via a Chapter 11 bankruptcy stalking-horse sale from a bankrupt seller.",
+      "last_raise": "A ~$750M private placement (Oct 2025) to unnamed institutional purchasers, no warrants disclosed, part of roughly $1.5B raised across four 2025 private placements; shares outstanding up about 41.6% year over year.",
+      "related_parties": "No current customer is a related party; a legacy lender/shareholder relationship at an acquired subsidiary was settled in August 2025.",
+      "gates": "An active securities class action specifically alleging misrepresentation of customers, contracts, and business operations, with four stayed shareholder derivative suits (not two, as reported); an explicit, unremediated material weakness in disclosure controls persisting through the most recent 10-Q.",
+      "reasons": [
+        "Management's own reconciliation shows organic, non-acquisition revenue increased only $0.6 million year over year in H1 2026, meaning the touted revenue growth is almost entirely from recent acquisitions rather than customer demand for the company's core products (10-Q, 2026-08-10).",
+        "An active securities class action alleges false or misleading statements specifically about 'the Company's customers, contracts and business operations,' with four shareholder derivative suits stayed pending its outcome, and an explicit, unremediated material weakness in disclosure controls persists as of the most recent 10-Q (10-K, 2026-03-02; 10-Q, 2026-08-10).",
+        "The acquired subsidiary's 'established customer base,' cited as a demand source, was acquired as the bankruptcy-court stalking-horse bidder in the seller's Chapter 11 sale process, a fact absent from the report despite bearing directly on how durable that customer base is (8-K, 2025-12-15)."
+      ],
+      "disagreement_with_investigator": ""
+    },
+    {
+      "ticker": "ASPI",
+      "band": "avoid-pattern",
+      "binding_demand": "The flagship isotope/HALEU story is contract-signed but has generated zero enriched-isotope revenue, with shipment targets slipping to H2 2026; the segment that actually drove FY2025 revenue (Skyline, ~46%) was deconsolidated as discontinued operations, and the largest continuing-operations segment (radiopharmacy sales, 78% of H1-2026 revenue) was never checked for its own customer concentration.",
+      "last_raise": "A $199.3M net underwritten public offering (Oct 2025) at $12.25, no discount or warrants; shares outstanding grew from 110.8M to 153.3M, partly from merger-consideration shares issued in an acquisition.",
+      "related_parties": "TerraPower is simultaneously the company's prospective HALEU customer and its $20-22M lender for the very facility that would supply it; the Executive Chairman personally co-invested alongside the company in the same acquisition targets.",
+      "gates": "An explicit, unremediated material weakness as of Dec 31, 2025; a certified securities class action with a settlement-in-principle pending court approval, plus four 2026 shareholder derivative suits; every reporting insider sold with zero purchases; a newly wholly-owned subsidiary carries its own auditor going-concern paragraph that was never surfaced, and a subsequent-events date conflict between two filings has no corroborating 8-K.",
+      "reasons": [
+        "An explicit, unremediated material weakness in disclosure controls and internal controls is disclosed for FY2025, alongside a certified securities class action (settlement-in-principle pending court approval) and four 2026 shareholder derivative suits, while every reporting insider sold stock and none bought in the trailing 12 months (10-K, 2026-04-10; 10-Q, 2026-08-14).",
+        "The company has not generated any revenue from enriched-isotope sales and shipment targets have slipped to the second half of 2026, while the segment that actually drove about 46% of FY2025 revenue was deconsolidated as discontinued operations on March 29, 2026 (10-Q, 2026-08-14).",
+        "A subsidiary acquired in early 2026 and now the source of the one continuing-operations customer cited in the report carries its own auditor-disclosed going-concern paragraph that never appears in the report, and a deconsolidation-date conflict between two filings has no corroborating 8-K (S-3ASR, 2026-07-16; 8-K/A Ex 99.2, 2026-03-24)."
+      ],
+      "disagreement_with_investigator": ""
+    }
+  ],
+  "cross_name_observations": [
+    "Dilution across the cohort is overwhelmingly bought by anonymous market participants (ATM draws, underwritten public offerings) rather than named strategic investors -- UMAC, DPRO, RR, LIDR, AMBQ, QUBT, RCAT and ASPI all raised primarily from unnamed institutional or retail buyers; GILT and LAES stand out as raising from a recognizable, named class (Israeli institutional investors/insurers) instead.",
+    "The most concrete delivered-and-scaling demand in the cohort sits in defense/industrial-hardware names with named end customers and confirmed unit deliveries -- RCAT (U.S. Army SRR), BLDP (NFI, Solaris, CPKC), UMAC (Teal Drones/Red Cat), and LPTH (24% named-by-percentage customer) -- versus names whose demand is still contract-signed-but-undelivered (ASPI's isotope/HALEU story, LIDR's lunar-lidar award) or non-binding despite being recognized (AMBQ's cancellable-without-penalty orders).",
+    "RR most closely resembles the 2021 EV-SPAC cohort pattern: a headline demand number that does not reconcile with the company's own cash-flow statement, a financial restatement, an admittedly-unremediated material weakness, and a $1B ATM overhang; QUBT (serial ~$1.5B of private placements, acquisition-driven revenue, a bankruptcy-sourced acquisition target) and ASPI (serial capital raises, an unbuilt facility, a contract-signed-no-revenue story, and a going-concern subsidiary folded in via stock-for-stock M&A) echo the same pattern to varying degrees.",
+    "A small defense-drone ecosystem cross-trades with itself: UMAC's director is Red Cat/RCAT's CEO, UMAC delivered product to Red Cat's Teal Drones subsidiary, and RCAT separately buys about $2.4M of inventory from UMAC -- the same handful of insiders and entities appear on both sides of multiple 'customer' and 'supplier' relationships across two names in this cohort.",
+    "Quantum/nuclear-adjacent names (QUBT, LAES, ASPI) share a signature: revenue that is tiny or entirely acquisition-driven, share counts that doubled or grew by hundreds of millions of dollars of serial issuance in 12 months, minimal-to-zero organic binding demand, and a going-concern or restructuring history (QUBT's bankrupt acquisition target, ASPI's newly-acquired going-concern subsidiary) that required a second-pass search to surface.",
+    "Every one of the 15 names shows insider Form 4 activity that is entirely or overwhelmingly selling, with zero-to-minimal open-market purchases in the trailing 12 months -- not one name in the cohort shows net insider open-market buying.",
+    "Anonymized customer disclosure (unnamed 'Customer A/B/C' or 'leading global technology customer' language) is the norm rather than the exception -- nine of the fifteen names (UMAC, LPTH, RR, SES, LIDR, AMBQ, ENVX, GILT, LAES) rely on at least one materially concentrated but legally unnamed customer.",
+    "Foreign private issuers in the cohort (DPRO, BLDP, GILT, LAES) file under 20-F/40-F/6-K rather than 10-K, and two of them (DPRO, BLDP) have zero SEC Form 4 filings at all -- their insider trading signal is structurally absent, not merely undisclosed.",
+    "Where the investigator and devil's-advocate auditor disagreed most sharply (RR), the fault line was a headline 'cash received' figure lifted from a narrative Business-section sentence without cross-checking it against the same filing's own audited cash-flow statement -- the single most consequential verification failure found across the cohort."
+  ],
+  "method_notes": [
+    "WebSearch and press coverage were excluded from every investigation by task instruction, so 'no short-seller report found' or 'no litigation found' means not found in SEC/EDGAR filings, not confirmed absent in the wider world, for all 15 names.",
+    "Anonymized customers (Customer A/B/C, an unnamed 'leading global technology customer,' etc.) appear in nearly every filing reviewed; the real-world identity behind the revenue concentration for UMAC, LPTH, RR, SES, LIDR, AMBQ, ENVX, GILT and LAES could not be confirmed from public filings, so true single-customer-loss risk is likely understated.",
+    "Underlying purchase/supply-agreement contract exhibits (deposit terms, cancellation penalties, minimum-purchase clauses) were rarely filed as exhibits; most 'binding demand' assessments rest on the company's own narrative description of a contract rather than the contract text itself.",
+    "Foreign-private-issuer insider-disclosure regimes differ materially from domestic filers -- DPRO and BLDP have zero SEC Form 4 filings (Canadian SEDI reporting / Section 16 exemption), so insider buy/sell signal is structurally unavailable, not merely unreported, for those two names.",
+    "This is a point-in-time snapshot as of 2026-09-26; several names carry pending, unresolved catalysts (ASPI's class-action settlement approval, SES's securities class action, RR's control-environment remediation, GILT's pending acquisition close) whose outcome could not be known from filings available today.",
+    "The devil's-advocate audits themselves were bounded -- each checked a sampled set of citations (roughly 10 to 33 per name) and ran a fixed list of full-text-search terms; an audit finding no missed disqualifier is evidence of a clean sampled search, not proof of an exhaustive one."
+  ]
+}
