@@ -1,0 +1,369 @@
+{
+  "ticker": "RDW",
+  "filings_read": [
+    {
+      "form": "10-K",
+      "date": "2026-02-27",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000029/rdw-20251231.htm"
+    },
+    {
+      "form": "10-Q",
+      "date": "2026-08-06",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000124/rdw-20260630.htm"
+    },
+    {
+      "form": "10-Q",
+      "date": "2025-08-07",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981025000215/rdw-20250630.htm"
+    },
+    {
+      "form": "10-Q",
+      "date": "2026-05-07",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000063/rdw-20260331.htm"
+    },
+    {
+      "form": "DEF 14A",
+      "date": "2026-04-10",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000050/rdw-20260410.htm"
+    },
+    {
+      "form": "SCHEDULE 13D/A",
+      "date": "2026-05-20",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000110465926064511/xslSCHEDULE_13D_X02/primary_doc.xml"
+    },
+    {
+      "form": "SCHEDULE 13D/A",
+      "date": "2026-01-09",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000110465926002488/xslSCHEDULE_13D_X01/primary_doc.xml"
+    },
+    {
+      "form": "8-K",
+      "date": "2025-10-08",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981025000229/rdw-20251002.htm"
+    },
+    {
+      "form": "8-K",
+      "date": "2026-02-17",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000014/rdw-20260211.htm"
+    },
+    {
+      "form": "8-K",
+      "date": "2026-03-17",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000038/rdw-20260312.htm"
+    },
+    {
+      "form": "8-K",
+      "date": "2026-07-14",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000104/rdw-20260710.htm"
+    },
+    {
+      "form": "424B5",
+      "date": "2026-06-09",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000162828026041769/redwire-atmprosuppjune2026.htm"
+    },
+    {
+      "form": "424B5 (preliminary)",
+      "date": "2025-06-16",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000162828025031584/redwire424b5.htm"
+    }
+  ],
+  "binding_demand": {
+    "verdict": "confirmed_delivered",
+    "customers": [
+      {
+        "name": "U.S. Marine Corps / U.S. Army / Five Eyes partners",
+        "what": "Stalker Block 30 UAS (Edge Autonomy/Redwire Defense Tech), fielded for two decades",
+        "binding": "delivered (fielded programs, not a single disclosed contract value)",
+        "delivered_or_recognised": "yes - proven in operations worldwide for two decades, with thousands of flight hours across six continents",
+        "citation": "10-K, 2026-02-27, https://www.sec.gov/Archives/edgar/data/1819810/000181981026000029/rdw-20251231.htm: 'meeting mission needs for customers including, but not limited to, the U.S. Marine Corps, U.S. Army, and Five Eyes partners.'"
+      },
+      {
+        "name": "Ukraine Armed Forces / Latvia Ministry of Defense",
+        "what": "Penguin C Mk2 UAS heritage customers",
+        "binding": "delivered",
+        "delivered_or_recognised": "yes - Ukraine sales quantified at ~3% of FY2025 revenue",
+        "citation": "10-K, 2026-02-27, same URL: 'Selected heritage for the Penguin C Mk2 includes the Ukraine Armed Forces, Latvia Ministry of Defense, and commercial operations, among others.' and 'approximately 3% of our sales for the year ended December 31, 2025 were related to Ukraine'"
+      },
+      {
+        "name": "NASA",
+        "what": "PROBA, DART, Artemis I, IXPE - flown/deployed missions using Redwire hardware",
+        "binding": "delivered (missions already flown)",
+        "delivered_or_recognised": "yes - historical flight heritage disclosed as completed missions",
+        "citation": "10-K, 2026-02-27, same URL: successfully deployed on several flight missions in LEO, GEO, and deep space, including on the ISS, NASA's Imaging X-ray Polarimetry Explorer (IXPE) mission, and NASA's DART mission."
+      },
+      {
+        "name": "Customer D and Customer E (anonymized, >=10% of revenue)",
+        "what": "Unnamed customers, likely national-security/civil-space given segment mix; identity redacted in filing",
+        "binding": "unknown - concentration table does not disclose whether contracts are firm/binding vs. IDIQ task orders",
+        "delivered_or_recognised": "yes - revenue recognized in FY2025 ($66.261M and $62.829M respectively)",
+        "citation": "10-K, 2026-02-27, same URL: 'Customer D (1) 66,261 ... Customer E (1) 62,829 ... While revenue may have been generated during each of the periods presented, amounts are only disclosed for the periods in which revenues represented 10% or more of total revenue.'"
+      }
+    ],
+    "concentration": "Revenues from the two largest customers were ~19% and ~20% of total FY2025 revenue ($335.4M); customer identities anonymized as 'Customer D/E' in the 10-K's 10%-concentration table. Revenue mix FY2025: 46.9% national security, 21.6% civil, 31.5% commercial; 41.6% of revenue from customers outside the U.S. Backlog was $411.2M at 12/31/2025 (Space $299.8M, Defense Tech $111.4M), growing to $542.1M organic backlog at 6/30/2026; book-to-bill was 1.32x for FY2025 (Space 1.13x, Defense Tech 1.62x) vs 0.76x in FY2024, and organic backlog additions of $352.3M vs $214.0M revenue recognized in H1 2026 (~1.65x)."
+  },
+  "last_raise": {
+    "date": "2026-06-09 (facility); most recent quantified draws through 2026-06-30",
+    "form": "424B5 (ATM prospectus supplement) / 10-Q (Note H - Debt / ATM Facilities disclosure)",
+    "amount_usd": "June 2026 ATM: up to $500,000,000 authorized; $149.6M gross / $146.6M net actually sold in the quarter ended 6/30/2026. Prior facilities in the same 12 months: Nov 2025 ATM ($250M, fully drawn/terminated), May 2026 ATM ($350M, fully drawn/terminated - $350.0M gross/$341.2M net sold). June 2025 underwritten follow-on: 15,525,000 shares at $16.75 for $245.0M net proceeds.",
+    "instrument": "At-the-market (ATM) common equity program (no debt/convertible); prior 18-month event also includes an underwritten public common stock offering (June 2025)",
+    "buyers": "ATM: sold into the open market via sales agents (Truist Securities, J.P. Morgan Securities, BofA Securities, TCBI/Texas Capital Securities, A.G.P./Alliance Global Partners, B. Riley Securities, Canaccord Genuity, H.C. Wainwright, KeyBanc Capital Markets, Roth Capital Partners) - no named investors, not a PIPE/registered direct. June 2025 offering: underwritten public offering, joint book-running managers J.P. Morgan, BofA Securities, Morgan Stanley, Texas Capital Securities, Truist Securities, Roth Capital Partners - public market buyers, not named investors.",
+    "discount_and_warrants": "No warrants issued in the ATM or June 2025 offering. No discount disclosed beyond standard underwriting commissions (ATM commissions ~2-3% of gross proceeds per filings). Edge Autonomy acquisition itself involved a Seller Note with a 3.0% PIK upfront fee and a 1.20x minimum-return payment (repaid in full June 2025, $20.0M interest expense recognized on repayment).",
+    "shares_out_now": "249,992,609 shares of common stock as of August 3, 2026 (10-Q cover page)",
+    "shares_out_year_ago": "144,039,944 shares of common stock as of August 4, 2025 (10-Q cover page) - +73.6% YoY",
+    "atm_or_eln_in_place": "Yes - June 2026 ATM Facility, $500M authorized, $350.4M unused capacity as of 6/30/2026 per the 10-Q (two prior 2025-2026 ATM facilities, $250M and $350M, were each fully drawn and terminated within the same 12 months)",
+    "citation": "10-Q, 2026-08-06, https://www.sec.gov/Archives/edgar/data/1819810/000181981026000124/rdw-20260630.htm: 'During the three months ended June 30, 2026, the Company sold 9,323,823 shares of its common stock at a weighted average price of $16.05 for $149.6 million of gross proceeds.' and 'The Company had $350.4 million of unused capacity under the June 2026 ATM Facility as of June 30, 2026.'"
+  },
+  "related_parties": {
+    "customer_is_financier": "Yes. AE Industrial Partners (AEI) - Redwire's founder and, until 2026, controlling preferred/common shareholder and Edge Autonomy's seller - also has portfolio companies that are Redwire customers (disclosed as 'Related Party A/B/C', linked via board interlocks with directors Kirk Konert, Reggie Brothers, James McConville and Frank Calvelli). AEI additionally financed the Edge Autonomy acquisition's cash consideration via a $100M related-party Seller Note (repaid in full June 2025) and via the original 2022 $81.25M Series A Convertible Preferred Stock investment (fully converted to common and sold by both AEI and Bain Capital by mid-2026).",
+    "related_party_transactions": "FY H1 related-party revenue: $2.321M (H1 2025) and $0.606M (H1 2026) from Related Party A/B/C combined; related-party AR of $0.437M at 6/30/2026. AEI's board nomination rights (up to 4 directors) were tied to its ownership; AEI's ownership fell below 1% during Q2 2026 and it 'was no longer considered a related party' as of 6/30/2026. Bain Capital (BCC Redwire Aggregator, L.P.) fully exited its preferred/common position in 2025; its board designee (Ray Wallander) resigned 2/11/2026 as the nomination right had expired.",
+    "citation": "10-Q, 2026-08-06, same URL, Note Q - Related Parties: 'A customer of the Company, Related Party A, is a related party because Kirk Konert, a member of the Company's Board, also serves on the board of directors for the customer' and 'During the three months ended June 30, 2026, AEI's ownership of the Company significantly decreased to less than 1% and AEI was no longer considered a related party as of June 30, 2026.'"
+  },
+  "graveyard_gates": {
+    "going_concern_explicit": "No. No 'going concern' or 'substantial doubt' language found in the FY2025 10-K or the Q2 2026 10-Q (searched full stripped text of both documents for both phrases - zero matches in either).",
+    "listing_notice_12m": "No. EDGAR full-text search for Item 3.01 (Notice of Delisting/Failure to Satisfy Listing Rule) 8-K filings by CIK 1819810, 2025-09-26 to 2026-09-26, returned 0 results.",
+    "item_502_departures_12m": "Yes, 4 Item 5.02 8-Ks in the trailing 12 months, none explicitly tied to funding/financial distress: (1) 2025-10-08 CFO Jonathan Baliff planned retirement effective 11/30/2025; (2) 2026-02-17 director Ray Wallander (Bain's expired board designee) resignation; (3) 2026-03-17 Frank Calvelli appointed to fill a board vacancy; (4) 2026-07-14 Gregory Heston appointed to fill the vacancy from David Kornblatt's resignation.",
+    "material_weakness": "Yes, explicit and unremediated as of the most recent 10-Q. Management concluded disclosure controls were not effective as of both 12/31/2025 and 6/30/2026, citing ITGC gaps at Redwire Defense Tech (Edge Autonomy) and European operations, and insufficient time to demonstrate operating effectiveness of U.S. process-level controls.",
+    "short_seller_or_litigation": "Litigation (not a short-seller report): Yingling v. Cannito, et al. (D. Del., then M.D. Fla., Case No. 1:22-cv-00684-MN), a shareholder derivative suit alleging Section 10(b)/Rule 10b-5 and Section 20(a) violations tied to pre-2023 internal-control material weaknesses. Settled in principle 8/14/2025; final order approving $0.9M plaintiff's-counsel fees entered 8/4/2026 (immaterial in size).",
+    "citation": "10-Q, 2026-08-06, same URL: 'certain of our disclosure controls and procedures were not effective as of June 30, 2026 due to the material weaknesses in internal control over financial reporting described below' and 'That litigation is captioned Yingling v. Cannito, et al., Case No. 1:22-cv-00684-MN (D. Del.).'"
+  },
+  "insiders_and_holders": {
+    "form4_net_12m": "Predominantly net selling. Dozens of Form 144 notices of proposed sale filed nearly continuously Jan-Sept 2026 (filer agent CIK 0001628280, on behalf of AEI-affiliated and other insider sellers), coinciding with AE Red Holdings LLC's (AEI's Edge Autonomy-seller entity) stake falling from 35,849,907 shares (19.7%) on 1/9/2026 to 2,119,271 shares (1.1%) on 5/18/2026, and total AEI-affiliated ownership falling from 31.2% (per the 4/10/2026 DEF 14A, using a 3/26/2026 13D/A) to below 1% by 6/30/2026. Did not individually tabulate every Form 4 direction; the dominant signal is large-holder distribution, not open-market executive buying.",
+    "schedule_13d_13g": "AE Red Holdings, LLC (AEI affiliate, Edge Autonomy seller) filed Schedule 13D/A Amendment No. 21 on 5/20/2026 reporting 2,119,271 shares (1.1%), down from 35,849,907 shares (19.7%) reported in the amendment filed 1/9/2026. Two additional Schedule 13G filings (institutional holders, not individually read in detail) were filed 2026-07-29 and 2026-08-07 - see data_gaps.",
+    "strategic_holders": "AE Industrial Partners (founder/PE sponsor) and Bain Capital (BCC Redwire Aggregator, L.P., original 2022 co-investor) were the two strategic/PE holders; both fully exited their Series A Convertible Preferred Stock (converted to common, then sold) during 2025 (Bain) and Q2 2026 (AEI). No other named strategic corporate holder identified in the filings read.",
+    "citation": "SCHEDULE 13D/A, 2026-05-20, https://www.sec.gov/Archives/edgar/data/1819810/000110465926064511/xslSCHEDULE_13D_X02/primary_doc.xml: 'Percent of class represented by amount in Row (11) 1.1%'; SCHEDULE 13D/A, 2026-01-09, https://www.sec.gov/Archives/edgar/data/1819810/000110465926002488/xslSCHEDULE_13D_X01/primary_doc.xml: 'Percent of class represented by amount in Row (11) 19.7%'"
+  },
+  "capital_web_edges": [
+    {
+      "src": "AE Industrial Partners (AEI)",
+      "dst": "RDW",
+      "type": "equity",
+      "evidence": "10-K, 2026-02-27: the Company sold an aggregate of 81,250.00 shares of Convertible Preferred Stock for $81.25 million to AEI and Bain Capital, October 2022; fully converted/sold by mid-2026."
+    },
+    {
+      "src": "AE Red Holdings, LLC (Ultimate Holdings, AEI affiliate)",
+      "dst": "RDW",
+      "type": "acquired",
+      "evidence": "10-K, 2026-02-27: RDW acquired 100% of Redwire Defense Tech Intermediate Holdings, LLC (formerly Edge Autonomy) for total consideration of $160.0 million in cash and the issuance of 49,764,847 shares, closed 6/13/2025."
+    },
+    {
+      "src": "AE Red Holdings, LLC (AEI affiliate)",
+      "dst": "RDW",
+      "type": "lender",
+      "evidence": "10-K, 2026-02-27: $100.0 million unsecured Seller Note from Ultimate Holdings to fund Edge Autonomy cash consideration, repaid in full June 2025."
+    },
+    {
+      "src": "Related Party A / B / C (unnamed, board-interlocked customers)",
+      "dst": "RDW",
+      "type": "customer",
+      "evidence": "10-Q, 2026-08-06, Note Q: board interlocks via directors Kirk Konert, Reggie Brothers, James McConville, Frank Calvelli; $0.606M related-party revenue in H1 2026."
+    },
+    {
+      "src": "NASA",
+      "dst": "RDW",
+      "type": "customer",
+      "evidence": "10-K, 2026-02-27: DART, Artemis I, IXPE, ISS missions flown using Redwire hardware."
+    },
+    {
+      "src": "U.S. Marine Corps / U.S. Army / Five Eyes partners",
+      "dst": "Redwire Defense Tech (Edge Autonomy)",
+      "type": "customer",
+      "evidence": "10-K, 2026-02-27: Stalker Block 30 proven in operations worldwide for two decades for these customers."
+    },
+    {
+      "src": "Ukraine Armed Forces / Latvia Ministry of Defense",
+      "dst": "Redwire Defense Tech (Edge Autonomy)",
+      "type": "customer",
+      "evidence": "10-K, 2026-02-27: Penguin C Mk2 heritage customers; Ukraine ~3% of FY2025 revenue."
+    },
+    {
+      "src": "JPMorgan Chase Bank, N.A.",
+      "dst": "RDW",
+      "type": "lender",
+      "evidence": "10-Q, 2026-08-06: JPMorgan Credit Agreement / JPM A&R Credit Agreement term loan, maturity extended to 5/31/2029."
+    },
+    {
+      "src": "Bain Capital (BCC Redwire Aggregator, L.P.)",
+      "dst": "RDW",
+      "type": "equity",
+      "evidence": "10-Q, 2026-08-06, Note M: Bain converted all of their remaining shares of Convertible Preferred Stock into common stock and subsequently sold such shares during 2025; fully exited."
+    }
+  ],
+  "band": "avoid-pattern",
+  "reasons": [
+    "Explicit, unremediated gate: management concluded disclosure controls were not effective as of both 12/31/2025 and 6/30/2026 due to material weaknesses (ITGC gaps at the newly acquired Edge Autonomy/European operations and unproven U.S. process-level controls), per 10-Q, 2026-08-06, https://www.sec.gov/Archives/edgar/data/1819810/000181981026000124/rdw-20260630.htm: 'certain of our disclosure controls and procedures were not effective as of June 30, 2026 due to the material weaknesses in internal control over financial reporting described below.'",
+    "Demand is real but customer identity is opaque and concentrated: the two largest customers (~19% and ~20% of FY2025 revenue) are anonymized as 'Customer D/E' rather than named, even though backlog ($411.2M, growing to $542.1M) and book-to-bill (1.32x FY2025) show genuine, recognized-revenue demand, per 10-K, 2026-02-27, https://www.sec.gov/Archives/edgar/data/1819810/000181981026000029/rdw-20251231.htm: 'Revenues from our two largest customers were approximately 19% and 20% of our total revenues for the year ended December 31, 2025.'",
+    "Heavy related-party insider distribution around the Edge Autonomy deal: AEI's Edge Autonomy-seller entity (AE Red Holdings, LLC) sold down from 19.7% (1/9/2026) to 1.1% (5/18/2026) of the company it had just been paid 49.76M shares to sell into, while acting as a related-party financier/customer-interlock, per SCHEDULE 13D/A, 2026-05-20, https://www.sec.gov/Archives/edgar/data/1819810/000110465926064511/xslSCHEDULE_13D_X02/primary_doc.xml: 'Percent of class represented by amount in Row (11) 1.1%.'"
+  ],
+  "data_gaps": [
+    "Q3 2026 activity (July-September 2026) is not yet reflected in a 10-Q; any ATM draws, contract awards, or insider transactions after 6/30/2026 (except the two 8-Ks and Form 4/144 filings explicitly checked in the filing index) were not independently verified beyond the filing index.",
+    "The two most recent Schedule 13G filings (2026-07-29 and 2026-08-07) were identified in the filing index but not fetched/read in detail; the specific institutional holder names and percentages are not confirmed in this research.",
+    "Form 4 transactions were not individually tabulated line-by-line for a precise 12-month buy/sell count; the conclusion of 'net selling' rests on the Form 144 volume and the 13D/A and DEF 14A ownership trend, which is directional but not a transaction-by-transaction tally.",
+    "Exact underwriting discount/commission percentage for the June 2025 follow-on offering (15,525,000 shares at $16.75) was not located in the excerpted text of the preliminary 424B5 (the final priced 424B5 filed 2025-06-17 was not separately fetched).",
+    "The full DEF 14A Item 13 'Certain Relationships and Related Transactions' narrative section (if present beyond the beneficial-ownership table and Note Q disclosures already cited) was not located/fully read in the proxy text extracted.",
+    "Backlog and customer-concentration figures for the Defense Tech/Edge Autonomy segment specifically pre-date the acquisition close (6/13/2025); FY2024 Defense Tech figures in the 10-K reflect only a partial-year/different-scope predecessor business, complicating pro-forma growth comparisons as flagged in the task."
+  ],
+  "sources": [
+    {
+      "form": "10-K",
+      "date": "2026-02-27",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000029/rdw-20251231.htm",
+      "quote": "Revenues from our two largest customers were approximately 19% and 20% of our total revenues for the year ended December 31, 2025."
+    },
+    {
+      "form": "10-K",
+      "date": "2026-02-27",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000029/rdw-20251231.htm",
+      "quote": "As of December 31, 2025, our total contracted backlog was $411.2 million of which $299.8 million related to the Space segment and $111.4 million related to the Defense Tech segment."
+    },
+    {
+      "form": "10-K",
+      "date": "2026-02-27",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000029/rdw-20251231.htm",
+      "quote": "Our book-to-bill ratio was 1.32 for the Last Twelve Months (LTM) ended December 31, 2025, as compared to 0.76 for the LTM ended December 31, 2024."
+    },
+    {
+      "form": "10-K",
+      "date": "2026-02-27",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000029/rdw-20251231.htm",
+      "quote": "meeting mission needs for customers including, but not limited to, the U.S. Marine Corps, U.S. Army, and Five Eyes partners."
+    },
+    {
+      "form": "10-K",
+      "date": "2026-02-27",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000029/rdw-20251231.htm",
+      "quote": "Selected heritage for the Penguin C Mk2 includes the Ukraine Armed Forces, Latvia Ministry of Defense, and commercial operations, among others."
+    },
+    {
+      "form": "10-K",
+      "date": "2026-02-27",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000029/rdw-20251231.htm",
+      "quote": "approximately 3% of our sales for the year ended December 31, 2025 were related to Ukraine, which sales have been declining"
+    },
+    {
+      "form": "10-K",
+      "date": "2026-02-27",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000029/rdw-20251231.htm",
+      "quote": "the Company acquired 100% of Redwire Defense Tech Intermediate Holdings, LLC equity for total consideration of $160.0 million in cash and the issuance of 49,764,847 shares"
+    },
+    {
+      "form": "10-K",
+      "date": "2026-02-27",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000029/rdw-20251231.htm",
+      "quote": "On June 13, 2025, following the satisfaction of all regulatory approvals, including a stockholder vote, the acquisition was completed."
+    },
+    {
+      "form": "10-K",
+      "date": "2026-02-27",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000029/rdw-20251231.htm",
+      "quote": "an unsecured promissory note agreement with Ultimate Holdings (an affiliate of AE Industrial Partners and former parent of Edge Autonomy) (the Seller Note), which included a note payable of $100.0 million"
+    },
+    {
+      "form": "10-K",
+      "date": "2026-02-27",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000029/rdw-20251231.htm",
+      "quote": "the Company used $120.0 million of these proceeds to repay the Seller Note in full, inclusive of the minimum return payment"
+    },
+    {
+      "form": "10-K",
+      "date": "2026-02-27",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000029/rdw-20251231.htm",
+      "quote": "we generated 46.9% of our revenue from national security customers, 21.6% of our revenue from civil customers, and 31.5% of our revenue from commercial customers"
+    },
+    {
+      "form": "10-Q",
+      "date": "2026-08-06",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000124/rdw-20260630.htm",
+      "quote": "The registrant had outstanding 249,992,609 shares of common stock as of August 3, 2026."
+    },
+    {
+      "form": "10-Q",
+      "date": "2025-08-07",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981025000215/rdw-20250630.htm",
+      "quote": "The registrant had outstanding 144,039,944 shares of common stock as of August 4, 2025."
+    },
+    {
+      "form": "10-Q",
+      "date": "2026-08-06",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000124/rdw-20260630.htm",
+      "quote": "AEI, at its option, converted all 46,505.13 of their remaining shares of the Company's Convertible Preferred Stock...into 15,247,586 shares of the Company's common stock"
+    },
+    {
+      "form": "10-Q",
+      "date": "2026-08-06",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000124/rdw-20260630.htm",
+      "quote": "During the three months ended June 30, 2026, the Company sold 9,323,823 shares of its common stock at a weighted average price of $16.05 for $149.6 million of gross proceeds."
+    },
+    {
+      "form": "10-Q",
+      "date": "2026-08-06",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000124/rdw-20260630.htm",
+      "quote": "The Company had $350.4 million of unused capacity under the June 2026 ATM Facility as of June 30, 2026."
+    },
+    {
+      "form": "10-Q",
+      "date": "2026-08-06",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000124/rdw-20260630.htm",
+      "quote": "A customer of the Company, Related Party A, is a related party because Kirk Konert, a member of the Company's Board, also serves on the board of directors for the customer"
+    },
+    {
+      "form": "10-Q",
+      "date": "2026-08-06",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000124/rdw-20260630.htm",
+      "quote": "During the three months ended June 30, 2026, AEI's ownership of the Company significantly decreased to less than 1% and AEI was no longer considered a related party"
+    },
+    {
+      "form": "10-Q",
+      "date": "2026-08-06",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000124/rdw-20260630.htm",
+      "quote": "certain of our disclosure controls and procedures were not effective as of June 30, 2026 due to the material weaknesses in internal control over financial reporting described below"
+    },
+    {
+      "form": "10-Q",
+      "date": "2026-08-06",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000124/rdw-20260630.htm",
+      "quote": "the material weaknesses cannot be considered remediated until remediated controls operate for a sufficient period of time"
+    },
+    {
+      "form": "10-Q",
+      "date": "2026-08-06",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000124/rdw-20260630.htm",
+      "quote": "That litigation is captioned Yingling v. Cannito, et al., Case No. 1:22-cv-00684-MN (D. Del.)."
+    },
+    {
+      "form": "10-Q",
+      "date": "2026-08-06",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000124/rdw-20260630.htm",
+      "quote": "the Company and the individual defendants reached an agreement-in-principle with plaintiff to settle this matter"
+    },
+    {
+      "form": "8-K",
+      "date": "2025-10-08",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981025000229/rdw-20251002.htm",
+      "quote": "Jonathan Baliff, current Chief Financial Officer (CFO), will retire from the position of CFO effective as of November 30, 2025...Mr. Baliff's retirement is not the result of any disagreement"
+    },
+    {
+      "form": "8-K",
+      "date": "2026-02-17",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000014/rdw-20260211.htm",
+      "quote": "The decision by Mr. Wallander to resign from the Board did not arise from any disagreement with the Company on any matters relating to the Company's operations, policies or practices."
+    },
+    {
+      "form": "SCHEDULE 13D/A",
+      "date": "2026-05-20",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000110465926064511/xslSCHEDULE_13D_X02/primary_doc.xml",
+      "quote": "Aggregate amount beneficially owned by each reporting person 2,119,271.00...Percent of class represented by amount in Row (11) 1.1%"
+    },
+    {
+      "form": "SCHEDULE 13D/A",
+      "date": "2026-01-09",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000110465926002488/xslSCHEDULE_13D_X01/primary_doc.xml",
+      "quote": "Shared Voting Power 35,849,907.00...Percent of class represented by amount in Row (11) 19.7%"
+    },
+    {
+      "form": "DEF 14A",
+      "date": "2026-04-10",
+      "url": "https://www.sec.gov/Archives/edgar/data/1819810/000181981026000050/rdw-20260410.htm",
+      "quote": "AE Industrial Partners and affiliates (1) 51,693,289 31.2% 46,505 100.0% 23.1%"
+    }
+  ]
+}
