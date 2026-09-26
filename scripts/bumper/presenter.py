@@ -37,7 +37,9 @@ SETTING = ("The woman from the input image stays seated at the same podcast desk
 STYLE = (" Relaxed natural mouth movements, subtle facial expressions, minimal head motion, unhurried delivery, "
          "she remains in the same position throughout. Photorealistic. NO readable text, NO logos, NO watermarks.")
 MIN_SIM = 0.85
-ATTEMPTS = 2
+MAX_LAG = 2          # frames at 24 fps between audio envelope and mouth motion
+ATTEMPTS = 3
+VIDEO_MODEL = "grok-imagine-video-1.5"   # the CLI default (grok-imagine-video) lip-syncs 7-10 frames late on ~40% of clips
 
 STYLE_CLIP = ("Isometric 3D illustration, dark navy background, neon green and amber accent lighting, clean minimal corporate style, "
               "cinematic slow camera move, soft volumetric light, high detail. Strictly no text, no numbers, no letters, no charts, no logos, no captions.")
@@ -69,7 +71,7 @@ def spoken_numbers(text):
 
 
 def grok_video(prompt, out, image=None, duration=10, timeout=600):
-    args = [str(CLI), "video", "--json", "--duration", str(duration), "--timeout", str(timeout), "--prompt", prompt]
+    args = [str(CLI), "video", "--json", "--model", VIDEO_MODEL, "--duration", str(duration), "--timeout", str(timeout), "--prompt", prompt]
     if image:
         args += ["--image", str(image)]
     else:
@@ -96,6 +98,30 @@ def stt(mp4):
         return ""
 
 
+def lip_lag(mp4, crop="220:150:250:360", fps=24):
+    """frames by which the audio envelope trails mouth-region motion (0 = in sync); plus the correlation."""
+    import numpy as np
+    wav = mp4.with_suffix(".wav")
+    if not wav.exists():
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(mp4), "-vn", "-ac", "1", "-ar", "16000", str(wav)], check=True)
+    with wave.open(str(wav), "rb") as w:
+        a = np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(float) / 32768
+    hop = 16000 // fps
+    env = np.array([np.sqrt(np.mean(a[i:i + hop] ** 2)) for i in range(0, len(a) - hop, hop)])
+    p = subprocess.run(["ffmpeg", "-v", "error", "-i", str(mp4), "-vf", f"crop={crop},scale=48:48,format=gray", "-r", str(fps),
+                        "-f", "rawvideo", "-pix_fmt", "gray", "-"], capture_output=True)
+    fr = np.frombuffer(p.stdout, dtype=np.uint8).reshape(-1, 48, 48).astype(float)
+    mot = np.concatenate([[0], np.abs(np.diff(fr, axis=0)).mean(axis=(1, 2))])
+    n = min(len(env), len(mot))
+    env, mot = env[:n], mot[:n]
+    env = (env - env.mean()) / (env.std() + 1e-9)
+    mot = (mot - mot.mean()) / (mot.std() + 1e-9)
+    lags = list(range(-15, 16))
+    xc = [float(np.mean(env[max(0, l):n + min(0, l)] * mot[max(0, -l):n - max(0, l)])) for l in lags]
+    i = int(np.argmax(xc))
+    return lags[i], round(xc[i], 2)
+
+
 def gen():
     segs = json.load(open(D / "narration3.json", encoding="utf-8"))
     manifest_p = PRES / "manifest.json"
@@ -110,28 +136,32 @@ def gen():
         print(f"clip {sid}: {'ok' if f else 'FAILED ' + str(err)} {time.time() - t:.0f}s", flush=True)
     for s in segs:
         sid = s["id"]
-        if manifest.get(sid, {}).get("similarity", 0) >= MIN_SIM:
-            print(f"{sid}: cached {manifest[sid]['similarity']}", flush=True)
+        if manifest.get(sid, {}).get("similarity", 0) >= MIN_SIM and abs(manifest[sid].get("lag", 99)) <= MAX_LAG:
+            print(f"{sid}: cached sim {manifest[sid]['similarity']} lag {manifest[sid]['lag']}", flush=True)
             continue
-        best = manifest.get(sid, {"similarity": 0})
+        best = manifest.get(sid, {"similarity": 0, "lag": 99})
         for att in range(ATTEMPTS):
-            out = PRES / f"{sid}_a{att}.mp4"
+            out = PRES / f"{sid}_b{att}.mp4"
             t = time.time()
-            f, err = grok_video(SETTING + spoken_numbers(s["hook"]) + STYLE, out, image=ANCHOR)
-            if not f:
-                print(f"{sid} a{att}: FAILED {err}", flush=True)
-                continue
+            if not (out.exists() and out.stat().st_size > 100000):  # a pre-seeded probe clip is evaluated, not regenerated
+                f, err = grok_video(SETTING + spoken_numbers(s["hook"]) + STYLE, out, image=ANCHOR)
+                if not f:
+                    print(f"{sid} b{att}: FAILED {err}", flush=True)
+                    continue
             txt = stt(out)
             sim = round(similarity(s["hook"], txt), 3)
-            print(f"{sid} a{att}: sim {sim} ({time.time() - t:.0f}s) :: {txt[:90]}", flush=True)
-            if sim > best.get("similarity", 0):
-                best = {"file": out.name, "similarity": sim, "transcript": txt, "hook": s["hook"], "attempt": att,
-                        "source": "grok-cli imagine video 10s native dialogue, start-frame anchor"}
-            if sim >= MIN_SIM:
+            lag, corr = lip_lag(out)
+            print(f"{sid} b{att}: sim {sim} lag {lag:+d}f corr {corr} ({time.time() - t:.0f}s) :: {txt[:80]}", flush=True)
+            cand = {"file": out.name, "similarity": sim, "lag": lag, "lip_corr": corr, "transcript": txt, "hook": s["hook"], "attempt": att,
+                    "source": f"grok-cli {VIDEO_MODEL} 10s native dialogue, start-frame anchor"}
+            better = (sim >= MIN_SIM, -abs(lag), sim) > (best.get("similarity", 0) >= MIN_SIM, -abs(best.get("lag", 99)), best.get("similarity", 0))
+            if better:
+                best = cand
+            if sim >= MIN_SIM and abs(lag) <= MAX_LAG:
                 break
         manifest[sid] = best
         json.dump(manifest, open(manifest_p, "w", encoding="utf-8"), indent=1)
-    low = [k for k, v in manifest.items() if v.get("similarity", 0) < MIN_SIM]
+    low = [k for k, v in manifest.items() if v.get("similarity", 0) < MIN_SIM or abs(v.get("lag", 99)) > MAX_LAG]
     print("done. below gate:", low or "none")
 
 

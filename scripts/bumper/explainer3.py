@@ -48,7 +48,7 @@ def speech_end(p, thresh=0.02, tail=0.45):
     return max(2.0, min(end, len(x) / sr))
 
 
-def build_audio(hook_wav, rest_wav, out, sr=24000, hook_len=None):
+def build_audio(hook_wav, rest_wav, out, sr=24000, hook_len=None, lag_frames=0):
     def load(p):
         with wave.open(str(p), "rb") as w:
             s = w.getframerate()
@@ -59,6 +59,9 @@ def build_audio(hook_wav, rest_wav, out, sr=24000, hook_len=None):
             x = np.interp(np.linspace(0, len(x) - 1, int(len(x) * sr / s)), np.arange(len(x)), x)
         return x
     h = load(hook_wav)
+    if lag_frames:  # measured audio-trails-mouth offset (frames at 24 fps): advance the audio by that much
+        k = int(round(abs(lag_frames) / 24 * sr))
+        h = h[k:] if lag_frames > 0 else np.concatenate([np.zeros(k), h])
     if hook_len:
         h = h[: int(hook_len * sr)]
     r = load(rest_wav) if rest_wav and pathlib.Path(rest_wav).exists() else np.zeros(0)
@@ -135,7 +138,8 @@ def render_segment(segment, manifest, force=False):
     pres_clip = PRES / m["file"]
     hook_s = speech_end(hook_wav)
     audio = WORK3 / f"{sid}_audio.wav"
-    hook_s, rest_s = build_audio(hook_wav, rest_wav, audio, hook_len=hook_s)
+    lag = m.get("lag", 0) if abs(m.get("lag", 0)) > 2 else 0  # only correct clips that failed the sync gate
+    hook_s, rest_s = build_audio(hook_wav, rest_wav, audio, hook_len=hook_s, lag_frames=lag)
     P = Presented(segment, hook_s, rest_s)
     n = int(round(P.total * FPS))
     inputs, fc, vi = [], [], 0

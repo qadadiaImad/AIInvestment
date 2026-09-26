@@ -1,114 +1,142 @@
 {
  "01_hook": {
-  "file": "01_hook_a1.mp4",
-  "similarity": 1.0,
-  "transcript": "We pointed the bumper radar at the whole U.S. market. 1,126 pre-profit small caps went in.",
+  "file": "01_hook_b0.mp4",
+  "similarity": 0.889,
+  "lag": 0,
+  "lip_corr": 0.64,
+  "transcript": "We pointed the bumper radar at the whole U.S. market. 1126 pre-profit small caps went in.",
   "hook": "We pointed the bumper radar at the whole US market. 1,126 pre-profit small caps went in.",
-  "attempt": 1,
-  "source": "grok-cli imagine video 10s native dialogue, start-frame anchor"
+  "attempt": 0,
+  "source": "grok-cli grok-imagine-video-1.5 10s native dialogue, start-frame anchor"
  },
  "02_recap": {
-  "file": "02_recap_a0.mp4",
+  "file": "02_recap_b0.mp4",
   "similarity": 0.941,
+  "lag": 0,
+  "lip_corr": 0.64,
   "transcript": "1st, what we are looking for. A bumper is a small company that becomes a sector leader.",
   "hook": "First, what we are looking for. A bumper is a small company that becomes a sector leader.",
   "attempt": 0,
-  "source": "grok-cli imagine video 10s native dialogue, start-frame anchor"
+  "source": "grok-cli grok-imagine-video-1.5 10s native dialogue, start-frame anchor"
  },
  "03_lists": {
-  "file": "03_lists_a0.mp4",
-  "similarity": 0.962,
-  "transcript": "Our 1st screen used the names we already track, 145 companies. That is the wrong universe. A bumper is by definition not on anyone's list yet.",
+  "file": "03_lists_b0.mp4",
+  "similarity": 0.923,
+  "lag": 0,
+  "lip_corr": 0.63,
+  "transcript": "The 1st screen used the names we already track: 145 companies. That is the wrong universe. A bumper is by definition not on anyone's list yet.",
   "hook": "Our first screen used the names we already track: 145 companies. That is the wrong universe. A bumper is by definition not on anyone's list yet.",
   "attempt": 0,
-  "source": "grok-cli imagine video 10s native dialogue, start-frame anchor"
+  "source": "grok-cli grok-imagine-video-1.5 10s native dialogue, start-frame anchor"
  },
  "04_funnel": {
-  "file": "04_funnel_a0.mp4",
-  "similarity": 0.894,
-  "transcript": "Then the gates: Biotech, banks, retail, consumer and shell companies play a different game, so they leave 1st, 04:54 Rye Main, the runway gate removes 02:39.",
+  "file": "04_funnel_b0.mp4",
+  "similarity": 0.957,
+  "lag": 0,
+  "lip_corr": 0.39,
+  "transcript": "Then the gates. Biotech, banks, retail, consumer, and shell companies play a different game, so they leave 1st. 474 remain. The runway gate removes 239.",
   "hook": "Then the gates. Biotech, banks, retail, consumer and shell companies play a different game, so they leave first: 474 remain. The runway gate removes 239.",
   "attempt": 0,
-  "source": "grok-cli imagine video 10s native dialogue, start-frame anchor"
+  "source": "grok-cli grok-imagine-video-1.5 10s native dialogue, start-frame anchor"
  },
  "05_runway": {
-  "file": "05_runway_a0.mp4",
+  "file": "05_runway_b2.mp4",
   "similarity": 1.0,
-  "transcript": "Gate one is cash runway, cash divided by the yearly burn. Under two years, disqualified. This is the balance sheet draining.",
+  "lag": 0,
+  "lip_corr": 0.56,
+  "transcript": "Gate one is cash runway, cash divided by the yearly burn, under two years, disqualified. This is the balance sheet draining.",
   "hook": "Gate one is cash runway: cash divided by the yearly burn. Under two years, disqualified. This is the balance sheet draining.",
-  "attempt": 0,
-  "source": "grok-cli imagine video 10s native dialogue, start-frame anchor"
+  "attempt": 2,
+  "source": "grok-cli grok-imagine-video-1.5 10s native dialogue, start-frame anchor"
  },
  "06_dilution": {
-  "file": "06_dilution_a0.mp4",
+  "file": "06_dilution_b0.mp4",
   "similarity": 0.895,
-  "transcript": "Why is Runway the 1st gate? Because the graveyard says so. Arrival, Lordstown, and Canoe all had headline customers.",
+  "lag": 0,
+  "lip_corr": 0.73,
+  "transcript": "Why is runway the 1st gate? Because the graveyard says so. Arrival, Lordstown and Kanu all had headline customers.",
   "hook": "Why is runway the first gate? Because the graveyard says so. Arrival, Lordstown and Canoo all had headline customers.",
   "attempt": 0,
-  "source": "grok-cli imagine video 10s native dialogue, start-frame anchor"
+  "source": "grok-cli grok-imagine-video-1.5 10s native dialogue, start-frame anchor"
  },
  "07_gc": {
-  "file": "07_gc_a0.mp4",
+  "file": "07_gc_b0.mp4",
   "similarity": 1.0,
+  "lag": -1,
+  "lip_corr": 0.32,
   "transcript": "Gate two is the going concern statement. When management writes that there is substantial doubt about continuing, that is a legal bright line, and it showed up four to five months before Virgin Orbit and Astra failed.",
   "hook": "Gate two is the going-concern statement. When management writes that there is substantial doubt about continuing, that is a legal bright line, and it showed up four to five months before Virgin Orbit and Astra failed.",
   "attempt": 0,
-  "source": "grok-cli imagine video 10s native dialogue, start-frame anchor"
+  "source": "grok-cli grok-imagine-video-1.5 10s native dialogue, start-frame anchor"
  },
  "08_notice": {
-  "file": "08_notice_a0.mp4",
+  "file": "08_notice_b0.mp4",
   "similarity": 1.0,
-  "transcript": "Gate three is the exchange letter, a minimum bid price or listing rule notice, filed in an 8K.",
+  "lag": 1,
+  "lip_corr": 0.63,
+  "transcript": "Gate three is the exchange letter, a minimum bid price or listing rule notice filed in an 8-K.",
   "hook": "Gate three is the exchange letter: a minimum bid price or listing rule notice filed in an 8-K.",
   "attempt": 0,
-  "source": "grok-cli imagine video 10s native dialogue, start-frame anchor"
+  "source": "grok-cli grok-imagine-video-1.5 10s native dialogue, start-frame anchor"
  },
  "09_graveyard": {
-  "file": "09_graveyard_a0.mp4",
+  "file": "09_graveyard_b1.mp4",
   "similarity": 0.963,
+  "lag": 0,
+  "lip_corr": 0.56,
   "transcript": "Here is the trap the gates are built for. Every graveyard name had a winner's signals. Nikola had General Motors, Lordstown had Foxconn, Canoe had Walmart.",
   "hook": "Here is the trap the gates are built for. Every graveyard name had a winner's signals. Nikola had General Motors. Lordstown had Foxconn. Canoo had Walmart.",
-  "attempt": 0,
-  "source": "grok-cli imagine video 10s native dialogue, start-frame anchor"
+  "attempt": 1,
+  "source": "grok-cli grok-imagine-video-1.5 10s native dialogue, start-frame anchor"
  },
  "10_binding": {
-  "file": "10_binding_a0.mp4",
+  "file": "10_binding_b0.mp4",
   "similarity": 1.0,
-  "transcript": "The binding demand check. Company, customer, financier. A letter of intent is a dashed line. It counts for nothing.",
+  "lag": 0,
+  "lip_corr": 0.49,
+  "transcript": "The binding demand check. Company, customer, financier. A letter of intent is a dashed line, it counts for nothing.",
   "hook": "The binding-demand check. Company, customer, financier. A letter of intent is a dashed line: it counts for nothing.",
   "attempt": 0,
-  "source": "grok-cli imagine video 10s native dialogue, start-frame anchor"
- },
- "12_survivors": {
-  "file": "12_survivors_a0.mp4",
-  "similarity": 0.976,
-  "transcript": "What is left? 180 names pass every gate we can run run from public data. 116 are below the median winner's size.",
-  "hook": "What is left. 180 names pass every gate we can run from public data; 116 are below the median winner's size.",
-  "attempt": 0,
-  "source": "grok-cli imagine video 10s native dialogue, start-frame anchor"
- },
- "13_next": {
-  "file": "13_next_a0.mp4",
-  "similarity": 1.0,
-  "transcript": "What turns a survivor into a watch? Three reads per company. The customer contract, deposit, cancellation terms, delivered units.",
-  "hook": "What turns a survivor into a watch: three reads per company. The customer contract: deposit, cancellation terms, delivered units.",
-  "attempt": 0,
-  "source": "grok-cli imagine video 10s native dialogue, start-frame anchor"
- },
- "14_outro": {
-  "file": "14_outro_a0.mp4",
-  "similarity": 1.0,
-  "transcript": "The information is in the filings and the relationships, not the ratios. Educational research only, not investment advice.",
-  "hook": "The information is in the filings and the relationships, not the ratios. Educational research only, not investment advice.",
-  "attempt": 0,
-  "source": "grok-cli imagine video 10s native dialogue, start-frame anchor"
+  "source": "grok-cli grok-imagine-video-1.5 10s native dialogue, start-frame anchor"
  },
  "11_robots": {
-  "file": "11_robots_a0.mp4",
+  "file": "11_robots_b0.mp4",
   "similarity": 0.889,
+  "lag": 2,
+  "lip_corr": 0.67,
   "transcript": "So, robotics. Five pure plays sit under $3 billion, and most of them fail on the 1st gate.",
   "hook": "So, robotics. Five pure plays sit under three billion dollars, and most of them fail on the first gate.",
   "attempt": 0,
-  "source": "grok-cli imagine video 10s native dialogue, start-frame anchor"
+  "source": "grok-cli grok-imagine-video-1.5 10s native dialogue, start-frame anchor"
+ },
+ "12_survivors": {
+  "file": "12_survivors_b1.mp4",
+  "similarity": 1.0,
+  "lag": 0,
+  "lip_corr": 0.55,
+  "transcript": "What is left? 180 names pass every gate we can run from public data. 116 are below the median winner's size.",
+  "hook": "What is left. 180 names pass every gate we can run from public data; 116 are below the median winner's size.",
+  "attempt": 1,
+  "source": "grok-cli grok-imagine-video-1.5 10s native dialogue, start-frame anchor"
+ },
+ "13_next": {
+  "file": "13_next_b0.mp4",
+  "similarity": 1.0,
+  "lag": 6,
+  "lip_corr": 0.39,
+  "transcript": "What turns a survivor into a watch? Three reads per company. The customer contract, deposit, cancellation terms, delivered units.",
+  "hook": "What turns a survivor into a watch: three reads per company. The customer contract: deposit, cancellation terms, delivered units.",
+  "attempt": 0,
+  "source": "grok-cli grok-imagine-video-1.5 10s native dialogue, start-frame anchor"
+ },
+ "14_outro": {
+  "file": "14_outro_b0.mp4",
+  "similarity": 1.0,
+  "lag": 1,
+  "lip_corr": 0.57,
+  "transcript": "The information is in the filings and the relationships, not the ratios. Educational research only, not investment advice.",
+  "hook": "The information is in the filings and the relationships, not the ratios. Educational research only, not investment advice.",
+  "attempt": 0,
+  "source": "grok-cli grok-imagine-video-1.5 10s native dialogue, start-frame anchor"
  }
 }
