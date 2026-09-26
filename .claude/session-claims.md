@@ -15,6 +15,7 @@ when done.
 
 | Resource | Held by | Since | Until | Notes |
 |---|---|---|---|---|
+| grok-cli video + TTS + STT, GPU (Chatterbox VC) | bumper-explainer-2 presenter cut | 2026-09-26 15:35Z | ~2026-09-26 18:00Z | RELEASED 2026-09-26 16:30Z — presenter cut: 18 grok video gens (1 probe + 17 presenter attempts incl. 3 for the reworded robotics hook) + 2 character clips, 15 TTS, ~21 STT; Chatterbox VC of 28 files on the RTX 4070 |
 | grok-cli video + TTS | bumper-explainer-2 (screen + robotics) | 2026-09-26 08:10Z | ~2026-09-26 14:00Z | RELEASED 2026-09-26 15:35Z — explainer 2 'the screen': 11 video clips (10 s, 16:9, 720p; 1 probe reused, 0 retries) + 14 TTS syntheses (atlas) |
 | grok-cli TTS | bumper-explainer | 2026-09-25 21:50Z | ~2026-09-25 23:30Z | RELEASED 2026-09-25 22:05Z — narrated bumper explainer: 11 TTS syntheses (voice atlas, ~4.5 min of audio), no retries |
 
