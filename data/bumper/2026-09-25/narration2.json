@@ -1,0 +1,100 @@
+[
+ {
+  "id": "01_hook",
+  "kind": "clip",
+  "chart": "title",
+  "clip": "Isometric 3D illustration, dark navy background, neon green and amber accent lighting, clean minimal corporate style, cinematic slow camera move, soft volumetric light, high detail. Strictly no text, no numbers, no letters, no charts, no logos, no captions. A green radar dish sweeps a glowing beam across a vast dark city of thousands of small glass office towers seen from above; a handful of towers light up as the beam passes, most stay dark.",
+  "text": "We pointed the bumper radar at the whole US market. 1,126 pre-profit small caps went in. 180 came out not disqualified, and almost every robotics name was cut. Here is the screen, gate by gate, and why."
+ },
+ {
+  "id": "02_recap",
+  "kind": "chart",
+  "chart": "capdist",
+  "clip": null,
+  "text": "First, what we are looking for. A bumper is a small company that becomes a sector leader. Across 276 historical winners, the median market cap when the run began was 799 million. A quarter started below 313 million, one in ten below 171 million, and three quarters were under 3.0 billion. Low cap is not a taste. It is what the data says."
+ },
+ {
+  "id": "03_lists",
+  "kind": "clip",
+  "chart": "counter",
+  "clip": "Isometric 3D illustration, dark navy background, neon green and amber accent lighting, clean minimal corporate style, cinematic slow camera move, soft volumetric light, high detail. Strictly no text, no numbers, no letters, no charts, no logos, no captions. A single stage spotlight lights three small glass figurines on a dark floor while thousands of identical figurines stand in darkness behind them; slowly the spotlight widens and the whole crowd is revealed.",
+  "text": "Our first screen used the names we already track: 145 companies. That is the wrong universe. A bumper is by definition not on anyone's list yet. So the second screen let the scanner build the universe: every US-listed common stock worth fifty million to three billion dollars and burning cash. 1,126 names."
+ },
+ {
+  "id": "04_funnel",
+  "kind": "chart",
+  "chart": "funnel",
+  "clip": null,
+  "text": "Then the gates. Biotech, banks, retail, consumer and shell companies play a different game, so they leave first: 474 remain. The runway gate removes 239. Exchange notices remove 6 more. Going-concern language flags 49 for reading. 180 are not disqualified, 116 of them below the median winner's size."
+ },
+ {
+  "id": "05_runway",
+  "kind": "clip",
+  "chart": "runway",
+  "clip": "Isometric 3D illustration, dark navy background, neon green and amber accent lighting, clean minimal corporate style, cinematic slow camera move, soft volumetric light, high detail. Strictly no text, no numbers, no letters, no charts, no logos, no captions. A tall transparent glass tank shaped like a ledger book, filled with glowing green liquid, drains steadily through a valve at the bottom into a bright amber flame; the liquid level falls visibly during the shot.",
+  "text": "Gate one is cash runway: cash divided by the yearly burn. Under two years, disqualified. This is the balance sheet draining. Serve Robotics grew revenue 426 percent, and has 1.4 years of cash. Xtend, Palladyne, Arbe, Aeva, Innoviz: all under two years. Growth does not pay the bills. The next raise does."
+ },
+ {
+  "id": "06_dilution",
+  "kind": "clip",
+  "chart": "dilution",
+  "clip": "Isometric 3D illustration, dark navy background, neon green and amber accent lighting, clean minimal corporate style, cinematic slow camera move, soft volumetric light, high detail. Strictly no text, no numbers, no letters, no charts, no logos, no captions. Night office: a small glass company building sits on a table; a giant hand pours more and more tiny glass cubes into the building's foundation tray, and the building's original cubes shrink in proportion as the tray overflows.",
+  "text": "Why is runway the first gate? Because the graveyard says so. Arrival, Lordstown and Canoo all had headline customers. What killed them was the second raise: done at a discount, to whoever would still buy, with warrants attached. The question is never whether they can raise. It is who buys the dilution, and on what terms."
+ },
+ {
+  "id": "07_gc",
+  "kind": "clip",
+  "chart": "gclist",
+  "clip": "Isometric 3D illustration, dark navy background, neon green and amber accent lighting, clean minimal corporate style, cinematic slow camera move, soft volumetric light, high detail. Strictly no text, no numbers, no letters, no charts, no logos, no captions. An auditor's desk under a lamp: a thick bound financial report lies open, a heavy brass stamp comes down and leaves a glowing red seal on the page; papers stacked around, a magnifying glass beside.",
+  "text": "Gate two is the going-concern statement. When management writes that there is substantial doubt about continuing, that is a legal bright line, and it showed up four to five months before Virgin Orbit and Astra failed. A text search flags 49 names this year. But search cannot tell an explicit statement from risk-factor boilerplate, so these are flags to read, not verdicts. Nano Nuclear has fifteen years of cash and four hits: boilerplate. Evolution Metals has two months of cash and four hits: real."
+ },
+ {
+  "id": "08_notice",
+  "kind": "clip",
+  "chart": "noticelist",
+  "clip": "Isometric 3D illustration, dark navy background, neon green and amber accent lighting, clean minimal corporate style, cinematic slow camera move, soft volumetric light, high detail. Strictly no text, no numbers, no letters, no charts, no logos, no captions. A sealed envelope slides under the door of a dark glass office; as it lands, a red warning lamp above the door blinks on and washes the room in red light.",
+  "text": "Gate three is the exchange letter: a minimum bid price or listing rule notice filed in an 8-K. It means the company is already fighting to stay listed. Blink Charging, Momentus and Soluna carry one this year. 6 names leave here."
+ },
+ {
+  "id": "09_graveyard",
+  "kind": "clip",
+  "chart": "graveyardtable",
+  "clip": "Isometric 3D illustration, dark navy background, neon green and amber accent lighting, clean minimal corporate style, cinematic slow camera move, soft volumetric light, high detail. Strictly no text, no numbers, no letters, no charts, no logos, no captions. A rainy lot at dusk full of sleek unbranded electric trucks and vans slowly rusting, weeds growing between them, one truck's headlights still faintly glowing.",
+  "text": "Here is the trap the gates are built for. Every graveyard name had a winner's signals. Nikola had General Motors. Lordstown had Foxconn. Canoo had Walmart. Arrival had a UPS letter of intent for ten thousand vans, with no deposit and no cancellation penalty. Announced demand is not demand. Which brings us to the check that separates them."
+ },
+ {
+  "id": "10_binding",
+  "kind": "chart",
+  "chart": "interaction",
+  "clip": null,
+  "text": "The binding-demand check. Company, customer, financier. A letter of intent is a dashed line: it counts for nothing. A contract becomes solid only when a later filing shows delivered units or recognised revenue. And when the customer is also the one funding the company, the arrow points both ways, and that is a warning, not a validation. Read the contract, not the press release."
+ },
+ {
+  "id": "11_robots",
+  "kind": "clip",
+  "chart": "robotscatter",
+  "clip": "Isometric 3D illustration, dark navy background, neon green and amber accent lighting, clean minimal corporate style, cinematic slow camera move, soft volumetric light, high detail. Strictly no text, no numbers, no letters, no charts, no logos, no captions. A sleek humanoid robot stands on a dim factory floor under a single work light; beside it a tall glass cylinder gauge of glowing green liquid slowly empties toward the bottom while the robot keeps working.",
+  "text": "So, robotics. The pure plays under three billion dollars are Serve, Xtend, Palladyne, Arbe and Richtech. 6 of the ten robotics and perception names fail on runway alone. They look like the 2021 EV cohort: triple-digit growth from tiny bases, heavy burn, cash measured in quarters. Richtech is the one pure play that clears the gates, with 14 years of runway, but revenue growth of 31 percent and no binding-demand check yet. Symbotic and Ondas are past the window: too big."
+ },
+ {
+  "id": "12_survivors",
+  "kind": "clip",
+  "chart": "survivors",
+  "clip": "Isometric 3D illustration, dark navy background, neon green and amber accent lighting, clean minimal corporate style, cinematic slow camera move, soft volumetric light, high detail. Strictly no text, no numbers, no letters, no charts, no logos, no captions. Aerial view of the dark city of glass towers at night; the radar beam passes and only a scattered handful of towers stay lit in green while the rest fade to black, camera slowly orbiting.",
+  "text": "What is left. 180 names pass every gate we can run from public data; 116 are below the median winner's size. Among low-cap technology names with a research line and revenue growing over thirty percent: SEALSQ, LightPath, Ballard, Enovix, SES, ASP Isotopes. Read that carefully. Not disqualified is not a pick. The promotion gate, delivered contracts confirmed in a later filing, has not been run on any of them."
+ },
+ {
+  "id": "13_next",
+  "kind": "clip",
+  "chart": "nextsteps",
+  "clip": "Isometric 3D illustration, dark navy background, neon green and amber accent lighting, clean minimal corporate style, cinematic slow camera move, soft volumetric light, high detail. Strictly no text, no numbers, no letters, no charts, no logos, no captions. Close-up of hands turning the pages of a thick bound legal filing under a desk lamp, a magnifying glass hovering; one clause on the page begins to glow green.",
+  "text": "What turns a survivor into a watch: three reads per company. The customer contract: deposit, cancellation terms, delivered units. The last raise: who bought it and at what discount. The related parties: whether the customer, the lender and the shareholder are the same entity. All of it is in the filings, all of it is free, and none of it is in a ratio."
+ },
+ {
+  "id": "14_outro",
+  "kind": "clip",
+  "chart": "outro",
+  "clip": "Isometric 3D illustration, dark navy background, neon green and amber accent lighting, clean minimal corporate style, cinematic slow camera move, soft volumetric light, high detail. Strictly no text, no numbers, no letters, no charts, no logos, no captions. The radar dish slows and stops, its green beam fading over the dark city; a single lit tower remains, then the scene fades to black.",
+  "text": "The information is in the filings and the relationships, not the ratios. Educational research only, not investment advice. Screen outputs and code are in the AI Investment repository."
+ }
+]

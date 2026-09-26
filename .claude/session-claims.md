@@ -15,6 +15,7 @@ when done.
 
 | Resource | Held by | Since | Until | Notes |
 |---|---|---|---|---|
+| grok-cli video + TTS | bumper-explainer-2 (screen + robotics) | 2026-09-26 08:10Z | ~2026-09-26 14:00Z | RELEASED 2026-09-26 15:35Z — explainer 2 'the screen': 11 video clips (10 s, 16:9, 720p; 1 probe reused, 0 retries) + 14 TTS syntheses (atlas) |
 | grok-cli TTS | bumper-explainer | 2026-09-25 21:50Z | ~2026-09-25 23:30Z | RELEASED 2026-09-25 22:05Z — narrated bumper explainer: 11 TTS syntheses (voice atlas, ~4.5 min of audio), no retries |
 
 ## Recently released

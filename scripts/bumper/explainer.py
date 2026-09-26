@@ -61,7 +61,7 @@ def seg(t, start, length):
 
 
 def sentences(text: str) -> list[str]:
-    parts = re.split(r"(?<=[.!?;:])\s+", text.strip())
+    parts = re.split(r"(?<=[.!?])\s+", text.strip())
     out = []
     for p in parts:
         if not p:
